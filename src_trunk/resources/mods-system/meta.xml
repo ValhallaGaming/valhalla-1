@@ -1,0 +1,48 @@
+<meta>
+	<info author="vG MTA Scripting Team" type="script" description="mods System"/>
+
+	<script src="c_mods_system.lua" type="client"/>
+	
+	<file src="skins/credits.txt"/>
+	
+	<file src="skins/lvpd/csher.txd"/>
+	<file src="skins/lvpd/csher.dff"/>
+	<file src="skins/lvpd/gungrl3.txd"/>
+	<file src="skins/lvpd/gungrl3.dff"/>	
+	<file src="skins/lvpd/sfpd1.txd"/>
+	<file src="skins/lvpd/wmysgrd.txd"/>
+	<file src="skins/lvpd/tenpen.txd"/>
+	<file src="skins/lvpd/tenpen.dff"/>	
+
+	<file src="skins/civs/hmori.txd"/>
+	<file src="skins/civs/hmori.dff"/>
+	
+	<file src="skins/gangs/ballas1.txd"/>
+	<file src="skins/gangs/ballas1.dff"/>
+	<file src="skins/gangs/ballas2.txd"/>
+	<file src="skins/gangs/ballas2.dff"/>
+	<file src="skins/gangs/ballas3.txd"/>
+	<file src="skins/gangs/ballas3.dff"/>
+	<file src="skins/gangs/fam1.txd"/>
+	<file src="skins/gangs/fam1.dff"/>
+	<file src="skins/gangs/fam2.txd"/>
+	<file src="skins/gangs/fam2.dff"/>
+	<file src="skins/gangs/fam3.txd"/>
+	<file src="skins/gangs/fam3.dff"/>
+	<file src="skins/gangs/lsv1.txd"/>
+	<file src="skins/gangs/lsv1.dff"/>
+	<file src="skins/gangs/lsv2.txd"/>
+	<file src="skins/gangs/lsv2.dff"/>
+	<file src="skins/gangs/lsv3.txd"/>
+	<file src="skins/gangs/lsv3.dff"/>
+	<file src="skins/gangs/vla1.txd"/>
+	<file src="skins/gangs/vla1.dff"/>
+	<file src="skins/gangs/vla2.txd"/>
+	<file src="skins/gangs/vla2.dff"/>
+	<file src="skins/gangs/vla3.txd"/>
+	<file src="skins/gangs/vla3.dff"/>
+
+	<file src="tags/tags_lafront.txd"/>
+	<file src="tags/tags_laseville.txd"/>
+
+</meta>

@@ -1,0 +1,34 @@
+<meta>
+	<info author="vG MTA Scripting Team" type="script" description="Admin System"/>
+
+
+	<script src="Vehicle/s_vehicle_commands.lua" type="server"/>
+	<script src="Player/s_player_commands.lua" type="server"/>
+	<script src="Interior/s_interior_commands.lua" type="server"/>
+	<script src="Resources/s_resource_commands.lua" type="server"/>
+	
+	<script src="Player/s_afk_kick.lua" type="server"/>
+	<script src="Player/c_afk_kick.lua" type="client"/>
+	
+	<config src="whatisroleplaying.xml" type="client" />
+	<config src="powergaming.xml" type="client" />
+	<config src="metagaming.xml" type="client" />
+	<config src="commonsense.xml" type="client" />
+	<config src="revengekilling.xml" type="client" />
+	<config src="serverrules.xml" type="client" />
+	
+	<script src="rphelp.lua" type="client"/>
+	
+	<script src="HelpCommandsv1.lua" type="client"/>
+	
+	<script src="s_check.lua" type="server" />
+	<script src="c_check.lua" type="client" />
+	<file src="search.png" />
+	
+	<script src="teleport.lua" type="server" />
+	<map src="lounge.map" />
+	
+	<script src="c_admin_help.lua" type="client" />
+	
+	<script src="c_cheats.lua" type="client" />
+</meta>

@@ -1,0 +1,17 @@
+<meta>
+	<info author="vG MTA Scripting Team" type="script" description="Gate System"/>
+
+	<script src="pd_side_gate.lua" type="server"/>
+	
+	<script src="pd_garage_gate1.lua" type="server"/>
+	<script src="pd_garage_gate2.lua" type="server"/>
+	
+	<script src="pd_door1.lua" type="server"/>
+	<script src="pd_door2.lua" type="server"/>
+	<script src="pd_door3.lua" type="server"/>
+	<script src="pd_door4.lua" type="server"/>
+	<script src="pd_door5.lua" type="server"/>
+	<script src="pd_door6.lua" type="server"/>
+	
+	<script src="bank_door.lua" type="server"/>
+</meta>

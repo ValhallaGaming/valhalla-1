@@ -1,0 +1,5 @@
+<meta>
+	<info author="vG MTA Scripting Team" type="script" description="Phone System"/>
+	
+	<script src="s_phone_system.lua" type="server" />
+</meta>

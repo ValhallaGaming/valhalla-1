@@ -450,11 +450,17 @@ function playerhelp( sourcePlayer, commandName )
 				guiGridListSetItemText ( misccommandslist, taxicreaterow, misccommandexample, "/taxi I need a taxi from Las Venturas General Hospital.", false, false )
 		
 				ordersuppliescreaterow = guiGridListAddRow ( misccommandslist )
-				guiGridListSetItemText ( misccommandslist, ordersuppliescreaterow, misccommand, "/ordersuppies", false, false )
+				guiGridListSetItemText ( misccommandslist, ordersuppliescreaterow, misccommand, "/ordersupplies", false, false )
 				guiGridListSetItemText ( misccommandslist, ordersuppliescreaterow, misccommanduse, "/ordersupplies [amount]", false, false )
 				guiGridListSetItemText ( misccommandslist, ordersuppliescreaterow, misccommandexplanation, "This command will restock your business with the amount of supplies specified. Supplies cost $2 each.", false, false )
 				guiGridListSetItemText ( misccommandslist, ordersuppliescreaterow, misccommandexample, "/ordersupplies 2500", false, false )
 				
+                settagcreaterow = guiGridListAddRow ( misccommandslist )
+                guiGridListSetItemText ( misccommandslist, settagcreaterow, misccommand, "/settag", false, false )
+				guiGridListSetItemText ( misccommandslist, settagcreaterow, misccommanduse, "/settag [1-8]", false, false )
+				guiGridListSetItemText ( misccommandslist, settagcreaterow, misccommandexplanation, "This command allows you to change the tag you're spraying using a spraycan.", false, false )
+				guiGridListSetItemText ( misccommandslist, settagcreaterow, misccommandexample, "/settag 7", false, false )
+                
 		else
 		    local visible = guiGetVisible ( myWindow )
 		    if ( visible == false ) then

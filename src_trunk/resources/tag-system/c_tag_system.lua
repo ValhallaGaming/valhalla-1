@@ -81,12 +81,13 @@ function setTag(commandName, newTag)
 	if not (newTag) then
 		outputChatBox("SYNTAX: " .. commandName .. " [Tag # 1->8].", 255, 194, 14)
 	else
-		if ((tonumber(newTag)>0) and (tonumber(newTag)<9)) then
-			setElementData(getLocalPlayer(), "tag", tonumber(newTag), true)
+        local newTag = tonumber(newTag)
+		if (newTag>0) and (newTag<9) then
+			setElementData(getLocalPlayer(), "tag", true, newTag)
 			outputChatBox("Tag changed to #" .. newTag .. ".", 0, 255, 0)
 		else
 			outputChatBox("Invalid value, please enter a value between 1 and 8.", 255, 0, 0)
 		end
 	end
 end
-addCommandHandler("settag", setTag, false)
+addCommandHandler("settag", setTag)

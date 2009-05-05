@@ -1,10 +1,9 @@
 -- PD and ES badge items.
-
 ---------
 -- SQL --
 ---------
 INSERT INTO items SET id='20', item_name='LVMPD Badge', item_description='A gold Las Venturas Metropolitan Police Badge.';
-INSERT INTO items SET id='21', item_name='LVMPD Badge', item_description='A gold Las Venturas Metropolitan Police Badge.';
+INSERT INTO items SET id='21', item_name='LVES ID Badge', item_description='A LVES ID Badge.';
 
 -----------------------------
 -- Server side item script --
@@ -25,10 +24,10 @@ INSERT INTO items SET id='21', item_name='LVMPD Badge', item_description='A gold
 			local r, g, b = getPlayerNametagColor ( source )
 			if not ( r == 255) and (b == 0) and (g == 0) then
 				setPlayerNametagColor ( source, 155, 0, 0 ) -- Change the players name tag to blue.
-				outputChatBox(source.." puts on a Las Venturas ID badge. Badge Number: "..itemValue..".", thePlayer, 255, 51, 102)
+				outputChatBox(source.." puts on a Las Venturas Emergency Services ID badge. Badge Number: "..itemValue..".", thePlayer, 255, 51, 102)
 			else
 				setPlayerNametagColor ( source, false ) -- Change the players name tag to default.
-				outputChatBox(source.." takes off a Las Venturas ID badge.", thePlayer, 255, 51, 102)
+				outputChatBox(source.." takes off a Las Venturas Emergency Services ID badge.", thePlayer, 255, 51, 102)
 			end
 			
 -- /issueBadge Command

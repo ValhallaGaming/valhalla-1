@@ -4,17 +4,17 @@
 -- SQL --
 ---------
 INSERT INTO items SET id='22', item_name='Sack', item_description='An empty sack. Perfect for putting over heads to blindfold people.';
-
+-- Needs a "blidfold" column in the characters sql like cuffed to record the players blindfold state.
 -------------------------------
 -- Server side Item function --
 -------------------------------
 
--- /blindfold [player]
+-- /blindfold [player name]
 function blindfoldPlayer(thePlayer, commandName, targetPartialNick )
-	if not (targetPartialNick) then
+	if not (targetPartialNick) then -- if missing target player arg.
 		outputChatBox("SYNTAX: /" .. commandName .. " [Player Partial Nick / ID]", thePlayer, 255, 194, 14)
 	else
-		if not(exports.global:doesPlayerHaveItem(thePlayer, 22)) then -- does the player have the blindfold object?
+		if not(exports.global:doesPlayerHaveItem(thePlayer, 22)) then -- does the player have the blindfold item?
 			outputChatBox("You need something to blindfold them with.", thePlayer, 255, 0, 0)
 		else
 			local targetPlayer = exports.global:findPlayerByPartialNick(targetPartialNick)
@@ -73,7 +73,7 @@ function blindfoldPlayer(thePlayer, commandName, targetPartialNick )
 		end
 	end
 end
-addCommandHandler("blindfold", givePlayerBadge, false, false)
+addCommandHandler("blindfold", blindfoldPlayer, false, false)
 
 -----------------
 -- Client Side --

@@ -1,10 +1,13 @@
 cooldown = 0
 count = 0
+MAX_TAGCOUNT = 2
+MAX_TAG_RADIUS = 100
 
 function clientTagWall(weapon, ammo, ammoInClip, hitX, hitY, hitZ, hitElement)
 	if (weapon==41) then
 		local team = getPlayerTeam(getLocalPlayer())
 		local ftype = getElementData(team, "type")
+        local tag = getElementData(source, "tag")
 
 		if (ftype~=2) then
 			if not (hitElement) or (getElementType(hitElement)~="player") then -- Didn't attack someone
@@ -26,23 +29,21 @@ function clientTagWall(weapon, ammo, ammoInClip, hitX, hitY, hitZ, hitElement)
 							cooldown = 1
 							setTimer(resetCooldown, 5000, 1)
 						else
-							local colshape = createColSphere(x, y, z, 1000)
-							local tags = getElementsByType("object")
+							local colshape = createColSphere(x, y, z, MAX_TAG_RADIUS)
+							local tags = getElementsWithinColShape(colshape, "object")
 							local tagcount = 0
 
 							for key, value in ipairs(tags) do
 								local objtype = getElementData(value, "type")
 
 								if (tostring(objtype)=="tag") then
-									local ox, oy, oz = getElementPosition(value)
-									local distance = getDistanceBetweenPoints3D(x, y, z, ox, oy, oz)
-									if (distance<150) then
-										tagcount = tagcount + 1
-									end
+									tagcount = tagcount + 1
 								end
 							end
 
-							if (tagcount<2) then
+                            if tag == 9 then tagcount = 0 end --ignore tagcount if the tag type is 9 (city maintenance)
+                            
+							if (tagcount<MAX_TAGCOUNT) then
 								
 								count = count + 1
 								

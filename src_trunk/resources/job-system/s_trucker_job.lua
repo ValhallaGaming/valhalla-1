@@ -138,7 +138,7 @@ function truckingMissionPart3(thePlayer, matchingDimension)
 		else
 			outputChatBox("Hey, Good Work! Here's your 60$ ((Mission Completed!))", thePlayer, 255, 194, 14)
 			triggerEvent("updateGlobalSupplies", thePlayer, 50)
-			exports.global:givePlayerSafeMoney(thePlayer, 30)
+			exports.global:givePlayerSafeMoney(thePlayer, 60)
 			local marker = getElementData(thePlayer, "job.marker")
 			local colsphere = getElementData(thePlayer, "job.colshape")
 			local blip = getElementAttachedTo(marker)

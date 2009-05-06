@@ -43,6 +43,7 @@ function createNewObject(thePlayer, commandName, modelid)
 				mysql_free_result(query)
 				
 				local object = createObject(tonumber(modelid), x, y, z, 0, 0, rotation)
+				exports.pool:allocateObject(object)
 				
 				if (object) then
 					setElementInterior(object, interior)
@@ -82,6 +83,7 @@ function loadAllObjects(res)
 				local modelid = tonumber(row[8])
 					
 				local object = createObject(modelid, x, y, z, 0, 0, rotation)
+				exports.pool:allocateObject(object)
 				setElementInterior(object, interior)
 				setElementDimension(object, dimension)
 				setElementData(object, "dbid", id)
@@ -101,7 +103,7 @@ function getNearbyObjects(thePlayer, commandName)
 		outputChatBox("Nearby Objects:", thePlayer, 255, 126, 0)
 		local count = 0
 		
-		for k, theObject in ipairs(getElementsByType("objects")) do
+		for k, theObject in ipairs(exports.pool:getAllObjects(0) do
 			local dbid = getElementData(theObject, "dbid")
 			if (dbid) then
 				local x, y = getElementPosition(theColshape)
@@ -128,7 +130,7 @@ function delObject(thePlayer, commandName, targetID)
 		else
 			local object = nil
 				
-			for key, value in ipairs(getElementsByType("object")) do
+			for key, value in ipairs(exports.pool:getAllObjects()) do
 				local dbid = getElementData(value, "dbid")
 
 				if (dbid) then

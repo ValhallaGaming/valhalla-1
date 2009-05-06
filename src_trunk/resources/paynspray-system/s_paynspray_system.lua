@@ -41,12 +41,14 @@ function createSpray(thePlayer, commandName)
 			mysql_free_result(query)
 			
 			local shape = createColSphere(x, y, z, 5)
+			exports.pool:allocateColshape(shape)
 			setElementInterior(shape, interior)
 			setElementDimension(shape, dimension)
 			setElementData(shape, "dbid", id)
 			setElementData(shape, "type", "paynspray")
 			
-			createBlip(x, y, z, 63)
+			local sprayblip = createBlip(x, y, z, 63)
+			exports.pool:allocateBlip(sprayblip)
 			
 			outputChatBox("Pay n Spray spawned with ID #" .. id .. ".", thePlayer, 0, 255, 0)
 		else
@@ -72,9 +74,11 @@ function loadAllSprays(res)
 				local interior = tonumber(row[5])
 				local dimension = tonumber(row[6])
 				
-				createBlip(x, y, z, 63)
+				local sprayblip = createBlip(x, y, z, 63)
+				exports.pool:allocateBlip(sprayblip)
 				
 				local shape = createColSphere(x, y, z, 5)
+				exports.pool:allocateColshape(shape)
 				setElementInterior(shape, interior)
 				setElementDimension(shape, dimension)
 				setElementData(shape, "dbid", id)
@@ -95,7 +99,7 @@ function getNearbySprays(thePlayer, commandName)
 		outputChatBox("Nearby Pay n Sprays:", thePlayer, 255, 126, 0)
 		local count = 0
 		
-		for k, theColshape in ipairs(getElementsByType("colshape")) do
+		for k, theColshape in ipairs(exports.pool:getAllColshapes()) do
 			local colshapeType = getElementData(theColshape, "type")
 			if (colshapeType) then
 				if (colshapeType=="paynspray") then
@@ -121,7 +125,7 @@ function delSpray(thePlayer, commandName)
 	if (exports.global:isPlayerLeadAdmin(thePlayer)) then
 		local colShape = nil
 			
-		for key, value in ipairs(getElementsByType("colshape")) do
+		for key, value in ipairs(exports.pool:getAllColshapes()) do
 			local shapeType = getElementData(value, "type")
 			if (shapeType) then
 				if (shapeType=="paynspray") then

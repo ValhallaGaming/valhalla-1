@@ -1157,6 +1157,8 @@ function createInterior(thePlayer, commandName, interiorId, inttype, cost, ...)
 				if (tonumber(inttype)==0) then -- House
 					local pickup = createPickup(x, y, z, 3, 1273)
 					local intpickup = createPickup(ix, iy, iz, 3, 1318)
+					exports.allocatePickup(pickup)
+					exports.allocatePickup(intpickup)
 					
 					-- set the default pickup data
 					setPickupElementData(pickup, id, ix, iy, iz, optAngle, interior, locked, owner, inttype, cost, name,"0", "0", max_items, -1, 0,100,  interiorwithin, x, y, z, dimension, 0)
@@ -1165,6 +1167,8 @@ function createInterior(thePlayer, commandName, interiorId, inttype, cost, ...)
 				elseif (tonumber(inttype)==1) then -- Business
 					local pickup = createPickup(x, y, z, 3, 1272)
 					local intpickup = createPickup(ix, iy, iz, 3, 1318)
+					exports.allocatePickup(pickup)
+					exports.allocatePickup(intpickup)
 
 					setPickupElementData(pickup, id, ix, iy, iz, optAngle, interior, locked, owner, inttype, cost, name,"0", "0", max_items, "", 0,100, interiorwithin, x, y, z, dimension, 0)
 					setIntPickupElementData(intpickup, id, x, y, z, rot, locked, owner, inttype, interiorwithin, dimension, interior, ix, iy, iz)
@@ -1172,12 +1176,16 @@ function createInterior(thePlayer, commandName, interiorId, inttype, cost, ...)
 				elseif (tonumber(inttype)==2) then -- Government / Other
 					local pickup = createPickup(x, y, z, 3, 1318)
 					local intpickup = createPickup(ix, iy, iz, 3, 1318)
+					exports.allocatePickup(pickup)
+					exports.allocatePickup(intpickup)
 					
 					setPickupElementData(pickup, id, ix, iy, iz, optAngle, interior, locked, owner, inttype, 0, name,"0", "0", 0, -1, 0,100, interiorwithin, x, y, z, dimension, 0)
 					setIntPickupElementData(intpickup, id, x, y, z, rot, locked, owner, inttype, interiorwithin, dimension, interior, ix, iy, iz)
 				elseif (tonumber(inttype)==3) then -- Rentable
 					local pickup = createPickup(x, y, z, 3, 1273)
 					local intpickup = createPickup(ix, iy, iz, 3, 1318)
+					exports.allocatePickup(pickup)
+					exports.allocatePickup(intpickup)
 					
 					setPickupElementData(pickup, id, ix, iy, iz, optAngle, interior, locked, owner, inttype, 0, name,"0", "0", 0, -1, 0,100, interiorwithin, x, y, z, dimension, 0)
 					setIntPickupElementData(intpickup, id, x, y, z, rot, locked, owner, inttype, interiorwithin, dimension, interior, ix, iy, iz)
@@ -1206,7 +1214,7 @@ function updateInteriorExit(thePlayer, commandName)
 				mysql_free_result(query)
 			end
 			
-			local pickups = getElementsByType("pickup")
+			local pickups = exports.pool:getAllPickups()
 			for k, thePickup in ipairs(pickups) do
 				local pickupType = getElementData(thePickup, "type")
 				
@@ -1242,7 +1250,7 @@ function sellProperty(thePlayer, commandName)
 		local cost = 0
 		local owner = nil
 		local inttype = nil
-		local pickups = getElementsByType("pickup")
+		local pickups = exports.pool:getAllPickups()
 		local dimension = nil
 		local interior = nil
 		for k, thePickup in ipairs(pickups) do
@@ -1270,7 +1278,7 @@ function sellProperty(thePlayer, commandName)
 			end
 		end
 		
-		for key, value in ipairs(getElementsByType("blip")) do
+		for key, value in ipairs(exports.pool:getAllBlips()) do
 			local bx, by, bz = getElementPosition(value)
 			if (bx==x and by==y and bz==z) then
 				destroyElement(value)
@@ -1333,7 +1341,7 @@ function deleteInterior(thePlayer, commandName)
 			local dbid = getElementDimension(thePlayer)
 			local x, y, z, rot, interior, dimension = nil
 			
-			local pickups = getElementsByType("pickup")
+			local pickups = exports.pool:getAllPickups()
 			for k, thePickup in ipairs(pickups) do
 				local pickupType = getElementData(thePickup, "type")
 				
@@ -1417,11 +1425,14 @@ function reloadOneInterior(id)
 				
 				if (owner<1) then
 					pickup = createPickup(x, y, z, 3, 1273)
+					exports.pool:allocatePickup(pickup)
 				else
 					pickup = createPickup(x, y, z, 3, 1318)
+					exports.pool:allocatePickup(pickup)
 				end
 				
 				local intpickup = createPickup(ix, iy, iz, 3, 1318)
+				exports.pool:allocatePickup(intpickup)
 					
 				setPickupElementData(pickup, id, ix, iy, iz, optAngle, interior, locked, owner, inttype, cost, name, items, items_values, max_items, tennant, rentable, rent, interiorwithin, x, y, z, dimension, money)
 				setIntPickupElementData(intpickup, id, x, y, z, rot, locked, owner, inttype, interiorwithin, dimension, interior, ix, iy, iz)
@@ -1431,11 +1442,14 @@ function reloadOneInterior(id)
 					
 				if (owner<1) then
 					pickup = createPickup(x, y, z, 3, 1272)
+					exports.pool:allocatePickup(pickup)
 				else
 					pickup = createPickup(x, y, z, 3, 1318)
+					exports.pool:allocatePickup(pickup)
 				end
 				
 				local intpickup = createPickup(ix, iy, iz, 3, 1318)
+				exports.pool:allocatePickup(intpickup)
 					
 				setPickupElementData(pickup, id, ix, iy, iz, optAngle, interior, locked, owner, inttype, cost, name, items, items_values, max_items, tennant, rentable, rent, interiorwithin, x, y, z, dimension, money)
 				setIntPickupElementData(intpickup, id, x, y, z, rot, locked, owner, inttype, interiorwithin, dimension, interior, ix, iy, iz)
@@ -1443,6 +1457,8 @@ function reloadOneInterior(id)
 			elseif (inttype==2) then -- Interior Owned
 				local pickup = createPickup(x, y, z, 3, 1318)
 				local intpickup = createPickup(ix, iy, iz, 3, 1318)
+				exports.pool:allocatePickup(pickup)
+				exports.pool:allocatePickup(intpickup)
 					
 				setPickupElementData(pickup, id, ix, iy, iz, optAngle, interior, locked, owner, inttype, cost, name, items, items_values, max_items, tennant, rentable, rent, interiorwithin, x, y, z, dimension, money)
 				setIntPickupElementData(intpickup, id, x, y, z, rot, locked, owner, inttype, interiorwithin, dimension, interior, ix, iy, iz)
@@ -1452,11 +1468,14 @@ function reloadOneInterior(id)
 					
 				if (owner<1) then
 					pickup = createPickup(x, y, z, 3, 1273)
+					exports.pool:allocatePickup(pickup)
 				else
 					pickup = createPickup(x, y, z, 3, 1318)
+					exports.pool:allocatePickup(pickup)
 				end
 					
 				local intpickup = createPickup(ix, iy, iz, 3, 1318)
+				exports.pool:allocatePickup(intpickup)
 					
 				setPickupElementData(pickup, id, ix, iy, iz, optAngle, interior, locked, owner, inttype, cost, name, items, items_values, max_items, tennant, rentable, rent, interiorwithin, x, y, z, dimension, money)
 				setIntPickupElementData(intpickup, id, x, y, z, rot, locked, owner, inttype, interiorwithin, dimension, interior, ix, iy, iz)
@@ -1471,7 +1490,7 @@ function loadAllInteriors()
 	local result = mysql_query(handler, "SELECT id, x, y, z , interiorx, interiory, interiorz, type, owner, locked, cost, name, interior, dimensionwithin, interiorwithin, angle, angleexit, items, items_values, max_items, rentable, tennant, rent, money FROM interiors")
 	local counter = 0
 		
-	local players = getElementsByType("player")
+	local players = exports.pool:getAllPlayers()
 	for k, thePlayer in ipairs(players) do
 		setElementData(thePlayer, "interiormarker", nil)
 	end
@@ -1515,11 +1534,14 @@ function loadAllInteriors()
 					
 					if (owner<1) then
 						pickup = createPickup(x, y, z, 3, 1273)
+						exports.pool:allocatePickup(pickup)
 					else
 						pickup = createPickup(x, y, z, 3, 1318)
+						exports.pool:allocatePickup(pickup)
 					end
 					
 					local intpickup = createPickup(ix, iy, iz, 3, 1318)
+					exports.pool:allocatePickup(intpickup)
 					
 					setPickupElementData(pickup, id, ix, iy, iz, optAngle, interior, locked, owner, inttype, cost, name, items, items_values, max_items, tennant, rentable, rent, interiorwithin, x, y, z, dimension, money)
 					setIntPickupElementData(intpickup, id, x, y, z, rot, locked, owner, inttype, interiorwithin, dimension, interior, ix, iy, iz)
@@ -1529,11 +1551,14 @@ function loadAllInteriors()
 					
 					if (owner<1) then
 						pickup = createPickup(x, y, z, 3, 1272)
+						exports.pool:allocatePickup(pickup)
 					else
 						pickup = createPickup(x, y, z, 3, 1318)
+						exports.pool:allocatePickup(pickup)
 					end
 					
 					local intpickup = createPickup(ix, iy, iz, 3, 1318)
+					exports.pool:allocatePickup(intpickup)
 					
 					setPickupElementData(pickup, id, ix, iy, iz, optAngle, interior, locked, owner, inttype, cost, name, items, items_values, max_items, tennant, rentable, rent, interiorwithin, x, y, z, dimension, money)
 					setIntPickupElementData(intpickup, id, x, y, z, rot, locked, owner, inttype, interiorwithin, dimension, interior, ix, iy, iz)
@@ -1541,6 +1566,8 @@ function loadAllInteriors()
 			elseif (inttype==2) then -- Interior Owned
 				local pickup = createPickup(x, y, z, 3, 1318)
 				local intpickup = createPickup(ix, iy, iz, 3, 1318)
+				exports.pool:allocatePickup(pickup)
+				exports.pool:allocatePickup(intpickup)
 					
 				setPickupElementData(pickup, id, ix, iy, iz, optAngle, interior, locked, owner, inttype, cost, name, items, items_values, max_items, tennant, rentable, rent, interiorwithin, x, y, z, dimension, money)
 				setIntPickupElementData(intpickup, id, x, y, z, rot, locked, owner, inttype, interiorwithin, dimension, interior, ix, iy, iz)
@@ -1550,11 +1577,14 @@ function loadAllInteriors()
 					
 					if (owner<1) then
 						pickup = createPickup(x, y, z, 3, 1273)
+						exports.pool:allocatePickup(pickup)
 					else
 						pickup = createPickup(x, y, z, 3, 1318)
+						exports.pool:allocatePickup(pickup)
 					end
 					
 					local intpickup = createPickup(ix, iy, iz, 3, 1318)
+					exports.pool:allocatePickup(intpickup)
 					
 					setPickupElementData(pickup, id, ix, iy, iz, optAngle, interior, locked, owner, inttype, cost, name, items, items_values, max_items, tennant, rentable, rent, interiorwithin, x, y, z, dimension, money)
 					setIntPickupElementData(intpickup, id, x, y, z, rot, locked, owner, inttype, interiorwithin, dimension, interior, ix, iy, iz)
@@ -1613,7 +1643,7 @@ end
 
 -- Bind Keys required
 function bindKeys()
-	local players = getElementsByType("player")
+	local players = exports.pool:getAllPlayers()
 	for k, arrayPlayer in ipairs(players) do
 		if not(isKeyBound(arrayPlayer, "enter", "down", enterInterior)) then
 			bindKey(arrayPlayer, "enter", "down", enterInterior)
@@ -1689,7 +1719,7 @@ function buyInterior(player, pickup, cost, isHouse)
 		local charid = getElementData(player, "dbid")
 		local pickupid = getElementData(pickup, "dbid")
 		
-		for key, value in ipairs(getElementsByType("pickup")) do
+		for key, value in ipairs(exports.pool:getAllPickups()) do
 			local id = tonumber(getElementData(value, "dbid"))
 			if (id==pickupid) then
 				destroyElement(value)
@@ -1737,6 +1767,7 @@ function buyInterior(player, pickup, cost, isHouse)
 			-- Achievement
 			exports.global:givePlayerAchievement(player, 9)
 			local blip = createBlip(x, y, z, 31, 2, 255, 0, 0, 255, 200)
+			exports.pool:allocateBlip(blip)
 			setElementVisibleTo(blip, getRootElement(), false)
 			setElementVisibleTo(blip, player, true)
 			exports.global:givePlayerItem(player, 4, id)
@@ -1744,6 +1775,7 @@ function buyInterior(player, pickup, cost, isHouse)
 			-- Achievement
 			exports.global:givePlayerAchievement(player, 10)
 			local blip = createBlip(x, y, z, 32, 2, 255, 0, 0, 255, 200)
+			exports.pool:allocateBlip(blip)
 			setElementVisibleTo(blip, getRootElement(), false)
 			setElementVisibleTo(blip, player, true)
 			exports.global:givePlayerItem(player, 5, id)
@@ -1751,6 +1783,8 @@ function buyInterior(player, pickup, cost, isHouse)
 		
 		local pickup = createPickup(x, y, z, 3, 1318)
 		local intpickup = createPickup(ix, iy, iz, 3, 1318)
+		exports.pool:allocatePickup(pickup)
+		exports.pool:allocatePickup(intpickup)
 
 		setPickupElementData(pickup, id, ix, iy, iz, optAngle, interior, locked, owner, inttype, cost, name, items, items_values, max_items, tennant, rentable, rent, interiorwithin, x, y, z, dimension, money)
 		setIntPickupElementData(intpickup, id, x, y, z, rot, locked, owner, inttype, interiorwithin, dimension, interior, ix, iy, iz)
@@ -1901,7 +1935,7 @@ function getNearbyInteriors(thePlayer, commandName)
 		outputChatBox("Nearby Interiors:", thePlayer, 255, 126, 0)
 		local count = 0
 		
-		for k, thePickup in ipairs(getElementsByType("pickup")) do
+		for k, thePickup in ipairs(exports.pool:getAllPickups()) do
 			local pickuptype = getElementData(thePickup, "type")
 
 			if (pickuptype=="interior") then
@@ -1935,7 +1969,7 @@ function changeInteriorName( thePlayer, commandName, ...)
 			outputChatBox("Interior name changed to ".. name ..".", thePlayer, 0, 255, 0) -- Output confirmation.
 			
 			-- update the name on the markers...
-			for k, thePickup in ipairs(getElementsByType("pickup")) do
+			for k, thePickup in ipairs(exports.pool:getAllPickups()) do
 			local pickupType = getElementData(thePickup, "type")
 			
 			if (pickupType=="interior") then

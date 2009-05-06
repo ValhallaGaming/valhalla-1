@@ -1,0 +1,47 @@
+<meta>
+    <info author="vG MTA Scripting Team" type="script" description="Pooling Functions"/>
+
+	<script src="server/s_vehicle_pool.lua" type="server"/>
+	<export function="allocateVehicle" type="server"/>
+	<export function="getAllVehicles" type="server"/>
+	<export function="getVehicleFromID" type="server"/>
+	
+	<script src="server/s_player_pool.lua" type="server"/>
+	<export function="getAllPlayers" type="server"/>
+	<export function="getPlayerFromID" type="server"/>
+	
+	<script src="server/s_marker_pool.lua" type="server"/>
+	<export function="allocateMarker" type="server"/>
+	<export function="getAllMarkers" type="server"/>
+	<export function="getMarkerFromID" type="server"/>
+	
+	<script src="server/s_pickup_pool.lua" type="server"/>
+	<export function="allocatePickup" type="server"/>
+	<export function="getAllPickups" type="server"/>
+	<export function="getPickupFromID" type="server"/>
+	
+	<script src="server/s_object_pool.lua" type="server"/>
+	<export function="allocateObject" type="server"/>
+	<export function="getAllObjects" type="server"/>
+	<export function="getObjectFromID" type="server"/>
+	
+	<script src="server/s_blip_pool.lua" type="server"/>
+	<export function="allocateBlip" type="server"/>
+	<export function="getAllBlips" type="server"/>
+	<export function="getBlipFromID" type="server"/>
+	
+	<script src="server/s_colshape_pool.lua" type="server"/>
+	<export function="allocateColshape" type="server"/>
+	<export function="getAllColshapes" type="server"/>
+	<export function="getColShapeFromID" type="server"/>
+	
+	<script src="server/s_team_pool.lua" type="server"/>
+	<export function="allocateTeam" type="server"/>
+	<export function="getAllTeams" type="server"/>
+	<export function="getTeamFromID" type="server"/>
+	
+	<script src="server/s_ped_pool.lua" type="server"/>
+	<export function="allocatePed" type="server"/>
+	<export function="getAllPeds" type="server"/>
+	<export function="getPedFromID" type="server"/>
+</meta>

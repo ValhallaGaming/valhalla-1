@@ -1,8 +1,10 @@
 objGated = createObject(1557, 295.12623901367, 189.35, 1006.171875, 0, 0, 0)
+exports.pool:allocateObject(objGated)
 setElementInterior(objGated, 3)
 setElementDimension(objGated, 1)
 
 objGated2 = createObject(1557, 298.12623901367, 189.35, 1006.171875, 0, 0, 180)
+exports.pool:allocateObject(objGated2)
 setElementInterior(objGated2, 3)
 setElementDimension(objGated2, 1)
 

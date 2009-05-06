@@ -14,7 +14,7 @@ function scanMoneyHacks()
 	local counter = 0
 	
 	exports.irc:sendMessage("[ANTICHEAT] Scanning for money hacks...")
-	local players = getElementsByType("player")
+	local players = exports.pool:getAllPlayers()
 	for key, value in ipairs(players) do
 		local logged = getElementData(value, "loggedin")
 		if (logged==1) then
@@ -36,7 +36,7 @@ function scanMoneyHacks()
 	exports.irc:sendMessage("[ANTICHEAT] " .. counter .. " Money Hacker(s) Detected.")
 	exports.irc:sendMessage("[ANTICHEAT] Scan completed in " .. tickend-tick .. " millseconds.")
 	
-	local theConsole = getElementsByType("console")[1]
+	local theConsole = getRootElement()
 	for key, value in ipairs(hackers) do
 		local money = hackersMoney[key]
 		local accountID = getElementData(value, "gameaccountid")

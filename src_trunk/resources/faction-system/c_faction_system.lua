@@ -364,7 +364,7 @@ function checkNameExists(theEditBox)
 	local found = nil
 	local count = 0
 	
-	local players = getElementsByType("player")
+	local players = exports.pool:getAllPlayers()
 	for key, value in ipairs(players) do
 		local username = string.lower(tostring(getPlayerName(value)))
 		if (string.find(username, string.lower(tostring(guiGetText(theEditBox))))) and (guiGetText(theEditBox)~="") then

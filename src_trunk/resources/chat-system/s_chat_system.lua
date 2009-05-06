@@ -74,6 +74,7 @@ function chatMain(message, messageType)
 		if (messageType==0) then
 			local x, y, z = getElementPosition(source)
 			local chatSphere = createColSphere(x, y, z, 20)
+			exports.pool:allocateColshape(chatSphere)
 			local nearbyPlayers = getElementsWithinColShape(chatSphere, "player")
 			local playerName = string.gsub(getPlayerName(source), "_", " ")
 			
@@ -91,18 +92,22 @@ function chatMain(message, messageType)
 					local logged = tonumber(getElementData(nearbyPlayer, "loggedin"))
 					if not (isPedDead(nearbyPlayer)) and (logged==1) then
 						chatSphere = createColSphere(x, y, z, 20*0.2)
+						exports.pool:allocateColshape(chatSphere)
 			        if isElementWithinColShape(nearbyPlayer, chatSphere) then
 			            outputChatBox( "#EEEEEE" .. playerName .. " Says: " .. message, nearbyPlayer, 255, 255, 255, true)
 						destroyElement(chatSphere)
 						chatSphere = createColSphere(x, y, z, 20*0.4)
+						exports.pool:allocateColshape(chatSphere)
 			        elseif isElementWithinColShape(nearbyPlayer, chatSphere) then
 			            outputChatBox( "#DDDDDD" .. playerName .. " Says: " .. message, nearbyPlayer, 255, 255, 255, true)
 						destroyElement(chatSphere)
 						chatSphere = createColSphere(x, y, z, 20*0.6)
+						exports.pool:allocateColshape(chatSphere)
 			        elseif isElementWithinColShape(nearbyPlayer, chatSphere) then          
 						outputChatBox( "#CCCCCC" .. playerName .. " Says: " .. message, nearbyPlayer, 255, 255, 255, true)
 						destroyElement(chatSphere)
 						chatSphere = createColSphere(x, y, z, 20*0.8)
+						exports.pool:allocateColshape(chatSphere)
 			        elseif isElementWithinColShape(nearbyPlayer, chatSphere) then
 			            outputChatBox( "#BBBBBB" .. playerName .. " Says: " .. message, nearbyPlayer, 255, 255, 255, true)
 					else
@@ -122,6 +127,7 @@ function chatMain(message, messageType)
 			else
 				local x, y, z = getElementPosition(source)
 				local chatSphere = createColSphere(x, y, z, 20)
+				exports.pool:allocateColshape(chatSphere)
 				local nearbyPlayers = getElementsWithinColShape(chatSphere, "player")
 				local playerName = string.gsub(getPlayerName(source), "_", " ")
 				
@@ -146,7 +152,7 @@ function chatMain(message, messageType)
 		if (exports.global:doesPlayerHaveItem(source, 6)) then
 			local username = string.gsub(getPlayerName(source), "_", " ")
 			local theChannel = getElementData(source, "radiochannel")
-			for key, value in ipairs(getElementsByType("player")) do
+			for key, value in ipairs(exports.pool:getAllPlayers()) do
 				local targetChannel = getElementData(value, "radiochannel")
 				local logged = getElementData(source, "loggedin")
 				
@@ -171,6 +177,7 @@ function chatMain(message, messageType)
 						-- Show it to people near who can hear his radio
 						local x, y, z = getElementPosition(value)
 						local chatSphere = createColSphere(x, y, z, 10)
+						exports.pool:allocateColshape(chatSphere)
 						local nearbyPlayers = getElementsWithinColShape(chatSphere, "player")
 						
 						destroyElement(chatSphere)
@@ -189,6 +196,7 @@ function chatMain(message, messageType)
 			-- Show the radio to nearby listening in people near the speaker
 			local x, y, z = getElementPosition(source)
 			local chatSphere = createColSphere(x, y, z, 10)
+			exports.pool:allocateColshape(chatSphere)
 			local nearbyPlayers = getElementsWithinColShape(chatSphere, "player")
 			destroyElement(chatSphere)
 			
@@ -227,7 +235,7 @@ function globalOOC(thePlayer, commandName, ...)
 			elseif (muted==1) then
 				outputChatBox("You are currenty muted from the OOC Chat.", thePlayer, 255, 0, 0)
 			else	
-				local players = getElementsByType("player")
+				local players = exports.pool:getAllPlayers()
 				local playerName = string.gsub(getPlayerName(thePlayer), "_", " ")
 					
 				exports.irc:sendMessage("[OOC: Global Chat] " .. playerName .. ": " .. message)
@@ -318,6 +326,7 @@ function localOOC(thePlayer, commandName, ...)
 		else
 			local x, y, z = getElementPosition(thePlayer)
 			local chatSphere = createColSphere(x, y, z, 20)
+			exports.pool:allocateColshape(chatSphere)
 			local nearbyPlayers = getElementsWithinColShape(chatSphere, "player")
 			local playerName = string.gsub(getPlayerName(thePlayer), "_", " ")
 			local message = table.concat({...}, " ")
@@ -355,7 +364,7 @@ function districtOOC(thePlayer, commandName, ...)
 			local message = table.concat({...}, " ")
 			local zonename = getElementZoneName(thePlayer)
 			
-			for key, value in ipairs(getElementsByType("player")) do
+			for key, value in ipairs(exports.pool:getAllPlayers()) do
 				local playerzone = getElementZoneName(value)
 				local playerdimension = getElementDimension(value)
 				local playerinterior = getElementInterior(value)
@@ -384,6 +393,7 @@ function localDo(thePlayer, commandName, ...)
 		else
 			local x, y, z = getElementPosition(thePlayer)
 			local chatSphere = createColSphere(x, y, z, 40)
+			exports.pool:allocateColshape(chatSphere)
 			local nearbyPlayers = getElementsWithinColShape(chatSphere, "player")
 			local playerName = string.gsub(getPlayerName(thePlayer), "_", " ")
 			local message = table.concat({...}, " ")
@@ -420,6 +430,7 @@ function localShout(thePlayer, commandName, ...)
 		else
 			local x, y, z = getElementPosition(thePlayer)
 			local chatSphere = createColSphere(x, y, z, 40)
+			exports.pool:allocateColshape(chatSphere)
 			local nearbyPlayers = getElementsWithinColShape(chatSphere, "player")
 			local playerName = string.gsub(getPlayerName(thePlayer), "_", " ")
 			local message = table.concat({...}, " ")
@@ -459,6 +470,7 @@ function megaphoneShout(thePlayer, commandName, ...)
 			else
 				local x, y, z = getElementPosition(thePlayer)
 				local chatSphere = createColSphere(x, y, z, 40)
+				exports.pool:allocateColshape(chatSphere)
 				local nearbyPlayers = getElementsWithinColShape(chatSphere, "player")
 				local playerName = string.gsub(getPlayerName(thePlayer), "_", " ")
 				local message = table.concat({...}, " ")
@@ -540,7 +552,7 @@ function adminChat(thePlayer, commandName, ...)
 			outputChatBox("SYNTAX: /a [Message]", thePlayer, 255, 194, 14)
 		else
 			local message = table.concat({...}, " ")
-			local players = getElementsByType("player")
+			local players = exports.pool:getAllPlayers()
 			local username = string.gsub(getPlayerName(thePlayer), "_", " ")
 			local adminTitle = exports.global:getPlayerAdminTitle(thePlayer)
 
@@ -566,7 +578,7 @@ function adminAnnouncement(thePlayer, commandName, ...)
 			outputChatBox("SYNTAX: /" .. commandName .. " [Message]", thePlayer, 255, 194, 14)
 		else
 			local message = table.concat({...}, " ")
-			local players = getElementsByType("player")
+			local players = exports.pool:getAllPlayers()
 			local username = string.gsub(getPlayerName(thePlayer), "_", " ")
 
 			for k, arrayPlayer in ipairs(players) do
@@ -590,7 +602,7 @@ function leadAdminChat(thePlayer, commandName, ...)
 			outputChatBox("SYNTAX: /" .. commandName .. " [Message]", thePlayer, 255, 194, 14)
 		else
 			local message = table.concat({...}, " ")
-			local players = getElementsByType("player")
+			local players = exports.pool:getAllPlayers()
 			local username = string.gsub(getPlayerName(thePlayer), "_", " ")
 			local adminTitle = exports.global:getPlayerAdminTitle(thePlayer)
 
@@ -615,7 +627,7 @@ function headAdminChat(thePlayer, commandName, ...)
 			outputChatBox("SYNTAX: /" .. commandName .. " [Message]", thePlayer, 255, 194, 14)
 		else
 			local message = table.concat({...}, " ")
-			local players = getElementsByType("player")
+			local players = exports.pool:getAllPlayers()
 			local username = string.gsub(getPlayerName(thePlayer), "_", " ")
 			local adminTitle = exports.global:getPlayerAdminTitle(thePlayer)
 
@@ -637,7 +649,7 @@ function showAdmins(thePlayer, commandName)
 	local logged = getElementData(thePlayer, "loggedin")
 	
 	if(logged==1) then
-		local players = getElementsByType("player")
+		local players = exports.pool:getAllPlayers()
 		local counter = 0
 		
 		outputChatBox("ADMINS:", thePlayer)
@@ -664,7 +676,7 @@ function toggleOOC(thePlayer, commandName)
 	local logged = getElementData(thePlayer, "loggedin")
 
 	if(logged==1) and (exports.global:isPlayerAdmin(thePlayer)) then
-		local players = getElementsByType("player")
+		local players = exports.pool:getAllPlayers()
 		local oocEnabled = exports.global:getOOCState()
 		
 		if (oocEnabled==0) then
@@ -880,6 +892,7 @@ function localClose(thePlayer, commandName, ...)
 			local chatRadius = 2
 			local posX, posY, posZ = getElementPosition(thePlayer)
 			local chatSphere = createColSphere( posX, posY, posZ, 5)
+			exports.pool:allocateColshape(chatSphere)
 			local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
 			destroyElement( chatSphere )
 			for index, targetPlayers in ipairs( targetPlayers ) do

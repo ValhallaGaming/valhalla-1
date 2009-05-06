@@ -64,6 +64,7 @@ addEventHandler("onPlayerArrest", getRootElement(), giveAchievementOnArrested)
 
 -- /////////////// ACHIEVEMENT ID 8 - Banged Up ///////////////////
 mtaPickup = createPickup(1444.1369628906, 1903.8308105469, 10.8203125, 3, 1248)
+exports.pool:allocatePickup(mtaPickup)
 function giveAchievementOnMTAPickup(thePlayer)
 	cancelEvent()
 	exports.global:givePlayerAchievement(thePlayer, 32)

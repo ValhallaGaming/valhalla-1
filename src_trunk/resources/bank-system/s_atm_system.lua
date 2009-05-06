@@ -1,31 +1,3 @@
--- ////////////////////////////////////
--- //			MYSQL				 //
--- ////////////////////////////////////		
-sqlUsername = exports.mysql:getMySQLUsername()
-sqlPassword = exports.mysql:getMySQLPassword()
-sqlDB = exports.mysql:getMySQLDBName()
-sqlHost = exports.mysql:getMySQLHost()
-sqlPort = exports.mysql:getMySQLPort()
-
-handler = mysql_connect(sqlHost, sqlUsername, sqlPassword, sqlDB, sqlPort)
-
-function checkMySQL()
-	if not (mysql_ping(handler)) then
-		handler = mysql_connect(sqlHost, sqlUsername, sqlPassword, sqlDB, sqlPort)
-	end
-end
-setTimer(checkMySQL, 300000, 0)
-
-function closeMySQL()
-	if (handler) then
-		mysql_close(handler)
-	end
-end
-addEventHandler("onResourceStop", getResourceRootElement(getThisResource()), closeMySQL)
--- ////////////////////////////////////
--- //			MYSQL END			 //
--- ////////////////////////////////////
-
 function createATM(thePlayer, commandName)
 	if (exports.global:isPlayerLeadAdmin(thePlayer)) then
 		local x, y, z = getElementPosition(thePlayer)
@@ -44,6 +16,7 @@ function createATM(thePlayer, commandName)
 			mysql_free_result(query)
 			
 			local object = createObject(2942, x, y, z, 0, 0, rotation-180)
+			exports.pool:allocateObject(object)
 			setElementDimension(object, dimension)
 			setElementInterior(object, interior)
 			
@@ -52,6 +25,7 @@ function createATM(thePlayer, commandName)
 				local pz = z
 			
 			local pickup = createPickup(px, py, pz, 3, 1274)
+			exports.pool:allocatePickup(pickup)
 			setElementDimension(pickup, dimension)
 			setElementInterior(pickup, interior)
 			
@@ -91,6 +65,7 @@ function loadAllATMs(res)
 				local interior = tonumber(row[7])
 				
 				local object = createObject(2942, x, y, z, 0, 0, rotation-180)
+				exports.pool:allocateObject(object)
 				setElementDimension(object, dimension)
 				setElementInterior(object, interior)
 				
@@ -99,6 +74,7 @@ function loadAllATMs(res)
 				local pz = z
 				
 				local pickup = createPickup(px, py, pz, 3, 1274)
+				exports.pool:allocatePickup(pickup)
 				setElementDimension(pickup, dimension)
 				setElementInterior(pickup, interior)
 				
@@ -126,7 +102,7 @@ function deleteATM(thePlayer, commandName, id)
 			id = tonumber(id)
 				
 			local counter = 0
-			local objects = getElementsByType("object")
+			local objects = exports.pool:getAllObjects()
 			for k, theObject in ipairs(objects) do
 				local objectType = getElementData(theObject, "type")
 					
@@ -139,7 +115,7 @@ function deleteATM(thePlayer, commandName, id)
 				end
 			end
 			
-			local pickups = getElementsByType("pickup")
+			local pickups = exports.pool:getAllPickups()
 			for k, thePickup in ipairs(pickups) do
 				local pickupType = getElementData(thePickup, "type")
 					
@@ -174,7 +150,7 @@ function getNearbyATMs(thePlayer, commandName)
 		outputChatBox("Nearby ATMs:", thePlayer, 255, 126, 0)
 		local count = 0
 		
-		for k, theObject in ipairs(getElementsByType("object")) do
+		for k, theObject in ipairs(exports.pool:getAllObjects()) do
 			local objecttype = getElementData(theObject, "type")
 			if (objecttype=="atm") then
 				local x, y, z = getElementPosition(theObject)

@@ -3,6 +3,7 @@ function syncHeadBob(x, y, z)
 
 	
 	local colshape = createColSphere(px, py, pz, 20)
+	exports.pool:allocateColshape(colshape)
 	local players = getElementsWithinColShape(colshape, "player")
 	for key, value in ipairs(players) do
 		if (value~=source) then

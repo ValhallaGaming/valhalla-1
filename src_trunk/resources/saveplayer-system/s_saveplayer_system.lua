@@ -17,7 +17,7 @@ end
 setTimer(checkMySQL, 300000, 0)
 
 function closeMySQL()
-	for key, value in ipairs(getElementsByType("player")) do
+	for key, value in ipairs(exports.pool:getAllPlayers()) do
 		triggerEvent("savePlayer", value, "Save All")
 	end
 	if (handler) then

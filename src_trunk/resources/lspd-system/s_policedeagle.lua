@@ -4,6 +4,7 @@ function tazerFired(x, y, z, target)
 
 	if (distance<50) then
 		local colshape = createColSphere(px, py, pz, 20)
+		exports.pool:allocateColshape(colshape)
 		for key, value in ipairs(getElementsWithinColShape(colshape)) do
 			if (value~=source) then
 				outputChatBox("SYNC: Sending tazer effect to client: " .. tostring(getPlayerName(value)) .. " FROM: " .. tostring(getPlayerName(source)) .. ".")

@@ -15,10 +15,10 @@ function loadGlobal()
 end
 
 function displayCredits()
-	exports.irc:sendMessage("------------------------------------------------------")
-	exports.irc:sendMessage("--  VG MTA:RP Script V2 Loaded - By Phil (Daniels)  --")
-	exports.irc:sendMessage("--              www.valhallagaming.net              --")
-	exports.irc:sendMessage("------------------------------------------------------")
+	exports.irc:sendMessage("-------------------------------------------------------------")
+	exports.irc:sendMessage("--  VG MTA:RP Script V2 Loaded - By vG.MTA Scripting Team  --")
+	exports.irc:sendMessage("--              www.valhallagaming.net                     --")
+	exports.irc:sendMessage("-------------------------------------------------------------")
 end
 
 function fixLag()

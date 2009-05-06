@@ -1,5 +1,5 @@
 function getDonators()
-	local players = getElementsByType("player")
+	local players = exports.pool:getAllPlayers()
 	
 	local donators = { }
 	local count = 1

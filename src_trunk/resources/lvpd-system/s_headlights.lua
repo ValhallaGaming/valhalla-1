@@ -24,9 +24,11 @@ function toggleFlashers(x1, y1, z1, x2, y2, z2)
 				-- new flashing lights
 				
 				local object1 = createObject(1489, x1, y1, z1)
+				exports.pool:allocateObject(object1)
 				attachElements(object1, veh, x1+0.9, y2+0.6, z1+0.7)
 				
 				local object2 = createObject(1489, x1, y1, z1)
+				exports.pool:allocateObject(object2)
 				attachElements(object2, veh, x2-0.9, y2+0.6, z1+0.7)
 
 				setElementData(veh, "flashobject1", object1)
@@ -113,6 +115,7 @@ function toggleFlashing(theVehicle)
 			end
 			
 			local marker = createMarker(0, 0, 0, "corona", 1, 255, 0, 0, 200)
+			exports.pool:allocateMarker(marker)
 			attachElements(marker, object2, 0, 0, 0)
 			setElementData(theVehicle, "flashmarker2", marker)
 
@@ -135,6 +138,7 @@ function toggleFlashing(theVehicle)
 			end
 			
 			local marker = createMarker(0, 0, 0, "corona", 1, 0, 0, 255, 200)
+			exports.pool:allocateMarker(marker)
 			attachElements(marker, object1, 0, 0, 0)
 			setElementData(theVehicle, "flashmarker1", marker)
 			
@@ -157,6 +161,7 @@ function toggleFlashing(theVehicle)
 			end
 			
 			local marker = createMarker(0, 0, 0, "corona", 1, 255, 0, 0, 200)
+			exports.pool:allocateMarker(marker)
 			attachElements(marker, object2, 0, 0, 0)
 			setElementData(theVehicle, "flashmarker2", marker)
 			
@@ -179,6 +184,7 @@ function toggleFlashing(theVehicle)
 			end
 			
 			local marker = createMarker(0, 0, 0, "corona", 1, 0, 0, 255, 200)
+			exports.pool:allocateMarker(marker)
 			attachElements(marker, object1, 0, 0, 0)
 			setElementData(theVehicle, "flashmarker1", marker)
 			

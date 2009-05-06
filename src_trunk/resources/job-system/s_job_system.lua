@@ -29,6 +29,7 @@ addEventHandler("onResourceStop", getResourceRootElement(getThisResource()), clo
 chDimension = 125
 chInterior = 3
 employmentCollision = createColSphere(360.8212890625, 173.62351989746, 1009.109375, 5)
+exports.pool:allocateColShape(employmentCollision)
 
 -- /employment at cityhall
 function employment(thePlayer)

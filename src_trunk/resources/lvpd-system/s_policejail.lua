@@ -1,10 +1,12 @@
 -- objects to make the floor solid...
 obj1 = createObject(3867, 195.93978881836, 175.52951049805, 1000.1234375)
+exports.pool:allocateObject(obj1)
 setElementDimension(obj1, 1)
 setElementInterior(obj1, 3)
 setObjectRotation(obj1, 270, 0, 180)
 
 obj2 = createObject(3867, 195.93978881836, 157.52951049805, 1000.1234375)
+exports.pool:allocateObject(obj2)
 setElementDimension(obj2, 1)
 setElementInterior(obj2, 3)
 setObjectRotation(obj2, 270, 0, 180)
@@ -41,6 +43,7 @@ cells[4][3] = 1003.0234375
 cells[4][4] = 3.4074401855469
 
 arrestColShape = createColSphere(200.70149230957, 168.81527709961, 1003.0234375, 4)
+exports.pool:allocateColshape(arrestColShape)
 setElementInterior(arrestColShape, 3)
 setElementDimension(arrestColShape, 1)
 

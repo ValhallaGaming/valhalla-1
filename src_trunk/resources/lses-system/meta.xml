@@ -1,6 +1,0 @@
-<meta>
-	<info author="vG MTA Scripting Team" type="script" description="LS-ES System"/>
-
-	<script src="s_lses_system.lua" type="server"/>
-	<script src="c_lses_system.lua" type="client"/>
-</meta>

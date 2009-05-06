@@ -7,7 +7,7 @@ addEventHandler("onPlayerJoin", getRootElement(), playerJoin)
 
 function resourceStart(res)
 	if (res==getThisResource()) then
-		for key, value in ipairs(getElementsByType("player")) do
+		for key, value in ipairs(exports.pool:getAllPlayers()) do
 			setElementData(value, "report", nil)
 		end
 	end

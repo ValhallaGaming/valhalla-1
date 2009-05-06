@@ -1,4 +1,5 @@
 arrestColShape = createColSphere(1513.50, -1538.44, -8.97, 4)
+exports.pool:allocateColshape(arrestColShape)
 setElementInterior(arrestColShape, 0)
 setElementDimension(arrestColShape, 0)
 

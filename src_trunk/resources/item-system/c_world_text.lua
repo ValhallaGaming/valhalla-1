@@ -2,7 +2,7 @@ function showWorldText()
 	local x, y, z = getElementPosition(getLocalPlayer())
 	local colsphere = createColSphere(x, y, z, 10)
 	
-	for key, value in ipairs(getElementsByType("object")) do
+	for key, value in ipairs(exports.pool:getAllObjects()) do
 		local ox, oy, oz = getElementPosition(value)
 		if (getDistanceBetweenPoints3D(x, y, z, ox, oy, oz)<20) then
 			local objtype = getElementData(value, "type")

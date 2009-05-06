@@ -1,8 +1,10 @@
 objGateb = createObject(1557, 228.25027770996, 159.77064819336, 1002.0234375, 0, 0, 90)
+exports.pool:allocateObject(objGateb)
 setElementInterior(objGateb, 3)
 setElementDimension(objGateb, 1)
 
 objGateb2 = createObject(1557, 228.25027770996, 162.77064819336, 1002.0234375, 0, 0, 270)
+exports.pool:allocateObject(objGateb2)
 setElementInterior(objGateb2, 3)
 setElementDimension(objGateb2, 1)
 

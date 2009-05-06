@@ -1,6 +1,0 @@
-<meta>
-	<html src="index.php" default="true" />
-	<html src="mta_sdk.php" default="false" />
-	<script src="ucp.lua"/>
-	<export function='getPlayersInfo' http='true' />
-</meta>

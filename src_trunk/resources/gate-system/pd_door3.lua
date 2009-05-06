@@ -1,8 +1,10 @@
 objGatec = createObject(1557, 229.92783508301, 169.94030761719, 1002.0234375, 0, 0, 0)
+exports.pool:allocateObject(objGatec)
 setElementInterior(objGatec, 3)
 setElementDimension(objGatec, 1)
 
 objGatec2 = createObject(1557, 232.92783508301, 169.94030761719, 1002.0234375, 0, 0, 180)
+exports.pool:allocateObject(objGatec2)
 setElementInterior(objGatec2, 3)
 setElementDimension(objGatec2, 1)
 

@@ -2,7 +2,7 @@ function getBlips(thePlayer, stype)
 	local gameaccountid = getElementData(thePlayer, "gameaccountid")
 	local blips = { }
 	local count = 1
-	for key, value in ipairs(getElementsByType("blip")) do
+	for key, value in ipairs(exports.pool:getAllBlips()) do
 		local bliptype = getElementData(value, "type")
 		local blipowner = getElementData(value, "owner")
 		
@@ -23,7 +23,7 @@ function getMarkers(thePlayer, stype)
 	local gameaccountid = getElementData(thePlayer, "gameaccountid")
 	local markers = { }
 	local count = 1
-	for key, value in ipairs(getElementsByType("marker")) do
+	for key, value in ipairs(exports.pool:getAllMarkers()) do
 		local markertype = getElementData(value, "type")
 		local markerowner = getElementData(value, "owner")
 		

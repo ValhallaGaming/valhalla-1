@@ -23,6 +23,7 @@ function cuffPlayer(thePlayer, commandName, targetPartialNick)
 					local x, y, z = getElementPosition(targetPlayer)
 					
 					local colSphere = createColSphere(x, y, z, smallRadius)
+					exports.pool:allocateColshape(colSphere)
 					
 					if (isElementWithinColShape(thePlayer, colSphere)) then
 						destroyElement(colSphere)
@@ -71,6 +72,7 @@ function uncuffPlayer(thePlayer, commandName, targetPartialNick)
 					local x, y, z = getElementPosition(targetPlayer)
 					
 					local colSphere = createColSphere(x, y, z, smallRadius)
+					exports.pool:allocateColshape(colSphere)
 					
 					if (isElementWithinColShape(thePlayer, colSphere)) then
 						destroyElement(colSphere)
@@ -108,6 +110,7 @@ function tazerAttack(thePlayer)
 			else
 				local x, y, z = getElementPosition(thePlayer)
 				local colSphere = createColSphere(x, y, z, smallRadius)
+				exports.pool:allocateColshape(colSphere)
 				local nearbyPlayers = getElementsWithinColShape(colSphere)
 				local tazedPlayer = nil
 				local tazablePlayers = 0

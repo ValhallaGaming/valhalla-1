@@ -43,7 +43,7 @@ function callSomeone(thePlayer, commandName, phoneNumber)
 					exports.global:sendLocalMeAction(thePlayer, "takes out a cell phone.")
 					local found, foundElement = false
 					
-					for key, value in ipairs(getElementsByType("player")) do
+					for key, value in ipairs(exports.pool:getAllPlayers()) do
 						local logged = getElementData(value, "loggedin")
 						
 						if (logged==1) then
@@ -232,6 +232,7 @@ function talkPhone(thePlayer, commandName, ...)
 					-- Send it to nearby players of the speaker
 					local x, y, z = getElementPosition(thePlayer)
 					local chatSphere = createColSphere(x, y, z, 10)
+					exports.pool:allocateColshape(chatSphere)
 					local nearbyPlayers = getElementsWithinColShape(chatSphere, "player")
 					
 					destroyElement(chatSphere)
@@ -247,6 +248,7 @@ function talkPhone(thePlayer, commandName, ...)
 					if (phoneState==2) then -- Loudspeaker
 						local x, y, z = getElementPosition(target)
 						local chatSphere = createColSphere(x, y, z, 40)
+						exports.pool:allocateColshape(chatSphere)
 						local nearbyPlayers = getElementsWithinColShape(chatSphere, "player")
 						local username = getPlayerName(target)
 						

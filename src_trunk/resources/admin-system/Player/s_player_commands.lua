@@ -100,7 +100,7 @@ function resKick(thePlayer, commandName, amount)
 			else
 				local players = { }
 				local count = 1
-				for key, value in ipairs(getElementsByType("player")) do
+				for key, value in ipairs(exports.pool:getAllPlayers()) do
 					if not (exports.global:isPlayerAdmin(value)) then
 						players[count] = value
 						count = count + 1
@@ -568,7 +568,7 @@ function hiddenOOC(thePlayer, commandName, ...)
 		if not (...) then
 			outputChatBox("SYNTAX: /" .. commandName .. " [Message]", thePlayer, 255, 194, 14)
 		else
-			local players = getElementsByType("player")
+			local players = exports.pool:getAllPlayers()
 			local message = table.concat({...}, " ")
 			
 			exports.irc:sendMessage("[OOC: Global Cha] Hidden Admin: " .. message)
@@ -1073,7 +1073,7 @@ function jailPlayer(thePlayer, commandName, who, minutes, ...)
 				end
 				
 				local incVal = 0
-				for key, value in ipairs(getElementsByType("player")) do
+				for key, value in ipairs(exports.pool:getAllPlayers()) do
 					local name = getPlayerName(value)
 					if (name==getPlayerName(targetPlayer)) then
 						incVal = key

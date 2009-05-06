@@ -1,18 +1,26 @@
 local obj = createObject(1557, 2303.9951171875, -14.620796585083, 25.7421875, 0, 0, 270.55862426758)
+exports.pool:allocateObject(obj)
 local obj2 = createObject(1557, 2303.9951171875, -17.6, 25.7421875, 0, 0, 90.55862426758)
+exports.pool:allocateObject(obj2)
 local obj3 = createObject(1557, 2303.9951171875, -17.8, 25.7421875, 0, 0, 90.55862426758)
+exports.pool:allocateObject(obj3)
 local obj4 = createObject(1491, 2314.75390625, 0.36209610104561, 25.7421875, 0, 0, 0)
+exports.pool:allocateObject(obj4)
 
 local ped = createPed(150, 2318.423828125, -7.2702474594116, 26.749565124512)
+exports.pool:allocatePed(ped)
 setPedRotation(ped, 91.057830810547)
 
 local ped2 = createPed(141, 2318.423828125, -9.9451246261597, 26.749565124512)
+exports.pool:allocatePed(ped2)
 setPedRotation(ped2, 91.057830810547)
 
 local ped3 = createPed(57, 2318.423828125, -12.672068595886, 26.749565124512)
+exports.pool:allocatePed(ped3)
 setPedRotation(ped3, 91.057830810547)
 
 local ped4 = createPed(57, 2306.6376953125, -7.5967411994934, 26.7421875)
+exports.pool:allocatePed(ped4)
 setPedRotation(ped4, 271.95004272461)
 
 setElementDimension(obj, 128)
@@ -59,6 +67,7 @@ function playerTarget(target)
 				
 				local x, y, z = getElementPosition(target)
 				local chatSphere = createColSphere(x, y, z, 20)
+				exports.pool:allocateColshape(chatSphere)
 				local nearbyPlayers = getElementsWithinColShape(chatSphere, "player")
 				
 				

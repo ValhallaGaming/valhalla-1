@@ -5,7 +5,7 @@ addEvent("onVehicleToggleStrobes", false)
 
 -- Bind Keys required
 function bindKeys()
-	local players = getElementsByType("player")
+	local players = exports.pool:getAllPlayers()
 	for k, arrayPlayer in ipairs(players) do
 		if not(isKeyBound(arrayPlayer, "p", "down", toggleFlashers)) then
 			bindKey(arrayPlayer, "p", "down", toggleFlashers)

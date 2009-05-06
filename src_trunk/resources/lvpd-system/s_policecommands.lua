@@ -57,6 +57,7 @@ function cuffPlayer(thePlayer, commandName, targetPartialNick)
 						local x, y, z = getElementPosition(targetPlayer)
 						
 						local colSphere = createColSphere(x, y, z, smallRadius)
+						exports.pool:allocateColshape(colSphere)
 						
 						if (isElementWithinColShape(thePlayer, colSphere)) then
 							outputChatBox("You have been hand cuffed by " .. username .. ".", targetPlayer)
@@ -113,6 +114,7 @@ function uncuffPlayer(thePlayer, commandName, targetPartialNick)
 						local x, y, z = getElementPosition(targetPlayer)
 						
 						local colSphere = createColSphere(x, y, z, smallRadius)
+						exports.pool:allocateColshape(colSphere)
 						
 						if (isElementWithinColShape(thePlayer, colSphere)) then
 							outputChatBox("You have been uncuffed by " .. username .. ".", targetPlayer)

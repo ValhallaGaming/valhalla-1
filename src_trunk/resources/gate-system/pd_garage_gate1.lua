@@ -1,4 +1,5 @@
 objGateh = createObject(972, 2297.1805664063, 2509.133789063, 2.2734375, 0, 0, 180)
+exports.pool:allocateObject(objGateh)
 
 open = false
 

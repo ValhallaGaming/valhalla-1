@@ -32,7 +32,7 @@ FUEL_PRICE = 0.33
 MAX_FUEL = 100
 
 function fuelDepleting()
-	local players = getElementsByType("player")
+	local players = exports.pool:getAllPlayers()
 	for k, v in ipairs(players) do
 		if(isPedInVehicle(v)) then
 			local veh = getPedOccupiedVehicle(v)
@@ -94,6 +94,7 @@ function createFuelPoint(thePlayer, commandName)
 			mysql_free_result(result)
 		
 			local theSphere = createColSphere(x, y, z, 5)
+			exports.pool:allocateColshape(theSphere)
 			setElementDimension(theSphere, dimension)
 			setElementInterior(theSphere, interior)
 			setElementData(theSphere, "type", "fuel")
@@ -114,7 +115,7 @@ function getNearbyFuelpoints(thePlayer, commandName)
 		outputChatBox("Nearby Fuelpoints:", thePlayer, 255, 126, 0)
 		local count = 0
 		
-		for k, theColshape in ipairs(getElementsByType("colshape")) do
+		for k, theColshape in ipairs(exports.pool:getAllColshapes()) do
 			local colshapeType = getElementData(theColshape, "type")
 			if (colshapeType) then
 				if (colshapeType=="fuel") then
@@ -157,6 +158,7 @@ function loadFuelPoints(res)
 				local interior = tonumber(row[6])
 				
 				local theSphere = createColSphere(x, y, z, 5)
+				exports.pool:allocateColshape(theSphere)
 				setElementDimension(theSphere, dimension)
 				setElementInterior(theSphere, interior)
 				setElementData(theSphere, "type", "fuel")
@@ -176,7 +178,7 @@ function fillVehicle(thePlayer, commandName)
 	else
 		local colShape = nil
 		
-		for key, value in ipairs(getElementsByType("colshape")) do
+		for key, value in ipairs(exports.pool:getAllColshapes()) do
 			local shapeType = getElementData(value, "type")
 			if (shapeType) then
 				if (shapeType=="fuel") then
@@ -223,7 +225,7 @@ addCommandHandler("fill", fillVehicle)
 function fuelTheVehicle(thePlayer, theVehicle, theShape, theLitres)
 	local colShape = nil
 		
-	for key, value in ipairs(getElementsByType("colshape")) do
+	for key, value in ipairs(exports.pool:getAllColshapes()) do
 		local shapeType = getElementData(value, "type")
 		if (shapeType) then
 			if (shapeType=="fuel") then
@@ -260,7 +262,7 @@ function delFuelPoint(thePlayer, commandName)
 	if (exports.global:isPlayerLeadAdmin(thePlayer)) then
 		local colShape = nil
 			
-		for key, value in ipairs(getElementsByType("colshape")) do
+		for key, value in ipairs(exports.pool:getAllColshapes()) do
 			local shapeType = getElementData(value, "type")
 			if (shapeType) then
 				if (shapeType=="fuel") then

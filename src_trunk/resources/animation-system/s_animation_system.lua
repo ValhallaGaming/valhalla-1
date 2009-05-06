@@ -15,7 +15,7 @@ function animationList(thePlayer)
 	outputChatBox("/mourn /lay1-2 /drink /lean /strip1-2 /fu /scratch /piss /drag", thePlayer, 255, 194, 14)
 	outputChatBox("/hailtaxi /cheer1-2 /handsup /fixcar /slapass /wank /wait /think", thePlayer, 255, 194, 14)
 	outputChatBox("/lightup /smokelean /smoke1-3 /sit1-4 /aim /rap1-3 /laugh", thePlayer, 255, 194, 14)
-	outputChatBox("/cry /puke /beg /shake /gsign1-10 /cover", thePlayer, 255, 194, 14)
+	outputChatBox("/cry /puke /beg /shake /gsign1-10 /cover /idle", thePlayer, 255, 194, 14)
 	outputChatBox("/stopanim to cancel animations.", thePlayer, 255, 194, 14)
 end
 addCommandHandler("animlist", animationList, false, false)
@@ -124,6 +124,16 @@ function pedLean(thePlayer)
 	end
 end
 addCommandHandler ( "lean", pedLean, false, false )
+
+-- /idle animtion -------------------------------------------------
+function idle1Animation(thePlayer)
+	local logged = getElementData(thePlayer, "loggedin")
+	
+	if (logged==1) then
+		setPedAnimation(thePlayer, "DEALER", "DEALER_IDLE_01", -1, true, false, true)
+	end
+end
+addCommandHandler("idle", idle1Animation, false, false)
 
 -- Piss Animation -------------------------------------------------------------------------
 function pedPiss(thePlayer)

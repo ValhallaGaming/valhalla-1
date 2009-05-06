@@ -636,8 +636,7 @@ function setVehiclePosition(thePlayer, commandName)
 				mysql_query(handler, "UPDATE vehicles SET x='" .. x .. "', y='" .. y .."', z='" .. z .. "', rotx='" .. rx .. "', roty='" .. ry .. "', rotz='" .. rz .. "', currx='" .. x .. "', curry='" .. y .. "', currz='" .. z .. "', currrx='" .. rx .. "', currry='" .. ry .. "', currrz='" .. rz .. "' WHERE id='" .. dbid .. "'")
 				
 				setVehicleRespawnPosition(veh, x, y, z, rx, ry, rz)
-				respawnVehicle(veh)
-				outputChatBox("Vehicle spawn position set & respawned.", thePlayer)
+				outputChatBox("Vehicle spawn position set.", thePlayer)
 			end
 		end
 	end

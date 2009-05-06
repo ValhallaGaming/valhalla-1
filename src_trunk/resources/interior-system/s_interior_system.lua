@@ -1959,7 +1959,7 @@ function changeInteriorName( thePlayer, commandName, ...)
 	if (exports.global:isPlayerAdmin(thePlayer)) then -- Is the player an admin?
 		local id = getElementDimension(thePlayer)
 		if not (...) then -- is the command complete?
-			outputChatBox("SYNTAX: /" .. commandName .." [Interior ID] [New Name]", thePlayer, 255, 194, 14) -- if command is not complete show the syntax.
+			outputChatBox("SYNTAX: /" .. commandName .." [New Name]", thePlayer, 255, 194, 14) -- if command is not complete show the syntax.
 		elseif (dimension==0) then
 			outputChatBox("You are not inside an interior.", 255, 0, 0)
 		else

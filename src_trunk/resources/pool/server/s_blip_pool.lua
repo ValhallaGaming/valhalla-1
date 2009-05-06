@@ -5,6 +5,7 @@ function allocateBlip(element)
 		if (pool[i]==nil) then
 			pool[i] = element
 			setElementData(element, "poolid", i)
+			break
 		end
 	end
 end
@@ -28,8 +29,3 @@ function getBlipFromID(id)
 		return false
 	end
 end
-
-function showall()
-	outputDebugString("BLIPS: " .. #pool)
-end
-addCommandHandler("showall", showall)

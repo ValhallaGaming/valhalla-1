@@ -6,6 +6,7 @@ function allocateMarker(element)
 			if (pool[i]==nil) then
 				pool[i] = element
 				setElementData(element, "poolid", i)
+				break
 			end
 		end
 	end
@@ -30,8 +31,3 @@ function getMarkerFromID(id)
 		return false
 	end
 end
-
-function showall()
-	outputDebugString("MARKERS: " .. #pool)
-end
-addCommandHandler("showall", showall)

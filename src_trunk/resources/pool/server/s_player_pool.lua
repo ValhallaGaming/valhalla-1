@@ -1,8 +1,13 @@
 local pool = { }
 
 function allocatePlayer()
-	local id = getElementData(source, "playerid")
-	pool[id] = source
+	for i = 1, #pool+1 do
+		if (pool[i]==nil) then
+			pool[i] = source
+			setElementData(source, "poolid", i)
+			break
+		end
+	end
 end
 addEventHandler("onPlayerJoin", getRootElement(), allocatePlayer)
 
@@ -23,8 +28,3 @@ function getPlayerFromID(id)
 		return false
 	end
 end
-
-function showall()
-	outputDebugString("PLAYERS: " .. #pool)
-end
-addCommandHandler("showall", showall)

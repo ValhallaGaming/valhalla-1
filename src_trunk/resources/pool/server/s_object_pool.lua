@@ -6,6 +6,7 @@ function allocateObject(element)
 			if (pool[i]==nil) then
 				pool[i] = element
 				setElementData(element, "poolid", i)
+				break
 			end
 		end
 	end
@@ -30,8 +31,3 @@ function getObjectFromID(id)
 		return false
 	end
 end
-
-function showall()
-	outputDebugString("OBJECTS: " .. #pool)
-end
-addCommandHandler("showall", showall)

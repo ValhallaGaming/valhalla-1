@@ -6,6 +6,7 @@ function allocateVehicle(element)
 			if (pool[i]==nil) then
 				pool[i] = element
 				setElementData(element, "poolid", i)
+				break
 			end
 		end
 	end

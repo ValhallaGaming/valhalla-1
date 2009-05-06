@@ -252,6 +252,7 @@ function globalOOC(thePlayer, commandName, ...)
 	end
 end
 addCommandHandler("o", globalOOC, false, false)
+addCommandHandler("GlobalOOC", globalOOC)
 
 function playerToggleOOC(thePlayer, commandName)
 	local logged = getElementData(thePlayer, "loggedin")
@@ -348,8 +349,8 @@ function localOOC(thePlayer, commandName, ...)
 		end
 	end
 end
-
 addCommandHandler("b", localOOC, false, false)
+addCommandHandler("LocalOOC", localOOC)
 
 function districtOOC(thePlayer, commandName, ...)
 	local logged = getElementData(thePlayer, "loggedin")

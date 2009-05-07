@@ -1,7 +1,7 @@
 local pool = { }
 
 function allocatePlayer()
-	for i = 1, #pool+1 do
+	for i = 1, #pool+10 do
 		if (pool[i]==nil) then
 			pool[i] = source
 			setElementData(source, "poolid", i)

@@ -586,7 +586,7 @@ function deleteVehicle(thePlayer, commandName, id)
 			local counter = 0
 			
 			for k, theVehicle in ipairs(vehicles) do
-				local dbid = getElementData(theVehicle, "dbid")
+				local dbid = tonumber(getElementData(theVehicle, "dbid"))
 
 				if (dbid==tonumber(id)) then
 					if (dbid<0) then -- TEMP vehicle

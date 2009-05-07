@@ -1,4 +1,4 @@
-scriptVersion = "2.0.1.1"
+scriptVersion = "2.0.2"
 function getScriptVersion()
 	return scriptVersion
 end

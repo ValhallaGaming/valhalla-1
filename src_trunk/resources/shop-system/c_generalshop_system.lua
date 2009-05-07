@@ -28,7 +28,7 @@ addEventHandler("onClientResourceStart", getResourceRootElement(getThisResource(
 
 
 function showGeneralshopUI(shop_type, race)
-	if not (wGeneralShop) then
+	if (wGeneralShop) then
 		local screenwidth, screenheight = guiGetScreenSize ()
 		
 		local Width = 500

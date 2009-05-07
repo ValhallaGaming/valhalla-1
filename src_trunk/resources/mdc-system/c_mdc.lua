@@ -330,7 +330,7 @@ function createMdcWindow(suspectName)
 	-- if the search button is clicked, remake the window with the suspects information
 	addEventHandler ( "onClientGUIClick", guiSearchButton,  function(button, state)
 	
-		if(button == "left" and state == "up") then
+		if(button == "left") then
 			if(clearShowWindow()) then
 				-- get the suspect name from the edit box
 				local suspectName = guiGetText ( guiSearchEditBox)
@@ -359,7 +359,7 @@ function createMdcWindow(suspectName)
 	addEventHandler ( "onClientGUIClick", guiAddPersonnelButton,  addSuspectShow, false)
 	
 	addEventHandler ( "onClientGUIClick", guiViewPersonnelButton,  function(button, state)
-		if(button == "left" and state == "up") then
+		if(button == "left") then
 			if(clearShowWindow()) then
 				if not(guiGetVisible(guiAddCrimeWindow) or guiGetVisible(guiDetailsWindow) or guiGetVisible(guiDeleteCrimeWindow) or guiGetVisible(guiWarrantWindow) ) then
 					if(suspectName) then
@@ -383,7 +383,7 @@ function createMdcWindow(suspectName)
 	
 	-- event handler for Warrant BUttons
 	addEventHandler ( "onClientGUIClick", guiAddWantedButton,  function(button, state)
-		if(button == "left" and state == "up") then
+		if(button == "left") then
 			if(clearShowWindow()) then
 				if not(guiGetVisible(guiAddCrimeWindow) or guiGetVisible(guiDetailsWindow) or guiGetVisible(guiDeleteCrimeWindow) or guiGetVisible(guiWarrantWindow) ) then
 					if(suspectName) then
@@ -405,7 +405,7 @@ function createMdcWindow(suspectName)
 	end, false)
 	
 	addEventHandler ( "onClientGUIClick", guiAddCrimeButton,  function(button, state)
-		if(button == "left" and state == "up") then
+		if(button == "left") then
 			if(clearShowWindow()) then
 				if not(guiGetVisible(guiAddCrimeWindow) or guiGetVisible(guiDetailsWindow) or guiGetVisible(guiDeleteCrimeWindow) or guiGetVisible(guiWarrantWindow) ) then
 					if(suspectName) then
@@ -430,7 +430,7 @@ function createMdcWindow(suspectName)
 	
 	-- If  view all suspects button is pressed
 	addEventHandler ( "onClientGUIClick", guiViewAllSuspectsButton,  function(button, state)
-		if(button == "left" and state == "up") then
+		if(button == "left") then
 		
 			if(triggerServerEvent("onGetAllSuspects", getLocalPlayer(), details ) ) then
 										
@@ -558,7 +558,7 @@ function createAddCrimeWindow()
 	guiSetVisible(guiAddCrimeWindow, false)
 	
 	addEventHandler ( "onClientGUIClick", guiAddCrimeBackButton,  function(button, state)
-		if(button == "left" and state == "up") then
+		if(button == "left") then
 			guiSetVisible(guiAddCrimeWindow, false)
 		end
 	end, false)
@@ -802,7 +802,7 @@ function createDetailsWindow(details)
 	
 	addEventHandler ( "onClientGUIClick", guiAddUpdateButton,  function(button, state)
 		
-		if(button == "left" and state == "up") then
+		if(button == "left") then
 			-- get all of the text box values
 			local name = guiGetText(guiDetailsNameEditBox)
 			local birth = guiGetText(guiDetailsBirthEditBox)
@@ -907,7 +907,7 @@ function createWarrantWindow()
 		
 			addEventHandler ( "onClientGUIClick", guiWarrantRemoveButton,  function(button, state)
 		
-				if(button == "left" and state == "up") then
+				if(button == "left") then
 					local warrantDetails = {suspectDetails[1], 0, "No details given", "No punishment required", "None"}
 					triggerServerEvent("onUpdateSuspectWarrantDetails", getLocalPlayer(), warrantDetails)
 					
@@ -938,7 +938,7 @@ function createWarrantWindow()
 			
 			addEventHandler ( "onClientGUIClick", guiWarrantUpdateButton,  function(button, state)
 				
-				if(button == "left" and state == "up") then
+				if(button == "left") then
 				
 					local hour, minute = getTime()
 					local realtime = getRealTime()
@@ -987,7 +987,7 @@ function createWarrantWindow()
 	
 	addEventHandler ( "onClientGUIClick", guiWarrantBackButton,  function(button, state)
 		
-		if(button == "left" and state == "up") then
+		if(button == "left") then
 			guiSetVisible(guiWarrantWindow, false)
 		end
 	end, false)
@@ -1046,14 +1046,14 @@ function createAccountWindow()
 	-- If back button is pressed, set the window hidden
 	addEventHandler ( "onClientGUIClick", guiAccountBackButton,  function(button, state)
 		
-		if(button == "left" and state == "up") then
+		if(button == "left") then
 			guiSetVisible(guiAccountWindow, false)
 		end
 	end, false)
 	
 	-- If update button is triggered, trigger a server event to update the account
 	addEventHandler ( "onClientGUIClick", guiAccountUpdateButton,  function(button, state)
-		if(button == "left" and state == "up") then
+		if(button == "left") then
 		
 			local NewUser = user[1]
 			local NewPass = guiGetText(guiAccountNewPassEdit)
@@ -1115,7 +1115,7 @@ function createAccountWindow()
 	
 	-- If create button is triggered, trigger a server event to update the account
 	addEventHandler ( "onClientGUIClick", guiAccountCreateButton,  function(button, state)
-		if(button == "left" and state == "up") then
+		if(button == "left") then
 		
 			local NewUser = guiGetText(guiAccountUserEdit )
 			local NewPass = guiGetText(guiAccountNewPassEdit)
@@ -1169,7 +1169,7 @@ function createAccountWindow()
 	
 	-- If remove button is triggered, trigger a server event to remove the account
 	addEventHandler ( "onClientGUIClick", guiAccountRemoveButton,  function(button, state)
-		if(button == "left" and state == "up") then
+		if(button == "left") then
 		
 			local NewUser = guiGetText(guiAccountUserEdit )
 			local OldPass = guiGetText(guiAccountExistingPassEdit )	
@@ -1219,7 +1219,7 @@ function createAccountWindow()
 	
 		-- If show al accounts buttons is triggered, do the following
 	addEventHandler ( "onClientGUIClick", guiAccountShowAllButton,  function(button, state)
-		if(button == "left" and state == "up") then
+		if(button == "left") then
 		
 			-- hide the window
 			guiSetVisible(guiAccountWindow, false)			
@@ -1357,7 +1357,6 @@ end
 -- function hides the mdc window
 function hideMdc(button, state)
 	if(button == "left") then
-		if(state == "up") then
 			guiSetVisible(guiMdcWindow, false)
 			guiSetVisible(guiAddCrimeWindow, false)
 			guiSetVisible(guiDetailsWindow, false)
@@ -1369,7 +1368,6 @@ function hideMdc(button, state)
 			toggleAllControls ( true, true, false)
 			toggleControl ( "next_weapon", false)
 			toggleControl ("previous_weapon", false)
-		end
 	end
 end
 
@@ -1379,7 +1377,6 @@ end
 -- function shows the add suspectwindow
 function addSuspectShow(button, state)
 	if(button == "left") then
-		if(state == "up") then
 			if(clearShowWindow()) then
 				if not (guiGetVisible(guiDetailsWindow)) then
 					-- create the details window, withouth a suspect name
@@ -1390,21 +1387,17 @@ function addSuspectShow(button, state)
 					guiSetInputEnabled(true)
 				end
 			end		
-		end
 	end
 end
 
 -- function hides the addSuspectShow gui
 function hideSuspectShow(button, state)
 	if(button == "left") then
-		if(state == "up") then
 			-- hide the mdc window
 			guiSetVisible(guiMdcWindow, true)
 			guiSetVisible(guiDetailsWindow, false)
 			-- allow the user to input stuff
 			guiSetInputEnabled(true)
-		
-		end
 	end
 end
 
@@ -1695,7 +1688,7 @@ addEventHandler("onClientSaveSuspectCrimes", getLocalPlayer() , saveSuspectCrime
  function toggleInputEnabled( key, keyState)
  
 	-- check to see if its m and down
-	if(key == "left" and keystate == "up") then
+	if(key == "left") then
 		if(source == guiToggleButton) then
 	
 			if (guiGetInputEnabled( )) then
@@ -1715,7 +1708,7 @@ addEventHandler("onClientSaveSuspectCrimes", getLocalPlayer() , saveSuspectCrime
  
  function toggleInputEnabled2(key, keyState)
  	-- check to see if its m and down
-	if(key == "m" and keystate == "up") then
+	if(key == "m") then
 		if(guiGetVisible(guiMdcWindow)) then
 			if (guiGetInputEnabled( )) then
 				guiSetInputEnabled(false)
@@ -1801,7 +1794,7 @@ end
 	
 	-- if the player has clicked back, just close the windows
 	addEventHandler ( "onClientGUIClick", guiLogInBackButton,  function(button, state)
-		if(button == "left" and state == "up") then
+		if(button == "left") then
 			guiSetVisible(guiLogIn, false)
 			guiSetInputEnabled ( false)
 		end
@@ -1809,7 +1802,7 @@ end
 	
 	-- if the player has clicked log in, get the name and password details, and send it to the server
 	addEventHandler ( "onClientGUIClick", guiLogInSubmitButton,  function(button, state)
-		if(button == "left" and state == "up") then
+		if(button == "left") then
 			
 			-- get the log in details from the boxes
 			local logInDetails = { guiGetText(guiUserNameEdit),  guiGetText(guiPasswordEdit)}

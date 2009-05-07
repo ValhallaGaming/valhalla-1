@@ -18,7 +18,6 @@
 	<script src="s_enginebreak.lua" type="server" />
 	
 	<script src="c_indicators.lua" type="client" />
-	<script src="s_indicators.lua" type="server" />
 	
 	<script src="c_speedo.lua" type="client" />
 	<file src="disc.png"/>

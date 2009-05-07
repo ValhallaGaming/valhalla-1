@@ -11,7 +11,6 @@ function loadGlobal()
 	restartResource(getResourceFromName("account-system"))
 	restartResource(getResourceFromName("global"))
 	setTimer(displayCredits, 1000, 1)
-	setTimer(fixLag, 60000, 0)
 end
 
 function displayCredits()
@@ -19,9 +18,4 @@ function displayCredits()
 	exports.irc:sendMessage("--  VG MTA:RP Script V2 Loaded - By vG.MTA Scripting Team  --")
 	exports.irc:sendMessage("--              www.valhallagaming.net                     --")
 	exports.irc:sendMessage("-------------------------------------------------------------")
-end
-
-function fixLag()
-	local chat = getResourceFromName("chat-system")
-	restartResource(chat)
 end

@@ -305,14 +305,7 @@ function spawnCharacter(charname)
 			outputChatBox("You were jailed by: " .. jailed_by .. ".", source, 255, 0, 0)
 			outputChatBox("Reason: " .. jailed_reason, source, 255, 0, 0)
 				
-			local incVal = 0
-			for key, value in ipairs(exports.pool:getAllPlayers()) do
-				local name = getPlayerName(value)
-				if (name==getPlayerName(source)) then
-					incVal = key
-					break
-				end
-			end
+			local incVal = getElementData(source, "playerid")
 				
 			setElementDimension(source, 65400+incVal)
 			setElementInterior(source, 6)

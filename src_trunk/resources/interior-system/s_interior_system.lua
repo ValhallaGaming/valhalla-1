@@ -1324,8 +1324,10 @@ function sellProperty(thePlayer, commandName)
 			end
 		elseif (inttype==2) then
 			outputChatBox("You cannot sell a government property.", thePlayer, 255, 0, 0)
+			reloadOneInterior(tonumber(dbid))
 		else
 			outputChatBox("You do not own this property.", thePlayer, 255, 0, 0)
+			reloadOneInterior(tonumber(dbid))
 		end
 	end
 end

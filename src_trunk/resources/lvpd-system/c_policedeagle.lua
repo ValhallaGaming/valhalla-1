@@ -19,7 +19,7 @@ end
 
 function bindKeys(res)
 	if (res==getThisResource()) then
-		bindKey("b", "down", switchMode)
+		bindKey("n", "down", switchMode)
 	end
 end
 addEventHandler("onClientResourceStart", getRootElement(), bindKeys)

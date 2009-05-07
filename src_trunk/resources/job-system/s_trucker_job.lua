@@ -1,3 +1,5 @@
+players = {}
+
 function initiateTruckerJob(thePlayer)
 	local blip = createBlip(2609.6213378906, 1435.2698974609, 10.8203125, 0, 2, 255, 0, 255, 255, 200)
 	local marker = createMarker(2609.6213378906, 1435.2698974609, 10.8203125, "cylinder", 2, 0, 255, 0, 150)
@@ -34,7 +36,7 @@ function startTruckingMission(thePlayer, matchingDimension)
 		local trailer = createVehicle(584, 2608.9780273438, 1417.2369384766, 10.8203125, 0, 0, 180, "-RSHAUL-")
 		exports.pool:allocateVehicle(vehicle)
 		exports.pool:allocateVehicle(trailer)
-		
+        
 		if (isPedInVehicle(thePlayer)) then
 			removePedFromVehicle(thePlayer)
 		end
@@ -78,7 +80,10 @@ function startTruckingMission(thePlayer, matchingDimension)
 		addEventHandler("onColShapeHit", colsphere, truckingMissionPart2)
 		setElementData(thePlayer, "job.marker", marker)
 		setElementData(thePlayer, "job.colshape", colsphere)
-		setElementData(thePlayer, "jobmarker", nil)
+        setElementData(thePlayer, "job.vehicle", vehicle)
+        setElementData(thePlayer, "job.vehicle.trailer", trailer)
+        
+		removeElementData(thePlayer, "jobmarker")
 	end
 end
 
@@ -89,13 +94,7 @@ function truckingMissionPart2(thePlayer, matchingDimension)
 		
 		if not (trailer) or not (vehicle) then
 			outputChatBox("Hey, Where's the trailer we gave you? ((Mission Failed))", thePlayer, 255, 194, 14)
-			local marker = getElementData(thePlayer, "job.marker")
-			local blip = getElementAttachedTo(marker)
-			destroyElement(blip)
-			destroyElement(marker)
-			removePedFromVehicle(thePlayer, vehicle)
-			destroyElement(vehicle)
-			destroyElement(trailer)
+			cleanup(thePlayer)
 		else
 			local marker = getElementData(thePlayer, "job.marker")
 			local colsphere = getElementData(thePlayer, "job.colshape")
@@ -103,7 +102,10 @@ function truckingMissionPart2(thePlayer, matchingDimension)
 			destroyElement(blip)
 			destroyElement(marker)
 			destroyElement(colsphere)
-		
+            
+            removeElementData(thePlayer, "job.colshape")
+            removeElementData(thePlayer, "job.marker")
+            
 			blip = createBlip(2638.9558105469, 1069.9577636719, 10.8203125, 0, 2, 255, 0, 255, 255, 200)
 			marker = createMarker(2638.9558105469, 1069.9577636719, 10.8203125, "cylinder", 4, 0, 255, 0, 150)
 			attachElements(marker, blip)
@@ -138,13 +140,7 @@ function truckingMissionPart3(thePlayer, matchingDimension)
 		
 		if not (trailer) or not (vehicle) then
 			outputChatBox("Hey, Where's the trailer we gave you? ((Mission Failed))", thePlayer, 255, 194, 14)
-			local marker = getElementData(thePlayer, "job.marker")
-			local blip = getElementAttachedTo(marker)
-			destroyElement(blip)
-			destroyElement(marker)
-			removePedFromVehicle(thePlayer, vehicle)
-			destroyElement(vehicle)
-			destroyElement(trailer)
+			cleanup(thePlayer)
 		else
 			outputChatBox("Hey, Good Work! Here's your 60$ ((Mission Completed!))", thePlayer, 255, 194, 14)
 			triggerEvent("updateGlobalSupplies", thePlayer, 50)
@@ -152,12 +148,41 @@ function truckingMissionPart3(thePlayer, matchingDimension)
 			local marker = getElementData(thePlayer, "job.marker")
 			local colsphere = getElementData(thePlayer, "job.colshape")
 			local blip = getElementAttachedTo(marker)
+            
 			destroyElement(blip)
 			destroyElement(marker)
 			destroyElement(colsphere)
+            
 			removePedFromVehicle(thePlayer, vehicle)
+            
 			destroyElement(vehicle)
 			destroyElement(trailer)
+            
+            removeElementData(thePlayer, "job.colshape")
+            removeElementData(thePlayer, "job.marker")
 		end
 	end
 end
+
+function cleanup(player)
+    if (player) then
+        local marker = getElementData(player, "job.marker")
+        local vehicle = getElementData(player, "job.vehicle")
+        local trailer = getElementData(player, "job.vehicle.trailer")
+        
+        destroyElement(getElementAttachedTo(marker))
+        destroyElement(marker)
+        destroyElement(vehicle)
+        destroyElement(trailer)
+        
+        removeElementData(player, "job.vehicle.trailer")
+        removeElementData(player, "job.vehicle")
+        removeElementData(player, "job.marker")
+    end
+end
+
+function quit()
+    cleanup (source)
+end
+
+addEventHandler("onPlayerQuit", getRootElement(), quit)

@@ -131,6 +131,7 @@ function startCleaningMission(thePlayer)
 		warpPedIntoVehicle(thePlayer, vehicle)
 		
 		setElementData(thePlayer, "cleaner.marker", "1")
+        setElementData(thePlayer, "cleaner.vehicle", vehicle)
 		
 		local int = math.random ( 1, 1 ) -- Number of checkpoint paths. (1 minimum , 3 max )
 		local x1,y1,z1 = nil
@@ -316,7 +317,7 @@ function FinishCheckpoints(thePlayer)
 			
 			destroyElement(vehicle)
 			vehicle = nil
-			
+			removeElementData(source, "cleaner.vehicle")
 			
 			outputChatBox("You have completed your task, well done.", thePlayer, 255, 194, 14)
 			outputChatBox("You received: 80$", thePlayer, 255, 194, 14)
@@ -332,3 +333,13 @@ function FinishCheckpoints(thePlayer)
 		outputChatBox( "(( You must pass through the checkpoints in the street sweeper. ))", thePlayer, 255, 194, 14)
 	end
 end
+
+function quit()
+    local vehicle = getElementData(source, "cleaner.vehicle")
+    if vehicle then
+        destroyElement(vehicle)
+    end
+    removeElementData(source, "cleaner.vehicle")
+end
+
+addEventHandler("onPlayerQuit", getRootElement(), quit)

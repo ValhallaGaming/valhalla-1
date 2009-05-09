@@ -11,3 +11,11 @@ Chamberlains changes.
 Scripts in "unfinished code" need to be complete, checked and added to the correct resources by someone who knows what they are doing.
 
 /vehpos - I removed the line that respawns the vehicle after vehpos as it was being used to repair and refuel cars on the go.
+
+
+--------------------
+Jack's changes.
+-------------------
+
+Did the ES duty and heal command, just need co-ordinates for a colshape for duty and locations for markers.
+Not sure if the markers in the PD were placed with createMarker and the repair fuel stations dynamically placed? ES needs these too

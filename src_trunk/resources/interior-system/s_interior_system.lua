@@ -1157,8 +1157,8 @@ function createInterior(thePlayer, commandName, interiorId, inttype, cost, ...)
 				if (tonumber(inttype)==0) then -- House
 					local pickup = createPickup(x, y, z, 3, 1273)
 					local intpickup = createPickup(ix, iy, iz, 3, 1318)
-					exports.allocatePickup(pickup)
-					exports.allocatePickup(intpickup)
+					exports.pool:allocatePickup(pickup)
+					exports.pool:allocatePickup(intpickup)
 					
 					-- set the default pickup data
 					setPickupElementData(pickup, id, ix, iy, iz, optAngle, interior, locked, owner, inttype, cost, name,"0", "0", max_items, -1, 0,100,  interiorwithin, x, y, z, dimension, 0)
@@ -1167,8 +1167,8 @@ function createInterior(thePlayer, commandName, interiorId, inttype, cost, ...)
 				elseif (tonumber(inttype)==1) then -- Business
 					local pickup = createPickup(x, y, z, 3, 1272)
 					local intpickup = createPickup(ix, iy, iz, 3, 1318)
-					exports.allocatePickup(pickup)
-					exports.allocatePickup(intpickup)
+					exports.pool:allocatePickup(pickup)
+					exports.pool:allocatePickup(intpickup)
 
 					setPickupElementData(pickup, id, ix, iy, iz, optAngle, interior, locked, owner, inttype, cost, name,"0", "0", max_items, "", 0,100, interiorwithin, x, y, z, dimension, 0)
 					setIntPickupElementData(intpickup, id, x, y, z, rot, locked, owner, inttype, interiorwithin, dimension, interior, ix, iy, iz)
@@ -1176,16 +1176,16 @@ function createInterior(thePlayer, commandName, interiorId, inttype, cost, ...)
 				elseif (tonumber(inttype)==2) then -- Government / Other
 					local pickup = createPickup(x, y, z, 3, 1318)
 					local intpickup = createPickup(ix, iy, iz, 3, 1318)
-					exports.allocatePickup(pickup)
-					exports.allocatePickup(intpickup)
+					exports.pool:allocatePickup(pickup)
+					exports.pool:allocatePickup(intpickup)
 					
 					setPickupElementData(pickup, id, ix, iy, iz, optAngle, interior, locked, owner, inttype, 0, name,"0", "0", 0, -1, 0,100, interiorwithin, x, y, z, dimension, 0)
 					setIntPickupElementData(intpickup, id, x, y, z, rot, locked, owner, inttype, interiorwithin, dimension, interior, ix, iy, iz)
 				elseif (tonumber(inttype)==3) then -- Rentable
 					local pickup = createPickup(x, y, z, 3, 1273)
 					local intpickup = createPickup(ix, iy, iz, 3, 1318)
-					exports.allocatePickup(pickup)
-					exports.allocatePickup(intpickup)
+					exports.pool:allocatePickup(pickup)
+					exports.pool:allocatePickup(intpickup)
 					
 					setPickupElementData(pickup, id, ix, iy, iz, optAngle, interior, locked, owner, inttype, 0, name,"0", "0", 0, -1, 0,100, interiorwithin, x, y, z, dimension, 0)
 					setIntPickupElementData(intpickup, id, x, y, z, rot, locked, owner, inttype, interiorwithin, dimension, interior, ix, iy, iz)

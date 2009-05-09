@@ -93,6 +93,7 @@ function useItem(itemID, itemName, itemValue, isWeapon)
 			setElementHealth(source, 100)
 			exports.global:sendLocalMeAction(source, "eats a plump haggis.")
             exports.global:takePlayerItem(source, itemID, itemValue)
+			showInventory(source)
 		elseif (itemID==2) then -- cellphone
 			outputChatBox("Use /call to use this item.", source, 255, 194, 14)
 		elseif (itemID==3) then -- car key

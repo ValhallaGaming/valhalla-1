@@ -191,8 +191,7 @@ end
 
 function sprayEffect(vehicle, thePlayer, shape)
 	if (isElementWithinColShape(thePlayer, shape)) then
-		local money = getElementData(thePlayer, "money")
-		setElementData(thePlayer, "money", money-50)
+		exports.global:takePlayerSafeMoney(thePlayer, 50)
 		
 		local id = getElementModel(vehicle)
 		

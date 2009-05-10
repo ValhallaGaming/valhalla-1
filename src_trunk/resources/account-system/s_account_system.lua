@@ -560,7 +560,6 @@ function loginPlayer(username, password, operatingsystem)
 	local result = mysql_query(handler, "SELECT id, admin, hiddenadmin, adminduty, donator, adminjail, adminjail_time, adminjail_by, adminjail_reason, banned, banned_by, banned_reason, muted, globalooc, blur, friendsmessage, friends, adminreports FROM accounts WHERE username='" .. safeusername .. "' AND password='" .. password .. "'")
 	
 	if (mysql_num_rows(result)>0) then
-		triggerClientEvent(source, "hideUI", source, false)
 		triggerEvent("onPlayerLogin", source, username, password)
 		
 		local id = tonumber(mysql_result(result, 1, 1))
@@ -578,6 +577,7 @@ function loginPlayer(username, password, operatingsystem)
 		end
 		
 		if not (found) then
+			triggerClientEvent(source, "hideUI", source, false)
 			local admin = tonumber(mysql_result(result, 1, 2))
 			local hiddenadmin = tonumber(mysql_result(result, 1, 3))
 			local adminduty = tonumber(mysql_result(result, 1, 4))
@@ -668,13 +668,14 @@ function loginPlayer(username, password, operatingsystem)
 				
 			end
 		else
+			showChat(source, true)
 			outputChatBox("This account is already logged in. You cannot login more than once.", source, 255, 0, 0)
 		end
 	else
 		showChat(source, true)
 		local attempts = tonumber(getElementData(source, "loginattempts"))
 		attempts = attempts + 1
-		--setElementData(source, "loginattempts", attempts)
+		setElementData(source, "loginattempts", attempts)
 		
 		if (attempts>=3) then
 			kickPlayer(source, true, false, false, getRootElement(), "Too many login attempts")

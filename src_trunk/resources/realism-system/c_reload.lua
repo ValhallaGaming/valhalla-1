@@ -9,7 +9,7 @@ function weaponAmmo(prevSlot, currSlot)
 	savedAmmo[prevSlot][2] = getPedAmmoInClip(source, prevSlot) -- Store the weapon's ammo in clip
 
 	-- give the ammo for the current (new) weapon
-	if (savedAmmo[currSlot]~=nil) then -- could be a new gun - we may not have stored ammo for it yet
+	if (savedAmmo[currSlot]~=nil) and not (isPedInVehicle(getLocalPlayer())) then -- could be a new gun - we may not have stored ammo for it yet
 		
 		local weapon = savedAmmo[currSlot][1]
 		local ammoInClip = savedAmmo[currSlot][2]
@@ -24,7 +24,7 @@ end
 addEventHandler("onClientPlayerWeaponSwitch", getLocalPlayer(), weaponAmmo)
 
 function disableAutoReload(weapon, ammo, ammoInClip)
-	if (ammoInClip==1) and ((ammo-ammoInClip)>0) and not (noReloadGuns[weapon]) and (weapon>21) and (weapon<35) then
+	if (ammoInClip==1) and ((ammo-ammoInClip)>0) and not (noReloadGuns[weapon]) and (weapon>21) and (weapon<35) and not (isPedInVehicle(getLocalPlayer())) then
 		-- Message to reload
 		addEventHandler("onClientRender", getRootElement(), drawText)
 		

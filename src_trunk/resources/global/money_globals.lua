@@ -32,7 +32,7 @@ function givePlayerSafeMoney(thePlayer, amount)
 		local money = getElementData(thePlayer, "money")
 		checkMoneyHacks(thePlayer)
 		setElementData(thePlayer, "money", money+tonumber(amount))
-		setPlayerMoney(thePlayer, money+tonumber(amount))
+		givePlayerMoney(thePlayer, tonumber(amount))
 	end
 end
 
@@ -42,7 +42,7 @@ function takePlayerSafeMoney(thePlayer, amount)
 		
 		checkMoneyHacks(thePlayer)
 		setElementData(thePlayer, "money", money-amount)
-		setPlayerMoney(thePlayer, money-amount)
+		takePlayerMoney(thePlayer, tonumber(amount))
 	end
 end
 

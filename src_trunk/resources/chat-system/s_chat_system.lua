@@ -710,14 +710,14 @@ addCommandHandler("togooc", toggleOOC, false, false)
 		
 function togglePM(thePlayer, commandName)
 	local logged = getElementData(thePlayer, "loggedin")
-
-	if(logged==1) and ((exports.global:isPlayerAdmin(thePlayer))) or (exports.global:isPlayerBronzeDonator(thePlayer)) then
+	
+	if(logged==1) and ((exports.global:isPlayerAdmin(thePlayer)) or (exports.global:isPlayerBronzeDonator(thePlayer)))then
 		local pmenabled = getElementData(thePlayer, "pmblocked")
 		
 		if (pmenabled==0) then
 			setElementData(thePlayer, "pmblocked", 1)
 			outputChatBox("PM's are now enabled.", thePlayer, 0, 255, 0)
-		elseif (pmenabled==1) then
+		else
 			setElementData(thePlayer, "pmblocked", 0)
 			outputChatBox("PM's are now disabled.", thePlayer, 255, 0, 0)
 		end

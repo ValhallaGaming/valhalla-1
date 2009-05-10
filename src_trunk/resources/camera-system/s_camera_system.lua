@@ -92,8 +92,11 @@ end
 function sendWarning(element, matchingDimension)
 	if (matchingDimension) and (getElementType(element)=="vehicle")then
 		local thePlayer = getVehicleOccupant(element)
-		outputChatBox("You are entering a speed control area. The speed limit is 80Mph (120Kph). Watch your speed.", thePlayer)
-		outputChatBox("Courtesy of the Las Venturas Metropolitan Police Department.", thePlayer)
+		
+		if (getElementType(thePlayer) and isElement(thePlayer)) then
+			outputChatBox("You are entering a speed control area. The speed limit is 80Mph (120Kph). Watch your speed.", thePlayer)
+			outputChatBox("Courtesy of the Las Venturas Metropolitan Police Department.", thePlayer)
+		end
 	end
 end
 

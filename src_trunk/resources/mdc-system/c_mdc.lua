@@ -1366,8 +1366,8 @@ function hideMdc(button, state)
 						
 			guiSetInputEnabled(false)
 			toggleAllControls ( true, true, false)
-			toggleControl ( "next_weapon", false)
-			toggleControl ("previous_weapon", false)
+			toggleControl ( "next_weapon", true)
+			toggleControl ("previous_weapon", true)
 	end
 end
 

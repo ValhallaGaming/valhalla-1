@@ -23,7 +23,7 @@ function toggleLeftIndicators()
 				rx, ry, rotation = getVehicleRotation(veh)
 				leftTimer = setTimer(checkLeftAngle, 1000, 0, veh)
 			else
-				setElementData(veh, "leftindicator", nil, true)
+				setElementData(veh, "leftindicator", true, nil)
 				local key = vehicleids[veh]
 				
 				if (vehicles[key][2]) then
@@ -55,7 +55,7 @@ function checkLeftAngle(veh)
 	
 	if (rz>=rotation+70) then
 		killTimer(leftTimer)
-		setElementData(veh, "leftindicator", nil, true)
+		setElementData(veh, "leftindicator", true, nil)
 		local key = vehicleids[veh]
 				
 		if (vehicles[key][2]) then
@@ -85,7 +85,7 @@ function checkRightAngle(veh)
 
 	if (rz<=rotation-70) then
 		killTimer(rightTimer)
-		setElementData(veh, "rightindicator", nil, true)
+		setElementData(veh, "rightindicator", true, nil)
 		local key = vehicleids[veh]
 				
 		if (vehicles[key][6]) then
@@ -123,7 +123,7 @@ function toggleRightIndicators()
 				rx, ry, rotation = getVehicleRotation(veh)
 				rightTimer = setTimer(checkRightAngle, 1000, 0, veh)
 			else
-				setElementData(veh, "rightindicator", nil, true)
+				setElementData(veh, "rightindicator", true, nil)
 				local key = vehicleids[veh]
 				
 				if (vehicles[key][6]) then

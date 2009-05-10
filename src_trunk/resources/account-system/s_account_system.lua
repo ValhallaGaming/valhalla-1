@@ -31,7 +31,12 @@ scriptVer = exports.global:getScriptVersion()
 salt = "vgrpkeyscotland"
 
 function sendSalt()
-	triggerClientEvent(source, "sendSalt", source, salt)
+	local version = nil
+	if (getVersion().type~="Custom" or getVersion().type~="Release") then
+		version = tonumber(string.sub(getVersion().type, 10, string.len(getVersion().type)))
+	end
+	
+	triggerClientEvent(source, "sendSalt", source, salt, version)
 end
 addEvent("getSalt", true)
 addEventHandler("getSalt", getRootElement(), sendSalt)

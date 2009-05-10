@@ -897,15 +897,19 @@ function resetScenario1()
 	scen1Timer2 = setTimer(resetScenario1, 15000, 1)
 end
 
-function storeSalt(theSalt)
+triggerServerEvent("getSalt", getLocalPlayer())
+
+function storeSalt(theSalt, version)
+	sversion = version
 	salt = theSalt
+	
+	createMainUI(getThisResource())
 end
 addEvent("sendSalt", true)
 addEventHandler("sendSalt", getRootElement(), storeSalt)
 
 function createMainUI(res, isChangeAccount)
 	if (res==getThisResource()) then
-		triggerServerEvent("getSalt", getLocalPlayer())
 		local tutFile = xmlLoadFile("vgrptut.xml")
 		
 		if (tutFile) then
@@ -936,6 +940,18 @@ function createMainUI(res, isChangeAccount)
 				outputChatBox("WARNING: You are running on a low resolution. We recommend atleast 1024x768.", 255, 0, 0)
 			end
 			
+			local version = tonumber(string.sub(getVersion().type, 10, string.len(getVersion().type)))
+			if (getVersion().type~="Custom" or getVersion().type~="Release") and sversion then
+				
+				if (version<sversion) then
+					clearChatBox()
+					showChat(true)
+					outputChatBox("You are using an older nightly. You require r" .. sversion .. ".")
+					outputChatBox("You can obtain this at http://nightly.mtasa.com")
+					return
+				end
+			end
+				
 			tabPanelMain = guiCreateTabPanel(x, y, width, height, false)
 			local regFile = xmlLoadFile("vgrpreg.xml")
 			
@@ -1054,7 +1070,7 @@ function createMainUI(res, isChangeAccount)
 		end
 	end
 end
-addEventHandler("onClientResourceStart", getRootElement(), createMainUI)
+--addEventHandler("onClientResourceStart", getRootElement(), createMainUI)
 
 function retrieveDetails()
 	if (source==bForgot) then

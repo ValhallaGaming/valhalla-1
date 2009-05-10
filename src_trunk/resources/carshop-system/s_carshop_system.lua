@@ -27,7 +27,7 @@ addEventHandler("onResourceStop", getResourceRootElement(getThisResource()), clo
 -- ////////////////////////////////////
 
 carshopPickup = createPickup(1947.6556396484, 2068.9575195313, 10.8203125, 3, 1239)
-exports.pool:allocatePickup(carshopPickup)
+exports.pool:allocateElement(carshopPickup)
 
 function pickupUse(thePlayer)
 	triggerClientEvent(thePlayer, "showCarshopUI", thePlayer)
@@ -63,7 +63,7 @@ function makeCar(thePlayer, car, cost, id, col1, col2)
 	local plate = letter1 .. letter2 .. math.random(0, 9) .. " " .. math.random(1000, 9999)
 	
 	local veh = createVehicle(id, x, y, z, 0, 0, rz, plate)
-	exports.pool:allocateVehicle(veh)
+	exports.pool:allocateElement(veh)
 					
 	setElementData(veh, "fuel", 100)
 	

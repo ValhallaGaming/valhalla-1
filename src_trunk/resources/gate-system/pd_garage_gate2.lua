@@ -1,5 +1,5 @@
 objGateg = createObject(972, 2331.6135253906, 2444.0122070313, 4.6781973838806, 0, 0, 330)
-exports.pool:allocateObject(objGateg)
+exports.pool:allocateElement(objGateg)
 
 open = false
 

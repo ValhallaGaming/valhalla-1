@@ -16,7 +16,7 @@ function createATM(thePlayer, commandName)
 			mysql_free_result(query)
 			
 			local object = createObject(2942, x, y, z, 0, 0, rotation-180)
-			exports.pool:allocateObject(object)
+			exports.pool:allocateElement(object)
 			setElementDimension(object, dimension)
 			setElementInterior(object, interior)
 			
@@ -25,7 +25,7 @@ function createATM(thePlayer, commandName)
 				local pz = z
 			
 			local pickup = createPickup(px, py, pz, 3, 1274)
-			exports.pool:allocatePickup(pickup)
+			exports.pool:allocateElement(pickup)
 			setElementDimension(pickup, dimension)
 			setElementInterior(pickup, interior)
 			
@@ -65,7 +65,7 @@ function loadAllATMs(res)
 				local interior = tonumber(row[7])
 				
 				local object = createObject(2942, x, y, z, 0, 0, rotation-180)
-				exports.pool:allocateObject(object)
+				exports.pool:allocateElement(object)
 				setElementDimension(object, dimension)
 				setElementInterior(object, interior)
 				
@@ -74,7 +74,7 @@ function loadAllATMs(res)
 				local pz = z
 				
 				local pickup = createPickup(px, py, pz, 3, 1274)
-				exports.pool:allocatePickup(pickup)
+				exports.pool:allocateElement(pickup)
 				setElementDimension(pickup, dimension)
 				setElementInterior(pickup, interior)
 				
@@ -102,7 +102,7 @@ function deleteATM(thePlayer, commandName, id)
 			id = tonumber(id)
 				
 			local counter = 0
-			local objects = exports.pool:getAllObjects()
+			local objects = exports.pool:getPoolElementsByType("object")
 			for k, theObject in ipairs(objects) do
 				local objectType = getElementData(theObject, "type")
 					
@@ -115,7 +115,7 @@ function deleteATM(thePlayer, commandName, id)
 				end
 			end
 			
-			local pickups = exports.pool:getAllPickups()
+			local pickups = exports.pool:getPoolElementsByType("pickup")
 			for k, thePickup in ipairs(pickups) do
 				local pickupType = getElementData(thePickup, "type")
 					
@@ -150,7 +150,7 @@ function getNearbyATMs(thePlayer, commandName)
 		outputChatBox("Nearby ATMs:", thePlayer, 255, 126, 0)
 		local count = 0
 		
-		for k, theObject in ipairs(exports.pool:getAllObjects()) do
+		for k, theObject in ipairs(exports.pool:getPoolElementsByType("object")) do
 			local objecttype = getElementData(theObject, "type")
 			if (objecttype=="atm") then
 				local x, y, z = getElementPosition(theObject)

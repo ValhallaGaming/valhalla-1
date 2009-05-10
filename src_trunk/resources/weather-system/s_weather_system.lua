@@ -332,7 +332,7 @@ function changeWeather()
 
 		-- Blend into the new weather
 		setWeather(ID)
-		local players = exports.pool:getAllPlayers()
+		local players = exports.pool:getPoolElementsByType("player")
 		for k, thePlayer in ipairs(players) do
 			local check = getElementData(thePlayer, "IsInCustomInterior")
 			if(check == 1) then

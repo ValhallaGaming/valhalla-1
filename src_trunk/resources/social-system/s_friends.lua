@@ -28,7 +28,7 @@ addEventHandler("onResourceStop", getResourceRootElement(getThisResource()), clo
 
 ----------------------[KEY BINDS]--------------------
 function bindKeys()
-	local players = exports.pool:getAllPlayers()
+	local players = exports.pool:getPoolElementsByType("player")
 	for k, arrayPlayer in ipairs(players) do
 		setElementData(arrayPlayer, "friends.visible", 0)
 		if not(isKeyBound(arrayPlayer, "o", "down", toggleFriends)) then
@@ -113,7 +113,7 @@ function toggleFriends(source)
 						local fyear = tonumber(mysql_result(fresult, 1, 4)) -- YEAR
 						
 						local found, player = false
-						for key, value in ipairs(exports.pool:getAllPlayers()) do
+						for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
 							if (tonumber(getElementData(value, "gameaccountid"))==friends[i][1]) then
 								found = true
 								player = value

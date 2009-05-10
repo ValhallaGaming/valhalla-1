@@ -27,7 +27,7 @@ addEventHandler("onResourceStop", getResourceRootElement(getThisResource()), clo
 -- ////////////////////////////////////
 
 licenseColSphere = createColSphere(358.25839233398, 161.80035400391, 1008.3828125, 3)
-exports.pool:allocateColshape(licenseColSphere)
+exports.pool:allocateElement(licenseColSphere)
 setElementInterior(licenseColSphere, 3)
 setElementDimension(licenseColSphere, 125)
 

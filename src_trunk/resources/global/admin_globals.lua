@@ -1,5 +1,5 @@
 function getAdmins()
-	local players = exports.pool:getAllPlayers()
+	local players = exports.pool:getPoolElementsByType("player")
 	
 	local admins = { }
 	local count = 1

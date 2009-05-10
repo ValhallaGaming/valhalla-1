@@ -27,7 +27,7 @@ end
 addEventHandler("onPlayerQuit", getRootElement(), playerQuit)
 
 function resourceStart()
-	local players = exports.pool:getAllPlayers()
+	local players = exports.pool:getPoolElementsByType("player")
 	
 	for key, value in ipairs(players) do
 		ids[key] = value

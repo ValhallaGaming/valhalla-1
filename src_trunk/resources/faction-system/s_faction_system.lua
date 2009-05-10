@@ -43,7 +43,7 @@ function loadAllFactions(res)
 				local factionType = tonumber(row[4])
 				
 				local theTeam = createTeam(tostring(name))
-				exports.pool:allocateTeam(theTeam)
+				exports.pool:allocateElement(theTeam)
 				setElementData(theTeam, "type", factionType)
 				setElementData(theTeam, "money", money)
 				setElementData(theTeam, "id", id)
@@ -52,10 +52,10 @@ function loadAllFactions(res)
 			mysql_free_result(result)
 			
 			local citteam = createTeam("Citizen", 255, 255, 255)
-			exports.pool:allocateTeam(citteam)
+			exports.pool:allocateElement(citteam)
 			
 			-- set all players into their appropriate faction
-			local players = exports.pool:getAllPlayers()
+			local players = exports.pool:getPoolElementsByType("player")
 			for k, thePlayer in ipairs(players) do
 				local username = getPlayerName(thePlayer)
 				local safeusername = mysql_escape_string(handler, username)
@@ -91,7 +91,7 @@ addEventHandler("onResourceStart", getRootElement(), loadAllFactions)
 
 -- Bind Keys required
 function bindKeys()
-	local players = exports.pool:getAllPlayers()
+	local players = exports.pool:getPoolElementsByType("player")
 	for k, arrayPlayer in ipairs(players) do
 		if not(isKeyBound(arrayPlayer, "F3", "down", showFactionMenu)) then
 			bindKey(arrayPlayer, "F3", "down", showFactionMenu)
@@ -248,7 +248,7 @@ function callbackRespawnVehicles()
 	if not (factionCooldown) then
 		local factionID = tonumber(getElementData(theTeam, "id"))
 		
-		for key, value in ipairs(exports.pool:getAllVehicles()) do
+		for key, value in ipairs(exports.pool:getPoolElementsByType("vehicle")) do
 			local faction = getElementData(value, "faction")
 			if ((tonumber(faction)==factionID) and not getVehicleOccupant(value, 0) and not getVehicleOccupant(value, 1) and not getVehicleOccupant(value, 2) and not getVehicleOccupant(value, 3)) then
 				respawnVehicle(value)
@@ -529,7 +529,7 @@ function createFaction(thePlayer, commandName, factionType, ...)
 			factionType = tonumber(factionType)
 			
 			local theTeam = createTeam(tostring(factionName))
-			exports.pool:allocateTeam(theTeam)
+			exports.pool:allocateElement(theTeam)
 			if	(theTeam) then
 				local query = mysql_query(handler, "INSERT INTO factions SET name='" .. mysql_escape_string(handler, factionName) .. "', bankbalance='0', type='" .. mysql_escape_string(handler, factionType) .. "'")
 				
@@ -560,7 +560,7 @@ function adminRenameFaction(thePlayer, commandName, factionID, ...)
 			outputChatBox("SYNTAX: /" .. commandName .. " [Faction ID] [Faction Name]", thePlayer, 255, 194, 14)
 		else
 			theTeam = nil
-			for key, value in ipairs(exports.pool:getAllTeams()) do
+			for key, value in ipairs(exports.pool:getPoolElementsByType("team")) do
 				local id = tonumber(getElementData(value, "id"))
 				
 				if (id==tonumber(factionID)) then
@@ -684,7 +684,7 @@ function adminDeleteFaction(thePlayer, commandName, factionID)
 			outputChatBox("SYNTAX: /" .. commandName .. " [Faction ID]", thePlayer, 255, 194, 14)
 		else
 			theTeam = nil
-			for key, value in ipairs(exports.pool:getAllTeams()) do
+			for key, value in ipairs(exports.pool:getPoolElementsByType("team")) do
 				local id = tonumber(getElementData(value, "id"))
 				
 				if (id==tonumber(factionID)) then
@@ -739,7 +739,7 @@ function setFactionMoney(thePlayer, commandName, factionID, amount)
 		else
 			theTeam = nil
 			amount = tonumber(amount)
-			for key, value in ipairs(exports.pool:getAllTeams()) do
+			for key, value in ipairs(exports.pool:getPoolElementsByType("team")) do
 				local id = tonumber(getElementData(value, "id"))
 				
 				if (id==tonumber(factionID)) then
@@ -762,7 +762,7 @@ addCommandHandler("setfactionmoney", setFactionMoney, false, false)
 
 -- /////////////// WAGES
 function payAllWages()
-	local players = exports.pool:getAllPlayers()
+	local players = exports.pool:getPoolElementsByType("player")
 	
 	local gresult = mysql_query(handler, "SELECT bankbalance FROM factions WHERE id='3'")
 	local govAmount = tonumber(mysql_result(gresult, 1, 1))

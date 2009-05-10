@@ -29,7 +29,7 @@ function backup(thePlayer, commandName)
 			backupPlayer = thePlayer
 			local x, y, z = getElementPosition(thePlayer)
 			backupBlip = createBlip(x, y, z, 41, 2, 255, 0, 0, 255, 255)
-			exports.pool:allocateBlip(backupBlip)
+			exports.pool:allocateElement(backupBlip)
 			attachElements(backupBlip, thePlayer)
 			
 			setElementVisibleTo(backupBlip, getRootElement(), false)

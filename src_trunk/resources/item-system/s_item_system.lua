@@ -28,7 +28,7 @@ addEventHandler("onResourceStop", getResourceRootElement(getThisResource()), clo
 
 -- Bind Keys required
 function bindKeys()
-	local players = exports.pool:getAllPlayers()
+	local players = exports.pool:getPoolElementsByType("player")
 	for k, arrayPlayer in ipairs(players) do
 		if not(isKeyBound(arrayPlayer, "i", "down", showInventory)) then
 			bindKey(arrayPlayer, "i", "down", showInventory)
@@ -99,7 +99,7 @@ function useItem(itemID, itemName, itemValue, isWeapon)
 		elseif (itemID==3) then -- car key
 			-- unlock nearby cars
 			local found, id = nil
-			for key, value in ipairs(exports.pool:getAllVehicles()) do
+			for key, value in ipairs(exports.pool:getPoolElementsByType("vehicle")) do
 				local dbid = getElementData(value, "dbid")
 				local vx, vy, vz = getElementPosition(value)
 				local x, y, z = getElementPosition(source)
@@ -128,7 +128,7 @@ function useItem(itemID, itemName, itemValue, isWeapon)
 			end
 		elseif (itemID==4) or (itemID==5) then -- house key or business key
 			local found, id = nil
-			for key, value in ipairs(exports.pool:getAllPickups()) do
+			for key, value in ipairs(exports.pool:getPoolElementsByType("pickup")) do
 				local dbid = getElementData(value, "dbid")
 				local vx, vy, vz = getElementPosition(value)
 				local x, y, z = getElementPosition(source)
@@ -150,7 +150,7 @@ function useItem(itemID, itemName, itemValue, isWeapon)
 					mysql_query(handler, "UPDATE interiors SET locked='0' WHERE id='" .. id .. "' LIMIT 1")
 					exports.global:sendLocalMeAction(source, "puts the key in the door to unlock it.")
 					
-					for key, value in ipairs(exports.pool:getAllPickups()) do
+					for key, value in ipairs(exports.pool:getPoolElementsByType("pickup")) do
 						local dbid = getElementData(value, "dbid")
 						if (dbid==id) and (value~=found) then
 							setElementData(value, "locked", 0)
@@ -161,7 +161,7 @@ function useItem(itemID, itemName, itemValue, isWeapon)
 					mysql_query(handler, "UPDATE interiors SET locked='1' WHERE id='" .. id .. "' LIMIT 1")
 					exports.global:sendLocalMeAction(source, "puts the key in the door to lock it.")
 					
-					for key, value in ipairs(exports.pool:getAllPickups()) do
+					for key, value in ipairs(exports.pool:getPoolElementsByType("pickup")) do
 						local dbid = getElementData(value, "dbid")
 						if (dbid==id) and (value~=found) then
 							setElementData(value, "locked", 1)
@@ -298,7 +298,7 @@ function dropItem(itemID, itemValue, itemName, x, y, z, gz, isWeapon)
 		mysql_free_result(objectresult)
 		
 		local obj = createObject(modelid, x, y, z)
-		exports.pool:allocateObject(obj)
+		exports.pool:allocateElement(obj)
 		
 		local interior = getElementInterior(source)
 		local dimension = getElementDimension(source)
@@ -343,7 +343,7 @@ function dropItem(itemID, itemValue, itemName, x, y, z, gz, isWeapon)
 		end
 		
 		local obj = createObject(modelid, x, y, z, 0, 0, 0)
-		exports.pool:allocateObject(obj)
+		exports.pool:allocateElement(obj)
 		
 		local interior = getElementInterior(source)
 		local dimension = getElementDimension(source)
@@ -400,7 +400,7 @@ function loadWorldItems(res)
 					end
 				
 					local obj = createObject(modelid, x, y, z)
-					exports.pool:allocateObject(obj)
+					exports.pool:allocateElement(obj)
 					setElementData(obj, "id", tonumber(row[1]))
 					setElementData(obj, "itemID", tonumber(row[2]))
 					setElementData(obj, "itemValue", tonumber(row[3]))
@@ -412,7 +412,7 @@ function loadWorldItems(res)
 					mysql_free_result(objectresult)
 					
 					local obj = createObject(modelid, x, y, z)
-					exports.pool:allocateObject(obj)
+					exports.pool:allocateElement(obj)
 					setElementDimension(obj, dimension)
 					setElementInterior(obj, interior)
 					setElementData(obj, "id", tonumber(row[1]))
@@ -438,7 +438,7 @@ function loadWorldItems(res)
 					end
 				
 					local obj = createObject(modelid, x, y, z, 0, 0, 0)
-					exports.pool:allocateObject(obj)
+					exports.pool:allocateElement(obj)
 					setElementData(obj, "id", tonumber(row[1]))
 					setElementData(obj, "itemID", tonumber(row[2]))
 					setElementData(obj, "itemValue", tonumber(row[3]))
@@ -450,7 +450,7 @@ function loadWorldItems(res)
 					mysql_free_result(objectresult)
 					
 					local obj = createObject(modelid, x, y, z, 270, 0, 0)
-					exports.pool:allocateObject(obj)
+					exports.pool:allocateElement(obj)
 					setElementData(obj, "id", tonumber(row[1]))
 					setElementData(obj, "itemID", tonumber(row[2]))
 					setElementData(obj, "itemValue", tonumber(row[3]))

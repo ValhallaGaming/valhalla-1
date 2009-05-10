@@ -92,8 +92,8 @@ function initiateCleanerJob(thePlayer)
 	
 	local blip = createBlip(1504.0679931641, 2364.36328125, 10.8203125, 0, 2, 255, 0, 255, 255)
 	local marker = createMarker(1504.3505859375, 2363.8732910156, 10.8203125, "cylinder", 2, 0, 255, 0, 150)
-	exports.pool:allocateBlip(blip)
-	exports.pool:allocateMarker(marker)
+	exports.pool:allocateElement(blip)
+	exports.pool:allocateElement(marker)
 	attachElements ( marker, blip )
 	
 	setElementVisibleTo(blip, getRootElement(), false)
@@ -118,7 +118,7 @@ function startCleaningMission(thePlayer)
 		source = nil
 		
 		local vehicle = createVehicle(574,  1503.5179443359, 2369.0305175781, 10.8203125, 0, 0, 0.645355224609, "CLEANER")
-		exports.pool:allocateVehicle(vehicle)
+		exports.pool:allocateElement(vehicle)
 			
 		setElementData(vehicle, "fuel", 100)
 		setElementData(vehicle, "owner", -2)
@@ -156,8 +156,8 @@ function startCleaningMission(thePlayer)
 		end																				--- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 		local blip2 = createBlip(x1 ,y1 ,z1, 0, 2, 255, 0, 255, 255)
 		local marker2 = createMarker(x1 ,y1 ,z1 , "checkpoint", 4, 255, 0, 255, 150)
-		exports.pool:allocateBlip(blip2)
-		exports.pool:allocateMarker(marker2)
+		exports.pool:allocateElement(blip2)
+		exports.pool:allocateElement(marker2)
 		
 		setElementVisibleTo(blip2, getRootElement(), false)
 		setElementVisibleTo(blip2, thePlayer, true)
@@ -165,7 +165,7 @@ function startCleaningMission(thePlayer)
 		setElementVisibleTo(marker2, thePlayer, true)
 		
 		local colsphere = createColSphere ( x1 ,y1 ,z1 , 4 )
-		exports.pool:allocateColshape(colsphere)
+		exports.pool:allocateElement(colsphere)
 		attachElements ( marker2, blip2 )
 		setElementData(colsphere, "attatched", marker2)
 		
@@ -195,8 +195,8 @@ function UpdateCheckpoints(thePlayer)
 				outputChatBox("Alright, that should be enough. Drive to the trash dump. (( Blip added. Check on F11 ))", thePlayer, 255, 194, 14)
 				local marker3 = createMarker(1503.5179443359, 2369.0305175781, 10.8203125, "checkpoint", 4, 255, 0, 255, 150)
 				local blip3 = createBlip(1503.5179443359, 2369.0305175781, 10.8203125, 0, 2, 255, 0, 255, 255)
-				exports.pool:allocateMarker(marker3)
-				exports.pool:allocateBlip(blip3)
+				exports.pool:allocateElement(marker3)
+				exports.pool:allocateElement(blip3)
 				
 				setElementVisibleTo(blip3, getRootElement(), false)
 				setElementVisibleTo(blip3, thePlayer, true)
@@ -204,7 +204,7 @@ function UpdateCheckpoints(thePlayer)
 				setElementVisibleTo(marker3, thePlayer, true)
 				
 				local colsphere = createColSphere (1503.5179443359, 2369.0305175781, 10.8203125 , 4 )
-				exports.pool:allocateColshape(colsphere)
+				exports.pool:allocateElement(colsphere)
 				attachElements ( marker3, blip3 )
 				setElementData(colsphere, "attatched", marker3)
 				
@@ -232,8 +232,8 @@ function UpdateCheckpoints(thePlayer)
 				
 				local marker3 = createMarker( x2, y2, z2, "checkpoint", 4, 255, 0, 255, 150)
 				local blip3 = createBlip( x2, y2, z2, 0, 2, 255, 0, 255, 255)
-				exports.pool:allocateMarker(marker3)
-				exports.pool:allocateBlip(blip3)
+				exports.pool:allocateElement(marker3)
+				exports.pool:allocateElement(blip3)
 				
 				setElementVisibleTo(blip3, getRootElement(), false)
 				setElementVisibleTo(blip3, thePlayer, true)
@@ -241,7 +241,7 @@ function UpdateCheckpoints(thePlayer)
 				setElementVisibleTo(marker3, thePlayer, true)
 				
 				local colsphere = createColSphere ( x2 ,y2 ,z2 , 4 )
-				exports.pool:allocateColshape(colsphere)
+				exports.pool:allocateElement(colsphere)
 				attachElements ( marker3, blip3 )
 				setElementData(colsphere, "attatched", marker3)
 				
@@ -274,8 +274,8 @@ function FinalCheckpoints( thePlayer )
 			
 			local marker4 = createMarker(1442.3360595703, 2371.0288085938, 10.8203125, "checkpoint", 4, 255, 0, 255, 150)
 			local blip4 = createBlip(1442.3360595703, 2371.0288085938, 10.8203125, 0, 2, 255, 0, 255, 255)
-			exports.pool:allocateMarker(marker4)
-			exports.pool:allocateBlip(blip4)
+			exports.pool:allocateElement(marker4)
+			exports.pool:allocateElement(blip4)
 			
 			setElementVisibleTo(blip4, getRootElement(), false)
 			setElementVisibleTo(blip4, thePlayer, true)
@@ -283,7 +283,7 @@ function FinalCheckpoints( thePlayer )
 			setElementVisibleTo(marker4, thePlayer, true)
 			
 			local colsphere = createColSphere (1442.3360595703, 2371.0288085938, 10.8203125, 4 )
-			exports.pool:allocateColshape(colsphere)
+			exports.pool:allocateElement(colsphere)
 			attachElements ( marker4, blip4 )
 			setElementData(colsphere, "attatched", marker4)
 				

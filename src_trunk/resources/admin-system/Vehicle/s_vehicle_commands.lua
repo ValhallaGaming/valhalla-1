@@ -23,7 +23,7 @@ addCommandHandler("unflip", unflipCar, false, false)
 function unlockAllCivilianCars(thePlayer, commandName)
 	if (exports.global:isPlayerAdmin(thePlayer)) then
 		local count = 0
-		for key, value in ipairs(exports.pool:getAllVehicles()) do
+		for key, value in ipairs(exports.pool:getPoolElementsByType("vehicle")) do
 			local id = getElementData(value, "dbid")
 			
 			if (id>=0) then
@@ -58,7 +58,7 @@ function createTempVehicle(thePlayer, commandName, id, col1, col2)
 			local plate = letter1 .. letter2 .. math.random(0, 9) .. " " .. math.random(1000, 9999)
 			
 			local veh = createVehicle(id, x, y, z, 0, 0, r, plate)
-			exports.pool:allocateVehicle(veh)
+			exports.pool:allocateElement(veh)
 			
 			if (armoredCars[(tonumber(id))]) then
 				setVehicleDamageProof(veh, true)
@@ -126,7 +126,7 @@ function gotoCar(thePlayer, commandNAme, id)
 		if not (id) then
 			ooutputChatBox("SYNTAX: /" .. commandName .. " [id]", thePlayer, 255, 194, 14)
 		else
-			local vehicles = exports.pool:getAllVehicles()
+			local vehicles = exports.pool:getPoolElementsByType("vehicle")
 			local counter = 0
 			
 			for k, theVehicle in ipairs(vehicles) do
@@ -160,7 +160,7 @@ function getCar(thePlayer, commandName, id)
 		if not (id) then
 			outputChatBox("SYNTAX: /" .. commandName .. " [id]", thePlayer, 255, 194, 14)
 		else
-			local vehicles = exports.pool:getAllVehicles()
+			local vehicles = exports.pool:getPoolElementsByType("vehicle")
 			local counter = 0
 			
 			for k, theVehicle in ipairs(vehicles) do
@@ -196,7 +196,7 @@ function getNearbyVehicles(thePlayer, commandName)
 	if (exports.global:isPlayerAdmin(thePlayer)) then
 		local posX, posY, posZ = getElementPosition( thePlayer )
         local objSphere = createColSphere( posX, posY, posZ, 20 )
-		exports.pool:allocateColshape(objSphere)
+		exports.pool:allocateElement(objSphere)
         local nearbyVehicles = getElementsWithinColShape( objSphere, "vehicle" )
         destroyElement( objSphere )
 		outputChatBox("Nearby Vehicles:", thePlayer, 255, 126, 0)
@@ -229,7 +229,7 @@ function respawnCmdVehicle(thePlayer, commandName, id)
 			outputChatBox("SYNTAX: /respawnveh [id]", thePlayer, 255, 194, 14)
 		else
 			local id = tonumber(id)
-			local vehicles = exports.pool:getAllVehicles()
+			local vehicles = exports.pool:getPoolElementsByType("vehicle")
 			local counter = 0
 			
 			for k, theVehicle in ipairs(vehicles) do
@@ -270,13 +270,13 @@ addCommandHandler("respawnveh", respawnCmdVehicle, false, false)
 
 function respawnAllVehicles(thePlayer, commandName)
 	if (exports.global:isPlayerAdmin(thePlayer)) then
-		local vehicles = exports.pool:getAllVehicles()
+		local vehicles = exports.pool:getPoolElementsByType("vehicle")
 		local counter = 0
 		local failedcounter = 0
 		local tempcounter = 0
 		
 		-- Remove all players from vehicles
-		for key, value in ipairs(exports.pool:getAllPlayers()) do
+		for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
 			if (isPedInVehicle(value)) then
 				removePedFromVehicle(value)
 			end
@@ -490,7 +490,7 @@ addCommandHandler("setcarhp", setCarHP, false, false)
 function fixAllVehicles(thePlayer, commandName)
 	if (exports.global:isPlayerAdmin(thePlayer)) then
 		local username = getPlayerName(thePlayer)
-		for key, value in ipairs(exports.pool:getAllVehicles()) do
+		for key, value in ipairs(exports.pool:getPoolElementsByType("vehicle")) do
 			fixVehicle(value)
 		end
 		outputChatBox("All vehicles repaired by Admin " .. username .. ".")
@@ -533,7 +533,7 @@ addCommandHandler("fuelveh", fuelPlayerVehicle, false, false)
 function fuelAllVehicles(thePlayer, commandName)
 	if (exports.global:isPlayerAdmin(thePlayer)) then
 		local username = getPlayerName(thePlayer)
-		for key, value in ipairs(exports.pool:getAllVehicles()) do
+		for key, value in ipairs(exports.pool:getPoolElementsByType("vehicle")) do
 			setElementData(value, "fuel", 100)
 		end
 		outputChatBox("All vehicles refuelled by Admin " .. username .. ".")
@@ -582,7 +582,7 @@ function deleteVehicle(thePlayer, commandName, id)
 		if not (id) then
 			outputChatBox("SYNTAX: /" .. commandName .. " [id]", thePlayer, 255, 194, 14)
 		else
-			local vehicles = exports.pool:getAllVehicles()
+			local vehicles = exports.pool:getPoolElementsByType("vehicle")
 			local counter = 0
 			
 			for k, theVehicle in ipairs(vehicles) do

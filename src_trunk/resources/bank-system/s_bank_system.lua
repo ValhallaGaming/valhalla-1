@@ -27,7 +27,7 @@ addEventHandler("onResourceStop", getResourceRootElement(getThisResource()), clo
 -- ////////////////////////////////////
 
 bankPickup = createPickup(2316.6174316406, -7.3972668647766, 26.7421875, 3, 1274)
-exports.pool:allocatePickup(bankPickup)
+exports.pool:allocateElement(bankPickup)
 setElementDimension(bankPickup, 128)
 
 function pickupUse(thePlayer)

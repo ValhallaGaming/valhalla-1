@@ -47,13 +47,13 @@ function createElevator(thePlayer, commandName, interior, dimension, ix, iy, iz)
 				if (query) then
 					mysql_free_result(query)
 					local pickup = createPickup(x, y, z, 3, 1318)
-					exports.pool:allocatePickup(pickup)
+					exports.pool:allocateElement(pickup)
 					local intpickup = createPickup(ix, iy, iz, 3, 1318)
-					exports.pool:allocatePickup(intpickup)
+					exports.pool:allocateElement(intpickup)
 					local shape1 = createColSphere(x, y, z, 2)
-					exports.pool:allocateColshape(shape1)
+					exports.pool:allocateElement(shape1)
 					local shape2 = createColSphere(ix, iy, iz, 2)
-					exports.pool:allocateColshape(shape2)
+					exports.pool:allocateElement(shape2)
 
 					setElementData(shape1, "dbid", id)
 					setElementData(shape1, "x", ix)
@@ -92,7 +92,7 @@ addCommandHandler("addelevator", createElevator, false, false)
 
 function loadAllElevators(res)
 	if (res==getThisResource()) then
-		local players = exports.pool:getAllPlayers()
+		local players = exports.pool:getPoolElementsByType("player")
 		for k, thePlayer in ipairs(players) do
 			setElementData(thePlayer, "UsedElevator", nil)
 		end
@@ -117,13 +117,13 @@ function loadAllElevators(res)
 				local interior = tonumber(row[11])
 				
 				local pickup = createPickup(x, y, z, 3, 1318)
-				exports.pool:allocatePickup(pickup)
+				exports.pool:allocateElement(pickup)
 				local intpickup = createPickup(ix, iy, iz, 3, 1318)
-				exports.pool:allocatePickup(intpickup)
+				exports.pool:allocateElement(intpickup)
 				local shape1 = createColSphere(x, y, z, 2)
-				exports.pool:allocateColshape(shape1)
+				exports.pool:allocateElement(shape1)
 				local shape2 = createColSphere(ix, iy, iz, 2)
-				exports.pool:allocateColshape(shape2)
+				exports.pool:allocateElement(shape2)
 
 				setElementData(shape1, "dbid", id)
 				setElementData(shape1, "x", ix)
@@ -267,7 +267,7 @@ function deleteElevator(thePlayer, commandName, id)
 			id = tonumber(id)
 				
 			local counter = 0
-			local pickups = exports.pool:getAllPickups()
+			local pickups = exports.pool:getPoolElementsByType("pickup")
 			for k, thePickup in ipairs(pickups) do
 				local pickupType = getElementData(thePickup, "type")
 					
@@ -279,7 +279,7 @@ function deleteElevator(thePlayer, commandName, id)
 					end
 				end
 			end
-			local shapes = exports.pool:getAllColshapes()
+			local shapes = exports.pool:getPoolElementsByType("colshape")
 			for k, v in ipairs(shapes) do
 				local shapeType = getElementData(v, "type")
 					
@@ -311,7 +311,7 @@ addCommandHandler("delelevator", deleteElevator, false, false)
 function TempDelete(thePlayer, commandName)
 	if (exports.global:isPlayerLeadAdmin(thePlayer)) then
 		local posX, posY, posZ = getElementPosition(thePlayer)
-		for k, thePickup in ipairs(exports.pool:getAllColshapes()) do
+		for k, thePickup in ipairs(exports.pool:getPoolElementsByType("colshape")) do
 			local pickuptype = getElementData(thePickup, "type")
 			if (pickuptype=="elevator") then
 				local x, y, z = getElementPosition(thePickup)
@@ -336,7 +336,7 @@ function getNearbyElevators(thePlayer, commandName)
 		outputChatBox("Nearby Elevators:", thePlayer, 255, 126, 0)
 		local count = 0
 		
-		for k, thePickup in ipairs(exports.pool:getAllColshapes()) do
+		for k, thePickup in ipairs(exports.pool:getPoolElementsByType("colshape")) do
 			local pickuptype = getElementData(thePickup, "type")
 			if (pickuptype=="elevator") then
 				local x, y, z = getElementPosition(thePickup)

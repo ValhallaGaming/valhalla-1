@@ -1,10 +1,10 @@
 objGatee = createObject(1557, 274.12623901367, 189.35, 1006.171875, 0, 0, 0)
-exports.pool:allocateObject(objGate3)
+exports.pool:allocateElement(objGate3)
 setElementInterior(objGatee, 3)
 setElementDimension(objGatee, 1)
 
 objGatee2 = createObject(1557, 277.12623901367, 189.35, 1006.171875, 0, 0, 180)
-exports.pool:allocateObject(objGatee2)
+exports.pool:allocateElement(objGatee2)
 setElementInterior(objGatee2, 3)
 setElementDimension(objGatee2, 1)
 

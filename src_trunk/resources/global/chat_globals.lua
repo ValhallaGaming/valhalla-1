@@ -9,7 +9,7 @@ function setOOCState(state)
 end
 
 function sendMessageToAdmins(message)
-	local players = exports.pool:getAllPlayers()
+	local players = exports.pool:getPoolElementsByType("player")
 	
 	for k, thePlayer in ipairs(players) do
 		if (exports.global:isPlayerAdmin(thePlayer)) then
@@ -23,7 +23,7 @@ function findPlayerByPartialNick(partialNick)
 	local matchNickAccuracy=0
 	local partialNick = string.lower(partialNick)
 
-	local players = exports.pool:getAllPlayers()
+	local players = exports.pool:getPoolElementsByType("player")
 	
 	-- IDS
 	if ((tostring(type(tonumber(partialNick)))) == "number") then
@@ -124,7 +124,7 @@ end
 function sendLocalMeAction(thePlayer, message)
 	local x, y, z = getElementPosition(thePlayer)
 	local chatSphere = createColSphere(x, y, z, 20)
-	exports.pool:allocateColshape(chatSphere)
+	exports.pool:allocateElement(chatSphere)
 	local nearbyPlayers = getElementsWithinColShape(chatSphere, "player")
 	local playerName = string.gsub(getPlayerName(thePlayer), "_", " ")
 	
@@ -143,7 +143,7 @@ end
 function sendLocalDoAction(thePlayer, message)
 	local x, y, z = getElementPosition(thePlayer)
 	local chatSphere = createColSphere(x, y, z, 20)
-	exports.pool:allocateColshape(chatSphere)
+	exports.pool:allocateElement(chatSphere)
 	local nearbyPlayers = getElementsWithinColShape(chatSphere, "player")
 	local playerName = string.gsub(getPlayerName(thePlayer), "_", " ")
 	

@@ -31,7 +31,7 @@ function makeTagObject(cx, cy, cz, rot, interior, dimension)
 	local tag = getElementData(source, "tag")
 	if (tag~=9) then
 		local obj = createObject(tags[tag], cx, cy, cz, 0, 0, rot+90)
-		exports.pool:allocateObject(obj)
+		exports.pool:allocateElement(obj)
 		setElementDimension(obj, dimension)
 		setElementInterior(obj, interior)
 		
@@ -44,7 +44,7 @@ function makeTagObject(cx, cy, cz, rot, interior, dimension)
 		outputChatBox("You have tagged the wall!", source, 255, 194, 14)
 	else
 		local colshape = createColSphere(cx, cy, cz, 10)
-		exports.pool:allocateColshape(colshape)
+		exports.pool:allocateElement(colshape)
 		local objects = getElementsWithinColShape(colshape, "object")
 		
 		local object = nil
@@ -91,7 +91,7 @@ function loadAllTags(res)
 				local modelid = tonumber(row[10])
 					
 				local object = createObject(modelid, x, y, z, rx, ry, rz)
-				exports.pool:allocateObject(object)
+				exports.pool:allocateElement(object)
 				setElementInterior(object, interior)
 				setElementDimension(object, dimension)
 				setElementData(object, "dbid", id)

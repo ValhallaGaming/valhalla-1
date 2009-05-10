@@ -1,7 +1,7 @@
 objGatei = createObject(976, 2237.5334472656, 2448.87109375, 9.8203125, 0, 0, 90)
-exports.pool:allocateObject(objGatei)
+exports.pool:allocateElement(objGatei)
 objGatei2 = createObject(976, 2237.5334472656, 2448.87109375, 12.8203125, 0, 0, 90)
-exports.pool:allocateObject(objGatei2)
+exports.pool:allocateElement(objGatei2)
 
 -- these are just fences to stop people climbing
 o1 = createObject(987, 2237.5334472656, 2442.37109375, 9.9203125, 0, 0, 270)

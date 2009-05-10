@@ -4,7 +4,7 @@ function tazerFired(x, y, z, target)
 
 	if (distance<50) then
 		local colshape = createColSphere(px, py, pz, 20)
-		exports.pool:allocateColshape(colshape)
+		exports.pool:allocateElement(colshape)
 		for key, value in ipairs(getElementsWithinColShape(colshape)) do
 			if (value~=source) then
 				triggerClientEvent(value, "showTazerEffect", value, x, y, z) -- show the sparks

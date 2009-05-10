@@ -18,7 +18,7 @@ function deployFlashbang(thePlayer, commandName, targetPartialNick)
 			exports.global:sendLocalMeAction(thePlayer, "throws a flashbang.")
 			
 			local obj = createObject(343, x, y, z)
-			exports.pool:allocateObject(obj)
+			exports.pool:allocateElement(obj)
 			setTimer(explodeFlash, math.random(500, 600), 3, obj, x, y, z)
 		end
 	end
@@ -27,7 +27,7 @@ addCommandHandler("flashbang", deployFlashbang, false, false)
 
 function explodeFlash(obj, x, y, z)
 	local colsphere = createColSphere(x, y, z, 7)
-	exports.pool:allocateColshape(colsphere)
+	exports.pool:allocateElement(colsphere)
 	local players = getElementsWithinColShape(colsphere, "player")
 	
 	destroyElement(obj)

@@ -19,9 +19,9 @@ function PlacingSpikes(sourcePlayer, command)
 				if(Spike[value] == nil) then
 
 				Spike[value] = createObject ( 1593, x1, y1, z1-0.8, 0.0, 0.0, rotz+90.0)
-				exports.pool:allocateObject(Spike[value])
+				exports.pool:allocateElement(Spike[value])
 				Shape[value] = createColCuboid ( x1-0.5, y1-0.5, z1-0.8, 2.0, 2.0, 2.5)
-				exports.pool:allocateColshape(Shape[value])
+				exports.pool:allocateElement(Shape[value])
 				triggerClientEvent ("onSpikesAdded", getRootElement())
 				outputChatBox("Spawned spikes with ID:" .. value, sourcePlayer, 0, 194, 0)
 				

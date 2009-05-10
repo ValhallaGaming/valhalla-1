@@ -90,7 +90,7 @@ function createPermVehicle(thePlayer, commandName, id, col1, col2, userName, fac
 				local plate = letter1 .. letter2 .. math.random(0, 9) .. " " .. math.random(1000, 9999)
 				
 				local veh = createVehicle(id, x, y, z, 0, 0, r, plate)
-				exports.pool:allocateVehicle(veh)
+				exports.pool:allocateElement(veh)
 					
 				if not (veh) then
 					outputChatBox("Invalid Vehicle ID.", thePlayer, 255, 0, 0)
@@ -172,7 +172,7 @@ function createCivilianPermVehicle(thePlayer, commandName, id, col1, col2, userN
 			local plate = letter1 .. letter2 .. math.random(0, 9) .. " " .. math.random(1000, 9999)
 			
 			local veh = createVehicle(id, x, y, z, 0, 0, r, plate)
-			exports.pool:allocateVehicle(veh)
+			exports.pool:allocateElement(veh)
 				
 			if not (veh) then
 				outputChatBox("Invalid Vehicle ID.", thePlayer, 255, 0, 0)
@@ -222,7 +222,7 @@ function loadAllVehicles(res)
 	if (res==getThisResource()) then
 		
 		-- Reset player in vehicle states
-		local players = exports.pool:getAllPlayers()
+		local players = exports.pool:getPoolElementsByType("player")
 		for key, value in ipairs(players) do
 			setElementData(value, "realinvehicle", 0)
 		end
@@ -318,7 +318,7 @@ function loadAllVehicles(res)
 				
 				-- Spawn the vehicle
 				local veh = createVehicle(vehid, x, y, z, rx, ry, rz, plate)
-				exports.pool:allocateVehicle(veh)
+				exports.pool:allocateElement(veh)
 				
 				-- Set the vehicle armored if it is armored
 				if (armoredCars[tonumber(vehid)]) then
@@ -569,7 +569,7 @@ addEventHandler("onVehicleDamage", getRootElement(), damageTyres)
 
 -- Bind Keys required
 function bindKeys()
-	local players = exports.pool:getAllPlayers()
+	local players = exports.pool:getPoolElementsByType("player")
 	for k, arrayPlayer in ipairs(players) do
 		if not(isKeyBound(arrayPlayer, "j", "down", toggleEngine)) then
 			bindKey(arrayPlayer, "j", "down", toggleEngine)
@@ -726,7 +726,7 @@ function removeFromFactionVehicle(thePlayer)
 		local seat = getPedOccupiedVehicleSeat(thePlayer)
 		if (faction~=vfaction) and (seat==0) then
 			local factionName = "this faction"
-			for key, value in ipairs(exports.pool:getAllTeams()) do
+			for key, value in ipairs(exports.pool:getPoolElementsByType("team")) do
 				local id = tonumber(getElementData(value, "id"))
 				if (id==vfaction) then
 					factionName = getTeamName(value)

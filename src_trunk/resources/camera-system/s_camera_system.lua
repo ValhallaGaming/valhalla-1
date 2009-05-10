@@ -9,11 +9,11 @@ function resourceStart(res)
 	if (res==getThisResource()) then
 		-- STRIP CAMERA 1
 		stripCamera1 = createObject(1293, 2057.3688964844, 1600.7856445313, 9.929556846619, 0, 0, 183.23063659668)
-		exports.pool:allocateObject(stripCamera1)
+		exports.pool:allocateElement(stripCamera1)
 		stripCamera1Col = createColSphere(2057.3688964844, 1600.7856445313, 9.929556846619, 80)
-		exports.pool:allocateColshape(stripCamera1Col)
+		exports.pool:allocateElement(stripCamera1Col)
 		stripCamera1ColWarn = createColSphere(2057.3688964844, 1600.7856445313, 10.929556846619, 150)
-		exports.pool:allocateColshape(stripCamera1ColWarn)
+		exports.pool:allocateElement(stripCamera1ColWarn)
 		stripCamera1Speed = 60
 		addEventHandler("onColShapeHit", stripCamera1ColWarn, sendWarning)
 		addEventHandler("onColShapeHit", stripCamera1Col, monitorSpeed)

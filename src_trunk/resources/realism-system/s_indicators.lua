@@ -1,6 +1,6 @@
 function resStart(res)
 	if (res==getThisResource()) then
-		for key, veh in ipairs(exports.pool:getAllVehicles()) do
+		for key, veh in ipairs(exports.pool:getPoolElementsByType("vehicle")) do
 			setElementData(veh, "rightmarker1", nil)
 			setElementData(veh, "rightobject1", nil)
 			setElementData(veh, "rightmarker2", nil)
@@ -150,17 +150,17 @@ function toggleLeftIndicator(x1, y1, z1, x2, y2, z2)
 		if not (leftmarker) then
 			
 			object = createObject(1489, x1, y1, z1)
-			exports.pool:allocateObject(object)
+			exports.pool:allocateElement(object)
 			marker = createMarker(x1, y1, z1, "corona", 1, 255, 194, 14, 200)
-			exports.pool:allocateMarker(marker)
+			exports.pool:allocateElement(marker)
 			attachElements(object, veh, x1+0.1, y1+0.5, z1+0.7)
 			attachElements(marker, object, 0, 0, 0)
 			setElementAlpha(object, 0)
 			
 			object2 = createObject(1489, x1, y1, z1)
-			exports.pool:allocateObject(object2)
+			exports.pool:allocateElement(object2)
 			marker2 = createMarker(x1, y1, z1, "corona", 1, 255, 194, 14, 200)
-			exports.pool:allocateMarker(marker2)
+			exports.pool:allocateElement(marker2)
 			attachElements(object2, veh, x1+0.1, y2, z1+0.7)
 			attachElements(marker2, object2, 0, 0, 0)
 			setElementAlpha(object2, 0)
@@ -201,18 +201,18 @@ function toggleRightIndicator(x1, y1, z1, x2, y2, z2)
 			
 			-- top right cornor
 			object = createObject(1489, x1, y1, z1)
-			exports.pool:allocateObject(object)
+			exports.pool:allocateElement(object)
 			marker = createMarker(x1, y1, z1, "corona", 1, 255, 194, 14, 200)
-			exports.pool:allocateMarker(marker)
+			exports.pool:allocateElement(marker)
 			attachElements(object, veh, x2-0.3, y1+0.4, z1+0.7)
 			attachElements(marker, object, 0, 0, 0)
 			setElementAlpha(object, 0)
 			
 			-- top right cornor
 			object2 = createObject(1489, x1, y1, z1)
-			exports.pool:allocateObject(object2)
+			exports.pool:allocateElement(object2)
 			marker2 = createMarker(x1, y1, z1, "corona", 1, 255, 194, 14, 200)
-			exports.pool:allocateMarker(marker2)
+			exports.pool:allocateElement(marker2)
 			attachElements(object2, veh, x2-0.3, y2-0.1, z1+0.7)
 			attachElements(marker2, object2, 0, 0, 0)
 			setElementAlpha(object2, 0)

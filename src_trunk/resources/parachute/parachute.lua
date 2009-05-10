@@ -1,7 +1,7 @@
 root = getRootElement ()
 
 local function onResourceStart ( resource )
-  local players = exports.pool:getAllPlayers()
+  local players = exports.pool:getPoolElementsByType("player")
   for k, v in pairs ( players ) do
     setElementData ( v, "parachuting", false )
   end
@@ -9,7 +9,7 @@ end
 addEventHandler ( "onResourceStart", getResourceRootElement ( getThisResource () ), onResourceStart )
 
 function requestAddParachute ()
-	for key,player in ipairs(exports.pool:getAllPlayers()) do
+	for key,player in ipairs(exports.pool:getPoolElementsByType("player")) do
 		if player ~= source then
 			triggerClientEvent ( player, "doAddParachuteToPlayer", source )
 		end
@@ -20,7 +20,7 @@ addEventHandler ( "requestAddParachute", root, requestAddParachute )
 
 function requestRemoveParachute ()
 	takeWeapon ( source, 46 )
-	for key,player in ipairs(exports.pool:getAllPlayers()) do
+	for key,player in ipairs(exports.pool:getPoolElementsByType("player")) do
 		if player ~= source then
 			triggerClientEvent ( player, "doRemoveParachuteFromPlayer", source )
 		end

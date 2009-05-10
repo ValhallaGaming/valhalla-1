@@ -54,7 +54,7 @@ end
 
 -- Bind Keys required
 function bindKeys()
-	local players = exports.pool:getAllPlayers()
+	local players = exports.pool:getPoolElementsByType("player")
 	for k, arrayPlayer in ipairs(players) do
 		if not(isKeyBound(arrayPlayer, "r", "down", reloadWeapon)) then
 			bindKey(arrayPlayer, "r", "down", reloadWeapon)

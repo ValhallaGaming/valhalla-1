@@ -1,17 +1,17 @@
 poolTable = {
-    "player" = {},
-    "vehicle" = {},
-    "colshape" = {},
-    "ped" = {},
-    "marker" = {},
-    "object" = {},
-    "pickup" = {},
-    "team" = {},
-    "blip" = {}
+    ["player"] = {},
+    ["vehicle"] = {},
+    ["colshape"] = {},
+    ["ped"] = {},
+    ["marker"] = {},
+    ["object"] = {},
+    ["pickup"] = {},
+    ["team"] = {},
+    ["blip"] = {}
 }
 
 function isValidType(elementType)
-    for k, v in ipairs(poolTable) do
+    for k, v in pairs(poolTable) do
         if k == elementType then
             return true
         end

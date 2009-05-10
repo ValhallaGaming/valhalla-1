@@ -84,7 +84,7 @@ function resourceStart()
 	exports.vgscoreboard:resetScoreboardColumns()
 	exports.vgscoreboard:addScoreboardColumn("ID #", getRootElement(), 1, 0.05)
 
-	for key, value in ipairs(exports.pool:getAllPlayers()) do
+	for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
 		triggerEvent("playerJoinResourceStart", value)
 	end
 end
@@ -376,7 +376,7 @@ function spawnCharacter(charname)
 		for i=1, 100 do
 			local fid = gettok(friends, i, 59)
 			if (fid) then
-				for key, value in ipairs(exports.pool:getAllPlayers()) do
+				for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
 					local id = tonumber(getElementData(value, "gameaccountid"))
 					if (id==tonumber(fid)) then
 						friendsonline = friendsonline + 1
@@ -473,7 +473,7 @@ function spawnCharacter(charname)
 		end
 		
 		-- Let's stick some blips on the properties they own
-		for key, value in ipairs(exports.pool:getAllPickups()) do
+		for key, value in ipairs(exports.pool:getPoolElementsByType("pickup")) do
 			local type = getElementData(value, "type")
 			if (type=="interior") then
 				local inttype = getElementData(value, "inttype")
@@ -482,14 +482,14 @@ function spawnCharacter(charname)
 					local x, y, z = getElementPosition(value)
 					if (inttype==0) then -- house
 						local blip = createBlip(x, y, z, 31, 2, 255, 0, 0, 255, 0)
-						exports.pool:allocateBlip(blip)
+						exports.pool:allocateElement(blip)
 						setElementVisibleTo(blip, getRootElement(), false)
 						setElementVisibleTo(blip, source, true)
 						setElementData(blip, "type", "accountblip")
 						setElementData(blip, "owner", tonumber(getElementData(source, "gameaccountid")))
 					elseif (inttype==2) then -- business
 						local blip = createBlip(x, y, z, 32, 2, 255, 0, 0, 255, 0, source)
-						exports.pool:allocateBlip(blip)
+						exports.pool:allocateElement(blip)
 						setElementVisibleTo(blip, getRootElement(), false)
 						setElementVisibleTo(blip, source, true)
 					end
@@ -567,7 +567,7 @@ function loginPlayer(username, password, operatingsystem)
 		
 		-- Check the account isn't already logged in
 		local found = false
-		for key, value in ipairs(exports.pool:getAllPlayers()) do
+		for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
 			local accid = tonumber(getElementData(value, "gameaccountid"))
 			if (accid) then
 				if (accid==id) and (value~=source) then

@@ -78,7 +78,7 @@ function getNearbyGeneralshops(thePlayer, commandName)
 		
 		local dimension = getElementDimension(thePlayer)
 		
-		for k, theColshape in ipairs(exports.pool:getAllColshapes()) do
+		for k, theColshape in ipairs(exports.pool:getPoolElementsByType("colshape")) do
 			local colshapeType = getElementData(theColshape, "type")
 			if (colshapeType) then
 				if (colshapeType=="shop") then
@@ -109,7 +109,7 @@ function deleteGeneralShop(thePlayer, commandName, id)
 		else
 			local counter = 0
 			
-			for k, theColshape in ipairs(exports.pool:getAllColshapes()) do
+			for k, theColshape in ipairs(exports.pool:getPoolElementsByType("colshape")) do
 				local colshapeType = getElementData(theColshape, "type")
 				if (colshapeType) then
 					if (colshapeType=="shop") then
@@ -199,7 +199,7 @@ function givePlayerBoughtItem(itemID, itemValue, theCost, isWeapon, name, supply
 	local thePickup = nil
 	local inttype = nil
 	local supplies = nil
-	for key, value in ipairs(exports.pool:getAllPickups()) do
+	for key, value in ipairs(exports.pool:getPoolElementsByType("pickup")) do
 		local pickupType = getElementData(value, "type")
 		if (pickupType=="interior") then
 			local id = getElementData(value, "dbid")
@@ -264,7 +264,7 @@ function givePlayerBoughtItem(itemID, itemValue, theCost, isWeapon, name, supply
 				outputChatBox("This item is out of stock.", source, 255, 0, 0)
 				local owner = getElementData(thePickup, "owner")
 				local theOwner = nil
-				for key, value in ipairs(exports.pool:getAllPlayers()) do
+				for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
 					local id = getElementData(value, "dbid")
 					if (id==owner) then
 						theOwner = value
@@ -319,7 +319,7 @@ function givePlayerBoughtItem(itemID, itemValue, theCost, isWeapon, name, supply
 				-- give the money to the shop owner
 				local owner = getElementData(thePickup, "owner")
 				local theOwner = nil
-				for key, value in ipairs(exports.pool:getAllPlayers()) do
+				for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
 					local id = getElementData(value, "dbid")
 					if (id==owner) then
 						theOwner = value
@@ -367,7 +367,7 @@ function orderSupplies(thePlayer, commandName, amount)
 				
 			local owner = nil
 			local inttype = nil
-			local pickups = exports.pool:getAllPickups()
+			local pickups = exports.pool:getPoolElementsByType("pickup")
 			for k, thePickup in ipairs(pickups) do
 				local pickupType = getElementData(thePickup, "type")
 				

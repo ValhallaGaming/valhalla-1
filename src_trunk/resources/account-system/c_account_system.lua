@@ -1237,7 +1237,6 @@ function showCharacterUI(accounts, achievementCount, achievementPointsCount, ach
 	iAchievementCount = achievementCount
 	iAchievementPointsCount = achievementPointsCount
 	tableAchievements = achievements
-	tableStatistics = statistics
 	
 	toggleAllControls(false, true, false)
 
@@ -1251,7 +1250,6 @@ function showCharacterUI(accounts, achievementCount, achievementPointsCount, ach
 	tabCharacter = guiCreateTab("Character Selection", tabPanelCharacter)
 	tabAccount = guiCreateTab("Account Management", tabPanelCharacter)
 	tabAchievements = guiCreateTab("Achievements", tabPanelCharacter)
-	tabStatistics = guiCreateTab("Stats", tabPanelCharacter)
 	
 	displayAccountManagement()
 	displayAchievements()

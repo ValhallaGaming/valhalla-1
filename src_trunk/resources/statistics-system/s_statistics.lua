@@ -48,7 +48,7 @@ function getAdminStats(thePlayer, commandName)
 				
 		-- VEHICLES
 		local counter = 0
-		for key, value in ipairs(exports.pool:getAllVehicles()) do
+		for key, value in ipairs(exports.pool:getPoolElementsByType("vehicle")) do
 			counter = counter + 1
 		end
 		outputChatBox("     Vehicles: " .. counter .. ".", thePlayer, 255, 194, 14)

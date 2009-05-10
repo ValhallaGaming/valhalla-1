@@ -86,7 +86,6 @@ function takePlayerItem(thePlayer, itemID, itemValue)
 						itemvaluestring = itemvaluestring .. vtoken .. ","
 					else
 						found = true
-						--break
 					end
 				else
 					if (token~=itemID) or (itemValue~=vtoken) or (found) then
@@ -94,9 +93,7 @@ function takePlayerItem(thePlayer, itemID, itemValue)
 						itemstring = itemstring .. token .. ","
 						itemvaluestring = itemvaluestring .. vtoken .. ","
 					else
-						outputDebugString(tostring(i) .. " BROKE")
 						found = true
-						--break
 					end
 				end
 			end

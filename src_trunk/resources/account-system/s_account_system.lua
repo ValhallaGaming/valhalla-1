@@ -674,7 +674,7 @@ function loginPlayer(username, password, operatingsystem)
 		showChat(source, true)
 		local attempts = tonumber(getElementData(source, "loginattempts"))
 		attempts = attempts + 1
-		setElementData(source, "loginattempts", attempts)
+		--setElementData(source, "loginattempts", attempts)
 		
 		if (attempts>=3) then
 			kickPlayer(source, true, false, false, getRootElement(), "Too many login attempts")
@@ -819,6 +819,7 @@ function sendAccounts(thePlayer, id, isChangeChar)
 
 	spawnPlayer(thePlayer, 258.43417358398, -41.489139556885, 1002.0234375, 268.19247436523, 0, 14, 65000+playerid)
 	
+	
 	-- Get achievements
 	local gameAccountID = getElementData(source, "gameaccountid")
 	local aresult = mysql_query(handler, "SELECT achievementid, date FROM achievements WHERE account='" .. gameAccountID .. "'")
@@ -865,96 +866,7 @@ function sendAccounts(thePlayer, id, isChangeChar)
 	setElementData(thePlayer, "achievements.points", points)
 	setElementData(thePlayer, "achievements.count", amount)
 	
-	-- STATISTICS
-	local statistics = { }
-	
-	-- STAT 1: Richest Player
-	local statresult = mysql_query(handler, "SELECT charactername, bankmoney FROM characters ORDER BY money DESC LIMIT 1")
-	if (mysql_num_rows(statresult)>0) then
-		statistics[1] = { }
-		statistics[1][1] = "Richest Player"
-		statistics[1][2] = string.gsub(mysql_result(statresult, 1, 1), "_", " ") .. " (" .. mysql_result(statresult, 1, 2) .. "$)"
-	end
-	mysql_free_result(statresult)
-	
-	-- STAT 2: Poorest Player
-	local statresult = mysql_query(handler, "SELECT charactername, bankmoney FROM characters ORDER BY money ASC LIMIT 1")
-	if (mysql_num_rows(statresult)>0) then
-	statistics[2] = { }
-	statistics[2][1] = "Poorest Player"
-	statistics[2][2] = string.gsub(mysql_result(statresult, 1, 1), "_", " ") .. " (" .. mysql_result(statresult, 1, 2) .. "$)"
-	end
-	mysql_free_result(statresult)
-	
-	-- STAT 3: Most Deaths
-	local statresult = mysql_query(handler, "SELECT charactername, deaths FROM characters ORDER BY deaths DESC LIMIT 1")
-	if (mysql_num_rows(statresult)>0) then
-	statistics[3] = { }
-	statistics[3][1] = "Most Deaths"
-	statistics[3][2] = string.gsub(mysql_result(statresult, 1, 1), "_", " ") .. " (" .. mysql_result(statresult, 1, 2) .. " Deaths)"
-	end
-	mysql_free_result(statresult)
-	
-	-- STAT 4: Player With Most Achievements
-	local statresult = mysql_query(handler, "SELECT id, account FROM achievements")
-	
-	local highest = 0
-	local highestid = -1
-	for result, row in mysql_rows(statresult) do
-		local result = mysql_query(handler, "SELECT count(id) FROM achievements WHERE account='" .. tonumber(row[2]) .. "'")
-		local count = tonumber(mysql_result(result, 1, 1))
-		mysql_free_result(result)
-		
-		if (count>=highest) then
-			highest = count
-			highestid = tonumber(row[2])
-		end
-	end
-	mysql_free_result(statresult)
-	
-	if (highestid>0) then
-		local statresult = mysql_query(handler, "SELECT username FROM accounts WHERE id='" .. highestid .. "'")
-		statistics[4] = { }
-		statistics[4][1] = "Most Achievements"
-		statistics[4][2] = string.gsub(mysql_result(statresult, 1, 1), "_", " ") .. " (" .. highest .. " Achievements)"
-		mysql_free_result(statresult)
-	else
-		statistics[4] = { }
-		statistics[4][1] = "Most Achievements"
-		statistics[4][2] = "None"
-	end
-
-	-- STAT 5: Total Achievements Given Out
-	local statresult = mysql_query(handler, "SELECT count(id) FROM achievements")
-	statistics[5] = { }
-	statistics[5][1] = "Total Achievements Given Out"
-	statistics[5][2] = tostring(mysql_result(statresult, 1, 1)) .. " Achievements"
-	mysql_free_result(statresult)
-	
-	-- STAT 6: Most Used Vehicle
-	local highest = 0
-	local highestid = -1
-	
-	for i=400, 630 do
-		local vehicles = getVehiclesOfType(i)
-		
-		if (#vehicles>highest) then
-			highest = #vehicles
-			highestid = i
-		end
-	end
-	
-	if (highestid>0) then
-		statistics[6] = { }
-		statistics[6][1] = "Most Popular Vehicle"
-		statistics[6][2] = getVehicleNameFromModel(highestid)
-	else
-		statistics[6] = { }
-		statistics[6][1] = "Most Popular Vehicle"
-		statistics[6][2] = "None"
-	end
-	
-	triggerClientEvent(thePlayer, "showCharacterSelection", thePlayer, accounts, achievementCount, achievementPointsCount, achievements, statistics)
+	triggerClientEvent(thePlayer, "showCharacterSelection", thePlayer, accounts, achievementCount, achievementPointsCount, achievements)
 end
 addEvent("sendAccounts", true)
 addEventHandler("sendAccounts", getRootElement(), sendAccounts)

@@ -1218,8 +1218,7 @@ tableAchievements, tableStatistics, iAchievementCount, iAchievementPointsCount =
 bDeleteChar = nil
 bChangeAccount = nil
 
-function showCharacterUI(accounts, achievementCount, achievementPointsCount, achievements, statistics, firstTime)
-	
+function showCharacterUI(accounts, achievementCount, achievementPointsCount, achievements, firstTime)
 	if (bChangeChar) then
 		destroyElement(bChangeChar)
 		bChangeChar = nil
@@ -1256,7 +1255,6 @@ function showCharacterUI(accounts, achievementCount, achievementPointsCount, ach
 	
 	displayAccountManagement()
 	displayAchievements()
-	displayStatistics()
 
 	-- Character Info
 	local charsDead, charsAlive = 0, 0
@@ -3259,43 +3257,6 @@ end
 --/////////////////////////////////////////////////////////////////
 lStatistics, lPoints, paneStatistics = nil
 tabPanel, tabMystats, tabAllstats = nil
-
-function displayStatistics()
-	tabPanel = guiCreateTabPanel(0.025, 0.025, 0.95, 0.95, true, tabStatistics)
-	tabAllstats = guiCreateTab("All Stats", tabPanel)
-	--tabMystats = guiCreateTab("My Stats", tabPanel) -- coming soon
-	
-	
-	-- ALL STATS
-	paneStatistics = guiCreateScrollPane(0.05, 0.05, 0.9, 0.85, true, tabAllstats)
-	
-	pane = { }
-	local y = 0.0
-	local height = 0.2
-	local resource = getResourceFromName("achievement-system")
-	
-	for key, value in pairs(tableStatistics) do
-		local name = tableStatistics[key][1]
-		local val = tableStatistics[key][2]
-		
-		pane[key] = {}
-		pane[key][7] = guiCreateScrollPane(0.0, y, 1.0, 0.35, true, paneStatistics)
-		pane[key][6] = guiCreateStaticImage(0.0, 0.1, 0.95, 0.5, "bg.png", true, pane[key][7], resource)
-		
-		pane[key][1] = guiCreateLabel(0.225, 0.1, 0.7, 0.2, tostring(name), true, pane[key][7])
-		guiSetFont(pane[key][1], "default-bold-small")
-		guiLabelSetHorizontalAlign(pane[key][1], "center")
-		
-		pane[key][3] = guiCreateStaticImage(0.05, 0.1, 0.15, 0.5, "stats.png", true, pane[key][7], resource)
-		
-		pane[key][5] = guiCreateLabel(0.225, 0.25, 0.7, 0.6, tostring(val), true, pane[key][7])
-		guiLabelSetHorizontalAlign(pane[key][5], "center")
-		guiSetFont(pane[key][5], "default-small")
-		
-		y = y + 0.205
-	end
-end
-
 
 --/////////////////////////////////////////////////////////////////
 --DISPLAY ACHIEVEMENTS

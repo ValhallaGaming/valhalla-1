@@ -21,3 +21,8 @@ Did the ES duty and heal command, just need co-ordinates for a colshape for duty
 Not sure if the markers in the PD were placed with createMarker and the repair fuel stations dynamically placed? ES needs these too
 
 getid - needs checking
+
+--------------------
+Resources modified (since r33)
+--------------------
+realism-system

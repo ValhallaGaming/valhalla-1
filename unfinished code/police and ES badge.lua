@@ -14,25 +14,25 @@ INSERT INTO items SET id='21', item_name='LVES ID Badge', item_description='A LV
 			local r, g, b = getPlayerNametagColor ( source )
 			if not ( r == 0) and (b == 80) and (g == 255) then
 				setPlayerNametagColor ( source, 0, 80, 255 ) -- Change the players name tag to blue.
-				outputChatBox(source.." puts on a police badge. Badge Number: "..itemValue..".", thePlayer, 255, 51, 102)
+				exports.global:sendLocalMeAction(source," puts on a police badge. Badge Number: "..itemValue..".")
 			else
 				setPlayerNametagColor ( source, false ) -- Change the players name tag to default.
-				outputChatBox(source.." takes off a police badge.", thePlayer, 255, 51, 102)
+				exports.global:sendLocalMeAction(source," takes off a police badge.")
 			end
 		elseif (itemID==21) then -- ES ID badge
 			showInventory(source)
 			local r, g, b = getPlayerNametagColor ( source )
 			if not ( r == 255) and (b == 0) and (g == 0) then
 				setPlayerNametagColor ( source, 155, 0, 0 ) -- Change the players name tag to blue.
-				outputChatBox(source.." puts on a Las Venturas Emergency Services ID badge. Badge Number: "..itemValue..".", thePlayer, 255, 51, 102)
+				exports.global:sendLocalMeAction(source," puts on a Las Venturas Emergency Services ID badge. Badge Number: "..itemValue..".")
 			else
 				setPlayerNametagColor ( source, false ) -- Change the players name tag to default.
-				outputChatBox(source.." takes off a Las Venturas Emergency Services ID badge.", thePlayer, 255, 51, 102)
+				exports.global:sendLocalMeAction(source," takes off a Las Venturas Emergency Services ID badge.")
 			end
 			
 -- /issueBadge Command
 -- A commnad for leaders of the PD and ES factions to issue a police badge or ES ID badge item to their members. This will be the only IC way badges can be created.
-function givePlayerBadge(thePlayer, commandName, targetPlayer, badgeID )
+function givePlayerBadge(thePlayer, commandName, targetPlayer, badgeNumber )
 	if not ( ) or ( )then -- If the player is not the leader of the PD or ES factions
 		outputChatBox("You must be set as leader to issue badges.", thePlayer, 255, 0, 0) -- If they aren't PD or ES leader they can't give out badges.
 	else	
@@ -54,15 +54,11 @@ function givePlayerBadge(thePlayer, commandName, targetPlayer, badgeID )
 						outputChatBox("You are too far away to issue this player a police badge.", thePlayer, 255, 0, 0)
 					else
 						if ( ) then -- If the player is a PD leader
-							itemID = 20 -- or the ID of the police badge.
-							itemValue = tonumber(itemValue) -- The badge number the player will be issued.
-							exports.global:givePlayerItem(targetPlayer, itemID, itemValue) -- Give the player the badge.
-							exports.global:sendLocalMeAction(thePlayer, " issues "..targetPlayer.." a police badge with number "..itemvalue..".")
+							exports.global:givePlayerItem(targetPlayer, 20, badgeNumber) -- Give the player the badge. replace 20 with the ID of the police badge
+							exports.global:sendLocalMeAction(thePlayer, " issues "..targetPlayer.." a police badge with number "..badgeNumber..".")
 						else -- If the player is a ES leader
-							itemID = 21 -- or the ID of the ES badge.
-							itemValue = tonumber(itemValue) -- The badge number the player will be issued.
-							exports.global:givePlayerItem(targetPlayer, itemID, itemValue) -- Give the player the badge.
-							exports.global:sendLocalMeAction(thePlayer, " issues "..targetPlayer.." a Las Venturas Emergency Service ID badge with number "..itemvalue..".")
+							exports.global:givePlayerItem(targetPlayer, 21, badgeNumber) -- Give the player the badge. replace 21 with the value of the ES badge.
+							exports.global:sendLocalMeAction(thePlayer, " issues "..targetPlayer.." a Las Venturas Emergency Service ID badge with number "..badgeNumber..".")
 						end
 					end
 				end

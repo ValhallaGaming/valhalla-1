@@ -23,8 +23,8 @@ function toggleLeftIndicators()
 				rx, ry, rotation = getVehicleRotation(veh)
 				leftTimer = setTimer(checkLeftAngle, 1000, 0, veh)
 			else
-				setElementData(veh, "leftindicator", true, nil)
-				local key = vehicleids[veh]
+				removeElementData(veh, "leftindicator", true)
+				local key = veh
 				
 				if (vehicles[key][2]) then
 					destroyElement(vehicles[key][2])
@@ -55,8 +55,8 @@ function checkLeftAngle(veh)
 	
 	if (rz>=rotation+70) then
 		killTimer(leftTimer)
-		setElementData(veh, "leftindicator", true, nil)
-		local key = vehicleids[veh]
+		removeElementData(veh, "leftindicator")
+		local key = veh
 				
 		if (vehicles[key][2]) then
 			destroyElement(vehicles[key][2])
@@ -85,8 +85,8 @@ function checkRightAngle(veh)
 
 	if (rz<=rotation-70) then
 		killTimer(rightTimer)
-		setElementData(veh, "rightindicator", true, nil)
-		local key = vehicleids[veh]
+		removeElementData(veh, "rightindicator")
+		local key = veh
 				
 		if (vehicles[key][6]) then
 			destroyElement(vehicles[key][6])
@@ -123,8 +123,8 @@ function toggleRightIndicators()
 				rx, ry, rotation = getVehicleRotation(veh)
 				rightTimer = setTimer(checkRightAngle, 1000, 0, veh)
 			else
-				setElementData(veh, "rightindicator", true, nil)
-				local key = vehicleids[veh]
+				removeElementData(veh, "rightindicator")
+				local key = veh
 				
 				if (vehicles[key][6]) then
 					destroyElement(vehicles[key][6])
@@ -154,80 +154,35 @@ addCommandHandler ("indicator_left", toggleLeftIndicators)
 addCommandHandler ("indicator_right", toggleRightIndicators)
 
 vehicles = { }
-vehicleids = { }
 
 function streamIn()
 	if (getElementType(source)=="vehicle") then
-		for i = 1, #vehicles+1 do
-			if (vehicles[i]==nil) then
-				vehicles[i] = { }
-				vehicles[i][1] = source
-				vehicleids[source] = i
-				break
-			end
-		end
-	end
+        vehicles[source] = { }
+    end
 end
 addEventHandler("onClientElementStreamIn", getRootElement(), streamIn)
 
 function streamOut()
 	if (getElementType(source)=="vehicle") then
-		if (vehicleids[source]~=nil) then
-			local id = vehicleids[source]
-			vehicleids[source] = nil
-			vehicles[id] = nil
-		end
+        cleanupVehicle(source)
+		table.remove(vehicles, source)
 	end
 end
 addEventHandler("onClientElementStreamOut", getRootElement(), streamOut)
+
+function cleanupVehicle(vehicle)
+    if vehicle then
+        for i = 2, 9 do
+            destroyElement(vehicles[vehicle][i])
+        end
+    end
+end
 
 function doFlashes()
 	if (#vehicles==0) then return end
 
 	for key, value in pairs(vehicles) do
-		local veh = vehicles[key][1]
-		
-		if (veh==nil) then
-			if (vehicles[key][2]) then
-				destroyElement(vehicles[key][2])
-				vehicles[key][2] = nil
-			end
-				
-			if (vehicles[key][3]) then
-				destroyElement(vehicles[key][3])
-				vehicles[key][3] = nil
-			end
-				
-			if (vehicles[key][4]) then
-				destroyElement(vehicles[key][4])
-				vehicles[key][4] = nil
-			end
-				
-			if (vehicles[key][5]) then
-				destroyElement(vehicles[key][5])
-				vehicles[key][5] = nil
-			end
-			
-			if (vehicles[key][6]) then
-					destroyElement(vehicles[key][6])
-					vehicles[key][6] = nil
-				end
-				
-				if (vehicles[key][7]) then
-					destroyElement(vehicles[key][7])
-					vehicles[key][7] = nil
-				end
-				
-				if (vehicles[key][8]) then
-					destroyElement(vehicles[key][8])
-					vehicles[key][8] = nil
-				end
-				
-				if (vehicles[key][9]) then
-					destroyElement(vehicles[key][9])
-					vehicles[key][9] = nil
-				end
-		end
+		local veh = key
 
 		-- left indicator
 		if (getElementData(veh, "leftindicator")) then

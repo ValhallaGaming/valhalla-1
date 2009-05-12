@@ -126,11 +126,11 @@ function applyMods(res)
 		----------------
 		-- Gang Tags --
 		----------------
-		tag1 = engineLoadTXD("tags/tags_lafront.txd")
+		tag1 = engineLoadTXD("tags/tags_lafront.txd") -- vG logo
 		engineImportTXD(tag1, 1524)
 		
-		tag2 = engineLoadTXD("tags_lakilo.txd") -- Bay Crest Bloods
-		engineImportTXD(tag2, 1525)
+		-- tag2 = engineLoadTXD("tags_lakilo.txd") 
+		-- engineImportTXD(tag2, 1525)
 		
 		-- tag3 = engineLoadTXD("tags_laseville.txd")
 		-- engineImportTXD(tag2, 1528)
@@ -147,8 +147,8 @@ function applyMods(res)
 		-- tag6 = engineLoadTXD ( "tags/tags_temple.txd" )
 		-- engineImportTXD ( tag6, 1529 )
 
-		-- tag7 = engineLoadTXD ( "tags/tags_laazteca.txd" )
-		-- engineImportTXD ( tag7, 1530 )
+		tag7 = engineLoadTXD ( "tags/tags_laazteca.txd" ) -- Bay Crest Bloods
+		engineImportTXD ( tag7, 1530 )
 
 		-- tag8 = engineLoadTXD ( "tags/tags_lavagos.txd" )
 		-- engineImportTXD ( tag8, 1531 )

@@ -1,4 +1,4 @@
-players = {}
+timers = {}
 
 function initiateTruckerJob(thePlayer)
 	local blip = createBlip(2609.6213378906, 1435.2698974609, 10.8203125, 0, 2, 255, 0, 255, 255, 200)
@@ -51,7 +51,7 @@ function startTruckingMission(thePlayer, matchingDimension)
 		setElementData(vehicle, "oldz", 10.8203125)
 		warpPedIntoVehicle(thePlayer, vehicle)
 		attachTrailerToVehicle(vehicle, trailer)
-		
+        
 		outputChatBox("Drive the truck to the fuel refinery in the desert.", thePlayer, 255, 194, 14)
 		outputChatBox("Drive carefully! This trailer is highly explosive!", thePlayer, 255, 194, 14)
 		
@@ -163,6 +163,26 @@ function truckingMissionPart3(thePlayer, matchingDimension)
 		end
 	end
 end
+
+function vehicleExit (vehicle, seat)
+    local veh = getElementData(source, "job.vehicle")
+    if vehicle == veh and seat == 0 then
+        outputChatBox("Hey, Get back to your truck! ((Job will be cancelled if you don't return quickly!))", source, 255, 194, 14)
+        local timer = setTimer(cleanup, 30000, 1, source)
+        timers[source] = timer
+    end
+end
+
+addEventHandler("onPlayerVehicleExit", getRootElement(), vehicleExit)
+
+function vehicleEnter (vehicle, seat)
+    local veh = getElementData(source, "job.vehicle")
+    if veh == vehicle and seat == 0 then
+        killTimer (timers[source])
+    end
+end
+
+addEventHandler("onPlayerVehicleEnter", getRootElement(), vehicleEnter)
 
 function cleanup(player)
     if (player) then

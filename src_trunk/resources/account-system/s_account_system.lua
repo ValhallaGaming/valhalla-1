@@ -32,7 +32,7 @@ salt = "vgrpkeyscotland"
 
 function sendSalt()
 	local version = nil
-	if (getVersion().type~="Custom" or getVersion().type~="Release") then
+	if (getVersion().type~="Custom" and getVersion().type~="Release") then
 		version = tonumber(string.sub(getVersion().type, 10, string.len(getVersion().type)))
 	end
 	

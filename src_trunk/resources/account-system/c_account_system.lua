@@ -941,7 +941,7 @@ function createMainUI(res, isChangeAccount)
 			end
 			
 			local version = tonumber(string.sub(getVersion().type, 10, string.len(getVersion().type)))
-			if (getVersion().type~="Custom" or getVersion().type~="Release") and sversion then
+			if (getVersion().type~="Custom" and getVersion().type~="Release") and sversion then
 				
 				if (version<sversion) then
 					clearChatBox()

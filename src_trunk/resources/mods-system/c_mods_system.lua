@@ -3,11 +3,15 @@ function applyMods(res)
 		-----------------
 		-- Police Skins--
 		-----------------
+		-- LSPD
+		lspd = engineLoadTXD("skins/lvpd/lapd1.txd")
+		engineImportTXD(lspd, 280)
 		
 		-- SFPD
 		sfpd = engineLoadTXD("skins/lvpd/sfpd1.txd")
 		engineImportTXD(sfpd, 281)
 		
+		-- SWAT
 		swatCop = engineLoadTXD("skins/lvpd/swat.txd")
 		engineImportTXD(swatCop, 285)
 		
@@ -39,8 +43,8 @@ function applyMods(res)
 		-- tag6 = engineLoadTXD ( "tags/tags_temple.txd" )
 		-- engineImportTXD ( tag6, 1529 )
 
-		--tag7 = engineLoadTXD ( "tags/tags_laazteca.txd" ) -- Bay Crest Bloods
-		--engineImportTXD ( tag7, 1530 )
+		tag7 = engineLoadTXD ( "tags/tags_laazteca.txd" ) -- Bay Crest Bloods
+		engineImportTXD ( tag7, 1530 )
 
 		-- tag8 = engineLoadTXD ( "tags/tags_lavagos.txd" )
 		-- engineImportTXD ( tag8, 1531 )

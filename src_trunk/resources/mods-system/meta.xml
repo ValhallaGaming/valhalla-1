@@ -3,13 +3,13 @@
 
 	<script src="c_mods_system.lua" type="client"/>
 	
-	<file src="skins/credits.txt"/>
-	
+	<file src="skins/lvpd/lapd1.txd"/>
 	<file src="skins/lvpd/sfpd1.txd"/>
-	<file src="skins/lvpd/wmysgrd.txd"/>
 	<file src="skins/lvpd/swat.txd"/>
-
+	<file src="skins/lvpd/wmysgrd.txd"/>	
+	
 	<file src="tags/tags_lafront.txd"/>
 	<file src="tags/tags_laseville.txd"/>
+	<file src="tags/tags_laazteca.txd"/>
 
 </meta>

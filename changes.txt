@@ -10,9 +10,15 @@ Chamberlains changes.
 ---------------------
 Scripts in "unfinished code" need to be completed, checked and added to the correct resources by someone who knows what they are doing.
 
-= map-system/BoxingArena.map
-= mods-system/c_mods_system.lua
-= mods-system/tags/tags_laazteca.txd
+= map-system
+	- BoxingArena.map
+
+= mods-system
+	- meta.xml
+	- c_mods_system.lua
+	- tags/tags_laazteca.txd *New file*
+	- skins/lvpd/lapd1.txd *New file*
+
 
 --------------------
 Jack's changes.

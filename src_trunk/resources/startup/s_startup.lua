@@ -9,6 +9,8 @@ addEventHandler("onResourceStart", getRootElement(), resStart)
 
 function loadGlobal()
 	restartResource(getResourceFromName("account-system"))
+	restartResource(getResourceFromName("interior-system"))
+	restartResource(getResourceFromName("fuel-system"))
 	restartResource(getResourceFromName("global"))
 	setTimer(displayCredits, 1000, 1)
 end

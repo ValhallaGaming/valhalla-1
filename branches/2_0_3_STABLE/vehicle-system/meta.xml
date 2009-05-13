@@ -1,0 +1,5 @@
+<meta>
+    <info author="vG MTA Scripting Team" type="script" description="Vehicle System"/>
+
+	<script src="s_vehicle_system.lua" />
+</meta>

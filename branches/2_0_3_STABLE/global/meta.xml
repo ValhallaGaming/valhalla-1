@@ -1,0 +1,67 @@
+<meta>
+    <info author="vG MTA Scripting Team" type="script" description="Global Functions"/>
+
+	<script src="chat_globals.lua" type="server"/>
+	<export function="getOOCState" type="server"/>
+	<export function="setOOCState" type="server"/>
+	<export function="sendMessageToAdmins" type="server"/>
+	<export function="sendLocalMeAction" type="server"/>
+	<export function="sendLocalDoAction" type="server"/>
+	<export function="randChar" type="server"/>
+	<export function="findPlayerByPartialNick" type="server"/>
+	
+	<script src="admin_globals.lua" type="server"/>
+	<export function="isPlayerAdmin" type="server"/>
+	<export function="isPlayerSuperAdmin" type="server"/>
+	<export function="isPlayerHeadAdmin" type="server"/>
+	<export function="isPlayerLeadAdmin" type="server"/>
+	<export function="getPlayerAdminLevel" type="server"/>
+	<export function="getPlayerAdminTitle" type="server"/>
+	<export function="getAdmins" type="server"/>
+	
+	<script src="optomization_globals.lua" type="server"/>
+	<export function="getBlips" type="server"/>
+	<export function="getMarkers" type="server"/>
+	
+	<script src="money_globals.lua" type="server"/>
+	<export function="givePlayerSafeMoney" type="server"/>
+	<export function="takePlayerSafeMoney" type="server"/>
+	<export function="setPlayerSafeMoney" type="server"/>
+	<export function="checkMoneyHacks" type="server"/>
+	<export function="getTaxAmount" type="server"/>
+	<export function="getIncomeTaxAmount" type="server"/>
+	
+	<script src="achievement_globals.lua" type="server"/>
+	<export function="doesPlayerHaveAchievement" type="server"/>
+	<export function="givePlayerAchievement" type="server"/>
+	
+	<script src="country_globals.lua" type="server"/>
+	<export function="getPlayerCountry" type="server"/>
+	
+	<script src="item_globals.lua" type="server"/>
+	<export function="givePlayerSafeWeapon" type="server"/>
+	<export function="doesPlayerHaveItem" type="server"/>
+	<export function="givePlayerItem" type="server"/>
+	<export function="takePlayerItem" type="server"/>
+	
+	<script src="c_item_globals.lua" type="client"/>
+	<export function="cdoesPlayerHaveItem" type="client"/>
+	
+	<script src="s_version_globals.lua" type="server"/>
+	<export function="getScriptVersion" type="server"/>
+	
+	<script src="donator_globals.lua" type="server"/>
+	<export function="isPlayerBronzeDonator" type="server"/>
+	<export function="isPlayerSilverDonator" type="server"/>
+	<export function="isPlayerGoldDonator" type="server"/>
+	<export function="isPlayerPlatinumDonator" type="server"/>
+	<export function="isPlayerPearlDonator" type="server"/>
+	<export function="isPlayerDiamondDonator" type="server"/>
+	<export function="isPlayerGodleyDonator" type="server"/>
+	<export function="getPlayerDonatorLevel" type="server"/>
+	<export function="getPlayerDonatorTitle" type="server"/>
+	<export function="getDonators" type="server"/>
+	
+	<script src="c_version_globals.lua" type="client"/>
+	<export function="cgetScriptVersion" type="client"/>
+</meta>

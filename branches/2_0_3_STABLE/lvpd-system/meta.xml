@@ -1,0 +1,17 @@
+<meta>
+	<info author="vG MTA Scripting Team" type="script" description="LV-PD System"/>
+
+	<script src="c_headlights.lua" type="client"/>
+	
+	<script src="s_policecommands.lua" type="server"/>
+	<script src="s_policejail.lua" type="server"/>
+	
+	<script src="s_policedeagle.lua" type="server"/>
+	<script src="c_policedeagle.lua" type="client"/>
+	
+	<script src="s_backup.lua" type="server"/>
+	
+	<script src="s_police_garage.lua" type="server"/>
+	
+	<script src="s_policeflash.lua" type="server"/>
+</meta>

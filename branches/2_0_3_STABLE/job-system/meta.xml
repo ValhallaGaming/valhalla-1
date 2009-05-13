@@ -1,0 +1,21 @@
+<meta>
+	<info author="vG MTA Scripting Team" type="script" description="Spike System"/>
+
+	<script src="s_job_system.lua" type="server"/>
+	<script src="c_job_system.lua" type="client"/>
+	
+	<script src="s_streetcleaner.lua" type="server"/>
+	<script src="s_trucker_job.lua" type="server"/>
+	
+	<script src="c_taxi.lua" type="client" />
+	
+	<file src="images/Background.png" />
+	<file src="images/Off.png" />
+	<file src="images/OFFlight.png" />
+	<file src="images/On.png" />
+	<file src="images/ONlight.png" />
+	<file src="images/STANDBYlight.png" />
+	<file src="images/Pause.png" />
+	<file src="images/ArrowUP.png" />
+	<file src="images/ArrowDOWN.png" />
+</meta>

@@ -1,0 +1,39 @@
+<meta>
+	<info author="vG MTA Scripting Team" type="script" description="Realism System"/>
+
+	<script src="c_realism_system.lua" type="client" />
+	
+	<script src="s_reload.lua" type="server" />
+	<script src="c_reload.lua" type="client" />
+	
+	<script src="c_vehicle_crash.lua" type="client" />
+	<script src="s_vehicle_crash.lua" type="server" />
+	
+	<script src="s_glowstick_system.lua" type="server" />
+	<script src="c_glowstick_system.lua" type="client" />
+	
+	<script src="s_headbob.lua" type="server" />
+	<script src="c_headbob.lua" type="client" />
+	
+	<script src="s_enginebreak.lua" type="server" />
+	
+	<script src="c_indicators.lua" type="client" />
+	
+	<script src="c_speedo.lua" type="client" />
+	<file src="disc.png"/>
+	<file src="fueldisc.png"/>
+	
+	<script src="c_city_guide.lua" type="client" />
+	<file src="guide/0.png"/>
+	<file src="guide/1.png"/>
+	<file src="guide/2.png"/>
+	<file src="guide/3.png"/>
+	<file src="guide/4.png"/>
+	<file src="guide/5.png"/>
+	<file src="guide/6.png"/>
+	<file src="guide/7.png"/>
+	<file src="guide/8.png"/>
+	
+	<script src="c_radio_fix.lua" type="client" />
+	<script src="s_radio_fix.lua" type="server" />
+</meta>

@@ -8,6 +8,10 @@
 	<file src="skins/lvpd/swat.txd"/>
 	<file src="skins/lvpd/wmysgrd.txd"/>	
 	
+	<file src="skins/gangs/vla1.txd"/>
+	<file src="skins/gangs/vla2.txd"/>
+	<file src="skins/gangs/vla3.txd"/>
+
 	<file src="tags/tags_lafront.txd"/>
 	<file src="tags/tags_laseville.txd"/>
 	<file src="tags/tags_laazteca.txd"/>

@@ -18,7 +18,9 @@ Scripts in "unfinished code" need to be completed, checked and added to the corr
 	- c_mods_system.lua
 	- tags/tags_laazteca.txd *New file*
 	- skins/lvpd/lapd1.txd *New file*
-
+	- skins/gangs/vla1.txd *New File*
+	- skins/gangs/vla2.txd *New File*
+	- skins/gangs/vla3.txd *New File*
 
 --------------------
 Jack's changes.

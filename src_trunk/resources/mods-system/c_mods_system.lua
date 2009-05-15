@@ -18,7 +18,20 @@ function applyMods(res)
 		-- Cadet
 		cadet = engineLoadTXD("skins/lvpd/wmysgrd.txd")
 		engineImportTXD(cadet, 71)
-
+		
+		-----------
+		-- Gangs --
+		-----------
+		-- Varios Los Aztecas (recolour to brown)
+		vla1 = engineLoadTXD("skins/gangs/vla1.txd")
+		engineImportTXD(vla1, 114)
+		
+		vla2 = engineLoadTXD("skins/gangs/vla2.txd")
+		engineImportTXD(vla2, 115)
+		
+		vla3 = engineLoadTXD("skins/gangs/vla3.txd")
+		engineImportTXD(vla3, 116)
+		
 		----------------
 		-- Gang Tags --
 		----------------

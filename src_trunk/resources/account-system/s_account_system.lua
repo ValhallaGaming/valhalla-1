@@ -479,24 +479,26 @@ function spawnCharacter(charname)
 		
 		-- Let's stick some blips on the properties they own
 		for key, value in ipairs(exports.pool:getPoolElementsByType("pickup")) do
-			local type = getElementData(value, "type")
-			if (type=="interior") then
-				local inttype = getElementData(value, "inttype")
-				local owner = getElementData(value, "inttype")
-				if (owner==id) and (inttype<2) then -- house/business and owned by this player
-					local x, y, z = getElementPosition(value)
-					if (inttype==0) then -- house
-						local blip = createBlip(x, y, z, 31, 2, 255, 0, 0, 255, 0)
-						exports.pool:allocateElement(blip)
-						setElementVisibleTo(blip, getRootElement(), false)
-						setElementVisibleTo(blip, source, true)
-						setElementData(blip, "type", "accountblip")
-						setElementData(blip, "owner", tonumber(getElementData(source, "gameaccountid")))
-					elseif (inttype==2) then -- business
-						local blip = createBlip(x, y, z, 32, 2, 255, 0, 0, 255, 0, source)
-						exports.pool:allocateElement(blip)
-						setElementVisibleTo(blip, getRootElement(), false)
-						setElementVisibleTo(blip, source, true)
+			if (value) then
+				local ptype = getElementData(value, "type")
+				if (ptype=="interior") then
+					local inttype = getElementData(value, "inttype")
+					local owner = getElementData(value, "inttype")
+					if (owner==id) and (inttype<2) then -- house/business and owned by this player
+						local x, y, z = getElementPosition(value)
+						if (inttype==0) then -- house
+							local blip = createBlip(x, y, z, 31, 2, 255, 0, 0, 255, 0)
+							exports.pool:allocateElement(blip)
+							setElementVisibleTo(blip, getRootElement(), false)
+							setElementVisibleTo(blip, source, true)
+							setElementData(blip, "type", "accountblip")
+							setElementData(blip, "owner", tonumber(getElementData(source, "gameaccountid")))
+						elseif (inttype==2) then -- business
+							local blip = createBlip(x, y, z, 32, 2, 255, 0, 0, 255, 0, source)
+							exports.pool:allocateElement(blip)
+							setElementVisibleTo(blip, getRootElement(), false)
+							setElementVisibleTo(blip, source, true)
+						end
 					end
 				end
 			end

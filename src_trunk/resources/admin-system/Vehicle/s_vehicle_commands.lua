@@ -26,7 +26,7 @@ function unlockAllCivilianCars(thePlayer, commandName)
 		for key, value in ipairs(exports.pool:getPoolElementsByType("vehicle")) do
 			local id = getElementData(value, "dbid")
 			
-			if (id>=0) then
+			if (id) and (id>=0) then
 				local owner = getElementData(value, "owner")
 				if (owner==-2) then
 					setVehicleLocked(value, false)
@@ -284,7 +284,7 @@ function respawnAllVehicles(thePlayer, commandName)
 		
 		for k, theVehicle in ipairs(vehicles) do
 			local dbid = getElementData(theVehicle, "dbid")
-			if (dbid<0) then -- TEMP vehicle
+			if not (dbid) or (dbid<0) then -- TEMP vehicle
 				destroyElement(theVehicle)
 				tempcounter = tempcounter + 1
 			else

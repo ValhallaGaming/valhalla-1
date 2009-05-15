@@ -39,6 +39,10 @@ function allocateElement(element)
 end
 
 function getPoolElementsByType(elementType)
+	if (elementType=="pickup") then
+		return getElementsByType("pickup")
+	end
+
     if isValidType(elementType) then
         return poolTable[elementType]
     end

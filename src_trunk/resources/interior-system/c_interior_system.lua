@@ -62,7 +62,7 @@ end
 function fadeMessage(fadein)
 	local alpha = guiGetAlpha(gInteriorName)
 	
-	if (fadein) then
+	if (fadein) and (alpha) then
 		local newalpha = alpha + 0.05
 		guiSetAlpha(gInteriorName, newalpha)
 		guiSetAlpha(gOwnerName, newalpha)

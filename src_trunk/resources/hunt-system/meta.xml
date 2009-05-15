@@ -1,0 +1,5 @@
+<meta>
+	<info author="vG MTA Scripting Team" type="script" description="Hunt System"/>
+	
+	<script src="s_hunt_event.lua" type="server" />
+</meta>

@@ -17,35 +17,35 @@ function onPickupWasHit(player, matchingDimension)
 		if (source==pickup1) then
 			exports.global:givePlayerAchievement(player, 33)
 			outputChatBox("Hint #2: They've been building this damn thing for months, and I still have no idea what it's meant to be.", player)
-			outputChatBox("The value of this hint is 4, Please take note of this as you will be asked to provide it at the end of the hunt.", thePlayer)
+			outputChatBox("The value of this hint is 4, Please take note of this as you will be asked to provide it at the end of the hunt.", player)
 		elseif (source==pickup2) then
 			outputChatBox("Hint #3: I really do hate papercuts =[", player)
-			outputChatBox("The value of this hint is 1, Please take note of this as you will be asked to provide it at the end of the hunt.", thePlayer)
+			outputChatBox("The value of this hint is 1, Please take note of this as you will be asked to provide it at the end of the hunt.", player)
 		elseif (source==pickup3) then
 			outputChatBox("Hint #4: I only wanted a trucker job, but it seems they have upped-sticks and moved to Las Venturas.", player)
-			outputChatBox("The value of this hint is 6, Please take note of this as you will be asked to provide it at the end of the hunt.", thePlayer)
+			outputChatBox("The value of this hint is 6, Please take note of this as you will be asked to provide it at the end of the hunt.", player)
 		elseif (source==pickup4) then
 			outputChatBox("Hint #5: Fill in the blanks -      T _ _        _ _ R _", player)
-			outputChatBox("The value of this hint is 0, Please take note of this as you will be asked to provide it at the end of the hunt.", thePlayer)
+			outputChatBox("The value of this hint is 0, Please take note of this as you will be asked to provide it at the end of the hunt.", player)
 		elseif (source==pickup5) then
 			outputChatBox("Hint #6: Damn, SWAT stole my wall...", player)
-			outputChatBox("The value of this hint is 2, Please take note of this as you will be asked to provide it at the end of the hunt.", thePlayer)
+			outputChatBox("The value of this hint is 2, Please take note of this as you will be asked to provide it at the end of the hunt.", player)
 		elseif (source==pickup6) then
 			outputChatBox("Hint #7: Half a highway.", player)
-			outputChatBox("The value of this hint is 9, Please take note of this as you will be asked to provide it at the end of the hunt.", thePlayer)
+			outputChatBox("The value of this hint is 9, Please take note of this as you will be asked to provide it at the end of the hunt.", player)
 		elseif (source==pickup7) then
-			outputChatBox("Hint #8: I heard after Sergeant Adam Suzuko retired, he spent a lot of his time here, He also met Elton John here on several occasions.", player)
-			outputChatBox("The value of this hint is 6, Please take note of this as you will be asked to provide it at the end of the hunt.", thePlayer)
+			outputChatBox("Hint #8: I heard after Sergeant Adam Suzuko retired, he spent a lot of his time here, He also met Elton John here a lot.", player)
+			outputChatBox("The value of this hint is 6, Please take note of this as you will be asked to provide it at the end of the hunt.", player)
 		elseif (source==pickup8) then
 			outputChatBox("Hint #9: Back in the day of Don Corleone, Clowns performed their favorite activity of deathmatch here many a time.", player)
-			outputChatBox("The value of this hint is 1, Please take note of this as you will be asked to provide it at the end of the hunt.", thePlayer)
+			outputChatBox("The value of this hint is 1, Please take note of this as you will be asked to provide it at the end of the hunt.", player)
 		elseif (source==pickup9) then
 			outputChatBox("Hint #10: I only wanted to see Joe Calzaghe, but Chamberlain put a perspex wall infront of me.", player)
-			outputChatBox("The value of this hint is 0, Please take note of this as you will be asked to provide it at the end of the hunt.", thePlayer)
+			outputChatBox("The value of this hint is 0, Please take note of this as you will be asked to provide it at the end of the hunt.", player)
 		elseif (source==pickup10) then
 			exports.global:givePlayerAchievement(player, 34)
 			outputChatBox("Congratulations! You have completed the hunt, Please /report saying You have completed it and include the Code.", player)
-			outputChatBox("The value of this hint is 5, Please take note of this as you will be asked to provide it at the end of the hunt.", thePlayer)
+			outputChatBox("The value of this hint is 5, Please take note of this as you will be asked to provide it at the end of the hunt.", player)
 		end
 	end
 end

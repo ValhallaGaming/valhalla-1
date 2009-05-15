@@ -35,3 +35,6 @@ getid - needs checking
 Resources modified (since r33)
 --------------------
 realism-system
+
+INSERT INTO achievementslist SET id=33, NAME="Pirate", description="Took part in the Valhalla MTA Treasure Hunt Event.", points=25;
+INSERT INTO achievementslist SET id=34, NAME="No.1 Pirate", description="Completed the Valhalla MTA Treasure Hunt Event.", points=25;

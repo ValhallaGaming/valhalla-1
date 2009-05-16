@@ -23,6 +23,7 @@ Scripts in "unfinished code" need to be completed, checked and added to the corr
 	- skins/gangs/vla3.txd *New File*
 	- lv/lee_stripclub.txd *New File*
 	- lv/lee_stripclub1.txd *New File*
+	- tags/tags_lakilo.txd *New File*
 
 --------------------
 Jack's changes.

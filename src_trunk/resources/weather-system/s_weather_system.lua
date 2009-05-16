@@ -407,7 +407,7 @@ addCommandHandler("forecast", showForecast)
 
 
 -- Timers to change the weather every so often. Change the weather every 30 mins +- 15 mins
-setTimer(changeWeather, 30*60*1000 + (delay*1000*60), 0) 
+setTimer(changeWeather, 60*60*1000 + (delay*1000*60), 0) 
 -- Change the weater type every 2 hours +- 45 mins.
 setTimer(function()
 changeWeatherType()

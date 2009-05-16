@@ -284,8 +284,9 @@ function pmPlayer(thePlayer, commandName, who, ...)
 			
 			if (targetPlayer) then
 				local logged = getElementData(targetPlayer, "loggedin")
+				local pmblocked = getElementData(thePlayer, "pmblocked")
 				
-				if (logged==1) then
+				if (logged==1) and (pmblocked==0) then
 					local playerName = string.gsub(getPlayerName(thePlayer), "_", " ")
 					local targetPlayerName = string.gsub(getPlayerName(targetPlayer), "_", " ")
 				

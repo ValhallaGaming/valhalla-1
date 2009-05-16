@@ -52,12 +52,20 @@
     <object id="object (vgsEcnstrct08) (1)" dimension="2" interior="1" model="8879" posX="1061.2541503906" posY="1556.8354492188" posZ="12.368495941162" rotX="0" rotY="0" rotZ="227.00494384766" />
     <object id="object (vgsEcnstrct09) (1)" dimension="2" interior="1" model="8880" posX="1064.8520507813" posY="1553.2279052734" posZ="13.183824539185" rotX="0" rotY="0" rotZ="225.01995849609" />
     <object id="object (vgsEcnstrct08) (2)" dimension="2" interior="1" model="8879" posX="1134.8360595703" posY="1479.4692382813" posZ="12.368495941162" rotX="0" rotY="0" rotZ="56.254943847656" />
-    <object id="object (vgsEcnstrct09) (2)" dimension="2" interior="1" model="8880" posX="1130.1192626953" posY="1481.7144775391" posZ="13.158824920654" rotX="0" rotY="0" rotZ="64.194915771484" />
+    <object id="object (vgsEcnstrct09) (2)" dimension="2" interior="1" model="8880" posX="1130.1192626953" posY="1481.7144775391" posZ="13.158824920654" rotX="0" rotY="0" rotZ="64.194885253906" />
     <object id="object (billbrdlan2_01) (2)" dimension="2" interior="1" model="4729" posX="1062.7901611328" posY="1558.4255371094" posZ="18.978847503662" rotX="0" rotY="0" rotZ="336.17993164063" />
     <object id="object (billbrdlan2_01) (3)" dimension="2" interior="1" model="4729" posX="1135.3123779297" posY="1479.6771240234" posZ="18.978847503662" rotX="0" rotY="0" rotZ="155.54547119141" />
     <object id="object (vegasNland23) (2)" dimension="2" interior="1" model="7474" posX="1057.9119873047" posY="1511.6297607422" posZ="21.645315170288" rotX="180" rotY="0" rotZ="0" />
     <object id="object (billbrdlan_10) (5)" dimension="2" interior="1" model="4238" posX="1080.5046386719" posY="1565.6497802734" posZ="18.799753189087" rotX="0" rotY="0" rotZ="30" />
     <object id="object (billbrdlan_10) (6)" dimension="2" interior="1" model="4238" posX="1117.2114257813" posY="1472.6325683594" posZ="18.949750900269" rotX="0" rotY="0" rotZ="210" />
-    <object id="object (billbrdlan2_05) (5)" dimension="2" interior="1" model="4731" posX="1053.0821533203" posY="1540.712890625" posZ="18.924724578857" rotX="0" rotY="0" rotZ="110.07501220703" />
+    <object id="object (billbrdlan2_05) (5)" dimension="2" interior="1" model="4731" posX="1053.0821533203" posY="1540.712890625" posZ="18.924724578857" rotX="0" rotY="0" rotZ="110.07504272461" />
     <object id="object (billbrdlan2_05) (6)" dimension="2" interior="1" model="4731" posX="1144.3955078125" posY="1496.7795410156" posZ="18.92472076416" rotX="0" rotY="0" rotZ="292.26000976563" />
+    <object id="object (bballintvgn1) (5)" dimension="2" interior="1" model="3452" posX="1121.4221191406" posY="1569.8717041016" posZ="-81.73836517334" rotX="0" rotY="0" rotZ="0" />
+    <object id="object (door_savhangr2) (1)" dimension="2" interior="1" model="16775" posX="1108.7115478516" posY="1564.6982421875" posZ="-83.565719604492" rotX="0" rotY="0" rotZ="89.999938964844" />
+    <object id="object (door_savhangr2) (2)" dimension="2" interior="1" model="16775" posX="1126.7027587891" posY="1565.3310546875" posZ="-83.565719604492" rotX="0" rotY="0" rotZ="89.999969482422" />
+    <object id="object (dts_bbdoor) (3)" dimension="2" interior="1" model="2970" posX="1129.0612792969" posY="1548.5311279297" posZ="4.817008972168" rotX="0" rotY="0" rotZ="45" />
+    <object id="object (dts_bbdoor) (4)" dimension="2" interior="1" model="2970" posX="1128.9792480469" posY="1548.3858642578" posZ="4.817008972168" rotX="0" rotY="0" rotZ="225" />
+    <object id="object (dts_bbdoor) (5)" dimension="2" interior="1" model="2970" posX="1114.2252197266" posY="1569.2786865234" posZ="-87.46492767334" rotX="0" rotY="0" rotZ="270" />
+    <object id="object (dts_bbdoor) (6)" dimension="2" interior="1" model="2970" posX="1114.2220458984" posY="1569.4361572266" posZ="-87.46492767334" rotX="0" rotY="0" rotZ="89.999938964844" />
+    <object id="object (mp_sfpd_big) (1)" dimension="2" interior="1" model="14847" posX="1026.4416503906" posY="1553.7257080078" posZ="-166.45155334473" rotX="0" rotY="0" rotZ="0" />
 </map>

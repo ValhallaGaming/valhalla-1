@@ -65,10 +65,10 @@ function applyMods(res)
 		tag1 = engineLoadTXD("tags/tags_lafront.txd") -- vG logo
 		engineImportTXD(tag1, 1524)
 		
-		tag2 = engineLoadTXD("tags_lakilo.txd") -- MTA 
+		tag2 = engineLoadTXD("tags/tags_lakilo.txd") -- MTA 
 		engineImportTXD(tag2, 1525)
 		
-		-- tag3 = engineLoadTXD("tags_laseville.txd")
+		-- tag3 = engineLoadTXD("tags/tags_laseville.txd")
 		-- engineImportTXD(tag2, 1528)
 
 		-- tag3 = engineLoadTXD ( "tags/tags_larifa.txd" )

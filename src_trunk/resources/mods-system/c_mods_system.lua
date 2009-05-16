@@ -1,6 +1,33 @@
 function applyMods(res)
 	if (res==getThisResource()) then
 		-----------------
+		-- Pig Pen Interior--
+		-----------------
+		-- Bar
+		pigpen1 = engineLoadTXD("lv/lee_stripclub1.txd")
+		engineImportTXD(pigpen1, 14831)
+		
+		-- corver stage + seat
+		pigpen2 = engineLoadTXD("lv/lee_stripclub.txd")
+		engineImportTXD(pigpen2, 14832)
+		
+		-- Backwall seats
+		pigpen3 = engineLoadTXD("lv/lee_stripclub.txd")
+		engineImportTXD(pigpen3, 14833)
+		
+		-- columns
+		pigpen4 = engineLoadTXD("lv/lee_stripclub.txd")
+		engineImportTXD(pigpen4, 14835)
+		
+		-- corner seats
+		pigpen5 = engineLoadTXD("lv/lee_stripclub.txd")
+		engineImportTXD(pigpen5, 14837)
+		
+		-- main interior structure
+		pigpen6 = engineLoadTXD("lv/lee_stripclub.txd")
+		engineImportTXD(pigpen6, 14838)
+		
+		-----------------
 		-- Police Skins--
 		-----------------
 		-- LSPD

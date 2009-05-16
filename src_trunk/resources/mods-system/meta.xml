@@ -3,6 +3,9 @@
 
 	<script src="c_mods_system.lua" type="client"/>
 	
+	<file src="lv/lee_stripclub.txd"/>
+	<file src="lv/lee_stripclub1.txd"/>	
+
 	<file src="skins/lvpd/lapd1.txd"/>
 	<file src="skins/lvpd/sfpd1.txd"/>
 	<file src="skins/lvpd/swat.txd"/>

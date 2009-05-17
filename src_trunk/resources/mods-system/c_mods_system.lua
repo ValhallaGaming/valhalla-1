@@ -1,8 +1,8 @@
 function applyMods(res)
 	if (res==getThisResource()) then
-		-----------------
-		-- Pig Pen Interior--
-		-----------------
+		----------------------
+		-- Pig Pen Interior --
+		----------------------
 		-- Bar
 		pigpen1 = engineLoadTXD("lv/lee_stripclub1.txd")
 		engineImportTXD(pigpen1, 14831)
@@ -10,26 +10,34 @@ function applyMods(res)
 		-- corver stage + seat
 		pigpen2 = engineLoadTXD("lv/lee_stripclub.txd")
 		engineImportTXD(pigpen2, 14832)
-		
 		-- Backwall seats
-		pigpen3 = engineLoadTXD("lv/lee_stripclub.txd")
-		engineImportTXD(pigpen3, 14833)
-		
+		engineImportTXD(pigpen2, 14833)
 		-- columns
-		pigpen4 = engineLoadTXD("lv/lee_stripclub.txd")
-		engineImportTXD(pigpen4, 14835)
-		
+		engineImportTXD(pigpen2, 14835)
 		-- corner seats
-		pigpen5 = engineLoadTXD("lv/lee_stripclub.txd")
-		engineImportTXD(pigpen5, 14837)
-		
+		engineImportTXD(pigpen2, 14837)
 		-- main interior structure
-		pigpen6 = engineLoadTXD("lv/lee_stripclub.txd")
-		engineImportTXD(pigpen6, 14838)
+		engineImportTXD(pigpen2, 14838)
 		
-		-----------------
-		-- Police Skins--
-		-----------------
+		------------------------
+		-- Blackfield Stadium --
+		------------------------
+		BFStadium = engineLoadTXD("lv/vgs_stadium.txd")
+		engineImportTXD(BFStadium, 8201)
+		engineImportTXD(BFStadium, 8333)
+		
+		----------------
+		-- Billboards --
+		----------------
+		-- UFA
+		UFA1 = engineLoadTXD("lv/vgsn_billboard.txd")
+		engineImportTXD(UFA1, 7309)
+		engineImportTXD(UFA1, 7303)
+		engineImportTXD(UFA1, 7301)
+		
+		------------------
+		-- Police Skins --
+		------------------
 		-- LSPD
 		lspd = engineLoadTXD("skins/lvpd/lapd1.txd")
 		engineImportTXD(lspd, 280)

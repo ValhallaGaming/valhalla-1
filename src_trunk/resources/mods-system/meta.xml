@@ -5,6 +5,9 @@
 	
 	<file src="lv/lee_stripclub.txd"/>
 	<file src="lv/lee_stripclub1.txd"/>	
+	<file src="lv/vgsn_billboard.txd"/>
+	<file src="lv/vgs_stadium.txd"/>
+	
 
 	<file src="skins/lvpd/lapd1.txd"/>
 	<file src="skins/lvpd/sfpd1.txd"/>
@@ -14,6 +17,7 @@
 	<file src="skins/gangs/vla1.txd"/>
 	<file src="skins/gangs/vla2.txd"/>
 	<file src="skins/gangs/vla3.txd"/>
+
 
 	<file src="tags/tags_lafront.txd"/>
 	<file src="tags/tags_lakilo.txd"/>

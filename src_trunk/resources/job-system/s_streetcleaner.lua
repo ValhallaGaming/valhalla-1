@@ -108,9 +108,6 @@ function initiateCleanerJob(thePlayer)
 end
 
 function startCleaningMission(thePlayer)
-	if ( isPedInVehicle ( thePlayer ) ) then
-		outputChatBox("(( Walk into the marker. ))", thePlayer, 255, 194, 14)
-	else
 		local attached = getElementAttachedTo ( source ) -- source is the marker; attatched is the blip
 		destroyElement(attached)
 		destroyElement(source)
@@ -128,6 +125,7 @@ function startCleaningMission(thePlayer)
 		setElementData(vehicle, "oldy", 369.0305175781)
 		setElementData(vehicle, "oldz", 10.8203125)
 		setElementData(vehicle, "engine", 1)
+        removePedFromVehicle(thePlayer)
 		warpPedIntoVehicle(thePlayer, vehicle)
 		
 		setElementData(thePlayer, "cleaner.marker", "1")

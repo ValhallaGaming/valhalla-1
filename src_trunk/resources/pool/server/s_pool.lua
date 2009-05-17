@@ -46,6 +46,7 @@ function getPoolElementsByType(elementType)
     if isValidType(elementType) then
         return poolTable[elementType]
     end
+    return false
 end
 
 function updatePoolOnResourceStart(resource)

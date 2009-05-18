@@ -504,8 +504,8 @@ function createAddCrimeWindow()
 
 	guiAddCrimeWindow = guiCreateWindow ( X , Y , Width , Height , "Add Crime" , false )
 	
-	local hour, ninute = getTime()
-	local realtime = getRealTime()
+	local hour, minute = getTime()
+	local realTime = getRealTime()
 	
 	if(minute<10) then
 		minute = "0"..tostring(minute)

@@ -71,13 +71,12 @@ addEventHandler("onClientPedWeaponFire", getLocalPlayer(), weaponFire)
 function cancelTazerDamage(attacker, weapon, bodypart, loss)
 	if (weapon==24) then -- deagle
 		local mode = getElementData(attacker, "deaglemode")
-		if (mode==0 or mode==2) then -- tazer mode
-			--local hp = getElementHealth(source)
-			--setElementHealth(source, hp+loss)
+		if (mode==0 or mode==2) then -- tazer mode / radar gun mode
+			cancelEvent()
 		end
 	end
 end
-addEventHandler("onClientPedDamage", getLocalPlayer(), cancelTazerDamage)
+addEventHandler("onClientPlayerDamage", getLocalPlayer(), cancelTazerDamage)
 
 function showTazerEffect(x, y, z)
 	fxAddSparks(x, y, z, 1, 1, 1, 1, 100, 0, 0, 0, true, 3, 2)

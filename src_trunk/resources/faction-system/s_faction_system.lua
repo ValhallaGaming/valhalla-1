@@ -799,7 +799,7 @@ function payAllWages()
 						local pay = rankWage - (incomeTax*rankWage)
 						
 						local bankmoney = getElementData(value, "bankmoney")
-						local interestrate = 0.0003
+						local interestrate = 0.0004
 						
 						-- DONATOR PERKS
 						local donator = getElementData(value, "donatorlevel")
@@ -855,7 +855,7 @@ function payAllWages()
 						
 						local pay = unemployedPay
 						local bankmoney = getElementData(value, "bankmoney")
-						local interestrate = 0.0003
+						local interestrate = 0.0004
 						
 						-- DONATOR PERKS
 						local donator = getElementData(value, "donatorlevel")
@@ -891,7 +891,6 @@ function payAllWages()
 						outputChatBox("~-~-~-~-~-~-~-~~-~-~-~-~ PAY SLIP ~-~-~-~-~-~-~-~~-~-~-~-~", value, 255, 194, 14)
 						outputChatBox("    State Benefits: " .. pay .. "$", value, 255, 194, 14)
 						outputChatBox("    Business Profit: " .. profit .. "$", value, 255, 194, 14)
-						outputChatBox("    Income Tax of " .. (incomeTax*100) .. "%: " .. (incomeTax*profit) .. "$", value, 255, 194, 14)
 						outputChatBox("    Bank Interest (" .. interestrate*1000 .. "%): " .. interest .. "$", value, 255, 194, 14)
 						outputChatBox("----------------------------------------------------------", value, 255, 194, 14)
 						outputChatBox("  Gross Income: " .. unemployedPay+profit+interest .. "$ (Wire-Transferred to bank)", value, 255, 194, 14)
@@ -905,7 +904,7 @@ function payAllWages()
 				else
 					govAmount = govAmount - unemployedPay
 					local bankmoney = getElementData(value, "bankmoney")
-					local interestrate = 0.0003
+					local interestrate = 0.0004
 					
 					local pay = unemployedPay
 					
@@ -943,7 +942,6 @@ function payAllWages()
 					outputChatBox("~-~-~-~-~-~-~-~~-~-~-~-~ PAY SLIP ~-~-~-~-~-~-~-~~-~-~-~-~", value, 255, 194, 14)
 					outputChatBox("    State Benefits: " .. pay .. "$", value, 255, 194, 14)
 					outputChatBox("    Business Profit: " .. profit .. "$", value, 255, 194, 14)
-					outputChatBox("    Income Tax of " .. (incomeTax*100) .. "%: " .. (incomeTax*profit) .. "$", value, 255, 194, 14)
 					outputChatBox("    Bank Interest (" .. interestrate*1000 .. "%): " .. interest .. "$", value, 255, 194, 14)
 					outputChatBox("----------------------------------------------------------", value, 255, 194, 14)
 					outputChatBox("  Gross Income: " .. unemployedPay+profit+interest .. "$ (Wire-Transferred to bank)", value, 255, 194, 14)

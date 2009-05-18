@@ -261,6 +261,7 @@ function getSuspectCrime(name)
 			tableresult[1][11] = mysql_result(result, 1, 11)
 			tableresult[1][12] = mysql_result(result, 1, 12)
 			tableresult[1][13] = mysql_result(result, 1, 13)
+			tableresult[1][14] = mysql_result(result, 1, 14)
 			mysql_free_result(result)
 			
 			triggerClientEvent("onClientSaveSuspectCrimes", client, tableresult)

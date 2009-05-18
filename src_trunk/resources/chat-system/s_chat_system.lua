@@ -210,8 +210,48 @@ function chatMain(message, messageType)
 		end
 	end
 end
-
 addEventHandler("onPlayerChat", getRootElement(), chatMain)
+
+function radio(thePlayer, commandName, ...)
+	if (...) then
+		local message = table.concat({...}, " ")
+		triggerEvent("onPlayerChat", thePlayer, message, 2)
+	else
+		outputChatBox("SYNTAX: /" .. commandName .. " [Message]", thePlayer, 255, 194, 14)
+	end
+end
+addCommandHandler("r", radio, false, false)
+addCommandHandler("radio", radio, false, false)
+
+function departmentradio(thePlayer, commandName, ...)
+	local theTeam = getPlayerTeam(thePlayer)
+	
+	if (theTeam) then
+		local teamID = tonumber(getElementData(theTeam, "id"))
+
+		if (teamID==1 or teamID==2) then
+			if (...) then
+				local message = table.concat({...}, " ")
+				
+				local PDFaction = getPlayersInTeam(getTeamFromName("Las Venturas Metropolitan Police Department"))
+				local ESFaction = getPlayersInTeam(getTeamFromName("Las Venturas Emergency Services"))
+				local playerName = string.gsub(getPlayerName(thePlayer), "_", " ")
+				
+				for key, value in ipairs(PDFaction) do
+					outputChatBox("[DEPARTMENT RADIO] " .. playerName .. " says: " .. message, value, 0, 102, 255)
+				end
+				
+				for key, value in ipairs(ESFaction) do
+					outputChatBox("[DEPARTMENT RADIO] " .. playerName .. " says: " .. message, value, 0, 102, 255)
+				end
+			else
+				outputChatBox("SYNTAX: /" .. commandName .. " [Message]", thePlayer, 255, 194, 14)
+			end
+		end
+	end
+end
+addCommandHandler("d", departmentradio, false, false)
+addCommandHandler("department", departmentradio, false, false)
 
 function blockChatMessage()
     cancelEvent()
@@ -381,7 +421,7 @@ function districtOOC(thePlayer, commandName, ...)
 		end
 	end
 end
-addCommandHandler("d", districtOOC, false, false)
+addCommandHandler("dooc", districtOOC, false, false)
 addCommandHandler("district", districtOOC, false, false)
 
 function localDo(thePlayer, commandName, ...)

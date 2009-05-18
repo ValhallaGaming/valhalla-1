@@ -26,6 +26,12 @@ function applyMods(res)
 		engineImportTXD(BFStadium, 8201)
 		engineImportTXD(BFStadium, 8333)
 		
+		------------------------
+		-- busStop --
+		------------------------
+		busStop = engineLoadTXD("lv/bustopm.txd")
+		engineImportTXD(busStop, 1257)
+				
 		----------------
 		-- Billboards --
 		----------------

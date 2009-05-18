@@ -26,6 +26,7 @@ Scripts in "unfinished code" need to be completed, checked and added to the corr
 	- tags/tags_lakilo.txd *New File*
 	- lv/vgsn_billboard.txd *New File*
 	- lv/vgs_stadium.txd *New File*
+	- lv/bustopm.txd *New File*
 
 --------------------
 Jack's changes.

@@ -12,7 +12,6 @@
 	<script src="s_glowstick_system.lua" type="server" />
 	<script src="c_glowstick_system.lua" type="client" />
 	
-	<script src="s_headbob.lua" type="server" />
 	<script src="c_headbob.lua" type="client" />
 	
 	<script src="s_enginebreak.lua" type="server" />

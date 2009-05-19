@@ -86,6 +86,40 @@ function gluePlayer(thePlayer, commandName)
 end
 addCommandHandler("glue", gluePlayer, false, false)
 
+-- /MUTE
+function mutePlayer(thePlayer, commandName, targetPlayer)
+	if (exports.global:isPlayerAdmin(thePlayer)) then
+		if not (targetPlayer) then
+			outputChatBox("SYNTAX: /" .. commandName .. " [Player Partial Nick / ID]", thePlayer, 255, 194, 14)
+		else
+			local targetPlayer = exports.global:findPlayerByPartialNick(targetPlayer)
+			
+			if not (targetPlayer) then
+				outputChatBox("Player not found.", thePlayer, 255, 0, 0)
+			else
+				local targetPlayerName = getPlayerName(targetPlayer)
+				local logged = getElementData(targetPlayer, "loggedin")
+				
+				if (logged==0) then
+					outputChatBox("Player is not logged in.", thePlayer, 255, 0, 0)
+				else
+					local muted = getElementData(targetPlayer, "muted")
+					
+					if (muted==0) then
+						setElementData(targetPlayer, "muted", 1)
+						outputChatBox(targetPlayerName .. " is now muted from OOC.", thePlayer, 255, 0, 0)
+						outputChatBox("You were muted by '" .. getPlayerName(thePlayer) .. "'.", targetPlayer, 255, 0, 0)
+					else
+						setElementData(targetPlayer, "muted", 0)
+						outputChatBox(targetPlayerName .. " is now unmuted from OOC.", thePlayer, 0, 255, 0)
+						outputChatBox("You were unmuted by '" .. getPlayerName(thePlayer) .. "'.", targetPlayer, 0, 255, 0)
+					end
+				end
+			end
+		end
+	end
+end
+addCommandHandler("pmute", mutePlayer, false, false)
 
 -- /RESKICK
 function resKick(thePlayer, commandName, amount)

@@ -76,7 +76,7 @@ function cancelTazerDamage(attacker, weapon, bodypart, loss)
 		end
 	end
 end
-addEventHandler("onClientPlayerDamage", getLocalPlayer(), cancelTazerDamage)
+addEventHandler("onClientPedDamage", getLocalPlayer(), cancelTazerDamage)
 
 function showTazerEffect(x, y, z)
 	fxAddSparks(x, y, z, 1, 1, 1, 1, 100, 0, 0, 0, true, 3, 2)

@@ -30,7 +30,7 @@ function isPlayerSuperAdmin(thePlayer)
 
 	if(adminLevel==0) then
 		return false
-	elseif(adminLevel>=4) then
+	elseif(adminLevel>=1) then
 		return true
 	end
 end

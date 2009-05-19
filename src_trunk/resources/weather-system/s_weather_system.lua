@@ -354,7 +354,7 @@ addCommandHandler("getweather", getWeatherType)
 
 -- function sets the weather to a certain type
 function setWeatherType(thePlayer, command)
-	if(exports.global:isPlayerLeadAdmin(thePlayer)) then
+	if(exports.global:isPlayerSuperAdmin(thePlayer)) then
 		triggerClientEvent ( thePlayer, "onCreateWeatherControlGUI", thePlayer, weather )
 	else
 		outputChatBox("You are not authorised to use that command!", thePlayer, 255, 0, 0, true)

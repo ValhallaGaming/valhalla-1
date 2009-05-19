@@ -1,6 +1,6 @@
 function createWeaponModelOnBack(x, y, z, weapon)
 	local objectID = 355
-	outputChatBox("MAKE")
+
 	if (weapon==31) then
 		objectID = 356
 	elseif (weapon==30) then
@@ -23,12 +23,10 @@ addEventHandler("createWeaponBackModel", getRootElement(), createWeaponModelOnBa
 
 function destroyWeaponModelOnBack()
 	local currobject = getElementData(source, "weaponback.object")
-	outputChatBox("DESTROY")
+
 	if (currobject) then
 		destroyElement(currobject)
 	end
 end
 addEvent("destroyWeaponBackModel", true)
 addEventHandler("destroyWeaponBackModel", getRootElement(), destroyWeaponModelOnBack)
---355
---356

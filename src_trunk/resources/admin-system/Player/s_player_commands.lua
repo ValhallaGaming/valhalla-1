@@ -1573,7 +1573,7 @@ function adminDuty(thePlayer, commandName)
 		
 		if (adminduty==0) then
 			setElementData(thePlayer, "adminduty", 1)
-			local adminTitle = exports.global:getPlayerAdminTitle(thePlayeR)
+			local adminTitle = exports.global:getPlayerAdminTitle(thePlayer)
 			
 			setPlayerNametagColor(thePlayer, 255, 194, 14)
 			outputChatBox("You went on admin duty.", thePlayer, 0, 255, 0)
@@ -1608,3 +1608,27 @@ function setMOTD(thePlayer, commandName, ...)
 	end
 end
 addCommandHandler("setmotd", setMOTD, false, false)
+
+-- GET PLAYER ID
+function getPlayerID(thePlayer, commandName, target)
+	if not (target) then
+		outputChatBox("SYNTAX: /" .. commandName .. " [Partial Player Nick]", thePlayer, 255, 194, 14)
+	else
+		local username = getPlayerName(thePlayer)
+		local targetPlayer = exports.global:findPlayerByPartialNick(target)
+		
+		if (targetPlayer) then
+			local targetPlayerName = getPlayerName(targetPlayer)
+			
+			local logged = getElementData(targetPlayer, "loggedin")
+			if (logged==1) then
+				local id = getElementData(targetPlayer, "playerid")
+				outputChatBox("** " .. targetPlayerName .. "'s ID is " .. id .. ".", thePlayer, 255, 194, 14)
+			end
+		else
+			outputChatBox("Player not found.", thePlayer, 255, 0, 0)
+		end
+	end
+end
+addCommandHandler("getid", getPlayerID, false, false)
+addCommandHandler("id", getPlayerID, false, false)

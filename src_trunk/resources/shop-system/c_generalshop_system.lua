@@ -225,10 +225,10 @@ function getItemsForSale(shop_type, race)
 		item[1] = {"Brass Knuckles","A pair of brass knuckles, ouch.", "100", 1, 1, 1,true,50}
 		item[2] = {"Katana", "You're favourite Japanese sword.", "200", 8, 1, 1,true,100}
 		item[3] = {"9mm Pistol", "A silver, 9mm handgun, comes with 100 ammo.", "250",  22, 100, 1,true,200}
-		item[4] = {"Sawn-Off", "A sawn off shotgun - comes with 30 ammo.", "450", 26, 30, 1,true,400}
+		item[4] = {"Shotgun", "A silver shotgun - comes with 30 ammo.", "450", 25, 30, 1,true,400}
 		item[5] = {"Uzi", "A small micro-uzi - comes with 250 ammo.", "450", 28, 250, 1,true,190}
 		item[6] = {"Tec-9", "A Tec-9 micro-uzi - comes with 250 ammo", "500", 32, 250, 1,true,300}
-		item[7] = {"AK-47", "An AK-47 rifle - comes with 400 ammo", "750", 30, 450, 1,true,600}
+		item[7] = {"Country Rifle", "A country rifle - comes with 30 ammo", "750", 33, 30, 1,true,600}
 	
 	-- food + drink
 	elseif(shop_type == 3) then

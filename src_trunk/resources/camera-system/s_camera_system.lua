@@ -14,7 +14,7 @@ function resourceStart(res)
 		exports.pool:allocateElement(stripCamera1Col)
 		stripCamera1ColWarn = createColSphere(2057.3688964844, 1600.7856445313, 10.929556846619, 150)
 		exports.pool:allocateElement(stripCamera1ColWarn)
-		stripCamera1Speed = 60
+		stripCamera1Speed = 65
 		addEventHandler("onColShapeHit", stripCamera1ColWarn, sendWarning)
 		addEventHandler("onColShapeHit", stripCamera1Col, monitorSpeed)
 		addEventHandler("onColShapeLeave", stripCamera1Col, stopMonitorSpeed)
@@ -93,7 +93,7 @@ function sendWarning(element, matchingDimension)
 	if (matchingDimension) and (getElementType(element)=="vehicle")then
 		local thePlayer = getVehicleOccupant(element)
 		
-		if (getElementType(thePlayer) and isElement(thePlayer)) then
+		if (getElementType(thePlayer) and isElement(thePlayer) and (thePlayer~=getRootElement())) then
 			outputChatBox("You are entering a speed control area. The speed limit is 80Mph (120Kph). Watch your speed.", thePlayer)
 			outputChatBox("Courtesy of the Las Venturas Metropolitan Police Department.", thePlayer)
 		end

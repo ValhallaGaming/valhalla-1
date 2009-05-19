@@ -20,7 +20,7 @@ function toggleLeftIndicators()
 			
 			if not (state) then
 				setElementData(veh, "leftindicator", true, true)
-				rx, ry, rotation = getVehicleRotation(veh)
+				rx, ry, rotation = getElementRotation(veh)
 				leftTimer = setTimer(checkLeftAngle, 1000, 0, veh)
 			else
 				removeElementData(veh, "leftindicator", true)
@@ -56,7 +56,7 @@ function removeElementData(vehicle, str)
 end
 
 function checkLeftAngle(veh)
-	rx, ry, rz = getVehicleRotation(veh)
+	rx, ry, rz = getElementRotation(veh)
 	
 	if (rz>=rotation+70) then
 		killTimer(leftTimer)
@@ -86,7 +86,7 @@ function checkLeftAngle(veh)
 end
 
 function checkRightAngle(veh)
-	rx, ry, rz = getVehicleRotation(veh)
+	rx, ry, rz = getElementRotation(veh)
 
 	if (rz<=rotation-70) then
 		killTimer(rightTimer)
@@ -125,7 +125,7 @@ function toggleRightIndicators()
 			
 			if not (state) then
 				setElementData(veh, "rightindicator", true, true)
-				rx, ry, rotation = getVehicleRotation(veh)
+				rx, ry, rotation = getElementRotation(veh)
 				rightTimer = setTimer(checkRightAngle, 1000, 0, veh)
 			else
 				removeElementData(veh, "rightindicator")

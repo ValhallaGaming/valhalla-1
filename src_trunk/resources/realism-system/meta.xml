@@ -35,4 +35,7 @@
 	
 	<script src="c_radio_fix.lua" type="client" />
 	<script src="s_radio_fix.lua" type="server" />
+	
+	<script src="s_weapons_back.lua" type="server"/>
+	<script src="c_weapons_back.lua" type="client"/>
 </meta>

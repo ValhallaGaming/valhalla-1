@@ -4,8 +4,9 @@ function reloadWeapon(thePlayer)
 	local weapon = getPlayerWeapon(thePlayer)
 	local ammo = getPlayerTotalAmmo(thePlayer)
 	local reloading = getElementData(thePlayer, "reloading")
-
-	if (reloading==false) and not (isPedInVehicle(thePlayer)) then
+	local jammed = getElementData(thePlayer, "jammed")
+	
+	if (reloading==false) and not (isPedInVehicle(thePlayer)) and ((jammed==0) or not jammed) then
 		if (weapon) and (ammo) then
 			if (weapon>21) and (weapon<35) and not (noReloadGuns[weapon]) then
 				toggleControl(thePlayer, "fire", false)

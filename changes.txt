@@ -27,6 +27,7 @@ Scripts in "unfinished code" need to be completed, checked and added to the corr
 	- lv/vgsn_billboard.txd *New File*
 	- lv/vgs_stadium.txd *New File*
 	- lv/bustopm.txd *New File*
+	- lv/vgndwntwn21.txd *New File*
 
 --------------------
 Jack's changes.

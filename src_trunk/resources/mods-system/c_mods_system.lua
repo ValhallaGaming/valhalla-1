@@ -1,5 +1,11 @@
 function applyMods(res)
 	if (res==getThisResource()) then
+		------------------------------
+		-- Petrelli's Cafe Exterior --
+		------------------------------
+		Petrelli1 = engineLoadTXD("lv/vgndwntwn21.txd")
+		engineImportTXD(Petrelli1, 6908)
+		
 		----------------------
 		-- Pig Pen Interior --
 		----------------------
@@ -27,7 +33,7 @@ function applyMods(res)
 		engineImportTXD(BFStadium, 8333)
 		
 		------------------------
-		-- busStop --
+		-- bus Stop --
 		------------------------
 		busStop = engineLoadTXD("lv/bustopm.txd")
 		engineImportTXD(busStop, 1257)

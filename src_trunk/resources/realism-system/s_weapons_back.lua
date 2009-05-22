@@ -30,3 +30,20 @@ function destroyWeaponModelOnBack()
 end
 addEvent("destroyWeaponBackModel", true)
 addEventHandler("destroyWeaponBackModel", getRootElement(), destroyWeaponModelOnBack)
+
+addEventHandler("onPlayerQuit", getRootElement(), destroyWeaponModelOnBack)
+
+function interiorChange (pickup)
+    local currobject = getElementData(source, "weaponback.object")
+    local dimension = getElementData(thePickup, "dbid")
+    local interior = getElementData(thePickup, "interior")
+    
+    if (currobject) then
+        setElementInterior(currobject, interior)
+        setElementDimension(currobject, dimension)
+    end
+end
+
+addEventHandler("onPlayerInteriorEnter", getRootElement(), interiorChange)
+
+addEventHandler("onPlayerInteriorExit", getRootElement(), interiorChange)

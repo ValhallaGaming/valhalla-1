@@ -1,3 +1,6 @@
+addEvent("onPlayerInteriorEnter")
+addEvent("onPlayerInteriorExit")
+
 -- Get an array of all interiors
 local interiors={} 
                	-- INTERIOR 1 Business_StripClub1
@@ -1834,7 +1837,7 @@ function enterInterior(source)
 				local cost = getElementData(thePickup, "cost")
 				
 				local houseID = getElementData(thePickup, "dbid")
-				
+                
 				-- if the interior is unlocked
 				if (locked == 0) then 
 					setPlayerInsideInterior(thePickup, source)
@@ -1861,9 +1864,11 @@ function enterInterior(source)
 					local interior = getElementData(thePickup, "interior")
 					local dimension = getElementData(thePickup, "dimension")
 					
+                    triggerEvent("onPlayerInteriorExit", source, thePickup)
+                    
 					-- fade camera to black
 					fadeCamera ( source, false, 1,0,0,0 )
-						
+                    
 					-- teleport the player during the black fade
 					setTimer(function()
 					
@@ -1899,7 +1904,9 @@ function setPlayerInsideInterior(thePickup, thePlayer)
 	local owner = getElementData(thePickup, "owner")
 	local inttype = getElementData(thePickup, "inttype")
 	local cost = getElementData(thePickup, "cost")
-					
+	
+    triggerEvent("onPlayerInteriorEnter", thePlayer, thePickup)
+    
 	-- fade camera to black
 	fadeCamera ( thePlayer, false, 1,0,0,0 )
 					

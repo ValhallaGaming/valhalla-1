@@ -324,7 +324,13 @@ function pmPlayer(thePlayer, commandName, who, ...)
 			
 			if (targetPlayer) then
 				local logged = getElementData(targetPlayer, "loggedin")
-				local pmblocked = getElementData(thePlayer, "pmblocked")
+				local pmblocked = getElementData(targetPlayer, "pmblocked")
+				
+				outputDebugString(tostring(pmblocked))
+				if not (pmblocked) then
+					pmblocked = 0
+					setElementData(targetPlayer, "pmblocked", 0)
+				end
 				
 				if (logged==1) and (pmblocked==0) then
 					local playerName = string.gsub(getPlayerName(thePlayer), "_", " ")
@@ -347,7 +353,7 @@ function pmPlayer(thePlayer, commandName, who, ...)
 					outputChatBox("PM Sent to " .. targetPlayerName .. ": " .. message, thePlayer, 255, 255, 0)
 				elseif (logged==0) then
 					outputChatBox("Player is not logged in yet.", thePlayer, 255, 255, 0)
-				elseif (pmBlocked==1) then
+				elseif (pmblocked==1) then
 					outputChatBox("Player is ignoring whispers!", thePlayer, 255, 255, 0)
 				end
 			else
@@ -755,11 +761,11 @@ function togglePM(thePlayer, commandName)
 	if(logged==1) and ((exports.global:isPlayerAdmin(thePlayer)) or (exports.global:isPlayerBronzeDonator(thePlayer)))then
 		local pmenabled = getElementData(thePlayer, "pmblocked")
 		
-		if (pmenabled==0) then
-			setElementData(thePlayer, "pmblocked", 1)
+		if (pmenabled==1) then
+			setElementData(thePlayer, "pmblocked", 0)
 			outputChatBox("PM's are now enabled.", thePlayer, 0, 255, 0)
 		else
-			setElementData(thePlayer, "pmblocked", 0)
+			setElementData(thePlayer, "pmblocked", 1)
 			outputChatBox("PM's are now disabled.", thePlayer, 255, 0, 0)
 		end
 	end

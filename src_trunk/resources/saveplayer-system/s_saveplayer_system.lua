@@ -54,7 +54,7 @@ function savePlayer(reason)
 		
 		removePedFromVehicle(source)
 		
-		local x, y, z, rot, tag, health, armour, interior, dimension, username, cuffed, skin, muted, hiddenAdmin, radiochannel, duty, adminduty, globalooc, fightstyle, blur, casualskin, adminreports
+		local x, y, z, rot, tag, health, armour, interior, dimension, pmblocked, username, cuffed, skin, muted, hiddenAdmin, radiochannel, duty, adminduty, globalooc, fightstyle, blur, casualskin, adminreports
 		
 		username = getPlayerName(source)
 		
@@ -70,6 +70,7 @@ function savePlayer(reason)
 		
 		muted = getElementData(source, "muted")
 		hiddenAdmin = getElementData(source, "hiddenadmin")
+		pmblocked = getElementData(source, "pmblocked")
 		
 		fightstyle = getPedFightingStyle(source)
 		

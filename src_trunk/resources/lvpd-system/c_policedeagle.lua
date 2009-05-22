@@ -65,7 +65,7 @@ function weaponFire(weapon, ammo, ammoInClip, hitX, hitY, hitZ, hitElement)
 		end
 	end
 end
-addEventHandler("onClientPedWeaponFire", getLocalPlayer(), weaponFire)
+addEventHandler("onClientPlayerWeaponFire", getLocalPlayer(), weaponFire)
 
 -- code for the target/tazed person
 function cancelTazerDamage(attacker, weapon, bodypart, loss)
@@ -76,7 +76,7 @@ function cancelTazerDamage(attacker, weapon, bodypart, loss)
 		end
 	end
 end
-addEventHandler("onClientPedDamage", getLocalPlayer(), cancelTazerDamage)
+addEventHandler("onClientPlayerDamage", getLocalPlayer(), cancelTazerDamage)
 
 function showTazerEffect(x, y, z)
 	fxAddSparks(x, y, z, 1, 1, 1, 1, 100, 0, 0, 0, true, 3, 2)

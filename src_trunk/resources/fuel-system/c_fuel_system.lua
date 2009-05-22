@@ -44,7 +44,7 @@ function playerDied()
 		guiSetVisible(lFuel, false)
 	end
 end
-addEventHandler("onClientPedWasted", getRootElement(), playerDied)
+addEventHandler("onClientPlayerWasted", getRootElement(), playerDied)
 
 function setPlayerFuel(fuel)
 	guiProgressBarSetProgress(pFuel, tonumber(fuel))

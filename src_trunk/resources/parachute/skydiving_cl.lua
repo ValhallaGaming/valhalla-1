@@ -27,7 +27,7 @@ local function onRender()
 					setPedWeaponSlot(localPlayer,11)
 					toggleControl ( "next_weapon", false )
 					toggleControl ( "previous_weapon", false )
-					addEventHandler ( "onClientPedWasted", localPlayer, onSkyDivingWasted )
+					addEventHandler ( "onClientPlayerWasted", localPlayer, onSkyDivingWasted )
 				end
 			else
 				local rotX,_,rotZ = getElementRotation ( localPlayer )
@@ -113,7 +113,7 @@ function onSkyDivingWasted()
 	stopSkyDiving()
 	setPedAnimation(localPlayer)
 	setPedAnimation(localPlayer,"PARACHUTE","FALL_skyDive_DIE", t(3000), false, true, false)
-	removeEventHandler ( "onClientPedWasted", localPlayer, onSkyDivingWasted )
+	removeEventHandler ( "onClientPlayerWasted", localPlayer, onSkyDivingWasted )
 end
 
 function stopSkyDiving()

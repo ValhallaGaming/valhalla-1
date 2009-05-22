@@ -36,7 +36,7 @@ function disableAutoReload(weapon, ammo, ammoInClip)
 		cleanupUI()
 	end
 end
-addEventHandler("onClientPedWeaponFire", getLocalPlayer(), disableAutoReload)
+addEventHandler("onClientPlayerWeaponFire", getLocalPlayer(), disableAutoReload)
 
 function drawText()
 	local scrWidth, scrHeight = guiGetScreenSize()

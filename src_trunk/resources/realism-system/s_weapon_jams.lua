@@ -1,5 +1,9 @@
-function toggleFiring(enabled)
+function toggleFiring(enabled, showJamMessage)
 	toggleControl(source, "fire", enabled)
+	
+	if (showJamMessage) then
+		exports.global:sendLocalMeAction(source, "'s weapon jams.")
+	end
 end
 addEvent("togglefiring", true)
 addEventHandler("togglefiring", getRootElement(), toggleFiring)

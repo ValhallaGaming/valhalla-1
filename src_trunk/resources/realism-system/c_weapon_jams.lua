@@ -18,13 +18,13 @@ function playerFired(weapon, ammo, ammoInClip, x, y, z, element)
 			pJam = guiCreateProgressBar(0.425, 0.75, 0.2, 0.035, true)
 			outputChatBox("Your weapon has jammed, Tap - and = in order to unjam your weapons.", 255, 0, 0)
 			local slot = getPedWeaponSlot(getLocalPlayer())
-			triggerServerEvent("togglefiring", getLocalPlayer(), false)
+			triggerServerEvent("togglefiring", getLocalPlayer(), false, true)
 			bindKey("-", "down", unjamWeapon)
 			setElementData(getLocalPlayer(), "jammed", true, 1)
 		end
 	end
 end
-addEventHandler("onClientPedWeaponFire", getLocalPlayer(), playerFired)
+addEventHandler("onClientPlayerWeaponFire", getLocalPlayer(), playerFired)
 
 function unjamWeapon()
 	if (state==0) then
@@ -52,7 +52,7 @@ function unjamWeapon()
 end
 
 function weaponChangedJammed(prev, curr)
-	outputDebugString(tostring(jammed))
+
 	if (curr==5) then
 		if (jammed) then
 			setElementData(getLocalPlayer(), "jammed", true, 1)

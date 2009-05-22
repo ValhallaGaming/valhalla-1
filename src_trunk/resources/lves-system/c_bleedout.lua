@@ -32,4 +32,4 @@ function showBlood(attacker, weapon, bodypart)
 		end
 	end
 end
-addEventHandler("onClientPedDamage", getRootElement(), showBlood)
+addEventHandler("onClientPlayerDamage", getRootElement(), showBlood)

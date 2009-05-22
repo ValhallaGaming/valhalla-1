@@ -189,13 +189,13 @@ function limitDrivebySpeed ( weaponID )
 			toggleControl ( "vehicle_fire", true )
 		end
 		removeEventHandler("onClientVehicleExit",localPlayer,unbindFire)
-		removeEventHandler("onClientPedWasted",localPlayer,unbindFire)
+		removeEventHandler("onClientPlayerWasted",localPlayer,unbindFire)
 		unbindKey ( "vehicle_fire", "both", limitedKeyPress )
 	else
 		if isControlEnabled ( "vehicle_fire" ) then 
 			toggleControl ( "vehicle_fire", false )
 			addEventHandler("onClientVehicleExit",localPlayer,unbindFire)
-			addEventHandler("onClientPedWasted",localPlayer,unbindFire)
+			addEventHandler("onClientPlayerWasted",localPlayer,unbindFire)
 			bindKey ( "vehicle_fire","both",limitedKeyPress,speed)
 		end
 	end
@@ -207,7 +207,7 @@ function unbindFire()
 			toggleControl ( "vehicle_fire", true )
 	end
 	removeEventHandler("onClientVehicleExit",localPlayer,unbindFire)
-	removeEventHandler("onClientPedWasted",localPlayer,unbindFire)
+	removeEventHandler("onClientPlayerWasted",localPlayer,unbindFire)
 end
 
 local block

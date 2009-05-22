@@ -8,7 +8,7 @@ function realisticWeaponSounds(weapon)
 		playSoundFrontEnd(randSound)
 	end
 end
-addEventHandler("onClientPedWeaponFire", getRootElement(), realisticWeaponSounds)
+addEventHandler("onClientPlayerWeaponFire", getRootElement(), realisticWeaponSounds)
 
 
 ------/////////////////////// Chamberlain's Strippers ///////////////////////------

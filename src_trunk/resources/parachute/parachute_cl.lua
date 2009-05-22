@@ -143,7 +143,7 @@ function onFire ( key, keyState )
 		if not processLineOfSight ( x,y,z, x,y,z-MIN_GROUND_HEIGHT, true, true,false,true,true,false,false,false,localPlayer ) then
 		  stopSkyDiving()
 		  addLocalParachute()
-		  addEventHandler ( "onClientPedWasted", localPlayer, onWasted )
+		  addEventHandler ( "onClientPlayerWasted", localPlayer, onWasted )
 		end
 	end
 end
@@ -159,7 +159,7 @@ function onWasted()
 	removeParachute(localPlayer,"water")
 	setPedAnimation(localPlayer)
 	setPedAnimation(localPlayer,"PARACHUTE","FALL_skyDive_DIE", t(3000), false, true, false)
-	removeEventHandler ( "onClientPedWasted", localPlayer, onWasted )
+	removeEventHandler ( "onClientPlayerWasted", localPlayer, onWasted )
 end
 
 function addLocalParachute()

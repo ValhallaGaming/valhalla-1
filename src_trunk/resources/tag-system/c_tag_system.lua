@@ -72,7 +72,7 @@ function clientTagWall(weapon, ammo, ammoInClip, hitX, hitY, hitZ, hitElement)
 		end
 	end
 end
-addEventHandler("onClientPedWeaponFire", getLocalPlayer(), clientTagWall)
+addEventHandler("onClientPlayerWeaponFire", getLocalPlayer(), clientTagWall)
 
 function resetCooldown()
 	cooldown = 0

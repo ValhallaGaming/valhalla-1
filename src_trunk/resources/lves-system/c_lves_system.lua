@@ -27,7 +27,7 @@ function realisticDamage(attacker, weapon, bodypart)
 		end
 	end
 end
-addEventHandler("onClientPedDamage", getLocalPlayer(), realisticDamage)
+addEventHandler("onClientPlayerDamage", getLocalPlayer(), realisticDamage)
 
 function endEffect()
 	fadeCamera(true, 1.0)
@@ -35,6 +35,7 @@ function endEffect()
 end
 
 function playerDeath()
+	outputChatBox(tostring("HIT"))
 	deathTimer = 30
 	deathLabel = nil
 	rot = 0.0
@@ -57,7 +58,7 @@ function playerDeath()
 	
 	setGameSpeed(0.5)
 end
-addEventHandler("onClientPedWasted", getLocalPlayer(), playerDeath)
+addEventHandler("onClientPlayerWasted", getLocalPlayer(), playerDeath)
 
 function lowerTimer()
 	deathTimer = deathTimer - 1
@@ -123,4 +124,4 @@ function checkWeapons()
 		triggerServerEvent("onDeathRemovePlayerWeapons", getLocalPlayer(), weapons)
 	end
 end
-addEventHandler("onClientPedWasted", getLocalPlayer(), checkWeapons)
+addEventHandler("onClientPlayerWasted", getLocalPlayer(), checkWeapons)

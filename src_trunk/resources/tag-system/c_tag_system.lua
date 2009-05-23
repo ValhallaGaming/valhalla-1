@@ -15,13 +15,15 @@ function clientTagWall(weapon, ammo, ammoInClip, hitX, hitY, hitZ, hitElement)
 				if (cooldown==0) then
 					if (ammoInClip>10) and (weapon==41) then
 						-- Check the player is near a wall
-						local x, y, z = getElementPosition(getLocalPlayer())
-
+						local oldX, oldY, oldZ = getElementPosition(getLocalPlayer())
 						local rot = getPedRotation(getLocalPlayer())
-						local px = x + math.sin(math.rad(rot)) * 3
-						local py = y + math.cos(math.rad(rot)) * 3
+
+						local matrix = getElementMatrix (getLocalPlayer())
+						local newX = oldX * matrix[1][1] + oldY * matrix [1][2] + oldZ * matrix [1][3] + matrix [1][4]
+						local newY = oldX * matrix[2][1] + oldY * matrix [2][2] + oldZ * matrix [2][3] + matrix [2][4]
+						local newZ = oldX * matrix[3][1] + oldY * matrix [3][2] + oldZ * matrix [3][3] + matrix [3][4]
 							
-						local facingWall, cx, cy, cz, element = processLineOfSight(x, y, z, px, py, z, true, false, false, true, false)
+						local facingWall, cx, cy, cz, element = processLineOfSight(oldX, oldY, oldZ, newX, newY, newZ, true, false, false, true, false)
 
 						if not (facingWall) then
 							outputChatBox("You are not near a wall.", 255, 0, 0)
@@ -29,7 +31,7 @@ function clientTagWall(weapon, ammo, ammoInClip, hitX, hitY, hitZ, hitElement)
 							cooldown = 1
 							setTimer(resetCooldown, 5000, 1)
 						else
-							local colshape = createColSphere(x, y, z, MAX_TAG_RADIUS)
+							local colshape = createColSphere(cx, cy, cz, MAX_TAG_RADIUS)
 							local tags = getElementsWithinColShape(colshape, "object")
 							local tagcount = 0
 
@@ -54,8 +56,8 @@ function clientTagWall(weapon, ammo, ammoInClip, hitX, hitY, hitZ, hitElement)
 									local interior = getElementInterior(getLocalPlayer())
 									local dimension = getElementDimension(getLocalPlayer())
 									
-									cx = cx - math.sin(math.rad(rot)) * 0.1
-									cy = cy - math.cos(math.rad(rot)) * 0.1
+									--cx = cx - math.sin(math.rad(rot)) * 0.1
+									--cy = cy - math.cos(math.rad(rot)) * 0.1
 									
 									triggerServerEvent("createTag", getLocalPlayer(), cx, cy, cz, rot, interior, dimension) 
 								end

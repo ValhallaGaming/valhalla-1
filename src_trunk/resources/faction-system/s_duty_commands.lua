@@ -8,6 +8,25 @@ setElementInterior(pdColShape, 3)
 -- 1 = SWAT
 -- 2 = Police
 -- 3 = Cadet
+function pdarmor(thePlayer, commandName)
+	local logged = getElementData(thePlayer, "loggedin")
+
+	if (logged==1) then
+		if (isElementWithinColShape(thePlayer, pdColShape)) then
+		
+			local duty = tonumber(getElementData(thePlayer, "duty"))
+			local theTeam = getPlayerTeam(thePlayer)
+			local factionType = getElementData(theTeam, "type")
+			
+			if (factionType==2) then
+				outputChatBox("You now have a new armor vest.", thePlayer, 255, 194, 14)
+				setPedArmor(thePlayer, 100)
+			end
+		end
+	end
+end
+addCommandHandler("armor", pdarmor)
+
 function swatduty(thePlayer, commandName)	
 	local logged = getElementData(thePlayer, "loggedin")
 

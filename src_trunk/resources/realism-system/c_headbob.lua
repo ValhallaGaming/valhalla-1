@@ -15,6 +15,7 @@ function bobHead()
     			local vx = x + math.sin(math.rad(rot)) * 10
     			local vy = y + math.cos(math.rad(rot)) * 10
     			setPedLookAt(value, vx, vy, z, 3000)
+			end
 		end
 	end
 end

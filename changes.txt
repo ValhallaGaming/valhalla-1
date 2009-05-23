@@ -15,19 +15,11 @@ Scripts in "unfinished code" need to be completed, checked and added to the corr
 
 = mods-system
 	- meta.xml
-	- c_mods_system.lua
-	- tags/tags_laazteca.txd *New file*
-	- skins/lvpd/lapd1.txd *New file*
-	- skins/gangs/vla1.txd *New File*
-	- skins/gangs/vla2.txd *New File*
-	- skins/gangs/vla3.txd *New File*
-	- lv/lee_stripclub.txd *New File*
-	- lv/lee_stripclub1.txd *New File*
-	- tags/tags_lakilo.txd *New File*
-	- lv/vgsn_billboard.txd *New File*
-	- lv/vgs_stadium.txd *New File*
 	- lv/bustopm.txd *New File*
-	- lv/vgndwntwn21.txd *New File*
+	- skins/gangs/vla1.txd *updated
+	- skins/gangs/vla2.txd *updated
+	- skins/gangs/vla3.txd *updated
+
 
 --------------------
 Jack's changes.

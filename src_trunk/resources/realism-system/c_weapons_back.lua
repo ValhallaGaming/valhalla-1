@@ -6,7 +6,7 @@ local weapon = nil
 
 function weaponSwitched()
 	-- SLOT 5
-	if (getPedWeaponSlot(getLocalPlayer())~=5 and getPedWeapon(getLocalPlayer(), 5)~=0) then
+	if (getPedWeaponSlot(getLocalPlayer())~=5 and getPedWeapon(getLocalPlayer(), 5)~=0) and not (isPedInVehicle(getLocalPlayer())) then
 		local weap = getPedWeapon(getLocalPlayer(), 5)
 		if (weap==30 or weap==31) then
 			if not (objectmade) or (isPedDucked(getLocalPlayer())~=crouched) or (weap~=weapon) then -- no object, so lets create it

@@ -3443,3 +3443,32 @@ function savePassword(button, state)
 	end
 end
 
+
+-- ////////////////// tognametags
+local nametags = true
+function toggleNametags()
+	if (nametags) then
+		nametags = false
+		outputChatBox("Nametags are no longer visible.", 255, 0, 0)
+		for key, value in ipairs(getElementsByType("player")) do
+			setPlayerNametagShowing(value, false)
+		end
+	elseif not (nametags) then
+		nametags = true
+		outputChatBox("Nametags are now visible.", 0, 255, 0)
+		for key, value in ipairs(getElementsByType("player")) do
+			setPlayerNametagShowing(value, true)
+		end
+	end
+end
+addCommandHandler("tognametags", toggleNametags)
+addCommandHandler("togglenametags", toggleNametags)
+
+function onPlayerJoinSetNametagsState()
+	if (nametags) then
+		setPlayerNametagShowing(source, true)
+	else
+		setPlayerNametagShowing(source, false)
+	end
+end
+addEventHandler("onClientPlayerJoin", getRootElement(), onPlayerJoinSetNametagsState)

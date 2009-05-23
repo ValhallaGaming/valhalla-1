@@ -248,7 +248,7 @@ function doFlashes()
 			end
 		end
 		
-		if (hadIndicator) and (getVehicleOccupant(0)==getLocalPlayer() or getVehicleOccupant(1)==getLocalPlayer()) then
+		if (hadIndicator) and (getVehicleOccupant(value, 0)==getLocalPlayer() or getVehicleOccupant(value, 1)==getLocalPlayer() getVehicleOccupant(value, 2)==getLocalPlayer() getVehicleOccupant(value, 3)==getLocalPlayer()) then
 			playSoundFrontEnd(42)
 		end
 			

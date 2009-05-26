@@ -31,7 +31,7 @@ function checkDM(killer)
 		
 		if not (timer) then
 			timer = true
-			setTimer(resetDMCD, 60000, 1)
+			setTimer(resetDMCD, 120000, 1)
 		end
 	end
 end

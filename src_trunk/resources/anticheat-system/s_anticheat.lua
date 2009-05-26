@@ -1,10 +1,22 @@
 function anticheatStarted(res)
 	if (res==getThisResource()) then
-		outputChatBox("[ANTICHEAT] Version 1.0 Protection Started.")
-		exports.irc:sendMessage("[ANTICHEAT] Version 1.0 Protection Started.")
+		outputChatBox("[ANTICHEAT] Version 2.0 Protection Started.")
+		exports.irc:sendMessage("[ANTICHEAT] Version 2.0 Protection Started.")
 	end
 end
 addEventHandler("onResourceStart", getRootElement(), anticheatStarted)
+
+function showSpeedToAdmins(velocity)
+	exports.global:sendMessageToAdmins("[Possible Speedhack/HandlingHack] " .. getPlayerName(source) .. ": " .. velocity .. "Mph.")
+end
+addEvent("alertAdminsOfSpeedHacks", true)
+addEventHandler("alertAdminsOfSpeedHacks", getRootElement(), showSpeedToAdmins)
+
+function showDMToAdmins(kills)
+	exports.global:sendMessageToAdmins("[Possible DeathMatching] " .. getPlayerName(source) .. ": " .. kills .. " kills in <=2 Minutes.")
+end
+addEvent("alertAdminsOfDM", true)
+addEventHandler("alertAdminsOfDM", getRootElement(), showDMToAdmins)
 
 -- [MONEY HACKS]
 function scanMoneyHacks()

@@ -69,15 +69,15 @@ function applyMods(res)
 		-----------
 		-- Gangs --
 		-----------
-		-- Varios Los Aztecas (recolour to brown)
-		vla1 = engineLoadTXD("skins/gangs/vla1.txd")
-		engineImportTXD(vla1, 114)
+		-- San Fierro Rifa (recoloured to black)
+		sfr1 = engineLoadTXD("skins/gangs/sfr1.txd")
+		engineImportTXD(sfr1, 173)
 		
-		vla2 = engineLoadTXD("skins/gangs/vla2.txd")
-		engineImportTXD(vla2, 115)
+		sfr2 = engineLoadTXD("skins/gangs/sfr2.txd")
+		engineImportTXD(sfr2, 174)
 		
-		vla3 = engineLoadTXD("skins/gangs/vla3.txd")
-		engineImportTXD(vla3, 116)
+		sfr3 = engineLoadTXD("skins/gangs/sfr3.txd")
+		engineImportTXD(sfr3, 175)
 		
 		----------------
 		-- Gang Tags --
@@ -87,12 +87,9 @@ function applyMods(res)
 		
 		tag2 = engineLoadTXD("tags/tags_lakilo.txd") -- MTA 
 		engineImportTXD(tag2, 1525)
-		
-		-- tag3 = engineLoadTXD("tags/tags_laseville.txd")
-		-- engineImportTXD(tag2, 1528)
 
-		-- tag3 = engineLoadTXD ( "tags/tags_larifa.txd" )
-		-- engineImportTXD ( tag3, 1526 )
+		tag3 = engineLoadTXD ( "tags/tags_larifa.txd" ) -- Tatum Creek Crips
+		engineImportTXD ( tag3, 1526 )
 
 		-- tag4 = engineLoadTXD ( "tags/tags_larollin.txd" )
 		-- engineImportTXD ( tag4, 1527 )

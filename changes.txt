@@ -11,14 +11,16 @@ Chamberlains changes.
 Scripts in "unfinished code" need to be completed, checked and added to the correct resources by someone who knows what they are doing.
 
 = map-system
-	- BoxingArena.map
+	- glenbrook_aparment_doors.map
 
 = mods-system
+	- c_mods_system.lua
 	- meta.xml
 	- lv/bustopm.txd *New File*
-	- skins/gangs/vla1.txd *updated
-	- skins/gangs/vla2.txd *updated
-	- skins/gangs/vla3.txd *updated
+	- skins/gangs/sfr1.txd *New File*
+	- skins/gangs/sfr2.txd *New File* 
+	- skins/gangs/sfr3.txd *New File*
+	- tags/tags_larifa *New File*
 
 
 --------------------

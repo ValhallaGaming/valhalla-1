@@ -58,7 +58,7 @@ function savePlayer(reason, player)
 			triggerEvent("onVehicleExit", vehicle, source, seat)
 		end
 		
-		removePedFromVehicle(source)
+		--removePedFromVehicle(source)
 		
 		local x, y, z, rot, tag, health, armour, interior, dimension, pmblocked, username, cuffed, skin, muted, hiddenAdmin, radiochannel, duty, adminduty, globalooc, fightstyle, blur, casualskin, adminreports
 		

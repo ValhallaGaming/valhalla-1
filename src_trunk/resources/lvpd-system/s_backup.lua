@@ -28,22 +28,26 @@ function backup(thePlayer, commandName)
 		elseif not (backupBlip) then -- make backup blip
 			backupPlayer = thePlayer
 			local x, y, z = getElementPosition(thePlayer)
-			backupBlip = createBlip(x, y, z, 41, 2, 255, 0, 0, 255, 255)
+			backupBlip = createBlip(x, y, z, 0, 3, 255, 0, 0, 255, 255, 32767)
 			exports.pool:allocateElement(backupBlip)
 			attachElements(backupBlip, thePlayer)
+			
+			addEventHandler("onPlayerQuit", thePlayer, destroyBlip)
+			addEventHandler("savePlayer", thePlayer, destroyBlip)
 			
 			setElementVisibleTo(backupBlip, getRootElement(), false)
 			
 			for key, value in ipairs(getPlayersInTeam(theTeam)) do
+				outputChatBox("A unit needs urgent assistance! Please respond ASAP!", value, 255, 194, 14)
 				setElementVisibleTo(backupBlip, value, true)
 			end
 			
-			for key, value in ipairs(getPlayersInTeam(theTeam)) do
-				outputChatBox("A unit needs urgent assistance! Please respond ASAP!", value, 255, 194, 14)
-			end
 			
-			addEventHandler("onPlayerQuit", thePlayer, destroyBlip)
-			addEventHandler("savePlayer", thePlayer, destroyBlip)
+			for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
+				if not (getPlayerTeam(value)==theTeam) then
+					setElementVisibleTo(backupBlip, value, false)
+				end
+			end
 		elseif (backupBlip) and (backupPlayer==thePlayer) then -- in use by this player
 			for key, value in ipairs(getPlayersInTeam(theTeam)) do
 				outputChatBox("The unit no longer requires assistance. Resume normal patrol", value, 255, 194, 14)

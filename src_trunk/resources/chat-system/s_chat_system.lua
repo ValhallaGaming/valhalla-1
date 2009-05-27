@@ -325,8 +325,7 @@ function pmPlayer(thePlayer, commandName, who, ...)
 			if (targetPlayer) then
 				local logged = getElementData(targetPlayer, "loggedin")
 				local pmblocked = getElementData(targetPlayer, "pmblocked")
-				
-				outputDebugString(tostring(pmblocked))
+
 				if not (pmblocked) then
 					pmblocked = 0
 					setElementData(targetPlayer, "pmblocked", 0)

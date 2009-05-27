@@ -170,7 +170,7 @@ function shapeHit(element, matchingDimension)
 				
 				local money = getElementData(thePlayer, "money")
 				
-				if (money<100) then
+				if (money<50) then
 					outputChatBox("You cannot afford to have your car worked on.", thePlayer, 255, 0, 0)
 				else
 					outputChatBox("Welcome to Pay 'n' Spray. Please wait while we work on your " .. getVehicleName(element) .. ".", thePlayer, 255, 194, 14)
@@ -202,15 +202,9 @@ function sprayEffect(vehicle, thePlayer, shape)
 		
 		fixVehicle(vehicle)
 		
-		if not (governmentVehicle[id]) then
-			local col1 = math.random(0, 127)
-			local col2 = math.random(0, 127)
-			setVehicleColor(vehicle, col1, col2, col1, col2)
-		end
-		
 		outputChatBox(" ", thePlayer)
 		outputChatBox("Thank you for visting Pay 'n' Spray garage. Have a safe journey.", thePlayer, 255, 194, 14)
-		outputChatBox("BILL: Car Repair & Repaint - 50$", thePlayer, 255, 194, 14)
+		outputChatBox("BILL: Car Repair - 50$", thePlayer, 255, 194, 14)
 	else
 		outputChatBox("You forgot to wait for your repair!", thePlayer, 255, 0, 0)
 	end

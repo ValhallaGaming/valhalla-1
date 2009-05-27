@@ -10,11 +10,11 @@ function bobHead()
         		local x, y, z = getWorldFromScreenPosition(sx, sy, 10)
         		setPedLookAt(value, x, y, z, 3000)
             else
-                local rot = getPedCameraRotation(value)
-    			local x, y, z = getElementPosition(value)
-    			local vx = x + math.sin(math.rad(rot)) * 10
-    			local vy = y + math.cos(math.rad(rot)) * 10
-    			setPedLookAt(value, vx, vy, z, 3000)
+                --local rot = getPedCameraRotation(value)
+    			--local x, y, z = getElementPosition(value)
+    			--local vx = x + math.sin(math.rad(rot)) * 10
+    			--local vy = y + math.cos(math.rad(rot)) * 10
+    			--setPedLookAt(value, vx, vy, z, 3000)
 			end
 		end
 	end

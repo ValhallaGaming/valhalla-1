@@ -122,7 +122,7 @@ function createPermVehicle(thePlayer, commandName, id, col1, col2, userName, fac
 					local dimension = getElementDimension(thePlayer)
 					local interior = getElementInterior(thePlayer)
 						
-					local query = mysql_query(handler, "INSERT INTO vehicles SET model='" .. id .. "', x='" .. x .. "', y='" .. y .. "', z='" .. z .. "', rotx='" .. rx .. "', roty='" .. ry .. "', rotz='" .. rz .. "', color1='" .. col1 .. "', color2='" .. col2 .. "', faction='" .. factionVehicle .. "', owner='" .. dbid .. "', plate='" .. plate .. "', currx='" .. x .. "', curry='" .. y .. "', currz='" .. z .. "', currrx='0', currry='0', currrz='" .. r .. "', locked='" .. locked .. "'")
+					local query = mysql_query(handler, "INSERT INTO vehicles SET model='" .. id .. "', x='" .. x .. "', y='" .. y .. "', z='" .. z .. "', rotx='" .. rx .. "', roty='" .. ry .. "', rotz='" .. rz .. "', color1='" .. col1 .. "', color2='" .. col2 .. "', faction='" .. factionVehicle .. "', owner='" .. dbid .. "', plate='" .. plate .. "', currx='" .. x .. "', curry='" .. y .. "', currz='" .. z .. "', currrx='0', currry='0', currrz='" .. r .. "', locked='" .. locked .. "', interior='" .. interior .. "', currinterior='" .. interior .. "', dimension='" .. dimension .. "', currdimension='" .. dimension .. "'")
 
 					if (query) then
 						mysql_free_result(query)
@@ -214,7 +214,7 @@ function createCivilianPermVehicle(thePlayer, commandName, id, col1, col2, userN
 					setVehicleDamageProof(veh, true)
 				end
 					
-				local query = mysql_query(handler, "INSERT INTO vehicles SET model='" .. id .. "', x='" .. x .. "', y='" .. y .. "', z='" .. z .. "', rotx='" .. rx .. "', roty='" .. ry .. "', rotz='" .. rz .. "', color1='" .. col1 .. "', color2='" .. col2 .. "', faction='-1', owner='-2', plate='" .. plate .. "', currx='" .. x .. "', curry='" .. y .. "', currz='" .. z .. "', currrx='0', currry='0', currrz='" .. r .. "'")
+				local query = mysql_query(handler, "INSERT INTO vehicles SET model='" .. id .. "', x='" .. x .. "', y='" .. y .. "', z='" .. z .. "', rotx='" .. rx .. "', roty='" .. ry .. "', rotz='" .. rz .. "', color1='" .. col1 .. "', color2='" .. col2 .. "', faction='-1', owner='-2', plate='" .. plate .. "', currx='" .. x .. "', curry='" .. y .. "', currz='" .. z .. "', currrx='0', currry='0', currrz='" .. r .. "', interior='" .. interior .. "', currinterior='" .. interior .. "', dimension='" .. dimension .. "', currdimension='" .. dimension .. "'")
 				
 				if (query) then
 					mysql_free_result(query)
@@ -438,6 +438,7 @@ function loadAllVehicles(res)
 				setElementData(veh, "job", tonumber(job))
 				
 				-- Interiors
+				outputDebugString(tostring(currdimension))
 				setElementDimension(veh, currdimension)
 				setElementInterior(veh, currinterior)
 				
@@ -582,26 +583,26 @@ function damageTyres()
 	local tyre1, tyre2, tyre3, tyre4 = getVehicleWheelStates(source)
 	
 	if (tyre1==1) then
-		local randTime = math.random(10, 30)
-		randTime = randTime * 1000
+		local randTime = math.random(5, 15)
+		randTime = randTime * 2000
 		setTimer(destroyTyre, randTime, 1, source, 1)
 	end
 	
 	if (tyre2==1) then
-		local randTime2 = math.random(10, 30)
-		randTime2 = randTime2 * 1000
+		local randTime = math.random(5, 15)
+		randTime = randTime * 2000
 		setTimer(destroyTyre, randTime2, 1, source, 2)
 	end
 	
 	if (tyre3==1) then
-		local randTime3 = math.random(10, 30)
-		randTime3 = randTime3 * 1000
+		local randTime = math.random(5, 15)
+		randTime = randTime * 2000
 		setTimer(destroyTyre, randTime3, 1, source, 3)
 	end
 	
 	if (tyre4==1) then
-		local randTime4 = math.random(10, 30)
-		randTime4 = randTime4 * 1000
+		local randTime = math.random(5, 15)
+		randTime = randTime * 2000
 		setTimer(destroyTyre, randTime4, 1, source, 4)
 	end
 end
@@ -681,7 +682,7 @@ function toggleLock(source, key, keystate)
 	
 	if (veh) and (inVehicle==1) then
 		local model = getElementModel(veh)
-		--if not (locklessVehicle[model]) then
+		if not (locklessVehicle[model]) then
 			local locked = isVehicleLocked(veh)
 			local seat = getPedOccupiedVehicleSeat(source)
 			if (seat==0) then
@@ -693,7 +694,7 @@ function toggleLock(source, key, keystate)
 					exports.global:sendLocalMeAction(source, "locks the vehicle doors.")
 				end
 			end
-		--end
+		end
 	end
 end
 

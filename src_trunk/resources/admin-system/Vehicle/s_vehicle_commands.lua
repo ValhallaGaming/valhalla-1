@@ -633,7 +633,10 @@ function setVehiclePosition(thePlayer, commandName)
 				local x, y, z = getElementPosition(veh)
 				local rx, ry, rz = getVehicleRotation(veh)
 				
-				mysql_query(handler, "UPDATE vehicles SET x='" .. x .. "', y='" .. y .."', z='" .. z .. "', rotx='" .. rx .. "', roty='" .. ry .. "', rotz='" .. rz .. "', currx='" .. x .. "', curry='" .. y .. "', currz='" .. z .. "', currrx='" .. rx .. "', currry='" .. ry .. "', currrz='" .. rz .. "' WHERE id='" .. dbid .. "'")
+				local interior = getElementInterior(thePlayer)
+				local dimension = getElementDimension(thePlayer)
+				
+				mysql_query(handler, "UPDATE vehicles SET x='" .. x .. "', y='" .. y .."', z='" .. z .. "', rotx='" .. rx .. "', roty='" .. ry .. "', rotz='" .. rz .. "', currx='" .. x .. "', curry='" .. y .. "', currz='" .. z .. "', currrx='" .. rx .. "', currry='" .. ry .. "', currrz='" .. rz .. "', interior='" .. interior .. "', currinterior='" .. interior .. "', dimension='" .. dimension .. "', currdimension='" .. dimension .. "' WHERE id='" .. dbid .. "'")
 				
 				setVehicleRespawnPosition(veh, x, y, z, rx, ry, rz)
 				outputChatBox("Vehicle spawn position set.", thePlayer)

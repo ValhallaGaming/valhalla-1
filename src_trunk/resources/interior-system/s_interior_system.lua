@@ -1,5 +1,5 @@
-addEvent("onPlayerInteriorEnter")
-addEvent("onPlayerInteriorExit")
+addEvent("onPlayerInteriorEnter", true)
+addEvent("onPlayerInteriorExit", true)
 
 -- Get an array of all interiors
 local interiors={} 
@@ -1871,7 +1871,6 @@ function enterInterior(source)
                     
 					-- teleport the player during the black fade
 					setTimer(function()
-					
 						setElementInterior(source, interior, x, y, z)
 						setCameraInterior(source, interior)
 						setElementDimension(source, dimension)
@@ -1963,6 +1962,7 @@ function getNearbyInteriors(thePlayer, commandName)
 		end
 	end
 end
+addCommandHandler("nearbyinteriors", getNearbyInteriors, false, false)
 
 function changeInteriorName( thePlayer, commandName, ...)
 	if (exports.global:isPlayerAdmin(thePlayer)) then -- Is the player an admin?
@@ -1993,4 +1993,3 @@ function changeInteriorName( thePlayer, commandName, ...)
 	end
 end
 addCommandHandler("setinteriorname", changeInteriorName, false, false) -- the command "/setInteriorName".
-addCommandHandler("nearbyinteriors", getNearbyInteriors, false, false)

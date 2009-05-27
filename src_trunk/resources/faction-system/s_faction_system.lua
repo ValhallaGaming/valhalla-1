@@ -827,7 +827,7 @@ function payAllWages()
 						end
 						
 						local interest = math.ceil(interestrate * bankmoney)
-						setElementData(value, "bankmoney", bankmoney+pay+interest)
+						setElementData(value, "bankmoney", bankmoney+pay+interest+profit)
 						
 						local factionAmount = factionMoney - rankWage
 						setElementData(theTeam, "money", tonumber(factionAmount))
@@ -883,7 +883,7 @@ function payAllWages()
 						end
 						
 						local interest = math.ceil(interestrate * bankmoney)
-						setElementData(value, "bankmoney", bankmoney+unemployedPay+interest)
+						setElementData(value, "bankmoney", bankmoney+unemployedPay+interest+profit)
 						
 						-- business money
 						local profit = getElementData(value, "businessprofit")
@@ -934,7 +934,7 @@ function payAllWages()
 						end
 						
 						local interest = math.ceil(interestrate * bankmoney)
-					setElementData(value, "bankmoney", bankmoney+unemployedPay+interest)
+					setElementData(value, "bankmoney", bankmoney+unemployedPay+interest+profit)
 					
 					-- business money
 					local profit = getElementData(value, "businessprofit")

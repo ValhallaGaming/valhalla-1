@@ -82,9 +82,13 @@ function sendWarningToCops(vehicle, player, colshape, x, y, z, speed)
 		local theTeam = getTeamFromName("Las Venturas Metropolitan Police Department")
 		local teamPlayers = getPlayersInTeam(theTeam)
 		for key, value in ipairs(teamPlayers) do
-			outputChatBox("DISPATCH: All units we have a traffic violation at " .. areaname .. ". ((" .. getPlayerName(player) .. "))", value, 255, 194, 14)
-			outputChatBox("DISPATCH: Vehicle was a " .. vehname .. " travelling at " .. tostring(math.ceil(speed))+15 .. " Mph.", value, 255, 194, 14)
-			outputChatBox("DISPATCH: Vehicle was last seen heading " .. direction .. ".", value, 255, 194, 14)
+			local duty = getElementData(value, "duty")
+			
+			if (duty>0) then
+				outputChatBox("DISPATCH: All units we have a traffic violation at " .. areaname .. ". ((" .. getPlayerName(player) .. "))", value, 255, 194, 14)
+				outputChatBox("DISPATCH: Vehicle was a " .. vehname .. " travelling at " .. tostring(math.ceil(speed))+15 .. " Mph.", value, 255, 194, 14)
+				outputChatBox("DISPATCH: Vehicle was last seen heading " .. direction .. ".", value, 255, 194, 14)
+			end
 		end
 	end
 end

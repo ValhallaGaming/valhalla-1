@@ -119,6 +119,9 @@ function createPermVehicle(thePlayer, commandName, id, col1, col2, userName, fac
 						setVehicleDamageProof(veh, true)
 					end
 						
+					local dimension = getElementDimension(thePlayer)
+					local interior = getElementInterior(thePlayer)
+						
 					local query = mysql_query(handler, "INSERT INTO vehicles SET model='" .. id .. "', x='" .. x .. "', y='" .. y .. "', z='" .. z .. "', rotx='" .. rx .. "', roty='" .. ry .. "', rotz='" .. rz .. "', color1='" .. col1 .. "', color2='" .. col2 .. "', faction='" .. factionVehicle .. "', owner='" .. dbid .. "', plate='" .. plate .. "', currx='" .. x .. "', curry='" .. y .. "', currz='" .. z .. "', currrx='0', currry='0', currrz='" .. r .. "', locked='" .. locked .. "'")
 
 					if (query) then
@@ -138,6 +141,15 @@ function createPermVehicle(thePlayer, commandName, id, col1, col2, userName, fac
 						setElementData(veh, "faction", factionVehicle)
 						setElementData(veh, "owner", dbid)
 						setElementData(veh, "job", 0)
+						
+						setElementData(veh, "dimension", dimension)
+						setElementData(veh, "interior", interior)
+						setElementData(veh, "currdimension", dimension)
+						setElementData(veh, "currinterior", dimension)
+						
+						setElementDimension(veh, dimension)
+						setElementInterior(veh, interior)
+						
 						outputChatBox(getVehicleName(veh) .. " spawned with ID #" .. id .. ".", thePlayer, 255, 194, 14)
 						triggerEvent("onVehicleSpawn", veh)
 					end
@@ -189,6 +201,14 @@ function createCivilianPermVehicle(thePlayer, commandName, id, col1, col2, userN
 				setVehicleEngineState(veh, false)
 				setVehicleFuelTankExplodable(veh, false)
 				
+				local dimension = getElementDimension(thePlayer)
+				local interior = getElementInterior(thePlayer)
+				
+				setElementData(veh, "dimension", dimension)
+				setElementData(veh, "interior", interior)
+				setElementData(veh, "currdimension", dimension)
+				setElementData(veh, "currinterior", interior)
+				
 				-- Set the vehicle armored if it is armored
 				if (armoredCars[tonumber(id)]) then
 					setVehicleDamageProof(veh, true)
@@ -228,7 +248,7 @@ function loadAllVehicles(res)
 		end
 		
 		local result = mysql_query(handler, "SELECT currx, curry, currz, currrx, currry, currrz, x, y, z, rotx, roty, rotz, id, model, upgrade0, upgrade1, upgrade2, upgrade3, upgrade4, upgrade5, upgrade6, upgrade7, upgrade8, upgrade9, upgrade10, upgrade11, upgrade12, upgrade13, upgrade14, upgrade15, upgrade16 FROM vehicles")
-		local resultext = mysql_query(handler, "SELECT fuel, engine, locked, lights, sirens, paintjob, wheel1, wheel2, wheel3, wheel4, panel0, panel1, panel2, panel3, panel4, panel5, panel6, door1, door2, door3, door4, door5, door6, hp, color1, color2, plate, faction, owner, job FROM vehicles")
+		local resultext = mysql_query(handler, "SELECT fuel, engine, locked, lights, sirens, paintjob, wheel1, wheel2, wheel3, wheel4, panel0, panel1, panel2, panel3, panel4, panel5, panel6, door1, door2, door3, door4, door5, door6, hp, color1, color2, plate, faction, owner, job, dimension, interior, currdimension, currinterior FROM vehicles")
 		
 		local counter = 0
 		local rowc = 1
@@ -310,6 +330,11 @@ function loadAllVehicles(res)
 				local faction = tonumber(mysql_result(resultext, rowc, 28))
 				local owner = tonumber(mysql_result(resultext, rowc, 29))
 				
+				local dimension = tonumber(mysql_result(resultext, rowc, 31))
+				local interior = tonumber(mysql_result(resultext, rowc, 32))
+				local currdimension = tonumber(mysql_result(resultext, rowc, 33))
+				local currinterior = tonumber(mysql_result(resultext, rowc, 34))
+
 				if (faction~=-1) then
 					locked = 0
 				end
@@ -412,6 +437,15 @@ function loadAllVehicles(res)
 				setElementData(veh, "owner", owner)
 				setElementData(veh, "job", tonumber(job))
 				
+				-- Interiors
+				setElementDimension(veh, currdimension)
+				setElementInterior(veh, currinterior)
+				
+				setElementData(veh, "dimension", dimension)
+				setElementData(veh, "interior", interior)
+				setElementData(veh, "currdimension", dimension)
+				setElementData(veh, "currinterior", interior)
+				
 				-- Set the lights
 				if (lights==0 or lights==1) then
 					setVehicleOverrideLights(veh, 1)
@@ -443,7 +477,7 @@ end
 addEventHandler("onResourceStart", getRootElement(), loadAllVehicles)
 
 function vehicleExploded()
-	setTimer(respawnVehicle, 180000, 1, source)
+	setTimer(respawnVehicle, 60000, 1, source)
 end
 addEventHandler("onVehicleExplode", getRootElement(), vehicleExploded)
 
@@ -482,6 +516,12 @@ function vehicleRespawn(exploded)
 	
 	setVehicleLightState(source, 0, 0)
 	setVehicleLightState(source, 1, 0)
+	
+	local dimension = getElementData(source, "dimension")
+	local interior = getElementData(source, "interior")
+	
+	setElementDimension(source, dimension)
+	setElementInterior(source, interior)
 	
 	if (faction==-1) then
 		setVehicleLocked(source, true)

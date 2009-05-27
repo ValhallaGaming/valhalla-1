@@ -34,7 +34,6 @@ addEventHandler("destroyWeaponBackModel", getRootElement(), destroyWeaponModelOn
 addEventHandler("onPlayerQuit", getRootElement(), destroyWeaponModelOnBack)
 
 function interiorChange (pickup)
-	outputChatBox("CHANGE")
     local currobject = getElementData(source, "weaponback.object")
     local dimension = getElementData(pickup, "dbid")
     local interior = getElementData(pickup, "interior")
@@ -43,10 +42,6 @@ function interiorChange (pickup)
 	if (inttype=="interiorexit") then
 		dimension = getElementData(pickup, "dimension")
 	end
-	
-	outputChatBox(tostring(dimension))
-	outputChatBox(tostring(interior))
-	outputChatBox(tostring(inttype))
 	
     if (currobject) then
         setElementInterior(currobject, interior)

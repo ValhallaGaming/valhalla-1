@@ -17,8 +17,8 @@ function showEmploymentWindow()
     local column = guiGridListAddColumn(jobList, "Job Title", 0.9)
 
 	-- TRUCKER
-	local row = guiGridListAddRow(jobList)
-	guiGridListSetItemText(jobList, row, column, "Intercity Trucker", false, false)
+	--local row = guiGridListAddRow(jobList)
+	--guiGridListSetItemText(jobList, row, column, "Intercity Trucker", false, false)
 	
 	-- TAXI
 	local rowtaxi = guiGridListAddRow(jobList)

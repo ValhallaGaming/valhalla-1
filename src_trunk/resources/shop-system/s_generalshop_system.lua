@@ -237,7 +237,29 @@ function givePlayerBoughtItem(itemID, itemValue, theCost, isWeapon, name, supply
 				exports.global:takePlayerSafeMoney(source, tonumber(theCost))
 				outputChatBox("You learnt " .. name .. ".", source, 255, 194, 14)
 				outputChatBox("You have $"..getElementData(source, "money").." left in your wallet.", source, 255, 194, 14)
-				setPedFightingStyle(source, tonumber(itemID))
+				
+				itemID = tonumber(itemID)
+				
+				if (itemID==4) then
+					setPedFightingStyle(source, itemID)
+					exports.global:givePlayerItem(source, 20, 1)
+				elseif (itemID==5) then
+					setPedFightingStyle(source, itemID)
+					exports.global:givePlayerItem(source, 21, 1)
+				elseif (itemID==6) then
+					setPedFightingStyle(source, itemID)
+					exports.global:givePlayerItem(source, 22, 1)
+				elseif (itemID==7) then
+					setPedFightingStyle(source, itemID)
+					exports.global:givePlayerItem(source, 23, 1)
+				elseif (itemID==15) then
+					setPedFightingStyle(source, itemID)
+					exports.global:givePlayerItem(source, 24, 1)
+				elseif (itemID==16) then
+					setPedFightingStyle(source, itemID)
+					exports.global:givePlayerItem(source, 25, 1)
+				end
+				
 				exports.global:givePlayerAchievement(source, 20)
 			else
 				if (itemID==28) or (itemID==30) or (itemID==32) then

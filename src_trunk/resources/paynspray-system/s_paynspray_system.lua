@@ -191,7 +191,12 @@ end
 
 function sprayEffect(vehicle, thePlayer, shape)
 	if (isElementWithinColShape(thePlayer, shape)) then
-		exports.global:takePlayerSafeMoney(thePlayer, 50)
+		local faction = getPlayerTeam(thePlayer)
+		local ftype = getElementData(faction, "type")
+			
+		if (ftype~=2) then
+			exports.global:takePlayerSafeMoney(thePlayer, 50)
+		end
 		
 		local id = getElementModel(vehicle)
 		

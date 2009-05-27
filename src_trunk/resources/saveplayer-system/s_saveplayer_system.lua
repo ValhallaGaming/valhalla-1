@@ -38,7 +38,13 @@ function saveWeapons(thePlayer)
 	end
 end
 
-function savePlayer(reason)
+function saveAllPlayers()
+	for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
+		triggerEvent("savePlayer", value, "Save All")
+	end
+end
+
+function savePlayer(reason, player)
 	local logged = getElementData(source, "loggedin")
 
 	if (logged==1) then
@@ -131,3 +137,4 @@ end
 addEventHandler("onPlayerQuit", getRootElement(), savePlayer)
 addEvent("savePlayer", false)
 addEventHandler("savePlayer", getRootElement(), savePlayer)
+setTimer(saveAllPlayers, 300000, 0)

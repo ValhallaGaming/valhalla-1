@@ -45,7 +45,7 @@ function playerDeath()
 	local pX, pY, pZ = getElementPosition(getLocalPlayer())
 
 	-- Setup the text
-	setTimer(lowerTimer, 1000, 30)
+	setTimer(lowerTimer, 1000, 10)
 	
 	local screenwidth, screenheight = guiGetScreenSize ()
 	

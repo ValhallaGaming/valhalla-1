@@ -44,8 +44,8 @@ end
 addEventHandler("onPlayerDamage", getRootElement(), realisticDamage)
 
 function playerDeath()
-	outputChatBox("Respawn in 30 seconds.", source)
-	setTimer(respawnPlayer, 30000, 1, source)
+	outputChatBox("Respawn in 10 seconds.", source)
+	setTimer(respawnPlayer, 10000, 1, source)
 end
 addEventHandler("onPlayerWasted", getRootElement(), playerDeath)
 

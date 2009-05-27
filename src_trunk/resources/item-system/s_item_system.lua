@@ -253,6 +253,24 @@ function useItem(itemID, itemName, itemValue, isWeapon)
 			triggerClientEvent(source, "showCityGuide", source)
 		elseif (itemID==19) then -- MP3 PLayer
 			outputChatBox("Use the - and = keys to use the MP3 Player.", source, 255, 194, 14)
+		elseif (itemID==20) then -- STANDARD FIGHTING
+			setPedFightingStyle(source, 4)
+			outputChatBox("You read a book on how to do Standard Fighting.", source, 255, 194, 14)
+		elseif (itemID==21) then -- BOXING
+			setPedFightingStyle(source, 5)
+			outputChatBox("You read a book on how to do Boxing.", source, 255, 194, 14)
+		elseif (itemID==22) then -- KUNG FU
+			setPedFightingStyle(source, 6)
+			outputChatBox("You read a book on how to do Kung Fu.", source, 255, 194, 14)
+		elseif (itemID==23) then -- KNEE HEAD
+			setPedFightingStyle(source, 7)
+			outputChatBox("You read a book on how to do Knee Head Fighting.", source, 255, 194, 14)
+		elseif (itemID==24) then -- GRAB KICK
+			setPedFightingStyle(source, 15)
+			outputChatBox("You read a book on how to do Grab Kick Fighting.", source, 255, 194, 14)
+		elseif (itemID==25) then -- ELBOWS
+			setPedFightingStyle(source, 16)
+			outputChatBox("You read a book on how to do Elbow Fighting.", source, 255, 194, 14)
 		else
 			outputChatBox("Error 800001 - Report on http://bugs.valhallagaming.net", source, 255, 0, 0)
 		end

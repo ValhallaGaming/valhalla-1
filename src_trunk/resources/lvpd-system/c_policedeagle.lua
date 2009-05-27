@@ -55,17 +55,28 @@ function weaponFire(weapon, ammo, ammoInClip, hitX, hitY, hitZ, hitElement)
 			playSoundFrontEnd(38)
 			triggerServerEvent("tazerFired", getLocalPlayer(), hitX, hitY, hitZ, hitElement) 
 		elseif (mode==2) then
-			if (hitElement) then
-				if (getElementType(hitElement)=="vehicle") then
-					local speedx, speedy, speedz = getElementVelocity(hitElement)
+			
+		end
+	end
+end
+addEventHandler("onClientPlayerWeaponFire", getLocalPlayer(), weaponFire)
+
+function weaponAim(target)
+	if (target) then
+		if (getElementType(target)=="vehicle") then
+			if (getPedWeapon(getLocalPlayer())==24) then
+				local mode = getElementData(getLocalPlayer(), "deaglemode")
+				
+				if (mode==2) then
+					local speedx, speedy, speedz = getElementVelocity(target)
 					actualspeed = math.ceil(((speedx^2 + speedy^2 + speedz^2)^(0.5)*100))
-					outputChatBox(getVehicleName(hitElement) .. " clocked in at " .. actualspeed .. " MPH.", 255, 194, 14)
+					outputChatBox(getVehicleName(target) .. " clocked in at " .. actualspeed .. " MPH.", 255, 194, 14)
 				end
 			end
 		end
 	end
 end
-addEventHandler("onClientPlayerWeaponFire", getLocalPlayer(), weaponFire)
+addEventHandler("onClientPlayerTarget", getRootElement(), weaponAim)
 
 -- code for the target/tazed person
 function cancelTazerDamage(attacker, weapon, bodypart, loss)

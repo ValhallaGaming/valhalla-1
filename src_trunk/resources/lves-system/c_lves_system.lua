@@ -35,7 +35,6 @@ function endEffect()
 end
 
 function playerDeath()
-	outputChatBox(tostring("HIT"))
 	deathTimer = 30
 	deathLabel = nil
 	rot = 0.0

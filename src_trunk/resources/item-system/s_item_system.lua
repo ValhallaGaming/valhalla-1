@@ -119,11 +119,11 @@ function useItem(itemID, itemName, itemValue, isWeapon)
 				if (isVehicleLocked(found)) then
 					setVehicleLocked(found, false)
 					mysql_query(handler, "UPDATE vehicles SET locked='0' WHERE id='" .. id .. "' LIMIT 1")
-					exports.global:sendLocalMeAction(source, "presses on the car key to unlock the car. ((" .. getVehicleName(found) .. "))")
+					exports.global:sendLocalMeAction(source, "presses on the key to unlock the vehicle. ((" .. getVehicleName(found) .. "))")
 				else
 					setVehicleLocked(found, true)
 					mysql_query(handler, "UPDATE vehicles SET locked='1' WHERE id='" .. id .. "' LIMIT 1")
-					exports.global:sendLocalMeAction(source, "presses on the car key to lock the car. ((" .. getVehicleName(found) .. "))")
+					exports.global:sendLocalMeAction(source, "presses on the key to lock the vehicle. ((" .. getVehicleName(found) .. "))")
 				end
 			end
 		elseif (itemID==4) or (itemID==5) then -- house key or business key

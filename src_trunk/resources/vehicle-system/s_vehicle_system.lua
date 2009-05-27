@@ -568,14 +568,16 @@ end
 addEventHandler("onVehicleExit", getRootElement(), vehicleExit)
 
 function destroyTyre(veh, tyre)
+	local tyre1, tyre2, tyre3, tyre4 = getVehicleWheelStates(veh)
+	
 	if (tyre==1) then
-		setVehicleWheelStates(veh, 2, -1, -1, -1)
+		setVehicleWheelStates(veh, 2, tyre2, tyre3, tyre4)
 	elseif (tyre==2) then
-		setVehicleWheelStates(veh, -1, 2, -1, -1)
+		setVehicleWheelStates(veh, tyre1, 2, tyre3, tyre4)
 	elseif (tyre==3) then
-		setVehicleWheelStates(veh, -1, -1, 2, -1)
+		setVehicleWheelStates(veh, tyre1, tyre2, 2, tyre4)
 	elseif (tyre==4) then
-		setVehicleWheelStates(veh, -1, -1, -1, 2)
+		setVehicleWheelStates(veh, tyre1, tyre2, tyre3, 2)
 	end
 end
 

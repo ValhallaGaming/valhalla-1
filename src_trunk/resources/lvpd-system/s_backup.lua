@@ -33,7 +33,10 @@ function backup(thePlayer, commandName)
 			attachElements(backupBlip, thePlayer)
 			
 			setElementVisibleTo(backupBlip, getRootElement(), false)
-			setElementVisibleTo(backupBlip, theTeam, true)
+			
+			for key, value in ipairs(getPlayersInTeam(theTeam)) do
+				setElementVisibleTo(backupBlip, value, true)
+			end
 			
 			for key, value in ipairs(getPlayersInTeam(theTeam)) do
 				outputChatBox("A unit needs urgent assistance! Please respond ASAP!", value, 255, 194, 14)

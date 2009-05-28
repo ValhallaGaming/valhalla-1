@@ -350,7 +350,7 @@ function givePlayerBoughtItem(itemID, itemValue, theCost, isWeapon, name, supply
 				
 				mysql_query(handler, "UPDATE characters SET money=money + " .. tonumber(theCost) .. " WHERE id='" .. owner .. "' LIMIT 1")
 				if (theOwner) then
-					exports.global:givePlayerSafeMoney(theOwner, theCost)
+					--exports.global:givePlayerSafeMoney(theOwner, theCost)
 					local profits = getElementData(theOwner, "businessprofit")
 					setElementData(theOwner, "businessprofit", profits+theCost)
 				end

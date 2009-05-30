@@ -6,6 +6,13 @@ local weapon = nil
 
 function weaponSwitched()
 	-- SLOT 5
+	
+	if (getCameraTarget()~=getLocalPlayer()) and (objectmade) then
+		objectmade = false
+		triggerServerEvent("destroyWeaponBackModel", getLocalPlayer())
+		return
+	end
+	
 	if (getPedWeaponSlot(getLocalPlayer())~=5 and getPedWeapon(getLocalPlayer(), 5)~=0) and not (isPedInVehicle(getLocalPlayer())) then
 		local weap = getPedWeapon(getLocalPlayer(), 5)
 		if (weap==30 or weap==31) then

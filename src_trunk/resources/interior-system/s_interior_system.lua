@@ -1307,7 +1307,7 @@ function sellProperty(thePlayer, commandName)
 			else
 				outputChatBox("Error 504914 - Report on forums.", thePlayer, 255, 0, 0)
 			end
-		elseif (tonumber(owner)==getElementData(thePlayer, "dbid")) and (inttype~=2) then
+		elseif (tonumber(owner)==getElementData(thePlayer, "dbid") or exports.pool:isPlayerAdmin(thePlayer)) and (inttype~=2) then
 			setElementPosition(thePlayer, x, y, z)
 			setPedRotation(thePlayer, rot)
 			setElementData(thePlayer, "interiormarker", nil)
@@ -1318,9 +1318,14 @@ function sellProperty(thePlayer, commandName)
 				
 			if (query) then
 				mysql_free_result(query)
-				local money = math.ceil((cost/3)*2)
-				exports.global:givePlayerSafeMoney(thePlayer, money)
-				outputChatBox("You sold your property for " .. money .. "$.", thePlayer, 0, 255, 0)
+				
+				if (tonumber(owner)==getElementData(thePlayer, "dbid")) then
+					local money = math.ceil((cost/3)*2)
+					exports.global:givePlayerSafeMoney(thePlayer, money)
+					outputChatBox("You sold your property for " .. money .. "$.", thePlayer, 0, 255, 0)
+				else
+					outputChatBox("You set this property to unowned.")
+				end
 				reloadOneInterior(tonumber(dbid))
 			else
 				outputChatBox("Error 504914 - Report on forums.", thePlayer, 255, 0, 0)

@@ -1,11 +1,11 @@
 -- objects to make the floor solid...
-obj1 = createObject(3867, 195.93978881836, 175.52951049805, 1000.1234375)
+obj1 = createObject(3867, 195.93978881836, 175.52951049805, 999.8234375)
 exports.pool:allocateElement(obj1)
 setElementDimension(obj1, 1)
 setElementInterior(obj1, 3)
 setObjectRotation(obj1, 270, 0, 180)
 
-obj2 = createObject(3867, 195.93978881836, 157.52951049805, 1000.1234375)
+obj2 = createObject(3867, 195.93978881836, 157.52951049805, 999.8234375)
 exports.pool:allocateElement(obj2)
 setElementDimension(obj2, 1)
 setElementInterior(obj2, 3)
@@ -34,13 +34,6 @@ cells[3][1] = 193.31275939941
 cells[3][2] = 174.46385192871
 cells[3][3] = 1003.0234375
 cells[3][4] = 3.4074401855469
-
--- cell 4
-cells[4] = {}
-cells[4][1] = 188.91346740723
-cells[4][2] = 174.46385192871
-cells[4][3] = 1003.0234375
-cells[4][4] = 3.4074401855469
 
 arrestColShape = createColSphere(200.70149230957, 168.81527709961, 1003.0234375, 4)
 exports.pool:allocateElement(arrestColShape)
@@ -188,3 +181,36 @@ function showJailtime(thePlayer)
 	end
 end
 addCommandHandler("jailtime", showJailtime)
+
+function jailRelease(thePlayer, commandName, targetPlayerNick)
+	local logged = getElementData(thePlayer, "loggedin")
+	
+	if (logged==1) then
+		local theTeam = getPlayerTeam(thePlayer)
+		local factionType = getElementData(theTeam, "type")
+		
+		if (factionType==2) and (isElementWithinColShape(thePlayer, arrestColShape)) then
+			if not (targetPlayerNick) then
+				outputChatBox("SYNTAX: /release [Player Partial Nick / ID]", thePlayer, 255, 194, 14)
+			else
+				local targetPlayer = exports.global:findPlayerByPartialNick(targetPlayerNick)
+				
+				if not (targetPlayer) then
+					outputChatBox("Player is not online.", thePlayer, 255, 0, 0)
+				else
+					local jailTimer = getElementData(targetPlayer, "pd.jailtimer")
+					local username  = getPlayerName(thePlayer)
+					local targetPlayerNick  = getPlayerName(targetPlayer)
+						
+					if (jailTimer) then
+						setElementData(targetPlayer, "pd.jailtime", 1)
+						timerPDUnjailPlayer(targetPlayer)
+					else
+						outputChatBox("This player is not serving a jail sentance.", thePlayer, 255, 0, 0)
+					end
+				end
+			end
+		end
+	end
+end
+addCommandHandler("release", jailRelease)

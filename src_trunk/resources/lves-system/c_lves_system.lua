@@ -35,7 +35,7 @@ function endEffect()
 end
 
 function playerDeath()
-	deathTimer = 30
+	deathTimer = 10
 	deathLabel = nil
 	rot = 0.0
 	fadeCamera(false, 29, 255, 255, 255)
@@ -48,7 +48,7 @@ function playerDeath()
 	
 	local screenwidth, screenheight = guiGetScreenSize ()
 	
-	local width = 250
+	local width = 300
 	local height = 100
 	local x = (screenwidth - width)/2
 	local y = screenheight - (screenheight/8 - (height/8))

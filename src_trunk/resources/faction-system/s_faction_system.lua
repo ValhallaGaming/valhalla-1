@@ -827,7 +827,6 @@ function payAllWages()
 						end
 						
 						local interest = math.ceil(interestrate * bankmoney)
-						setElementData(value, "bankmoney", bankmoney+pay+interest+profit)
 						
 						local factionAmount = factionMoney - rankWage
 						setElementData(theTeam, "money", tonumber(factionAmount))
@@ -836,6 +835,7 @@ function payAllWages()
 						
 						-- business money
 						local profit = getElementData(value, "businessprofit")
+						setElementData(value, "bankmoney", bankmoney+pay+interest+profit)
 						
 						outputChatBox("~-~-~-~-~-~-~-~~-~-~-~-~ PAY SLIP ~-~-~-~-~-~-~-~~-~-~-~-~", value, 255, 194, 14)
 						outputChatBox("    Wage Paid: " .. rankWage .. "$", value, 255, 194, 14)
@@ -883,10 +883,10 @@ function payAllWages()
 						end
 						
 						local interest = math.ceil(interestrate * bankmoney)
-						setElementData(value, "bankmoney", bankmoney+unemployedPay+interest+profit)
 						
 						-- business money
 						local profit = getElementData(value, "businessprofit")
+						setElementData(value, "bankmoney", bankmoney+unemployedPay+interest+profit)
 						
 						outputChatBox("~-~-~-~-~-~-~-~~-~-~-~-~ PAY SLIP ~-~-~-~-~-~-~-~~-~-~-~-~", value, 255, 194, 14)
 						outputChatBox("    State Benefits: " .. pay .. "$", value, 255, 194, 14)
@@ -934,10 +934,11 @@ function payAllWages()
 						end
 						
 						local interest = math.ceil(interestrate * bankmoney)
-					setElementData(value, "bankmoney", bankmoney+unemployedPay+interest+profit)
+					
 					
 					-- business money
 					local profit = getElementData(value, "businessprofit")
+					setElementData(value, "bankmoney", bankmoney+unemployedPay+interest+profit)
 					
 					outputChatBox("~-~-~-~-~-~-~-~~-~-~-~-~ PAY SLIP ~-~-~-~-~-~-~-~~-~-~-~-~", value, 255, 194, 14)
 					outputChatBox("    State Benefits: " .. pay .. "$", value, 255, 194, 14)

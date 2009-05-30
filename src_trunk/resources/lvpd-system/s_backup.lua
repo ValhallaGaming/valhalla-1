@@ -38,19 +38,30 @@ function backup(thePlayer, commandName)
 			setElementVisibleTo(backupBlip, getRootElement(), false)
 			
 			for key, value in ipairs(getPlayersInTeam(theTeam)) do
-				outputChatBox("A unit needs urgent assistance! Please respond ASAP!", value, 255, 194, 14)
-				setElementVisibleTo(backupBlip, value, true)
+				local duty = getElementData(value, "duty")
+				
+				if (duty>0) then
+					outputChatBox("A unit needs urgent assistance! Please respond ASAP!", value, 255, 194, 14)
+					setElementVisibleTo(backupBlip, value, true)
+				end
 			end
 			
 			
 			for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
-				if not (getPlayerTeam(value)==theTeam) then
+				local duty = getElementData(value, "duty")
+				
+				if (getPlayerTeam(value)~=theTeam) or (duty==0) then
 					setElementVisibleTo(backupBlip, value, false)
 				end
 			end
 		elseif (backupBlip) and (backupPlayer==thePlayer) then -- in use by this player
 			for key, value in ipairs(getPlayersInTeam(theTeam)) do
-				outputChatBox("The unit no longer requires assistance. Resume normal patrol", value, 255, 194, 14)
+			
+				local duty = getElementData(value, "duty")
+				
+				if (duty>0) then
+					outputChatBox("The unit no longer requires assistance. Resume normal patrol", value, 255, 194, 14)
+				end
 			end
 			
 			destroyElement(backupBlip)

@@ -170,8 +170,9 @@ function startCleaningMission(thePlayer)
 		addEventHandler("onColShapeHit", colsphere, UpdateCheckpoints)	
 		
 		outputChatBox("Drive around Las Venturas on your cleaning path, sweeping the streets. ((Drive through the checkpoints))", thePlayer, 255, 194, 14)
-	end
+	
 end
+addCommandHandler("cj", startCleaningMission)
 
 function UpdateCheckpoints(thePlayer)
 	if ( isPedInVehicle ( thePlayer ) ) then

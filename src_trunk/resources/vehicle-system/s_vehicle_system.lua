@@ -567,45 +567,46 @@ function vehicleExit(thePlayer, seat)
 end
 addEventHandler("onVehicleExit", getRootElement(), vehicleExit)
 
-function destroyTyre(veh, tyre)
+function destroyTyre(veh)
 	local tyre1, tyre2, tyre3, tyre4 = getVehicleWheelStates(veh)
 	
-	if (tyre==1) then
-		setVehicleWheelStates(veh, 2, tyre2, tyre3, tyre4)
-	elseif (tyre==2) then
-		setVehicleWheelStates(veh, tyre1, 2, tyre3, tyre4)
-	elseif (tyre==3) then
-		setVehicleWheelStates(veh, tyre1, tyre2, 2, tyre4)
-	elseif (tyre==4) then
-		setVehicleWheelStates(veh, tyre1, tyre2, tyre3, 2)
+	if (tyre1==1) then
+		tyre1 = 2
 	end
+	
+	if (tyre2==1) then
+		tyre2 = 2
+	end
+	
+	if (tyre3==1) then
+		tyre3 = 2
+	end
+	
+	if (tyre4==1) then
+		tyre4 = 2
+	end
+	outputChatBox("TRIGGER")
+	
+	if (tyre1==2 and tyre2==2 and tyre3==2 and tyre4==2) then
+		tyre3 = 0
+	end
+	
+	removeElementData(veh, "tyretimer")
+	setVehicleWheelStates(veh, tyre1, tyre2, tyre3, tyre4)
 end
 
 function damageTyres()
 	local tyre1, tyre2, tyre3, tyre4 = getVehicleWheelStates(source)
+	local tyreTimer = getElementData(source, "tyretimer")
 	
-	if (tyre1==1) then
-		local randTime = math.random(5, 15)
-		randTime = randTime * 2000
-		setTimer(destroyTyre, randTime, 1, source, 1)
-	end
-	
-	if (tyre2==1) then
-		local randTime = math.random(5, 15)
-		randTime = randTime * 2000
-		setTimer(destroyTyre, randTime2, 1, source, 2)
-	end
-	
-	if (tyre3==1) then
-		local randTime = math.random(5, 15)
-		randTime = randTime * 2000
-		setTimer(destroyTyre, randTime3, 1, source, 3)
-	end
-	
-	if (tyre4==1) then
-		local randTime = math.random(5, 15)
-		randTime = randTime * 2000
-		setTimer(destroyTyre, randTime4, 1, source, 4)
+	if (tyretimer~=1) then
+		if (tyre1==1) or (tyre2==1) or (tyre3==1) or (tyre4==1) then
+			setElementData(source, "tyretimer", 1)
+			local randTime = math.random(5, 15)
+			randTime = randTime * 1000
+			outputChatBox("TIMER IS " .. randTime/1000 .. ".")
+			setTimer(destroyTyre, randTime, 1, source)
+		end
 	end
 end
 addEventHandler("onVehicleDamage", getRootElement(), damageTyres)

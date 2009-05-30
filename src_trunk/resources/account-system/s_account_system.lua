@@ -564,7 +564,7 @@ end
 
 function loginPlayer(username, password, operatingsystem)
 	local safeusername = mysql_escape_string(handler, username)
-	local result = mysql_query(handler, "SELECT id, admin, hiddenadmin, adminduty, donator, adminjail, adminjail_time, adminjail_by, adminjail_reason, banned, banned_by, banned_reason, muted, globalooc, blur, friendsmessage, friends, adminreports, pmblocked FROM accounts WHERE username='" .. safeusername .. "' AND password='" .. password .. "'")
+	local result = mysql_query(handler, "SELECT id, admin, hiddenadmin, adminduty, donator, adminjail, adminjail_time, adminjail_by, adminjail_reason, banned, banned_by, banned_reason, muted, globalooc, blur, friendsmessage, friends, adminreports, pmblocked, warns FROM accounts WHERE username='" .. safeusername .. "' AND password='" .. password .. "'")
 	
 	if (mysql_num_rows(result)>0) then
 		triggerEvent("onPlayerLogin", source, username, password)
@@ -603,6 +603,7 @@ function loginPlayer(username, password, operatingsystem)
 			local friends = mysql_result(result, 1, 17)
 			local adminreports = tonumber(mysql_result(result, 1, 18))
 			local pmblocked = tonumber(mysql_result(result, 1, 19))
+			local warns = tonumber(mysql_result(result, 1, 20))
 			
 			local country = exports.global:getPlayerCountry(source)
 			if (username=="Daniels") then
@@ -655,6 +656,7 @@ function loginPlayer(username, password, operatingsystem)
 				setElementData(source, "muted", tonumber(muted))
 				setElementData(source, "adminreports", adminreports)
 				setElementData(source, "pmblocked", pmblocked)
+				setElementData(source, "warns", warns)
 				
 				sendAccounts(source, id)
 				

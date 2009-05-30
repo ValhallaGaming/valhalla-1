@@ -53,14 +53,11 @@ function savePlayer(reason, player)
 		local vehicle = getPedOccupiedVehicle(source)
 		
 		if (vehicle) then
-			--exports.savevehicle-system:saveVehicleOnExit(source, getPedOccupiedVehicleSeat(source), vehicle)
 			local seat = getPedOccupiedVehicleSeat(source)
 			triggerEvent("onVehicleExit", vehicle, source, seat)
 		end
 		
-		--removePedFromVehicle(source)
-		
-		local x, y, z, rot, tag, health, armour, interior, dimension, pmblocked, username, cuffed, skin, muted, hiddenAdmin, radiochannel, duty, adminduty, globalooc, fightstyle, blur, casualskin, adminreports
+		local x, y, z, rot, tag, health, armour, interior, dimension, pmblocked, username, cuffed, skin, muted, hiddenAdmin, radiochannel, duty, adminduty, globalooc, fightstyle, blur, casualskin, adminreports, warns
 		
 		username = getPlayerName(source)
 		
@@ -89,6 +86,8 @@ function savePlayer(reason, player)
 		adminreports = getElementData(source, "adminreports")
 		
 		casualskin = getElementData(source, "casualskin")
+		
+		warns = getElementData(source, "warns")
 		
 		local bankmoney = getElementData(source, "bankmoney")
 		
@@ -121,7 +120,7 @@ function savePlayer(reason, player)
 		local zone = getElementZoneName(source)
 		
 		local update = mysql_query(handler, "UPDATE characters SET casualskin='" .. casualskin .. "', x='" .. x .. "', y='" .. y .. "', z='" .. z .. "', rotation='" .. rot .. "', health='" .. health .. "', armor='" .. armor .. "', skin='" .. skin .. "', dimension_id='" .. dimension .. "', interior_id='" .. interior .. "', money='" .. money .. "', cuffed='" .. cuffed .. "', radiochannel='" .. radiochannel .. "', duty='" .. duty .. "', fightstyle='" .. fightstyle .. "', yearday='" .. yearday .. "', year='" .. year .. "', lastarea='" .. zone .. "', items='" .. items .. "', itemvalues='" .. itemvalues .. "', bankmoney='" .. bankmoney .. "', tag='" .. tag .. "' WHERE charactername='" .. username .. "'")
-		local update2 = mysql_query(handler, "UPDATE accounts SET muted='" .. muted .. "', hiddenadmin='" .. hiddenAdmin .. "', adminduty='" .. adminduty .. "', globalooc='" .. globalooc .. "', blur='" .. blur .. "', adminreports='" .. adminreports .. "', pmblocked='" .. pmblocked .. "' WHERE username='" .. tostring(safegameAccountUsername) .. "'")
+		local update2 = mysql_query(handler, "UPDATE accounts SET muted='" .. muted .. "', hiddenadmin='" .. hiddenAdmin .. "', adminduty='" .. adminduty .. "', globalooc='" .. globalooc .. "', blur='" .. blur .. "', adminreports='" .. adminreports .. "', pmblocked='" .. pmblocked .. "', warns='" .. warns .. "' WHERE username='" .. tostring(safegameAccountUsername) .. "'")
 		
 		if (update) then
 			mysql_free_result(update)

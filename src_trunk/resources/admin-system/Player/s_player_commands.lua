@@ -1632,3 +1632,37 @@ function getPlayerID(thePlayer, commandName, target)
 end
 addCommandHandler("getid", getPlayerID, false, false)
 addCommandHandler("id", getPlayerID, false, false)
+
+-- WARNINGS
+function warnPlayer(thePlayer, commandName, targetPlayer)
+	if (exports.global:isPlayerAdmin(thePlayer)) then
+		if not (targetPlayer) then
+			outputChatBox("SYNTAX: /" .. commandName .. " [Partial Player Nick]", thePlayer, 255, 194, 14)
+		else
+			local targetPlayer = exports.global:findPlayerByPartialNick(targetPlayer)
+			
+			if not (targetPlayer) then
+				outputChatBox("Player not found.", thePlayer, 255, 0, 0)
+			else
+				local targetPlayerName = getPlayerName(targetPlayer)
+				local warns = getElementData(targetPlayer, "warns")
+				warns = warns + 1
+				outputChatBox("You have given " .. targetPlayerName .. " a warning. (" .. warns .. "/3).", thePlayer, 255, 0, 0)
+				outputChatBox("You have been given a warning by " .. getPlayerName(thePlayer) .. ".", targetPlayer, 255, 0, 0)
+				
+				setElementData(targetPlayer, "warns", warns)
+				
+				if (hiddenAdmin==0) then
+					local adminTitle = exports.global:getPlayerAdminTitle(thePlayer)
+					outputChatBox("AdmWarn: " .. adminTitle .. " " .. playerName .. " warned " .. targetPlayerName .. ". (" .. warns .. "/3)", getRootElement(), 255, 0, 51)
+				end
+				
+				if (warns>=3) then
+					banPlayer(targetPlayer, true, false, false, thePlayer, "Received 3 admin warnings.", 0)
+					outputChatBox("AdmWarn: " .. targetPlayerName .. " was banned for several admin warnings.", getRootElement(), 255, 0, 51)
+				end
+			end
+		end
+	end
+end
+addCommandHandler("warn", warnPlayer, false, false)

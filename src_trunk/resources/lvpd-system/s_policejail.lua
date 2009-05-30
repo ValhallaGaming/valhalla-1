@@ -176,3 +176,15 @@ function timerPDUnjailPlayer(jailedPlayer)
 		killTimer(theTimer)
 	end
 end
+
+function showJailtime(thePlayer)
+	local isJailed = getElementData(thePlayer, "pd.jailtimer")
+	
+	if not (isJailed) then
+		outputChatBox("You are not jailed.", thePlayer, 255, 0, 0)
+	else
+		local jailtime = getElementData(thePlayer, "pd.jailtime")
+		outputChatBox("You have " .. jailtime .. " minutes remaining of your jail sentance.", thePlayer, 255, 194, 14)
+	end
+end
+addCommandHandler("jailtime", showJailtime)

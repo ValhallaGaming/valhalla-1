@@ -14,4 +14,5 @@
 	<script src="s_police_garage.lua" type="server"/>
 	
 	<script src="s_policeflash.lua" type="server"/>
+	<script src="s_roadblocks.lua" type="server"/>
 </meta>

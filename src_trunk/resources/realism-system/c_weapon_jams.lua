@@ -5,7 +5,7 @@ local jammed = false
 
 function playerFired(weapon, ammo, ammoInClip, x, y, z, element)
 	if (weapon==30 or weapon==31) then
-		local chance = math.random(1,25)
+		local chance = math.random(1,60)
 		if (chance==1) then
 			jamcount = 0
 			state = 0

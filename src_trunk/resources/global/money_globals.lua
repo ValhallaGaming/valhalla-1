@@ -40,9 +40,11 @@ function takePlayerSafeMoney(thePlayer, amount)
 	if (tonumber(amount)>0) then
 		local money = getElementData(thePlayer, "money")
 		
-		checkMoneyHacks(thePlayer)
-		setElementData(thePlayer, "money", money-amount)
-		takePlayerMoney(thePlayer, tonumber(amount))
+		if (amount<=money) then
+			checkMoneyHacks(thePlayer)
+			setElementData(thePlayer, "money", money-amount)
+			takePlayerMoney(thePlayer, tonumber(amount))
+		end
 	end
 end
 

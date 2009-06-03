@@ -242,7 +242,7 @@ function useItem(itemID, itemName, itemValue, isWeapon)
 			setPedSkin(source, tonumber(itemValue))
 			setElementData(source, "casualskin", tonumber(itemValue))
 		elseif (itemID==17) then -- watch
-			local time = getRealTime()
+			local time = getTime()
 			local hours = time.hour
 			local mins = time.minute
 			exports.global:sendLocalMeAction(source, " looks at their watch.")

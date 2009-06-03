@@ -170,7 +170,10 @@ function shapeHit(element, matchingDimension)
 				
 				local money = getElementData(thePlayer, "money")
 				
-				if (money<50) then
+				local faction = getPlayerTeam(thePlayer)
+				local ftype = getElementData(faction, "type")
+				
+				if (money<50) and (ftype~=2) then
 					outputChatBox("You cannot afford to have your car worked on.", thePlayer, 255, 0, 0)
 				else
 					outputChatBox("Welcome to Pay 'n' Spray. Please wait while we work on your " .. getVehicleName(element) .. ".", thePlayer, 255, 194, 14)

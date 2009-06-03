@@ -196,25 +196,33 @@ function fillVehicle(thePlayer, commandName)
 			if (currFuel==MAX_FUEL) then
 				outputChatBox("This vehicle is already full.", thePlayer)
 			else
-				local money = getElementData(thePlayer, "money")
+				local faction = getPlayerTeam(thePlayer)
+				local ftype = getElementData(faction, "type")
 				
-				local tax = exports.global:getTaxAmount()
-				local cost = FUEL_PRICE + (tax*FUEL_PRICE)
-				local litresAffordable = math.ceil(money/cost)
-				
-				if (litresAffordable>100) then
-					litresAffordable=100
-				end
-				
-				if (litresAffordable+currFuel>100) then
-					litresAffordable = 100 - currFuel
-				end
+				if (ftype~=2) then
+					local money = getElementData(thePlayer, "money")
 					
-				if (litresAffordable==0) then
-					outputChatBox("You cannot afford any fuel.", thePlayer, 255, 0, 0)
+					local tax = exports.global:getTaxAmount()
+					local cost = FUEL_PRICE + (tax*FUEL_PRICE)
+					local litresAffordable = math.ceil(money/cost)
+					
+					if (litresAffordable>100) then
+						litresAffordable=100
+					end
+					
+					if (litresAffordable+currFuel>100) then
+						litresAffordable = 100 - currFuel
+					end
+						
+					if (litresAffordable==0) then
+						outputChatBox("You cannot afford any fuel.", thePlayer, 255, 0, 0)
+					else
+						outputChatBox("Refilling Vehicle...", thePlayer)
+						setTimer(fuelTheVehicle, 15000, 1, thePlayer, veh, colShape, litresAffordable)
+					end
 				else
 					outputChatBox("Refilling Vehicle...", thePlayer)
-					setTimer(fuelTheVehicle, 15000, 1, thePlayer, veh, colShape, litresAffordable)
+					setTimer(fuelTheVehicle, 15000, 1, thePlayer, veh, colShape, MAX_FUEL)
 				end
 			end
 		end

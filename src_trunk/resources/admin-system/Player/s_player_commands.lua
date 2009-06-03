@@ -700,6 +700,7 @@ function reconPlayer(thePlayer, commandName, targetPlayer)
 					setElementData(thePlayer, "recondimension", dimension)
 					setElementData(thePlayer, "reconinterior", interior)
 					setPlayerNametagShowing(thePlayer, false)
+					setPedWeaponSlot(thePlayer, 0)
 					
 					local playerdimension = getElementDimension(targetPlayer)
 					local playerinterior = getElementInterior(targetPlayer)
@@ -1699,3 +1700,20 @@ function warnPlayer(thePlayer, commandName, targetPlayer)
 	end
 end
 addCommandHandler("warn", warnPlayer, false, false)
+
+-- recon fix for interior changing
+function interiorChanged(thePickup)
+	local cameraTarget = getCameraTarget(source)
+	
+	if (cameraTarget) then
+		if (cameraTarget~=source) then
+			local interior = getElementInterior(cameraTarget)
+			local dimension = getElementDimension(cameraTarget)
+			setCameraInterior(source, interior)
+			setElementInterior(source, interior)
+			setElementDimension(source, dimension)
+		end
+	end	
+end
+addEventHandler("onPlayerInteriorEnter", getRootElement(), interiorChanged)
+addEventHandler("onPlayerInteriorExit", getRootElement(), interiorChanged)

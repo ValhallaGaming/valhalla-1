@@ -1633,6 +1633,39 @@ end
 addCommandHandler("getid", getPlayerID, false, false)
 addCommandHandler("id", getPlayerID, false, false)
 
+-- EJECT
+function ejectPlayer(thePlayer, commandName, target)
+	if not (target) then
+		outputChatBox("SYNTAX: /" .. commandName .. " [Partial Player Nick]", thePlayer, 255, 194, 14)
+	else
+		if not (isPedInVehicle(thePlayer)) then
+			outputChatBox("You are not in a vehicle.", thePlayer, 255, 0, 0)
+		else
+			local vehicle = getPedOccupiedVehicle(thePlayer)
+			
+			local targetPlayer = exports.global:findPlayerByPartialNick(target)
+			
+			if not (targetPlayer) then
+				outputChatBox("Player not found.", thePlayer, 255, 0, 0)
+			elseif (targetPlayer==thePlayer) then
+				outputChatBox("You cannot eject yourself.", thePlayer, 255, 0, 0)
+			else
+				local targetPlayerName = getPlayerName(targetPlayer)
+				
+				local targetvehicle = getPedOccupiedVehicle(targetPlayer)
+				
+				if (targetvehicle~=vehicle) then
+					outputChatBox("This player is not in your vehicle.", thePlayer, 255, 0, 0)
+				else
+					outputChatBox("You have thrown " .. targetPlayerName .. " out of your vehicle.", thePlayer, 0, 255, 0)
+					removePedFromVehicle(thePlayer)
+				end
+			end
+		end
+	end
+end
+addCommandHandler("eject", ejectPlayer, false, false)
+
 -- WARNINGS
 function warnPlayer(thePlayer, commandName, targetPlayer)
 	if (exports.global:isPlayerAdmin(thePlayer)) then

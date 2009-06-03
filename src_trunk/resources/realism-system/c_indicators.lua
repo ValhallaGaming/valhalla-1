@@ -20,11 +20,11 @@ function toggleLeftIndicators()
 			
 			if not (state) then
 				setElementData(veh, "leftindicator", true, true)
-				rx, ry, rotation = getElementRotation(veh)
+				rx, ry, rotation = getVehicleRotation(veh)
 				leftTimer = setTimer(checkLeftAngle, 1000, 0, veh)
 			else
-				removeElementData(veh, "leftindicator", true)
-				local key = veh
+				setElementData(veh, "leftindicator", nil, true)
+				local key = vehicleids[veh]
 				
 				if (vehicles[key][2]) then
 					destroyElement(vehicles[key][2])
@@ -50,67 +50,66 @@ function toggleLeftIndicators()
 	end
 end
 
-function removeElementData(vehicle, str)
-	setElementData(vehicle, str, nil, true)
-	return true
-end
-
 function checkLeftAngle(veh)
-	rx, ry, rz = getElementRotation(veh)
+	rx, ry, rz = getVehicleRotation(veh)
 	
-	if (rz>=rotation+70) then
-		killTimer(leftTimer)
-		removeElementData(veh, "leftindicator")
-		local key = veh
-				
-		if (vehicles[key][2]) then
-			destroyElement(vehicles[key][2])
-			vehicles[key][2] = nil
-		end
-				
-		if (vehicles[key][3]) then
-			destroyElement(vehicles[key][3])
-			vehicles[key][3] = nil
-		end
-				
-		if (vehicles[key][4]) then
-			destroyElement(vehicles[key][4])
-			vehicles[key][4] = nil
-		end
-				
-		if (vehicles[key][5]) then
-			destroyElement(vehicles[key][5])
-			vehicles[key][5] = nil
+	if (rz) then
+		if (rz>=rotation+70) then
+			killTimer(leftTimer)
+			setElementData(veh, "leftindicator", nil, true)
+			local key = vehicleids[veh]
+					
+			if (vehicles[key][2]) then
+				destroyElement(vehicles[key][2])
+				vehicles[key][2] = nil
+			end
+					
+			if (vehicles[key][3]) then
+				destroyElement(vehicles[key][3])
+				vehicles[key][3] = nil
+			end
+					
+			if (vehicles[key][4]) then
+				destroyElement(vehicles[key][4])
+				vehicles[key][4] = nil
+			end
+					
+			if (vehicles[key][5]) then
+				destroyElement(vehicles[key][5])
+				vehicles[key][5] = nil
+			end
 		end
 	end
 end
 
 function checkRightAngle(veh)
-	rx, ry, rz = getElementRotation(veh)
+	rx, ry, rz = getVehicleRotation(veh)
 
-	if (rz<=rotation-70) then
-		killTimer(rightTimer)
-		removeElementData(veh, "rightindicator")
-		local key = veh
-				
-		if (vehicles[key][6]) then
-			destroyElement(vehicles[key][6])
-			vehicles[key][6] = nil
-		end
-				
-		if (vehicles[key][7]) then
-			destroyElement(vehicles[key][7])
-			vehicles[key][7] = nil
-		end
-				
-		if (vehicles[key][8]) then
-			destroyElement(vehicles[key][8])
-			vehicles[key][8] = nil
-		end
-				
-		if (vehicles[key][9]) then
-			destroyElement(vehicles[key][9])
-			vehicles[key][9] = nil
+	if (rz) then
+		if (rz<=rotation-70) then
+			killTimer(rightTimer)
+			setElementData(veh, "rightindicator", nil, true)
+			local key = vehicleids[veh]
+					
+			if (vehicles[key][6]) then
+				destroyElement(vehicles[key][6])
+				vehicles[key][6] = nil
+			end
+					
+			if (vehicles[key][7]) then
+				destroyElement(vehicles[key][7])
+				vehicles[key][7] = nil
+			end
+					
+			if (vehicles[key][8]) then
+				destroyElement(vehicles[key][8])
+				vehicles[key][8] = nil
+			end
+					
+			if (vehicles[key][9]) then
+				destroyElement(vehicles[key][9])
+				vehicles[key][9] = nil
+			end
 		end
 	end
 end
@@ -125,11 +124,11 @@ function toggleRightIndicators()
 			
 			if not (state) then
 				setElementData(veh, "rightindicator", true, true)
-				rx, ry, rotation = getElementRotation(veh)
+				rx, ry, rotation = getVehicleRotation(veh)
 				rightTimer = setTimer(checkRightAngle, 1000, 0, veh)
 			else
-				removeElementData(veh, "rightindicator")
-				local key = veh
+				setElementData(veh, "rightindicator", nil, true)
+				local key = vehicleids[veh]
 				
 				if (vehicles[key][6]) then
 					destroyElement(vehicles[key][6])
@@ -159,37 +158,81 @@ addCommandHandler ("indicator_left", toggleLeftIndicators)
 addCommandHandler ("indicator_right", toggleRightIndicators)
 
 vehicles = { }
+vehicleids = { }
 
 function streamIn()
 	if (getElementType(source)=="vehicle") then
-        vehicles[source] = { }
-    end
+		for i = 1, #vehicles+1 do
+			if (vehicles[i]==nil) then
+				vehicles[i] = { }
+				vehicles[i][1] = source
+				vehicleids[source] = i
+				break
+			end
+		end
+	end
 end
 addEventHandler("onClientElementStreamIn", getRootElement(), streamIn)
 
 function streamOut()
 	if (getElementType(source)=="vehicle") then
-        cleanupVehicle(source)
-		table.remove(vehicles, source)
+		if (vehicleids[source]~=nil) then
+			local id = vehicleids[source]
+			vehicleids[source] = nil
+			vehicles[id] = nil
+		end
 	end
 end
 addEventHandler("onClientElementStreamOut", getRootElement(), streamOut)
-
-function cleanupVehicle(vehicle)
-    if vehicle then
-        for i = 2, 9 do
-            destroyElement(vehicles[vehicle][i])
-        end
-    end
-end
 
 function doFlashes()
 	if (#vehicles==0) then return end
 
 	for key, value in pairs(vehicles) do
-		local veh = key
-		local hadIndicator = false
+		local veh = vehicles[key][1]
 		
+		if (veh==nil) then
+			if (vehicles[key][2]) then
+				destroyElement(vehicles[key][2])
+				vehicles[key][2] = nil
+			end
+				
+			if (vehicles[key][3]) then
+				destroyElement(vehicles[key][3])
+				vehicles[key][3] = nil
+			end
+				
+			if (vehicles[key][4]) then
+				destroyElement(vehicles[key][4])
+				vehicles[key][4] = nil
+			end
+				
+			if (vehicles[key][5]) then
+				destroyElement(vehicles[key][5])
+				vehicles[key][5] = nil
+			end
+			
+			if (vehicles[key][6]) then
+					destroyElement(vehicles[key][6])
+					vehicles[key][6] = nil
+				end
+				
+				if (vehicles[key][7]) then
+					destroyElement(vehicles[key][7])
+					vehicles[key][7] = nil
+				end
+				
+				if (vehicles[key][8]) then
+					destroyElement(vehicles[key][8])
+					vehicles[key][8] = nil
+				end
+				
+				if (vehicles[key][9]) then
+					destroyElement(vehicles[key][9])
+					vehicles[key][9] = nil
+				end
+		end
+
 		-- left indicator
 		if (getElementData(veh, "leftindicator")) then
 			if (vehicles[key][2]==nil) then
@@ -206,7 +249,6 @@ function doFlashes()
 				attachElements(vehicles[key][4], veh, x1+0.1, y2, z1+0.7)
 				attachElements(vehicles[key][5], vehicles[key][4], 0, 0, 0)
 				setElementAlpha(vehicles[key][4], 0)
-				hadIndicator = true
 			else
 				destroyElement(vehicles[key][2])
 				destroyElement(vehicles[key][3])
@@ -235,7 +277,6 @@ function doFlashes()
 				attachElements(vehicles[key][8], veh, x2-0.3, y2-0.1, z1+0.7)
 				attachElements(vehicles[key][9], vehicles[key][8], 0, 0, 0)
 				setElementAlpha(vehicles[key][8], 0)
-				hadIndicator = true
 			else
 				destroyElement(vehicles[key][6])
 				destroyElement(vehicles[key][7])
@@ -247,11 +288,6 @@ function doFlashes()
 				vehicles[key][9] = nil
 			end
 		end
-		
-		if (hadIndicator) and (getVehicleOccupant(value, 0)==getLocalPlayer() or getVehicleOccupant(value, 1)==getLocalPlayer() or getVehicleOccupant(value, 2)==getLocalPlayer() or getVehicleOccupant(value, 3)==getLocalPlayer()) then
-			playSoundFrontEnd(42)
-		end
-			
 	end
 end
 setTimer(doFlashes, 500, 0)

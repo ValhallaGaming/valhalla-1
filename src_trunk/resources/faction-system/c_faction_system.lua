@@ -485,11 +485,12 @@ function btPromotePlayer(button, state)
 				outputChatBox(playerName .. " is already at the highest rank.", 255, 0, 0)
 			else
 				local row = guiGridListGetSelectedItem(gMemberGrid)
+				guiGridListSetSelectedItem(gMemberGrid, 0, 0)
 				guiGridListSetItemText(gMemberGrid, row, tonumber(colRank), arrFactionRanks[currRankNumber+1], false, false)
 				guiGridListSetItemText(gMemberGrid, row, tonumber(colWage), arrFactionWages[currRankNumber+1], false, true)
 				outputChatBox("You promoted " .. playerName .. " from '" .. arrFactionRanks[currRankNumber] .. "' to '" .. arrFactionRanks[currRankNumber+1] .. "'.", 0, 255, 0)
 				triggerServerEvent("cguiPromotePlayer", getLocalPlayer(), playerName, currRankNumber+1, arrFactionRanks[currRankNumber], arrFactionRanks[currRankNumber+1])
-				setTimer(reselectItem, 100, 1, grid, row, col)
+				guiGridListSetSelectedItem(gMemberGrid, row, tonumber(colRank))
 			end
 		else
 			outputChatBox("Please select a member to promote.")
@@ -516,11 +517,12 @@ function btDemotePlayer(button, state)
 				outputChatBox(playerName .. " is already at the lowest rank.", 255, 0, 0)
 			else
 				local row = guiGridListGetSelectedItem(gMemberGrid)
+				guiGridListSetSelectedItem(gMemberGrid, 0, 0)
 				guiGridListSetItemText(gMemberGrid, row, tonumber(colRank), arrFactionRanks[currRankNumber-1], false, false)
 				guiGridListSetItemText(gMemberGrid, row, tonumber(colWage), arrFactionWages[currRankNumber-1], false, true)
 				outputChatBox("You demoted " .. playerName .. " from '" .. arrFactionRanks[currRankNumber] .. "' to '" .. arrFactionRanks[currRankNumber-1] .. "'.", 0, 255, 0)
 				triggerServerEvent("cguiDemotePlayer", getLocalPlayer(), playerName, currRankNumber-1, arrFactionRanks[currRankNumber], arrFactionRanks[currRankNumber-1])
-				setTimer(reselectItem, 100, 1, grid, row, col)
+				guiGridListSetSelectedItem(gMemberGrid, row, tonumber(colRank))
 			end
 		else
 			outputChatBox("Please select a member to demote.")

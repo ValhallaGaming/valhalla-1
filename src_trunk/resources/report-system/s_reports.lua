@@ -156,7 +156,7 @@ function pendingReportTimeout(id)
 		end
 		
 		outputChatBox("[" .. timestring .. "] Your report (#" .. id .. ") has expired.", reportingPlayer, 255, 194, 14)
-		outputChatBox("[" .. timestring .. "] If you still require assistance, please resubmit your report or visit our forums (http://forums.concretegaming.net).", reportingPlayer, 255, 194, 14)
+		outputChatBox("[" .. timestring .. "] If you still require assistance, please resubmit your report or visit our forums (http://forums.valhallagaming.net).", reportingPlayer, 255, 194, 14)
 	end
 end
 

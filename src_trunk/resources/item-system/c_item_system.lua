@@ -347,3 +347,12 @@ function showItem(button)
 		end
 	end
 end
+
+function stopGasmaskDamage(attacker, weapon)
+	local gasmask = getElementData(getLocalPlayer(), "gasmask")
+
+	if (weapon==17) and (gasmask==1) then
+		cancelEvent()
+	end
+end
+addEventHandler("onClientPlayerDamage", getLocalPlayer(), stopGasmaskDamage)

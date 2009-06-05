@@ -20,7 +20,8 @@ function realisticDamage(attacker, weapon, bodypart)
 		end
 		
 		-- Damage effect
-		if not (effect) then
+		local gasmask = getElementData(source, "gasmask")
+		if not (effect) and ((not gasmask or gasmask==0) and (weapon==17)) then
 			fadeCamera(false, 1.0, 255, 0, 0)
 			effect = true
 			setTimer(endEffect, 250, 1)

@@ -271,6 +271,29 @@ function useItem(itemID, itemName, itemValue, isWeapon)
 		elseif (itemID==25) then -- ELBOWS
 			setPedFightingStyle(source, 16)
 			outputChatBox("You read a book on how to do Elbow Fighting.", source, 255, 194, 14)
+		elseif (itemID==26) then -- GASMASK
+			local gasmask = getElementData(source, "gasmask")
+			
+			if not (gasmask) or (gasmask==0) then
+				exports.global:sendLocalMeAction(source, "slips a black gas mask over their face.")
+				
+				-- can't see their name
+				local pid = getElementData(source, "playerid")
+				local fixedName = "(" .. tostring(pid) .. ") Unknown_Person"
+				setPlayerNametagText(source, tostring(fixedName))
+				outputChatBox(tostring(fixedName))
+				setElementData(source, "gasmask", 1)
+			elseif (gasmask==1) then
+				exports.global:sendLocalMeAction(source, "slips a black gas mask off their face.")
+				
+				-- can't see their name
+				local pid = getElementData(source, "playerid")
+				local name = getPlayerName(source)
+				local fixedName = "(" .. tostring(pid) .. ") " .. name
+				setPlayerNametagText(source, tostring(fixedName))
+				outputChatBox(tostring(fixedName))
+				setElementData(source, "gasmask", 0)
+			end
 		else
 			outputChatBox("Error 800001 - Report on http://bugs.valhallagaming.net", source, 255, 0, 0)
 		end

@@ -7,7 +7,7 @@ function showBlood(attacker, weapon, bodypart)
 	end
 	
 	-- Realistic blood from bodypart
-	if (attacker) then
+	if (attacker) and (weapon~=17) then
 		if (bodypart==3) then -- torso
 			local x, y, z = getPedBonePosition(source, 3)
 			fxAddBlood(x, y, z, 0, 0, 0, 500, 1.0)

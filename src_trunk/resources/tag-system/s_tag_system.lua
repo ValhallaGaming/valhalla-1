@@ -30,7 +30,7 @@ tags = {1524, 1525, 1526, 1527, 1528, 1529, 1530, 1531 }
 function makeTagObject(cx, cy, cz, rot, interior, dimension)
 	local tag = getElementData(source, "tag")
 	if (tag~=9) then
-		local obj = createObject(tags[tag], cx, cy, cz, 0, 0, rot+90)
+		local obj = createObject(tags[tag], cx, cy, cz, 0, 0, rot+91)
 		exports.pool:allocateElement(obj)
 		setElementDimension(obj, dimension)
 		setElementInterior(obj, interior)

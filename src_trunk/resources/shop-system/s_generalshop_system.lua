@@ -41,7 +41,7 @@ function createGeneralshop(thePlayer, commandName, shoptype)
 					local id = mysql_insert_id(handler)
 					mysql_free_result(query)
 					
-					local colCircle = createColCircle(x, y, 3)
+					local colCircle = createColSphere(x, y, z, 3)
 					setElementDimension(colCircle, dimension)
 					setElementInterior(colCircle, interior)
 					
@@ -150,7 +150,7 @@ function loadAllGeneralshops(res)
 				local interior = tonumber(row[6])
 				local shoptype = tonumber(row[7])
 				
-				local colCircle = createColCircle(x, y, 3)
+				local colCircle = createColSphere(x, y, z, 3)
 				setElementDimension(colCircle, dimension)
 				setElementInterior(colCircle, interior)
 				

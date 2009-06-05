@@ -3,7 +3,7 @@ function engineBreak()
 	local driver = getVehicleController(source)
 	
 	if (driver) then
-		if (health<=400)
+		if (health<=400) then
 			local rand = math.random(1, 5)
 
 			if (rand==1) then -- 20% chance

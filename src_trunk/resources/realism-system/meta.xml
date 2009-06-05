@@ -41,4 +41,6 @@
 	
 	<script src="c_weapon_jams.lua" type="client"/>
 	<script src="s_weapon_jams.lua" type="server"/>
+	
+	<script src="s_ck_corpses.lua" type="server"/>
 </meta>

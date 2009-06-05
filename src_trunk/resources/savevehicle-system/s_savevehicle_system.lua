@@ -86,6 +86,24 @@ function saveVehicleOnExit(thePlayer, seat, vehicle)
 			local door5 = getVehicleDoorState(source, 4)
 			local door6 = getVehicleDoorState(source, 5)
 			
+			local upgrade0 = getVehicleUpgradeOnSlot(source, 0)
+			local upgrade1 = getVehicleUpgradeOnSlot(source, 1)
+			local upgrade2 = getVehicleUpgradeOnSlot(source, 2)
+			local upgrade3 = getVehicleUpgradeOnSlot(source, 3)
+			local upgrade4 = getVehicleUpgradeOnSlot(source, 4)
+			local upgrade5 = getVehicleUpgradeOnSlot(source, 5)
+			local upgrade6 = getVehicleUpgradeOnSlot(source, 6)
+			local upgrade7 = getVehicleUpgradeOnSlot(source, 7)
+			local upgrade8 = getVehicleUpgradeOnSlot(source, 8)
+			local upgrade9 = getVehicleUpgradeOnSlot(source, 9)
+			local upgrade10 = getVehicleUpgradeOnSlot(source, 10)
+			local upgrade11 = getVehicleUpgradeOnSlot(source, 11)
+			local upgrade12 = getVehicleUpgradeOnSlot(source, 12)
+			local upgrade13 = getVehicleUpgradeOnSlot(source, 13)
+			local upgrade14 = getVehicleUpgradeOnSlot(source, 14)
+			local upgrade15 = getVehicleUpgradeOnSlot(source, 15)
+			local upgrade16 = getVehicleUpgradeOnSlot(source, 16)
+			
 			local health = getElementHealth(source)
 			
 			local paintjob = getVehiclePaintjob(source)
@@ -94,9 +112,11 @@ function saveVehicleOnExit(thePlayer, seat, vehicle)
 			local interior = getElementInterior(source)
 			
 			local update = mysql_query(handler, "UPDATE vehicles SET panel0='" .. panel0 .. "', panel1='" .. panel1 .. "', panel2='" .. panel2 .. "', panel3='" .. panel3 .. "', panel4='" .. panel4 .. "', panel5='" .. panel5 .. "', panel6='" .. panel6 .. "', door1='" .. door1 .. "', door2='" .. door2 .. "', door3='" .. door3 .. "', door4='" .. door4 .. "', door5='" .. door5 .. "', door6='" .. door6 .. "', hp='" .. health .. "', sirens='" .. sirens .. "', paintjob='" .. paintjob .. "', currdimension='" .. dimension .. "', currinterior='" .. interior .. "' WHERE id='" .. dbid .. "'")
+			local update2 = mysql_query(handler, "UPDATE vehicles SET upgrade0='" .. upgrade0 .. "', upgrade1='" .. upgrade1 .. "', upgrade2='" .. upgrade2 .. "', upgrade3='" .. upgrade3 .. "', upgrade4='" .. upgrade4 .. "', upgrade5='" .. upgrade5 .. "', upgrade6='" .. upgrade6 .. "', upgrade7='" .. upgrade7 .. "', upgrade8='" .. upgrade8 .. "', upgrade9='" .. upgrade9 .. "', upgrade10='" .. upgrade10 .. "', upgrade11='" .. upgrade11 .. "', upgrade12='" .. upgrade12 .. "', upgrade13='" .. upgrade13 .. "', upgrade14='" .. upgrade14 .. "', upgrade15='" .. upgrade15 .. "', upgrade16='" .. upgrade16 .. "' WHERE id='" .. dbid .. "'")
 			
 			if (update) then
 				mysql_free_result(update)
+				mysql_free_result(update2)
 			end
 			
 			local timeTaken = (getTickCount() - tick)/1000

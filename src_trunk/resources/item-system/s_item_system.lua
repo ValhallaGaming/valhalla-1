@@ -281,7 +281,7 @@ function useItem(itemID, itemName, itemValue, isWeapon)
 				local pid = getElementData(source, "playerid")
 				local fixedName = "(" .. tostring(pid) .. ") Unknown_Person"
 				setPlayerNametagText(source, tostring(fixedName))
-				outputChatBox(tostring(fixedName))
+
 				setElementData(source, "gasmask", 1)
 			elseif (gasmask==1) then
 				exports.global:sendLocalMeAction(source, "slips a black gas mask off their face.")
@@ -291,7 +291,7 @@ function useItem(itemID, itemName, itemValue, isWeapon)
 				local name = getPlayerName(source)
 				local fixedName = "(" .. tostring(pid) .. ") " .. name
 				setPlayerNametagText(source, tostring(fixedName))
-				outputChatBox(tostring(fixedName))
+
 				setElementData(source, "gasmask", 0)
 			end
 		else

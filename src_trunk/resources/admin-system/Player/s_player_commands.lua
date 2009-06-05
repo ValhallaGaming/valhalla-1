@@ -206,12 +206,21 @@ function ckPlayer(thePlayer, commandName, targetPlayer)
 				elseif (logged==1) then
 					mysql_query(handler, "UPDATE characters SET cked='1' WHERE charactername='" .. targetPlayerName .. "'")
 					
+					local x, y, z = getElementPosition(targetPlayer)
+					local skin = getPedSkin(targetPlayer)
+					local rotation = getPedRotation(targetPlayer)
+					
+					local ped = createPed(skin, x, y, z)
+					setPedRotation(ped, rotation)
+					setTimer(setPedAnimation, 100, 1, ped, "WUZI", "CS_Dead_Guy", -1, false, false, false)
+					
 					-- send back to change char screen
 					local id = getElementData(targetPlayer, "gameaccountid")
 					showCursor(targetPlayer, false)
 					triggerEvent("sendAccounts", targetPlayer, targetPlayer, id, true)
 					setElementData(targetPlayer, "loggedin", 0, true)
 					outputChatBox("Your character was CK'ed by " .. getPlayerName(thePlayer) .. ".", targetPlayer, 255, 194, 14)
+					showChat(targetPlayer, true)
 					outputChatBox("You have CK'ed ".. getPlayerName(targetPlayer) ..".", thePlayer, 255, 194, 14)
 				end
 			end

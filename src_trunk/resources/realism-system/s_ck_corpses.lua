@@ -43,7 +43,7 @@ function loadAllCorpses(res)
 				
 				local ped = createPed(skin, x, y, z)
 				setPedRotation(ped, rotation)
-				setTimer(setPedAnimation, 50, 1, ped, "WUZI", "CS_Dead_Guy", -1, false, false, false)
+				setTimer(setPedAnimation, 100, 1, ped, "WUZI", "CS_Dead_Guy", -1, false, false, false)
 			end
 		end
 	end

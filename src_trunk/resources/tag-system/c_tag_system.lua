@@ -13,10 +13,11 @@ function clientTagWall(weapon, ammo, ammoInClip, hitX, hitY, hitZ, hitElement)
 				if (cooldown==0) then
 					if (ammoInClip>10) and (weapon==41) then
 						-- Check the player is near a wall
-						local x, y, z = getElementPosition(getLocalPlayer())
-						local rot = getPedRotation(getLocalPlayer())
+						local localPlayer = getLocalPlayer()
+						local x, y, z = getElementPosition(localPlayer)
+						local rot = getPedRotation(localPlayer)
 
-						local matrix = getElementMatrix (getLocalPlayer())
+						local matrix = getElementMatrix (localPlayer)
 						local oldX = 0
 						local oldY = 1
 						local oldZ = 0
@@ -38,13 +39,13 @@ function clientTagWall(weapon, ammo, ammoInClip, hitX, hitY, hitZ, hitElement)
 								count = 0
 								cooldown = 1
 								setTimer(resetCooldown, 30000, 1)
-								local interior = getElementInterior(getLocalPlayer())
-								local dimension = getElementDimension(getLocalPlayer())
+								local interior = getElementInterior(localPlayer)
+								local dimension = getElementDimension(localPlayer)
 								
 								--cx = cx - math.sin(math.rad(rot)) * 0.1
 								cy = cy - math.cos(math.rad(rot)) * 0.1
 								
-								triggerServerEvent("createTag", getLocalPlayer(), cx, cy, cz, rot, interior, dimension) 
+								triggerServerEvent("createTag", localPlayer, cx, cy, cz, rot, interior, dimension) 
 							end
 						end
 					end

@@ -139,6 +139,8 @@ function sendLocalMeAction(thePlayer, message)
 		end
 	end
 end
+addEvent("sendLocalMeAction", true)
+addEventHandler("sendLocalMeAction", getRootElement(), sendLocalMeAction)
 
 function sendLocalDoAction(thePlayer, message)
 	local x, y, z = getElementPosition(thePlayer)

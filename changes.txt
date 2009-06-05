@@ -27,3 +27,11 @@ realism-system
 
 INSERT INTO achievementslist SET id=33, NAME="Pirate", description="Took part in the Valhalla MTA Treasure Hunt Event.", points=25;
 INSERT INTO achievementslist SET id=34, NAME="No.1 Pirate", description="Completed the Valhalla MTA Treasure Hunt Event.", points=25;
+
+-----------------
+SQL CHANGES - 2.1
+-----------------
+
+interior, dimension, currinterior, currdimension fields for vehicles
+warns for accounts
+hoursplayed for characters

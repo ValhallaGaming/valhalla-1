@@ -33,10 +33,14 @@ function explodeFlash(obj, x, y, z)
 	destroyElement(obj)
 	destroyElement(colsphere)
 	for key, value in ipairs(players) do
-		playSoundFrontEnd(value, 47)
-		fadeCamera(value, false, 0.5, 255, 255, 255)
-		setTimer(cancelEffect, 5000, 1, value)
-		setTimer(playSoundFrontEnd, 1000, 1, value, 48)
+		local gasmask = getElementData(value, "gasmask")
+		
+		if (not gasmask) or (gasmask==0) then
+			playSoundFrontEnd(value, 47)
+			fadeCamera(value, false, 0.5, 255, 255, 255)
+			setTimer(cancelEffect, 5000, 1, value)
+			setTimer(playSoundFrontEnd, 1000, 1, value, 48)
+		end
 	end
 end
 

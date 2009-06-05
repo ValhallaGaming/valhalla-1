@@ -71,6 +71,7 @@ function weaponAim(target)
 				
 				if (mode==2) then
 					local speedx, speedy, speedz = getElementVelocity(target)
+					actualspeed = math.ceil(((speedx^2 + speedy^2 + speedz^2)^(0.5)*100))
 					outputChatBox(getVehicleName(target) .. " clocked in at " .. actualspeed .. " MPH.", 255, 194, 14)
 				end
 			end

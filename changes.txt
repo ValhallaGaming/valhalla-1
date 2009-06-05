@@ -35,3 +35,10 @@ SQL CHANGES - 2.1
 interior, dimension, currinterior, currdimension fields for vehicles
 warns for accounts
 hoursplayed for characters
+INSERT INTO items SET id=20, item_name='Standard Fighting for Dummies', item_description='A book on how to do standard fighting.', modelid='1271';
+INSERT INTO items SET id=21, item_name='Boxing for Dummies', item_description='A book on how to do boxing.', modelid='1271';
+INSERT INTO items SET id=22, item_name='Kung Fu for Dummies', item_description='A book on how to do kung fu.', modelid='1271';
+INSERT INTO items SET id=23, item_name='Knee Head Fighting for Dummies', item_description='A book on how to do knee head fighting.', modelid='1271';
+INSERT INTO items SET id=24, item_name='Grab Kick Fighting for Dummies', item_description='A book on how to do grab kick fighting.', modelid='1271';
+INSERT INTO items SET id=25, item_name='Elbow Fighting for Dummies', item_description='A book on how to do elbow fighting.', modelid='1271';
+INSERT INTO items SET id=26, item_name='Gas Mask', item_description='A black gas mask, blocks out the effects of gas and flashbangs.', modelid='1271';

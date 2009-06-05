@@ -1,3 +1,19 @@
+-- Bind Keys required
+function bindKeys()
+	local players = exports.pool:getPoolElementsByType("player")
+	for k, arrayPlayer in ipairs(players) do
+		if not(isKeyBound(arrayPlayer, "space", "down", stopAnimation)) then
+			bindKey(arrayPlayer, "space", "down", stopAnimation)
+		end
+	end
+end
+
+function bindKeysOnJoin()
+	bindKey(source, "space", "down", stopAnimation)
+end
+addEventHandler("onResourceStart", getRootElement(), bindKeys)
+addEventHandler("onPlayerJoin", getRootElement(), bindKeysOnJoin)
+
 function stopAnimation(thePlayer)
 	local tazed = getElementData(thePlayer, "tazed")
 	

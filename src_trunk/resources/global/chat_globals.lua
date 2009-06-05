@@ -8,7 +8,7 @@ function setOOCState(state)
 	oocState = state
 end
 
-function sendMessageToAdmins(message, r, g, b)
+function sendMessageToAdmins(message)
 	local players = exports.pool:getPoolElementsByType("player")
 	
 	for k, thePlayer in ipairs(players) do

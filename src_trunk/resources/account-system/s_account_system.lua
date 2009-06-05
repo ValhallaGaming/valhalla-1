@@ -178,7 +178,7 @@ function spawnCharacter(charname)
 	
 	local safecharname = mysql_escape_string(handler, charname)
 	
-	local result = mysql_query(handler, "SELECT id, x, y, z, rotation, interior_id, dimension_id, health, armor, skin, money, faction_id, cuffed, radiochannel, masked, duty, cellnumber, fightstyle, pdjail, pdjail_time, job, casualskin, weapons, ammo, items, itemvalues, car_license, gun_license, bankmoney, fingerprint, tag FROM characters WHERE charactername='" .. charname .. "' AND account='" .. id .. "'")
+	local result = mysql_query(handler, "SELECT id, x, y, z, rotation, interior_id, dimension_id, health, armor, skin, money, faction_id, cuffed, radiochannel, masked, duty, cellnumber, fightstyle, pdjail, pdjail_time, job, casualskin, weapons, ammo, items, itemvalues, car_license, gun_license, bankmoney, fingerprint, tag, hoursplayed FROM characters WHERE charactername='" .. charname .. "' AND account='" .. id .. "'")
 	
 	if (result) then
 		local id = mysql_result(result, 1, 1)
@@ -219,6 +219,8 @@ function spawnCharacter(charname)
 		local fingerprint = tostring(mysql_result(result, 1, 30))
 		
 		local tag = tonumber(mysql_result(result, 1, 31))
+		
+		local hoursplayed = tonumber(mysql_result(result, 1, 32))
 		
 		if (items~=tostring(mysql_null())) and (itemvalues~=tostring(mysql_null())) then
 			setElementData(source, "items", items)
@@ -437,6 +439,7 @@ function spawnCharacter(charname)
 		setElementData(source, "hiddenadmin", tonumber(hiddenAdmin))
 		setElementData(source, "legitnamechange", 0)
 		setElementData(source, "muted", tonumber(muted))
+		setElementData(source, "hoursplayed", hoursplayed)
 		exports.global:setPlayerSafeMoney(source, money)
 		exports.global:checkMoneyHacks(source)
 		

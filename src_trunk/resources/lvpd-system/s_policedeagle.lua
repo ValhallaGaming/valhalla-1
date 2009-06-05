@@ -14,9 +14,9 @@ function tazerFired(x, y, z, target)
 		if (target) then
 			setElementData(target, "tazed", 1)
 			toggleAllControls(target, false, true, false)
-			setPedAnimation(target, "CRACK", "crckidle2", 3000, false, false, false)
-			setTimer(toggleAllControls, 3000, 1, target, true, true, true)
-			setTimer(setPedAnimation, 3001, 1, target)
+			setPedAnimation(target, "CRACK", "crckidle2", 10000, false, false, false)
+			setTimer(toggleAllControls, 10000, 1, target, true, true, true)
+			setTimer(setPedAnimation, 10005, 1, target)
 		end
 	end
 end

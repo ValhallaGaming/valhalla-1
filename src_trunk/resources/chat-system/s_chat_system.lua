@@ -870,11 +870,20 @@ function payPlayer(thePlayer, commandName, targetPlayerNick, amount)
 					amount = tonumber(amount)
 					
 					local money = getElementData(thePlayer, "money")
+					local hoursplayed = getElementData(thePlayer, "hoursplayed")
 					
-					if (money<amount) then
+					if (targetPlayer==thePlayer) then
+						outputChatBox("You cannot pay money to yourself.", thePlayer, 255, 0, 0)
+					elseif (money<amount) then
 						outputChatBox("You do not have enough money.", thePlayer, 255, 0, 0)
+					elseif (hoursplayed<5) and (amount>50) then
+						outputChatBox("You must play atleast 5 hours before transferring over 50$", thePlayer, 255, 0, 0)
 					else
 						exports.global:setPlayerSafeMoney(thePlayer, money-amount)
+						
+						if (hoursplayed<5) then
+							exports.global:sendMessageToAdmins("AdmWarn: New Player '" .. getPlayerName(thePlayer) .. "' transferred " .. amount .. "$ to '" .. getPlayerName(targetPlayer) .. "'.")
+						end
 						
 						local targetMoney = getElementData(targetPlayer, "money")
 						exports.global:setPlayerSafeMoney(targetPlayer, targetMoney+amount)

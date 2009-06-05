@@ -946,6 +946,9 @@ function payAllWages()
 					outputChatBox("    Bank Interest (" .. interestrate*1000 .. "%): " .. interest .. "$", value, 255, 194, 14)
 					outputChatBox("----------------------------------------------------------", value, 255, 194, 14)
 					outputChatBox("  Gross Income: " .. unemployedPay+profit+interest .. "$ (Wire-Transferred to bank)", value, 255, 194, 14)
+					
+					local hoursplayed = getElementData(value, "hoursplayed")
+					setElementData(value, "hoursplayed", hoursplayed+1)
 				end
 			end
 		end

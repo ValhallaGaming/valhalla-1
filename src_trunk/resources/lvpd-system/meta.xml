@@ -15,4 +15,7 @@
 	
 	<script src="s_policeflash.lua" type="server"/>
 	<script src="s_roadblocks.lua" type="server"/>
+	
+	<script src="fastrope/s_fastrope.lua" type="server"/>
+	<script src="fastrope/c_fastrope.lua" type="client"/>
 </meta>

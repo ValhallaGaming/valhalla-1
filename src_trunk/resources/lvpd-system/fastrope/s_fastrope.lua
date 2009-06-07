@@ -1,0 +1,49 @@
+function warpheli(thePlayer)
+	for key, value in ipairs(getElementsByType("vehicle")) do
+		local id = getElementData(value, "dbid")
+		
+		if (id==-1) then
+			warpPedIntoVehicle(thePlayer, value, 2)
+		end
+	end
+end
+addCommandHandler("warp", warpheli)
+
+function startRappel(x, y, z, gz)
+	local r = getPedRotation(source)
+	
+	local seat = getPedOccupiedVehicleSeat(source)
+	
+	if (seat==0 or seat==2) then -- left hand side
+		r = r + 90
+	else
+		r = r - 90
+	end
+	
+	setPedRotation(source, r)
+	
+	local slot = getPedWeaponSlot(source)
+	local invisible = createObject (1337, x, y, z, 0, 0, r)
+	setElementAlpha(invisible, 0)
+	removePedFromVehicle(source)
+	attachElements(source, invisible)
+	moveObject(invisible, 2000, x, y, gz, 0, 0, 0)
+	exports.pool:allocateElement(invisible)
+	setTimer(stopRappel, 2000, 1, invisible, source, slot)
+	setPedAnimation(source, "PARACHUTE", "PARA_float", -1, false, false, false)
+	
+	local colshape = createColCircle(x, y, 100) -- 100 distance
+	for key, value in ipairs(getElementsWithinColShape(colshape, "player")) do
+		triggerClientEvent(value, "createRope", value, x, y, z, gz)
+	end
+end
+addEvent("startRappel", true)
+addEventHandler("startRappel", getRootElement(), startRappel)
+
+function stopRappel(object, player, slot)
+	detachElements(player, object)
+	setPedAnimation(player)
+	setPedWeaponSlot(player, slot)
+	destroyElement(object)
+end
+	

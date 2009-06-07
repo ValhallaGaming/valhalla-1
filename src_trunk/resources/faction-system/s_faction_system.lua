@@ -770,8 +770,9 @@ function payAllWages()
 	
 	for key, value in ipairs(players) do
 		local logged = getElementData(value, "loggedin")
+		local timeinserver = getElementData(value, "timeinserver")
 		
-		if (logged==1) then
+		if (logged==1) and (timeinserver>=1) then
 			local playerFaction = getElementData(value, "faction")
 			if (playerFaction~=-1) then -- In a faction
 				local theTeam = getPlayerTeam(value)
@@ -951,6 +952,8 @@ function payAllWages()
 					setElementData(value, "hoursplayed", hoursplayed+1)
 				end
 			end
+		elseif (timeinserver<1) then
+			outputChatBox("You have not played long enough to recieve a payday.", value, 255, 0, 0)
 		end
 	end
 	

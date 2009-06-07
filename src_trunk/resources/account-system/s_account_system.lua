@@ -106,7 +106,7 @@ function onJoin()
 	setElementData(source, "globalooc", 1)
 	setElementData(source, "muted", 0)
 	setElementData(source, "loginattempts", 0)
-	setElementData(source, "safeweaponstring", "")
+	setElementData(source, "timeinserver", 0)
 	
 	setElementDimension(source, 0)
 	setElementInterior(source, 0)

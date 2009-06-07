@@ -3472,3 +3472,10 @@ function onPlayerJoinSetNametagsState()
 	end
 end
 addEventHandler("onClientPlayerJoin", getRootElement(), onPlayerJoinSetNametagsState)
+
+timeinserver = 0
+function updateTimeInServer()
+	timeinserver = timeinserver + 1
+	setElementData(getLocalPlayer(), "timeinserver", timeinserver)
+end
+setTimer(updateTimeInServer, 3540000, 0) -- actually 59 minutes, since we have events happening on 60 minutes that we WANT to trigger if we've just spent out first hour in the server

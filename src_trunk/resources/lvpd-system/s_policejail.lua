@@ -56,8 +56,8 @@ function arrestPlayer(thePlayer, commandName, targetPlayerNick, fine, jailtime, 
 		end
 		
 		if (factionType==2) and (isElementWithinColShape(thePlayer, arrestColShape)) then
-			if not (targetPlayerNick) or not (fine) or not (jailtime) or not (...) or (jailtime<1) or (jailtime>60) then
-				outputChatBox("SYNTAX: /arrest [Player Partial Nick / ID] [Fine] [Jail Time (Minutes 1->60)] [Crimes Committed]", thePlayer, 255, 194, 14)
+			if not (targetPlayerNick) or not (fine) or not (jailtime) or not (...) or (jailtime<1) or (jailtime>180) then
+				outputChatBox("SYNTAX: /arrest [Player Partial Nick / ID] [Fine] [Jail Time (Minutes 1->180)] [Crimes Committed]", thePlayer, 255, 194, 14)
 			else
 				local targetPlayer = exports.global:findPlayerByPartialNick(targetPlayerNick)
 				

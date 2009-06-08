@@ -24,13 +24,15 @@ function unlockAllCivilianCars(thePlayer, commandName)
 	if (exports.global:isPlayerAdmin(thePlayer)) then
 		local count = 0
 		for key, value in ipairs(exports.pool:getPoolElementsByType("vehicle")) do
-			local id = getElementData(value, "dbid")
-			
-			if (id) and (id>=0) then
-				local owner = getElementData(value, "owner")
-				if (owner==-2) then
-					setVehicleLocked(value, false)
-					count = count + 1
+			if (isElement(value)) and (getElementType(value)) then
+				local id = getElementData(value, "dbid")
+				
+				if (id) and (id>=0) then
+					local owner = getElementData(value, "owner")
+					if (owner==-2) then
+						setVehicleLocked(value, false)
+						count = count + 1
+					end
 				end
 			end
 		end

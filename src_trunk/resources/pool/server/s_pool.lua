@@ -75,7 +75,7 @@ addEventHandler("onPlayerQuit", getRootElement(),
     end
 )
 
-addEventHandler("onElementDestroyed", getRootElement(),
+addEventHandler("onElementDestroy", getRootElement(),
     function ()
         deallocateElement(source)
     end

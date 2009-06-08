@@ -284,7 +284,7 @@ function globalOOC(thePlayer, commandName, ...)
 					local targetOOCEnabled = getElementData(arrayPlayer, "globalooc")
 
 					if (logged==1) and (targetOOCEnabled==1) then
-						outputChatBox("(( " .. playerName .. ": " .. message .. " ))", arrayPlayer, 255, 255, 255)
+						outputChatBox("(( " .. playerName .. ": " .. message .. " ))", arrayPlayer, 196, 255, 255)
 					end
 				end
 			end
@@ -388,7 +388,7 @@ function localOOC(thePlayer, commandName, ...)
 				if (nearbyPlayerDimension==dimension) and (nearbyPlayerInterior==interior) then
 					local logged = getElementData(nearbyPlayer, "loggedin")
 					if not (isPedDead(nearbyPlayer)) and (logged==1) then
-						outputChatBox(playerName .. ": (( " .. message .. " ))", nearbyPlayer, 255, 255, 255)
+						outputChatBox(playerName .. ": (( " .. message .. " ))", nearbyPlayer, 196, 255, 255)
 					end
 				end
 			end
@@ -456,7 +456,7 @@ function localDo(thePlayer, commandName, ...)
 					local logged = getElementData(nearbyPlayer, "loggedin")
 				
 					if (logged==1) and not (isPedDead(nearbyPlayer)) then
-						outputChatBox(" * " .. message .. " *      ((" .. playerName .. "))", nearbyPlayer, 255, 128, 147)
+						outputChatBox(" * " .. message .. " *      ((" .. playerName .. "))", nearbyPlayer, 255, 51, 102)
 					end
 				end
 			end

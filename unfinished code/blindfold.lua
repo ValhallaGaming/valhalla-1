@@ -37,7 +37,7 @@ function blindfoldPlayer(thePlayer, commandName, targetPartialNick )
 							local restrain = getElementData(thePlayer, "restrain")
 							if (restrain == 1 ) then -- is the person attempting to remove the blindfold cuffed?
 								outputChatBox("You can't blindfold someone while you are restrained.", thePlayer, 255, 0, 0) -- cuffed error.
-							else -- if they aren't cuffed. Remove the blind fold.
+							else -- if they aren't cuffed. Put on the blind fold.
 								local query = mysql_query(handler, "UPDATE characters SET blindfold=1 WHERE id='" .. dbid .. "'") -- Set the players blindfold state to 1.
 								if (query) then
 									mysql_free_result(query)								

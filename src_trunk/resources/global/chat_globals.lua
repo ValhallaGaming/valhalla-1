@@ -154,7 +154,7 @@ function sendLocalDoAction(thePlayer, message)
 	for index, nearbyPlayer in ipairs(nearbyPlayers) do
 		local logged = getElementData(nearbyPlayer, "loggedin")
 		if not(isPedDead(nearbyPlayer)) and (logged==1) then
-			outputChatBox(" * " .. message .. " *      ((" .. playerName .. "))", nearbyPlayer, 255, 128, 147)
+			outputChatBox(" * " .. message .. " *      ((" .. playerName .. "))", nearbyPlayer, 255, 51, 102)
 		end
 	end
 end

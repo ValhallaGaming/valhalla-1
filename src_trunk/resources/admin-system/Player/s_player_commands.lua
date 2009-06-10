@@ -283,7 +283,7 @@ addCommandHandler("freconnect", forceReconnect, false, false)
 
 -- /GIVEGUN
 function givePlayerGun(thePlayer, commandName, targetPlayer, weapon, ammo)
-	if (exports.global:isPlayerAdmin(thePlayer)) then
+	if (exports.global:isPlayerLeadAdmin(thePlayer)) then
 		if not (weapon) or not (ammo) or not (targetPlayer) then
 			outputChatBox("SYNTAX: /" .. commandName .. " [Player Partial Nick / ID] [Weapon ID] [Ammo]", thePlayer, 255, 194, 14)
 		else

@@ -241,6 +241,7 @@ function respawnCmdVehicle(thePlayer, commandName, id)
 					if (dbid<0) then -- TEMP vehicle
 						fixVehicle(theVehicle) -- Can't really respawn this, so just repair it
 						setVehicleWheelStates(theVehicle, 0, 0, 0, 0)
+						setElementData(theVehicle, "enginebroke", 0)
 					else
 						local dbid = getElementData(theVehicle, "dbid")
 						local x, y, z = getElementPosition(theVehicle)
@@ -274,7 +275,6 @@ function respawnAllVehicles(thePlayer, commandName)
 	if (exports.global:isPlayerAdmin(thePlayer)) then
 		local vehicles = exports.pool:getPoolElementsByType("vehicle")
 		local counter = 0
-		local failedcounter = 0
 		local tempcounter = 0
 		
 		-- Remove all players from vehicles
@@ -290,10 +290,7 @@ function respawnAllVehicles(thePlayer, commandName)
 				destroyElement(theVehicle)
 				tempcounter = tempcounter + 1
 			else
-				local res = respawnVehicle(theVehicle)
-				if not (res) then
-					failedcounter = failedcounter + 1
-				end
+				respawnVehicle(theVehicle)
 				counter = counter + 1
 			end
 		end
@@ -301,7 +298,7 @@ function respawnAllVehicles(thePlayer, commandName)
 		outputChatBox("Respawned " .. counter .. " vehicles.", thePlayer)
 		outputChatBox("Deleted " .. tempcounter .. " temporary vehicles.", thePlayer)
 		unlockAllCivilianCars(thePlayer, "unlockcivcars")
-		exports.irc:sendMessage("[ADMIN] " .. getPlayerName(thePlayer) .. " respawned all vehicles. (FAILED: " .. failedcounter .. ").")
+		exports.irc:sendMessage("[ADMIN] " .. getPlayerName(thePlayer) .. " respawned all vehicles.")
 	end
 end
 addCommandHandler("respawnall", respawnAllVehicles, false, false)
@@ -376,6 +373,7 @@ function fixPlayerVehicle(thePlayer, commandName, target)
 					local veh = getPedOccupiedVehicle(targetPlayer)
 					if (veh) then
 						fixVehicle(veh)
+						setElementData(veh, "enginebroke", 0)
 						outputChatBox("You repaired " .. targetPlayerName .. "'s vehicle.", thePlayer)
 						outputChatBox("Your vehicle was repaired by admin " .. username .. ".", targetPlayer)
 					else

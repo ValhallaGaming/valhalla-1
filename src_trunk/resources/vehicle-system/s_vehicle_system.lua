@@ -320,7 +320,7 @@ function loadAllVehicles(res)
 				local door5 = mysql_result(resultext, rowc, 22)
 				local door6 = mysql_result(resultext, rowc, 23)
 				
-				local hp = mysql_result(resultext, rowc, 24)
+				local hp = tonumber(mysql_result(resultext, rowc, 24))
 				
 				local col1 = mysql_result(resultext, rowc, 25)
 				local col2 = mysql_result(resultext, rowc, 26)
@@ -470,6 +470,14 @@ function loadAllVehicles(res)
 				triggerEvent("onVehicleSpawn", veh)
 				counter = counter + 1
 				rowc = rowc + 1
+				
+				-- broken engine
+				if (hp<=350) then
+					setElementHealth(veh, 300)
+					setVehicleDamageProof(veh, true)
+					setVehicleEngineState(veh, false)
+					setElementData(veh, "enginebroke", 1)
+				end
 			end
 		end
 	exports.irc:sendMessage("[SCRIPT] Loaded " .. counter .. " vehicles.")
@@ -491,11 +499,15 @@ function vehicleRespawn(exploded)
 	local vehid = getElementModel(source)
 	if (armoredCars[tonumber(vehid)]) then
 		setVehicleDamageProof(source, true)
+	else
+		setVehicleDamageProof(source, false)
 	end
 		
 	setVehicleFuelTankExplodable(source, false)
 	setVehicleEngineState(source, false)
 	setVehicleLandingGearDown(source, true)
+
+	setElementData(source, "enginebroke", 0)
 	
 	setElementData(source, "dbid", id)
 	setElementData(source, "fuel", 100)
@@ -585,7 +597,6 @@ function destroyTyre(veh)
 	if (tyre4==1) then
 		tyre4 = 2
 	end
-	outputChatBox("TRIGGER")
 	
 	if (tyre1==2 and tyre2==2 and tyre3==2 and tyre4==2) then
 		tyre3 = 0
@@ -604,7 +615,6 @@ function damageTyres()
 			setElementData(source, "tyretimer", 1)
 			local randTime = math.random(5, 15)
 			randTime = randTime * 1000
-			outputChatBox("TIMER IS " .. randTime/1000 .. ".")
 			setTimer(destroyTyre, randTime, 1, source)
 		end
 	end
@@ -647,6 +657,14 @@ function toggleEngine(source, key, keystate)
 			local engine = getElementData(veh, "engine")
 			local fuel = getElementData(veh, "fuel")
 			local seat = getPedOccupiedVehicleSeat(source)
+			
+			-- engine broken
+			local broke = getElementData(veh, "enginebroke")
+			
+			if (broke==1) then
+				exports.global:sendLocalMeAction(source, "attempts to start the engine but fails.")
+				return
+			end
 			
 			if (seat==0) then
 				if (engine==0) and (fuel>0) then
@@ -785,3 +803,17 @@ function removeFromFactionVehicle(thePlayer)
 	end
 end
 addEventHandler("onVehicleEnter", getRootElement(), removeFromFactionVehicle)
+
+-- engines dont break down
+function doBreakdown()
+	local health = getElementHealth(source)
+	local broke = getElementData(source, "enginebroke")
+
+	if (health<=350) and (broke==0 or broke==false) then
+		setElementHealth(source, 300)
+		setVehicleDamageProof(source, true)
+		setVehicleEngineState(source, false)
+		setElementData(source, "enginebroke", 1)
+	end
+end
+addEventHandler("onVehicleDamage", getRootElement(), doBreakdown)

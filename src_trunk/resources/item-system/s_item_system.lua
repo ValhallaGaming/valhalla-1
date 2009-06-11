@@ -58,7 +58,7 @@ function showInventory(thePlayer)
 			local tableitems = { }
 			
 			if (items) then
-				for i = 1, 30 do
+				for i = 1, 10 do
 					local token = gettok(items, i, string.byte(','))
 					
 					if (token) then

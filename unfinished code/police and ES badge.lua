@@ -16,8 +16,14 @@ INSERT INTO items SET id='21', item_name='LVES ID Badge', item_description='A LV
 				setPlayerNametagColor ( source, 0, 80, 255 ) -- Change the players name tag to blue.
 				exports.global:sendLocalMeAction(source," puts on a police badge. Badge Number: "..itemValue..".")
 			else
-				setPlayerNametagColor ( source, false ) -- Change the players name tag to default.
-				exports.global:sendLocalMeAction(source," takes off a police badge.")
+				if ( ) then -- they are an on duty admin
+					-- change to admin colour.
+				elseif () then -- they are in a faction.
+					-- change to faction colour.
+				else
+					setPlayerNametagColor ( source, false ) -- Change the players name tag to default.
+				end
+				exports.global:sendLocalMeAction(source," takes off a police badge.")				
 			end
 		elseif (itemID==21) then -- ES ID badge
 			showInventory(source)
@@ -26,8 +32,14 @@ INSERT INTO items SET id='21', item_name='LVES ID Badge', item_description='A LV
 				setPlayerNametagColor ( source, 155, 0, 0 ) -- Change the players name tag to blue.
 				exports.global:sendLocalMeAction(source," puts on a Las Venturas Emergency Services ID badge. Badge Number: "..itemValue..".")
 			else
-				setPlayerNametagColor ( source, false ) -- Change the players name tag to default.
-				exports.global:sendLocalMeAction(source," takes off a Las Venturas Emergency Services ID badge.")
+				if ( ) then -- they are an on duty admin
+					-- change to admin colour.
+				elseif () then -- they are in a faction.
+					-- change to faction colour.
+				else
+					setPlayerNametagColor ( source, false ) -- Change the players name tag to default.
+				end
+				exports.global:sendLocalMeAction(source," takes off a police badge.")
 			end
 			
 -- /issueBadge Command

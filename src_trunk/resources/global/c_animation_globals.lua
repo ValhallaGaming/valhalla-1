@@ -15,3 +15,14 @@ function applyAnimation(thePlayer, block, name, forced, speed, blendSpeed, start
 	local setanim = setPedAnimation(thePlayer, block, name, speed, blendSpeed, startTime, loop, updatePosition, callbackFunction, ...)
 	return setanim
 end
+
+function removeAnimation(thePlayer)
+	setElementData(thePlayer, "forcedanimation", true, false)
+	setElementData(thePlayer, "animation", true, false)
+	
+	if (thePlayer==getLocalPlayer()) then
+		toggleAllControls(true, true, false)
+	end
+	local setanim = setPedAnimation(thePlayer)
+	return setanim
+end

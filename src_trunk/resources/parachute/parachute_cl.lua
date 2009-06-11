@@ -95,7 +95,7 @@ local function onRender ( )
 		else
 			if velZ >= FALL_VELOCITY then --they're going to have to fall down at this speed
 				removeParachute(localPlayer,"land")
-				setPedAnimation(localPlayer,"PARACHUTE","FALL_skyDive_DIE", t(3000), false, true, true)
+				exports.global:applyAnimation(localPlayer, "PARACHUTE", "FALL_skyDive_DIE", true, 1.0, 1.0, 0.0, false, true)
 			else
 				removeParachute(localPlayer,"land")
 				setPedNewAnimation ( localPlayer, nil, "PARACHUTE", "PARA_Land", t(3000), false, true, false )
@@ -151,14 +151,14 @@ end
 function onEnter ()
 	if ( getElementData ( localPlayer, "parachuting" ) ) then
 		removeParachute(localPlayer,"water")
-		setPedAnimation(localPlayer)
+		exports.global:removeAnimation(localPlayer)
 	end
 end
 
 function onWasted()
 	removeParachute(localPlayer,"water")
-	setPedAnimation(localPlayer)
-	setPedAnimation(localPlayer,"PARACHUTE","FALL_skyDive_DIE", t(3000), false, true, false)
+	exports.global:removeAnimation(localPlayer)
+	exports.global:applyAnimation(localPlayer, "PARACHUTE", "FALL_skyDive_DIE", true, 1.0, 2.0, 0.0, false, true)
 	removeEventHandler ( "onClientPlayerWasted", localPlayer, onWasted )
 end
 
@@ -171,9 +171,13 @@ function addLocalParachute()
 	triggerServerEvent ( "requestAddParachute", localPlayer )
 end
 
+function resetAnim(player)
+	exports.global:removeAnimation(player)
+end
+
 function removeParachute(player,type)
 	local chute = getPlayerParachute ( player )
-	 setTimer ( setPedAnimation, t(3000), 1, player )
+	 setTimer ( resetAnim, t(3000), 1, player )
 	 openingChutes[chute] = nil
 	 if chute then
 		if type == "land" then
@@ -241,13 +245,13 @@ addEventHandler ( "doRemoveParachuteFromPlayer", root,
 	end
 )
 
-function setPedNewAnimation ( ped, elementData, animgroup, animname, ... )
+function setPedNewAnimation ( ped, elementData, animgroup, animname, time, ... )
 	if animname ~= lastAnim[ped] then
 		lastAnim[ped] = animname
 		if elementData ~= nil then
 			setElementData ( ped, elementData, animname )
 		end
-		return setPedAnimation ( ped, animgroup, animname, ... )
+		return exports.global:applyAnimation ( ped, animgroup, animname, true, 1.0, 1.0, 0.0, ...)
 	end
 	return true
 end

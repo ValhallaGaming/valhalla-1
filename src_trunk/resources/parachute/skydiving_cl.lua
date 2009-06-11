@@ -111,8 +111,8 @@ function onSkyDivingWasted()
 	toggleControl ( "next_weapon", true )
 	toggleControl ( "previous_weapon", true )
 	stopSkyDiving()
-	setPedAnimation(localPlayer)
-	setPedAnimation(localPlayer,"PARACHUTE","FALL_skyDive_DIE", t(3000), false, true, false)
+	exports.global:removeAnimation(localPlayer)
+	exports.global:applyAnimation(localPlayer, "PARACHUTE", "FALL_skyDive_DIE", true, 1.0, 2.0, 0.0, false, true)
 	removeEventHandler ( "onClientPlayerWasted", localPlayer, onSkyDivingWasted )
 end
 

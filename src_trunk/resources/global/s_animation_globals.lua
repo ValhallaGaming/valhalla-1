@@ -18,3 +18,11 @@ function onSpawn()
 	setElementData(source, "animation", false)
 end
 addEventHandler("onPlayerSpawn", getRootElement(), onSpawn)
+
+function removeAnimation(thePlayer)
+	setElementData(thePlayer, "forcedanimation", false)
+	setElementData(thePlayer, "animation", false)
+	toggleAllControls(thePlayer, true, true, false)
+	local setanim = setPedAnimation(thePlayer)
+	return setanim
+end

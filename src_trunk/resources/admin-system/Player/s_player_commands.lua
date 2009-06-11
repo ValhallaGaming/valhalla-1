@@ -212,7 +212,7 @@ function ckPlayer(thePlayer, commandName, targetPlayer)
 					
 					local ped = createPed(skin, x, y, z)
 					setPedRotation(ped, rotation)
-					setTimer(setPedAnimation, 100, 1, ped, "WUZI", "CS_Dead_Guy", -1, false, false, false)
+					exports.global:applyAnimation(ped, "WUZI", "CS_Dead_Guy", true, 1.0, 2.0, 0.0, true, true)
 					
 					-- send back to change char screen
 					local id = getElementData(targetPlayer, "gameaccountid")

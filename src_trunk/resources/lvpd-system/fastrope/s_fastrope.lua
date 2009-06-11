@@ -30,7 +30,7 @@ function startRappel(x, y, z, gz)
 	moveObject(invisible, 2000, x, y, gz, 0, 0, 0)
 	exports.pool:allocateElement(invisible)
 	setTimer(stopRappel, 2000, 1, invisible, source, slot)
-	setPedAnimation(source, "PARACHUTE", "PARA_float", -1, false, false, false)
+	exports.global:applyAnimation(source, "PARACHUTE", "PARA_float", true, 1.0, false, false)
 	
 	local colshape = createColCircle(x, y, 100) -- 100 distance
 	for key, value in ipairs(getElementsWithinColShape(colshape, "player")) do
@@ -42,7 +42,7 @@ addEventHandler("startRappel", getRootElement(), startRappel)
 
 function stopRappel(object, player, slot)
 	detachElements(player, object)
-	setPedAnimation(player)
+	exports.global:removeAnimation(player)
 	setPedWeaponSlot(player, slot)
 	destroyElement(object)
 end

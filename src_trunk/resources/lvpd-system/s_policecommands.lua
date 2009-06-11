@@ -129,7 +129,7 @@ function uncuffPlayer(thePlayer, commandName, targetPartialNick)
 							toggleControl(targetPlayer, "aim_weapon", true)
 							setElementData(targetPlayer, "restrain", 0)
 							
-							setPedAnimation(targetPlayer)
+							exports.global:removeAnimation(targetPlayer)
 						else
 							outputChatBox("You are not within range of " .. targetPlayerName .. ".", thePlayer, 255, 0, 0)						
 						end

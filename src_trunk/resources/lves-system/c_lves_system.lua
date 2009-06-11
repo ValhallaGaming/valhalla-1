@@ -53,7 +53,7 @@ function playerDeath()
 	local height = 100
 	local x = (screenwidth - width)/2
 	local y = screenheight - (screenheight/8 - (height/8))
-	deathLabel = guiCreateLabel(x, y, width, height, "30 Seconds", false)
+	deathLabel = guiCreateLabel(x, y, width, height, "10 Seconds", false)
 	guiSetFont(deathLabel, "sa-gothic")
 	
 	setGameSpeed(0.5)
@@ -70,7 +70,7 @@ function lowerTimer()
 	end
 end
 
-deathTimer = 30
+deathTimer = 10
 deathLabel = nil
 
 function playerRespawn()

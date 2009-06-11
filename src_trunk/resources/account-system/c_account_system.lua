@@ -1606,7 +1606,22 @@ function selectedCharacter(button, state)
 					local skinID = tonumber(tableAccounts[key][9])
 					local cked = tonumber(tableAccounts[key][3])
 					setElementModel(getLocalPlayer(), skinID)
-					setPedAnimation(getLocalPlayer(), "ON_LOOKERS", "wave_loop", -1, true, false, false)
+					--setPedAnimation(getLocalPlayer(), "ON_LOOKERS", "wave_loop", -1, true, false, false)
+					
+					
+					local rand = math.random(1,5)
+					if (rand==1) then
+						exports.global:applyAnimation(getLocalPlayer(), "PLAYIDLES", "shift", true, 1.0, 2.0, 0.0, true, false)
+					elseif (rand==2) then
+						exports.global:applyAnimation(getLocalPlayer(), "PLAYIDLES", "shldr", true, 1.0, 2.0, 0.0, true, false)
+					elseif (rand==3) then
+						exports.global:applyAnimation(getLocalPlayer(), "PLAYIDLES", "stretch", true, 1.0, 2.0, 0.0, true, false)
+					elseif (rand==4) then
+						exports.global:applyAnimation(getLocalPlayer(), "PLAYIDLES", "strleg", true, 1.0, 2.0, 0.0, true, false)
+					elseif (rand==5) then
+						exports.global:applyAnimation(getLocalPlayer(), "PLAYIDLES", "time", true, 1.0, 2.0, 0.0, true, false)
+					end
+					
 					setElementAlpha(getLocalPlayer(), 0)
 					
 					if (cked==0) then
@@ -1622,7 +1637,7 @@ function selectedCharacter(button, state)
 						local x, y, z = getElementPosition(getLocalPlayer())
 						setElementAlpha(getLocalPlayer(), 0)
 						tmrFadeIn = setTimer(fadePlayerIn, 50, 10)
-						setPedAnimation(getLocalPlayer(), "WUZI", "CS_Dead_Guy", -1, false, false, false)
+						exports.global:applyAnimation(getLocalPlayer(), "WUZI", "CS_Dead_Guy", true, 1.0, 2.0, 0.0, true, false)
 					end
 				end
 			end
@@ -1642,6 +1657,21 @@ function selectedCharacter(button, state)
 			if not (fading) then
 				setElementModel(getLocalPlayer(), 0)
 				
+				local rand = math.random(1,5)
+				setElementData(getLocalPlayer(), "forcedanimation", true, true)
+				if (rand==1) then
+					setPedAnimation(getLocalPlayer(), "PLAYIDLES", "shift", 1.0, false, false)
+				elseif (rand==2) then
+					setPedAnimation(getLocalPlayer(), "PLAYIDLES", "shldr", 1.0, false, false)
+				elseif (rand==3) then
+					setPedAnimation(getLocalPlayer(), "PLAYIDLES", "stretch", 1.0, false, false)
+				elseif (rand==4) then
+					setPedAnimation(getLocalPlayer(), "PLAYIDLES", "strleg", 1.0, false, false)
+				elseif (rand==5) then
+					setPedAnimation(getLocalPlayer(), "PLAYIDLES", "time", 1.0, false, false)
+				end
+				
+				-- optomize this
 				triggerServerEvent("stripPlayer", getLocalPlayer())
 				setElementAlpha(getLocalPlayer(), 0)
 				

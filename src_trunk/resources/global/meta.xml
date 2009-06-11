@@ -64,4 +64,10 @@
 	
 	<script src="c_version_globals.lua" type="client"/>
 	<export function="cgetScriptVersion" type="client"/>
+	
+	<script src="c_animation_globals.lua" type="client"/>
+	<export function="applyAnimation" type="client"/>
+	
+	<script src="s_animation_globals.lua" type="server"/>
+	<export function="applyAnimation" type="server"/>
 </meta>

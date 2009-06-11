@@ -34,11 +34,10 @@ function realisticDamage(attacker, weapon, bodypart, loss)
 			
 
 		if (bodypart==9) and not (armor>0) then -- Head and no armor.
+			killPed(source)
 			exports.global:givePlayerAchievement(attacker, 12)
 			exports.global:givePlayerAchievement(source, 15)
-			killPed(source)
 		end
-		
 	end
 end
 addEventHandler("onPlayerDamage", getRootElement(), realisticDamage)
@@ -129,7 +128,7 @@ function respawnPlayer(thePlayer)
 end
 
 function deathRemoveWeapons(weapons, removedWeapons)
-	setTimer(giveGunsBack, 30005, 1, source, weapons, removedWeapons)
+	setTimer(giveGunsBack, 10005, 1, source, weapons, removedWeapons)
 end
 addEvent("onDeathRemovePlayerWeapons", true)
 addEventHandler("onDeathRemovePlayerWeapons", getRootElement(), deathRemoveWeapons)

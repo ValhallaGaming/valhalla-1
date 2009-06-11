@@ -15,11 +15,14 @@ addEventHandler("onResourceStart", getRootElement(), bindKeys)
 addEventHandler("onPlayerJoin", getRootElement(), bindKeysOnJoin)
 
 function stopAnimation(thePlayer)
-	local tazed = getElementData(thePlayer, "tazed")
+	local forcedanimation = getElementData(thePlayer, "forcedanimation")
+	local animation = getElementData(thePlayer, "animation")
 	
-	if (tazed) then
-		if (tazed~=1) then
+	if (animation) then
+		if not (forcedanimation) then
+			toggleAllControls(thePlayer, true, true, false)
 			setPedAnimation(thePlayer)
+			setElementData(thePlayer, "animation", false)
 		end
 	end
 end
@@ -44,8 +47,7 @@ function coverAnimation(thePlayer)
 	local logged = getElementData(thePlayer, "loggedin")
 	
 	if (logged==1) then
-		setPedAnimation(thePlayer, "ped", "DUCK_cower", -1, false, false, true)
-		setTimer(setPedAnimation, 4000, 1, thePlayer)
+		exports.global:applyAnimation(thePlayer, "ped", "DUCK_cower", false, 1.0, false, false)
 	end
 end
 addCommandHandler("cover", coverAnimation, false, false)
@@ -55,8 +57,7 @@ function cprAnimation(thePlayer)
 	local logged = getElementData(thePlayer, "loggedin")
 	
 	if (logged==1) then
-		setPedAnimation(thePlayer, "MEDIC", "CPR", -1, false, false, true)
-		setTimer(setPedAnimation, 4000, 1, thePlayer)
+		exports.global:applyAnimation(thePlayer, "MEDIC", "CPR", false, 1.0, true, false)
 	end
 end
 addCommandHandler("cpr", cprAnimation, false, false)
@@ -66,7 +67,7 @@ function copawayAnimation(thePlayer)
 	local logged = getElementData(thePlayer, "loggedin")
 	
 	if (logged==1) then
-		setPedAnimation(thePlayer, "POLICE", "CopTraf_Away", -1, true, false, true)
+		exports.global:applyAnimation(thePlayer, "police", "coptraf_away", false, 1.0, 1.0, 0.0, true, false)
 	end
 end
 addCommandHandler("copaway", copawayAnimation, false, false)

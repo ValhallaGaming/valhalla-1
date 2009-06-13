@@ -6,14 +6,6 @@ function applyMods(res)
 		Petrelli1 = engineLoadTXD("lv/vgndwntwn21.txd")
 		engineImportTXD(Petrelli1, 6908)
 		
-		------------------------------
-		-- CRUISERS --
-		------------------------------
-		local txd = engineLoadTXD("cars/copcarvg.txd")
-		engineImportTXD(txd, 596)
-		local dff = engineLoadDFF("cars/copcarvg.dff", 596)
-		engineReplaceModel(dff, 596)
-		
 		----------------------
 		-- Pig Pen Interior --
 		----------------------

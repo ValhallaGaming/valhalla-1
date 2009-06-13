@@ -13,8 +13,9 @@ Scripts in "unfinished code" need to be completed, checked and added to the corr
 - global
 	- chat_global
 
-- chat-system
-	- s_chat_system
+mods-system
+	- vgsN_billboards.txd
+	- s_mods_system
 
 --------------------
 Jack's changes.

@@ -50,10 +50,14 @@ function applyMods(res)
 		-- Billboards --
 		----------------
 		-- UFA
-		UFA1 = engineLoadTXD("lv/vgsn_billboard.txd")
-		engineImportTXD(UFA1, 7309)
-		engineImportTXD(UFA1, 7303)
-		engineImportTXD(UFA1, 7301)
+		billbaords1 = engineLoadTXD("lv/vgsn_billboard.txd")
+		engineImportTXD(billbaords1, 7309)
+		engineImportTXD(billbaords1, 7303)
+		engineImportTXD(billbaords1, 7301)
+		
+		-- Dragon Lady
+		engineImportTXD(billbaords1, 7300)
+		engineImportTXD(billbaords1, 7310)
 		
 		------------------
 		-- Police Skins --

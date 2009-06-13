@@ -512,7 +512,7 @@ function sit2Animation(thePlayer)
 	local logged = getElementData(thePlayer, "loggedin")
 	
 	if (logged==1) then
-		exports.global:applyAnimation(thePlayer, "FOOD", "FF_Sit_Look", false, 1.0, 1.0, 0.0, true, false))
+		exports.global:applyAnimation(thePlayer, "FOOD", "FF_Sit_Look", false, 1.0, 1.0, 0.0, true, false)
 	end
 end
 addCommandHandler("sit2", sit2Animation, false, false)

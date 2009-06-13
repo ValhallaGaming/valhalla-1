@@ -49,7 +49,7 @@ function showInventory(tableitems)
 	
 	local itemvalues = getElementData(getLocalPlayer(), "itemvalues")
 	
-	for i = 1, 30 do
+	for i = 1, 10 do
 		if (items[i]==nil) then
 			local row = guiGridListAddRow(gItems)
 			guiGridListSetItemText(gItems, row, colSlot, tostring(i), false, true)
@@ -219,20 +219,22 @@ end
 
 function useItem(button)
 	if (button=="left") then
+		local x, y, z = getElementPosition(getLocalPlayer())
+		local groundz = getGroundPosition(x, y, z)
 		if (guiGetSelectedTab(tabPanel)==tabItems) then -- ITEMS
 			local row, col = guiGridListGetSelectedItem(gItems)
 			local itemSlot = tonumber(guiGridListGetItemText(gItems, row, 1))
 			local itemName = tostring(guiGridListGetItemText(gItems, row, 2))
 			local itemValue = tonumber(guiGridListGetItemText(gItems, row, 3))
 			local itemID = tonumber(items[itemSlot][3])
-			triggerServerEvent("useItem", getLocalPlayer(), itemID, itemName, itemValue)
+			triggerServerEvent("useItem", getLocalPlayer(), itemID, itemName, itemValue, false, groundz)
 		elseif (guiGetSelectedTab(tabPanel)==tabWeapons) then -- WEAPONS
 			local row, col = guiGridListGetSelectedItem(gWeapons)
 			local itemSlot = tonumber(guiGridListGetItemText(gWeapons, row, 1))
 			local itemName = tostring(guiGridListGetItemText(gWeapons, row, 2))
 			local itemValue = tonumber(guiGridListGetItemText(gWeapons, row, 3))
 			local itemID = tonumber(getPedWeapon(getLocalPlayer(), itemSlot))
-			triggerServerEvent("useItem", getLocalPlayer(), itemSlot, itemName, itemValue, true)
+			triggerServerEvent("useItem", getLocalPlayer(), itemSlot, itemName, itemValue, true, groundz)
 		end
 	end
 end

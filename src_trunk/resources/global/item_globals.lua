@@ -2,7 +2,7 @@ function doesPlayerHaveItem(thePlayer, itemID, itemValue)
 	local items = getElementData(thePlayer, "items")
 	local itemvalues = getElementData(thePlayer, "itemvalues")
 
-	for i=1, 30 do
+	for i=1, 10 do
 		if not (items) or not (itemvalues) then -- no items
 			return false
 		else
@@ -34,7 +34,7 @@ function givePlayerItem(thePlayer, itemID, itemValue)
 	if not (items) or not (itemvalues) then -- no items
 		count = 0
 	else
-		for i=1, 30 do
+		for i=1, 10 do
 			local token = gettok(items, i, string.byte(','))
 			
 			if (token) then
@@ -45,7 +45,7 @@ function givePlayerItem(thePlayer, itemID, itemValue)
 		end
 	end
 	
-	if (count==30) then
+	if (count==10) then
 		return false
 	elseif (count==0) then
 		items = itemID .. ","
@@ -74,7 +74,7 @@ function takePlayerItem(thePlayer, itemID, itemValue)
 	if not (items) or not (itemvalues) then -- no items
 		found = false
 	else
-		for i=1, 30 do
+		for i=1, 10 do
 			local token = tonumber(gettok(items, i, string.byte(',')))
 			local vtoken = tonumber(gettok(itemvalues, i, string.byte(',')))
 			

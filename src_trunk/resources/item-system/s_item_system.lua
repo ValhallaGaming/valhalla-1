@@ -86,8 +86,12 @@ function showInventory(thePlayer)
 	end
 end
 
+function removeAnimation(player)
+	exports.global:removePedAnimation(player)
+end
+
 -- callbacks
-function useItem(itemID, itemName, itemValue, isWeapon)
+function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 	if not (isWeapon) then
 		if (itemID==1) then -- haggis
 			setElementHealth(source, 100)
@@ -178,7 +182,7 @@ function useItem(itemID, itemName, itemValue, isWeapon)
 			local health = getElementHealth(source)
 			setElementHealth(source, health+50)
 			exports.global:applyAnimation(source, "FOOD", "EAT_Burger", true, 1.0, false, false)
-			setTimer(exports.global:removePedAnimation, 4000, 1, source)
+			setTimer(removeAnimation, 4000, 1, source)
 			exports.global:sendLocalMeAction(source, " eats a sandwich.")
 			exports.global:takePlayerItem(source, itemID, itemValue)
 			showInventory(source)
@@ -187,7 +191,7 @@ function useItem(itemID, itemName, itemValue, isWeapon)
 			local health = getElementHealth(source)
 			setElementHealth(source, health+30)
 			exports.global:applyAnimation(source, "VENDING", "VEND_Drink_P", true, 1.0, false, false)
-			setTimer(exports.global:removePedAnimation, 4000, 1, source)
+			setTimer(removeAnimation, 4000, 1, source)
 			exports.global:sendLocalMeAction(source, " drinks a sprunk.")
 			exports.global:takePlayerItem(source, itemID, itemValue)
 			showInventory(source)
@@ -199,7 +203,7 @@ function useItem(itemID, itemName, itemValue, isWeapon)
 			local health = getElementHealth(source)
 			setElementHealth(source, health+10)
 			exports.global:applyAnimation(source, "FOOD", "EAT_Burger", true, 1.0, false, false)
-			setTimer(exports.global:removePedAnimation, 4000, 1, source)
+			setTimer(removeAnimation, 4000, 1, source)
 			exports.global:sendLocalMeAction(source, " eats a taco.")
 			exports.global:takePlayerItem(source, itemID, itemValue)
 			showInventory(source)
@@ -208,7 +212,7 @@ function useItem(itemID, itemName, itemValue, isWeapon)
 			local health = getElementHealth(source)
 			setElementHealth(source, health+10)
 			exports.global:applyAnimation(source, "FOOD", "EAT_Burger", true, 1.0, false, false)
-			setTimer(exports.global:removePedAnimation, 4000, 1, source)
+			setTimer(removeAnimation, 4000, 1, source)
 			exports.global:sendLocalMeAction(source, " eats a cheeseburger.")
 			exports.global:takePlayerItem(source, itemID, itemValue)
 			showInventory(source)
@@ -216,7 +220,7 @@ function useItem(itemID, itemName, itemValue, isWeapon)
 			showInventory(source)
 			setElementHealth(source, 100)
 			exports.global:applyAnimation(source, "FOOD", "EAT_Burger", true, 1.0, false, false)
-			setTimer(exports.global:removePedAnimation, 4000, 1, source)
+			setTimer(removeAnimation, 4000, 1, source)
 			exports.global:sendLocalMeAction(source, " eats a donut.")
 			exports.global:takePlayerItem(source, itemID, itemValue)
 			showInventory(source)
@@ -225,7 +229,7 @@ function useItem(itemID, itemName, itemValue, isWeapon)
 			local health = getElementHealth(source)
 			setElementHealth(source, health+80)
 			exports.global:applyAnimation(source, "FOOD", "EAT_Burger", true, 1.0, false, false)
-			setTimer(exports.global:removePedAnimation, 4000, 1, source)
+			setTimer(removeAnimation, 4000, 1, source)
 			exports.global:sendLocalMeAction(source, " eats a cookie.")
 			exports.global:takePlayerItem(source, itemID, itemValue)
 			showInventory(source)
@@ -234,7 +238,7 @@ function useItem(itemID, itemName, itemValue, isWeapon)
 			local health = getElementHealth(source)
 			setElementHealth(source, health+90)
 			exports.global:applyAnimation(source, "VENDING", "VEND_Drink_P", true, 1.0, false, false)
-			setTimer(exports.global:removePedAnimation, 4000, 1, source)
+			setTimer(removeAnimation, 4000, 1, source)
 			exports.global:sendLocalMeAction(source, " drinks a bottle of water.")
 			exports.global:takePlayerItem(source, itemID, itemValue)
 			showInventory(source)
@@ -248,7 +252,7 @@ function useItem(itemID, itemName, itemValue, isWeapon)
 			exports.global:sendLocalMeAction(source, " looks at their watch.")
 			outputChatBox("The time is " .. hours .. ":" .. mins .. ".", source, 255, 194, 14)
 			exports.global:applyAnimation(source, "COP_AMBIENT", "Coplook_watch", true, 1.0, false, false)
-			setTimer(exports.global:removePedAnimation, 4000, 1, source)
+			setTimer(removeAnimation, 4000, 1, source)
 		elseif (itemID==18) then -- city guide
 			triggerClientEvent(source, "showCityGuide", source)
 		elseif (itemID==19) then -- MP3 PLayer
@@ -294,6 +298,29 @@ function useItem(itemID, itemName, itemValue, isWeapon)
 
 				setElementData(source, "gasmask", 0)
 			end
+		elseif (itemID==27) then -- FLASHBANG
+			exports.global:takePlayerItem(source, itemID, itemValue)
+			showInventory(source)
+			local x, y, z = getElementPosition(source)
+			local rot = getPedRotation(source)
+			x = x + math.sin(math.rad(-rot)) * 10
+			y = y + math.cos(math.rad(-rot)) * 10
+			z = groundz
+			local obj = createObject(343, x, y, z)
+			exports.pool:allocateElement(obj)
+			setTimer(explodeFlash, math.random(500, 600), 1, obj, x, y, z)
+			exports.global:sendLocalMeAction(source, "throws a flashbang.")
+		elseif (itemID==28) then -- GLOWSTICK
+			exports.global:takePlayerItem(source, itemID, itemValue)
+			showInventory(source)
+			local x, y, z = getElementPosition(source)
+			local rot = getPedRotation(source)
+			local x = x + math.sin(math.rad(-rot)) * 1
+			local y = y + math.cos(math.rad(-rot)) * 1
+			local marker = createMarker(x, y, groundz, "corona", 1, 0, 255, 0, 150)
+			exports.pool:allocateElement(marker)
+			exports.global:sendLocalMeAction(source, "drops a glowstick.")
+			setTimer(destroyElement, 600000, 1, marker)
 		else
 			outputChatBox("Error 800001 - Report on http://bugs.valhallagaming.net", source, 255, 0, 0)
 		end
@@ -303,6 +330,35 @@ function useItem(itemID, itemName, itemValue, isWeapon)
 end
 addEvent("useItem", true)
 addEventHandler("useItem", getRootElement(), useItem)
+
+function explodeFlash(obj, x, y, z)
+	local colsphere = createColSphere(x, y, z, 7)
+	exports.pool:allocateElement(colsphere)
+	local players = getElementsWithinColShape(colsphere, "player")
+	
+	destroyElement(obj)
+	destroyElement(colsphere)
+	for key, value in ipairs(players) do
+		local gasmask = getElementData(value, "gasmask")
+		
+		if (not gasmask) or (gasmask==0) then
+			playSoundFrontEnd(value, 47)
+			fadeCamera(value, false, 0.5, 255, 255, 255)
+			setTimer(cancelEffect, 5000, 1, value)
+			setTimer(playSoundFrontEnd, 1000, 1, value, 48)
+		end
+	end
+end
+
+function cancelEffect(thePlayer)
+	fadeCamera(thePlayer, true, 6.0)
+end
+
+tags = {1524, 1525, 1526, 1527, 1528, 1529, 1530, 1531 }
+
+function destroyGlowStick(marker)
+	destroyElement(marker)
+end
 
 function destroyItem(itemID, itemValue, itemName, isWeapon)
 	outputChatBox("You destroyed a " .. itemName .. ".", source, 255, 194, 14)
@@ -332,7 +388,7 @@ function dropItem(itemID, itemValue, itemName, x, y, z, gz, isWeapon)
 		
 		-- Animation
 		exports.global:applyAnimation(source, "CARRY", "putdwn", true, 1.0, false, false)
-		setTimer(exports.global:removePedAnimation, 1500, 1, source)
+		setTimer(removeAnimation, 1500, 1, source)
 	
 		local objectresult = mysql_query(handler, "SELECT modelid FROM items WHERE id='" .. tonumber(itemID) .. "' LIMIT 1")
 		local modelid = tonumber(mysql_result(objectresult, 1, 1))

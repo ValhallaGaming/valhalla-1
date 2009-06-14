@@ -54,6 +54,13 @@ function handleReport(reportedPlayer, reportedReason)
 	local hours = time.hour
 	local minutes = time.minute
 	
+	hours = hours + 8
+	if (hours==24) then
+		hours = 0
+	elseif (hours>24) then
+		hours = hours - 24
+	end
+	
 	-- Fix hours
 	if (hours<10) then
 		hours = "0" .. hours

@@ -468,8 +468,8 @@ function callbackQuitFaction()
 		mysql_free_result(query)
 		outputChatBox("You quit the faction '" .. theTeamName .. "'.", source)
 		
-		local theTeam = getTeamFromName("Citizen")
-		setPlayerTeam(source, theTeam)
+		local newTeam = getTeamFromName("Citizen")
+		setPlayerTeam(source, newTeam)
 		setElementData(source, "faction", -1)
 
 		-- Send message to everyone in the faction

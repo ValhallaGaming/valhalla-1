@@ -46,6 +46,7 @@
 	
 	<script src="c_item_globals.lua" type="client"/>
 	<export function="cdoesPlayerHaveItem" type="client"/>
+	<export function="cgetItemName" type="client"/>
 	
 	<script src="s_version_globals.lua" type="server"/>
 	<export function="getScriptVersion" type="server"/>

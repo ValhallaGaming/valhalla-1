@@ -97,20 +97,13 @@ function getItemType(itemID)
 		return 4
 	elseif (itemID==28) then
 		return 4
+	elseif (itemID==29) then
+		return 4
 	else
 		return false
 	end
 end
 	
-	--[[
-		addEventHandler("onClientGUIClick", chkFood, toggleCategory, false)
-	addEventHandler("onClientGUIClick", chkKeys, toggleCategory, false)
-	addEventHandler("onClientGUIClick", chkDrugs, toggleCategory, false)
-	addEventHandler("onClientGUIClick", chkBooks, toggleCategory, false)
-	addEventHandler("onClientGUIClick", chkClothes, toggleCategory, false)
-	addEventHandler("onClientGUIClick", chkElectronics, toggleCategory, false)
-	addEventHandler("onClientGUIClick", chkOther, toggleCategory, false)
-	addEventHandler("onClientGUIClick", chkEmpty, toggleCategory, false)]]
 function toggleCategory()
 	if (source==chkFood) then
 		showFood = not showFood
@@ -165,6 +158,8 @@ function toggleCategory()
 				elseif (itemtype==6) and not (showClothes) then
 					add = false
 				elseif (itemtype==7) and not (showElectronics) then
+					add = false
+				elseif (itemtype==false) then
 					add = false
 				end
 				
@@ -227,7 +222,7 @@ function showInventory(tableitems)
 	addEventHandler("onClientGUIClick", chkElectronics, toggleCategory, false)
 	addEventHandler("onClientGUIClick", chkOther, toggleCategory, false)
 	addEventHandler("onClientGUIClick", chkEmpty, toggleCategory, false)
-	
+
 	for i = 1, 10 do
 		if (items[i]==nil) then
 			if (showEmpty) then
@@ -260,6 +255,8 @@ function showInventory(tableitems)
 				elseif (itemtype==6) and not (showClothes) then
 					add = false
 				elseif (itemtype==7) and not (showElectronics) then
+					add = false
+				elseif (itemtype==false) then
 					add = false
 				end
 				

@@ -51,3 +51,4 @@ INSERT INTO items SET id=25, item_name='Elbow Fighting for Dummies', item_descri
 INSERT INTO items SET id=26, item_name='Gas Mask', item_description='A black gas mask, blocks out the effects of gas and flashbangs.', modelid='1271';
 INSERT INTO items SET id=27, item_name='Flashbang', item_description='A small grenade canister with FB written on the side.', modelid='1271';
 INSERT INTO items SET id=28, item_name='Glowstick', item_description='A green glowstick.', modelid='1271';
+INSERT INTO items SET id=29, item_name='Door Ram', item_description='A red metal door ram.', modelid='1271';

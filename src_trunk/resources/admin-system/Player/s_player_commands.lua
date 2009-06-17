@@ -86,6 +86,49 @@ function gluePlayer(thePlayer, commandName)
 end
 addCommandHandler("glue", gluePlayer, false, false)
 
+--/AUNCUFF
+function adminUncuff(thePlayer, commandName, targetPlayer)
+	if (exports.global:isPlayerAdmin(thePlayer)) then
+		if not (targetPlayer) then
+			outputChatBox("SYNTAX: /" .. commandName .. " [Player Partial Nick / ID]", thePlayer, 255, 194, 14)
+		else
+			local targetPlayer = exports.global:findPlayerByPartialNick(targetPlayer)
+			
+			if not (targetPlayer) then
+				outputChatBox("Player not found.", thePlayer, 255, 0, 0)
+			else
+				local targetPlayerName = getPlayerName(targetPlayer)
+				local logged = getElementData(targetPlayer, "loggedin")
+				
+				if (logged==0) then
+					outputChatBox("Player is not logged in.", thePlayer, 255, 0, 0)
+				else
+					local restrain = getElementData(targetPlayer, "restrain")
+					
+					if (restrain==0) then
+						outputChatBox("Player is not restrained.", thePlayer, 255, 0, 0)
+					else
+						local targetPlayerName = getPlayerName(targetPlayer)
+						outputChatBox("You have been uncuffed by " .. username .. ".", targetPlayer)
+						outputChatBox("You have uncuffed " .. targetPlayerName .. ".", thePlayer)
+						toggleControl(targetPlayer, "sprint", true)
+						toggleControl(targetPlayer, "fire", true)
+						toggleControl(targetPlayer, "jump", true)
+						toggleControl(targetPlayer, "next_weapon", true)
+						toggleControl(targetPlayer, "previous_weapon", true)
+						toggleControl(targetPlayer, "accelerate", true)
+						toggleControl(targetPlayer, "brake_reverse", true)
+						toggleControl(targetPlayer, "aim_weapon", true)
+						setElementData(targetPlayer, "restrain", 0)
+						exports.global:removeAnimation(targetPlayer)
+					end
+				end
+			end
+		end
+	end
+end
+addCommandHandler("auncuff", adminUncuff, false, false)
+
 -- /MUTE
 function mutePlayer(thePlayer, commandName, targetPlayer)
 	if (exports.global:isPlayerAdmin(thePlayer)) then

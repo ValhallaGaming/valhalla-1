@@ -1,9 +1,4 @@
 addEventHandler("onClientResourceStart", getResourceRootElement(getThisResource()), function ( )
-	-- NB bullet
-	--[[local txd = engineLoadTXD ( "bullet.txd", 541 )
-	engineImportTXD ( txd, 541 )
-	local dff = engineLoadDFF ( "bullet.dff", 541 )
-	engineReplaceModel ( dff, 541 )]]
 
 	-- F1 vehicles
 	local txd = engineLoadTXD ( "bmw.txd", 502 )
@@ -25,12 +20,6 @@ addEventHandler("onClientResourceStart", getResourceRootElement(getThisResource(
 	engineImportTXD ( txd, 411 )
 	local dff = engineLoadDFF ( "renault.dff", 411 )
 	engineReplaceModel ( dff, 411 )
-
-	-- Bikes
-	local txd = engineLoadTXD ( "yamaha.txd", 522)
-	engineImportTXD ( txd, 522 )
-	local dff = engineLoadDFF ( "yamaha.dff", 522 )
-	engineReplaceModel ( dff, 522 )
 	
 	-- Shangai circuit
 	local txd = engineLoadTXD ( "chinaspeed.txd" )

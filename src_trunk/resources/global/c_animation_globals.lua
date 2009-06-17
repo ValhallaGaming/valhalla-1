@@ -12,7 +12,8 @@ function applyAnimation(thePlayer, block, name, forced, speed, blendSpeed, start
 	if (thePlayer==getLocalPlayer()) then
 		toggleAllControls(false, true, false)
 	end
-	local setanim = setPedAnimation(thePlayer, block, name, speed, blendSpeed, startTime, loop, updatePosition, callbackFunction, ...)
+	--local setanim = setPedAnimation(thePlayer, block, name, speed, blendSpeed, startTime, loop, updatePosition, callbackFunction, ...)
+	local setanim = setPedAnimation(thePlayer, block, name, -1, loop, updatePosition, false)
 	return setanim
 end
 

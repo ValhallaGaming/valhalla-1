@@ -1,5 +1,15 @@
 wItems, gItems, colSlot, colName, colValue, items, lDescription, bDropItem, bUseItem, bShowItem, bDestroyItem, tabPanel, tabItems, tabWeapons = nil
 gWeapons, colWSlot, colWName, colWValue = nil
+toggleLabel, chkFood, chkKeys, chkDrugs, chkOther, chkBooks, chkClothes, chkElectronics, chkEmpty = nil
+
+showFood = true
+showKeys = true
+showDrugs = true
+showOther = true
+showBooks = true
+showClothes = true
+showElectronics = true
+showEmpty = true
 
 function pickupItem(button, state, absoluteX, absoluteY, worldX, worldY, worldZ, clickedElement)
 	if (clickedElement) then
@@ -22,6 +32,153 @@ function pickupItem(button, state, absoluteX, absoluteY, worldX, worldY, worldZ,
 end
 addEventHandler("onClientClick", getRootElement(), pickupItem)
 
+function getItemType(itemID)
+	-- 1 = Food & Drink
+	-- 2 = Keys
+	-- 3 = Drugs
+	-- 4 = Other
+	-- 5 = Books
+	-- 6 = Clothing & Accessories
+	-- 7 = Electronics
+	
+	if (itemID==1) then
+		return 1
+	elseif (itemID==2) then
+		return 7
+	elseif (itemID==3) then
+		return 2
+	elseif (itemID==4) then
+		return 2
+	elseif (itemID==5) then
+		return 2
+	elseif (itemID==6) then
+		return 7
+	elseif (itemID==7) then
+		return 5
+	elseif (itemID==8) then
+		return 1
+	elseif (itemID==9) then
+		return 1
+	elseif (itemID==10) then
+		return 4
+	elseif (itemID==11) then
+		return 1
+	elseif (itemID==12) then
+		return 1
+	elseif (itemID==13) then
+		return 1
+	elseif (itemID==14) then
+		return 1
+	elseif (itemID==15) then
+		return 1
+	elseif (itemID==16) then
+		return 6
+	elseif (itemID==17) then
+		return 6
+	elseif (itemID==18) then
+		return 5
+	elseif (itemID==19) then
+		return 7
+	elseif (itemID==20) then
+		return 5
+	elseif (itemID==21) then
+		return 5
+	elseif (itemID==22) then
+		return 5
+	elseif (itemID==23) then
+		return 5
+	elseif (itemID==24) then
+		return 5
+	elseif (itemID==25) then
+		return 5
+	elseif (itemID==26) then
+		return 6
+	elseif (itemID==27) then
+		return 4
+	elseif (itemID==28) then
+		return 4
+	else
+		return false
+	end
+end
+	
+	--[[
+		addEventHandler("onClientGUIClick", chkFood, toggleCategory, false)
+	addEventHandler("onClientGUIClick", chkKeys, toggleCategory, false)
+	addEventHandler("onClientGUIClick", chkDrugs, toggleCategory, false)
+	addEventHandler("onClientGUIClick", chkBooks, toggleCategory, false)
+	addEventHandler("onClientGUIClick", chkClothes, toggleCategory, false)
+	addEventHandler("onClientGUIClick", chkElectronics, toggleCategory, false)
+	addEventHandler("onClientGUIClick", chkOther, toggleCategory, false)
+	addEventHandler("onClientGUIClick", chkEmpty, toggleCategory, false)]]
+function toggleCategory()
+	if (source==chkFood) then
+		showFood = not showFood
+	elseif (source==chkKeys) then
+		showKeys = not showKeys
+	elseif (source==chkDrugs) then
+		showDrugs = not showDrugs
+	elseif (source==chkBooks) then
+		showBooks = not showBooks
+	elseif (source==chkClothes) then
+		showClothes = not showClothes
+	elseif (source==chkElectronics) then
+		showElectronics = not showElectronics
+	elseif (source==chkOther) then
+		showOther = not showOther
+	elseif (source==chkEmpty) then
+		showEmpty = not showEmpty
+	end
+	
+	-- let's add the items again
+	guiGridListClear(gItems)
+	local itemvalues = getElementData(getLocalPlayer(), "itemvalues")
+	for i = 1, 10 do
+		if (items[i]==nil) then
+			if (showEmpty) then
+				local row = guiGridListAddRow(gItems)
+				guiGridListSetItemText(gItems, row, colSlot, tostring(i), false, true)
+				guiGridListSetItemText(gItems, row, colName, "Empty", false, false)
+				guiGridListSetItemText(gItems, row, colValue, "None", false, false)
+			end
+		else
+			local itemid = tonumber(items[i][3])
+			local itemvalue = gettok(itemvalues, i, string.byte(','))
+			
+			local itemtype = getItemType(itemid)
+	
+			if not (itemtype) then
+				return
+			else
+				local add = true
+				
+				if (itemtype==1) and not (showFood) then
+					add = false
+				elseif (itemtype==2) and not (showKeys) then
+					add = false
+				elseif (itemtype==3) and not (showDrugs) then
+					add = false
+				elseif (itemtype==4) and not (showOther) then
+					add = false
+				elseif (itemtype==5) and not (showBooks) then
+					add = false
+				elseif (itemtype==6) and not (showClothes) then
+					add = false
+				elseif (itemtype==7) and not (showElectronics) then
+					add = false
+				end
+				
+				if (add) then
+					local row = guiGridListAddRow(gItems)
+					guiGridListSetItemText(gItems, row, colSlot, tostring(i), false, true)
+					guiGridListSetItemText(gItems, row, colName, tostring(items[i][1]), false, false)
+					guiGridListSetItemText(gItems, row, colValue, tostring(itemvalue), false, false)
+				end
+			end
+		end
+	end
+end
+
 function showInventory(tableitems)
 	local width, height = 600, 500
 	local scrWidth, scrHeight = guiGetScreenSize()
@@ -33,13 +190,13 @@ function showInventory(tableitems)
 	
 	items = tableitems
 	
-	tabPanel = guiCreateTabPanel(0.025, 0.05, 0.95, 0.8, true, wItems)
+	tabPanel = guiCreateTabPanel(0.025, 0.05, 0.95, 0.7, true, wItems)
 	tabItems = guiCreateTab("Items", tabPanel)
 	tabWeapons = guiCreateTab("Weapons", tabPanel)
 	
 	
 	-- ITEMS
-	gItems = guiCreateGridList(0.025, 0.05, 0.95, 0.8, true, tabItems)
+	gItems = guiCreateGridList(0.025, 0.05, 0.95, 0.9, true, tabItems)
 	addEventHandler("onClientGUIClick", gItems, showDescription, false)
 	
 	
@@ -49,18 +206,70 @@ function showInventory(tableitems)
 	
 	local itemvalues = getElementData(getLocalPlayer(), "itemvalues")
 	
+	-- type checkboxes
+	toggleLabel = guiCreateLabel(0.025, 0.77, 0.95, 0.9, "Toggle Item Types:", true, wItems)
+	guiSetFont(toggleLabel, "default-bold-small")
+	
+	chkFood = guiCreateCheckBox(0.025, 0.8, 0.15, 0.05, "Food & Drink", showFood, true, wItems)
+	chkKeys = guiCreateCheckBox(0.2, 0.8, 0.1, 0.05, "Keys", showKeys, true, wItems)
+	chkDrugs = guiCreateCheckBox(0.3, 0.8, 0.1, 0.05, "Drugs", showDrugs, true, wItems)
+	chkBooks = guiCreateCheckBox(0.4, 0.8, 0.1, 0.05, "Books", showBooks, true, wItems)
+	chkClothes = guiCreateCheckBox(0.5, 0.8, 0.125, 0.05, "Clothing", showClothes, true, wItems)
+	chkElectronics = guiCreateCheckBox(0.625, 0.8, 0.15, 0.05, "Electronics", showElectronics, true, wItems)
+	chkOther = guiCreateCheckBox(0.775, 0.8, 0.1, 0.05, "Other", showOther, true, wItems)
+	chkEmpty = guiCreateCheckBox(0.875, 0.8, 0.1, 0.05, "Empty", showEmpty, true, wItems)
+	
+	addEventHandler("onClientGUIClick", chkFood, toggleCategory, false)
+	addEventHandler("onClientGUIClick", chkKeys, toggleCategory, false)
+	addEventHandler("onClientGUIClick", chkDrugs, toggleCategory, false)
+	addEventHandler("onClientGUIClick", chkBooks, toggleCategory, false)
+	addEventHandler("onClientGUIClick", chkClothes, toggleCategory, false)
+	addEventHandler("onClientGUIClick", chkElectronics, toggleCategory, false)
+	addEventHandler("onClientGUIClick", chkOther, toggleCategory, false)
+	addEventHandler("onClientGUIClick", chkEmpty, toggleCategory, false)
+	
 	for i = 1, 10 do
 		if (items[i]==nil) then
-			local row = guiGridListAddRow(gItems)
-			guiGridListSetItemText(gItems, row, colSlot, tostring(i), false, true)
-			guiGridListSetItemText(gItems, row, colName, "Empty", false, false)
-			guiGridListSetItemText(gItems, row, colValue, "None", false, false)
+			if (showEmpty) then
+				local row = guiGridListAddRow(gItems)
+				guiGridListSetItemText(gItems, row, colSlot, tostring(i), false, true)
+				guiGridListSetItemText(gItems, row, colName, "Empty", false, false)
+				guiGridListSetItemText(gItems, row, colValue, "None", false, false)
+			end
 		else
-			local row = guiGridListAddRow(gItems)
+			local itemid = tonumber(items[i][3])
 			local itemvalue = gettok(itemvalues, i, string.byte(','))
-			guiGridListSetItemText(gItems, row, colSlot, tostring(i), false, true)
-			guiGridListSetItemText(gItems, row, colName, tostring(items[i][1]), false, false)
-			guiGridListSetItemText(gItems, row, colValue, tostring(itemvalue), false, false)
+			
+			local itemtype = getItemType(itemid)
+	
+			if not (itemtype) then
+				return
+			else
+				local add = true
+				
+				if (itemtype==1) and not (showFood) then
+					add = false
+				elseif (itemtype==2) and not (showKeys) then
+					add = false
+				elseif (itemtype==3) and not (showDrugs) then
+					add = false
+				elseif (itemtype==4) and not (showOther) then
+					add = false
+				elseif (itemtype==5) and not (showBooks) then
+					add = false
+				elseif (itemtype==6) and not (showClothes) then
+					add = false
+				elseif (itemtype==7) and not (showElectronics) then
+					add = false
+				end
+				
+				if (add) then
+					local row = guiGridListAddRow(gItems)
+					guiGridListSetItemText(gItems, row, colSlot, tostring(i), false, true)
+					guiGridListSetItemText(gItems, row, colName, tostring(items[i][1]), false, false)
+					guiGridListSetItemText(gItems, row, colValue, tostring(itemvalue), false, false)
+				end
+			end
 		end
 	end
 	

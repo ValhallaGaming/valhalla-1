@@ -276,7 +276,7 @@ function showInventory(tableitems)
 	addEventHandler("onClientGUIDoubleClick", gItems, useItem, false)
 
 	-- WEAPONS
-	gWeapons = guiCreateGridList(0.025, 0.05, 0.95, 0.8, true, tabWeapons)
+	gWeapons = guiCreateGridList(0.025, 0.05, 0.95, 0.9, true, tabWeapons)
 	addEventHandler("onClientGUIClick", gWeapons, showDescription, false)
 	
 	

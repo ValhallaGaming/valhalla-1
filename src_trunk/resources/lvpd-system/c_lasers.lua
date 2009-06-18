@@ -9,8 +9,8 @@ function showLaser()
 				local sx, sy, sz = getPedTargetStart(value)
 				local ex, ey, ez = getPedTargetEnd(value)
 				local task = getPedTask(value, "secondary", 0)
-				
-				if (task=="TASK_SIMPLE_USE_GUN") then
+
+				if (task=="TASK_SIMPLE_USE_GUN" or isPedDoingGangDriveby(value)) then
 					local collision, cx, cy, cz, element = processLineOfSight(sx, sy, sz, ex, ey, ez, true, true, true, true, true, false, false, false)
 					
 					if not (collision) then

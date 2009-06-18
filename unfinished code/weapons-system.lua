@@ -19,7 +19,7 @@ function createStevie () -- Create SteviePed at 19:00 every day.
 		setElementDimension (stevie, 515)
 		setPedAnimation ( stevie, "FOOD", "FF_Sit_Loop", -1, true, false, false) -- Set the Peds Animation.
 		
-		activeConvo = 0 -- Set the convo state to 0 so people can start talking to him.
+		setElementData (stevie, "activeConvo", 0) -- Set the convo state to 0 so people can start talking to him.
 		
 		local pedX, pedY, pedZ = getElementPosition( stevie ) -- Create colSphere to detect trigger.
 		local triggerSphere = createColSphere( pedX, pedY, pedZ, 2 )
@@ -74,13 +74,13 @@ addEventHandler( "introEvent", getRootElement(), createStevieGUI )
 -- Server side
 function stevieIntro ( thePlayer, matchingDimension ) -- When player enters the colSphere create GUI with intro output to all local players as local chat.
 	if getElementType ( thePlayer ) == "player" then --if the element that entered was player
-		if (activeConvo == 1) then -- If stevie is already talking to someone...
+		if (getElementData(stevie, "activeConvo") == 1) then -- If stevie is already talking to someone...
 			-- do nothing
 		else
 			
 			-- Give the player the "Find Stevie" achievement.
 			
-			activeConvo = 1 -- set the NPCs conversation state to active so no one else can begin to talk to him.
+			setElementData (stevie, "activeConvo", 1) -- set the NPCs conversation state to active so no one else can begin to talk to him.
 	
 			local chatSphere = createColSphere( pedX, pedY, pedZ, 10 ) -- Create the colSphere for chat output to local players
 			local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
@@ -151,7 +151,7 @@ end
 function statement3_S ()
 	setPedAnimation ( thePlayer ) --Unfreeze the player.
 	
-	activeConvo = 0 -- set the NPCs conversation state to not active so others can begin to talk to him.
+	setElementData (stevie, "activeConvo", 0) -- set the NPCs conversation state to not active so others can begin to talk to him.
 	
 	-- Output the text from the last option to all player in radius
 	local chatSphere = createColSphere( pedX, pedY, pedZ, 10 )
@@ -260,7 +260,7 @@ function statement5_S ()
 	
 	setPedAnimation ( thePlayer ) --Unfreeze the player.
 		
-	activeConvo = 0 -- set the NPCs conversation state to not active so others can begin to talk to him.
+	setElementData (stevie, "activeConvo", 0) -- set the NPCs conversation state to not active so others can begin to talk to him.
 	
 	-- Output the text from the last option to all player in radius
 	local chatSphere = createColSphere( pedX, pedY, pedZ, 10 )
@@ -349,7 +349,7 @@ function statement7_S ()
 	
 	setPedAnimation ( thePlayer ) --Unfreeze the player.
 		
-	activeConvo = 0 -- set the NPCs conversation state to not active so others can begin to talk to him.
+	setElementData (stevie, "activeConvo", 0) -- set the NPCs conversation state to not active so others can begin to talk to him.
 	
 	-- Output the text from the last option to all player in radius
 	local chatSphere = createColSphere( pedX, pedY, pedZ, 10 )
@@ -486,7 +486,7 @@ end
 
 -- Server Side
 function stevieSuccess_S ()
-	activeConvo = 0 -- set the NPCs conversation state to not active so others can begin to talk to him.
+	setElementData (stevie, "activeConvo", 0) -- set the NPCs conversation state to not active so others can begin to talk to him.
 	
 	-- Add Stevie's business card to players inventory.
 	
@@ -531,7 +531,7 @@ function CloseButtonClick_S
 	
 	setPedAnimation ( thePlayer ) --Unfreeze the player.
 	
-	activeConvo = 0 -- set the NPCs conversation state to not active so others can begin to talk to him.
+	setElementData (stevie, "activeConvo", 0) -- set the NPCs conversation state to not active so others can begin to talk to him.
 	
 	-- Output the text from the last option to all player in radius
 	local chatSphere = createColSphere( pedX, pedY, pedZ, 10 )
@@ -572,7 +572,7 @@ end
 -- Server Side
 function quickClose_S ()
 	setPedAnimation ( thePlayer ) --Unfreeze the player.
-	activeConvo = 0 -- set the NPCs conversation state to not active so others can begin to talk to him.
+	setElementData (stevie, "activeConvo", 0) -- set the NPCs conversation state to not active so others can begin to talk to him.
 end
 addEvent( "quickCloseServerEvent", true )
 addEventHandler( "quickCloseServerEvent", getRootElement(), quickClose_S )
@@ -595,7 +595,7 @@ function steviePhonegui( thePlayer, commandName, SteviesNumber )
 			outputChatBox("The phone you are trying to call is switched off.", targetPlayers, 255, 194, 14)
 			setPedAnimation ( thePlayer )
 		else
-			if not (convoState == 0 ) then -- is someone already talking to Stevie?
+			if not (getElementData (stevie, "phoneCconvoState") == 0 ) then -- is someone already talking to Stevie?
 				outputChatBox("The phone you are trying to call is engaged.", targetPlayers, 255, 194, 14)
 				setPedAnimation ( thePlayer )
 			else
@@ -608,7 +608,7 @@ function steviePhonegui( thePlayer, commandName, SteviesNumber )
 					setPedAnimation(thePlayer, "ped", "phone_out", 1300, false, true, false)
 					setTimer(setPedAnimation, 1305, 1, thePlayer)
 				else -- If they aren't a cop.
-					convoState = 1 -- convoState set to active so no one else can call.
+					setElementData (stevie, "phoneConvoState", 1) -- convoState set to active so no one else can call.
 					-- Create the GUI
 					local Width = 400
 					local Height = 400
@@ -660,14 +660,13 @@ function agreeDeal_S ()
 		setPedAnimation(thePlayer, "ped", "phone_out", 1300, false, true, false) -- Reset the players animation
 		setTimer(setPedAnimation, 1305, 1, thePlayer)
 		setElementData(thePlayer, "phonestate", 0) -- The player can be called again.
-		convoState = 0 -- reset the convo state so other players can call Stevie.
+		setElementData(stevie,"phoneConvoState", 0) -- reset the convo state so other players can call Stevie.
 		
 		local playerMoney = getElementData ( thePlayer, "cashInHand" ) -- Check the player has $3000
 		if not (playerMoney >= 3000) then
 			outputChatBox("Stevie says: Call me when you've got the money.", thePlayer, 255, 194, 14) -- Tell the player they don't have enough money
 			setPedAnimation ( thePlayer ) -- End the call			
 		else
-			convoState = 0 -- reset the convo state so other players can call Stevie.
 			
 			local chatSphere = createColSphere( pedX, pedY, pedZ, 10 ) -- Output the text from the last option to all player in radius
 			local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
@@ -709,7 +708,7 @@ function declineDeal_S ()
 	setPedAnimation(thePlayer, "ped", "phone_out", 1300, false, true, false) -- Reset the players animation
 	setTimer(setPedAnimation, 1305, 1, thePlayer)
 	setElementData(thePlayer, "phonestate", 0) -- The player can be called again.
-	convoState = 0 -- reset the convo state so other players can call Stevie.
+	setElementData(stevie, "phoneConvoState", 0) -- reset the convo state so other players can call Stevie.
 			
 	local chatSphere = createColSphere( pedX, pedY, pedZ, 10 ) -- Output the text from the last option to all player in radius
 	local targetPlayers = getElementsWithinColShape( chatSphere, "player" )

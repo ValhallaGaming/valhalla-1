@@ -18,4 +18,6 @@
 	
 	<script src="fastrope/s_fastrope.lua" type="server"/>
 	<script src="fastrope/c_fastrope.lua" type="client"/>
+	
+	<script src="c_lasers.lua" type="client"/>
 </meta>

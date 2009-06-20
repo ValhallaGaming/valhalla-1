@@ -185,11 +185,19 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 			setPedSkin(source, tonumber(itemValue))
 			setElementData(source, "casualskin", tonumber(itemValue))
 		elseif (itemID==17) then -- watch
-			local time = getTime()
-			local hours = time.hour
-			local mins = time.minute
+			local realtime = getRealTime()
+			local hour = realtime.hour
+			local mins = realtime.minute
+
+			hour = hour + 8
+			if (hour==24) then
+				hour = 0
+			elseif (hour>24) then
+				hour = hour - 24
+			end
+			
 			exports.global:sendLocalMeAction(source, " looks at their watch.")
-			outputChatBox("The time is " .. hours .. ":" .. mins .. ".", source, 255, 194, 14)
+			outputChatBox("The time is " .. hour .. ":" .. mins .. ".", source, 255, 194, 14)
 			exports.global:applyAnimation(source, "COP_AMBIENT", "Coplook_watch", true, 1.0, false, false)
 			setTimer(removeAnimation, 4000, 1, source)
 		elseif (itemID==18) then -- city guide

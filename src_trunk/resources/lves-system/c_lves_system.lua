@@ -66,7 +66,7 @@ function lowerTimer()
 	if (deathTimer>1) then
 		guiSetText(deathLabel, tostring(deathTimer) .. " Seconds")
 	else
-		if (deathLabel) then
+		if (isElement(deathLabel)) then
 			guiSetText(deathLabel, tostring(deathTimer) .. " Second")
 		end
 	end

@@ -34,6 +34,7 @@ function realisticDamage(attacker, weapon, bodypart, loss)
 			
 
 		if (bodypart==9) and not (armor>0) then -- Head and no armor.
+			setPedHeadless(source, true)
 			killPed(source)
 			exports.global:givePlayerAchievement(attacker, 12)
 			exports.global:givePlayerAchievement(source, 15)
@@ -52,6 +53,8 @@ function respawnPlayer(thePlayer)
 	if (isElement(thePlayer)) then
 		local cost = math.random(25,50)
 		local money = getElementData(thePlayer, "money")
+		
+		setPedHeadless(thePlayer, false)
 		
 		-- Fix for injected cash
 		if (cost>money) then

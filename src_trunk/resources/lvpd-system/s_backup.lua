@@ -57,7 +57,7 @@ function backup(thePlayer, commandName)
 		elseif (backupBlip) and (backupPlayer==thePlayer) then -- in use by this player
 			for key, value in ipairs(getPlayersInTeam(theTeam)) do
 			
-				local duty = getElementData(value, "duty")
+				local duty = tonumber(getElementData(value, "duty"))
 				
 				if (duty>0) then
 					outputChatBox("The unit no longer requires assistance. Resume normal patrol", value, 255, 194, 14)

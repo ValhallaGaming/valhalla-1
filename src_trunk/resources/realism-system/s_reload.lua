@@ -15,7 +15,7 @@ function reloadWeapon(thePlayer)
 				setElementData(thePlayer, "reloading", true)
 				setTimer(checkFalling, 100, 10, thePlayer)
 				if not (isPedDucked(thePlayer)) then
-					setPedAnimation(thePlayer, "BUDDY", "buddy_reload", 1000, false, false, false)
+					exports.global:applyAnimation(thePlayer, "BUDDY", "buddy_reload", 1000, false, false)
 				end
 				setTimer(giveReload, 1001, 1, thePlayer, weapon, ammo)
 				triggerClientEvent(thePlayer, "cleanupUI", thePlayer)
@@ -32,7 +32,7 @@ function checkFalling(thePlayer)
 		
 		-- reset state
 		setElementData(thePlayer, "reloading.timer", nil)
-		setPedAnimation(thePlayer)
+		exports.global:removeAnimation(thePlayer)
 		setElementData(thePlayer, "reloading", false)
 		toggleControl(thePlayer, "fire", true)
 		toggleControl(thePlayer, "next_weapon", true)
@@ -42,7 +42,7 @@ end
 
 function giveReload(thePlayer, weapon, ammo)
 	setElementData(thePlayer, "reloading.timer", nil)
-	setPedAnimation(thePlayer)
+	exports.global:removeAnimation(thePlayer)
 	takeWeapon(thePlayer, weapon)
 	giveWeapon(thePlayer, weapon, ammo, true)
 	setElementData(thePlayer, "reloading", false)

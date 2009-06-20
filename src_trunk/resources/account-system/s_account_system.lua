@@ -543,10 +543,15 @@ function timerUnjailPlayer(jailedPlayer)
 			else
 				mysql_query(handler, "UPDATE accounts SET adminjail_time='" .. timeLeft .. "' WHERE id='" .. accountID .. "'")
 			end
+		else
+			if (isElement(jailedPlayer)) then
+				local theTimer = getElementData(jailedPlayer, "jailtimer")
+			
+				if (theTimer) then
+					killTimer(theTimer)
+				end
+			end
 		end
-	else
-		local theTimer = getElementData(jailedPlayer, "jailtimer")
-		killTimer(theTimer)
 	end
 end
 

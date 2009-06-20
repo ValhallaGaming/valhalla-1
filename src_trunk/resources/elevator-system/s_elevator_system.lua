@@ -191,22 +191,26 @@ addEventHandler("onPickupHit", getRootElement(), PickupEnter)
 function func (playa, f, down, playa, shape) enterElevator(playa, shape) end 
 
 function bindKeys(playa, shape)
-	if not(isKeyBound(playa, "enter", "down", func)) then
-		bindKey(playa, "enter", "down", func, playa, shape)
-	end
-	
-	if not(isKeyBound(playa, "f", "down", func)) then
-		bindKey(playa, "f", "down", func, playa, shape)
+	if (isElement(player)) then
+		if not(isKeyBound(playa, "enter", "down", func)) then
+			bindKey(playa, "enter", "down", func, playa, shape)
+		end
+		
+		if not(isKeyBound(playa, "f", "down", func)) then
+			bindKey(playa, "f", "down", func, playa, shape)
+		end
 	end
 end
 
 function unbindKeys(playa, shape)
-	if (isKeyBound(playa, "enter", "down", func)) then
-		unbindKey(playa, "enter", "down", func, playa, shape)
-	end
-	
-	if (isKeyBound(playa, "f", "down", func)) then
-		unbindKey(playa, "f", "down", func, playa, shape)
+	if (isElement(player)) then
+		if (isKeyBound(playa, "enter", "down", func)) then
+			unbindKey(playa, "enter", "down", func, playa, shape)
+		end
+		
+		if (isKeyBound(playa, "f", "down", func)) then
+			unbindKey(playa, "f", "down", func, playa, shape)
+		end
 	end
 end
 

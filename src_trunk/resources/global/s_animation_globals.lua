@@ -8,7 +8,7 @@ function applyAnimation(thePlayer, block, name, forced, blendSpeed, loop, update
 	setElementData(thePlayer, "forcedanimation", forced)
 	setElementData(thePlayer, "animation", true)
 	--local setanim = setPedAnimation(thePlayer, block, name, blendSpeed, loop, updatePosition)
-	local setanim = setPedAnimation(thePlayer, block, name, -1, loop, updatePosition, false)
+	local setanim = setPedAnimation(thePlayer, block, name, 99999999, loop, updatePosition, false)
 	return setanim
 end
 

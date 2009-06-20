@@ -32,6 +32,74 @@ function pickupItem(button, state, absoluteX, absoluteY, worldX, worldY, worldZ,
 end
 addEventHandler("onClientClick", getRootElement(), pickupItem)
 
+function getItemName(itemID)
+	if (itemID==1) then return "Haggis"
+	elseif (itemID==2) then return "Cellphone"
+	elseif (itemID==3) then return "Car Key"
+	elseif (itemID==4) then return "House Key"
+	elseif (itemID==5) then return "Business Key"
+	elseif (itemID==6) then return "Radio"
+	elseif (itemID==7) then return "Phonebook"
+	elseif (itemID==8) then return "Sandwich"
+	elseif (itemID==9) then return "Softdrink"
+	elseif (itemID==10) then return "Dice"
+	elseif (itemID==11) then return "Taco"
+	elseif (itemID==12) then return "Burger"
+	elseif (itemID==13) then return "Donut"
+	elseif (itemID==14) then return "Cookie"
+	elseif (itemID==15) then return "Water"
+	elseif (itemID==16) then return "Clothes"
+	elseif (itemID==17) then return "Watch"
+	elseif (itemID==18) then return "City Guide"
+	elseif (itemID==19) then return "MP3 Player"
+	elseif (itemID==20) then return "Standard Fighting for Dummies"
+	elseif (itemID==21) then return "Boxing for Dummies"
+	elseif (itemID==22) then return "Kung Fu for Dummies"
+	elseif (itemID==23) then return "Knee Head Fighting for Dummies"
+	elseif (itemID==24) then return "Grab Kick Fighting for Dummies"
+	elseif (itemID==25) then return "Elbow Fighting for Dummies"
+	elseif (itemID==26) then return "Gas Mask"
+	elseif (itemID==27) then return "Flashbang"
+	elseif (itemID==28) then return "Glowstick"
+	elseif (itemID==29) then return "Door Ram"
+	else return false 
+	end
+end
+
+function getItemDescription(itemID)
+	if (itemID==1) then return "A plump haggis animal, straight from the hills of Scotland."
+	elseif (itemID==2) then return "A sleek cellphone, look's like a new one too."
+	elseif (itemID==3) then return "A car key with a small car badge on it. (( Opens Car ##v ))"
+	elseif (itemID==4) then return "A green house key."
+	elseif (itemID==5) then return "A blue business key."
+	elseif (itemID==6) then return "A black radio."
+	elseif (itemID==7) then return "A torn phonebook."
+	elseif (itemID==8) then return "A yummy sandwich with cheese."
+	elseif (itemID==9) then return "A can of sprunk."
+	elseif (itemID==10) then return "A red dice with white dots."
+	elseif (itemID==11) then return "A greasy mexican taco."
+	elseif (itemID==12) then return "A double cheeseburger with bacon."
+	elseif (itemID==13) then return "Hot sticky sugar covered donut."
+	elseif (itemID==14) then return "A luxury chocolate chip cookie."
+	elseif (itemID==15) then return "A bottle of mineral water."
+	elseif (itemID==16) then return "A set of clean clothes. (( Skin ID ##v ))"
+	elseif (itemID==17) then return "A smart gold watch."
+	elseif (itemID==18) then return "A small city guide booklet."
+	elseif (itemID==19) then return "A white, sleek looking MP3 Player. The brand reads EyePod."
+	elseif (itemID==20) then return "A book on how to do standard fighting."
+	elseif (itemID==21) then return "A book on how to do boxing."
+	elseif (itemID==22) then return "A book on how to do kung fu."
+	elseif (itemID==23) then return "A book on how to do grab kick fighting."
+	elseif (itemID==24) then return "A book on how to do elbow fighting."
+	elseif (itemID==25) then return "A book on how to do elbow fighting."
+	elseif (itemID==26) then return "A black gas mask, blocks out the effects of gas and flashbangs."
+	elseif (itemID==27) then return "A small grenade canister with FB written on the side."
+	elseif (itemID==28) then return "A green glowstick."
+	elseif (itemID==29) then return "A red metal door ram."
+	else return false 
+	end
+end
+
 function getItemType(itemID)
 	-- 1 = Food & Drink
 	-- 2 = Keys
@@ -174,7 +242,16 @@ function toggleCategory()
 	end
 end
 
-function showInventory(tableitems)
+function toggleInventory()
+	if (wItems) then
+		hideInventory()
+	else
+		showInventory()
+	end
+end
+bindKey("i", "down", toggleInventory)
+
+function showInventory()
 	local width, height = 600, 500
 	local scrWidth, scrHeight = guiGetScreenSize()
 	local x = scrWidth/2 - (width/2)
@@ -183,7 +260,24 @@ function showInventory(tableitems)
 	wItems = guiCreateWindow(x, y, width, height, "Inventory", false)
 	guiWindowSetSizable(wItems, false)
 	
-	items = tableitems
+	local itemstring = getElementData(getLocalPlayer(), "items")
+	local itemvalues = getElementData(getLocalPlayer(), "itemvalues")
+			
+	items = { }
+			
+	if (itemstring) then
+		for i = 1, 10 do
+			local token = tonumber(gettok(itemstring, i, string.byte(',')))
+			
+			if (token) then
+				items[i] = { }
+				items[i][1] = getItemName(token)
+				items[i][2] = getItemDescription(token)
+				items[i][3] = token
+				items[i][4] = gettok(itemvalues, i, string.byte(','))
+			end
+		end
+	end
 	
 	tabPanel = guiCreateTabPanel(0.025, 0.05, 0.95, 0.7, true, wItems)
 	tabItems = guiCreateTab("Items", tabPanel)

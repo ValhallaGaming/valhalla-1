@@ -56,7 +56,7 @@ function makeCar(thePlayer, car, cost, id, col1, col2)
 	local username = getPlayerName(thePlayer)
 	local dbid = getElementData(thePlayer, "dbid")
 
-	exports.global:takePlayerSafeMoney(thePlayer, cost)
+	exports.global:takePlayerSafeMoney(thePlayer, tonumber(cost))
 				
 	local letter1 = exports.global:randChar()
 	local letter2 = exports.global:randChar()

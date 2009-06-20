@@ -105,11 +105,11 @@ function cremoveFriend()
 end
 
 function hidePlayerMenu()
-	destroyElement(wRightClick)
-	wRightClick = nil
-	
 	destroyElement(bAddAsFriend)
 	bAddAsFriend = nil
+
+	destroyElement(wRightClick)
+	wRightClick = nil
 	
 	ax = nil
 	ay = nil

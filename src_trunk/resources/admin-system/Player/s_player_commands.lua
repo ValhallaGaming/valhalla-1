@@ -1711,7 +1711,7 @@ function ejectPlayer(thePlayer, commandName, target)
 					outputChatBox("This player is not in your vehicle.", thePlayer, 255, 0, 0)
 				else
 					outputChatBox("You have thrown " .. targetPlayerName .. " out of your vehicle.", thePlayer, 0, 255, 0)
-					removePedFromVehicle(thePlayer)
+					removePedFromVehicle(targetPlayer)
 				end
 			end
 		end

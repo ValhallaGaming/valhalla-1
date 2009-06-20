@@ -191,7 +191,7 @@ addEventHandler("onPickupHit", getRootElement(), PickupEnter)
 function func (playa, f, down, playa, shape) enterElevator(playa, shape) end 
 
 function bindKeys(playa, shape)
-	if (isElement(player)) then
+	if (isElement(playa)) then
 		if not(isKeyBound(playa, "enter", "down", func)) then
 			bindKey(playa, "enter", "down", func, playa, shape)
 		end
@@ -203,7 +203,7 @@ function bindKeys(playa, shape)
 end
 
 function unbindKeys(playa, shape)
-	if (isElement(player)) then
+	if (isElement(playa)) then
 		if (isKeyBound(playa, "enter", "down", func)) then
 			unbindKey(playa, "enter", "down", func, playa, shape)
 		end

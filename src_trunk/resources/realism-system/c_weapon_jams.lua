@@ -66,7 +66,9 @@ function weaponChangedJammed(prev, curr)
 		jamcount = 0
 		state = 0
 		
-		destroyElement(pJam)
+		if (pJam) then
+			destroyElement(pJam)
+		end
 		
 		triggerServerEvent("togglefiring", getLocalPlayer(), true)
 		setElementData(getLocalPlayer(), "jammed", true, 0)

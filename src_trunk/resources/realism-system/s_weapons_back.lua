@@ -8,7 +8,7 @@ function createWeaponModelOnBack(x, y, z, weapon)
 	end
 	
 	local currobject = getElementData(source, "weaponback.object")
-	if (currobject~=nil) then
+	if (isElement(currobject)) then
 		destroyElement(currobject)
 	end
 	
@@ -24,7 +24,7 @@ addEventHandler("createWeaponBackModel", getRootElement(), createWeaponModelOnBa
 function destroyWeaponModelOnBack()
 	local currobject = getElementData(source, "weaponback.object")
 
-	if (currobject) then
+	if (isElement(currobject)) then
 		destroyElement(currobject)
 	end
 end

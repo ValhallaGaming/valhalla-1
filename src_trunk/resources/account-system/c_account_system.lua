@@ -3511,7 +3511,17 @@ addEventHandler("onClientPlayerJoin", getRootElement(), onPlayerJoinSetNametagsS
 
 timeinserver = 0
 function updateTimeInServer()
-	timeinserver = timeinserver + 1
-	setElementData(getLocalPlayer(), "timeinserver", timeinserver)
+	local logged = getElementData(getLocalPlayer(), "loggedin")
+	
+	if (logged==1) then
+		timeinserver = timeinserver + 1
+		setElementData(getLocalPlayer(), "timeinserver", true, timeinserver)
+	end
 end
-setTimer(updateTimeInServer, 3540000, 0) -- actually 59 minutes, since we have events happening on 60 minutes that we WANT to trigger if we've just spent out first hour in the server
+setTimer(updateTimeInServer, 60000, 0)
+
+function syncTimeInServer(tistime)
+	timeinserver = tistime
+end
+addEvent("syncTimeInServer", true)
+addEventHandler("syncTimeInServer", getRootElement(), syncTimeInServer)

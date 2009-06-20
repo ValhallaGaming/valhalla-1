@@ -161,7 +161,7 @@ function spawnCharacter(charname)
 	
 	local safecharname = mysql_escape_string(handler, charname)
 	
-	local result = mysql_query(handler, "SELECT id, x, y, z, rotation, interior_id, dimension_id, health, armor, skin, money, faction_id, cuffed, radiochannel, masked, duty, cellnumber, fightstyle, pdjail, pdjail_time, job, casualskin, weapons, ammo, items, itemvalues, car_license, gun_license, bankmoney, fingerprint, tag, hoursplayed, pdjail_station FROM characters WHERE charactername='" .. charname .. "' AND account='" .. id .. "'")
+	local result = mysql_query(handler, "SELECT id, x, y, z, rotation, interior_id, dimension_id, health, armor, skin, money, faction_id, cuffed, radiochannel, masked, duty, cellnumber, fightstyle, pdjail, pdjail_time, job, casualskin, weapons, ammo, items, itemvalues, car_license, gun_license, bankmoney, fingerprint, tag, hoursplayed, pdjail_station, timeinserver FROM characters WHERE charactername='" .. charname .. "' AND account='" .. id .. "'")
 	
 	if (result) then
 		local id = mysql_result(result, 1, 1)
@@ -185,7 +185,7 @@ function spawnCharacter(charname)
 		local fightstyle = tonumber(mysql_result(result, 1, 18))
 		local pdjail = tonumber(mysql_result(result, 1, 19))
 		local pdjail_time = tonumber(mysql_result(result, 1, 20))
-		local pdjail_station = tonumber(mysql_result(result, 1, 33))
+		
 		local job = tonumber(mysql_result(result, 1, 21))
 		local casualskin = tonumber(mysql_result(result, 1, 22))
 		
@@ -205,6 +205,13 @@ function spawnCharacter(charname)
 		local tag = tonumber(mysql_result(result, 1, 31))
 		
 		local hoursplayed = tonumber(mysql_result(result, 1, 32))
+		
+		local pdjail_station = tonumber(mysql_result(result, 1, 33))
+		
+		local timeinserver = tonumber(mysql_result(result, 1, 34))
+		
+		setElementData(source, "timeinserver", timeinserver)
+		triggerClientEvent(source, "syncTimeInServer", source, timeinserver)
 		
 		if (items~=tostring(mysql_null())) and (itemvalues~=tostring(mysql_null())) then
 			setElementData(source, "items", items)

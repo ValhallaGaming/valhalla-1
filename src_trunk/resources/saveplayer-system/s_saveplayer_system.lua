@@ -57,7 +57,7 @@ function savePlayer(reason, player)
 			triggerEvent("onVehicleExit", vehicle, source, seat)
 		end
 		
-		local x, y, z, rot, tag, health, armour, interior, dimension, pmblocked, username, cuffed, skin, muted, hiddenAdmin, radiochannel, duty, adminduty, globalooc, fightstyle, blur, casualskin, adminreports, warns, hoursplayed
+		local x, y, z, rot, tag, health, armour, interior, dimension, pmblocked, username, cuffed, skin, muted, hiddenAdmin, radiochannel, duty, adminduty, globalooc, fightstyle, blur, casualskin, adminreports, warns, hoursplayed, timeinserver
 		
 		username = getPlayerName(source)
 		
@@ -88,6 +88,8 @@ function savePlayer(reason, player)
 		casualskin = getElementData(source, "casualskin")
 		
 		warns = getElementData(source, "warns")
+		
+		timeinserver = getElementData(source, "timeinserver")
 		
 		local bankmoney = getElementData(source, "bankmoney")
 		
@@ -121,7 +123,7 @@ function savePlayer(reason, player)
 		-- LAST AREA
 		local zone = getElementZoneName(source)
 		
-		local update = mysql_query(handler, "UPDATE characters SET casualskin='" .. casualskin .. "', x='" .. x .. "', y='" .. y .. "', z='" .. z .. "', rotation='" .. rot .. "', health='" .. health .. "', armor='" .. armor .. "', skin='" .. skin .. "', dimension_id='" .. dimension .. "', interior_id='" .. interior .. "', money='" .. money .. "', cuffed='" .. cuffed .. "', radiochannel='" .. radiochannel .. "', duty='" .. duty .. "', fightstyle='" .. fightstyle .. "', yearday='" .. yearday .. "', year='" .. year .. "', lastarea='" .. zone .. "', items='" .. items .. "', itemvalues='" .. itemvalues .. "', bankmoney='" .. bankmoney .. "', tag='" .. tag .. "', hoursplayed='" .. hoursplayed .. "' WHERE charactername='" .. username .. "'")
+		local update = mysql_query(handler, "UPDATE characters SET casualskin='" .. casualskin .. "', x='" .. x .. "', y='" .. y .. "', z='" .. z .. "', rotation='" .. rot .. "', health='" .. health .. "', armor='" .. armor .. "', skin='" .. skin .. "', dimension_id='" .. dimension .. "', interior_id='" .. interior .. "', money='" .. money .. "', cuffed='" .. cuffed .. "', radiochannel='" .. radiochannel .. "', duty='" .. duty .. "', fightstyle='" .. fightstyle .. "', yearday='" .. yearday .. "', year='" .. year .. "', lastarea='" .. zone .. "', items='" .. items .. "', itemvalues='" .. itemvalues .. "', bankmoney='" .. bankmoney .. "', tag='" .. tag .. "', hoursplayed='" .. hoursplayed .. "', timeinserver='" .. timeinserver .. "' WHERE charactername='" .. username .. "'")
 		local update2 = mysql_query(handler, "UPDATE accounts SET muted='" .. muted .. "', hiddenadmin='" .. hiddenAdmin .. "', adminduty='" .. adminduty .. "', globalooc='" .. globalooc .. "', blur='" .. blur .. "', adminreports='" .. adminreports .. "', pmblocked='" .. pmblocked .. "', warns='" .. warns .. "' WHERE username='" .. tostring(safegameAccountUsername) .. "'")
 		
 		if (update) then

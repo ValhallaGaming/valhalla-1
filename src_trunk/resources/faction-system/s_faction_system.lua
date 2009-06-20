@@ -772,7 +772,7 @@ function payAllWages()
 		local logged = getElementData(value, "loggedin")
 		local timeinserver = getElementData(value, "timeinserver")
 		
-		if (logged==1) and (timeinserver>=1) then
+		if (logged==1) and (timeinserver>=60) then
 			local playerFaction = getElementData(value, "faction")
 			if (playerFaction~=-1) then -- In a faction
 				local theTeam = getPlayerTeam(value)
@@ -953,7 +953,7 @@ function payAllWages()
 				end
 			end
 		elseif (timeinserver<1) then
-			outputChatBox("You have not played long enough to recieve a payday.", value, 255, 0, 0)
+			outputChatBox("You have not played long enough to recieve a payday. (You require another " .. 60-timeinserver .. " Minutes of play.)", value, 255, 0, 0)
 		end
 	end
 	

@@ -66,7 +66,9 @@ function lowerTimer()
 	if (deathTimer>1) then
 		guiSetText(deathLabel, tostring(deathTimer) .. " Seconds")
 	else
-		guiSetText(deathLabel, tostring(deathTimer) .. " Second")
+		if (deathLabel) then
+			guiSetText(deathLabel, tostring(deathTimer) .. " Second")
+		end
 	end
 end
 
@@ -77,7 +79,6 @@ function playerRespawn()
 	setGameSpeed(1)
 	if (deathLabel) then
 		destroyElement(deathLabel)
-		guiSetVisible(deathLabel, false)
 	end
 	setCameraTarget(getLocalPlayer())
 end

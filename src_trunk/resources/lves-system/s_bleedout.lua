@@ -19,7 +19,7 @@ function bleedPlayer(thePlayer, playerName)
 				setElementHealth(thePlayer, health-2)
 				setTimer(bleedPlayer, 60000, 1, thePlayer, playerName)
 			else
-				setElementData(source, "bleeding", 0)
+				setElementData(thePlayer, "bleeding", 0)
 			end
 		end
 	end

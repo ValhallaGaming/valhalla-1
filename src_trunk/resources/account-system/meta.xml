@@ -3,7 +3,7 @@
 
 	<script src="s_account_system.lua" type="server" />
 	<script src="c_account_system.lua" type="client" />	
-	test
+
 	<file src="pass.png"/>
 
 	<file src="fail.png"/>

@@ -47,8 +47,8 @@ function showPlayerMenu(targetPlayer, friends, description)
 	sent = false
 	
 	-- FRISK
-	bFrisk = guiCreateButton(0.05, 0.25, 0.87, 0.1, "Frisk", true, wRightClick)
-	addEventHandler("onClientGUIClick", bFrisk, cfriskPlayer, false)
+	--bFrisk = guiCreateButton(0.05, 0.25, 0.87, 0.1, "Frisk", true, wRightClick)
+	--addEventHandler("onClientGUIClick", bFrisk, cfriskPlayer, false)
 end
 addEvent("displayPlayerMenu", true)
 addEventHandler("displayPlayerMenu", getRootElement(), showPlayerMenu)

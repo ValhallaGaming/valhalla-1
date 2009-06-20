@@ -49,6 +49,7 @@ function createGeneralshop(thePlayer, commandName, shoptype)
 					setElementData(colCircle, "type", "shop")
 					setElementData(colCircle, "shoptype", tonumber(shoptype))
 					
+					exports.pool:allocateElement(colCircle)
 					exports.irc:sendMessage("[ADMIN] " .. getPlayerName(thePlayer) .. " created shop #" .. id .. " - type "..shoptype..".")
 					outputChatBox("General shop created with ID #" .. id .. " and type "..shoptype..".", thePlayer, 0, 255, 0)
 				else
@@ -153,6 +154,8 @@ function loadAllGeneralshops(res)
 				local colCircle = createColSphere(x, y, z, 3)
 				setElementDimension(colCircle, dimension)
 				setElementInterior(colCircle, interior)
+				
+				exports.pool:allocateElement(colCircle)
 				
 				setElementData(colCircle, "dbid", id)
 				setElementData(colCircle, "type", "shop")

@@ -68,7 +68,7 @@ function doFlashes()
 	if (#policevehicles==0) then return end
 
 	for key, veh in ipairs(policevehicles) do
-		if not (getElementType(veh)) then
+		if not (isElement(veh)) then
 			local id = policevehicleids[veh]
 			policevehicleids[veh] = nil
 			policevehicles[id] = nil

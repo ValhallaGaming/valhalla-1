@@ -27,11 +27,11 @@ function playerQuit()
 		local alertTimer = reports[report][6]
 		local timeoutTimer = reports[report][7]
 		
-		if (alertTimer) then
+		if (alertTimer~=nil) then
 			killTimer(alertTimer)
 		end
 		
-		if (timeoutTimer) then
+		if (timeoutTimer~=nil) then
 			killTimer(timeoutTimer)
 		end
 		

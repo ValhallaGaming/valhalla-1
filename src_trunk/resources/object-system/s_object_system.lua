@@ -83,12 +83,15 @@ function loadAllObjects(res)
 				local modelid = tonumber(row[8])
 					
 				local object = createObject(modelid, x, y, z, 0, 0, rotation)
-				exports.pool:allocateElement(object)
-				setElementInterior(object, interior)
-				setElementDimension(object, dimension)
-				setElementData(object, "dbid", id)
-					
-				count = count + 1
+				
+				if (object) then
+					exports.pool:allocateElement(object)
+					setElementInterior(object, interior)
+					setElementDimension(object, dimension)
+					setElementData(object, "dbid", id)
+						
+					count = count + 1
+				end
 			end
 		mysql_free_result(result)
 		end
@@ -107,7 +110,7 @@ function getNearbyObjects(thePlayer, commandName)
 			local dbid = getElementData(theObject, "dbid")
 			if (dbid) then
 				local x, y = getElementPosition(theColshape)
-				local distance = getDistanceBetweenPoints2D(posX, posY, x, y)
+				local distance = getDistanceBetweenPoints2D(posX, posY, posZ, x, y, z)
 				if (distance<=10) then
 					local modelid = getElementModel(theObject)
 					outputChatBox("   Object (" .. modelid .. ") with ID " .. dbid .. ".", thePlayer, 255, 126, 0)

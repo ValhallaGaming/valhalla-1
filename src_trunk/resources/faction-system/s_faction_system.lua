@@ -963,3 +963,14 @@ function payAllWages()
 	exports.irc:sendMessage("[SCRIPT] All wages & state benefits paid.")
 end
 setTimer(payAllWages, 3600000, 0)
+
+function timeSaved(thePlayer)
+	local logged = getElementData(thePlayer, "loggedin")
+	
+	if (logged==1) then
+		local timeinserver = getElementData(thePlayer, "timeinserver")
+		outputChatBox("You currently have " .. timeinserver .. " Minutes played.", thePlayer, 255, 195, 14)
+		outputChatBox("You require another " .. 60-timeinserver .. " Minutes to obtain a payday.", thePlayer, 255, 195, 14)
+	end
+end
+addCommandHandler("timesaved", timeSaved)

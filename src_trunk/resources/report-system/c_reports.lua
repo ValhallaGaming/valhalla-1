@@ -48,7 +48,7 @@ function showReportMainUI()
 			pBug = guiCreateStaticImage(0.075, 0.675, 0.04, 0.05, "bug.png", true, wReportMain)
 			lBug = guiCreateLabel(0.15, 0.685, 1.0, 0.1, "Report a script bug", true, wReportMain)
 			guiSetFont(lBug, "default-bold-small")
-			lBugAbout = guiCreateLabel(0.15, 0.72, 0.75, 0.5, "Flaws, mistakes, typo's and all bugs related to the script should be reported via \n Mantis at http://www.vgmtabugs.co.cc.", true, wReportMain)
+			lBugAbout = guiCreateLabel(0.15, 0.72, 0.75, 0.5, "Flaws, mistakes, typo's and all bugs related to the script should be reported via \n Mantis at http://bugs.valhallagaming.net.", true, wReportMain)
 			guiLabelSetHorizontalAlign(lBugAbout, "left", true)
 			
 			guiWindowSetSizable(wReportMain, false)

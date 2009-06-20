@@ -74,7 +74,7 @@ function fadeMessage(fadein)
 		if(newalpha>=1.0) then
 			timer = setTimer(hideIntName, 4000, 1)
 		end
-	else
+	elseif (alpha) then
 		local newalpha = alpha - 0.05
 		guiSetAlpha(gInteriorName, newalpha)
 		guiSetAlpha(gOwnerName, newalpha)

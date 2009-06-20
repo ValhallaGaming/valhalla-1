@@ -77,7 +77,7 @@ deathLabel = nil
 
 function playerRespawn()
 	setGameSpeed(1)
-	if (deathLabel) then
+	if (isElement(deathLabel)) then
 		destroyElement(deathLabel)
 	end
 	setCameraTarget(getLocalPlayer())

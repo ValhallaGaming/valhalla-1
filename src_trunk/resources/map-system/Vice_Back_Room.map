@@ -1,4 +1,5 @@
 <map edf:definitions="editor_main">
+	-- Vice backroom
     <object id="object (crackhoose) (1)" dimension="1" interior="1" model="14735" posX="2498.7585449219" posY="2086.7438964844" posZ="-80.159423828125" rotX="0" rotY="0" rotZ="0" />
     <object id="object (Gen_doorEXT03) (1)" dimension="1" interior="1" model="1498" posX="2486.7585449219" posY="2090.6215820313" posZ="-81.756980895996" rotX="0" rotY="0" rotZ="0" />
     <object id="object (Gen_doorEXT12) (1)" dimension="1" interior="1" model="1533" posX="2475.6647949219" posY="2086.8674316406" posZ="-81.764923095703" rotX="0" rotY="0" rotZ="90" />
@@ -32,11 +33,18 @@
     <object id="object (MODEL_BOX6) (2)" dimension="1" interior="1" model="2478" posX="2490.5668945313" posY="2081.7583007813" posZ="-80.946380615234" rotX="0" rotY="0" rotZ="180" />
     <object id="object (Gen_doorEXT15) (1)" dimension="1" interior="1" model="1536" posX="2491.2946777344" posY="2088.2922363281" posZ="-81.784423828125" rotX="0" rotY="0" rotZ="270" />
     <object id="object (swivelchair_A) (1)" dimension="1" interior="1" model="1671" posX="2486.9848632813" posY="2082.12890625" posZ="-81.324211120605" rotX="0" rotY="0" rotZ="180" />
+	
+	-- Vice WC door
 	<object id="object (Gen_doorEXT15) (2)" dimension="413" interior="10" model="1536" posX="364.1397" posY="-63.7950" posZ="1000.5078125" rotX="0" rotY="0" rotZ="180" />
+	
+	-- Vice Office
 	<object id="object (ADAM_V_DOOR) (1)" dimension="421" interior="5" model="1569" posX="1225.7962646484" posY="-814.03784179688" posZ="1083.0078125" rotX="0" rotY="0" rotZ="0.63421630859375" />
     <object id="object (wilshire7dr1_law) (1)" dimension="421" interior="5" model="16775" posX="1227.7248535156" posY="-814.08435058594" posZ="1086.3458251953" rotX="0" rotY="0" rotZ="0" />
     <object id="object (wilshire7dr1_law) (2)" dimension="421" interior="5" model="16775" posX="1240.4530029297" posY="-813.33312988281" posZ="1087.0034179688" rotX="0" rotY="0" rotZ="90" />
     <object id="object (mrk_seating1) (1)" dimension="421" interior="5" model="1723" posX="1236.4475097656" posY="-813.42932128906" posZ="1083.0078125" rotX="0" rotY="0" rotZ="180" />
     <object id="object (PC_1) (1)" dimension="421" interior="5" model="2190" posX="1232.7316894531" posY="-810.05871582031" posZ="1083.8111572266" rotX="0" rotY="0" rotZ="201.8349609375" />
     <object id="object (propashtray1) (1)" dimension="421" interior="5" model="1665" posX="1231.4195556641" posY="-809.71337890625" posZ="1083.8216552734" rotX="0" rotY="0" rotZ="125.05502319336" />
+	
+	--Dragon Lady WC Door
+	<object id="object (Gen_doorEXT15) (2)" dimension="686" interior="10" model="1536" posX="364.1397" posY="-63.7950" posZ="1000.5078125" rotX="0" rotY="0" rotZ="180" />
 </map>

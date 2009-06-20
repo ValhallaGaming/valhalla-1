@@ -87,7 +87,7 @@ function showInventory(thePlayer)
 end
 
 function removeAnimation(player)
-	exports.global:removePedAnimation(player)
+	exports.global:removeAnimation(player)
 end
 
 -- callbacks

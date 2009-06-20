@@ -18,10 +18,6 @@
   <file src="renault.txd" />
   <file src="renault.dff" />
   
-  <!-- bikes -->
-  <file src="yamaha.txd" />
-  <file src="yamaha.dff" />
-  
   <!-- Shangai circuit -->
   <file src="chinaspeed.txd" />
   <file src="hjp03.col" />

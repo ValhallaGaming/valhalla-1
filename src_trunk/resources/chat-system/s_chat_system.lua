@@ -183,7 +183,8 @@ function chatMain(message, messageType)
 						destroyElement(chatSphere)
 						
 						for k, v in ipairs(nearbyPlayers) do
-							if (v~=source) then
+							local channel = getElementData(v, "radiochannel")
+							if (v~=source) and (channel~=targetChannel) then
 								outputChatBox(getPlayerName(value) .. "'s Radio: " .. message, v, 255, 255, 255)
 							end
 						end

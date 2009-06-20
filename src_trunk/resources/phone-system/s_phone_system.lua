@@ -65,8 +65,8 @@ function callSomeone(thePlayer, commandName, phoneNumber)
 					
 					if (money<10) then
 						outputChatBox("You cannot afford a call.", thePlayer, 255, 0, 0)
-					--elseif not (found) or (foundElement==thePlayer) then -- Player with this phone number isnt online...
-						--outputChatBox("You get a dead tone...", thePlayer, 255, 194, 14)
+					elseif not (found) or (foundElement==thePlayer) then -- Player with this phone number isnt online...
+						outputChatBox("You get a dead tone...", thePlayer, 255, 194, 14)
 					else
 						local targetCalling = getElementData(foundElement, "calling")
 						
@@ -81,7 +81,7 @@ function callSomeone(thePlayer, commandName, phoneNumber)
 							
 							exports.global:applyAnimation(thePlayer, "ped", "phone_in", true, 1.0, false, true)
 							--thePlayer, block, name, forced, blendSpeed, loop, updatePosition
-							setTimer(startPhoneAnim, 3000, 1, thePlayer)
+							setTimer(startPhoneAnim, 3000, 2, thePlayer)
 							
 							-- target player
 							exports.global:sendLocalMeAction(foundElement, "'s Phone start's to ring.")
@@ -104,7 +104,6 @@ end
 addCommandHandler("call", callSomeone)
 
 function startPhoneAnim(thePlayer)
-	outputChatBox("HIT")
 	exports.global:applyAnimation(thePlayer, "ped", "phone_talk", true, 1.0, false, true)
 end
 	

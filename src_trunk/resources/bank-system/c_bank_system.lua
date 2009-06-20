@@ -84,60 +84,19 @@ addEventHandler("showBankUI", getRootElement(), showBankUI)
 function hideBankUI()
 	destroyElement(bClose)
 	bClose = nil
-	
+		
 	destroyElement(lBalance)
 	lBalance = nil
-	
+		
 	destroyElement(tabPersonal)
 	tabPersonal = nil
-	
-	if (tabBusiness) then
-		destroyElement(tabBusiness)
-		tabBusiness = nil
+
+	destroyElement(tabBusiness)
+	tabBusiness = nil
 		
-		destroyElement(lBalanceB)
-		lBalanceB = nil
-		
-		destroyElement(lWithdrawB)
-		lWithdrawB = nil
-		
-		destroyElement(tWithdrawB)
-		tWithdrawB = nil
-		
-		destroyElement(bWithdrawB)
-		bWithdrawB = nil
-		
-		destroyElement(lDepositB)
-		lDepositB = nil
-		
-		destroyElement(tDepositB)
-		tDepositB = nil
-		
-		destroyElement(bDepositB)
-		bDepositB = nil
-	end
-	
-	destroyElement(lWithdrawP)
-	lWithdrawP = nil
-		
-	destroyElement(tWithdrawP)
-	tWithdrawP = nil
-		
-	destroyElement(bWithdrawP)
-	bWithdrawP = nil
-		
-	destroyElement(lDepositP)
-	lDepositP = nil
-		
-	destroyElement(tDepositP)
-	tDepositP = nil
-		
-	destroyElement(bDepositP)
-	bDepositP = nil
-	
 	destroyElement(wBank)
 	wBank = nil
-	
+		
 	guiSetInputEnabled(false)
 end
 

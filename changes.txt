@@ -3,15 +3,15 @@ Chamberlains changes.
 ---------------------
 Scripts in "unfinished code" need to be completed, checked and added to the correct resources by someone who knows what they are doing.
 
-<<<<<<< .mine
-realism-system
+- realism-system
 	C_realism_system
 
-map-system
+- map-system
 	vice_back_room
 
-=======
->>>>>>> .r195
+- animation-system
+	S_animation_system
+
 --------------------
 Jack's changes.
 -------------------

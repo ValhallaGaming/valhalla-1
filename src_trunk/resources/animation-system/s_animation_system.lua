@@ -29,10 +29,9 @@ addCommandHandler("stopani", stopAnimation, false, false)
 
 function animationList(thePlayer)
 	outputChatBox("/piss /wank /slapass /carfix /handsup /hailtaxi /scratch /fu", thePlayer, 255, 194, 14)
-	outputChatBox("/strip1-2 /lightup /drink /beg /mourn /cheer1-3 /dance1-3 /crack 1-2", thePlayer, 255, 194, 14)
-	outputChatBox("gsign1-5 /puke /rap1-3 /sit1-3 /smoke1-3 /smokelean /laugh /startrace", thePlayer, 255, 194, 14)
-	outputChatBox("/carchat /daps1-2 /shove /ali /bitchslap /shocked /dive /angryface", thePlayer, 255, 194, 14)
-	outputChatBox("/shockedface /huhface /chew /what", thePlayer, 255, 194, 14)
+	outputChatBox("/strip1-2 /lightup /drink /beg /mourn /cheer1-3 /dance1-3 /crack1-2", thePlayer, 255, 194, 14)
+	outputChatBox("/gsign1-5 /puke /rap1-3 /sit1-3 /smoke1-3 /smokelean /laugh /startrace", thePlayer, 255, 194, 14)
+	outputChatBox("/carchat /daps1-2 /shove /ali /bitchslap /shocked /dive /what", thePlayer, 255, 194, 14)
 	outputChatBox("/stopanim or press the spacebar to cancel animations.", thePlayer, 255, 194, 14)
 end
 addCommandHandler("animlist", animationList, false, false)
@@ -639,7 +638,7 @@ function shoveAnimation(thePlayer)
 	local logged = getElementData(thePlayer, "loggedin")
 	
 	if (logged==1) then
-		exports.global:applyAnimation(thePlayer, "GANGS", "shake_car_SH", false, 1.0, 1.0, 0.0, false, false)
+		exports.global:applyAnimation(thePlayer, "GANGS", "shake_carSH", false, 1.0, 1.0, 0.0, false, false)
 	end
 end
 addCommandHandler("shove", shoveAnimation, false, false)
@@ -683,44 +682,6 @@ function diveAnimation(thePlayer)
 	end
 end
 addCommandHandler("dive", diveAnimation, false, false)
-
--- /face animtions -------------------------------------------------
-function angryfaceAnimation(thePlayer)
-	local logged = getElementData(thePlayer, "loggedin")
-	
-	if (logged==1) then
-		exports.global:applyAnimation(thePlayer, "ped", "faceanger", false, 1.0, 1.0, 0.0, true, false)
-	end
-end
-addCommandHandler("angryface", angryfaceAnimation, false, false)
-
-function shockedfaceAnimation(thePlayer)
-	local logged = getElementData(thePlayer, "loggedin")
-	
-	if (logged==1) then
-		exports.global:applyAnimation(thePlayer, "ped", "facesup", false, 1.0, 1.0, 0.0, true, false)
-	end
-end
-addCommandHandler("shockedface", shockedfaceAnimation, false, false)
-
-function curiousfaceAnimation(thePlayer)
-	local logged = getElementData(thePlayer, "loggedin")
-	
-	if (logged==1) then
-		exports.global:applyAnimation(thePlayer, "ped", "facecurios", false, 1.0, 1.0, 0.0, true, false)
-	end
-end
-addCommandHandler("huhface", curiousfaceAnimation, false, false)
-
--- /chew animtions -------------------------------------------------
-function chewAnimation(thePlayer)
-	local logged = getElementData(thePlayer, "loggedin")
-	
-	if (logged==1) then
-		exports.global:applyAnimation(thePlayer, "ped", "facegum", false, 1.0, 1.0, 0.0, true, false)
-	end
-end
-addCommandHandler("chew", chewAnimation, false, false)
 
 -- /what Amination -------------------------------------------------------------------------
 function whatAnimation(thePlayer)

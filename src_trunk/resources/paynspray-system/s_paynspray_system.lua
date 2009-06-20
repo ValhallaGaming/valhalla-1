@@ -162,7 +162,7 @@ end
 addCommandHandler("delpaynspray", delSpray, false, false)
 
 function shapeHit(element, matchingDimension)
-	if (getElementType(element)=="vehicle") and (matchingDimension) then
+	if (isElement(element)) and (getElementType(element)=="vehicle") and (matchingDimension) then
 		local shapetype = getElementData(source, "type")
 		if (shapetype) then
 			if (shapetype=="paynspray") then

@@ -296,40 +296,44 @@ function FinalCheckpoints( thePlayer )
 end
 
 function FinishCheckpoints(thePlayer)
-	if ( isPedInVehicle ( thePlayer ) ) then
-		local vehicle = getPedOccupiedVehicle ( thePlayer )
-		local vehid = getElementModel ( vehicle )
-		if tonumber(vehid) == 574 then
-			local markerattatched = getElementData(source, "attatched" )
-			local attached = getElementAttachedTo ( markerattatched ) -- source is the marker; attatched is the blip
-			destroyElement(attached)
-			destroyElement(markerattatched)
-			destroyElement(source)
-			attached = nil
-			markerattatched = nil
-			source = nil
+	if (isElement(thePlayer)) then
+		if ( isPedInVehicle ( thePlayer ) ) then
+			local vehicle = getPedOccupiedVehicle ( thePlayer )
+			local vehid = getElementModel ( vehicle )
+			if tonumber(vehid) == 574 then
+				local markerattatched = getElementData(source, "attatched" )
+				local attached = getElementAttachedTo ( markerattatched ) -- source is the marker; attatched is the blip
+				destroyElement(attached)
+				destroyElement(markerattatched)
+				destroyElement(source)
+				attached = nil
+				markerattatched = nil
+				source = nil
 
-			removePedFromVehicle ( thePlayer )
-			
-			removeElementData(vehicle, "fuel")
-			removeElementData(vehicle, "dbid")
-			
-			destroyElement(vehicle)
-			vehicle = nil
-			removeElementData(source, "cleaner.vehicle")
-			
-			outputChatBox("You have completed your task, well done.", thePlayer, 255, 194, 14)
-			outputChatBox("You received: 300$", thePlayer, 255, 194, 14)
-			exports.global:givePlayerSafeMoney(thePlayer, 300)
-			
-			removeElementData ( thePlayer, "cleaner.marker" )
-			removeElementData ( thePlayer, "cleaner.t" )
-			removeElementData ( thePlayer, "cleaner.checkmarkers" )
+				removePedFromVehicle ( thePlayer )
+				
+				removeElementData(vehicle, "fuel")
+				removeElementData(vehicle, "dbid")
+				
+				if (isElement(vehicle)) then
+					destroyElement(vehicle)
+					vehicle = nil
+					removeElementData(source, "cleaner.vehicle")
+					
+					outputChatBox("You have completed your task, well done.", thePlayer, 255, 194, 14)
+					outputChatBox("You received: 300$", thePlayer, 255, 194, 14)
+					exports.global:givePlayerSafeMoney(thePlayer, 300)
+					
+					removeElementData ( thePlayer, "cleaner.marker" )
+					removeElementData ( thePlayer, "cleaner.t" )
+					removeElementData ( thePlayer, "cleaner.checkmarkers" )
+				end
+			else
+				outputChatBox( "(( You must pass through the checkpoints in the street sweeper. ))", thePlayer, 255, 194, 14)
+			end
 		else
 			outputChatBox( "(( You must pass through the checkpoints in the street sweeper. ))", thePlayer, 255, 194, 14)
 		end
-	else
-		outputChatBox( "(( You must pass through the checkpoints in the street sweeper. ))", thePlayer, 255, 194, 14)
 	end
 end
 

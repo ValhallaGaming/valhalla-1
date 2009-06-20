@@ -171,22 +171,24 @@ addEventHandler("onResourceStart", getRootElement(), loadAllGeneralshops)
 
 function hitCollisionShape(hitElement, matchingDimension)
 	if (matchingDimension) then -- Same dimension
-		local elementType = getElementType(hitElement)
-		if (elementType=="player") then
-			local colshapeType = getElementData(source, "type")
-			if (colshapeType=="shop") then
-				local shoptype = getElementData(source, "shoptype")
-				
-				local race = 1
-				
-				if(shoptype == 5) then -- if its a clothes shop, we also need the players race
-					local username = getPlayerName(hitElement)
-					local result = mysql_query(handler, "SELECT skincolor FROM characters WHERE charactername='" .. username .. "' LIMIT 1")
-					local race = tonumber(mysql_result(result, 1, 1))
+		if (isElement(hitElement)) then
+			local elementType = getElementType(hitElement)
+			if (elementType=="player") then
+				local colshapeType = getElementData(source, "type")
+				if (colshapeType=="shop") then
+					local shoptype = getElementData(source, "shoptype")
 					
-					mysql_free_result(result)
+					local race = 1
+					
+					if(shoptype == 5) then -- if its a clothes shop, we also need the players race
+						local username = getPlayerName(hitElement)
+						local result = mysql_query(handler, "SELECT skincolor FROM characters WHERE charactername='" .. username .. "' LIMIT 1")
+						local race = tonumber(mysql_result(result, 1, 1))
+						
+						mysql_free_result(result)
+					end
+					triggerClientEvent(hitElement, "showGeneralshopUI", hitElement, shoptype, race)
 				end
-				triggerClientEvent(hitElement, "showGeneralshopUI", hitElement, shoptype, race)
 			end
 		end
 	end

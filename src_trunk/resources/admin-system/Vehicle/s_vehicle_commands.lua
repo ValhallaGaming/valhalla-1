@@ -589,6 +589,7 @@ function deleteVehicle(thePlayer, commandName, id)
 				local dbid = tonumber(getElementData(theVehicle, "dbid"))
 
 				if (dbid==tonumber(id)) then
+					triggerEvent("onVehicleDelete", theVehicle)
 					if (dbid<0) then -- TEMP vehicle
 						destroyElement(theVehicle)
 					else
@@ -602,7 +603,6 @@ function deleteVehicle(thePlayer, commandName, id)
 						end
 					end
 					counter = counter + 1
-					triggerEvent("onVehicleDelete", theVehicle)
 				end
 			end
 			

@@ -4,12 +4,16 @@ function applyAnimation(thePlayer, block, name, forced, blendSpeed, loop, update
 	if updatePosition==nil then updatePosition = true end
 	if forced==nil then forced = false end
 	
-	toggleAllControls(thePlayer, false, true, false)
-	setElementData(thePlayer, "forcedanimation", forced)
-	setElementData(thePlayer, "animation", true)
-	--local setanim = setPedAnimation(thePlayer, block, name, blendSpeed, loop, updatePosition)
-	local setanim = setPedAnimation(thePlayer, block, name, -1, loop, updatePosition, false)
-	return setanim
+	if (isElement(thePlayer) and getElementType(thePlayer)=="player") then
+		toggleAllControls(thePlayer, false, true, false)
+		setElementData(thePlayer, "forcedanimation", forced)
+		setElementData(thePlayer, "animation", true)
+		--local setanim = setPedAnimation(thePlayer, block, name, blendSpeed, loop, updatePosition)
+		local setanim = setPedAnimation(thePlayer, block, name, -1, loop, updatePosition, false)
+		return setanim
+	else
+		return false
+	end
 end
 
 function onSpawn()
@@ -21,9 +25,13 @@ end
 addEventHandler("onPlayerSpawn", getRootElement(), onSpawn)
 
 function removeAnimation(thePlayer)
-	local setanim = setPedAnimation(thePlayer)
-	setElementData(thePlayer, "forcedanimation", false)
-	setElementData(thePlayer, "animation", false)
-	toggleAllControls(thePlayer, true, true, false)
-	return setanim
+	if (isElement(thePlayer) and getElementType(thePlayer)=="player") then
+		local setanim = setPedAnimation(thePlayer)
+		setElementData(thePlayer, "forcedanimation", false)
+		setElementData(thePlayer, "animation", false)
+		toggleAllControls(thePlayer, true, true, false)
+		return setanim
+	else
+		return false
+	end
 end

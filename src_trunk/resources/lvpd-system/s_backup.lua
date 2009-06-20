@@ -38,7 +38,7 @@ function backup(thePlayer, commandName)
 			setElementVisibleTo(backupBlip, getRootElement(), false)
 			
 			for key, value in ipairs(getPlayersInTeam(theTeam)) do
-				local duty = getElementData(value, "duty")
+				local duty = tonumber(getElementData(value, "duty"))
 				
 				if (duty>0) then
 					outputChatBox("A unit needs urgent assistance! Please respond ASAP!", value, 255, 194, 14)

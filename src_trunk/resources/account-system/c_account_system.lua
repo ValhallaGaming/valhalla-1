@@ -1813,7 +1813,9 @@ function cancelCreation(button, state)
 			triggerServerEvent("stripPlayer", getLocalPlayer())
 			removeEventHandler("onClientRender", getRootElement(), moveCameraToCreation)
 			
-			destroyElement(bRotate)
+			if (isElement(bRotate)) then
+				destroyElement(bRotate)
+			end
 			bRotate = nil
 			local playerid = getElementData(getLocalPlayer(), "playerid")
 			setElementInterior(getLocalPlayer(), 14)
@@ -1822,7 +1824,10 @@ function cancelCreation(button, state)
 			setPedRotation(getLocalPlayer(), 268.19247436523)
 			
 			creation = false
-			destroyElement(tabPanelCreation)
+			
+			if (isElement(tabPanelCreation)) then
+				destroyElement(tabPanelCreation)
+			end
 			tabPanelCreation = nil
 			
 			

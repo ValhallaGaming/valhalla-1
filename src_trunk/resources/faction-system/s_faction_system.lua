@@ -947,12 +947,14 @@ function payAllWages()
 					outputChatBox("    Bank Interest (" .. interestrate*1000 .. "%): " .. interest .. "$", value, 255, 194, 14)
 					outputChatBox("----------------------------------------------------------", value, 255, 194, 14)
 					outputChatBox("  Gross Income: " .. unemployedPay+profit+interest .. "$ (Wire-Transferred to bank)", value, 255, 194, 14)
-					
-					local hoursplayed = getElementData(value, "hoursplayed")
-					setElementData(value, "hoursplayed", hoursplayed+1)
 				end
 			end
-		elseif (timeinserver<1) then
+			local hoursplayed = getElementData(value, "hoursplayed")
+			setElementData(value, "hoursplayed", hoursplayed+1)
+			
+			setElementData(value, "timeinserver", 0)
+			triggerClientEvent(value, "syncTimeInServer", value, 0)
+		elseif (timeinserver<60) then
 			outputChatBox("You have not played long enough to recieve a payday. (You require another " .. 60-timeinserver .. " Minutes of play.)", value, 255, 0, 0)
 		end
 	end
@@ -963,6 +965,17 @@ function payAllWages()
 	exports.irc:sendMessage("[SCRIPT] All wages & state benefits paid.")
 end
 setTimer(payAllWages, 3600000, 0)
+
+function adminDoPayday(thePlayer)
+	local logged = getElementData(thePlayer, "loggedin")
+	
+	if (logged==1) then
+		if (exports.global:isPlayerLeadAdmin(thePlayer)) then
+			payAllWages()
+		end
+	end
+end
+addCommandHandler("dopayday", adminDoPayday)
 
 function timeSaved(thePlayer)
 	local logged = getElementData(thePlayer, "loggedin")

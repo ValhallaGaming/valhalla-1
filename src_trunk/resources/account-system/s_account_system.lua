@@ -62,23 +62,6 @@ function encryptSerial(str)
 	return rhash
 end
 
-function cleanupOnQuit(reason)
-	-- clean up blips and markers only visible to this player on quit
-	local blips = exports.global:getBlips(source)
-	for key, value in ipairs(blips) do
-		destroyElement(value)
-	end
-	
-	local markers = exports.global:getMarkers(source)
-	for key, value in ipairs(markers) do
-		destroyElement(value)
-	end
-	
-	exports.irc:sendMessage("Cleaned up after " .. getPlayerName(source) .. " [" .. reason .. "].")
-	exports.irc:sendMessage(#blips .. " blips and " .. #markers .. " markers.")
-end
-addEventHandler("onPlayerQuit", getRootElement(), cleanupOnQuit)
-
 function resourceStart()
 	setGameType("Roleplay")
 	setMapName("Valhalla Gaming: Las Venturas")
@@ -178,7 +161,7 @@ function spawnCharacter(charname)
 	
 	local safecharname = mysql_escape_string(handler, charname)
 	
-	local result = mysql_query(handler, "SELECT id, x, y, z, rotation, interior_id, dimension_id, health, armor, skin, money, faction_id, cuffed, radiochannel, masked, duty, cellnumber, fightstyle, pdjail, pdjail_time, job, casualskin, weapons, ammo, items, itemvalues, car_license, gun_license, bankmoney, fingerprint, tag, hoursplayed FROM characters WHERE charactername='" .. charname .. "' AND account='" .. id .. "'")
+	local result = mysql_query(handler, "SELECT id, x, y, z, rotation, interior_id, dimension_id, health, armor, skin, money, faction_id, cuffed, radiochannel, masked, duty, cellnumber, fightstyle, pdjail, pdjail_time, job, casualskin, weapons, ammo, items, itemvalues, car_license, gun_license, bankmoney, fingerprint, tag, hoursplayed, pdjail_station FROM characters WHERE charactername='" .. charname .. "' AND account='" .. id .. "'")
 	
 	if (result) then
 		local id = mysql_result(result, 1, 1)
@@ -202,6 +185,7 @@ function spawnCharacter(charname)
 		local fightstyle = tonumber(mysql_result(result, 1, 18))
 		local pdjail = tonumber(mysql_result(result, 1, 19))
 		local pdjail_time = tonumber(mysql_result(result, 1, 20))
+		local pdjail_station = tonumber(mysql_result(result, 1, 33))
 		local job = tonumber(mysql_result(result, 1, 21))
 		local casualskin = tonumber(mysql_result(result, 1, 22))
 		
@@ -337,10 +321,12 @@ function spawnCharacter(charname)
 			setElementData(source, "pd.jailserved", 0)
 			setElementData(source, "pd.jailtime", pdjail_time)
 			setElementData(source, "pd.jailtimer", theTimer)
+			setElementData(source, "pd.jailstation", pdjail_station)
 		else
 			setElementData(source, "pd.jailserved", 1)
 			setElementData(source, "pd.jailtime", 0)
 			setElementData(source, "pd.jailtimer", nil)
+			setElementData(source, "pd.jailstation", nil)
 			if (pdjail_time<0) then
 				timerPDUnjailPlayer(source)
 			end
@@ -1311,16 +1297,28 @@ function timerPDUnjailPlayer(jailedPlayer)
 
 		if (timeLeft<=0) then
 			fadeCamera(jailedPlayer, false)
-			mysql_query(handler, "UPDATE characters SET pdjail_time='0', pdjail='0' WHERE charactername='" .. username .. "'")
+			mysql_query(handler, "UPDATE characters SET pdjail_time='0', pdjail='0', pdjail_station='0' WHERE charactername='" .. username .. "'")
 			setElementData(jailedPlayer, "jailtimer", nil)
 			setElementDimension(jailedPlayer, 1)
 			setElementInterior(jailedPlayer, 3)
 			setCameraInterior(jailedPlayer, 3)
-			setElementPosition(jailedPlayer, 233.42037963867, 157.07211303711, 1003.0234375)
-			setPedRotation(jailedPlayer, 211.10571289063)
+			
+			local station = getElementData(jailedPlayer, "pd.jailstation")
+			
+			if (station==2) then
+				setElementPosition(jailedPlayer, 2320.96484375, 620.83203125, 10.825594902039)
+				setPedRotation(jailedPlayer, 2.2666625976563)
+				setElementDimension(jailedPlayer, 0)
+				setElementInterior(jailedPlayer, 0)
+			else
+				setElementPosition(jailedPlayer, 233.42037963867, 157.07211303711, 1003.0234375)
+				setPedRotation(jailedPlayer, 211.10571289063)
+			end
+				
 			setElementData(jailedPlayer, "pd.jailserved", 0)
 			setElementData(jailedPlayer, "pd.jailtime", 0)
-			setElementData(jailedPlayer, "pd.jailtimer", nil)
+			removeElementData(jailedPlayer, "pd.jailtimer")
+			removeElementData(jailedPlayer, "pd.jailstation")
 			fadeCamera(jailedPlayer, true)
 			outputChatBox("Your time has been served.", jailedPlayer, 0, 255, 0)
 		else

@@ -1299,7 +1299,7 @@ function useMDC(thePlayer, Command)
 	local thePlayer = getLocalPlayer()
 		
 	-- check to make sure that the player is near the MDC or in a car
-	if( isElementWithinColShape ( thePlayer , colCircle1 ) or
+	if( isElementWithinColShape ( thePlayer , colCircle1 ) or isElementWithinColShape ( thePlayer , colCircle2 ) or
 	isPedInVehicle ( thePlayer))then
 
 		-- if the player is in a vehicle
@@ -1753,6 +1753,7 @@ function createColCircles()
 	local radius = 3
 	
 	colCircle1 = createColCircle ( 200.70289611816, 168.57279968262 , radius)
+	colCircle2 = createColCircle ( 238.3134765625, 71.35546875 , radius)
 
 	
 	local dimension = 1
@@ -1760,7 +1761,7 @@ function createColCircles()
 	-- set the col cirlces into the correct dimension
 	setElementDimension(colCircle1, dimension)
 	
-
+	setElementDimension(colCircle2, 681)
 
 end
  addEventHandler( "onClientResourceStart", getResourceRootElement( getThisResource( ) ), createColCircles )

@@ -16,9 +16,13 @@ function tazerFired(x, y, z, target)
 			toggleAllControls(target, false, true, false)
 			exports.global:applyAnimation(source, "CRACK", "crackidle2", true, 1.0, true, false)
 			setTimer(toggleAllControls, 10000, 1, target, true, true, true)
-			setTimer(exports.global:removeAnimation, 10005, 1, target)
+			setTimer(removeAnimation, 10005, 1, target)
 		end
 	end
 end
 addEvent("tazerFired", true )
 addEventHandler("tazerFired", getRootElement(), tazerFired)
+
+function removeAnimation(thePlayer)
+	exports.global:removeAnimation(thePlayer)
+end

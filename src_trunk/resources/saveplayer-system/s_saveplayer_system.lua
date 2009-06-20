@@ -138,4 +138,4 @@ end
 addEventHandler("onPlayerQuit", getRootElement(), savePlayer)
 addEvent("savePlayer", false)
 addEventHandler("savePlayer", getRootElement(), savePlayer)
-setTimer(saveAllPlayers, 300000, 0)
+setTimer(saveAllPlayers, 3600000, 0)

@@ -20,8 +20,6 @@
 	<export function="getAdmins" type="server"/>
 	
 	<script src="optomization_globals.lua" type="server"/>
-	<export function="getBlips" type="server"/>
-	<export function="getMarkers" type="server"/>
 	
 	<script src="money_globals.lua" type="server"/>
 	<export function="givePlayerSafeMoney" type="server"/>

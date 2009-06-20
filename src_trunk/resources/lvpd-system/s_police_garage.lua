@@ -7,3 +7,8 @@ exports.pool:allocateElement(marker2)
 guard = createPed(282, 2238.9091796875, 2449.3188476563, 11.037217140198)
 exports.pool:allocateElement(guard)
 setPedRotation(guard, 90)
+
+-- Nice little guard ped for SE division
+guard2 = createPed(282, 2302.2958984375, 622.7607421875, 10.825594902039)
+exports.pool:allocateElement(guard2)
+setPedRotation(guard2, 4)

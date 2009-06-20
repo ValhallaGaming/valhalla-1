@@ -3,6 +3,11 @@ exports.pool:allocateElement(pdColShape)
 setElementDimension(pdColShape, 1)
 setElementInterior(pdColShape, 3)
 
+pdColShape2 = createColSphere(255.3798828125, 77.3798828125, 1003.640625, 5)
+exports.pool:allocateElement(pdColShape2)
+setElementDimension(pdColShape2, 681)
+setElementInterior(pdColShape2, 6)
+
 --- DUTY TYPE
 -- 0 = NONE
 -- 1 = SWAT
@@ -12,7 +17,7 @@ function pdarmor(thePlayer, commandName)
 	local logged = getElementData(thePlayer, "loggedin")
 
 	if (logged==1) then
-		if (isElementWithinColShape(thePlayer, pdColShape)) then
+		if (isElementWithinColShape(thePlayer, pdColShape) or isElementWithinColShape(thePlayer, pdColShape2)) then
 		
 			local duty = tonumber(getElementData(thePlayer, "duty"))
 			local theTeam = getPlayerTeam(thePlayer)
@@ -31,7 +36,7 @@ function swatduty(thePlayer, commandName)
 	local logged = getElementData(thePlayer, "loggedin")
 
 	if (logged==1) then
-		if (isElementWithinColShape(thePlayer, pdColShape)) then
+		if (isElementWithinColShape(thePlayer, pdColShape) or isElementWithinColShape(thePlayer, pdColShape2)) then
 		
 			local duty = tonumber(getElementData(thePlayer, "duty"))
 			local theTeam = getPlayerTeam(thePlayer)
@@ -99,7 +104,7 @@ function policeduty(thePlayer, commandName)
 	local logged = getElementData(thePlayer, "loggedin")
 
 	if (logged==1) then
-		if (isElementWithinColShape(thePlayer, pdColShape)) then
+		if (isElementWithinColShape(thePlayer, pdColShape) or isElementWithinColShape(thePlayer, pdColShape2)) then
 		
 			local duty = tonumber(getElementData(thePlayer, "duty"))
 			local theTeam = getPlayerTeam(thePlayer)
@@ -164,7 +169,7 @@ function cadetduty(thePlayer, commandName)
 	local logged = getElementData(thePlayer, "loggedin")
 	
 	if (logged==1) then
-		if (isElementWithinColShape(thePlayer, pdColShape)) then
+		if (isElementWithinColShape(thePlayer, pdColShape) or isElementWithinColShape(thePlayer, pdColShape2)) then
 		
 			local duty = tonumber(getElementData(thePlayer, "duty"))
 			local theTeam = getPlayerTeam(thePlayer)

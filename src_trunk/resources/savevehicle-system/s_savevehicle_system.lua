@@ -34,7 +34,7 @@ function saveVehicleOnExit(thePlayer, seat, vehicle)
 	
 	local dbid = getElementData(source, "dbid")
 	
-	if (dbid>=0) then -- Check it's a permanently spawned vehicle
+	if (dbid>=0) and (dbid~=999999) then -- Check it's a permanently spawned vehicle and not a job vehicle
 		local tick = getTickCount()
 		local model = getElementModel(source)
 		local x, y, z = getElementPosition(source)

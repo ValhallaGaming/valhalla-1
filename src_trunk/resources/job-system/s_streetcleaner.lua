@@ -108,6 +108,7 @@ function initiateCleanerJob(thePlayer)
 end
 
 function startCleaningMission(thePlayer)
+	if (isElement(thePlayer)) then
 		local attached = getElementAttachedTo ( source ) -- source is the marker; attatched is the blip
 		destroyElement(attached)
 		destroyElement(source)
@@ -170,6 +171,7 @@ function startCleaningMission(thePlayer)
 		addEventHandler("onColShapeHit", colsphere, UpdateCheckpoints)	
 		
 		outputChatBox("Drive around Las Venturas on your cleaning path, sweeping the streets. ((Drive through the checkpoints))", thePlayer, 255, 194, 14)
+	end
 	
 end
 addCommandHandler("cj", startCleaningMission)
@@ -318,7 +320,7 @@ function FinishCheckpoints(thePlayer)
 				if (isElement(vehicle)) then
 					destroyElement(vehicle)
 					vehicle = nil
-					removeElementData(source, "cleaner.vehicle")
+					removeElementData(thePlayer, "cleaner.vehicle")
 					
 					outputChatBox("You have completed your task, well done.", thePlayer, 255, 194, 14)
 					outputChatBox("You received: 300$", thePlayer, 255, 194, 14)

@@ -923,7 +923,7 @@ function createMainUI(res, isChangeAccount)
 			end
 			fadeCamera(true)
 			
-			if (bChangeChar) then
+			if (bChangeAccount) then
 				destroyElement(bChangeAccount)
 				bChangeAccount = nil
 			end

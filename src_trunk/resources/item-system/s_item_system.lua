@@ -37,7 +37,7 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 			setElementHealth(source, 100)
 			exports.global:sendLocalMeAction(source, "eats a plump haggis.")
             exports.global:takePlayerItem(source, itemID, itemValue)
-			showInventory(source)
+			
 		elseif (itemID==2) then -- cellphone
 			outputChatBox("Use /call to use this item.", source, 255, 194, 14)
 		elseif (itemID==3) then -- car key
@@ -118,70 +118,69 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 		elseif (itemID==7) then -- phonebook
 			outputChatBox("Use /phonebook to use this item.", source, 255, 194, 14)
 		elseif (itemID==8) then -- sandwich
-			showInventory(source)
+			
 			local health = getElementHealth(source)
 			setElementHealth(source, health+50)
 			exports.global:applyAnimation(source, "FOOD", "EAT_Burger", true, 1.0, false, false)
 			setTimer(removeAnimation, 4000, 1, source)
 			exports.global:sendLocalMeAction(source, " eats a sandwich.")
 			exports.global:takePlayerItem(source, itemID, itemValue)
-			showInventory(source)
 		elseif (itemID==9) then -- sprunk
-			showInventory(source)
+			
 			local health = getElementHealth(source)
 			setElementHealth(source, health+30)
 			exports.global:applyAnimation(source, "VENDING", "VEND_Drink_P", true, 1.0, false, false)
 			setTimer(removeAnimation, 4000, 1, source)
 			exports.global:sendLocalMeAction(source, " drinks a sprunk.")
 			exports.global:takePlayerItem(source, itemID, itemValue)
-			showInventory(source)
+			
 		elseif (itemID==10) then -- red dice
 			local output = math.random(1, 6)
 			exports.global:sendLocalMeAction(source, "rolls a dice and gets " .. output .. ".")
 		elseif (itemID==11) then -- taco
-			showInventory(source)
+			
 			local health = getElementHealth(source)
 			setElementHealth(source, health+10)
 			exports.global:applyAnimation(source, "FOOD", "EAT_Burger", true, 1.0, false, false)
 			setTimer(removeAnimation, 4000, 1, source)
 			exports.global:sendLocalMeAction(source, " eats a taco.")
 			exports.global:takePlayerItem(source, itemID, itemValue)
-			showInventory(source)
+			
 		elseif (itemID==12) then -- cheeseburger
-			showInventory(source)
+			
 			local health = getElementHealth(source)
 			setElementHealth(source, health+10)
 			exports.global:applyAnimation(source, "FOOD", "EAT_Burger", true, 1.0, false, false)
 			setTimer(removeAnimation, 4000, 1, source)
 			exports.global:sendLocalMeAction(source, " eats a cheeseburger.")
 			exports.global:takePlayerItem(source, itemID, itemValue)
-			showInventory(source)
+			
 		elseif (itemID==13) then -- donut
-			showInventory(source)
+			
 			setElementHealth(source, 100)
 			exports.global:applyAnimation(source, "FOOD", "EAT_Burger", true, 1.0, false, false)
 			setTimer(removeAnimation, 4000, 1, source)
 			exports.global:sendLocalMeAction(source, " eats a donut.")
 			exports.global:takePlayerItem(source, itemID, itemValue)
-			showInventory(source)
+			
 		elseif (itemID==14) then -- cookie
-			showInventory(source)
+			
 			local health = getElementHealth(source)
 			setElementHealth(source, health+80)
 			exports.global:applyAnimation(source, "FOOD", "EAT_Burger", true, 1.0, false, false)
 			setTimer(removeAnimation, 4000, 1, source)
 			exports.global:sendLocalMeAction(source, " eats a cookie.")
 			exports.global:takePlayerItem(source, itemID, itemValue)
-			showInventory(source)
+			
 		elseif (itemID==15) then -- water
-			showInventory(source)
+			
 			local health = getElementHealth(source)
 			setElementHealth(source, health+90)
 			exports.global:applyAnimation(source, "VENDING", "VEND_Drink_P", true, 1.0, false, false)
 			setTimer(removeAnimation, 4000, 1, source)
 			exports.global:sendLocalMeAction(source, " drinks a bottle of water.")
 			exports.global:takePlayerItem(source, itemID, itemValue)
-			showInventory(source)
+			
 		elseif (itemID==16) then -- clothes
 			setPedSkin(source, tonumber(itemValue))
 			setElementData(source, "casualskin", tonumber(itemValue))
@@ -240,7 +239,7 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 			end
 		elseif (itemID==27) then -- FLASHBANG
 			exports.global:takePlayerItem(source, itemID, itemValue)
-			showInventory(source)
+			
 			local x, y, z = getElementPosition(source)
 			local rot = getPedRotation(source)
 			x = x + math.sin(math.rad(-rot)) * 10
@@ -252,7 +251,7 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 			exports.global:sendLocalMeAction(source, "throws a flashbang.")
 		elseif (itemID==28) then -- GLOWSTICK
 			exports.global:takePlayerItem(source, itemID, itemValue)
-			showInventory(source)
+			
 			local x, y, z = getElementPosition(source)
 			local rot = getPedRotation(source)
 			local x = x + math.sin(math.rad(-rot)) * 1

@@ -1,0 +1,132 @@
+================= Logging started at 6/20/2009 04:28:59 AM ==================
+Calculating size of cabinet files...
+Copying uncompressed setup files...
+Preprocessing data for data1.hdr...
+Feature: <Support>
+Feature: <Support>\Engine
+Feature: <Support>\Engine\Log
+Feature: <Support>\Engine\Kernel
+   Component: <Engine>Kernel Placeholder
+   Component: <Engine>EngineCommonPlaceHolderSelfReg
+Feature: <Support>\Main Installation
+Feature: <Data>
+Feature: Script
+   Component: <Support>Script
+Feature: Setup
+   Component: <Support>Language Independent OS Independent Files
+   Component: <Support>English OS Independent Files
+   Component: <Support>Danish OS Independent Files
+   Component: <Support>Dutch OS Independent Files
+   Component: <Support>Finnish OS Independent Files
+   Component: <Support>German OS Independent Files
+   Component: <Support>Norwegian OS Independent Files
+   Component: <Support>Polish OS Independent Files
+   Component: <Support>Spanish OS Independent Files
+   Component: <Support>Swedish OS Independent Files
+   Component: <Support>Misc Support Files
+   Component: <Support>Build Generated Support Files
+   Component: <Support>Misc i64 Support Files
+   Component: <Support>Misc x64 Support Files
+Feature: StrTbl
+   Component: <Support>English String Tables
+   Component: <Support>Danish String Tables
+   Component: <Support>Dutch String Tables
+   Component: <Support>Finnish String Tables
+   Component: <Support>Norwegian String Tables
+   Component: <Support>Polish String Tables
+   Component: <Support>Spanish String Tables
+   Component: <Support>Swedish String Tables
+   Component: <Support>German String Tables
+Feature: RunTime
+   Component: <Support>Non-SelfRegistering
+Feature: Resource
+   Component: <Support>English Files
+   Component: <Support>German Files
+   Component: <Support>Danish Files
+   Component: <Support>Dutch Files
+   Component: <Support>Finnish Files
+   Component: <Support>Norwegian Files
+   Component: <Support>Polish Files
+   Component: <Support>Spanish Files
+   Component: <Support>Swedish Files
+Feature: Disk<1>
+   Component: <Disk1>Disk1 Files(1)
+   Component: <Disk1>Disk1 Files(2)
+   Component: <Disk1>Disk1 Files(3)
+   Component: <Disk1>Disk1 Files(4)
+Feature: Multi Theft Auto
+   Component: DefaultComponent
+   Component: Files
+   Component: Files1
+   Component: Files2
+   Component: SelfRegFiles
+Processing registries...
+Building cabinet file data1.hdr...
+Building cabinet file data1.cab...
+Feature: <Support>
+Feature: <Support>\Engine
+Feature: <Support>\Engine\Log
+Feature: <Support>\Engine\Kernel
+   Component: <Engine>Kernel Placeholder
+   Component: <Engine>EngineCommonPlaceHolderSelfReg
+Feature: <Support>\Main Installation
+Feature: <Support>\Main Installation\Script
+   Component: <Support>Script
+Feature: <Support>\Main Installation\Setup
+   Component: <Support>Language Independent OS Independent Files
+   Component: <Support>English OS Independent Files
+   Component: <Support>Danish OS Independent Files
+   Component: <Support>Dutch OS Independent Files
+   Component: <Support>Finnish OS Independent Files
+   Component: <Support>German OS Independent Files
+   Component: <Support>Norwegian OS Independent Files
+   Component: <Support>Polish OS Independent Files
+   Component: <Support>Spanish OS Independent Files
+   Component: <Support>Swedish OS Independent Files
+   Component: <Support>Misc Support Files
+   Component: <Support>Build Generated Support Files
+   Component: <Support>Misc i64 Support Files
+   Component: <Support>Misc x64 Support Files
+Feature: <Support>\Main Installation\StrTbl
+   Component: <Support>English String Tables
+   Component: <Support>Danish String Tables
+   Component: <Support>Dutch String Tables
+   Component: <Support>Finnish String Tables
+   Component: <Support>Norwegian String Tables
+   Component: <Support>Polish String Tables
+   Component: <Support>Spanish String Tables
+   Component: <Support>Swedish String Tables
+   Component: <Support>German String Tables
+Feature: <Support>\Main Installation\RunTime
+   Component: <Support>Non-SelfRegistering
+Feature: <Support>\Main Installation\Resource
+   Component: <Support>English Files
+   Component: <Support>German Files
+   Component: <Support>Danish Files
+   Component: <Support>Dutch Files
+   Component: <Support>Finnish Files
+   Component: <Support>Norwegian Files
+   Component: <Support>Polish Files
+   Component: <Support>Spanish Files
+   Component: <Support>Swedish Files
+Feature: <Data>
+Building cabinet file data2.cab...
+Feature: <Data>\Disk<1>
+   Component: <Disk1>Disk1 Files(1)
+   Component: <Disk1>Disk1 Files(2)
+   Component: <Disk1>Disk1 Files(3)
+   Component: <Disk1>Disk1 Files(4)
+Feature: <Data>\Multi Theft Auto
+   Component: DefaultComponent
+   Component: Files
+   Component: Files1
+   Component: Files2
+   Component: SelfRegFiles
+Creating disk layout file 'layout.bin'...
+Creating self-extracting exe...
+Build finished at 06/20/09 04:29:17.
+Automatic update notification disabled
+SINGLE_EXE_IMAGE - 0 error(s), 0 warning(s)
+================= Logging stopped at 6/20/2009 04:29:17 AM ==================
+Log file has been created: <file:C:\InstallShield 2008 Projects\My Project Name-1\Media\SINGLE_EXE_IMAGE\Log Files\6-20-2009 04-28-59 AM.txt>
+

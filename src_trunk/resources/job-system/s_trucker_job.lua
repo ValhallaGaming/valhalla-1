@@ -26,7 +26,6 @@ end
 function job(thePlayer)
 	initiateTruckerJob(thePlayer)
 end
-addCommandHandler("job", job)
 
 function startTruckingMission(thePlayer, matchingDimension)
 	local jobmarker = getElementData(thePlayer, "jobmarker")

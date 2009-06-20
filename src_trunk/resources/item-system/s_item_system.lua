@@ -606,6 +606,10 @@ end
 addEvent("showItem", true)
 addEventHandler("showItem", getRootElement(), showItem)
 
+function resetAnim(thePlayer)
+	exports.global:removeAnimation(thePlayer)
+end
+
 function pickupItem(object, id, itemID, itemValue, itemName)
 	local x, y, z = getElementPosition(source)
 	local ox, oy, oz = getElementPosition(object)
@@ -615,7 +619,7 @@ function pickupItem(object, id, itemID, itemValue, itemName)
 		
 		-- Animation
 		exports.global:applyAnimation(source, "CARRY", "liftup", true, 1.0, false, false)
-		setTimer(resetAnim, 4000, 1, source)
+		setTimer(resetAnim, 2000, 1, source)
 		
 		exports.global:sendLocalMeAction(source, "bends over and picks up a " .. itemName .. ".")
 		destroyElement(object)

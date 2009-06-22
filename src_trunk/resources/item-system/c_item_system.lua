@@ -527,6 +527,20 @@ function useItem(button)
 			local itemName = tostring(guiGridListGetItemText(gItems, row, 2))
 			local itemValue = tonumber(guiGridListGetItemText(gItems, row, 3))
 			local itemID = tonumber(items[itemSlot][3])
+			
+			if (itemID==1 or itemID==8 or itemID==9 or itemID==11 or itemID==12 or itemID==13 or itemID==14 or itemID==15 or itemID==27 or itemID==28) then
+				guiGridListSetSelectedItem(gItems, 0, 0)
+				guiGridListSetItemText(gItems, row, colName, "Empty", false, false)
+				guiGridListSetItemText(gItems, row, colValue, "None", false, false)
+				guiGridListSetSelectedItem(gItems, row, col)
+				guiSetText(lDescription, "An empty slot.")
+				items[itemSlot] = nil
+				guiSetEnabled(bUseItem, false)
+				guiSetEnabled(bDropItem, false)
+				guiSetEnabled(bShowItem, false)
+				guiSetEnabled(bDestroyItem, false)
+			end
+			
 			triggerServerEvent("useItem", getLocalPlayer(), itemID, itemName, itemValue, false, groundz)
 		elseif (guiGetSelectedTab(tabPanel)==tabWeapons) then -- WEAPONS
 			local row, col = guiGridListGetSelectedItem(gWeapons)
@@ -553,6 +567,7 @@ function destroyItem(button)
 			guiGridListSetItemText(gItems, row, colValue, "None", false, false)
 			guiGridListSetSelectedItem(gItems, row, col)
 			guiSetText(lDescription, "An empty slot.")
+			items[itemSlot] = nil
 			guiSetEnabled(bUseItem, false)
 			guiSetEnabled(bDropItem, false)
 			guiSetEnabled(bShowItem, false)
@@ -595,6 +610,7 @@ function dropItem(button)
 			guiGridListSetItemText(gItems, row, colValue, "None", false, false)
 			guiGridListSetSelectedItem(gItems, row, col)
 			guiSetText(lDescription, "An empty slot.")
+			items[itemSlot] = nil
 			guiSetEnabled(bUseItem, false)
 			guiSetEnabled(bDropItem, false)
 			guiSetEnabled(bShowItem, false)

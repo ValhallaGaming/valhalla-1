@@ -1,5 +1,4 @@
 function mixDrugs(drug1, drug2, drug1name, drug2name)
-	exports.global:sendLocalMeAction(source, "mixes some chemicals together.")
 	-- 30 = Cannabis Sativa
 	-- 31 = Cocaine Alkaloid
 	-- 32 = Lysergic Acid
@@ -21,10 +20,10 @@ function mixDrugs(drug1, drug2, drug1name, drug2name)
 	if (drug1 == 31 and drug2 == 31) then -- Cocaine
 		drugName = "Cocaine"
 		drugID = 34
-	elseif (drug1==30 and drug2==31) or (durg1==31 and drug2==30) then -- Drug 2
+	elseif (drug1==30 and drug2==31) or (drug1==31 and drug2==30) then -- Drug 2
 		drugName = "Drug 2"
 		drugID = 35
-	elseif (drug1==32 and drug2==31) or (drug2==31 and drug1==32) then -- Drug 3
+	elseif (drug1==32 and drug2==31) or (drug1==31 and drug2==32) then -- Drug 3
 		drugName = "Drug 3"
 		drugID = 36
 	elseif (drug1==33 and drug2==31) or (drug1==31 and drug2==33) then -- Drug 4
@@ -55,10 +54,18 @@ function mixDrugs(drug1, drug2, drug1name, drug2name)
 		return
 	end
 	
-	outputChatBox("You mixed '" .. drug1name .. "' and '" .. drug2name .. "' to form '" .. drugName .. "'")
 	exports.global:takePlayerItem(source, drug1, -1)
 	exports.global:takePlayerItem(source, drug2, -1)
-	exports.global:givePlayerItem(source, drugID, 1)
+	local given = exports.global:givePlayerItem(source, drugID, 1)
+	
+	if (given) then
+		outputChatBox("You mixed '" .. drug1name .. "' and '" .. drug2name .. "' to form '" .. drugName .. "'", source)
+		exports.global:sendLocalMeAction(source, "mixes some chemicals together.")
+	else
+		outputChatBox("You do not have enough space to mix these chemicals.", source, 255, 0, 0)
+		exports.global:givePlayerItem(source, drug1, 1)
+		exports.global:givePlayerItem(source, drug2, 1)
+	end
 end
 addEvent("mixDrugs", true)
 addEventHandler("mixDrugs", getRootElement(), mixDrugs)

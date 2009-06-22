@@ -314,6 +314,9 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 			outputChatBox("Use the chemistry set purchasable from 24/7 to use this item.", source, 255, 0, 0)
 		elseif (itemID==33) then
 			outputChatBox("Use the chemistry set purchasable from 24/7 to use this item.", source, 255, 0, 0)
+		elseif (itemID>=34 and itemID<=44) then -- DRUGS
+			exports.global:takePlayerItem(source, itemID, -1)
+			exports.global:sendLocalMeAction(source, "takes some " .. itemName .. ".")
 		else
 			outputChatBox("Error 800001 - Report on http://bugs.valhallagaming.net", source, 255, 0, 0)
 		end

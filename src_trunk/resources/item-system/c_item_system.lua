@@ -590,7 +590,7 @@ function useItem(button)
 			local itemValue = tonumber(guiGridListGetItemText(gItems, row, 3))
 			local itemID = tonumber(items[itemSlot][3])
 			
-			if (itemID==1 or itemID==8 or itemID==9 or itemID==11 or itemID==12 or itemID==13 or itemID==14 or itemID==15 or itemID==27 or itemID==28) then
+			if (itemID==1 or itemID==8 or itemID==9 or itemID==11 or itemID==12 or itemID==13 or itemID==14 or itemID==15 or itemID==27 or itemID==28 or (itemID>=34 and itemID<=43)) then
 				guiGridListSetSelectedItem(gItems, 0, 0)
 				guiGridListSetItemText(gItems, row, colName, "Empty", false, false)
 				guiGridListSetItemText(gItems, row, colValue, "None", false, false)
@@ -607,6 +607,33 @@ function useItem(button)
 				hideInventory()
 				showChemistrySet()
 				return
+			end
+			
+			if (itemID==34) then -- COCAINE
+				doDrug1Effect()
+			elseif (itemID==35) then
+				doDrug2Effect()
+			elseif (itemID==36) then
+				doDrug3Effect()
+			elseif (itemID==37) then
+				doDrug4Effect()
+			elseif (itemID==38) then
+				doDrug5Effect()
+			elseif (itemID==39) then
+				doDrug6Effect()
+			elseif (itemID==40) then
+				doDrug3Effect()
+				doDrug1Effect()
+			elseif (itemID==41) then
+				doDrug4Effect()
+				doDrug6Effect()
+			elseif (itemID==42) then
+				doDrug5Effect()
+				doDrug2Effect()
+			elseif (itemID==43) then
+				doDrug4Effect()
+				doDrug1Effect()
+				doDrug6Effect()
 			end
 			
 			triggerServerEvent("useItem", getLocalPlayer(), itemID, itemName, itemValue, false, groundz)

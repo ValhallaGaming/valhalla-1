@@ -113,3 +113,219 @@ function mixItems()
 	
 	hideChemistrySet()
 end
+
+local localPlayer = getLocalPlayer()
+
+-- DRUG 1 EFFECT
+local vehicles = nil
+local weather = nil
+drug1effect = false
+drug1timer = nil
+function doDrug1Effect()
+	if not (drug1effect) then
+		drug1effect = true
+		weather = getWeather()
+		setSkyGradient(0, 0, 255, 0, 0, 255)
+		
+		
+		local x, y, z = getElementPosition(localPlayer)
+		vehicles = { }
+		for i = 1, 20 do
+			vehicles[i] = createVehicle(423, x+(i*3), y+(i*3), z)
+			setVehicleColor(vehicles[i], 126, 126, 126, 126)
+		end
+		setTimer(setWeather, 100, 1, 9)
+	end
+	
+	drug1timer = setTimer(resetDrug1Effect, 1000, 1)
+end
+
+function resetDrug1Effect()
+	drug1effect = false
+	resetSkyGradient()
+	setTimer(setWeather, 100, 1, weather)
+	for key, value in ipairs(vehicles) do
+		destroyElement(value)
+	end
+	vehicles = nil
+end
+
+-- DRUG 2 EFFECT
+drug2effect = false
+drug2timer = nil
+function doDrug2Effect()
+	if not (drug2effect) then
+		drug2effect = true
+		addEventHandler("onClientPlayerDamage", getLocalPlayer(), cancelEvent)
+		drug2timer = setTimer(resetDrug2Effect, 300000, 1)
+	end
+end
+
+function resetDrug2Effect()
+	drug2effect = false
+	removeEventHandler("onClientPlayerDamage", getLocalPlayer(), cancelEvent)
+end
+
+-- DRUG 3 EFFECT
+drug3effect = false
+drug3timer = nil
+function doDrug3Effect()
+	if not (drug3effect) then
+		drug3effect = true
+		setSkyGradient(255, 128, 255, 255, 128, 255)
+		drug3timer = setTimer(resetDrug3Effect, 600000, 1)
+		weather = getWeather()
+		setGameSpeed(0.3)
+	end
+end
+
+function resetDrug3Effect()
+	drug3effect = false
+	resetSkyGradient()
+	setTimer(setWeather, 100, 1, weather)
+	setGameSpeed(1)
+end
+
+-- DRUG 4 EFFECT
+drug4effect = false
+drug4timer = nil
+local peds = nil
+function doDrug4Effect()
+	if not (drug4effect) then
+		peds = { }
+		drug4effect = true
+		setSkyGradient(255, 128, 255, 255, 128, 255)
+		drug4timer = setTimer(resetDrug4Effect, 300000, 1)
+		weather = getWeather()
+		
+		addEventHandler("onClientRender", getRootElement(), createRandomPeds)
+	end
+end
+
+local count = 1
+function createRandomPeds()
+	if (count>50) then
+		for key, value in ipairs(peds) do
+			destroyElement(value)
+		end
+		count = 1
+	end
+	
+	local x, y, z = getElementPosition(localPlayer)
+	local rand1 = math.random(1, 5)
+	local rand2 = math.random(1, 5)
+	
+	peds[count] = createPed(264, x+rand1, y+rand2, z)
+	count = count + 1
+end
+
+function resetDrug4Effect()
+	drug4effect = false
+	resetSkyGradient()
+	setTimer(setWeather, 100, 1, weather)
+	removeEventHandler("onClientRender", getRootElement(), createRandomPeds)
+	
+	for key, value in ipairs(peds) do
+		destroyElement(value)
+	end
+	peds = nil
+end
+
+-- DRUG 5 EFFECT
+drug5effect = false
+drug5timer = nil
+function doDrug5Effect()
+	if not (drug5effect) then
+		drug5effect = true
+		setSkyGradient(0, 0, 0, 0, 0, 0)
+		weather = getWeather()
+		setTimer(setWeather, 100, 1, 9)
+		drug5timer = setTimer(resetDrug5Effect, 300000, 1)
+		setGameSpeed(5)
+	end
+end
+
+function resetDrug5Effect()
+	drug5effect = false
+	setGameSpeed(1)
+	resetSkyGradient()
+	setTimer(setWeather, 100, 1, weather)
+end
+
+-- DRUG 6 EFFECT
+drug6effect = false
+drug6timer = nil
+drug6timer2 = nil
+function doDrug6Effect()
+	if not (drug6effect) then
+		drug6effect = true
+		weather = getWeather()
+		setSkyGradient(255, 0, 0, 0, 255, 0)
+		drug6timer = setTimer(resetDrug6Effect, 300000, 1)
+		addEventHandler("onClientPlayerDamage", getLocalPlayer(), cancelEvent)
+		setGameSpeed(0.5)
+		drug6timer2 = setTimer(doRandomMessage, 15000, 5)
+	end
+end
+
+local drugMessages = { }
+drugMessages[1] = "F U Pal"
+drugMessages[2] = "Wow man, your flyyyyyyyying"
+drugMessages[3] = "We need some drugs PAL!"
+drugMessages[4] = "Some of the ol' Love Fist Fury!"
+drugMessages[5] = "Yo mannnnnnnnnnn, why are your legs turned to mush?"
+
+function doRandomMessage()
+	local x, y, z = getElementPosition(localPlayer)
+	local colSphere = createColSphere(x, y, z, 10)
+	
+	local players = getElementsWithinColShape(colSphere, "player")
+	
+	if (#players>0) then
+		local rand = math.random(1, #players)
+		for key, value in ipairs(players) do
+			if (key==rand) then
+				local rand2 = math.random(1, 5)
+				local charname = getPlayerName(value)
+				charname = string.gsub(tostring(charname), "_", " ")
+				outputChatBox(charname .. " Says: " .. drugMessages[rand2], 255, 255, 255)
+			end
+		end
+	end
+end
+
+function resetDrug6Effect()
+	drug5effect = false
+	setGameSpeed(1)
+end
+
+function resetAllDrugs()
+	resetDrug1Effect()
+	resetDrug2Effect()
+	resetDrug3Effect()
+	resetDrug4Effect()
+	resetDrug5Effect()
+	resetDrug6Effect()
+	
+	killTimer(drug1Timer)
+	drug1Timer = nil
+	
+	killTimer(drug2Timer)
+	drug2Timer = nil
+	
+	killTimer(drug3Timer)
+	drug3Timer = nil
+	
+	killTimer(drug4Timer)
+	drug4Timer = nil
+	
+	killTimer(drug5Timer)
+	drug5Timer = nil
+	
+	killTimer(drug6Timer)
+	drug6Timer = nil
+	
+	killTimer(drug6Timer2)
+	drug6Timer2 = nil
+end
+addEventHandler("onClientChangeChar", getRootElement(), resetAllDrugs)

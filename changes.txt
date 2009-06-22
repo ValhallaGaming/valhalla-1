@@ -7,7 +7,8 @@ Scripts in "unfinished code" need to be completed, checked and added to the corr
 	C_realism_system
 
 - map-system
-	vice_back_room
+	boxingArena
+	creek ghetto
 
 - animation-system
 	S_animation_system

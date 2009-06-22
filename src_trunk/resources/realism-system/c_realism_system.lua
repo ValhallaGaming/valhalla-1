@@ -79,7 +79,7 @@ end
 DrgStrip1Timer = setTimer ( DrgStrip1Dance, 15000, 0)
 
 -- Stripper 2	
-local DrgStrip2 = createPed (63, 1208.12, -6.05, 1000.32)
+local DrgStrip2 = createPed (257, 1208.12, -6.05, 1000.32)
 setPedAnimation ( DrgStrip2, "STRIP", "STR_Loop_A", -1, true, false, false)
 setElementInterior (DrgStrip2, 2)
 setElementDimension (DrgStrip2, 685)

@@ -1,7 +1,7 @@
 local objGateg = createObject(3055, 2335.5135253906, 2443.5122070313, 6.9781973838806, 0, 0, 240)
 exports.pool:allocateElement(objGateg)
 
-local open = false
+open = false
 
 -- Gate code
 function usePDFrontGarageGate(thePlayer)

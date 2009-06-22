@@ -1,7 +1,7 @@
 local objGateh = createObject(3055, 2293.8805664063, 2498.833789063, 4.2734375, 0, 0, 90)
 exports.pool:allocateElement(objGateh)
 
-local open = false
+open = false
 
 -- Green door
 local greendoor = createObject(1492, 2293.8684082031, 2494.5129394531, 2.3734375, 0, 0, 270)

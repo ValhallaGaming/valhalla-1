@@ -31,7 +31,7 @@ exports.pool:allocateElement(object4)
 setElementInterior(object4, 3)
 setElementDimension(object4, 1)
 
-local open = false
+open = false
 
 -- Gate code
 function usePDDoor6(thePlayer)

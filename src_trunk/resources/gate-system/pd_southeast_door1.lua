@@ -1,14 +1,14 @@
 local objDivGate1 = createObject(3089, 244.9, 72.4765625, 1003.940625, 0, 0, 0)
-local exports.pool:allocateElement(objDivGate1)
+exports.pool:allocateElement(objDivGate1)
 setElementInterior(objDivGate1, 6)
 setElementDimension(objDivGate1, 681)
 
 local objDivGate2 = createObject(3089, 247.9, 72.4765625, 1003.940625, 0, 0, 180)
-local exports.pool:allocateElement(objDivGate2)
+exports.pool:allocateElement(objDivGate2)
 setElementInterior(objDivGate2, 6)
 setElementDimension(objDivGate2, 681) -- 1557
 
-local open = false
+open = false
 
 -- Gate code
 function usePDDivDoor1(thePlayer)

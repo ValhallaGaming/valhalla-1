@@ -56,8 +56,8 @@ function mixDrugs(drug1, drug2, drug1name, drug2name)
 	end
 	
 	outputChatBox("You mixed '" .. drug1name .. "' and '" .. drug2name .. "' to form '" .. drugName .. "'")
-	exports.global:takePlayerItem(source, drug1)
-	exports.global:takePlayerItem(source, drug2)
+	exports.global:takePlayerItem(source, drug1, -1)
+	exports.global:takePlayerItem(source, drug2, -1)
 	exports.global:givePlayerItem(source, drugID, 1)
 end
 addEvent("mixDrugs", true)

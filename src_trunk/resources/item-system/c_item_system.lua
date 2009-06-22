@@ -603,6 +603,12 @@ function useItem(button)
 				guiSetEnabled(bDestroyItem, false)
 			end
 			
+			if (itemID==44) then
+				hideInventory()
+				showChemistrySet()
+				return
+			end
+			
 			triggerServerEvent("useItem", getLocalPlayer(), itemID, itemName, itemValue, false, groundz)
 		elseif (guiGetSelectedTab(tabPanel)==tabWeapons) then -- WEAPONS
 			local row, col = guiGridListGetSelectedItem(gWeapons)

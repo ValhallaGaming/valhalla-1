@@ -87,11 +87,13 @@ function checkSelectedItems()
 	end
 end
 
+alreadySent = false
 function mixItems()
 	if (guiGridListGetSelectedCount(gChemicals)==4) then
 		selected = guiGridListGetSelectedItems(gChemicals)
 		
-		if (selected) then
+		if (selected) and not (alreadySent) then
+			alreadySent = true
 			local row1 = selected[1]["row"]
 			local row2 = selected[3]["row"]
 			
@@ -105,6 +107,7 @@ function mixItems()
 			local row2name = chemItems[row2slot][1]
 			
 			triggerServerEvent("mixDrugs", getLocalPlayer(), row1item, row2item, row1name, row2name)
+			alreadySent = false
 		end
 	end
 	

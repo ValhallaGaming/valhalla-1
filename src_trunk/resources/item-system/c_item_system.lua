@@ -62,6 +62,21 @@ function getItemName(itemID)
 	elseif (itemID==27) then return "Flashbang"
 	elseif (itemID==28) then return "Glowstick"
 	elseif (itemID==29) then return "Door Ram"
+	elseif (itemID==30) then return "Cannabis Sativa"
+	elseif (itemID==31) then return "Cocaine Alkaloid"
+	elseif (itemID==32) then return "Lysergic Acid"
+	elseif (itemID==33) then return "Unprocessed PCP"
+	elseif (itemID==34) then return "Cocaine"
+	elseif (itemID==35) then return "Drug 2"
+	elseif (itemID==36) then return "Drug 3"
+	elseif (itemID==37) then return "Drug 4"
+	elseif (itemID==38) then return "Marijuana"
+	elseif (itemID==39) then return "Drug 6"
+	elseif (itemID==40) then return "Drug 7"
+	elseif (itemID==41) then return "LSD"
+	elseif (itemID==42) then return "Drug 9"
+	elseif (itemID==43) then return "Angel Dust"
+	elseif (itemID==44) then return "Chemistry Set"
 	else return false 
 	end
 end
@@ -96,6 +111,21 @@ function getItemDescription(itemID)
 	elseif (itemID==27) then return "A small grenade canister with FB written on the side."
 	elseif (itemID==28) then return "A green glowstick."
 	elseif (itemID==29) then return "A red metal door ram."
+	elseif (itemID==30) then return "Cannabis Sativa, when mixed can create some strong drugs."
+	elseif (itemID==31) then return "Cocaine Alkaloid, when mixed can create some strong drugs."
+	elseif (itemID==32) then return "Lysergic Acid, when mixed can create some strong drugs."
+	elseif (itemID==33) then return "Unprocessed PCP, when mixed can create some strong drugs."
+	elseif (itemID==34) then return "A strong drug."
+	elseif (itemID==35) then return "A strong drug."
+	elseif (itemID==36) then return "A strong drug."
+	elseif (itemID==37) then return "A strong drug."
+	elseif (itemID==38) then return "A strong drug."
+	elseif (itemID==39) then return "A strong drug."
+	elseif (itemID==40) then return "A strong drug."
+	elseif (itemID==41) then return "A strong drug."
+	elseif (itemID==42) then return "A strong drug."
+	elseif (itemID==43) then return "A strong drug."
+	elseif (itemID==44) then return "A small chemistry set."
 	else return false 
 	end
 end
@@ -166,6 +196,36 @@ function getItemType(itemID)
 	elseif (itemID==28) then
 		return 4
 	elseif (itemID==29) then
+		return 4
+	elseif (itemID==30) then
+		return 4
+	elseif (itemID==31) then
+		return 4
+	elseif (itemID==32) then
+		return 4
+	elseif (itemID==33) then
+		return 4
+	elseif (itemID==34) then
+		return 4
+	elseif (itemID==35) then
+		return 4
+	elseif (itemID==36) then
+		return 4
+	elseif (itemID==37) then
+		return 4
+	elseif (itemID==38) then
+		return 4
+	elseif (itemID==39) then
+		return 4
+	elseif (itemID==40) then
+		return 4
+	elseif (itemID==41) then
+		return 4
+	elseif (itemID==42) then
+		return 4
+	elseif (itemID==43) then
+		return 4
+	elseif (itemID==44) then
 		return 4
 	else
 		return false
@@ -252,173 +312,175 @@ end
 bindKey("i", "down", toggleInventory)
 
 function showInventory()
-	local width, height = 600, 500
-	local scrWidth, scrHeight = guiGetScreenSize()
-	local x = scrWidth/2 - (width/2)
-	local y = scrHeight/2 - (height/2)
-	
-	wItems = guiCreateWindow(x, y, width, height, "Inventory", false)
-	guiWindowSetSizable(wItems, false)
-	
-	local itemstring = getElementData(getLocalPlayer(), "items")
-	local itemvalues = getElementData(getLocalPlayer(), "itemvalues")
-			
-	items = { }
-			
-	if (itemstring) then
-		for i = 1, 10 do
-			local token = tonumber(gettok(itemstring, i, string.byte(',')))
-			
-			if (token) then
-				items[i] = { }
-				items[i][1] = getItemName(token)
-				items[i][2] = getItemDescription(token)
-				items[i][3] = token
-				items[i][4] = gettok(itemvalues, i, string.byte(','))
+	if not (wChemistrySet) then
+		local width, height = 600, 500
+		local scrWidth, scrHeight = guiGetScreenSize()
+		local x = scrWidth/2 - (width/2)
+		local y = scrHeight/2 - (height/2)
+		
+		wItems = guiCreateWindow(x, y, width, height, "Inventory", false)
+		guiWindowSetSizable(wItems, false)
+		
+		local itemstring = getElementData(getLocalPlayer(), "items")
+		local itemvalues = getElementData(getLocalPlayer(), "itemvalues")
+				
+		items = { }
+				
+		if (itemstring) then
+			for i = 1, 10 do
+				local token = tonumber(gettok(itemstring, i, string.byte(',')))
+				
+				if (token) then
+					items[i] = { }
+					items[i][1] = getItemName(token)
+					items[i][2] = getItemDescription(token)
+					items[i][3] = token
+					items[i][4] = gettok(itemvalues, i, string.byte(','))
+				end
 			end
 		end
-	end
-	
-	tabPanel = guiCreateTabPanel(0.025, 0.05, 0.95, 0.7, true, wItems)
-	tabItems = guiCreateTab("Items", tabPanel)
-	tabWeapons = guiCreateTab("Weapons", tabPanel)
-	
-	
-	-- ITEMS
-	gItems = guiCreateGridList(0.025, 0.05, 0.95, 0.9, true, tabItems)
-	addEventHandler("onClientGUIClick", gItems, showDescription, false)
-	
-	
-	colSlot = guiGridListAddColumn(gItems, "Slot", 0.1)
-	colName = guiGridListAddColumn(gItems, "Name", 0.625)
-	colValue = guiGridListAddColumn(gItems, "Value", 0.225)
-	
-	local itemvalues = getElementData(getLocalPlayer(), "itemvalues")
-	
-	-- type checkboxes
-	toggleLabel = guiCreateLabel(0.025, 0.77, 0.95, 0.9, "Toggle Item Types:", true, wItems)
-	guiSetFont(toggleLabel, "default-bold-small")
-	
-	chkFood = guiCreateCheckBox(0.025, 0.8, 0.15, 0.05, "Food & Drink", showFood, true, wItems)
-	chkKeys = guiCreateCheckBox(0.2, 0.8, 0.1, 0.05, "Keys", showKeys, true, wItems)
-	chkDrugs = guiCreateCheckBox(0.3, 0.8, 0.1, 0.05, "Drugs", showDrugs, true, wItems)
-	chkBooks = guiCreateCheckBox(0.4, 0.8, 0.1, 0.05, "Books", showBooks, true, wItems)
-	chkClothes = guiCreateCheckBox(0.5, 0.8, 0.125, 0.05, "Clothing", showClothes, true, wItems)
-	chkElectronics = guiCreateCheckBox(0.625, 0.8, 0.15, 0.05, "Electronics", showElectronics, true, wItems)
-	chkOther = guiCreateCheckBox(0.775, 0.8, 0.1, 0.05, "Other", showOther, true, wItems)
-	chkEmpty = guiCreateCheckBox(0.875, 0.8, 0.1, 0.05, "Empty", showEmpty, true, wItems)
-	
-	addEventHandler("onClientGUIClick", chkFood, toggleCategory, false)
-	addEventHandler("onClientGUIClick", chkKeys, toggleCategory, false)
-	addEventHandler("onClientGUIClick", chkDrugs, toggleCategory, false)
-	addEventHandler("onClientGUIClick", chkBooks, toggleCategory, false)
-	addEventHandler("onClientGUIClick", chkClothes, toggleCategory, false)
-	addEventHandler("onClientGUIClick", chkElectronics, toggleCategory, false)
-	addEventHandler("onClientGUIClick", chkOther, toggleCategory, false)
-	addEventHandler("onClientGUIClick", chkEmpty, toggleCategory, false)
+		
+		tabPanel = guiCreateTabPanel(0.025, 0.05, 0.95, 0.7, true, wItems)
+		tabItems = guiCreateTab("Items", tabPanel)
+		tabWeapons = guiCreateTab("Weapons", tabPanel)
+		
+		
+		-- ITEMS
+		gItems = guiCreateGridList(0.025, 0.05, 0.95, 0.9, true, tabItems)
+		addEventHandler("onClientGUIClick", gItems, showDescription, false)
+		
+		
+		colSlot = guiGridListAddColumn(gItems, "Slot", 0.1)
+		colName = guiGridListAddColumn(gItems, "Name", 0.625)
+		colValue = guiGridListAddColumn(gItems, "Value", 0.225)
+		
+		local itemvalues = getElementData(getLocalPlayer(), "itemvalues")
+		
+		-- type checkboxes
+		toggleLabel = guiCreateLabel(0.025, 0.77, 0.95, 0.9, "Toggle Item Types:", true, wItems)
+		guiSetFont(toggleLabel, "default-bold-small")
+		
+		chkFood = guiCreateCheckBox(0.025, 0.8, 0.15, 0.05, "Food & Drink", showFood, true, wItems)
+		chkKeys = guiCreateCheckBox(0.2, 0.8, 0.1, 0.05, "Keys", showKeys, true, wItems)
+		chkDrugs = guiCreateCheckBox(0.3, 0.8, 0.1, 0.05, "Drugs", showDrugs, true, wItems)
+		chkBooks = guiCreateCheckBox(0.4, 0.8, 0.1, 0.05, "Books", showBooks, true, wItems)
+		chkClothes = guiCreateCheckBox(0.5, 0.8, 0.125, 0.05, "Clothing", showClothes, true, wItems)
+		chkElectronics = guiCreateCheckBox(0.625, 0.8, 0.15, 0.05, "Electronics", showElectronics, true, wItems)
+		chkOther = guiCreateCheckBox(0.775, 0.8, 0.1, 0.05, "Other", showOther, true, wItems)
+		chkEmpty = guiCreateCheckBox(0.875, 0.8, 0.1, 0.05, "Empty", showEmpty, true, wItems)
+		
+		addEventHandler("onClientGUIClick", chkFood, toggleCategory, false)
+		addEventHandler("onClientGUIClick", chkKeys, toggleCategory, false)
+		addEventHandler("onClientGUIClick", chkDrugs, toggleCategory, false)
+		addEventHandler("onClientGUIClick", chkBooks, toggleCategory, false)
+		addEventHandler("onClientGUIClick", chkClothes, toggleCategory, false)
+		addEventHandler("onClientGUIClick", chkElectronics, toggleCategory, false)
+		addEventHandler("onClientGUIClick", chkOther, toggleCategory, false)
+		addEventHandler("onClientGUIClick", chkEmpty, toggleCategory, false)
 
-	for i = 1, 10 do
-		if (items[i]==nil) then
-			if (showEmpty) then
-				local row = guiGridListAddRow(gItems)
-				guiGridListSetItemText(gItems, row, colSlot, tostring(i), false, true)
-				guiGridListSetItemText(gItems, row, colName, "Empty", false, false)
-				guiGridListSetItemText(gItems, row, colValue, "None", false, false)
-			end
-		else
-			local itemid = tonumber(items[i][3])
-			local itemvalue = gettok(itemvalues, i, string.byte(','))
-			
-			local itemtype = getItemType(itemid)
-	
-			if not (itemtype) then
-				return
-			else
-				local add = true
-				
-				if (itemtype==1) and not (showFood) then
-					add = false
-				elseif (itemtype==2) and not (showKeys) then
-					add = false
-				elseif (itemtype==3) and not (showDrugs) then
-					add = false
-				elseif (itemtype==4) and not (showOther) then
-					add = false
-				elseif (itemtype==5) and not (showBooks) then
-					add = false
-				elseif (itemtype==6) and not (showClothes) then
-					add = false
-				elseif (itemtype==7) and not (showElectronics) then
-					add = false
-				elseif (itemtype==false) then
-					add = false
-				end
-				
-				if (add) then
+		for i = 1, 10 do
+			if (items[i]==nil) then
+				if (showEmpty) then
 					local row = guiGridListAddRow(gItems)
 					guiGridListSetItemText(gItems, row, colSlot, tostring(i), false, true)
-					guiGridListSetItemText(gItems, row, colName, tostring(items[i][1]), false, false)
-					guiGridListSetItemText(gItems, row, colValue, tostring(itemvalue), false, false)
+					guiGridListSetItemText(gItems, row, colName, "Empty", false, false)
+					guiGridListSetItemText(gItems, row, colValue, "None", false, false)
+				end
+			else
+				local itemid = tonumber(items[i][3])
+				local itemvalue = gettok(itemvalues, i, string.byte(','))
+				
+				local itemtype = getItemType(itemid)
+		
+				if not (itemtype) then
+					return
+				else
+					local add = true
+					
+					if (itemtype==1) and not (showFood) then
+						add = false
+					elseif (itemtype==2) and not (showKeys) then
+						add = false
+					elseif (itemtype==3) and not (showDrugs) then
+						add = false
+					elseif (itemtype==4) and not (showOther) then
+						add = false
+					elseif (itemtype==5) and not (showBooks) then
+						add = false
+					elseif (itemtype==6) and not (showClothes) then
+						add = false
+					elseif (itemtype==7) and not (showElectronics) then
+						add = false
+					elseif (itemtype==false) then
+						add = false
+					end
+					
+					if (add) then
+						local row = guiGridListAddRow(gItems)
+						guiGridListSetItemText(gItems, row, colSlot, tostring(i), false, true)
+						guiGridListSetItemText(gItems, row, colName, tostring(items[i][1]), false, false)
+						guiGridListSetItemText(gItems, row, colValue, tostring(itemvalue), false, false)
+					end
 				end
 			end
 		end
-	end
-	
-	addEventHandler("onClientGUIDoubleClick", gItems, useItem, false)
+		
+		addEventHandler("onClientGUIDoubleClick", gItems, useItem, false)
 
-	-- WEAPONS
-	gWeapons = guiCreateGridList(0.025, 0.05, 0.95, 0.9, true, tabWeapons)
-	addEventHandler("onClientGUIClick", gWeapons, showDescription, false)
-	
-	
-	colWSlot = guiGridListAddColumn(gWeapons, "Slot", 0.1)
-	colWName = guiGridListAddColumn(gWeapons, "Name", 0.625)
-	colWValue = guiGridListAddColumn(gWeapons, "Ammo", 0.225)
-	for i = 1, 12 do
-		if (getWeaponNameFromID(getPedWeapon(getLocalPlayer(), i))~="Melee") then
-			local row = guiGridListAddRow(gWeapons)
-			local weapon = getWeaponNameFromID(getPedWeapon(getLocalPlayer(), i))
-			local ammo = getPedTotalAmmo(getLocalPlayer(), i)
-			guiGridListSetItemText(gWeapons, row, colWSlot, tostring(i), false, true)
-			guiGridListSetItemText(gWeapons, row, colWName, tostring(weapon), false, false)
-			guiGridListSetItemText(gWeapons, row, colWValue, tostring(ammo), false, false)
+		-- WEAPONS
+		gWeapons = guiCreateGridList(0.025, 0.05, 0.95, 0.9, true, tabWeapons)
+		addEventHandler("onClientGUIClick", gWeapons, showDescription, false)
+		
+		
+		colWSlot = guiGridListAddColumn(gWeapons, "Slot", 0.1)
+		colWName = guiGridListAddColumn(gWeapons, "Name", 0.625)
+		colWValue = guiGridListAddColumn(gWeapons, "Ammo", 0.225)
+		for i = 1, 12 do
+			if (getWeaponNameFromID(getPedWeapon(getLocalPlayer(), i))~="Melee") then
+				local row = guiGridListAddRow(gWeapons)
+				local weapon = getWeaponNameFromID(getPedWeapon(getLocalPlayer(), i))
+				local ammo = getPedTotalAmmo(getLocalPlayer(), i)
+				guiGridListSetItemText(gWeapons, row, colWSlot, tostring(i), false, true)
+				guiGridListSetItemText(gWeapons, row, colWName, tostring(weapon), false, false)
+				guiGridListSetItemText(gWeapons, row, colWValue, tostring(ammo), false, false)
+			end
 		end
-	end
-	guiSetVisible(colWSlot, false)
-	
-	addEventHandler("onClientGUIDoubleClick", gWeapons, useItem, false)
-	
-	-- ARMOR
-	if (getPedArmor(getLocalPlayer())>0) then
-		local row = guiGridListAddRow(gWeapons)
-		guiGridListSetItemText(gWeapons, row, colWSlot, tostring(13), false, true)
-		guiGridListSetItemText(gWeapons, row, colWName, "Body Armor", false, false)
-		guiGridListSetItemText(gWeapons, row, colWValue, tostring(getPedArmor(getLocalPlayer())), false, false)
-	end
-	
-	-- GENERAL
-	lDescription = guiCreateLabel(0.025, 0.87, 0.95, 0.1, "Click an item to see it's description.", true, wItems)
-	guiLabelSetHorizontalAlign(lDescription, "center", true)
-	guiSetFont(lDescription, "default-bold-small")
-	
-	-- buttons
-	bUseItem = guiCreateButton(0.05, 0.91, 0.2, 0.15, "Use Item", true, wItems)
-	addEventHandler("onClientGUIClick", bUseItem, useItem, false)
-	guiSetEnabled(bUseItem, false)
-	
-	bDropItem = guiCreateButton(0.30, 0.91, 0.2, 0.15, "Drop Item", true, wItems)
-	addEventHandler("onClientGUIClick", bDropItem, dropItem, false)
-	guiSetEnabled(bDropItem, false)
-	
-	bShowItem = guiCreateButton(0.55, 0.91, 0.2, 0.15, "Show Item", true, wItems)
-	addEventHandler("onClientGUIClick", bShowItem, showItem, false)
-	guiSetEnabled(bShowItem, false)
-	
-	bDestroyItem = guiCreateButton(0.8, 0.91, 0.2, 0.15, "Destroy Item", true, wItems)
-	addEventHandler("onClientGUIClick", bDestroyItem, destroyItem, false)
-	guiSetEnabled(bDestroyItem, false)
+		guiSetVisible(colWSlot, false)
+		
+		addEventHandler("onClientGUIDoubleClick", gWeapons, useItem, false)
+		
+		-- ARMOR
+		if (getPedArmor(getLocalPlayer())>0) then
+			local row = guiGridListAddRow(gWeapons)
+			guiGridListSetItemText(gWeapons, row, colWSlot, tostring(13), false, true)
+			guiGridListSetItemText(gWeapons, row, colWName, "Body Armor", false, false)
+			guiGridListSetItemText(gWeapons, row, colWValue, tostring(getPedArmor(getLocalPlayer())), false, false)
+		end
+		
+		-- GENERAL
+		lDescription = guiCreateLabel(0.025, 0.87, 0.95, 0.1, "Click an item to see it's description.", true, wItems)
+		guiLabelSetHorizontalAlign(lDescription, "center", true)
+		guiSetFont(lDescription, "default-bold-small")
+		
+		-- buttons
+		bUseItem = guiCreateButton(0.05, 0.91, 0.2, 0.15, "Use Item", true, wItems)
+		addEventHandler("onClientGUIClick", bUseItem, useItem, false)
+		guiSetEnabled(bUseItem, false)
+		
+		bDropItem = guiCreateButton(0.30, 0.91, 0.2, 0.15, "Drop Item", true, wItems)
+		addEventHandler("onClientGUIClick", bDropItem, dropItem, false)
+		guiSetEnabled(bDropItem, false)
+		
+		bShowItem = guiCreateButton(0.55, 0.91, 0.2, 0.15, "Show Item", true, wItems)
+		addEventHandler("onClientGUIClick", bShowItem, showItem, false)
+		guiSetEnabled(bShowItem, false)
+		
+		bDestroyItem = guiCreateButton(0.8, 0.91, 0.2, 0.15, "Destroy Item", true, wItems)
+		addEventHandler("onClientGUIClick", bDestroyItem, destroyItem, false)
+		guiSetEnabled(bDestroyItem, false)
 
-	showCursor(true)
+		showCursor(true)
+	end
 end
 addEvent("showInventory", true)
 addEventHandler("showInventory", getRootElement(), showInventory)

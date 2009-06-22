@@ -4,5 +4,8 @@
 	<script src="s_item_system.lua" type="server" />
 	<script src="c_item_system.lua" type="client" />
 	
+	<script src="c_drug_system.lua" type="client" />
+	<script src="s_drug_system.lua" type="server" />
+	
 	<script src="c_world_text.lua" type="client" />
 </meta>

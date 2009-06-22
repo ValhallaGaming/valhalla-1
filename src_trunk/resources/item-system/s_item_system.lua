@@ -306,6 +306,14 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 					outputChatBox("That door is not locked.", source, 255, 0, 0)
 				end
 			end
+		elseif (itemID==30) then
+			outputChatBox("Use the chemistry set purchasable from 24/7 to use this item.", source, 255, 0, 0)
+		elseif (itemID==31) then
+			outputChatBox("Use the chemistry set purchasable from 24/7 to use this item.", source, 255, 0, 0)
+		elseif (itemID==32) then
+			outputChatBox("Use the chemistry set purchasable from 24/7 to use this item.", source, 255, 0, 0)
+		elseif (itemID==33) then
+			outputChatBox("Use the chemistry set purchasable from 24/7 to use this item.", source, 255, 0, 0)
 		else
 			outputChatBox("Error 800001 - Report on http://bugs.valhallagaming.net", source, 255, 0, 0)
 		end

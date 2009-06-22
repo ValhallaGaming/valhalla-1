@@ -99,6 +99,7 @@ function raidForChemicals(thePlayer)
 						exports.global:sendLocalMeAction(thePlayer, "enters the back of the ambulance and steals some chemicals.")
 					elseif not (given1) and not (given2) then
 						outputChatBox("You do not have enough space to take those items.", thePlayer, 255, 0, 0)
+						exports.global:sendLocalMeAction(thePlayer, "enters the back of the ambulance and attempts to steal some chemicals but drops them.")
 					end
 				end
 				break

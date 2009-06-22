@@ -176,6 +176,8 @@ function getShopTabTitles(shop_type)
 		return {"Clothes"}
 	elseif(shop_type == 6) then
 		return {"Fighting Styles"}
+	elseif(shop_type == 7) then
+		return {"Chemicals"}
 	else
 		return "This isn't a shop. Go Away."
 	end
@@ -187,7 +189,7 @@ end
 function getItemsForSale(shop_type, race)
 
 	local item = {}
-	-- { Name, Description, Price, item_id, value, heading, isWeapon }
+	-- { Name, Description, Price, item_id, value, heading, isWeapon, suppliesCost }
 
 	-- general store
 	if(shop_type == 1) then
@@ -210,6 +212,7 @@ function getItemsForSale(shop_type, race)
 		item[17] = {"Watch", "Telling the time was never so sexy!", "25", 17, 1, 1,false,10}
 		item[18] = {"City Guide", "A small city guide booklet.", "15", 18, 1,1,false,7}
 		item[19] = {"MP3 Player", "A white, sleek looking MP3 Player. The brand reads EyePod.", "120", 19, 1,1,false,7}
+		item[20] = {"Chemistry Set", "A small chemistry set.", "2000", 44, 1,1,false,15}
 
 		
 
@@ -272,6 +275,14 @@ function getItemsForSale(shop_type, race)
 		item[4] = {"Knee Head","Ever had a knee to the head? Pretty sore.", "50", 7, -1, 1, true}
 		item[5] = {"Grab & Kick","Kick his 'ead in!", "50", 15, -1, 1, true}
 		item[6] = {"Elbows","You may look retarded, but you will kick his ass!", "50", 16, -1, 1, true}
+		
+	-- drugs/chemicals
+	elseif(shop_type == 7) then
+	
+		item[1] = {"Cannabis Sativa","A chemical used to make drugs.", "0", 30, 1, 1, false,0}
+		item[2] = {"Cocaine Alkaloid","A chemical used to make drugs.", "0", 31, 1, 1, false,0}
+		item[3] = {"Lysergic Acid","A chemical used to make drugs.", "0", 32, 1, 1, false,0}
+		item[4] = {"Unprocessed PCP","A chemical used to make drugs.", "0", 33, 1, 1, false,0}
 	end
 		
 	return item
@@ -295,7 +306,9 @@ function getImageName(shop_type)
 		return "sex.png"
 	elseif(shop_type == 5) then
 		return "clothes.png"
-	elseif(shop_type == 1) then
+	elseif(shop_type == 6) then
+		return "general.png"
+	elseif(shop_type == 7) then
 		return "general.png"
 	else
 		return "This isn't a shop. Go Away."
@@ -318,6 +331,8 @@ function getIntroMessage(shop_type)
 		return "We've picked out some clothes that we think will suit you."
 	elseif(shop_type == 6) then
 		return "This gym is the best in town for hand-to-hand combat."
+	elseif(shop_type == 7) then
+		return "You thief!"
 	else
 		return "This isn't a shop. Go Away."
 	end

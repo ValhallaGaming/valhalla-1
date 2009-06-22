@@ -29,7 +29,7 @@ addEventHandler("onResourceStop", getResourceRootElement(getThisResource()), clo
 function createGeneralshop(thePlayer, commandName, shoptype)
 	if (exports.global:isPlayerAdmin(thePlayer)) then
 		if(tonumber(shoptype)) then
-			if((tonumber(shoptype) >= 1) and (tonumber(shoptype) < 7)) then
+			if((tonumber(shoptype) >= 1) and (tonumber(shoptype) < 8)) then
 			
 				local x, y, z = getElementPosition(thePlayer)
 				local dimension = getElementDimension(thePlayer)
@@ -66,6 +66,7 @@ function createGeneralshop(thePlayer, commandName, shoptype)
 			outputChatBox("TYPE 4 = Sex Shop", thePlayer, 255, 194, 14)
 			outputChatBox("TYPE 5 = Clothes Store", thePlayer, 255, 194, 14)
 			outputChatBox("TYPE 6 = Gym Store", thePlayer, 255, 194, 14)
+			outputChatBox("TYPE 7 = Drug Store", thePlayer, 255, 194, 14)
 		end
 	end
 end
@@ -235,8 +236,13 @@ function givePlayerBoughtItem(itemID, itemValue, theCost, isWeapon, name, supply
 			elseif (isWeapon==false) then
 				if(exports.global:givePlayerItem(source, itemID, itemValue)) then
 					exports.global:takePlayerSafeMoney(source, tonumber(theCost))
-					outputChatBox("You bought a " .. name .. ".", source, 255, 194, 14)
-					outputChatBox("You have $"..getElementData(source, "money").." left in your wallet.", source, 255, 194, 14)
+					
+					if (itemID~=30) and (itemID~=31) and (itemID~=32) and (itemID~=33) then
+						outputChatBox("You bought a " .. name .. ".", source, 255, 194, 14)
+						outputChatBox("You have $"..getElementData(source, "money").." left in your wallet.", source, 255, 194, 14)
+					else
+						outputChatBox("You stole some " .. name .. ".", source, 255, 194, 14)
+					end
 				end
 			elseif (isWeapon) and (itemValue==-1) then -- fighting styles!
 				exports.global:takePlayerSafeMoney(source, tonumber(theCost))

@@ -69,3 +69,45 @@ function mixDrugs(drug1, drug2, drug1name, drug2name)
 end
 addEvent("mixDrugs", true)
 addEventHandler("mixDrugs", getRootElement(), mixDrugs)
+
+function raidForChemicals(thePlayer)
+	local logged = getElementData(thePlayer, "loggedin")
+	
+	if (logged==1) then
+		local x, y, z = getElementPosition(thePlayer)
+		local colShape = createColSphere(x, y, z, 5)
+		
+		local vehicles = getElementsWithinColShape(colShape, "vehicle")
+		local found = false
+		for key, value in ipairs(vehicles) do
+			
+			if (getElementModel(value)==416) then
+				local locked = isVehicleLocked(value)
+				found = true
+
+				if (locked) then
+					outputChatBox("You try to enter the ambulance, but find it is locked.", thePlayer, 255, 0, 0)
+					exports.global:sendLocalMeAction(thePlayer, "attempts to enter the back of the ambulance.")
+				else
+					local rand1 = math.random(30, 33)
+					local rand2 = math.random(30, 33)
+					local given1 = exports.global:givePlayerItem(thePlayer, rand1, 1)
+					local given2 = exports.global:givePlayerItem(thePlayer, rand2, 1)
+					
+					if (given1) or (given2) then
+						outputChatBox("You broke into the back of the ambulance and stole some chemicals.", thePlayer, 0, 255, 0)
+						exports.global:sendLocalMeAction(thePlayer, "enters the back of the ambulance and steals some chemicals.")
+					elseif not (given1) and not (given2) then
+						outputChatBox("You do not have enough space to take those items.", thePlayer, 255, 0, 0)
+					end
+				end
+				break
+			end
+		end
+		
+		if not (found) then
+			outputChatBox("You are too far away.", thePlayer, 255, 0, 0)
+		end
+	end
+end
+addCommandHandler("raid", raidForChemicals, false, false)

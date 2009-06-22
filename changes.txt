@@ -9,6 +9,7 @@ Scripts in "unfinished code" need to be completed, checked and added to the corr
 - map-system
 	boxingArena
 	creek ghetto
+	Yakuza HQ
 
 - animation-system
 	S_animation_system

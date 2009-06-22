@@ -28,7 +28,7 @@ addCommandHandler("stopanim", stopAnimation, false, false)
 addCommandHandler("stopani", stopAnimation, false, false)
 
 function animationList(thePlayer)
-	outputChatBox("/piss /wank /slapass /carfix /handsup /hailtaxi /scratch /fu", thePlayer, 255, 194, 14)
+	outputChatBox("/piss /wank /slapass /fixcar /handsup /hailtaxi /scratch /fu", thePlayer, 255, 194, 14)
 	outputChatBox("/strip1-2 /lightup /drink /beg /mourn /cheer1-3 /dance1-3 /crack1-2", thePlayer, 255, 194, 14)
 	outputChatBox("/gsign1-5 /puke /rap1-3 /sit1-3 /smoke1-3 /smokelean /laugh /startrace", thePlayer, 255, 194, 14)
 	outputChatBox("/carchat /daps1-2 /shove /ali /bitchslap /shocked /dive /what", thePlayer, 255, 194, 14)
@@ -180,7 +180,7 @@ function pedSlapAss(thePlayer)
 end
 addCommandHandler ( "slapass", pedSlapAss, false, false )
 
--- Car fix Animation -------------------------------------------------------------------------
+-- fix car Animation -------------------------------------------------------------------------
 function pedCarFix(thePlayer)
 	local logged = getElementData(thePlayer, "loggedin")
 	

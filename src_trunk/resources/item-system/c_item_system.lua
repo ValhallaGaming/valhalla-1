@@ -198,35 +198,35 @@ function getItemType(itemID)
 	elseif (itemID==29) then
 		return 4
 	elseif (itemID==30) then
-		return 4
+		return 3
 	elseif (itemID==31) then
-		return 4
+		return 3
 	elseif (itemID==32) then
-		return 4
+		return 3
 	elseif (itemID==33) then
-		return 4
+		return 3
 	elseif (itemID==34) then
-		return 4
+		return 3
 	elseif (itemID==35) then
-		return 4
+		return 3
 	elseif (itemID==36) then
-		return 4
+		return 3
 	elseif (itemID==37) then
-		return 4
+		return 3
 	elseif (itemID==38) then
-		return 4
+		return 3
 	elseif (itemID==39) then
-		return 4
+		return 3
 	elseif (itemID==40) then
-		return 4
+		return 3
 	elseif (itemID==41) then
-		return 4
+		return 3
 	elseif (itemID==42) then
-		return 4
+		return 3
 	elseif (itemID==43) then
-		return 4
+		return 3
 	elseif (itemID==44) then
-		return 4
+		return 3
 	else
 		return false
 	end

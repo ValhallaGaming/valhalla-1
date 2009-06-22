@@ -13,6 +13,8 @@
 	<script src="pd_door5.lua" type="server"/>
 	<script src="pd_door6.lua" type="server"/>
 	
+	<script src="pd_pushdoors.lua" type="server"/>
+	
 	<script src="pd_southeast_division.lua" type="server"/>
 	<script src="pd_southeast_door1.lua" type="server"/>
 	

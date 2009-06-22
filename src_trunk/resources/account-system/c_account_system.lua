@@ -3513,7 +3513,7 @@ timeinserver = 0
 function updateTimeInServer()
 	local logged = getElementData(getLocalPlayer(), "loggedin")
 	
-	if (logged==1) and (timeinserver<60) then
+	if (logged==1) then
 		timeinserver = timeinserver + 1
 		setElementData(getLocalPlayer(), "timeinserver", true, timeinserver)
 	end

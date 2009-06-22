@@ -1,8 +1,8 @@
 -- BARRIER
-objDivision1 = createObject(968, 2303.1500078125, 623.0060546875, 10.704789924622, 0, 90, 0)
+local objDivision1 = createObject(968, 2303.1500078125, 623.0060546875, 10.704789924622, 0, 90, 0)
 exports.pool:allocateElement(objDivision1)
 
-open = false
+local open = false
 
 -- Gate code
 function usePDBarrier(thePlayer)

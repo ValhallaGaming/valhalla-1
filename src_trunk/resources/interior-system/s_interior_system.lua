@@ -1307,7 +1307,7 @@ function sellProperty(thePlayer, commandName)
 			else
 				outputChatBox("Error 504914 - Report on forums.", thePlayer, 255, 0, 0)
 			end
-		elseif (tonumber(owner)==getElementData(thePlayer, "dbid") or exports.pool:isPlayerAdmin(thePlayer)) and (inttype~=2) then
+		elseif (tonumber(owner)==getElementData(thePlayer, "dbid") or exports.global:isPlayerAdmin(thePlayer)) and (inttype~=2) then
 			setElementPosition(thePlayer, x, y, z)
 			setPedRotation(thePlayer, rot)
 			setElementData(thePlayer, "interiormarker", nil)

@@ -1,14 +1,14 @@
-objGatea = createObject(1557, 228.25027770996, 149.77064819336, 1002.0234375, 0, 0, 90)
+local objGatea = createObject(3089, 228.25027770996, 149.77064819336, 1003.3234375, 0, 0, 90)
 exports.pool:allocateElement(objGatea)
 setElementInterior(objGatea, 3)
 setElementDimension(objGatea, 1)
 
-objGatea2 = createObject(1557, 228.25027770996, 152.77064819336, 1002.0234375, 0, 0, 270)
+local objGatea2 = createObject(3089, 228.25027770996, 152.67064819336, 1003.3234375, 0, 0, 270)
 exports.pool:allocateElement(objGatea2)
 setElementInterior(objGatea2, 3)
 setElementDimension(objGatea2, 1)
 
-open = false
+local open = false
 
 -- Gate code
 function usePDDoor(thePlayer)
@@ -21,8 +21,8 @@ function usePDDoor(thePlayer)
 		if (distance<=10) and (open==false) then
 			open = true
 			outputChatBox("LVMPD Door is now Open!", thePlayer, 0, 255, 0)
-			moveObject(objGatea, 1000, 228.25027770996, 149.77064819336, 1002.0234375, 0, 0, 90)
-			moveObject(objGatea2, 1000, 228.25027770996, 152.77064819336, 1002.0234375, 0, 0, -90)
+			moveObject(objGatea, 1000, 228.25027770996, 149.77064819336, 1003.3234375, 0, 0, 90)
+			moveObject(objGatea2, 1000, 228.25027770996, 152.67064819336, 1003.3234375, 0, 0, -90)
 			setTimer(closePDDoor, 5000, 1, thePlayer)
 		end
 	end
@@ -34,8 +34,8 @@ function closePDDoor(thePlayer)
 		outputChatBox("LVMPD Door is now Closed!", thePlayer, 255, 0, 0)
 	end
 	
-	moveObject(objGatea, 1000, 228.25027770996, 149.77064819336, 1002.0234375, 0, 0, -90)
-	moveObject(objGatea2, 1000, 228.25027770996, 152.77064819336, 1002.0234375, 0, 0, 90)
+	moveObject(objGatea, 1000, 228.25027770996, 149.77064819336, 1003.3234375, 0, 0, -90)
+	moveObject(objGatea2, 1000, 228.25027770996, 152.67064819336, 1003.3234375, 0, 0, 90)
 	setTimer(resetState, 1000, 1)
 end
 

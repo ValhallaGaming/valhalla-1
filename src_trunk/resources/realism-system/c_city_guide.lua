@@ -36,7 +36,7 @@ end
 
 --The "prev" button's function
 function prevButtonClick( )
-	click_count = click_count - 1;
+	click_count = click_count - 1
 	if (click_count <= 0) then
 		guiSetVisible(buttonPrev, false)
 	else
@@ -53,7 +53,7 @@ end
 
 --The "next" button's function
 function nextButtonClick( )
-	click_count = click_count + 1;
+	click_count = click_count + 1
 	if (click_count <= 0) then
 		guiSetVisible(buttonPrev, false)
 	else
@@ -72,7 +72,7 @@ end
 
 -- The "close" button's function
 function closeButtonClick( )
-	click_count = 0;
+	click_count = 0
 	destroyElement ( buttonClose )
 	destroyElement ( buttonPrev )
 	destroyElement ( buttonNext )

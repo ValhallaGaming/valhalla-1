@@ -1,14 +1,14 @@
-objGatec = createObject(1557, 229.92783508301, 169.94030761719, 1002.0234375, 0, 0, 0)
+local objGatec = createObject(3089, 229.92783508301, 169.94030761719, 1003.3234375, 0, 0, 0)
 exports.pool:allocateElement(objGatec)
 setElementInterior(objGatec, 3)
 setElementDimension(objGatec, 1)
 
-objGatec2 = createObject(1557, 232.92783508301, 169.94030761719, 1002.0234375, 0, 0, 180)
+local objGatec2 = createObject(3089, 232.82783508301, 169.94030761719, 1003.3234375, 0, 0, 180)
 exports.pool:allocateElement(objGatec2)
 setElementInterior(objGatec2, 3)
 setElementDimension(objGatec2, 1)
 
-open = false
+local open = false
 
 -- Gate code
 function usePDDoor3(thePlayer)
@@ -21,8 +21,8 @@ function usePDDoor3(thePlayer)
 		if (distance<=10) and (open==false) then
 			open = true
 			outputChatBox("LVMPD Door is now Open!", thePlayer, 0, 255, 0)
-			moveObject(objGatec, 1000, 229.92783508301, 169.94030761719, 1002.0234375, 0, 0, -90)
-			moveObject(objGatec2, 1000, 232.92783508301, 169.94030761719, 1002.0234375, 0, 0, 90)
+			moveObject(objGatec, 1000, 229.92783508301, 169.94030761719, 1003.3234375, 0, 0, -90)
+			moveObject(objGatec2, 1000, 232.82783508301, 169.94030761719, 1003.3234375, 0, 0, 90)
 			setTimer(closePDDoor3, 5000, 1, thePlayer)
 		end
 	end
@@ -34,8 +34,8 @@ function closePDDoor3(thePlayer)
 		outputChatBox("LVMPD Door is now Closed!", thePlayer, 255, 0, 0)
 	end
 	
-	moveObject(objGatec, 1000, 229.92783508301, 169.94030761719, 1002.0234375, 0, 0, 90)
-	moveObject(objGatec2, 1000, 232.92783508301, 169.94030761719, 1002.0234375, 0, 0, -90)
+	moveObject(objGatec, 1000, 229.92783508301, 169.94030761719, 1003.3234375, 0, 0, 90)
+	moveObject(objGatec2, 1000, 232.82783508301, 169.94030761719, 1003.3234375, 0, 0, -90)
 	setTimer(resetState, 1000, 1)
 end
 

@@ -1,7 +1,7 @@
-objGateg = createObject(972, 2331.6135253906, 2444.0122070313, 4.6781973838806, 0, 0, 330)
+local objGateg = createObject(3055, 2335.5135253906, 2443.5122070313, 6.9781973838806, 0, 0, 240)
 exports.pool:allocateElement(objGateg)
 
-open = false
+local open = false
 
 -- Gate code
 function usePDFrontGarageGate(thePlayer)
@@ -14,7 +14,7 @@ function usePDFrontGarageGate(thePlayer)
 		if (distance<=50) and (open==false) then
 			open = true
 			outputChatBox("LVMPD Front Garage Gate is now Open!", thePlayer, 0, 255, 0)
-			moveObject(objGateg, 1000, 2340.6135253906, 2460.0122070313, 4.6781973838806, 0, 0, 0)
+			moveObject(objGateg, 1000, 2335.5135253906, 2443.5122070313, 9.8781973838806, 90, 0, 0)
 			setTimer(closePDFrontGarageGate, 5000, 1, thePlayer)
 		end
 	end
@@ -27,5 +27,5 @@ function closePDFrontGarageGate(thePlayer)
 	end
 	
 	open = false
-	moveObject(objGateg, 1000, 2331.6135253906, 2444.0122070313, 4.6781973838806)
+	moveObject(objGateg, 1000, 2335.5135253906, 2443.5122070313, 6.9781973838806, -90, 0, 0)
 end

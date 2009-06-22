@@ -54,4 +54,5 @@ function toggleLaser()
 		outputChatBox("Your weapon laser is now OFF.", 255, 0, 0)
 	end
 end
-bindKey("l", "down", toggleLaser)
+addCommandHandler("toglaser", toggleLaser, false)
+addCommandHandler("togglelaster", toggleLaser, false)

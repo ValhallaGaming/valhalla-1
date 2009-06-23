@@ -1,4 +1,4 @@
-wChemistrySet, gChemicals, colChemSlot, colChemName, chemItems, bMixItems = nil
+wChemistrySet, gChemicals, colChemSlot, colChemName, chemItems, bMixItems, bChemClose = nil
 
 function showChemistrySet()
 	if not (wItems) then
@@ -50,19 +50,20 @@ function showChemistrySet()
 			end
 
 			-- buttons
-			bMixItems = guiCreateButton(0.05, 0.91, 0.9, 0.15, "Mix Selected", true, wChemistrySet)
+			bMixItems = guiCreateButton(0.05, 0.91, 0.7, 0.15, "Mix Selected", true, wChemistrySet)
 			addEventHandler("onClientGUIClick", bMixItems, mixItems, false)
 			guiSetEnabled(bMixItems, false)
+			
+			bChemClose = guiCreateButton(0.8, 0.91, 0.15, 0.15, "Close", true, wChemistrySet)
 
 			addEventHandler("onClientGUIClick", gChemicals, checkSelectedItems, false)
-			
+			addEventHandler("onClientGUIClick", bChemClose, hideChemistrySet, false)
 			showCursor(true)
 		else
 			hideChemistrySet()
 		end
 	end
 end
-addCommandHandler("chemistry", showChemistrySet, false)
 
 function hideChemistrySet()
 	colChemSlot = nil
@@ -279,16 +280,17 @@ function doRandomMessage()
 	local x, y, z = getElementPosition(localPlayer)
 	local colSphere = createColSphere(x, y, z, 10)
 	
-	local players = getElementsWithinColShape(colSphere, "player")
-	
-	if (#players>0) then
-		local rand = math.random(1, #players)
-		for key, value in ipairs(players) do
-			if (key==rand) then
+	local players = getElementsByType("player")
+
+	for key, value in ipairs(players) do
+		if (value~=localPlayer) then
+			local px, py , pz = getElementPosition(value)
+			if (getDistanceBetweenPoints3D(x, y, z, px, py, pz)<15) then
 				local rand2 = math.random(1, 5)
 				local charname = getPlayerName(value)
 				charname = string.gsub(tostring(charname), "_", " ")
 				outputChatBox(charname .. " Says: " .. drugMessages[rand2], 255, 255, 255)
+				break
 			end
 		end
 	end

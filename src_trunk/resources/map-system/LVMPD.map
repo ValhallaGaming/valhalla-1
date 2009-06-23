@@ -51,5 +51,5 @@
 
 	-- Evidence room
 	<object id="object (ab_casdorLok) (6)" dimension="693" interior="1" model="3089" posX="2175.6840820313" posY="1594.2514648438" posZ="1000.3055419922" rotX="0" rotY="0" rotZ="0" />
-    <object id="object (door_savhangr2) (1)" dimension="0" interior="1" model="16775" posX="2215.7724609375" posY="1583.2967529297" posZ="1002.9763183594" rotX="0" rotY="0" rotZ="90" />
+    <object id="object (door_savhangr2) (1)" dimension="693" interior="1" model="16775" posX="2215.7724609375" posY="1583.2967529297" posZ="1002.9763183594" rotX="0" rotY="0" rotZ="90" />
 </map>

@@ -90,7 +90,8 @@ end
 
 --alreadySent = false
 function mixItems(button, state)
-	if (button=="left" and state=="down") then
+	if (button=="left" and state=="up") then
+		outputDebugString(tostring("MIX"))
 		if (guiGridListGetSelectedCount(gChemicals)==4) then
 			selected = guiGridListGetSelectedItems(gChemicals)
 			

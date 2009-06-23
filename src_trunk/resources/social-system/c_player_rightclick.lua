@@ -17,7 +17,9 @@ function clickPlayer(button, state, absX, absY, wx, wy, wz, element)
 			sent = true
 			triggerServerEvent("sendPlayerInfo", getLocalPlayer(), element)
 		elseif not (element) then
-			hidePlayerMenu()
+			if (wRightClick) then
+				hidePlayerMenu()
+			end
 		end
 end
 addEventHandler("onClientClick", getRootElement(), clickPlayer, false)

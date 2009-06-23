@@ -88,31 +88,32 @@ function checkSelectedItems()
 	end
 end
 
-alreadySent = false
-function mixItems()
-	if (guiGridListGetSelectedCount(gChemicals)==4) then
-		selected = guiGridListGetSelectedItems(gChemicals)
-		
-		if (selected) and not (alreadySent) then
-			alreadySent = true
-			local row1 = selected[1]["row"]
-			local row2 = selected[3]["row"]
+--alreadySent = false
+function mixItems(button, state)
+	if (button=="left" and state=="down") then
+		if (guiGridListGetSelectedCount(gChemicals)==4) then
+			selected = guiGridListGetSelectedItems(gChemicals)
 			
-			local row1slot = tonumber(guiGridListGetItemText(gChemicals, row1, 1))
-			local row2slot = tonumber(guiGridListGetItemText(gChemicals, row2, 1))
+			if (selected) then-
+				alreadySent = true
+				local row1 = selected[1]["row"]
+				local row2 = selected[3]["row"]
+				
+				local row1slot = tonumber(guiGridListGetItemText(gChemicals, row1, 1))
+				local row2slot = tonumber(guiGridListGetItemText(gChemicals, row2, 1))
 
-			local row1item = chemItems[row1slot][2]
-			local row2item = chemItems[row2slot][2]
-			
-			local row1name = chemItems[row1slot][1]
-			local row2name = chemItems[row2slot][1]
-			
-			triggerServerEvent("mixDrugs", getLocalPlayer(), row1item, row2item, row1name, row2name)
-			alreadySent = false
+				local row1item = chemItems[row1slot][2]
+				local row2item = chemItems[row2slot][2]
+				
+				local row1name = chemItems[row1slot][1]
+				local row2name = chemItems[row2slot][1]
+				
+				triggerServerEvent("mixDrugs", getLocalPlayer(), row1item, row2item, row1name, row2name)
+			end
 		end
+		
+		hideChemistrySet()
 	end
-	
-	hideChemistrySet()
 end
 
 local localPlayer = getLocalPlayer()

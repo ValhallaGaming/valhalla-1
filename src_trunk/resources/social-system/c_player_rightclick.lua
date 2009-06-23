@@ -3,10 +3,10 @@ bAddAsFriend, bFrisk, bRestrain, bCloseMenu = nil
 sent = false
 ax, ay = nil
 player = nil
+gotClick = false
 
 function clickPlayer(button, state, absX, absY, wx, wy, wz, element)
-	if (element) and (button="right") then
-		if (getElementType(element)=="player") and (sent==false) and (element~=getLocalPlayer()) then
+		if (element) and (getElementType(element)=="player") and (button=="right") and (state=="down") and (sent==false) and (element==getLocalPlayer()) then
 			if (wRightClick) then
 				hidePlayerMenu()
 			end
@@ -19,7 +19,6 @@ function clickPlayer(button, state, absX, absY, wx, wy, wz, element)
 		elseif not (element) then
 			hidePlayerMenu()
 		end
-	end
 end
 addEventHandler("onClientClick", getRootElement(), clickPlayer, false)
 
@@ -42,8 +41,8 @@ function showPlayerMenu(targetPlayer, friends, description)
 		addEventHandler("onClientGUIClick", bAddAsFriend, cremoveFriend, false)
 	end
 	
-	bAddAsFriend = guiCreateButton(0.05, 0.45, 0.87, 0.1, "Close Menu", true, wRightClick)
-	addEventHandler("onClientGUIClick", bAddAsFriend, hidePlayerMenu, false)
+	bCloseMenu = guiCreateButton(0.05, 0.45, 0.87, 0.1, "Close Menu", true, wRightClick)
+	addEventHandler("onClientGUIClick", bCloseMenu, hidePlayerMenu, false)
 	sent = false
 	
 	-- FRISK

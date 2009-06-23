@@ -22,11 +22,10 @@
     <object id="object (kmb_petroldoor) (1)" dimension="1" interior="3" model="2911" posX="291.24203491211" posY="192.87300109863" posZ="1006.171875" rotX="0" rotY="0" rotZ="0" />
 	
 	-- Interview Room Doors
-	<object id="object (ab_casdorLok) (1)" dimension="0" interior="3" model="3089" posX="258.73101806641" posY="197.515625" posZ="1008.5008544922" rotX="0" rotY="0" rotZ="0" />
-    <object id="object (ab_casdorLok) (2)" dimension="0" interior="3" model="3089" posX="250.50276184082" posY="197.53091430664" posZ="1008.5008544922" rotX="0" rotY="0" rotZ="0" />
-    <object id="object (Gen_doorEXT12) (1)" dimension="0" interior="3" model="1533" posX="225.16004943848" posY="185.08978271484" posZ="1002.0354614258" rotX="0" rotY="0" rotZ="0" />
-    <object id="object (paperchase02) (1)" dimension="0" interior="3" model="14595" posX="271.03240966797" posY="214.90447998047" posZ="1011.1636962891" rotX="0" rotY="0" rotZ="0" />
-
+	<object id="object (ab_casdorLok) (1)" dimension="1" interior="3" model="3089" posX="258.73101806641" posY="197.515625" posZ="1008.5008544922" rotX="0" rotY="0" rotZ="0" />
+    <object id="object (ab_casdorLok) (2)" dimension="1" interior="3" model="3089" posX="250.50276184082" posY="197.53091430664" posZ="1008.5008544922" rotX="0" rotY="0" rotZ="0" />
+    <object id="object (Gen_doorEXT12) (1)" dimension="1" interior="3" model="1533" posX="225.16004943848" posY="185.08978271484" posZ="1002.0354614258" rotX="0" rotY="0" rotZ="0" />
+    
 	-- Interview Room One
 	<object id="object (ab_casdorLok) (3)" dimension="10" interior="3" model="3089" posX="259.68969726563" posY="210.01272583008" posZ="1008.5008544922" rotX="0" rotY="0" rotZ="0" />
     <object id="object (CJ_FOLDCHAIR) (5)" dimension="10" interior="3" model="1810" posX="258.52578735352" posY="206.76329040527" posZ="1007.5624389648" rotX="0" rotY="0" rotZ="13.894989013672" />
@@ -36,7 +35,8 @@
     <object id="object (DYN_TABLE_03) (3)" dimension="10" interior="3" model="1516" posX="258.66305541992" posY="205.58219909668" posZ="1007.7118530273" rotX="0" rotY="0" rotZ="0" />
     <object id="object (shop_sec_cam) (2)" dimension="10" interior="3" model="1886" posX="254.79554748535" posY="201.39669799805" posZ="1010.9404907227" rotX="0" rotY="0" rotZ="138.95001220703" />
     <object id="object (CEwrehse07) (2)" dimension="10" interior="3" model="13078" posX="279.32089233398" posY="218.51524353027" posZ="1007.8436279297" rotX="180" rotY="0" rotZ="270" />  	
- 
+	<object id="object (paperchase02) (1)" dimension="10" interior="3" model="14595" posX="271.03240966797" posY="214.90447998047" posZ="1011.1636962891" rotX="0" rotY="0" rotZ="0" />
+
 	-- Interview Room Two
 	<object id="object (ab_casdorLok) (4)" dimension="11" interior="3" model="3089" posX="245.93327331543" posY="209.99052429199" posZ="1008.5008544922" rotX="0" rotY="0" rotZ="0" />
     <object id="object (CJ_FOLDCHAIR) (1)" dimension="11" interior="3" model="1810" posX="246.72229003906" posY="205.9970703125" posZ="1007.1865844727" rotX="0" rotY="0" rotZ="0" />
@@ -46,4 +46,6 @@
     <object id="object (DYN_TABLE_03) (2)" dimension="11" interior="3" model="1516" posX="246.69006347656" posY="205.02734375" posZ="1007.366394043" rotX="0" rotY="0" rotZ="0" />
     <object id="object (shop_sec_cam) (1)" dimension="11" interior="3" model="1886" posX="250.05070495605" posY="201.15327453613" posZ="1010.9662475586" rotX="7.9399719238281" rotY="0" rotZ="220.33508300781" />
 	<object id="object (CEwrehse07) (1)" dimension="11" interior="3" model="13078" posX="227.1756439209" posY="218.98593139648" posZ="1007.8436279297" rotX="180" rotY="0" rotZ="89.999938964844" />
+	<object id="object (paperchase02) (1)" dimension="11" interior="3" model="14595" posX="271.03240966797" posY="214.90447998047" posZ="1011.1636962891" rotX="0" rotY="0" rotZ="0" />
+
 </map>

@@ -138,7 +138,7 @@ function doDrug1Effect()
 		setTimer(setWeather, 100, 1, 9)
 	end
 	
-	drug1timer = setTimer(resetDrug1Effect, 1000, 1)
+	drug1timer = setTimer(resetDrug1Effect, 300000, 1)
 end
 
 function resetDrug1Effect()

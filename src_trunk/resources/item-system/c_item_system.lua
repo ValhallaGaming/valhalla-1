@@ -764,7 +764,7 @@ end
 function stopGasmaskDamage(attacker, weapon)
 	local gasmask = getElementData(getLocalPlayer(), "gasmask")
 
-	if (weapon==17) and (gasmask==1) then
+	if (weapon==17 or weapon==41) and (gasmask==1) then
 		cancelEvent()
 	end
 end

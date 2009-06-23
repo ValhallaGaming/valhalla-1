@@ -8,7 +8,8 @@
 	<file src="lv/vgsn_billboard.txd"/>
 	<file src="lv/vgs_stadium.txd"/>
 	<file src="lv/vgndwntwn21.txd"/>
-	<file src="lv/bustopm.txd"/>	
+	<file src="lv/bustopm.txd"/>
+	<file src="lv/gen_pol_vegas.txd"/>	
 
 	<file src="skins/lvpd/lapd1.txd"/>
 	<file src="skins/lvpd/sfpd1.txd"/>

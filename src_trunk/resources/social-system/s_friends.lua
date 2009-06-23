@@ -31,33 +31,19 @@ function bindKeys()
 	local players = exports.pool:getPoolElementsByType("player")
 	for k, arrayPlayer in ipairs(players) do
 		setElementData(arrayPlayer, "friends.visible", 0)
-		--if not(isKeyBound(arrayPlayer, "o", "down", toggleFriends)) then
-		--	bindKey(arrayPlayer, "o", "down", toggleFriends)
-		--end
-		
-		--if not(isKeyBound(arrayPlayer, "m", "down", toggleCursor)) then
-		--	bindKey(arrayPlayer, "m", "down", toggleCursor)
-		--end
+		if not(isKeyBound(arrayPlayer, "o", "down", toggleFriends)) then
+			bindKey(arrayPlayer, "o", "down", toggleFriends)
+		end
 	end
 end
 
 function bindKeysOnJoin()
 	bindKey(source, "o", "down", toggleFriends)
-	--bindKey(source, "m", "down", toggleCursor)
 	
 	setElementData(source, "friends.visible", 0)
 end
 addEventHandler("onResourceStart", getRootElement(), bindKeys)
 addEventHandler("onPlayerJoin", getRootElement(), bindKeysOnJoin)
-
--- function togles the cursor for the player
-function toggleCursor(source)
-	if(isCursorShowing(source)) then
-		showCursor(source, false)
-	else
-		showCursor(source, true)
-	end
-end
 
 function toggleFriends(source)
 	local logged = getElementData(source, "gameaccountloggedin")

@@ -4,25 +4,23 @@ sent = false
 ax, ay = nil
 player = nil
 gotClick = false
+closing = false
 
 function clickPlayer(button, state, absX, absY, wx, wy, wz, element)
-		if (element) and (getElementType(element)=="player") and (button=="right") and (state=="down") and (sent==false) and (element==getLocalPlayer()) then
-			if (wRightClick) then
-				hidePlayerMenu()
-			end
-			showCursor(true)
-			ax = absX
-			ay = absY
-			player = element
-			sent = true
-			triggerServerEvent("sendPlayerInfo", getLocalPlayer(), element)
-		elseif not (element) then
-			if (wRightClick) then
-				hidePlayerMenu()
-			end
+	if (element) and (getElementType(element)=="player") and (button=="right") and (state=="down") and (sent==false) and (element==getLocalPlayer()) then
+		if (wRightClick) then
+			hidePlayerMenu()
 		end
+		showCursor(true)
+		ax = absX
+		ay = absY
+		player = element
+		sent = true
+		closing = false
+		triggerServerEvent("sendPlayerInfo", getLocalPlayer(), element)
+	end
 end
-addEventHandler("onClientClick", getRootElement(), clickPlayer, false)
+addEventHandler("onClientClick", getRootElement(), clickPlayer, true)
 
 function showPlayerMenu(targetPlayer, friends, description)
 	wRightClick = guiCreateWindow(ax, ay, 150, 200, string.gsub(getPlayerName(targetPlayer), "_", " "), false)
@@ -43,7 +41,7 @@ function showPlayerMenu(targetPlayer, friends, description)
 		addEventHandler("onClientGUIClick", bAddAsFriend, cremoveFriend, false)
 	end
 	
-	bCloseMenu = guiCreateButton(0.05, 0.45, 0.87, 0.1, "Close Menu", true, wRightClick)
+	bCloseMenu = guiCreateButton(0.05, 0.25, 0.87, 0.1, "Close Menu", true, wRightClick)
 	addEventHandler("onClientGUIClick", bCloseMenu, hidePlayerMenu, false)
 	sent = false
 	
@@ -108,13 +106,19 @@ end
 function hidePlayerMenu()
 	destroyElement(bAddAsFriend)
 	bAddAsFriend = nil
+	
+	destroyElement(bCloseMenu)
+	bCloseMenu = nil
 
+	
 	destroyElement(wRightClick)
 	wRightClick = nil
 	
 	ax = nil
 	ay = nil
 	player = nil
+	
+	sent = false
 	
 	showCursor(false)
 end

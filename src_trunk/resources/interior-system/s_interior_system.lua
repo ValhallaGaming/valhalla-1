@@ -1082,6 +1082,18 @@ local interiors={}
                 interiors[104][5] = "357.7589"
 		interiors[104][6] = 20
                 interiors[104][7] = 0
+				
+				
+								-- INTERIOR 105 MARCO'S_BISTRO (LIBERTY CITY)
+                interiors[105] = { }
+                interiors[105][1] = "1"
+                interiors[105][2] = "-794.984497"
+                interiors[105][3] = "489.78887"
+                interiors[105][4] = "1375.73889"
+                interiors[105][5] = "357.7589"
+		interiors[105][6] = 20
+                interiors[105][7] = 0
+				
 -- START OF INTERIOR SYSTEM SCRIPT
 
 -- ////////////////////////////////////

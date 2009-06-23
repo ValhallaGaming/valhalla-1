@@ -31,19 +31,19 @@ function bindKeys()
 	local players = exports.pool:getPoolElementsByType("player")
 	for k, arrayPlayer in ipairs(players) do
 		setElementData(arrayPlayer, "friends.visible", 0)
-		if not(isKeyBound(arrayPlayer, "o", "down", toggleFriends)) then
-			bindKey(arrayPlayer, "o", "down", toggleFriends)
-		end
+		--if not(isKeyBound(arrayPlayer, "o", "down", toggleFriends)) then
+		--	bindKey(arrayPlayer, "o", "down", toggleFriends)
+		--end
 		
-		if not(isKeyBound(arrayPlayer, "m", "down", toggleCursor)) then
-			bindKey(arrayPlayer, "m", "down", toggleCursor)
-		end
+		--if not(isKeyBound(arrayPlayer, "m", "down", toggleCursor)) then
+		--	bindKey(arrayPlayer, "m", "down", toggleCursor)
+		--end
 	end
 end
 
 function bindKeysOnJoin()
 	bindKey(source, "o", "down", toggleFriends)
-	bindKey(source, "m", "down", toggleCursor)
+	--bindKey(source, "m", "down", toggleCursor)
 	
 	setElementData(source, "friends.visible", 0)
 end

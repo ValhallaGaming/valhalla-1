@@ -141,3 +141,12 @@ function removeFriend(button)
 		end
 	end
 end
+
+function toggleCursor()
+	if (isCursorShowing()) then
+		showCursor(false)
+	else
+		showCursor(true)
+	end
+end
+bindKey("m", "down", toggleCursor)

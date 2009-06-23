@@ -5,7 +5,7 @@ ax, ay = nil
 player = nil
 
 function clickPlayer(button, state, absX, absY, wx, wy, wz, element)
-	if (element) then
+	if (element) and (button="right") then
 		if (getElementType(element)=="player") and (sent==false) and (element~=getLocalPlayer()) then
 			if (wRightClick) then
 				hidePlayerMenu()

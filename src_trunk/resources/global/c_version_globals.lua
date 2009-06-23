@@ -1,4 +1,4 @@
-cscriptVersion = "2.1 r246"
+cscriptVersion = "2.1 r254"
 function cgetScriptVersion()
 	return cscriptVersion
 end

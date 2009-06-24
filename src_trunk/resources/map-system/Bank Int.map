@@ -305,4 +305,5 @@
     <object id="object (nu_plant_ofc) (9)" dimension="0" interior="3" model="2001" posX="2354.6674804688" posY="2368.4558105469" posZ="2022.65234375" rotX="0" rotY="0" rotZ="0" />
     <object id="object (nu_plant_ofc) (10)" dimension="0" interior="3" model="2001" posX="2361.1169433594" posY="2372.5456542969" posZ="2021.9249267578" rotX="0" rotY="0" rotZ="0" />
     <object id="object (Gen_doorEXT12) (6)" dimension="0" interior="3" model="1533" posX="2361.4663085938" posY="2382.1982421875" posZ="2021.9235839844" rotX="0" rotY="0" rotZ="270.26916503906" />
+    <object id="object (Gen_doorSHOP3) (1)" dimension="0" interior="3" model="1522" posX="2325.6381835938" posY="2368.3842773438" posZ="2021.92578125" rotX="0" rotY="0" rotZ="90" />
 </map>

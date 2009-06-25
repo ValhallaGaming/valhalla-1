@@ -1,4 +1,4 @@
-server = "irc.multitheftauto.com"
+server = "irc.gtanet.com"
 port = 6667
 username = "VGMTAServer"
 channel = "#vgmta.admins"
@@ -10,7 +10,6 @@ function initIRC()
 	ircInit()
 	conn = ircOpen(server, port, username, channel, password)
 	sendMessage("Server Started.")
-	ircPart(conn, "#mta")
 end
 addEventHandler("onResourceStart", getResourceRootElement(getThisResource()), initIRC)
 

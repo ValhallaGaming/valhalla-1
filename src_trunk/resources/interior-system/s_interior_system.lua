@@ -1202,7 +1202,7 @@ function createInterior(thePlayer, commandName, interiorId, inttype, cost, ...)
 					exports.pool:allocateElement(pickup)
 					exports.pool:allocateElement(intpickup)
 					
-					setPickupElementData(pickup, id, ix, iy, iz, optAngle, interior, locked, owner, inttype, 0, name,"0", "0", 0, -1, 0,100, interiorwithin, x, y, z, dimension, 0)
+					setPickupElementData(pickup, id, ix, iy, iz, optAngle, interior, locked, owner, inttype, cost, name,"0", "0",  max_items, -1, 0,100, interiorwithin, x, y, z, dimension, 0)
 					setIntPickupElementData(intpickup, id, x, y, z, rot, locked, owner, inttype, interiorwithin, dimension, interior, ix, iy, iz)
 				end
 			else
@@ -1303,7 +1303,7 @@ function sellProperty(thePlayer, commandName)
 		exports.global:takePlayerItem(thePlayer, 4, dbid)
 		exports.global:takePlayerItem(thePlayer, 5, dbid)
 		
-		if (tonumber(owner)==getElementData(thePlayer, "dbid")) and (inttype==3) then
+		if (tonumber(owner)==getElementData(thePlayer, "dbid")) or exports.global:isPlayerAdmin(thePlayer)) and (inttype==3) then -- If a rentable interior.
 			setElementPosition(thePlayer, x, y, z)
 			setPedRotation(thePlayer, rot)
 			setElementData(thePlayer, "interiormarker", nil)
@@ -1319,7 +1319,7 @@ function sellProperty(thePlayer, commandName)
 			else
 				outputChatBox("Error 504914 - Report on forums.", thePlayer, 255, 0, 0)
 			end
-		elseif (tonumber(owner)==getElementData(thePlayer, "dbid") or exports.global:isPlayerAdmin(thePlayer)) and (inttype~=2) then
+		elseif (tonumber(owner)==getElementData(thePlayer, "dbid") or exports.global:isPlayerAdmin(thePlayer)) and (inttype~=2) then -- If a business or house.
 			setElementPosition(thePlayer, x, y, z)
 			setPedRotation(thePlayer, rot)
 			setElementData(thePlayer, "interiormarker", nil)
@@ -1342,7 +1342,7 @@ function sellProperty(thePlayer, commandName)
 			else
 				outputChatBox("Error 504914 - Report on forums.", thePlayer, 255, 0, 0)
 			end
-		elseif (inttype==2) then
+		elseif (inttype==2) then -- If an unownable property
 			outputChatBox("You cannot sell a government property.", thePlayer, 255, 0, 0)
 			reloadOneInterior(tonumber(dbid))
 		else

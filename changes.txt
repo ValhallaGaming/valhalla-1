@@ -6,17 +6,6 @@ Scripts in "unfinished code" need to be completed, checked and added to the corr
 - Interior
 	- s_interior_system - added marco's bistro as interior 105 in interior ID list.
 
-- Mods-system
-	- vegasdwntwn1.txd
-	- c_mods_system.lua
-	- meta
-
-- map-system
-	- meta
-	- Bank Int.map
-	- LV Hospital.map
-	- steak_floor.map
-
 --------------------
 Jack's changes.
 -------------------

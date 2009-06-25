@@ -438,7 +438,6 @@ function loadAllVehicles(res)
 				setElementData(veh, "job", tonumber(job))
 				
 				-- Interiors
-				outputDebugString(tostring(currdimension))
 				setElementDimension(veh, currdimension)
 				setElementInterior(veh, currinterior)
 				
@@ -758,8 +757,8 @@ end
 
 -- bike lock fix
 function checkBikeLock(thePlayer)
-	if (isVehicleLocked(source)) then
-		outputChatBox("That bike is locked.", source, 255, 194, 15)
+	if (isVehicleLocked(source)) and (getVehicleType(source)=="Bike" or getVehicleType(source)=="BMX") then
+		outputChatBox("That bike is locked.", thePlayer, 255, 194, 15)
 		cancelEvent()
 	end
 end

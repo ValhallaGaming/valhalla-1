@@ -1089,7 +1089,7 @@ local interiors={}
                 interiors[105][1] = "1"
                 interiors[105][2] = "-794.984497"
                 interiors[105][3] = "489.78887"
-                interiors[105][4] = "1375.33889"
+                interiors[105][4] = "1375.73889"
                 interiors[105][5] = "357.7589"
 		interiors[105][6] = 20
                 interiors[105][7] = 0
@@ -1726,13 +1726,13 @@ function resetInteriorMarker(thePlayer)
 	end
 end
 
-function buyInterior(player, pickup, cost, isHouse)
+function buyInterior(player, pickup, cost, intType)
 	local money = tonumber(getElementData(player, "money"))
 	cost = tonumber(cost)
 	if (money>=cost) then
-		if (isHouse) then
+		if (intType==0) then
 			outputChatBox("Congratulations! You have just bought this house for $" .. cost .. ".", player, 255, 194, 14)
-		elseif (isRentable) then
+		elseif (intType==3) then
 			outputChatBox("Congratulations! You are now renting this property for $" .. cost .. ".", player, 255, 194, 14)
 		else
 			outputChatBox("Congratulations! You have just bought this business for $" .. cost .. ".", player, 255, 194, 14)
@@ -1859,9 +1859,11 @@ function enterInterior(source)
 				if (locked == 0) then 
 					setPlayerInsideInterior(thePickup, source)
 				elseif (locked==1) and (inttype==0) and (owner==-1) then -- unowned house
-					buyInterior(source, thePickup, cost, true)
+					buyInterior(source, thePickup, cost, 0)
+				elseif (locked==1) and (inttype==3) and (owner==-1) then -- unowned rentable
+					buyInterior(source, thePickup, cost, 3)
 				elseif (locked==1) and (inttype==1) and (owner==-1) then -- unowned business
-					buyInterior(source, thePickup, cost, false)
+					buyInterior(source, thePickup, cost, 1)
 				else -- interior is locked
 					outputChatBox("You try the door handle, but it seems to be locked.", source, 255, 0,0, true)
 				end

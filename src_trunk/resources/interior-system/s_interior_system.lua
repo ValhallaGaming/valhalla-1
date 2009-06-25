@@ -1303,7 +1303,7 @@ function sellProperty(thePlayer, commandName)
 		exports.global:takePlayerItem(thePlayer, 4, dbid)
 		exports.global:takePlayerItem(thePlayer, 5, dbid)
 		
-		if (tonumber(owner)==getElementData(thePlayer, "dbid")) or exports.global:isPlayerAdmin(thePlayer)) and (inttype==3) then -- If a rentable interior.
+		if (tonumber(owner)==getElementData(thePlayer, "dbid")) or exports.global:isPlayerAdmin(thePlayer) and (inttype==3) then -- If a rentable interior.
 			setElementPosition(thePlayer, x, y, z)
 			setPedRotation(thePlayer, rot)
 			setElementData(thePlayer, "interiormarker", nil)

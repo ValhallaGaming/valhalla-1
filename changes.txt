@@ -9,6 +9,7 @@ Scripts in "unfinished code" need to be completed, checked and added to the corr
 - Mods-system
 	- vegasdwntwn1.txd
 	- c_mods_system.lua
+	- meta
 
 - map-system
 	- meta

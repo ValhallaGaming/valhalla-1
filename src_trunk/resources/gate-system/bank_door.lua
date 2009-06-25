@@ -1,36 +1,27 @@
-local obj = createObject(1557, 2303.9951171875, -14.620796585083, 25.7421875, 0, 0, 270.55862426758)
-exports.pool:allocateElement(obj)
-local obj2 = createObject(1557, 2303.9951171875, -17.6, 25.7421875, 0, 0, 90.55862426758)
-exports.pool:allocateElement(obj2)
-local obj3 = createObject(1557, 2303.9951171875, -17.8, 25.7421875, 0, 0, 90.55862426758)
-exports.pool:allocateElement(obj3)
-local obj4 = createObject(1491, 2314.75390625, 0.36209610104561, 25.7421875, 0, 0, 0)
-exports.pool:allocateElement(obj4)
-
-local ped = createPed(150, 2318.423828125, -7.2702474594116, 26.749565124512)
+-- Cashier
+local ped = createPed(150, 2358.7563, 2361.6530, 2021.9191)
 exports.pool:allocateElement(ped)
-setPedRotation(ped, 91.057830810547)
+setPedRotation(ped, 90)
 
-local ped2 = createPed(141, 2318.423828125, -9.9451246261597, 26.749565124512)
+-- Guard.
+local ped2 = createPed(71, 2345.7058, 2351.9014, 2022.8787)
 exports.pool:allocateElement(ped2)
-setPedRotation(ped2, 91.057830810547)
+setPedRotation(ped2, 270)
 
-local ped3 = createPed(57, 2318.423828125, -12.672068595886, 26.749565124512)
+-- Desk worker
+local ped3 = createPed(141, 2340.0141, 2356.8478, 2022.93)
 exports.pool:allocateElement(ped3)
-setPedRotation(ped3, 91.057830810547)
+setPedRotation(ped3, 270)
 
-local ped4 = createPed(57, 2306.6376953125, -7.5967411994934, 26.7421875)
+-- Manager in office.
+local ped4 = createPed(57, 2357.0864, 2369.5573, 2021.9191)
 exports.pool:allocateElement(ped4)
-setPedRotation(ped4, 271.95004272461)
+setPedRotation(ped4, 270)
 
-setElementDimension(obj, 128)
-setElementDimension(obj2, 128)
-setElementDimension(obj3, 128)
-setElementDimension(obj4, 128)
-setElementDimension(ped, 128)
-setElementDimension(ped2, 128)
-setElementDimension(ped3, 128)
-setElementDimension(ped4, 128)
+setElementInterior(ped, 3)
+setElementInterior(ped2, 3)
+setElementInterior(ped3, 3)
+setElementInterior(ped4, 3)
 
 setPedAnimation(ped)
 setPedAnimation(ped2)

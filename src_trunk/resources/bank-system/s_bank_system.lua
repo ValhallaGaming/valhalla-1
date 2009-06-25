@@ -26,9 +26,9 @@ addEventHandler("onResourceStop", getResourceRootElement(getThisResource()), clo
 -- //			MYSQL END			 //
 -- ////////////////////////////////////
 
-bankPickup = createPickup(2316.6174316406, -7.3972668647766, 26.7421875, 3, 1274)
+bankPickup = createPickup(2356.2719, 2361.5007, 2022.9257, 3, 1274)
 exports.pool:allocateElement(bankPickup)
-setElementDimension(bankPickup, 128)
+setElementInterior(bankPickup, 3)
 
 function pickupUse(thePlayer)
 	local result = mysql_query(handler, "SELECT faction_id, faction_leader FROM characters WHERE charactername='" .. getPlayerName(thePlayer) .. "' LIMIT 1")

@@ -766,6 +766,23 @@ addEventHandler("onVehicleStartEnter", getRootElement(), checkBikeLock)
 
 function setRealInVehicle(thePlayer)
 	setElementData(thePlayer, "realinvehicle", 1)
+	
+	-- 0000464: Car owner message. 
+	local owner = getElementData(source, "owner")
+	local faction = getElementData(source, "faction")
+	local carName = getVehicleName(source)
+	
+	if (owner<0) then
+		outputChatBox("(( This " .. carName .. " is an admin vehicle. ))", thePlayer, 255, 195, 14)
+	elseif (faction==-1) and (owner>0) then
+		local query = mysql_query(handler, "SELECT charactername FROM characters WHERE id='" .. owner .. "' LIMIT 1")
+		
+		if (mysql_num_rows(query)>0) then
+			local ownerName = mysql_result(query, 1, 1)
+			outputChatBox("(( This " .. carName .. " belongs to " .. ownerName .. ". ))", thePlayer, 255, 195, 14)
+		end
+		mysql_free_result(query)
+	end
 end
 addEventHandler("onVehicleEnter", getRootElement(), setRealInVehicle)
 

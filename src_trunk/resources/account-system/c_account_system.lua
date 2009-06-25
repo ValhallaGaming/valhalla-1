@@ -1801,7 +1801,7 @@ function checkName()
 			noSpecialChars = true
 		end
 		
-		if (foundSpace) and (length<30) and not (foundNumber) and (noSpecialChars) then
+		if (foundSpace) and (length<22) and not (foundNumber) and (noSpecialChars) then
 			guiLabelSetColor(lRestrictions, 0, 255, 0)
 		else
 			guiLabelSetColor(lRestrictions, 255, 0, 0)

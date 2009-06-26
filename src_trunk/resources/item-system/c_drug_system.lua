@@ -299,7 +299,7 @@ function doRandomMessage()
 end
 
 function resetDrug6Effect()
-	drug5effect = false
+	drug6effect = false
 	setGameSpeed(1)
 end
 

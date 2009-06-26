@@ -204,7 +204,7 @@ function swatduty(thePlayer, commandName)
 					setElementHealth(thePlayer, 100)
 					
 					giveWeapon(thePlayer, 24, 1000) -- Deagle / MP Handgun
-					giveWeapon(thePlayer, 25, 400) -- Shotgun
+					giveWeapon(thePlayer, 27, 400) -- Shotgun
 					giveWeapon(thePlayer, 29, 1000) -- MP5
 					giveWeapon(thePlayer, 31, 5000) -- M4
 					giveWeapon(thePlayer, 34, 400) -- Sniper

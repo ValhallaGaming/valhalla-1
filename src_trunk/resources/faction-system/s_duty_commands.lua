@@ -52,7 +52,6 @@ function lvesHeal(thePlayer, commandName, targetPartialNick, price)
 					    if (price>money) then
 						    outputChatBox("The player cannot afford the heal.", thePlayer, 255, 0, 0)
 				        else
-							outputDebugString("HIT")
 							exports.global:takePlayerSafeMoney(targetPlayer, price)
 					        setElementHealth(targetPlayer, 100)
 					        outputChatBox("You have been healed by '" ..getPlayerName(thePlayer).. "'.", targetPlayer, 0, 255, 0)

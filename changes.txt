@@ -6,6 +6,9 @@ Scripts in "unfinished code" need to be completed, checked and added to the corr
 - Interior
 	- s_interior_system - added marco's bistro as interior 105 in interior ID list.
 
+- Animation-system
+	- s_animation_system
+
 --------------------
 Jack's changes.
 -------------------

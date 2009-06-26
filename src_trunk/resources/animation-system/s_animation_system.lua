@@ -28,10 +28,10 @@ addCommandHandler("stopanim", stopAnimation, false, false)
 addCommandHandler("stopani", stopAnimation, false, false)
 
 function animationList(thePlayer)
-	outputChatBox("/piss /wank /slapass /fixcar /handsup /hailtaxi /scratch /fu", thePlayer, 255, 194, 14)
+	outputChatBox("/piss /wank /slapass /fixcar /handsup /hailtaxi /scratch /fu /carchat", thePlayer, 255, 194, 14)
 	outputChatBox("/strip1-2 /lightup /drink /beg /mourn /cheer1-3 /dance1-3 /crack1-2", thePlayer, 255, 194, 14)
 	outputChatBox("/gsign1-5 /puke /rap1-3 /sit1-3 /smoke1-3 /smokelean /laugh /startrace", thePlayer, 255, 194, 14)
-	outputChatBox("/carchat /daps1-2 /shove /ali /bitchslap /shocked /dive /what", thePlayer, 255, 194, 14)
+	outputChatBox("/daps1-2 /shove /ali /bitchslap /shocked /dive /what /fall /fallfront", thePlayer, 255, 194, 14)
 	outputChatBox("/stopanim or press the spacebar to cancel animations.", thePlayer, 255, 194, 14)
 end
 addCommandHandler("animlist", animationList, false, false)
@@ -692,3 +692,23 @@ function whatAnimation(thePlayer)
 	end
 end
 addCommandHandler ( "what", whatAnimation, false, false )
+
+-- /fallfront Amination -------------------------------------------------------------------------
+function fallfrontAnimation(thePlayer)
+	local logged = getElementData(thePlayer, "loggedin")
+	
+	if (logged==1) then
+	exports.global:applyAnimation( thePlayer, "ped", "FLOOR_hit_f", false, 1.0, 1.0, 0.0, false, false)
+	end
+end
+addCommandHandler ( "fallfront", fallfrontAnimation, false, false )
+
+-- /fall Amination -------------------------------------------------------------------------
+function fallAnimation(thePlayer)
+	local logged = getElementData(thePlayer, "loggedin")
+	
+	if (logged==1) then
+	exports.global:applyAnimation( thePlayer, "ped", "FLOOR_hit", false, 1.0, 1.0, 0.0, false, false)
+	end
+end
+addCommandHandler ( "fall", fallAnimation, false, false )

@@ -3,9 +3,6 @@ Chamberlains changes.
 ---------------------
 Scripts in "unfinished code" need to be completed, checked and added to the correct resources by someone who knows what they are doing.
 
-- Bank
-	- s_bank_system - moved pickup to new bank interior.
-
 - Interior
 	- s_interior_system - added marco's bistro as interior 105 in interior ID list.
 

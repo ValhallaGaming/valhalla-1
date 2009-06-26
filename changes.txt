@@ -9,6 +9,10 @@ Scripts in "unfinished code" need to be completed, checked and added to the corr
 - Animation-system
 	- s_animation_system
 
+- Map-system
+	- Prison Cell and Rec maps reduced.
+	- Originals renamed "original".
+
 --------------------
 Jack's changes.
 -------------------

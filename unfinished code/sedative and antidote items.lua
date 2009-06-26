@@ -1,24 +1,46 @@
+---------
+-- SQL --
+---------
+
 -- Items:
 	-- Sedative, "A hypodermic needle filled with a drug."
 	-- Antidote, "A hypodermic needle filled with a drug."
 
--- Server side useItem function
-elseif (itemID== ) then -- sedative
-	exports.global:sendLocalMeAction(thePlayer,"injects "..targetPlayerName.." with a sedative." )
-	exports.global:sendLocalMeAction(targetPlayerName," staggers and collapses." )
-	exports.global:takePlayerItem(source, itemID, itemValue)
-	triggerClientEvent("sedativeEffect", targetPlayer)
-	
-	setElementData(targetPlayer, "freeze", 1)
+-----------------
+-- Server side --
+-----------------
 
-elseif (itemID== ) then -- Antidote
-	exports.global:sendLocalMeAction(thePlayer,"injects "..targetPlayerName.." with an antidote." )
-	exports.global:sendLocalMeAction(targetPlayerName," slowly regains consciousness." )
-	exports.global:takePlayerItem(source, itemID, itemValue)
-	triggerClientEvent("sedativeEffect", targetPlayer)
+-- Server side useItem function
+	elseif (itemID== ) then -- sedative
+		exports.global:sendLocalMeAction(thePlayer,"injects "..targetPlayerName.." with a sedative.")
+		exports.global:takePlayerItem(source, itemID, itemValue)
+		triggerClientEvent("sedativeEffect", targetPlayer)
+		setTimer(sedativeDelay, 3000, 1)
+	elseif (itemID== ) then -- Antidote
+		exports.global:sendLocalMeAction(thePlayer,"injects "..targetPlayerName.." with an antidote.")
+		exports.global:takePlayerItem(source, itemID, itemValue)
+		triggerClientEvent("cancelSedativeEffect", targetPlayer)
+		setTimer(antidoteDelay, 3000, 1)
+
+		
+function sedativeDelay()
+	setElementData(targetPlayer, "freeze", 1)
+	exports.global:applyAnimation(targetPlayer, "ped", "FLOOR_hit", true, 1.0, 1.0, 0.0, false, false)
+	exports.global:sendLocalMeAction(targetPlayer,"staggers and collapses.")
+end
+
+function antidoteDelay()
 	setElementData(targetPlayer, "freeze", 0)
+	exports.global:removeAnimation(targetPlayer)
+	exports.global:sendLocalMeAction(targetPlayer,"slowly regains consciousness.")
+end
+
+-----------------
+-- Client Side --
+-----------------
 	
 -- Client Side Sedative Effect
+sedativeTimer = nil
 function sedativeEffect ()
 	-- Freeze the player
 	toggleAllControls( false, true, false)
@@ -36,4 +58,6 @@ function cancelSedativeEffect ()
 	fadeCamera ( true, 3.0 )
 	-- Remove the text
 	destroyElement(sedativeText)
+	killTimer(sedativeTimer)
+	sedativeTimer = nil
 end

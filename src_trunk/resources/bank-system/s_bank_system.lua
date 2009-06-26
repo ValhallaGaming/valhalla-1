@@ -26,7 +26,7 @@ addEventHandler("onResourceStop", getResourceRootElement(getThisResource()), clo
 -- //			MYSQL END			 //
 -- ////////////////////////////////////
 
-bankPickup = createPickup(2356.2719, 2361.5007, 2021.9257, 3, 1274)
+bankPickup = createPickup(2356.2719, 2361.5007, 2022.5257, 3, 1274)
 exports.pool:allocateElement(bankPickup)
 setElementInterior(bankPickup, 3)
 

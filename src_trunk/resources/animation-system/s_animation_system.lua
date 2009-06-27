@@ -32,7 +32,7 @@ function animationList(thePlayer)
 	outputChatBox("/strip1-2 /lightup /drink /beg /mourn /cheer1-3 /dance1-3 /crack1-2", thePlayer, 255, 194, 14)
 	outputChatBox("/gsign1-5 /puke /rap1-3 /sit1-3 /smoke1-3 /smokelean /laugh /startrace", thePlayer, 255, 194, 14)
 	outputChatBox("/daps1-2 /shove /ali /bitchslap /shocked /dive /what /fall /fallfront", thePlayer, 255, 194, 14)
-	outputChatBox("/stopanim or press the spacebar to cancel animations.", thePlayer, 255, 194, 14)
+	outputChatBox("/stopanim or press the space bar to cancel animations.", thePlayer, 255, 194, 14)
 end
 addCommandHandler("animlist", animationList, false, false)
 addCommandHandler("animhelp", animationList, false, false)
@@ -688,7 +688,7 @@ function whatAnimation(thePlayer)
 	local logged = getElementData(thePlayer, "loggedin")
 	
 	if (logged==1) then
-	exports.global:applyAnimation( thePlayer, "RIOT", "RIOT_ANGRY", false, 1.0, 1.0, 0.0, false, false)
+		exports.global:applyAnimation( thePlayer, "RIOT", "RIOT_ANGRY", false, 1.0, 1.0, 0.0, false, false)
 	end
 end
 addCommandHandler ( "what", whatAnimation, false, false )
@@ -698,7 +698,7 @@ function fallfrontAnimation(thePlayer)
 	local logged = getElementData(thePlayer, "loggedin")
 	
 	if (logged==1) then
-	exports.global:applyAnimation( thePlayer, "ped", "FLOOR_hit_f", false, 1.0, 1.0, 0.0, false, false)
+		exports.global:applyAnimation( thePlayer, "ped", "FLOOR_hit_f", false, 1.0, 1.0, 0.0, false, false)
 	end
 end
 addCommandHandler ( "fallfront", fallfrontAnimation, false, false )
@@ -708,7 +708,7 @@ function fallAnimation(thePlayer)
 	local logged = getElementData(thePlayer, "loggedin")
 	
 	if (logged==1) then
-	exports.global:applyAnimation( thePlayer, "ped", "FLOOR_hit", false, 1.0, 1.0, 0.0, false, false)
+		exports.global:applyAnimation( thePlayer, "ped", "FLOOR_hit", false, 1.0, 1.0, 0.0, false, false)
 	end
 end
 addCommandHandler ( "fall", fallAnimation, false, false )

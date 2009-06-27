@@ -3,19 +3,10 @@ Chamberlains changes.
 ---------------------
 Scripts in "unfinished code" need to be completed, checked and added to the correct resources by someone who knows what they are doing.
 
-- Interior
-	- s_interior_system - added marco's bistro as interior 105 in interior ID list.
-
-- Animation-system
-	- s_animation_system
-
-- Map-system
-	- Prison Cell and Rec maps reduced.
-	- Originals renamed "original".
+- map-system
+	- Phils Bistro Map.map added
+	- meta
 
 --------------------
 Jack's changes.
 -------------------
-
-Did the ES duty and heal command, just need co-ordinates for a colshape for duty and locations for markers.
-Not sure if the markers in the PD were placed with createMarker and the repair fuel stations dynamically placed? ES needs these too

@@ -134,7 +134,6 @@ function lvfdduty(thePlayer, commandName)
 					
 					giveWeapon(thePlayer, 42, 5000) -- Fire Extinguisher
 					giveWeapon(thePlayer, 9, 1) -- Chainsaw
-					giveWeapon(thePlayer, 41, 5000) -- Pepperspray
 					setPedSkin(thePlayer, 278)
 					
 					setElementData(thePlayer, "duty", 5)

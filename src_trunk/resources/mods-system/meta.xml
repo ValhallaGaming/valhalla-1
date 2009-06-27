@@ -2,6 +2,7 @@
 	<info author="vG MTA Scripting Team" type="script" description="mods System"/>
 
 	<script src="c_mods_system.lua" type="client"/>
+	<script src="c_show_fps.lua" type="client"/>
 	
 	<file src="lv/lee_stripclub.txd"/>
 	<file src="lv/lee_stripclub1.txd"/>	

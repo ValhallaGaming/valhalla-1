@@ -45,10 +45,15 @@ function advertMessage(thePlayer, commandName, showNumber, ...)
 				else
 					local name = string.gsub(getPlayerName(thePlayer), "_", " ")
 					local phoneNumber = getElementData(thePlayer, "cellnumber")
-					outputChatBox("   ADVERT: " .. message .. ". ((" .. name .. "))", getRootElement(), 0, 255, 64)
 					
-					if (tonumber(showNumber)==1) then
-						outputChatBox("   Contact: #" .. phoneNumber .. ".", getRootElement(), 0, 255, 64)
+					for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
+						if (getElementData(value, "loggedin")==1) then
+							outputChatBox("   ADVERT: " .. message .. ". ((" .. name .. "))", getRootElement(), 0, 255, 64)
+							
+							if (tonumber(showNumber)==1) then
+								outputChatBox("   Contact: #" .. phoneNumber .. ".", getRootElement(), 0, 255, 64)
+							end
+						end
 					end
 					
 					exports.global:takePlayerSafeMoney(thePlayer, cost)

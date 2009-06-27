@@ -7,6 +7,9 @@ Scripts in "unfinished code" need to be completed, checked and added to the corr
 	- Phils Bistro Map.map added
 	- meta
 
+- admin-system
+	- rphelp.lua
+
 --------------------
 Jack's changes.
 -------------------

@@ -26,6 +26,10 @@ function createATM(thePlayer, commandName)
 			
 			local pickup = createPickup(px, py, pz, 3, 1274)
 			exports.pool:allocateElement(pickup)
+			local shape = getElementColShape(pickup)
+			setElementDimension(shape, dimension)
+			setElementInterior(shape, interior)
+			
 			setElementDimension(pickup, dimension)
 			setElementInterior(pickup, interior)
 			
@@ -74,6 +78,9 @@ function loadAllATMs(res)
 				local pz = z
 				
 				local pickup = createPickup(px, py, pz, 3, 1274)
+				local shape = getElementColShape(pickup)
+				setElementDimension(shape, dimension)
+				setElementInterior(shape, interior)
 				exports.pool:allocateElement(pickup)
 				setElementDimension(pickup, dimension)
 				setElementInterior(pickup, interior)

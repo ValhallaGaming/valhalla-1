@@ -28,6 +28,8 @@ addEventHandler("onResourceStop", getResourceRootElement(getThisResource()), clo
 
 bankPickup = createPickup(2356.2719, 2361.5007, 2022.5257, 3, 1274)
 exports.pool:allocateElement(bankPickup)
+local shape = getElementColShape(pickup)
+setElementInterior(shape, 3)
 setElementInterior(bankPickup, 3)
 
 function pickupUse(thePlayer)

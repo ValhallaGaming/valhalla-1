@@ -10,7 +10,7 @@ function removeRoadblock(thePlayer, commandName, id)
 			
 		if (ftype==2) then
 			if not (id) then
-				outputChatBox("SYNTAX: /" .. commandName .. " [Roadblock ID]", 255, 194, 15)
+				outputChatBox("SYNTAX: /" .. commandName .. " [Roadblock ID]", thePlayer, 255, 194, 15)
 			elseif (rbcount==0) then
 				outputChatBox("No roadblocks are spawned.", thePlayer, 255, 0, 0)
 			else

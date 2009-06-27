@@ -383,8 +383,8 @@ function dropItem(itemID, itemValue, itemName, x, y, z, gz, isWeapon)
 		outputChatBox("You dropped a " .. itemName .. ".", source, 255, 194, 14)
 		
 		-- Animation
-		exports.global:applyAnimation(source, "CARRY", "putdwn", true, 1.0, false, false)
-		setTimer(removeAnimation, 1500, 1, source)
+		exports.global:applyAnimation(source, "CARRY", "putdwn", -1, false, false, true)
+		setTimer(removeAnimation, 500, 1, source)
 	
 		local objectresult = mysql_query(handler, "SELECT modelid FROM items WHERE id='" .. tonumber(itemID) .. "' LIMIT 1")
 		local modelid = tonumber(mysql_result(objectresult, 1, 1))

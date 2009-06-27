@@ -79,9 +79,9 @@ function callSomeone(thePlayer, commandName, phoneNumber)
 							
 							-- local player
 							
-							exports.global:applyAnimation(thePlayer, "ped", "phone_in", true, 1.0, false, true)
+							--exports.global:applyAnimation(thePlayer, "ped", "phone_in", true, 1.0, false, true)
 							--thePlayer, block, name, forced, blendSpeed, loop, updatePosition
-							setTimer(startPhoneAnim, 3000, 2, thePlayer)
+							--setTimer(startPhoneAnim, 3000, 2, thePlayer)
 							
 							-- target player
 							exports.global:sendLocalMeAction(foundElement, "'s Phone start's to ring.")
@@ -104,7 +104,7 @@ end
 addCommandHandler("call", callSomeone)
 
 function startPhoneAnim(thePlayer)
-	exports.global:applyAnimation(thePlayer, "ped", "phone_talk", true, 1.0, false, true)
+	--exports.global:applyAnimation(thePlayer, "ped", "phone_talk", true, 1.0, false, true)
 end
 	
 
@@ -134,8 +134,8 @@ function answerPhone(thePlayer, commandName)
 					setElementData(thePlayer, "phonestate", 1) -- Your in an actual call
 					setElementData(calling, "phonestate", 1) -- Your in an actual call
 					exports.global:sendLocalMeAction(thePlayer, "answers their cellphone.")
-					setPedAnimation(thePlayer, "ped", "phone_in", 100, false, true, false)
-					setTimer(setPedAnimation, 2000, 1, thePlayer, "ped", "phone_talk", 100, false, true, false)
+					--setPedAnimation(thePlayer, "ped", "phone_in", 100, false, true, false)
+					--setTimer(setPedAnimation, 2000, 1, thePlayer, "ped", "phone_talk", 100, false, true, false)
 				end
 			elseif not (calling) then
 				outputChatBox("Your phone is not ringing.", thePlayer, 255, 0, 0)
@@ -176,11 +176,11 @@ function hangupPhone(thePlayer, commandName)
 				setElementData(calling, "phonestate", 0)
 				exports.global:sendLocalMeAction(thePlayer, "hangs up their cellphone.")
 				
-				setPedAnimation(thePlayer, "ped", "phone_out", 1300, false, true, false)
-				setTimer(setPedAnimation, 1305, 1, thePlayer)
+				--setPedAnimation(thePlayer, "ped", "phone_out", 1300, false, true, false)
+				--setTimer(setPedAnimation, 1305, 1, thePlayer)
 				
-				setPedAnimation(calling, "ped", "phone_out", 1300, false, true, false)
-				setTimer(setPedAnimation, 1305, 1, calling)
+				--setPedAnimation(calling, "ped", "phone_out", 1300, false, true, false)
+				--setTimer(setPedAnimation, 1305, 1, calling)
 			else
 				outputChatBox("Your phone is not in use.", thePlayer, 255, 0, 0)
 			end

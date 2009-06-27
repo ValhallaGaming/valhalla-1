@@ -44,17 +44,17 @@ function coverAnimation(thePlayer)
 	local logged = getElementData(thePlayer, "loggedin")
 	
 	if (logged==1) then
-		exports.global:applyAnimation(thePlayer, "ped", "DUCK_cower", false, 1.0, false, false)
+		exports.global:applyAnimation(thePlayer, "ped", "duck_cower", -1, false, false, false)
 	end
 end
 addCommandHandler("cover", coverAnimation, false, false)
-
+--thePlayer, block, name, animtime, loop, updatePosition, forced
 -- /cpr animtion -------------------------------------------------
 function cprAnimation(thePlayer)
 	local logged = getElementData(thePlayer, "loggedin")
 	
 	if (logged==1) then
-		exports.global:applyAnimation(thePlayer, "MEDIC", "CPR", false, 1.0, true, false)
+		exports.global:applyAnimation(thePlayer, "medic", "cpr", -1, false, false, false)
 	end
 end
 addCommandHandler("cpr", cprAnimation, false, false)
@@ -64,7 +64,7 @@ function copawayAnimation(thePlayer)
 	local logged = getElementData(thePlayer, "loggedin")
 	
 	if (logged==1) then
-		exports.global:applyAnimation(thePlayer, "police", "coptraf_away", false, 1.0, 1.0, 0.0, true, false)
+		exports.global:applyAnimation(thePlayer, "police", "coptraf_away", 5000, true, false, false)
 	end
 end
 addCommandHandler("copaway", copawayAnimation, false, false)

@@ -48,10 +48,10 @@ function advertMessage(thePlayer, commandName, showNumber, ...)
 					
 					for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
 						if (getElementData(value, "loggedin")==1) then
-							outputChatBox("   ADVERT: " .. message .. ". ((" .. name .. "))", getRootElement(), 0, 255, 64)
+							outputChatBox("   ADVERT: " .. message .. ". ((" .. name .. "))", value, 0, 255, 64)
 							
 							if (tonumber(showNumber)==1) then
-								outputChatBox("   Contact: #" .. phoneNumber .. ".", getRootElement(), 0, 255, 64)
+								outputChatBox("   Contact: #" .. phoneNumber .. ".", value, 0, 255, 64)
 							end
 						end
 					end

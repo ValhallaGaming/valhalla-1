@@ -208,13 +208,34 @@ function getNearbyVehicles(thePlayer, commandName)
 			local thisvehid = getElementData(nearbyVehicle, "dbid")
 			local vehicleID = getElementModel(nearbyVehicle)
 			local vehicleName = getVehicleNameFromModel(vehicleID)
-			
+			local owner = getElementData(nearbyVehicle, "owner")
+			local faction = getElementData(nearbyVehicle, "faction")
 			count = count + 1
 			
+			local ownerName = ""
+			
+			if (faction>0) then
+				for key, value in ipairs(exports.pool:getPoolElementsByType("team")) do
+					local dbid = tonumber(getElementData(value, "id"))
+					if (dbid==tonumber(faction)) then
+						ownerName = getTeamName(value)
+						break
+					end
+				end
+			elseif (owner==-1) then
+				ownerName = "Admin"
+			elseif (owner>0) then
+				local query = mysql_query(handler, "SELECT charactername FROM characters WHERE id='" .. owner .. "' LIMIT 1")
+				ownerName = tostring(mysql_result(query, 1, 1))
+				mysql_free_result(query)
+			else
+				ownerName = "Civilian"
+			end
+			
 			if (thisvehid) then
-				outputChatBox("   " .. vehicleName .. " (" .. vehicleID ..") with ID: " .. thisvehid .. ".", thePlayer, 255, 126, 0)
+				outputChatBox("   " .. vehicleName .. " (" .. vehicleID ..") with ID: " .. thisvehid .. ". Owner: " .. ownerName, thePlayer, 255, 126, 0)
 			elseif not (thisvehid) then
-				outputChatBox("   " ..  "*Temporary* " .. vehicleName .. " (" .. vehicleID ..") with ID: " .. thisvehid .. ".", thePlayer, 255, 126, 0)
+				outputChatBox("   " ..  "*Temporary* " .. vehicleName .. " (" .. vehicleID ..") with ID: " .. thisvehid .. ". Owner: " .. ownerName, thePlayer, 255, 126, 0)
 			end
 		end
 		

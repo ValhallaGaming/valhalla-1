@@ -1665,7 +1665,7 @@ function setIntPickupElementData(intpickup, id, x, y, z, rot, locked, owner, int
 		setElementDimension(intpickup, id)
 		setElementData(intpickup, "type", "interiorexit") -- To identify it later
 		
-		local shape = getElementColShape(pickup)
+		local shape = getElementColShape(intpickup)
 		setElementDimension(shape, id)
 		setElementInterior(shape, interior)
 	end

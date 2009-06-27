@@ -833,3 +833,13 @@ function doBreakdown()
 	end
 end
 addEventHandler("onVehicleDamage", getRootElement(), doBreakdown)
+
+-- 0000470: Water Vehicles
+function checkWaterVehicles()
+	for key, value in ipairs(exports.pool:getPoolElementsByType("vehicle")) do
+		if (isElementInWater(value) and not isVehicleBlown(value) and getVehicleType(value)~="Boat") then
+			blowVehicle(value)
+		end
+	end
+end
+setTimer(checkWaterVehicles, 600000, 0)

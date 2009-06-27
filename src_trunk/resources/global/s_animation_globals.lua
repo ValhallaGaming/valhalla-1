@@ -1,15 +1,14 @@
-function applyAnimation(thePlayer, block, name, forced, blendSpeed, loop, updatePosition)
-	if not (blendSpeed) then blendSpeed = 1.0 end
-	if loop==nil then loop = true end
-	if updatePosition==nil then updatePosition = true end
-	if forced==nil then forced = false end
+function applyAnimation(thePlayer, block, name, animtime, loop, updatePosition, forced)
+	if not animtime then animtime = -1 end
+	if not loop then loop = true end
+	if not updatePosition then updatePosition = true end
+	if not forced then forced = false end
 	
 	if (isElement(thePlayer) and getElementType(thePlayer)=="player") then
 		toggleAllControls(thePlayer, false, true, false)
 		setElementData(thePlayer, "forcedanimation", forced)
 		setElementData(thePlayer, "animation", true)
-		--local setanim = setPedAnimation(thePlayer, block, name, blendSpeed, loop, updatePosition)
-		local setanim = setPedAnimation(thePlayer, block, name, -1, loop, updatePosition, false)
+		local setanim = setPedAnimation(thePlayer, block, name, animtime, loop, updatePosition, false)
 		return setanim
 	else
 		return false

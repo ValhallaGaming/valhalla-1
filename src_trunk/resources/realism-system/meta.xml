@@ -43,4 +43,6 @@
 	<script src="s_weapon_jams.lua" type="server"/>
 	
 	<script src="s_ck_corpses.lua" type="server"/>
+	
+	<script src="c_cruise_control.lua" type="client"/>
 </meta>

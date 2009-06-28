@@ -239,7 +239,7 @@ function spawnCharacter(charname)
 		setElementData(source, "legitnamechange", 1)
 		setPlayerName(source, tostring(charname))
 		local pid = getElementData(source, "playerid")
-		local fixedName = "(" .. tostring(pid) .. ")" .. charname
+		local fixedName = "(" .. tostring(pid) .. ") " .. string.gsub(tostring(charname), "_", " ")
 
 		setPlayerNametagText(source, tostring(fixedName))
 		setElementData(source, "legitnamechange", 0)

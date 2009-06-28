@@ -4,4 +4,6 @@
 	<script src="s_chat_system.lua" type="server"/>
 	<script src="c_chat_system.lua" type="client"/>
 	<script src="s_stats.lua" type="server"/>
+	<script src="c_chat_icon.lua" type="client"/>
+	<file src="chat.png"/>
 </meta>

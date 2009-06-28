@@ -65,7 +65,7 @@ function callSomeone(thePlayer, commandName, phoneNumber)
 					
 					if (money<10) then
 						outputChatBox("You cannot afford a call.", thePlayer, 255, 0, 0)
-					elseif not (found) or (foundElement~=thePlayer) then -- Player with this phone number isnt online...
+					elseif not (found) or (foundElement==thePlayer) then -- Player with this phone number isnt online...
 						outputChatBox("You get a dead tone...", thePlayer, 255, 194, 14)
 					else
 						local targetCalling = getElementData(foundElement, "calling")

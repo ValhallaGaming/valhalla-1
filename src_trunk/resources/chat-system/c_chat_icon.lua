@@ -13,17 +13,18 @@ setElementData(getLocalPlayer(), "chatting", true, 0)
 function render()
 	local x, y, z = getElementPosition(getLocalPlayer())
 	for key, value in ipairs(getElementsByType("player")) do
-		local chatting = getElementData(value, "chatting")
-		
-		if (chatting==1) then
-			local px, py, pz = getElementPosition(value)
+		if (value~=getLocalPlayer()) then
+			local chatting = getElementData(value, "chatting")
 			
-			local dist = getDistanceBetweenPoints3D(x, y, z, px, py, pz)
-			if (dist < 1000) then
-				if (isLineOfSightClear(x, y, z, px, py, pz, true, false, false, false )) then
-					local screenX, screenY = getScreenFromWorldPosition(px, py, pz+1.2)
-					local draw = dxDrawImage(screenX, screenY, 70, 70, "chat.png")
-					outputDebugString(tostring(draw))
+			if (chatting==1) then
+				local px, py, pz = getElementPosition(value)
+				
+				local dist = getDistanceBetweenPoints3D(x, y, z, px, py, pz)
+				if (dist < 1000) then
+					if (isLineOfSightClear(x, y, z, px, py, pz, true, false, false, false )) then
+						local screenX, screenY = getScreenFromWorldPosition(px, py, pz+1.2)
+						local draw = dxDrawImage(screenX, screenY, 70, 70, "chat.png")
+					end
 				end
 			end
 		end

@@ -21,9 +21,11 @@ function render()
 				
 				local dist = getDistanceBetweenPoints3D(x, y, z, px, py, pz)
 				if (dist < 1000) then
-					if (isLineOfSightClear(x, y, z, px, py, pz, true, false, false, false )) then
+					if (isLineOfSightClear(x, y, z, px, py, pz, true, false, false, false ) and isElementOnScreen(value)) then
 						local screenX, screenY = getScreenFromWorldPosition(px, py, pz+1.2)
-						local draw = dxDrawImage(screenX, screenY, 70, 70, "chat.png")
+						if (screenX and screenY) then
+							local draw = dxDrawImage(screenX, screenY, 70, 70, "chat.png")
+						end
 					end
 				end
 			end

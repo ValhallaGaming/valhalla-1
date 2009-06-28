@@ -85,7 +85,7 @@ function sendWarningToCops(vehicle, player, colshape, x, y, z, speed)
 			local duty = tonumber(getElementData(value, "duty"))
 			if (duty>0) then
 				outputChatBox("DISPATCH: All units we have a traffic violation at " .. areaname .. ". ((" .. getPlayerName(player) .. "))", value, 255, 194, 14)
-				outputChatBox("DISPATCH: Vehicle was a " .. vehname .. " travelling at " .. tostring(math.ceil(speed))+15 .. " Mph.", value, 255, 194, 14)
+				outputChatBox("DISPATCH: Vehicle was a " .. vehname .. " travelling at " .. tostring(math.ceil(speed)) .. " Mph.", value, 255, 194, 14)
 				outputChatBox("DISPATCH: Vehicle was last seen heading " .. direction .. ".", value, 255, 194, 14)
 			end
 		end

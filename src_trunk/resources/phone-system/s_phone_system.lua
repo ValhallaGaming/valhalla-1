@@ -65,7 +65,7 @@ function callSomeone(thePlayer, commandName, phoneNumber)
 					
 					if (money<10) then
 						outputChatBox("You cannot afford a call.", thePlayer, 255, 0, 0)
-					elseif not (found) or (foundElement==thePlayer) then -- Player with this phone number isnt online...
+					elseif not (found) or (foundElement~=thePlayer) then -- Player with this phone number isnt online...
 						outputChatBox("You get a dead tone...", thePlayer, 255, 194, 14)
 					else
 						local targetCalling = getElementData(foundElement, "calling")
@@ -79,9 +79,9 @@ function callSomeone(thePlayer, commandName, phoneNumber)
 							
 							-- local player
 							
-							--exports.global:applyAnimation(thePlayer, "ped", "phone_in", true, 1.0, false, true)
-							--thePlayer, block, name, forced, blendSpeed, loop, updatePosition
-							--setTimer(startPhoneAnim, 3000, 2, thePlayer)
+							exports.global:applyAnimation(thePlayer, "ped", "phone_in", 1.0, 1.0, 0.0, false, true, true)
+							toggleAllControls(thePlayer, true, true, true)
+							setTimer(startPhoneAnim, 1000, 2, thePlayer)
 							
 							-- target player
 							exports.global:sendLocalMeAction(foundElement, "'s Phone start's to ring.")
@@ -104,7 +104,8 @@ end
 addCommandHandler("call", callSomeone)
 
 function startPhoneAnim(thePlayer)
-	--exports.global:applyAnimation(thePlayer, "ped", "phone_talk", true, 1.0, false, true)
+	exports.global:applyAnimation(thePlayer, "ped", "phone_talk", 1.0, 1.0, 0.0, true, true, true)
+	toggleAllControls(thePlayer, true, true, true)
 end
 	
 
@@ -134,8 +135,10 @@ function answerPhone(thePlayer, commandName)
 					setElementData(thePlayer, "phonestate", 1) -- Your in an actual call
 					setElementData(calling, "phonestate", 1) -- Your in an actual call
 					exports.global:sendLocalMeAction(thePlayer, "answers their cellphone.")
-					--setPedAnimation(thePlayer, "ped", "phone_in", 100, false, true, false)
-					--setTimer(setPedAnimation, 2000, 1, thePlayer, "ped", "phone_talk", 100, false, true, false)
+					
+					exports.global:applyAnimation(calling, "ped", "phone_in", 1.0, 1.0, 0.0, false, true, true)
+					toggleAllControls(calling, true, true, true)
+					setTimer(startPhoneAnim, 1000, 2, calling)
 				end
 			elseif not (calling) then
 				outputChatBox("Your phone is not ringing.", thePlayer, 255, 0, 0)
@@ -176,11 +179,13 @@ function hangupPhone(thePlayer, commandName)
 				setElementData(calling, "phonestate", 0)
 				exports.global:sendLocalMeAction(thePlayer, "hangs up their cellphone.")
 				
-				--setPedAnimation(thePlayer, "ped", "phone_out", 1300, false, true, false)
-				--setTimer(setPedAnimation, 1305, 1, thePlayer)
+				exports.global:applyAnimation(thePlayer, "ped", "phone_out", 1.0, 1.0, 0.0, false, true, true)
+				toggleAllControls(thePlayer, true, true, true)
+				setTimer(removeAnimation, 1305, 1, thePlayer)
 				
-				--setPedAnimation(calling, "ped", "phone_out", 1300, false, true, false)
-				--setTimer(setPedAnimation, 1305, 1, calling)
+				exports.global:applyAnimation(calling, "ped", "phone_out", 1.0, 1.0, 0.0, false, true, true)
+				toggleAllControls(calling, true, true, true)
+				setTimer(removeAnimation, 1305, 1, calling)
 			else
 				outputChatBox("Your phone is not in use.", thePlayer, 255, 0, 0)
 			end
@@ -190,6 +195,10 @@ function hangupPhone(thePlayer, commandName)
 	end
 end
 addCommandHandler("hangup", hangupPhone)
+
+function removeAnimation(thePlayer)
+	exports.global:removeAnimation(thePlayer)
+end
 
 function loudSpeaker(thePlayer, commandName)
 	local logged = getElementData(thePlayer, "loggedin")

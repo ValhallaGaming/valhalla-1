@@ -15,7 +15,8 @@ function reloadWeapon(thePlayer)
 				setElementData(thePlayer, "reloading", true)
 				setTimer(checkFalling, 100, 10, thePlayer)
 				if not (isPedDucked(thePlayer)) then
-					exports.global:applyAnimation(thePlayer, "BUDDY", "buddy_reload", 1000, false, false)
+					exports.global:applyAnimation(thePlayer, "BUDDY", "buddy_reload", 1.0, 1.0, 0.0, false, true, true)
+					toggleAllControls(thePlayer, true, true, true)
 				end
 				setTimer(giveReload, 1001, 1, thePlayer, weapon, ammo)
 				triggerClientEvent(thePlayer, "cleanupUI", thePlayer)

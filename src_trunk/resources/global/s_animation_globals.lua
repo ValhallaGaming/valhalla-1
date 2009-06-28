@@ -1,17 +1,15 @@
-function applyAnimation(thePlayer, block, name, speed, blendSpeed, startTime, loop, updatePosition, forced)
-	if speed==nil then speed = 1.0 end
-	if blendSpeed==nil then blendSpeed = 1.0 end
-	if startTime==nil then startTime = 0.0 end
-	if loop==nil then loop = true end
-	if updatePosition==nil then updatePosition = true end
-	if forced==nil then forced = true end
+function applyAnimation(thePlayer, block, name, animtime, loop, updatePosition, forced)
+	if animtime==nil then animtime=-1 end
+	if loop==nil then loop=true end
+	if updatePosition==nil then updatePosition=true end
+	if forced==nil then forced=true end
 	
 	if (isElement(thePlayer) and getElementType(thePlayer)=="player") then
 		toggleAllControls(thePlayer, false, true, false)
 		setElementData(thePlayer, "forcedanimation", forced)
 		setElementData(thePlayer, "animation", true)
-		triggerClientEvent(getRootElement(), "syncAnimation", thePlayer, block, name, speed, blendSpeed, startTime, loop, updatePosition, forced)
-		return true
+		local setanim = setPedAnimation(thePlayer, block, name, animtime, loop, updatePosition, false)
+		return setanim
 	else
 		return false
 	end

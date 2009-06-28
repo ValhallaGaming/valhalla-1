@@ -283,6 +283,7 @@ function globalOOC(thePlayer, commandName, ...)
 			else	
 				local players = exports.pool:getPoolElementsByType("player")
 				local playerName = string.gsub(getPlayerName(thePlayer), "_", " ")
+				local playerID = getElementData(thePlayer, "playerid")
 					
 				exports.irc:sendMessage("[OOC: Global Chat] " .. playerName .. ": " .. message)
 				for k, arrayPlayer in ipairs(players) do
@@ -290,7 +291,7 @@ function globalOOC(thePlayer, commandName, ...)
 					local targetOOCEnabled = getElementData(arrayPlayer, "globalooc")
 
 					if (logged==1) and (targetOOCEnabled==1) then
-						outputChatBox("(( " .. playerName .. ": " .. message .. " ))", arrayPlayer, 196, 255, 255)
+						outputChatBox("(( (" .. playerID .. ") " .. playerName .. ": " .. message .. " ))", arrayPlayer, 196, 255, 255)
 					end
 				end
 			end

@@ -40,7 +40,6 @@ addCommandHandler("anims", animationList, false, false)
 addCommandHandler("animations", animationList, false, false)
 
 function resetAnimation(thePlayer)
-	outputChatBox("REMOVED")
 	exports.global:removeAnimation(thePlayer)
 end
 

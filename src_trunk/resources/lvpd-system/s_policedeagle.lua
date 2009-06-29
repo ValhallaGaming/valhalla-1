@@ -14,7 +14,7 @@ function tazerFired(x, y, z, target)
 		if (isElement(target) and getElementType(target)=="player") then
 			setElementData(target, "tazed", 1)
 			toggleAllControls(target, false, true, false)
-			exports.global:applyAnimation(target, "ped", "FLOOR_hit_f", 1.0, 2.0, 0.0, true, false, true)
+			exports.global:applyAnimation(target, "ped", "FLOOR_hit_f", -1, false, false, true)
 			setTimer(removeAnimation, 10005, 1, target)
 		end
 	end

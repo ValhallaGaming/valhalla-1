@@ -9,6 +9,7 @@ function applyAnimation(thePlayer, block, name, animtime, loop, updatePosition, 
 		setElementData(thePlayer, "forcedanimation", forced)
 		setElementData(thePlayer, "animation", true)
 		local setanim = setPedAnimation(thePlayer, block, name, animtime, loop, updatePosition, false)
+		setTimer(setPedAnimation, 50, 2, thePlayer, block, name, animtime, loop, updatePosition, false)
 		return setanim
 	else
 		return false

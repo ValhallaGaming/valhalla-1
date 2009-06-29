@@ -3,7 +3,7 @@ function applyAnimation(thePlayer, block, name, animtime, loop, updatePosition, 
 	if loop==nil then loop=true end
 	if updatePosition==nil then updatePosition=true end
 	if forced==nil then forced=true end
-	
+
 	if (isElement(thePlayer) and getElementType(thePlayer)=="player") then
 		toggleAllControls(thePlayer, false, true, false)
 		setElementData(thePlayer, "forcedanimation", forced)
@@ -29,6 +29,7 @@ function removeAnimation(thePlayer)
 		setElementData(thePlayer, "forcedanimation", false)
 		setElementData(thePlayer, "animation", false)
 		toggleAllControls(thePlayer, true, true, false)
+		setPedAnimation(thePlayer)
 		return setanim
 	else
 		return false

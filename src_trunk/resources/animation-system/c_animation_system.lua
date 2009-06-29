@@ -13,8 +13,6 @@ function onRender()
 	if not (getPedAnimation(getLocalPlayer())) and (anim) then
 		anim = false
 		toggleAllControls(true, true, false)
-		--setPedFrozen(getLocalPlayer(), false)
-		--setPedControlState(getLocalPlayer(), "aim_weapon", false)
 	end
 end
 addEventHandler("onClientRender", getRootElement(), onRender)

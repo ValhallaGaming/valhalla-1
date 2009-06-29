@@ -25,8 +25,8 @@ function showEmploymentWindow()
 	guiGridListSetItemText(jobList, rowtaxi, column, "Taxi Driver", false, false)
 	
 	-- STREET CLEANER
-	local rowstreetcleaner = guiGridListAddRow(jobList)
-	guiGridListSetItemText(jobList, rowstreetcleaner, column, "Street Cleaner", false, false)
+	--local rowstreetcleaner = guiGridListAddRow(jobList)
+	--guiGridListSetItemText(jobList, rowstreetcleaner, column, "Street Cleaner", false, false)
 	
 	-- CITY MAINTENACE
 	local rowmaintenance = guiGridListAddRow(jobList)

@@ -1,3 +1,4 @@
+
 function bobHead()
 	local logged = getElementData(getLocalPlayer(), "loggedin")
 	
@@ -11,12 +12,19 @@ function bobHead()
         		setPedLookAt(value, x, y, z, 3000)
             else
                 --local rot = getPedCameraRotation(value)
+				--local rott = getPedRotation(value)
     			--local x, y, z = getElementPosition(value)
-    			--local vx = x + math.sin(math.rad(rot)) * 10
-    			--local vy = y + math.cos(math.rad(rot)) * 10
-    			--setPedLookAt(value, vx, vy, z, 3000)
+    			--local vx = x + math.sin(math.rad(rot)) * 5
+    			--local vy = y + math.cos(math.rad(rot)) * 5
+
+    			--setPedLookAt(value, vx, vy, z)
 			end
 		end
 	end
 end
 addEventHandler("onClientRender", getRootElement(), bobHead)
+
+function resetCam()
+	setCameraTarget(getLocalPlayer())
+end
+addCommandHandler("resetcam", resetCam)

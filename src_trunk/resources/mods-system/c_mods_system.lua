@@ -34,8 +34,8 @@ function applyMods(res)
 		--------------
 		-- SID sign --
 		--------------
-		SIDsign = engineLoadTXD("lv/gen_pol_vegas.txd")
-		engineImportTXD(SIDsign, 14886)
+		newPD = engineLoadTXD("lv/gen_pol_vegas.txd")
+		local import = engineImportTXD(newPD, 14887)
 		
 		------------------------
 		-- Blackfield Stadium --

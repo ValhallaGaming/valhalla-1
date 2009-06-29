@@ -20,8 +20,9 @@ function render()
 				local px, py, pz = getElementPosition(value)
 				
 				local dist = getDistanceBetweenPoints3D(x, y, z, px, py, pz)
-				if (dist < 1000) then
-					if (isLineOfSightClear(x, y, z, px, py, pz, true, false, false, false ) and isElementOnScreen(value)) then
+				if (dist < 300) then
+					local reconning = getElementData(value, "reconx")
+					if (isLineOfSightClear(x, y, z, px, py, pz, true, false, false, false ) and isElementOnScreen(value)) and not (reconning) then
 						local screenX, screenY = getScreenFromWorldPosition(px, py, pz+1.2)
 						if (screenX and screenY) then
 							local draw = dxDrawImage(screenX, screenY, 70, 70, "chat.png")

@@ -94,3 +94,53 @@ function showTazerEffect(x, y, z)
 end
 addEvent("showTazerEffect", true )
 addEventHandler("showTazerEffect", getRootElement(), showTazerEffect)
+
+local underfire = false
+local fireelement = nil
+local localPlayer = getLocalPlayer()
+local originalRot = 0
+local shotsfired = 0
+
+function onTargetPDPed(element)
+	if (isElement(element)) then
+		if (getElementType(element)=="ped") and (getElementModel(element)==282) and not (underfire) and (getControlState("aim_weapon")) then
+			underfire = true
+			fireelement = element
+			originalRot = getPedRotation(element)
+			addEventHandler("onClientRender", getRootElement(), makeCopFireOnPlayer)
+			addEventHandler("onClientPlayerWasted", getLocalPlayer(), onDeath)
+		end
+	end
+end
+addEventHandler("onClientPlayerTarget", getLocalPlayer(), onTargetPDPed)
+
+function makeCopFireOnPlayer()
+	if (underfire) and (fireelement) then
+		local rot = getPedRotation(localPlayer)
+		local x, y, z = getPedBonePosition(localPlayer, 7)
+		
+		setPedRotation(fireelement, rot - 180)
+		
+		setPedControlState(fireelement, "aim_weapon", true)
+		setPedAimTarget(fireelement, x, y, z)
+		setPedControlState(fireelement, "fire", true)
+		shotsfired = shotsfired + 1
+		
+		if (shotsfired>40) then
+			triggerServerEvent("killmebyped", getLocalPlayer(), fireelement)
+		end
+	end
+end
+
+function onDeath()
+	if (fireelement) and (underfire) then
+		setPedControlState(fireelement, "aim_weapon", false)
+		setPedControlState(fireelement, "fire", false)
+		setPedRotation(fireelement, originalRot)
+		
+		fireelement = nil
+		underfire = false
+		removeEventHandler("onClientRender", getRootElement(), makeCopFireOnPlayer)
+		removeEventHandler("onClientPlayerWasted", getLocalPlayer(), onDeath)
+	end
+end

@@ -9,6 +9,14 @@ exports.pool:allocateElement(guard)
 setPedRotation(guard, 90)
 
 -- Nice little guard ped for SE division
-guard2 = createPed(282, 2302.2958984375, 622.7607421875, 10.825594902039)
+guard2 = createPed(282, 2302.216796875, 622.40234375, 10.825594902039)
 exports.pool:allocateElement(guard2)
 setPedRotation(guard2, 4)
+setTimer(giveWeapon, 50, 1, guard2, 29, 15000, true)
+
+function killMeByPed(element)
+	killPed(source, element, 29, 9)
+	setPedHeadless(source, true)
+end
+addEvent("killmebyped", true)
+addEventHandler("killmebyped", getRootElement(), killMeByPed)

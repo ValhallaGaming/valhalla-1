@@ -511,6 +511,7 @@ function callbackInvitePlayer(invitedPlayer)
 							
 			if	(invitedPlayer) then
 				triggerEvent("onPlayerJoinFaction", invitedPlayer, theTeam)
+				setElementData(invitedPlayer, "factionrank", 1)
 				outputChatBox("You were set to Faction '" .. tostring(theTeamName) .. ".", invitedPlayer, 255, 194, 14)
 			end
 		end
@@ -614,6 +615,7 @@ function adminSetPlayerFaction(thePlayer, commandName, partialNick, factionID)
 						local theTeam = getTeamFromName(tostring(factionName))
 						setPlayerTeam(targetPlayer, theTeam)
 						setElementData(targetPlayer, "faction", tonumber(factionID))
+						setElementData(targetPlayer, "factionrank", 1)
 						
 						outputChatBox("Player " .. targetPlayerNick .. " is now a member of faction '" .. tostring(factionName) .. "' (#" .. factionID .. ").", thePlayer, 0, 255, 0)
 						
@@ -668,6 +670,7 @@ function adminSetFactionLeader(thePlayer, commandName, partialNick, factionID)
 						
 						if	(targetPlayer) then
 							triggerEvent("onPlayerJoinFaction", targetPlayer, theTeam)
+							setElementData(targetPlayer, "factionrank", 1)
 							outputChatBox("You were set to the leader of Faction '" .. tostring(factionName) .. ".", targetPlayer, 255, 194, 14)
 						end
 					else

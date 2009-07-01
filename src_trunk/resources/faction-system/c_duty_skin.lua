@@ -71,6 +71,8 @@ function changeDutySkin()
 		skins[6][1] = 279
 		skins[6][2] = 1
 		skincount = 6
+	else
+		return
 	end
 	
 	odimension = getElementDimension(localPlayer)

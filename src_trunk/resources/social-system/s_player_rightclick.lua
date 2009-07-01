@@ -70,3 +70,18 @@ function addFriend(player)
 end
 addEvent("addFriend", true)
 addEventHandler("addFriend", getRootElement(), addFriend)
+
+-- FRISKING
+function friskTakePlayerItem(player, itemID, itemValue, itemName)
+	exports.global:sendLocalMeAction(source, "takes a " .. itemName .. " from " .. getPlayerName(player) .. ".")
+	exports.global:takePlayerItem(player, itemID, itemValue)
+end
+addEvent("friskTakePlayerItem", true)
+addEventHandler("friskTakePlayerItem", getRootElement(), friskTakePlayerItem)
+
+function friskTakePlayerWeapon(player, weaponID)
+	exports.global:sendLocalMeAction(source, "takes a " .. getWeaponNameFromID(weaponID) .. " from " .. getPlayerName(player) .. ".")
+	takeWeapon(player, weaponID)
+end
+addEvent("friskTakePlayerWeapon", true)
+addEventHandler("friskTakePlayerWeapon", getRootElement(), friskTakePlayerWeapon)

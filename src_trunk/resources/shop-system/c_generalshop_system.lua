@@ -116,8 +116,7 @@ function showGeneralshopUI(shop_type, race)
 									skin = tostring(skin)
 								end
 								
-								local accountRes = getResourceFromName("account-system")
-								iClothesPreview = guiCreateStaticImage ( 320, 20, 100, 100, "img/" .. skin..".png" , false , gGShopItemTypeGrid[1], accountRes)
+								iClothesPreview = guiCreateStaticImage ( 320, 20, 100, 100, ":account-system/img/" .. skin..".png" , false , gGShopItemTypeGrid[1], accountRes)
 							end		
 						end
 					end

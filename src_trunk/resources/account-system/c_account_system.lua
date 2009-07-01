@@ -3342,13 +3342,13 @@ function displayAchievements()
 		
 		pane[key] = {}
 		pane[key][7] = guiCreateScrollPane(0.0, y, 1.0, 0.35, true, paneAchievements)
-		pane[key][6] = guiCreateStaticImage(0.0, 0.1, 0.95, 0.5, "bg.png", true, pane[key][7], resource)
+		pane[key][6] = guiCreateStaticImage(0.0, 0.1, 0.95, 0.5, ":achievement-system/bg.png", true, pane[key][7])
 		
 		pane[key][1] = guiCreateLabel(0.225, 0.1, 0.7, 0.2, tostring(name) .. " (" .. date .. ").", true, pane[key][7])
 		guiSetFont(pane[key][1], "default-bold-small")
 		guiLabelSetHorizontalAlign(pane[key][1], "center")
 		
-		pane[key][3] = guiCreateStaticImage(0.05, 0.1, 0.2, 0.5, "achievement.png", true, pane[key][7], resource)
+		pane[key][3] = guiCreateStaticImage(0.05, 0.1, 0.2, 0.5, ":achievement-system/achievement.png", true, pane[key][7], resource)
 		pane[key][4] = guiCreateLabel(0.05, 0.45, 0.2, 0.2, tostring(points) .. " Pts", true, pane[key][7])
 		guiLabelSetHorizontalAlign(pane[key][4], "center")
 		guiSetFont(pane[key][4], "default-bold-small")

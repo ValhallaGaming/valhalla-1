@@ -1353,7 +1353,7 @@ end
 addCommandHandler("gethere", getPlayer, false, false)
 
 function setMoney(thePlayer, commandName, target, money)
-	if (exports.global:isPlayerAdmin(thePlayer)) then
+	if (exports.global:isPlayerLeadAdmin(thePlayer)) then
 		if not (target) then
 			outputChatBox("SYNTAX: /" .. commandName .. " [Partial Player Nick] [Money]", thePlayer, 255, 194, 14)
 		else

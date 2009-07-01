@@ -234,9 +234,10 @@ function createMdcWindow(suspectName)
 	guiEditSetMaxLength ( guiSearchEditBox, 20 )
 	
 	if((suspectDetails[2] ~= nil) and suspectName) then
-		local accResource = getResourceFromName("CJRPaccount-system")
-		guiPhotoImage = guiCreateStaticImage (0.72, 0, 0.23, 0.3, suspectDetails[13]..".png", true, guiMdcMemo, accresource)
-		outputDebugString(tostring(accResource))
+		outputDebugString(tostring(suspectDetails[12]))
+		outputDebugString(tostring(":account-system/img/" .. suspectDetails[12]..".png"))
+		guiPhotoImage = guiCreateStaticImage (0.72, 0, 0.23, 0.3, ":account-system/img/" .. suspectDetails[12]..".png", true, guiMdcMemo)
+		outputDebugString(tostring(guiPhotoImage))
 	end
 	
 	-- ONLY SHOW THE DELETE CRIME STUFF IS THE PLAYER IS IN THE HIGH COMMAND --

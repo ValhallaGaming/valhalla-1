@@ -21,7 +21,7 @@ function dropGlowStick()
 		end
 	end
 end
-addCommandHandler("glowstick", dropGlowStick)
+--addCommandHandler("glowstick", dropGlowStick)
 
 function resetCooldown()
 	cooldown = 0

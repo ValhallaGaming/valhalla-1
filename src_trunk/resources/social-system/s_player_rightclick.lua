@@ -75,13 +75,15 @@ addEventHandler("addFriend", getRootElement(), addFriend)
 function friskTakePlayerItem(player, itemID, itemValue, itemName)
 	exports.global:sendLocalMeAction(source, "takes a " .. itemName .. " from " .. getPlayerName(player) .. ".")
 	exports.global:takePlayerItem(player, itemID, itemValue)
+	exports.global:givePlayerItem(source, itemID, itemValue)
 end
 addEvent("friskTakePlayerItem", true)
 addEventHandler("friskTakePlayerItem", getRootElement(), friskTakePlayerItem)
 
-function friskTakePlayerWeapon(player, weaponID)
+function friskTakePlayerWeapon(player, weaponID, weaponAmmo)
 	exports.global:sendLocalMeAction(source, "takes a " .. getWeaponNameFromID(weaponID) .. " from " .. getPlayerName(player) .. ".")
 	takeWeapon(player, weaponID)
+	giveWeapon(source, weaponID, 100)
 end
 addEvent("friskTakePlayerWeapon", true)
 addEventHandler("friskTakePlayerWeapon", getRootElement(), friskTakePlayerWeapon)

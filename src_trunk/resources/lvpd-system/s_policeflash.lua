@@ -23,7 +23,7 @@ function deployFlashbang(thePlayer, commandName, targetPartialNick)
 		end
 	end
 end
-addCommandHandler("flashbang", deployFlashbang, false, false)
+--addCommandHandler("flashbang", deployFlashbang, false, false)
 
 function explodeFlash(obj, x, y, z)
 	local colsphere = createColSphere(x, y, z, 7)

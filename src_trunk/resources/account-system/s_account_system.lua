@@ -161,7 +161,7 @@ function spawnCharacter(charname)
 	
 	local safecharname = mysql_escape_string(handler, charname)
 	
-	local result = mysql_query(handler, "SELECT id, x, y, z, rotation, interior_id, dimension_id, health, armor, skin, money, faction_id, cuffed, radiochannel, masked, duty, cellnumber, fightstyle, pdjail, pdjail_time, job, casualskin, weapons, ammo, items, itemvalues, car_license, gun_license, bankmoney, fingerprint, tag, hoursplayed, pdjail_station, timeinserver, restrainedobj, restrainedby FROM characters WHERE charactername='" .. charname .. "' AND account='" .. id .. "'")
+	local result = mysql_query(handler, "SELECT id, x, y, z, rotation, interior_id, dimension_id, health, armor, skin, money, faction_id, cuffed, radiochannel, masked, duty, cellnumber, fightstyle, pdjail, pdjail_time, job, casualskin, weapons, ammo, items, itemvalues, car_license, gun_license, bankmoney, fingerprint, tag, hoursplayed, pdjail_station, timeinserver, restrainedobj, restrainedby, faction_rank, dutyskin FROM characters WHERE charactername='" .. charname .. "' AND account='" .. id .. "'")
 	
 	if (result) then
 		local id = mysql_result(result, 1, 1)
@@ -211,6 +211,8 @@ function spawnCharacter(charname)
 		local timeinserver = tonumber(mysql_result(result, 1, 34))
 		local restrainedobj = tonumber(mysql_result(result, 1, 35))
 		local restrainedby = tonumber(mysql_result(result, 1, 36))
+		local factionrank = tonumber(mysql_result(result, 1, 37))
+		local dutyskin = tonumber(mysql_result(result, 1, 38))
 		
 		setElementData(source, "timeinserver", timeinserver)
 		triggerClientEvent(source, "syncTimeInServer", source, timeinserver)
@@ -363,6 +365,7 @@ function spawnCharacter(charname)
 		
 		local theTeam = getTeamFromName(tostring(factionName))
 		setPlayerTeam(source, theTeam)
+		setElementData(source, "factionrank", factionrank)
 		-- END FACTIONS
 		
 		-- number of friends etc
@@ -460,6 +463,7 @@ function spawnCharacter(charname)
 		setElementData(source, "bankmoney", bankmoney)
 		setElementData(source, "fingerprint", fingerprint)
 		setElementData(source, "tag", tag)
+		setElementData(source, "dutyskin", dutyskin)
 		
 		if (restrainedobj>0) then
 			setElementData(source, "restrainedObj", restrainedobj)

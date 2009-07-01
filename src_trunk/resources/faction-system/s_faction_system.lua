@@ -406,6 +406,7 @@ function callbackPromotePlayer(playerName, rankNum, oldRank, newRank)
 		mysql_free_result(query)
 		local thePlayer = getPlayerFromNick(playerName)
 		if(thePlayer) then -- Player is online, tell them
+			setElementData(thePlayer, "factionrank", rankNum)
 			outputChatBox(username .. " promoted you from '" .. oldRank .. "' to '" .. newRank .. "'.", thePlayer)
 		end
 		
@@ -436,6 +437,7 @@ function callbackDemotePlayer(playerName, rankNum, oldRank, newRank)
 		mysql_free_result(query)
 		local thePlayer = getPlayerFromNick(playerName)
 		if(thePlayer) then -- Player is online, tell them
+			setElementData(thePlayer, "factionrank", rankNum)
 			outputChatBox(username .. " demoted you from '" .. oldRank .. "' to '" .. newRank .. "'.", thePlayer)
 		end
 		

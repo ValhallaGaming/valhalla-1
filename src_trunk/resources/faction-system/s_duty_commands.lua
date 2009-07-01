@@ -76,18 +76,24 @@ function lvesduty(thePlayer, commandName)
 			
 			if (factionType==4) then
 				if (duty==0) then
-					outputChatBox("You are now on Medic Duty.", thePlayer)
-					exports.global:sendLocalMeAction(thePlayer, "takes their uniform from their locker.")
+					local dutyskin = getElementData(thePlayer, "dutyskin")
 					
-					setElementData(thePlayer, "casualskin", getPedSkin(thePlayer))
-					
-					takeAllWeapons(thePlayer)
-					setElementHealth(thePlayer, 100)
-					
-					giveWeapon(thePlayer, 41, 5000) -- Pepperspray
-					setPedSkin(thePlayer, 276)
-					
-					setElementData(thePlayer, "duty", 4)
+					if (dutyskin==-1) then
+						outputChatBox("You have not picked a uniform yet, press F4 to pick a uniform.", thePlayer, 255, 0, 0)
+					else
+						outputChatBox("You are now on Medic Duty.", thePlayer)
+						exports.global:sendLocalMeAction(thePlayer, "takes their uniform from their locker.")
+						
+						setElementData(thePlayer, "casualskin", getPedSkin(thePlayer))
+						
+						takeAllWeapons(thePlayer)
+						setElementHealth(thePlayer, 100)
+						
+						giveWeapon(thePlayer, 41, 5000) -- Pepperspray
+						setPedSkin(thePlayer, dutyskin)
+						
+						setElementData(thePlayer, "duty", 4)
+					end
 				elseif (duty==4) then -- ES
 					takeAllWeapons(thePlayer)
 					outputChatBox("You are now off Medic Duty.", thePlayer)
@@ -124,19 +130,25 @@ function lvfdduty(thePlayer, commandName)
 			
 			if (factionType==4) then
 				if (duty==0) then
-					outputChatBox("You are now on Firefighter Duty.", thePlayer)
-					exports.global:sendLocalMeAction(thePlayer, "takes their firefighter gear from their locker.")
+					local dutyskin = getElementData(thePlayer, "dutyskin")
 					
-					setElementData(thePlayer, "casualskin", getPedSkin(thePlayer))
-					
-					takeAllWeapons(thePlayer)
-					setElementHealth(thePlayer, 100)
-					
-					giveWeapon(thePlayer, 42, 5000) -- Fire Extinguisher
-					giveWeapon(thePlayer, 9, 1) -- Chainsaw
-					setPedSkin(thePlayer, 278)
-					
-					setElementData(thePlayer, "duty", 5)
+					if (dutyskin==-1) then
+						outputChatBox("You have not picked a uniform yet, press F4 to pick a uniform.", thePlayer, 255, 0, 0)
+					else
+						outputChatBox("You are now on Firefighter Duty.", thePlayer)
+						exports.global:sendLocalMeAction(thePlayer, "takes their firefighter gear from their locker.")
+						
+						setElementData(thePlayer, "casualskin", getPedSkin(thePlayer))
+						
+						takeAllWeapons(thePlayer)
+						setElementHealth(thePlayer, 100)
+						
+						giveWeapon(thePlayer, 42, 5000) -- Fire Extinguisher
+						giveWeapon(thePlayer, 9, 1) -- Chainsaw
+						setPedSkin(thePlayer, dutyskin)
+						
+						setElementData(thePlayer, "duty", 5)
+					end
 				elseif (duty==4) then -- ES
 					takeAllWeapons(thePlayer)
 					outputChatBox("You are now off Medic Duty.", thePlayer)
@@ -273,27 +285,33 @@ function policeduty(thePlayer, commandName)
 			
 			if (factionType==2) then
 				if (duty==0) then
-					outputChatBox("You are now on Police Duty.", thePlayer)
-					exports.global:sendLocalMeAction(thePlayer, "takes their gear from their locker.")
+					local dutyskin = getElementData(thePlayer, "dutyskin")
 					
-					setElementData(thePlayer, "casualskin", getPedSkin(thePlayer))
-					
-					takeAllWeapons(thePlayer)
-					
-					setPedArmor(thePlayer, 100)
-					setElementHealth(thePlayer, 100)
-					
-					giveWeapon(thePlayer, 3, 1) -- Nightstick
-					giveWeapon(thePlayer, 24, 1000) -- Deagle / MP Handgun
-					giveWeapon(thePlayer, 25, 400) -- Shotgun
-					giveWeapon(thePlayer, 29, 1000) -- MP5
-					giveWeapon(thePlayer, 41, 5000) -- Pepperspray
-					
-					exports.global:givePlayerItem(thePlayer, 45, 999)
-					
-					setPedSkin(thePlayer, 282)
-					
-					setElementData(thePlayer, "duty", 2)
+					if (dutyskin==-1) then
+						outputChatBox("You have not picked a uniform yet, press F4 to pick a uniform.", thePlayer, 255, 0, 0)
+					else
+						outputChatBox("You are now on Police Duty.", thePlayer)
+						exports.global:sendLocalMeAction(thePlayer, "takes their gear from their locker.")
+						
+						setElementData(thePlayer, "casualskin", getPedSkin(thePlayer))
+						
+						takeAllWeapons(thePlayer)
+						
+						setPedArmor(thePlayer, 100)
+						setElementHealth(thePlayer, 100)
+						
+						giveWeapon(thePlayer, 3, 1) -- Nightstick
+						giveWeapon(thePlayer, 24, 1000) -- Deagle / MP Handgun
+						giveWeapon(thePlayer, 25, 400) -- Shotgun
+						giveWeapon(thePlayer, 29, 1000) -- MP5
+						giveWeapon(thePlayer, 41, 5000) -- Pepperspray
+						
+						exports.global:givePlayerItem(thePlayer, 45, 999)
+						
+						setPedSkin(thePlayer, dutyskin)
+						
+						setElementData(thePlayer, "duty", 2)
+					end
 				elseif (duty==1) then -- SWAT
 					takeAllWeapons(thePlayer)
 					outputChatBox("You are now off SWAT duty.", thePlayer)
@@ -350,25 +368,31 @@ function cadetduty(thePlayer, commandName)
 			
 			if (factionType==2) then
 				if (duty==0) then
-					outputChatBox("You are now on Cadet Duty.", thePlayer)
-					exports.global:sendLocalMeAction(thePlayer, "takes their cadet gear from their locker.")
+					local dutyskin = getElementData(thePlayer, "dutyskin")
 					
-					setElementData(thePlayer, "casualskin", getPedSkin(thePlayer))
-					
-					takeAllWeapons(thePlayer)
-					
-					setPedArmor(thePlayer, 100)
-					setElementHealth(thePlayer, 100)
-					
-					giveWeapon(thePlayer, 3, 1) -- Nightstick
-					giveWeapon(thePlayer, 24, 1000) -- Deagle / MP Handgun
-					giveWeapon(thePlayer, 41, 5000) -- Pepperspray
-					
-					exports.global:givePlayerItem(thePlayer, 45, 999)
-					
-					setPedSkin(thePlayer, 71)
-					
-					setElementData(thePlayer, "duty", 3)
+					if (dutyskin==-1) then
+						outputChatBox("You have not picked a uniform yet, press F4 to pick a uniform.", thePlayer, 255, 0, 0)
+					else
+						outputChatBox("You are now on Cadet Duty.", thePlayer)
+						exports.global:sendLocalMeAction(thePlayer, "takes their cadet gear from their locker.")
+						
+						setElementData(thePlayer, "casualskin", getPedSkin(thePlayer))
+						
+						takeAllWeapons(thePlayer)
+						
+						setPedArmor(thePlayer, 100)
+						setElementHealth(thePlayer, 100)
+						
+						giveWeapon(thePlayer, 3, 1) -- Nightstick
+						giveWeapon(thePlayer, 24, 1000) -- Deagle / MP Handgun
+						giveWeapon(thePlayer, 41, 5000) -- Pepperspray
+						
+						exports.global:givePlayerItem(thePlayer, 45, 999)
+						
+						setPedSkin(thePlayer, dutyskin)
+						
+						setElementData(thePlayer, "duty", 3)
+					end
 				elseif (duty==1) then -- SWAT
 					takeAllWeapons(thePlayer)
 					outputChatBox("You are now off SWAT duty.", thePlayer)

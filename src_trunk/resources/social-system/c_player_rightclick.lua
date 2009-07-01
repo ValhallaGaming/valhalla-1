@@ -68,7 +68,7 @@ addEventHandler("displayPlayerMenu", getRootElement(), showPlayerMenu)
 --------------------
 function crestrainPlayer(button, state, x, y)
 	if (button=="left") then
-		if (exports.global:cdoesPlayerHaveItem(player, 45, -1) or exports.global:cdoesPlayerHaveItem(player, 46, -1)) then
+		if (exports.global:cdoesPlayerHaveItem(getLocalPlayer(), 45, -1) or exports.global:cdoesPlayerHaveItem(getLocalPlayer(), 46, -1)) then
 			local restrained = getElementData(player, "restrain")
 			
 			if (restrained==1) then

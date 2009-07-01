@@ -360,6 +360,7 @@ end
 
 function destroyItem(itemID, itemValue, itemName, isWeapon)
 	outputChatBox("You destroyed a " .. itemName .. ".", source, 255, 194, 14)
+	exports.global:sendLocalMeAction(source, "destroyed a " .. itemName .. ".")
 	if not (isWeapon) then
 		exports.global:takePlayerItem(source, tonumber(itemID), tonumber(itemValue))
 		

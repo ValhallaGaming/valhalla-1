@@ -53,10 +53,6 @@ function showPlayerMenu(targetPlayer, friends, description)
 	
 	local factiontype = getElementData(faction, "type")
 	
-	if (factiontype~=2) then
-		guiSetEnabled(bFrisk, false)
-	end
-	
 	-- RESTRAIN
 	local cuffed = getElementData(player, "restrain")
 	
@@ -67,10 +63,6 @@ function showPlayerMenu(targetPlayer, friends, description)
 		bRestrain = guiCreateButton(0.555, 0.25, 0.45, 0.1, "Unrestrain", true, wRightClick)
 		addEventHandler("onClientGUIClick", bRestrain, cunrestrainPlayer, false)
 	end
-	
-	if (factiontype~=2) then
-		guiSetEnabled(bRestrain, false)
-	end
 end
 addEvent("displayPlayerMenu", true)
 addEventHandler("displayPlayerMenu", getRootElement(), showPlayerMenu)
@@ -80,13 +72,26 @@ addEventHandler("displayPlayerMenu", getRootElement(), showPlayerMenu)
 --------------------
 function crestrainPlayer(button, state, x, y)
 	if (button=="left") then
-		local cuffed = getElementData(player, "restrain")
-		
-		if (cuffed==1) then
-			outputChatbox("This player is already restrained.", 255, 0, 0)
-			hidePlayerMenu()
+		if (exports.global:cdoesPlayerHaveItem(player, 45, -1) or exports.global:cdoesPlayerHaveItem(player, 46, -1)) then
+			local restrained = getElementData(player, "restrain")
+			
+			if (restrained==1) then
+				outputChatBox("This player is already restrained.", 255, 0, 0)
+				hidePlayerMenu()
+			else
+				local restrainedObj
+				
+				if (exports.global:cdoesPlayerHaveItem(player, 45, -1)) then
+					restrainedObj = 45
+				elseif (exports.global:cdoesPlayerHaveItem(player, 46, -1)) then
+					restrainedObj = 46
+				end
+					
+				triggerServerEvent("restrainPlayer", getLocalPlayer(), player, restrainedObj)
+				hidePlayerMenu()
+			end
 		else
-			triggerServerEvent("restrainPlayer", getLocalPlayer(), player)
+			outputChatBox("You have no items to restrain with.", 255, 0, 0)
 			hidePlayerMenu()
 		end
 	end
@@ -94,14 +99,22 @@ end
 
 function cunrestrainPlayer(button, state, x, y)
 	if (button=="left") then
-		local cuffed = getElementData(player, "restrain")
+		local restrained = getElementData(player, "restrain")
 		
-		if (cuffed==0) then
-			outputChatbox("This player is not restrained.", 255, 0, 0)
+		if (restrained==0) then
+			outputChatBox("This player is not restrained.", 255, 0, 0)
 			hidePlayerMenu()
 		else
-			triggerServerEvent("unrestrainPlayer", getLocalPlayer(), player)
-			hidePlayerMenu()
+			local restrainedBy = getElementData(player, "restrainedBy")
+			local restrainedObj = getElementData(player, "restrainedObj")
+			local dbid = getElementData(getLocalPlayer(), "dbid")
+			
+			if (dbid==restrainedBy) or (restrainedObj==46) then
+				triggerServerEvent("unrestrainPlayer", getLocalPlayer(), player, restrainedObj)
+				hidePlayerMenu()
+			else
+				outputChatBox("You do not have the keys to these handcuffs.", 255, 0, 0)
+			end
 		end
 	end
 end

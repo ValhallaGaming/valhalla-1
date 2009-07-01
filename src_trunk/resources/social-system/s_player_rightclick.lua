@@ -87,9 +87,10 @@ addEvent("friskTakePlayerWeapon", true)
 addEventHandler("friskTakePlayerWeapon", getRootElement(), friskTakePlayerWeapon)
 
 -- RESTRAINING
-function restrainPlayer(player)
+function restrainPlayer(player, restrainedObj)
 	local username = getPlayerName(source)
 	local targetPlayerName = getPlayerName(player)
+	local dbid = getElementData(source, "dbid")
 	
 	outputChatBox("You have been restrained by " .. username .. ".", player)
 	outputChatBox("You are restraining " .. targetPlayerName .. ".", source)
@@ -102,11 +103,16 @@ function restrainPlayer(player)
 	toggleControl(player, "brake_reverse", false)
 	toggleControl(player, "aim_weapon", false)
 	setElementData(player, "restrain", 1)
+	setElementData(player, "restrainedObj", restrainedObj)
+	setElementData(player, "restrainedBy", dbid)
+
+	exports.global:takePlayerItem(source, restrainedObj, -1)
+	exports.global:removeAnimation(player)
 end
 addEvent("restrainPlayer", true)
 addEventHandler("restrainPlayer", getRootElement(), restrainPlayer)
 
-function unrestrainPlayer(player)
+function unrestrainPlayer(player, restrainedObj)
 	local username = getPlayerName(source)
 	local targetPlayerName = getPlayerName(player)
 	
@@ -122,6 +128,7 @@ function unrestrainPlayer(player)
 	toggleControl(player, "aim_weapon", true)
 	setElementData(player, "restrain", 0)
 	
+	exports.global:givePlayerItem(source, restrainedObj, 1)
 	exports.global:removeAnimation(player)
 end
 addEvent("unrestrainPlayer", true)

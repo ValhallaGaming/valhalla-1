@@ -77,6 +77,8 @@ function getItemDescription(itemID)
 	elseif (itemID==42) then return "100milligrams of yellow liquid."
 	elseif (itemID==43) then return "10mg of phencyclidine powder."
 	elseif (itemID==44) then return "A small chemistry set."
+	elseif (itemID==45) then return "A pair of metal handcuffs."
+	elseif (itemID==46) then return "A long rope."
 	else return false 
 	end
 end
@@ -178,6 +180,10 @@ function getItemType(itemID)
 		return 3
 	elseif (itemID==44) then
 		return 3
+	elseif (itemID==45) then
+		return 4
+	elseif (itemID==46) then
+		return 4
 	else
 		return false
 	end
@@ -290,7 +296,6 @@ function showInventory()
 				end
 			end
 		end
-		
 		tabPanel = guiCreateTabPanel(0.025, 0.05, 0.95, 0.7, true, wItems)
 		tabItems = guiCreateTab("Items", tabPanel)
 		tabWeapons = guiCreateTab("Weapons", tabPanel)

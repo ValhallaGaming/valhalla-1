@@ -233,6 +233,8 @@ function getItemsForSale(shop_type, race)
 		item[5] = {"Uzi", "A small micro-uzi - comes with 250 ammo.", "450", 28, 250, 1,true,190}
 		item[6] = {"Tec-9", "A Tec-9 micro-uzi - comes with 250 ammo", "500", 32, 250, 1,true,300}
 		item[7] = {"Country Rifle", "A country rifle - comes with 30 ammo", "750", 33, 30, 1,true,600}
+		item[8] = {"Body Armor", "Kevlar Body armor", "500", 999, 0, 1,true,600}
+		item[9] = {"Hancuffs", "A metal pair of handcuffs.", "90", 45, 1,1,false,2}
 	
 	-- food + drink
 	elseif(shop_type == 3) then

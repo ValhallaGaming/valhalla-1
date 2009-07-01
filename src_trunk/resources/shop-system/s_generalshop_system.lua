@@ -273,6 +273,14 @@ function givePlayerBoughtItem(itemID, itemValue, theCost, isWeapon, name, supply
 				
 				exports.global:givePlayerAchievement(source, 20)
 			else
+				if (itemID==999) then
+					setPedArmor(source, 50)
+					exports.global:takePlayerSafeMoney(source, tonumber(theCost))
+					outputChatBox("You bought a " .. name .. ".", source, 255, 194, 14)
+					outputChatBox("You have $"..getElementData(source, "money").." left in your wallet.", source, 255, 194, 14)
+					return
+				end
+				
 				if (itemID==28) or (itemID==30) or (itemID==32) then
 					-- licensing check
 					local gunlicense = getElementData(source, "license.gun")

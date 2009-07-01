@@ -1,6 +1,6 @@
 
 function SpikesOnGround(theElement, matchingDimension)
-	if(getElementType(theElement) == "vehicle") then
+	if(getElementType(theElement) == "vehicle") and (getVehicleController(theElement)==getLocalPlayer()) then
 		local luck
 		luck = math.random(1, 4)
 		if(luck ~= 1) then

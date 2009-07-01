@@ -83,7 +83,7 @@ function cuffPlayer(thePlayer, commandName, targetPartialNick)
 		end
 	end
 end
-addCommandHandler("cuff", cuffPlayer, false, false)
+--addCommandHandler("cuff", cuffPlayer, false, false)
 
 ----------------------[UNCUFF]--------------------
 function uncuffPlayer(thePlayer, commandName, targetPartialNick)
@@ -140,7 +140,7 @@ function uncuffPlayer(thePlayer, commandName, targetPartialNick)
 		end
 	end
 end
-addCommandHandler("uncuff", uncuffPlayer, false, false)
+--addCommandHandler("uncuff", uncuffPlayer, false, false)
 
 -- /fingerprint
 function fingerprintPlayer(thePlayer, commandName, targetPlayerNick)

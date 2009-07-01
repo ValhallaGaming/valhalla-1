@@ -131,6 +131,8 @@ function unrestrainPlayer(player, restrainedObj)
 	toggleControl(player, "brake_reverse", true)
 	toggleControl(player, "aim_weapon", true)
 	setElementData(player, "restrain", 0)
+	removeElementData(player, "restrainedBy")
+	removeElementData(player, "restrainedObj")
 	
 	exports.global:givePlayerItem(source, restrainedObj, 1)
 	

@@ -41,7 +41,6 @@ function F1RPhelp( key, keyState )
 
 			---------
 			guiCreateLabel(0.02,0.04,0.94,0.92,contents1,true,tabRules)
-			guiCreateScrollBar(0.95, 0.1, 1, 0.05, true, tabRules)
 			guiCreateLabel(0.02,0.04,0.94,0.92,contents2,true,tabOverview)
 			guiCreateLabel(0.02,0.04,0.94,0.92,contents3,true,tabPowergaming)
 			guiCreateLabel(0.02,0.04,0.94,0.92,contents4,true,tabMetagaming)

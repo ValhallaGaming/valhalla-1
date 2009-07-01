@@ -234,10 +234,7 @@ function createMdcWindow(suspectName)
 	guiEditSetMaxLength ( guiSearchEditBox, 20 )
 	
 	if((suspectDetails[2] ~= nil) and suspectName) then
-		outputDebugString(tostring(suspectDetails[12]))
-		outputDebugString(tostring(":account-system/img/" .. suspectDetails[12]..".png"))
 		guiPhotoImage = guiCreateStaticImage (0.72, 0, 0.23, 0.3, ":account-system/img/" .. suspectDetails[12]..".png", true, guiMdcMemo)
-		outputDebugString(tostring(guiPhotoImage))
 	end
 	
 	-- ONLY SHOW THE DELETE CRIME STUFF IS THE PLAYER IS IN THE HIGH COMMAND --

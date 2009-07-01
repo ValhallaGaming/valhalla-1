@@ -85,3 +85,44 @@ function friskTakePlayerWeapon(player, weaponID)
 end
 addEvent("friskTakePlayerWeapon", true)
 addEventHandler("friskTakePlayerWeapon", getRootElement(), friskTakePlayerWeapon)
+
+-- RESTRAINING
+function restrainPlayer(player)
+	local username = getPlayerName(source)
+	local targetPlayerName = getPlayerName(player)
+	
+	outputChatBox("You have been restrained by " .. username .. ".", player)
+	outputChatBox("You are restraining " .. targetPlayerName .. ".", source)
+	toggleControl(player, "sprint", false)
+	toggleControl(player, "fire", false)
+	toggleControl(player, "jump", false)
+	toggleControl(player, "next_weapon", false)
+	toggleControl(player, "previous_weapon", false)
+	toggleControl(player, "accelerate", false)
+	toggleControl(player, "brake_reverse", false)
+	toggleControl(player, "aim_weapon", false)
+	setElementData(player, "restrain", 1)
+end
+addEvent("restrainPlayer", true)
+addEventHandler("restrainPlayer", getRootElement(), restrainPlayer)
+
+function unrestrainPlayer(player)
+	local username = getPlayerName(source)
+	local targetPlayerName = getPlayerName(player)
+	
+	outputChatBox("You have been unrestrained by " .. username .. ".", player)
+	outputChatBox("You are unrestraining " .. targetPlayerName .. ".", source)
+	toggleControl(player, "sprint", true)
+	toggleControl(player, "fire", true)
+	toggleControl(player, "jump", true)
+	toggleControl(player, "next_weapon", true)
+	toggleControl(player, "previous_weapon", true)
+	toggleControl(player, "accelerate", true)
+	toggleControl(player, "brake_reverse", true)
+	toggleControl(player, "aim_weapon", true)
+	setElementData(player, "restrain", 0)
+	
+	exports.global:removeAnimation(player)
+end
+addEvent("unrestrainPlayer", true)
+addEventHandler("unrestrainPlayer", getRootElement(), unrestrainPlayer)

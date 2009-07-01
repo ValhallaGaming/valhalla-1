@@ -105,15 +105,6 @@ function respawnPlayer(thePlayer)
 			
 			local theSkin = getPedSkin(thePlayer)
 			
-			-- Resetting the duty system
-			local duty = tonumber(getElementData(thePlayer, "duty"))
-
-			if (duty>0) then
-				setElementData(thePlayer, "duty", 0)
-			
-				theSkin = getElementData(thePlayer, "casualskin")
-			end
-			
 			local theTeam = getPlayerTeam(thePlayer)
 			
 			local fat = getPedStat(thePlayer, 21)

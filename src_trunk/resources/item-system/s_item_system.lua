@@ -319,7 +319,7 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 		elseif (itemID>=34 and itemID<=44) then -- DRUGS
 			exports.global:takePlayerItem(source, itemID, -1)
 			exports.global:sendLocalMeAction(source, "takes some " .. itemName .. ".")
-		elseif (itemID==45) or (itemID==46) then
+		elseif (itemID==45) or (itemID==46) or (itemID==47) then
 			outputChatBox("Right click a player to use this item.", source, 255, 0, 0)
 		else
 			outputChatBox("Error 800001 - Report on http://bugs.valhallagaming.net", source, 255, 0, 0)

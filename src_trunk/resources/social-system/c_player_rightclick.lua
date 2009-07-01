@@ -49,10 +49,6 @@ function showPlayerMenu(targetPlayer, friends, description)
 	bFrisk = guiCreateButton(0.05, 0.25, 0.45, 0.1, "Frisk", true, wRightClick)
 	addEventHandler("onClientGUIClick", bFrisk, cfriskPlayer, false)
 	
-	local faction = getPlayerTeam(getLocalPlayer())
-	
-	local factiontype = getElementData(faction, "type")
-	
 	-- RESTRAIN
 	local cuffed = getElementData(player, "restrain")
 	

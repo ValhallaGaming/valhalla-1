@@ -161,7 +161,7 @@ function spawnCharacter(charname)
 	
 	local safecharname = mysql_escape_string(handler, charname)
 	
-	local result = mysql_query(handler, "SELECT id, x, y, z, rotation, interior_id, dimension_id, health, armor, skin, money, faction_id, cuffed, radiochannel, masked, duty, cellnumber, fightstyle, pdjail, pdjail_time, job, casualskin, weapons, ammo, items, itemvalues, car_license, gun_license, bankmoney, fingerprint, tag, hoursplayed, pdjail_station, timeinserver FROM characters WHERE charactername='" .. charname .. "' AND account='" .. id .. "'")
+	local result = mysql_query(handler, "SELECT id, x, y, z, rotation, interior_id, dimension_id, health, armor, skin, money, faction_id, cuffed, radiochannel, masked, duty, cellnumber, fightstyle, pdjail, pdjail_time, job, casualskin, weapons, ammo, items, itemvalues, car_license, gun_license, bankmoney, fingerprint, tag, hoursplayed, pdjail_station, timeinserver, restrainedobj, restrainedby FROM characters WHERE charactername='" .. charname .. "' AND account='" .. id .. "'")
 	
 	if (result) then
 		local id = mysql_result(result, 1, 1)
@@ -209,6 +209,8 @@ function spawnCharacter(charname)
 		local pdjail_station = tonumber(mysql_result(result, 1, 33))
 		
 		local timeinserver = tonumber(mysql_result(result, 1, 34))
+		local restrainedobj = tonumber(mysql_result(result, 1, 35))
+		local restrainedby = tonumber(mysql_result(result, 1, 36))
 		
 		setElementData(source, "timeinserver", timeinserver)
 		triggerClientEvent(source, "syncTimeInServer", source, timeinserver)
@@ -458,6 +460,14 @@ function spawnCharacter(charname)
 		setElementData(source, "bankmoney", bankmoney)
 		setElementData(source, "fingerprint", fingerprint)
 		setElementData(source, "tag", tag)
+		
+		if (restrainedobj>0) then
+			setElementData(source, "restrainedObj", restrainedobj)
+		end
+		
+		if (restrainedby>0) then
+			setElementData(source, "restrainedBy", restrainedby)
+		end
 		
 		-- Let's give them their weapons
 		if (tostring(weapons)~=tostring(mysql_null())) and (tostring(ammo)~=tostring(mysql_null())) then -- if player has weapons saved

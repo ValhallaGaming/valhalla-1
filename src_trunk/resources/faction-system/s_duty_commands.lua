@@ -208,7 +208,11 @@ function swatduty(thePlayer, commandName)
 					giveWeapon(thePlayer, 34, 400) -- Sniper
 					giveWeapon(thePlayer, 17, 10) -- Tear gas
 					
-					outputChatBox("You can use /flashbang to throw a flashbang and /glowstick to drop a glowstick.", thePlayer)
+					exports.global:givePlayerItem(thePlayer, 26, 999)
+					exports.global:givePlayerItem(thePlayer, 27, 999)
+					exports.global:givePlayerItem(thePlayer, 28, 999)
+					exports.global:givePlayerItem(thePlayer, 29, 999)
+					exports.global:givePlayerItem(thePlayer, 45, 999)
 					
 					setPedSkin(thePlayer, 285)
 					
@@ -220,6 +224,12 @@ function swatduty(thePlayer, commandName)
 					setPedArmor(thePlayer, 0)
 					setElementData(thePlayer, "duty", 0)
 					
+					exports.global:takePlayerItem(thePlayer, 26, 999)
+					exports.global:takePlayerItem(thePlayer, 27, 999)
+					exports.global:takePlayerItem(thePlayer, 28, 999)
+					exports.global:takePlayerItem(thePlayer, 29, 999)
+					exports.global:takePlayerItem(thePlayer, 45, -1)
+					
 					local casualskin = getElementData(thePlayer, "casualskin")
 					setPedSkin(thePlayer, casualskin)
 				elseif (duty==2) then
@@ -229,6 +239,8 @@ function swatduty(thePlayer, commandName)
 					setPedArmor(thePlayer, 0)
 					setElementData(thePlayer, "duty", 0)
 					
+					exports.global:takePlayerItem(thePlayer, 45, -1)
+					
 					local casualskin = getElementData(thePlayer, "casualskin")
 					setPedSkin(thePlayer, casualskin)
 				elseif (duty==3) then -- CADET
@@ -237,6 +249,8 @@ function swatduty(thePlayer, commandName)
 					exports.global:sendLocalMeAction(thePlayer, "puts their cadet gear into their locker.")
 					setPedArmor(thePlayer, 0)
 					setElementData(thePlayer, "duty", 0)
+					
+					exports.global:takePlayerItem(thePlayer, 45, -1)
 					
 					local casualskin = getElementData(thePlayer, "casualskin")
 					setPedSkin(thePlayer, casualskin)
@@ -275,6 +289,8 @@ function policeduty(thePlayer, commandName)
 					giveWeapon(thePlayer, 29, 1000) -- MP5
 					giveWeapon(thePlayer, 41, 5000) -- Pepperspray
 					
+					exports.global:givePlayerItem(thePlayer, 45, 999)
+					
 					setPedSkin(thePlayer, 282)
 					
 					setElementData(thePlayer, "duty", 2)
@@ -285,6 +301,12 @@ function policeduty(thePlayer, commandName)
 					setPedArmor(thePlayer, 0)
 					setElementData(thePlayer, "duty", 0)
 					
+					exports.global:takePlayerItem(thePlayer, 26, 999)
+					exports.global:takePlayerItem(thePlayer, 27, 999)
+					exports.global:takePlayerItem(thePlayer, 28, 999)
+					exports.global:takePlayerItem(thePlayer, 29, 999)
+					exports.global:takePlayerItem(thePlayer, 45, -1)
+					
 					local casualskin = getElementData(thePlayer, "casualskin")
 					setPedSkin(thePlayer, casualskin)
 				elseif (duty==2) then
@@ -294,6 +316,8 @@ function policeduty(thePlayer, commandName)
 					setPedArmor(thePlayer, 0)
 					setElementData(thePlayer, "duty", 0)
 					
+					exports.global:takePlayerItem(thePlayer, 45, -1)
+					
 					local casualskin = getElementData(thePlayer, "casualskin")
 					setPedSkin(thePlayer, casualskin)
 				elseif (duty==3) then -- CADET
@@ -302,6 +326,8 @@ function policeduty(thePlayer, commandName)
 					exports.global:sendLocalMeAction(thePlayer, "puts their cadet gear into their locker.")
 					setPedArmor(thePlayer, 0)
 					setElementData(thePlayer, "duty", 0)
+					
+					exports.global:takePlayerItem(thePlayer, 45, -1)
 					
 					local casualskin = getElementData(thePlayer, "casualskin")
 					setPedSkin(thePlayer, casualskin)
@@ -338,6 +364,8 @@ function cadetduty(thePlayer, commandName)
 					giveWeapon(thePlayer, 24, 1000) -- Deagle / MP Handgun
 					giveWeapon(thePlayer, 41, 5000) -- Pepperspray
 					
+					exports.global:givePlayerItem(thePlayer, 45, 999)
+					
 					setPedSkin(thePlayer, 71)
 					
 					setElementData(thePlayer, "duty", 3)
@@ -348,6 +376,12 @@ function cadetduty(thePlayer, commandName)
 					setPedArmor(thePlayer, 0)
 					setElementData(thePlayer, "duty", 0)
 					
+					exports.global:takePlayerItem(thePlayer, 26, 999)
+					exports.global:takePlayerItem(thePlayer, 27, 999)
+					exports.global:takePlayerItem(thePlayer, 28, 999)
+					exports.global:takePlayerItem(thePlayer, 29, 999)
+					exports.global:takePlayerItem(thePlayer, 45, -1)
+					
 					local casualskin = getElementData(thePlayer, "casualskin")
 					setPedSkin(thePlayer, casualskin)
 				elseif (duty==2) then -- POLICE
@@ -357,6 +391,8 @@ function cadetduty(thePlayer, commandName)
 					setPedArmor(thePlayer, 0)
 					setElementData(thePlayer, "duty", 0)
 					
+					exports.global:takePlayerItem(thePlayer, 45, -1)
+					
 					local casualskin = getElementData(thePlayer, "casualskin")
 					setPedSkin(thePlayer, casualskin)
 				elseif (duty==3) then -- CADET
@@ -365,6 +401,8 @@ function cadetduty(thePlayer, commandName)
 					exports.global:sendLocalMeAction(thePlayer, "puts their cadet gear into their locker.")
 					setPedArmor(thePlayer, 0)
 					setElementData(thePlayer, "duty", 0)
+					
+					exports.global:takePlayerItem(thePlayer, 45, -1)
 					
 					local casualskin = getElementData(thePlayer, "casualskin")
 					setPedSkin(thePlayer, casualskin)

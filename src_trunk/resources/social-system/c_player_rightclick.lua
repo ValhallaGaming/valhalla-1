@@ -77,9 +77,9 @@ function crestrainPlayer(button, state, x, y)
 			else
 				local restrainedObj
 				
-				if (exports.global:cdoesPlayerHaveItem(player, 45, -1)) then
+				if (exports.global:cdoesPlayerHaveItem(getLocalPlayer(), 45, -1)) then
 					restrainedObj = 45
-				elseif (exports.global:cdoesPlayerHaveItem(player, 46, -1)) then
+				elseif (exports.global:cdoesPlayerHaveItem(getLocalPlayer(), 46, -1)) then
 					restrainedObj = 46
 				end
 					

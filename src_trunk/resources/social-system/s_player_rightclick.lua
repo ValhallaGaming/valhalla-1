@@ -94,6 +94,7 @@ function restrainPlayer(player, restrainedObj)
 	local targetPlayerName = getPlayerName(player)
 	local dbid = getElementData(source, "dbid")
 	
+	
 	outputChatBox("You have been restrained by " .. username .. ".", player)
 	outputChatBox("You are restraining " .. targetPlayerName .. ".", source)
 	toggleControl(player, "sprint", false)

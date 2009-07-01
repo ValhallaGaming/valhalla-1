@@ -99,6 +99,7 @@ function adminUncuff(thePlayer, commandName, targetPlayer)
 			else
 				local targetPlayerName = getPlayerName(targetPlayer)
 				local logged = getElementData(targetPlayer, "loggedin")
+				local username = getPlayerName(thePlayer)
 				
 				if (logged==0) then
 					outputChatBox("Player is not logged in.", thePlayer, 255, 0, 0)

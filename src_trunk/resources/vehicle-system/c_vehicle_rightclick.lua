@@ -158,11 +158,11 @@ function takeItemFromVehicle(button, state)
 			if not (exports.global:cdoesPlayerHaveSpaceForItem(localPlayer)) and (itemName) then
 				outputChatBox("Your inventory is full.", 255, 0, 0)
 			else
-				if (itemName) and not (exports.global:cdoesVehicleHaveItem(localPlayer, itemID, itemValue)) then
-					outputChatBox("This vehicle no longer has that item.", 255, 0, 0)
-					hideVehicleMenu()
-					return
-				end
+				--if (itemName) and not (exports.global:cdoesVehicleHaveItem(localPlayer, tonumber(itemID), tonumber(itemValue))) then
+				--	outputChatBox("This vehicle no longer has that item.", 255, 0, 0)
+				--	hideVehicleMenu()
+				--	return
+				--end
 
 				if (itemName) then -- ITEM
 					guiGridListRemoveRow(gVehicleItems, row)

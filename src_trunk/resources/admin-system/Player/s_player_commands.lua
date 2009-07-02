@@ -110,11 +110,11 @@ function lookPlayer(thePlayer, commandName, targetPlayer)
 				local height = tostring(mysql_result(query, 1, 4))
 				mysql_free_result(query)
 				
-				outputChatBox("~~~~~~~~~~~~ " .. targetPlayerName .. " ~~~~~~~~~~~~", 255, 194, 14)
-				outputChatBox("Age: " .. age .. " years old", 255, 194, 14)
-				outputChatBox("Weight: " .. weight .. "cm", 255, 194, 14)
-				outputChatBox("Height: " .. height .. "cm", 255, 194, 14)
-				outputChatBox("Description: " .. description, 255, 194, 14)
+				outputChatBox("~~~~~~~~~~~~ " .. targetPlayerName .. " ~~~~~~~~~~~~", thePlayer, 255, 194, 14)
+				outputChatBox("Age: " .. age .. " years old", thePlayer, 255, 194, 14)
+				outputChatBox("Weight: " .. weight .. "cm", thePlayer, 255, 194, 14)
+				outputChatBox("Height: " .. height .. "cm", thePlayer, 255, 194, 14)
+				outputChatBox("Description: " .. description, thePlayer, 255, 194, 14)
 			end
 		end
 	end

@@ -321,6 +321,8 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 			exports.global:sendLocalMeAction(source, "takes some " .. itemName .. ".")
 		elseif (itemID==45) or (itemID==46) or (itemID==47) then
 			outputChatBox("Right click a player to use this item.", source, 255, 0, 0)
+		elseif (itemID==48) then
+			outputChatBox("Your inventory is extended.", source, 0, 255, 0)
 		else
 			outputChatBox("Error 800001 - Report on http://bugs.valhallagaming.net", source, 255, 0, 0)
 		end

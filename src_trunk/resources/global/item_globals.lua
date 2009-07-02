@@ -128,7 +128,7 @@ end
 function doesVehicleHaveSpaceForItem(theVehicle)
 	local items = getElementData(theVehicle, "items")
 	
-	for i=1, 10 do
+	for i=1, 20 do
 		if not (items) or not (itemvalues) then -- no items
 			return true
 		else
@@ -145,7 +145,7 @@ function doesVehicleHaveItem(theVehicle, itemID, itemValue)
 	local items = getElementData(theVehicle, "items")
 	local itemvalues = getElementData(theVehicle, "itemvalues")
 
-	for i=1, 10 do
+	for i=1, 20 do
 		if not (items) or not (itemvalues) then -- no items
 			return false
 		else
@@ -172,12 +172,12 @@ end
 function giveVehicleItem(theVehicle, itemID, itemValue)
 	local items = getElementData(theVehicle, "items")
 	local itemvalues = getElementData(theVehicle, "itemvalues")
-	
+
 	local count = 0
 	if not (items) or not (itemvalues) then -- no items
 		count = 0
 	else
-		for i=1, 10 do
+		for i=1, 20 do
 			local token = gettok(items, i, string.byte(','))
 			
 			if (token) then
@@ -188,7 +188,7 @@ function giveVehicleItem(theVehicle, itemID, itemValue)
 		end
 	end
 	
-	if (count==10) then
+	if (count==20) then
 		return false
 	elseif (count==0) then
 		items = itemID .. ","
@@ -196,6 +196,9 @@ function giveVehicleItem(theVehicle, itemID, itemValue)
 		
 		setElementData(theVehicle, "items", items)
 		setElementData(theVehicle, "itemvalues", itemvalues)
+		local dbid = getElementData(theVehicle, "dbid")
+		outputChatBox(tostring(dbid))
+		mysql_query(handler, "UPDATE vehicles SET items='" .. items .. "', itemvalues='" .. itemvalues .. "' WHERE id='" .. dbid .. "' LIMIT 1")
 		return true
 	else
 		items = items .. itemID .. ","
@@ -203,6 +206,9 @@ function giveVehicleItem(theVehicle, itemID, itemValue)
 		
 		setElementData(theVehicle, "items", items)
 		setElementData(theVehicle, "itemvalues", itemvalues)
+		
+		local dbid = getElementData(theVehicle, "dbid")
+		mysql_query(handler, "UPDATE vehicles SET items='" .. items .. "', itemvalues='" .. itemvalues .. "' WHERE id='" .. dbid .. "' LIMIT 1")
 		return true
 	end
 end

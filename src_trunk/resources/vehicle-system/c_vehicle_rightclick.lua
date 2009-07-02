@@ -5,7 +5,7 @@ ax, ay = nil
 localPlayer = getLocalPlayer()
 vehicle = nil
 
-wInventory, gVehicleItems, gUserItems, lYou, lVehicle, bGiveItem, bTakeItem, bCloseInventory, lPlate = nil
+wInventory, gVehicleItems, gUserItems, lYou, lVehicle, bGiveItem, bTakeItem, bCloseInventory, lPlate, UIColName, VIColName = nil
 
 -- INVENTORY
 function cVehicleInventory(button, state)
@@ -35,7 +35,7 @@ function cVehicleInventory(button, state)
 				-- PLAYER
 				---------------
 				gUserItems = guiCreateGridList(0.05, 0.15, 0.45, 0.65, true, wInventory)
-				local UIColName = guiGridListAddColumn(gUserItems, "Name", 0.9)
+				UIColName = guiGridListAddColumn(gUserItems, "Name", 0.9)
 				
 				local items = getElementData(localPlayer, "items")
 				
@@ -63,7 +63,7 @@ function cVehicleInventory(button, state)
 				-- VEHICLE
 				---------------
 				gVehicleItems = guiCreateGridList(0.5, 0.15, 0.45, 0.65, true, wInventory)
-				local VIColName = guiGridListAddColumn(gVehicleItems, "Name", 0.9)
+				VIColName = guiGridListAddColumn(gVehicleItems, "Name", 0.9)
 				
 				local items = getElementData(vehicle, "items")
 				
@@ -72,7 +72,12 @@ function cVehicleInventory(button, state)
 					if (itemID~=nil) then
 						local itemName = exports.global:cgetItemName(itemID)
 						local row = guiGridListAddRow(gVehicleItems)
-						guiGridListSetItemText(gVehicleItems, row, VIColName, tostring(itemName), false, false)
+						
+						if (itemName) then
+							guiGridListSetItemText(gVehicleItems, row, VIColName, tostring(itemName), false, false)
+						else
+							guiGridListSetItemText(gVehicleItems, row, VIColName, getWeaponNameFromID(itemID-9000), false, false)
+						end
 						guiGridListSetSortingEnabled(gVehicleItems, false)
 					else
 						break
@@ -80,6 +85,7 @@ function cVehicleInventory(button, state)
 				end
 				
 				bGiveItem = guiCreateButton(0.05, 0.81, 0.45, 0.075, "Move ---->", true, wInventory)
+				addEventHandler("onClientGUIClick", bGiveItem, moveItemToVehicle, false)
 				
 				bTakeItem = guiCreateButton(0.5, 0.81, 0.45, 0.075, "<---- Move ", true, wInventory)
 				
@@ -90,7 +96,44 @@ function cVehicleInventory(button, state)
 	end
 end
 
-
+function moveItemToVehicle(button, state)
+	if (button=="left") then
+		local row, col = guiGridListGetSelectedItem(gUserItems)
+		
+		if (row<0) then
+			outputChatBox("Please select an item first.", 255, 0, 0)
+		elseif not (exports.global:cdoesVehicleHaveSpaceForItem(vehicle)) then
+			outputChatBox("This vehicle is full.", 255, 0, 0)
+		else
+			local items = getElementData(localPlayer, "items")
+			local itemvalues = getElementData(localPlayer, "itemvalues")
+			
+			local itemID = tonumber(gettok(items, row+1, string.byte(',')))
+			local itemValue = tonumber(gettok(itemvalues, row+1, string.byte(',')))
+			local itemName = exports.global:cgetItemName(itemID)
+			
+			if (itemName) and not (exports.global:cdoesPlayerHaveItem(localPlayer, itemID, itemValue)) then
+				outputChatBox("You no longer have that item", 255, 0, 0)
+				hideVehicleMenu()
+				return
+			end
+			
+			if (itemName) then -- ITEM
+				guiGridListRemoveRow(gUserItems, row)
+				local row = guiGridListAddRow(gVehicleItems)
+				guiGridListSetItemText(gVehicleItems, row, VIColName, tostring(itemName), false, false)
+				triggerServerEvent("moveItemToVehicle", getLocalPlayer(), vehicle, itemID, itemValue, itemName)
+			else -- WEAPON
+				local weaponID = getWeaponIDFromName(guiGridListGetItemText(gUserItems, row, col))
+				local weaponAmmo = getPedTotalAmmo(localPlayer, getSlotFromWeapon(weaponID))
+				guiGridListRemoveRow(gUserItems, row)
+				local row = guiGridListAddRow(gVehicleItems)
+				guiGridListSetItemText(gVehicleItems, row, VIColName, getWeaponNameFromID(weaponID), false, false)
+				triggerServerEvent("moveWeaponToVehicle", getLocalPlayer(), vehicle, weaponID, weaponAmmo)
+			end
+		end
+	end
+end
 
 function clickVehicle(button, state, absX, absY, wx, wy, wz, element)
 	if (element) and (getElementType(element)=="vehicle") and (button=="right") and (state=="down") and not (wInventory) then

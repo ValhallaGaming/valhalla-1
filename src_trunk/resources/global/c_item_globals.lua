@@ -94,7 +94,7 @@ function cgetItemName(itemID)
 	end
 end
 
-function cDoesVehicleHaveSpaceForItem(theVehicle)
+function cdoesVehicleHaveSpaceForItem(theVehicle)
 	local items = getElementData(theVehicle, "items")
 	
 	for i=1, 20 do
@@ -114,7 +114,7 @@ function cdoesVehicleHaveItem(theVehicle, itemID, itemValue)
 	local items = getElementData(theVehicle, "items")
 	local itemvalues = getElementData(theVehicle, "itemvalues")
 
-	for i=1, 10 do
+	for i=1, 20 do
 		if not (items) or not (itemvalues) then -- no items
 			return false
 		else

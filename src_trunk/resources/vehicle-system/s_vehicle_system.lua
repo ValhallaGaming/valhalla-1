@@ -378,9 +378,10 @@ function loadAllVehicles(res)
 				local interior = tonumber(mysql_result(resultext, rowc, 32))
 				local currdimension = tonumber(mysql_result(resultext, rowc, 33))
 				local currinterior = tonumber(mysql_result(resultext, rowc, 34))
-				local items = tonumber(mysql_result(resultext, rowc, 35))
-				local itemvalues = tonumber(mysql_result(resultext, rowc, 36))
-
+				
+				local items = mysql_result(resultext, rowc, 35)
+				local itemvalues = mysql_result(resultext, rowc, 36)
+				
 				if (faction~=-1) then
 					locked = 0
 				end
@@ -484,7 +485,7 @@ function loadAllVehicles(res)
 				setElementData(veh, "job", tonumber(job))
 				setElementData(veh, "items", items)
 				setElementData(veh, "itemvalues", itemvalues)
-				
+
 				-- Interiors
 				setElementDimension(veh, currdimension)
 				setElementInterior(veh, currinterior)
@@ -891,3 +892,24 @@ function checkWaterVehicles()
 	end
 end
 setTimer(checkWaterVehicles, 600000, 0)
+
+------------------------------------------------
+-- CLIENT CALLS FROM VEHICLE RIGHT CLICK
+------------------------------------------------
+function moveItemToVehicle(vehicle, itemID, itemValue, itemName)
+	exports.global:takePlayerItem(source, itemID, itemValue)
+	exports.global:giveVehicleItem(vehicle, itemID, itemValue)
+	exports.global:sendLocalMeAction(source, "puts a " .. itemName .. " inside the " .. getVehicleName(vehicle) .. ".")
+end
+addEvent("moveItemToVehicle", true)
+addEventHandler("moveItemToVehicle", getRootElement(), moveItemToVehicle)
+
+function moveWeaponToVehicle(vehicle, weaponID, weaponAmmo)
+	takeWeapon(source, weaponID)
+
+	local give = exports.global:giveVehicleItem(vehicle, 9000+weaponID, weaponAmmo)
+	outputChatBox(tostring(give))
+	exports.global:sendLocalMeAction(source, "puts a " .. getWeaponNameFromID(weaponID) .. " inside the " .. getVehicleName(vehicle) .. ".")
+end
+addEvent("moveWeaponToVehicle", true)
+addEventHandler("moveWeaponToVehicle", getRootElement(), moveWeaponToVehicle)

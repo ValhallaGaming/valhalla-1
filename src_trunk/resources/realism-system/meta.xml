@@ -22,6 +22,8 @@
 	<file src="disc.png"/>
 	<file src="fueldisc.png"/>
 	
+	<file src="whoopee.wav"/>
+	
 	<script src="c_city_guide.lua" type="client" />
 	<file src="guide/0.png"/>
 	<file src="guide/1.png"/>

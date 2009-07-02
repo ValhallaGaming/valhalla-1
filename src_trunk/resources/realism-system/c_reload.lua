@@ -48,3 +48,9 @@ function cleanupUI()
 end
 addEvent("cleanupUI", true)
 addEventHandler("cleanupUI", getRootElement(), cleanupUI)
+
+function danielWhite()
+	outputChatBox("Easter Egg, courtesy of Daniel White <3", 255, 194, 14)
+	playSound("whoopee.wav", false)
+end
+addCommandHandler("danielwhite", danielWhite)

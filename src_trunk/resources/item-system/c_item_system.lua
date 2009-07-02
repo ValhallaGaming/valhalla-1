@@ -2,6 +2,12 @@ wItems, gItems, colSlot, colName, colValue, items, lDescription, bDropItem, bUse
 gWeapons, colWSlot, colWName, colWValue = nil
 toggleLabel, chkFood, chkKeys, chkDrugs, chkOther, chkBooks, chkClothes, chkElectronics, chkEmpty = nil
 
+wRightClick = nil
+bPickup = nil
+bCloseMenu = nil
+ax, ay = nil
+item = nil
+
 showFood = true
 showKeys = true
 showDrugs = true
@@ -11,6 +17,83 @@ showClothes = true
 showElectronics = true
 showEmpty = true
 
+function clickItem(button, state, absX, absY, wx, wy, wz, element)
+	if (element) and (getElementType(element)=="object") and (button=="right") and (state=="down") then
+		local objtype = getElementData(element, "type")
+		local pickedup = getElementData(element, "pickedup")
+		
+		if (objtype) and not (pickedup) then
+			if (objtype=="worlditem") then
+				if (wRightClick) then
+					hideItemMenu()
+				end
+				showCursor(true)
+				ax = absX
+				ay = absY
+				item = element
+				showItemMenu()
+			end
+		end
+	end
+end
+addEventHandler("onClientClick", getRootElement(), clickItem, true)
+
+function showItemMenu()
+	local id = getElementData(item, "id")
+	local itemID = getElementData(item, "itemID")
+	local itemValue = getElementData(item, "itemValue")
+	local itemName = getElementData(item, "itemName")
+	
+	wRightClick = guiCreateWindow(ax, ay, 150, 200, itemName .. " (" .. itemValue .. ")", false)
+	
+	bPickup = guiCreateButton(0.05, 0.13, 0.87, 0.1, "Pick Item Up", true, wRightClick)
+	addEventHandler("onClientGUIClick", bPickup, pickupItem, false)
+	
+	bCloseMenu = guiCreateButton(0.05, 0.27, 0.87, 0.1, "Close Menu", true, wRightClick)
+	addEventHandler("onClientGUIClick", bCloseMenu, hideItemMenu, false)
+end
+
+function hideItemMenu()
+	if (isElement(bPickup)) then
+		destroyElement(bPickup)
+	end
+	bPickup = nil
+
+	if (isElement(bCloseMenu)) then
+		destroyElement(bCloseMenu)
+	end
+	bCloseMenu = nil
+
+	if (isElement(wRightClick)) then
+		destroyElement(wRightClick)
+	end
+	wRightClick = nil
+	
+	ax = nil
+	ay = nil
+
+	item = nil
+
+	showCursor(false)
+	triggerEvent("cursorHide", getLocalPlayer())
+end
+
+function pickupItem(button, state)
+	if (button=="left") then
+		local id = getElementData(item, "id")
+		local itemID = getElementData(item, "itemID")
+		local itemValue = getElementData(item, "itemValue")
+		local itemName = getElementData(item, "itemName")
+		setElementData(item, "pickedup", true)
+		showCursor(false)
+		triggerEvent("cursorHide", getLocalPlayer())
+		triggerServerEvent("pickupItem", getLocalPlayer(), item, id, itemID, itemValue, itemName)
+		hideItemMenu()
+	end
+end
+	
+
+--[[
 function pickupItem(button, state, absoluteX, absoluteY, worldX, worldY, worldZ, clickedElement)
 	if (clickedElement) then
 		if (getElementType(clickedElement)=="object") then
@@ -24,6 +107,8 @@ function pickupItem(button, state, absoluteX, absoluteY, worldX, worldY, worldZ,
 					local itemValue = getElementData(clickedElement, "itemValue")
 					local itemName = getElementData(clickedElement, "itemName")
 					setElementData(clickedElement, "pickedup", true)
+					showCursor(false)
+					triggerEvent("cursorHide", getLocalPlayer())
 					triggerServerEvent("pickupItem", getLocalPlayer(), clickedElement, id, itemID, itemValue, itemName)
 				end
 			end
@@ -31,6 +116,9 @@ function pickupItem(button, state, absoluteX, absoluteY, worldX, worldY, worldZ,
 	end
 end
 addEventHandler("onClientClick", getRootElement(), pickupItem)
+]]--
+
+
 
 function getItemDescription(itemID)
 	if (itemID==1) then return "A plump haggis animal, straight from the hills of Scotland."

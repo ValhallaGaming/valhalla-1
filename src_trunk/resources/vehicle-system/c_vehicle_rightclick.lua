@@ -1,0 +1,154 @@
+wRightClick = nil
+bInventory = nil
+bCloseMenu = nil
+ax, ay = nil
+localPlayer = getLocalPlayer()
+vehicle = nil
+
+wInventory, gVehicleItems, gUserItems, lYou, lVehicle, bGiveItem, bTakeItem, bCloseInventory, lPlate = nil
+
+-- INVENTORY
+function cVehicleInventory(button, state)
+	if (button=="left") then
+		local locked = isVehicleLocked(vehicle)
+		
+		if (locked) then
+			outputChatBox("This vehicle is locked.", 255, 0, 0)
+		else
+			local dbid = getElementData(vehicle, "dbid")
+			
+			if (dbid<0) then
+				outputChatBox("Admin cars do not have inventories.", 255, 0, 0)
+			else
+				destroyElement(wRightClick)
+				wRightClick = nil
+				
+				wInventory = guiCreateWindow(ax, ay, 400, 300, getVehicleName(vehicle) .. " Inventory", false)
+				
+				lYou = guiCreateLabel(0.25, 0.1, 0.87, 0.05, "YOU", true, wInventory)
+				guiSetFont(lYou, "default-bold-small")
+				
+				lVehicle = guiCreateLabel(0.675, 0.1, 0.87, 0.05, "VEHICLE", true, wInventory)
+				guiSetFont(lVehicle, "default-bold-small")
+				
+				---------------
+				-- PLAYER
+				---------------
+				gUserItems = guiCreateGridList(0.05, 0.15, 0.45, 0.65, true, wInventory)
+				local UIColName = guiGridListAddColumn(gUserItems, "Name", 0.9)
+				
+				local items = getElementData(localPlayer, "items")
+				
+				for i = 1, 10 do
+					local itemID = tonumber(gettok(items, i, string.byte(',')))
+					if (itemID~=nil) then
+						local itemName = exports.global:cgetItemName(itemID)
+						local row = guiGridListAddRow(gUserItems)
+						guiGridListSetItemText(gUserItems, row, UIColName, tostring(itemName), false, false)
+						guiGridListSetSortingEnabled(gUserItems, false)
+					end
+				end
+				
+				-- WEAPONS
+				for i = 1, 12 do
+					if (getPedWeapon(localPlayer, i)>0) then
+						local itemName = getWeaponNameFromID(getPedWeapon(localPlayer, i))
+						local row = guiGridListAddRow(gUserItems)
+						guiGridListSetItemText(gUserItems, row, UIColName, tostring(itemName), false, false)
+						guiGridListSetSortingEnabled(gUserItems, false)
+					end
+				end
+				
+				---------------
+				-- VEHICLE
+				---------------
+				gVehicleItems = guiCreateGridList(0.5, 0.15, 0.45, 0.65, true, wInventory)
+				local VIColName = guiGridListAddColumn(gVehicleItems, "Name", 0.9)
+				
+				local items = getElementData(vehicle, "items")
+				
+				for i = 1, 20 do
+					local itemID = tonumber(gettok(items, i, string.byte(',')))
+					if (itemID~=nil) then
+						local itemName = exports.global:cgetItemName(itemID)
+						local row = guiGridListAddRow(gVehicleItems)
+						guiGridListSetItemText(gVehicleItems, row, VIColName, tostring(itemName), false, false)
+						guiGridListSetSortingEnabled(gVehicleItems, false)
+					else
+						break
+					end
+				end
+				
+				bGiveItem = guiCreateButton(0.05, 0.81, 0.45, 0.075, "Move ---->", true, wInventory)
+				
+				bTakeItem = guiCreateButton(0.5, 0.81, 0.45, 0.075, "<---- Move ", true, wInventory)
+				
+				bCloseInventory = guiCreateButton(0.05, 0.9, 0.9, 0.075, "Close Inventory", true, wInventory)
+				addEventHandler("onClientGUIClick", bCloseInventory, hideVehicleMenu, false)
+			end
+		end
+	end
+end
+
+
+
+function clickVehicle(button, state, absX, absY, wx, wy, wz, element)
+	if (element) and (getElementType(element)=="vehicle") and (button=="right") and (state=="down") and not (wInventory) then
+		local x, y, z = getElementPosition(localPlayer)
+		
+		if (getDistanceBetweenPoints3D(x, y, z, wx, wy, wz)<=3) then
+			if (wRightClick) then
+				hideVehicleMenu()
+			end
+			showCursor(true)
+			ax = absX
+			ay = absY
+			vehicle = element
+			showVehicleMenu()
+		end
+	end
+end
+addEventHandler("onClientClick", getRootElement(), clickVehicle, true)
+
+function showVehicleMenu()
+	wRightClick = guiCreateWindow(ax, ay, 150, 200, getVehicleName(vehicle), false)
+	
+	lPlate = guiCreateLabel(0.05, 0.13, 0.87, 0.1, "Plate: " .. getVehiclePlateText(vehicle), true, wRightClick)
+	guiSetFont(lPlate, "default-bold-small")
+	
+	bInventory = guiCreateButton(0.05, 0.23, 0.87, 0.1, "Inventory", true, wRightClick)
+	addEventHandler("onClientGUIClick", bInventory, cVehicleInventory, false)
+	
+	bCloseMenu = guiCreateButton(0.05, 0.37, 0.87, 0.1, "Close Menu", true, wRightClick)
+	addEventHandler("onClientGUIClick", bCloseMenu, hideVehicleMenu, false)
+end
+
+function hideVehicleMenu()
+	if (isElement(bInventory)) then
+		destroyElement(bInventory)
+	end
+	bInventory = nil
+
+	if (isElement(bCloseMenu)) then
+		destroyElement(bCloseMenu)
+	end
+	bCloseMenu = nil
+
+	if (isElement(wInventory)) then
+		destroyElement(wInventory)
+	end
+	wInventory = nil
+	
+	if (isElement(wRightClick)) then
+		destroyElement(wRightClick)
+	end
+	wRightClick = nil
+	
+	ax = nil
+	ay = nil
+
+	vehicle = nil
+
+	showCursor(false)
+	triggerEvent("cursorHide", getLocalPlayer())
+end

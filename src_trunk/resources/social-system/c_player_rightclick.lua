@@ -8,16 +8,20 @@ closing = false
 
 function clickPlayer(button, state, absX, absY, wx, wy, wz, element)
 	if (element) and (getElementType(element)=="player") and (button=="right") and (state=="down") and (sent==false) and (element~=getLocalPlayer()) then
-		if (wRightClick) then
-			hidePlayerMenu()
+		local x, y, z = getElementPosition(getLocalPlayer())
+		
+		if (getDistanceBetweenPoints3D(x, y, z, wx, wy, wz)<=5) then
+			if (wRightClick) then
+				hidePlayerMenu()
+			end
+			showCursor(true)
+			ax = absX
+			ay = absY
+			player = element
+			sent = true
+			closing = false
+			triggerServerEvent("sendPlayerInfo", getLocalPlayer(), element)
 		end
-		showCursor(true)
-		ax = absX
-		ay = absY
-		player = element
-		sent = true
-		closing = false
-		triggerServerEvent("sendPlayerInfo", getLocalPlayer(), element)
 	end
 end
 addEventHandler("onClientClick", getRootElement(), clickPlayer, true)

@@ -1,3 +1,19 @@
+function cDoesPlayerHaveSpaceForItem(thePlayer)
+	local items = getElementData(thePlayer, "items")
+	
+	for i=1, 30 do
+		if not (items) or not (itemvalues) then -- no items
+			return true
+		else
+			local token = tonumber(gettok(items, i, string.byte(',')))
+			if not (token) then
+				return true
+			end
+		end
+	end
+	return false
+end
+
 function cdoesPlayerHaveItem(thePlayer, itemID, itemValue)
 	local items = getElementData(thePlayer, "items")
 	local itemvalues = getElementData(thePlayer, "itemvalues")

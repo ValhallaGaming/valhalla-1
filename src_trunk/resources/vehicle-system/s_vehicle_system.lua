@@ -292,7 +292,7 @@ function loadAllVehicles(res)
 		end
 		
 		local result = mysql_query(handler, "SELECT currx, curry, currz, currrx, currry, currrz, x, y, z, rotx, roty, rotz, id, model, upgrade0, upgrade1, upgrade2, upgrade3, upgrade4, upgrade5, upgrade6, upgrade7, upgrade8, upgrade9, upgrade10, upgrade11, upgrade12, upgrade13, upgrade14, upgrade15, upgrade16 FROM vehicles")
-		local resultext = mysql_query(handler, "SELECT fuel, engine, locked, lights, sirens, paintjob, wheel1, wheel2, wheel3, wheel4, panel0, panel1, panel2, panel3, panel4, panel5, panel6, door1, door2, door3, door4, door5, door6, hp, color1, color2, plate, faction, owner, job, dimension, interior, currdimension, currinterior FROM vehicles")
+		local resultext = mysql_query(handler, "SELECT fuel, engine, locked, lights, sirens, paintjob, wheel1, wheel2, wheel3, wheel4, panel0, panel1, panel2, panel3, panel4, panel5, panel6, door1, door2, door3, door4, door5, door6, hp, color1, color2, plate, faction, owner, job, dimension, interior, currdimension, currinterior, items, itemvalues FROM vehicles")
 		
 		local counter = 0
 		local rowc = 1
@@ -378,6 +378,8 @@ function loadAllVehicles(res)
 				local interior = tonumber(mysql_result(resultext, rowc, 32))
 				local currdimension = tonumber(mysql_result(resultext, rowc, 33))
 				local currinterior = tonumber(mysql_result(resultext, rowc, 34))
+				local items = tonumber(mysql_result(resultext, rowc, 35))
+				local itemvalues = tonumber(mysql_result(resultext, rowc, 36))
 
 				if (faction~=-1) then
 					locked = 0
@@ -480,6 +482,8 @@ function loadAllVehicles(res)
 				setElementData(veh, "faction", faction)
 				setElementData(veh, "owner", owner)
 				setElementData(veh, "job", tonumber(job))
+				setElementData(veh, "items", items)
+				setElementData(veh, "itemvalues", itemvalues)
 				
 				-- Interiors
 				setElementDimension(veh, currdimension)

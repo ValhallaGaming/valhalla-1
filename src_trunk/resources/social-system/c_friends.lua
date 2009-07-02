@@ -150,3 +150,15 @@ function toggleCursor()
 	end
 end
 bindKey("m", "down", toggleCursor)
+
+function cursorHide()
+	showCursor(false)
+end
+addEvent("cursorHide", false)
+addEventHandler("cursorHide", getRootElement(), cursorHide)
+
+function cursorShow()
+	showCursor(true)
+end
+addEvent("cursorShow", false)
+addEventHandler("cursorShow", getRootElement(), cursorShow)

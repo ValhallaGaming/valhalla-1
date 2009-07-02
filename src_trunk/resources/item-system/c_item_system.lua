@@ -305,7 +305,13 @@ function toggleCategory()
 	-- let's add the items again
 	guiGridListClear(gItems)
 	local itemvalues = getElementData(getLocalPlayer(), "itemvalues")
-	for i = 1, 10 do
+	
+	local slots = 10
+	if (exports.global:cdoesPlayerHaveItem(getLocalPlayer(), 48, -1)) then
+		slots = 20
+	end
+	
+	for i = 1, slots do
 		if (items[i]==nil) then
 			if (showEmpty) then
 				local row = guiGridListAddRow(gItems)
@@ -376,9 +382,14 @@ function showInventory()
 		local itemvalues = getElementData(getLocalPlayer(), "itemvalues")
 				
 		items = { }
-				
+		
+		local slots = 10
+	if (exports.global:cdoesPlayerHaveItem(getLocalPlayer(), 48, -1)) then
+		slots = 20
+	end
+		
 		if (itemstring) then
-			for i = 1, 10 do
+			for i = 1, slots do
 				local token = tonumber(gettok(itemstring, i, string.byte(',')))
 				
 				if (token) then
@@ -428,7 +439,7 @@ function showInventory()
 		addEventHandler("onClientGUIClick", chkOther, toggleCategory, false)
 		addEventHandler("onClientGUIClick", chkEmpty, toggleCategory, false)
 
-		for i = 1, 10 do
+		for i = 1, slots do
 			if (items[i]==nil) then
 				if (showEmpty) then
 					local row = guiGridListAddRow(gItems)

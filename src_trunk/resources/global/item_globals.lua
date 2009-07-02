@@ -1,7 +1,12 @@
 function doesPlayerHaveSpaceForItem(thePlayer)
 	local items = getElementData(thePlayer, "items")
 	
-	for i=1, 10 do
+	local slots = 10
+	if (doesPlayerHaveItem(thePlayer, 48, -1)) then
+		slots = 20
+	end
+	
+	for i=1, slots do
 		if not (items) or not (itemvalues) then -- no items
 			return true
 		else
@@ -13,12 +18,12 @@ function doesPlayerHaveSpaceForItem(thePlayer)
 	end
 	return false
 end
-
+	
 function doesPlayerHaveItem(thePlayer, itemID, itemValue)
 	local items = getElementData(thePlayer, "items")
 	local itemvalues = getElementData(thePlayer, "itemvalues")
-
-	for i=1, 10 do
+	
+	for i=1, 20 do
 		if not (items) or not (itemvalues) then -- no items
 			return false
 		else
@@ -46,11 +51,17 @@ function givePlayerItem(thePlayer, itemID, itemValue)
 	local items = getElementData(thePlayer, "items")
 	local itemvalues = getElementData(thePlayer, "itemvalues")
 	
+	local slots = 10
+	if (doesPlayerHaveItem(thePlayer, 48, -1)) then
+		slots = 20
+	end
+	
 	local count = 0
 	if not (items) or not (itemvalues) then -- no items
 		count = 0
 	else
-		for i=1, 10 do
+		
+		for i=1, slots do
 			local token = gettok(items, i, string.byte(','))
 			
 			if (token) then
@@ -61,7 +72,7 @@ function givePlayerItem(thePlayer, itemID, itemValue)
 		end
 	end
 	
-	if (count==10) then
+	if (count==slots) then
 		return false
 	elseif (count==0) then
 		items = itemID .. ","
@@ -84,13 +95,18 @@ function takePlayerItem(thePlayer, itemID, itemValue)
 	local items = getElementData(thePlayer, "items")
 	local itemvalues = getElementData(thePlayer, "itemvalues")
 	
+	local slots = 10
+	if (doesPlayerHaveItem(thePlayer, 48, -1)) then
+		slots = 20
+	end
+	
 	local found = false
 	local itemstring = ""
 	local itemvaluestring = ""
 	if not (items) or not (itemvalues) then -- no items
 		found = false
 	else
-		for i=1, 10 do
+		for i=1, slots do
 			local token = tonumber(gettok(items, i, string.byte(',')))
 			local vtoken = tonumber(gettok(itemvalues, i, string.byte(',')))
 			

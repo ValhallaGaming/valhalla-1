@@ -1,7 +1,12 @@
 function cdoesPlayerHaveSpaceForItem(thePlayer)
 	local items = getElementData(thePlayer, "items")
 	
-	for i=1, 10 do
+	local slots = 10
+	if (cdoesPlayerHaveItem(thePlayer, 48, -1)) then
+		slots = 20
+	end
+	
+	for i=1, slots do
 		if not (items) or not (itemvalues) then -- no items
 			return true
 		else
@@ -18,7 +23,7 @@ function cdoesPlayerHaveItem(thePlayer, itemID, itemValue)
 	local items = getElementData(thePlayer, "items")
 	local itemvalues = getElementData(thePlayer, "itemvalues")
 
-	for i=1, 10 do
+	for i=1, 20 do
 		if not (items) or not (itemvalues) then -- no items
 			return false
 		else

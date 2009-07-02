@@ -168,6 +168,7 @@ function getItemDescription(itemID)
 	elseif (itemID==45) then return "A pair of metal handcuffs."
 	elseif (itemID==46) then return "A long rope."
 	elseif (itemID==47) then return "A small pair of handcuff keys."
+	elseif (itemID==48) then return "A reasonably sized backpack."
 	else return false 
 	end
 end
@@ -274,6 +275,8 @@ function getItemType(itemID)
 	elseif (itemID==46) then
 		return 4
 	elseif (itemID==47) then
+		return 4
+	elseif (itemID==48) then
 		return 4
 	else
 		return false

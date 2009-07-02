@@ -90,6 +90,7 @@ function cgetItemName(itemID)
 	elseif (itemID==45) then return "Handcuffs"
 	elseif (itemID==46) then return "Rope"
 	elseif (itemID==47) then return "Handcuff Keys"
+	elseif (itemID==48) then return "Backpack"
 	else return false 
 	end
 end

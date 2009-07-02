@@ -199,12 +199,22 @@ function takePlayerItem(button, state, x, y)
 			local itemName = exports.global:cgetItemName(itemID)
 			
 			if (itemName) then -- ITEM
-				guiGridListRemoveRow(gFriskItems, row)
-				triggerServerEvent("friskTakePlayerItem", getLocalPlayer(), player, itemID, itemValue, itemName)
+				if not (exports.global:cdoesPlayerHaveSpaceForItem(getLocalPlayer())) then
+					outputChatBox("You do not have space for this item.", 255, 0, 0)
+				else
+					guiGridListRemoveRow(gFriskItems, row)
+					triggerServerEvent("friskTakePlayerItem", getLocalPlayer(), player, itemID, itemValue, itemName)
+				end
 			else -- WEAPON
 				local weaponID = getWeaponIDFromName(guiGridListGetItemText(gFriskItems, row, col))
-				guiGridListRemoveRow(gFriskItems, row)
-				triggerServerEvent("friskTakePlayerWeapon", getLocalPlayer(), player, weaponID)
+				
+				if (getPedWeapon(getLocalPlayer(), getSlotFromWeapon(weaponID))==weaponID) then
+					outputChatBox("You already have one of this item, this item is Unique.", 255, 0, 0)
+				else
+					local weaponAmmo = getPedTotalAmmo(player, getSlotFromWeapon(weaponID))
+					guiGridListRemoveRow(gFriskItems, row)
+					triggerServerEvent("friskTakePlayerWeapon", getLocalPlayer(), player, weaponID, weaponAmmo)
+				end
 			end
 		end
 	end

@@ -1,4 +1,4 @@
-function cDoesPlayerHaveSpaceForItem(thePlayer)
+function cdoesPlayerHaveSpaceForItem(thePlayer)
 	local items = getElementData(thePlayer, "items")
 	
 	for i=1, 10 do

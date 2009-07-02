@@ -88,6 +88,7 @@ function cVehicleInventory(button, state)
 				addEventHandler("onClientGUIClick", bGiveItem, moveItemToVehicle, false)
 				
 				bTakeItem = guiCreateButton(0.5, 0.81, 0.45, 0.075, "<---- Move ", true, wInventory)
+				addEventHandler("onClientGUIClick", bTakeItem, takeItemFromVehicle, false)
 				
 				bCloseInventory = guiCreateButton(0.05, 0.9, 0.9, 0.075, "Close Inventory", true, wInventory)
 				addEventHandler("onClientGUIClick", bCloseInventory, hideVehicleMenu, false)
@@ -130,6 +131,51 @@ function moveItemToVehicle(button, state)
 				local row = guiGridListAddRow(gVehicleItems)
 				guiGridListSetItemText(gVehicleItems, row, VIColName, getWeaponNameFromID(weaponID), false, false)
 				triggerServerEvent("moveWeaponToVehicle", getLocalPlayer(), vehicle, weaponID, weaponAmmo)
+			end
+		end
+	end
+end
+
+function takeItemFromVehicle(button, state)
+	if (button=="left") then
+		local row, col = guiGridListGetSelectedItem(gVehicleItems)
+		
+		if (row<0) then
+			outputChatBox("Please select an item first.", 255, 0, 0)
+		else
+			local items = getElementData(vehicle, "items")
+			local itemvalues = getElementData(vehicle, "itemvalues")
+			
+			local itemID = tonumber(gettok(items, row+1, string.byte(',')))
+			local itemValue = tonumber(gettok(itemvalues, row+1, string.byte(',')))
+			local itemName = exports.global:cgetItemName(itemID)
+			
+			if not (exports.global:cdoesPlayerHaveSpaceForItem(localPlayer)) and (itemName) then
+				outputChatBox("Your inventory is full.", 255, 0, 0)
+			else
+				if (itemName) and not (exports.global:cdoesVehicleHaveItem(localPlayer, itemID, itemValue)) then
+					outputChatBox("This vehicle no longer has that item.", 255, 0, 0)
+					hideVehicleMenu()
+					return
+				end
+
+				if (itemName) then -- ITEM
+					guiGridListRemoveRow(gVehicleItems, row)
+					local row = guiGridListAddRow(gUserItems)
+					guiGridListSetItemText(gUserItems, row, UIColName, tostring(itemName), false, false)
+					triggerServerEvent("moveItemToPlayer", getLocalPlayer(), vehicle, itemID, itemValue, itemName)
+				else -- WEAPON
+					if (getPedWeapon(localPlayer, getSlotFromWeapon(itemID-9000))==itemID-9000) then
+						outputChatBox("You already have one of this item, this item is Unique.", 255, 0, 0)
+					else
+						local weaponID = getWeaponIDFromName(guiGridListGetItemText(gVehicleItems, row, col))
+						local weaponAmmo = itemValue
+						guiGridListRemoveRow(gVehicleItems, row)
+						local row = guiGridListAddRow(gUserItems)
+						guiGridListSetItemText(gUserItems, row, UIColName, getWeaponNameFromID(weaponID), false, false)
+						triggerServerEvent("moveWeaponToPlayer", getLocalPlayer(), vehicle, weaponID, weaponAmmo)
+					end
+				end
 			end
 		end
 	end

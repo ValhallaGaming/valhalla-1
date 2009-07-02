@@ -196,8 +196,8 @@ function giveVehicleItem(theVehicle, itemID, itemValue)
 		
 		setElementData(theVehicle, "items", items)
 		setElementData(theVehicle, "itemvalues", itemvalues)
+		
 		local dbid = getElementData(theVehicle, "dbid")
-		outputChatBox(tostring(dbid))
 		mysql_query(handler, "UPDATE vehicles SET items='" .. items .. "', itemvalues='" .. itemvalues .. "' WHERE id='" .. dbid .. "' LIMIT 1")
 		return true
 	else
@@ -251,6 +251,9 @@ function takeVehicleItem(theVehicle, itemID, itemValue)
 	if (found) then
 		setElementData(theVehicle, "items", itemstring)
 		setElementData(theVehicle, "itemvalues", itemvaluestring)
+		
+		local dbid = getElementData(theVehicle, "dbid")
+		mysql_query(handler, "UPDATE vehicles SET items='" .. itemstring .. "', itemvalues='" .. itemvaluestring .. "' WHERE id='" .. dbid .. "' LIMIT 1")
 		return true
 	elseif not (found) then
 		return false

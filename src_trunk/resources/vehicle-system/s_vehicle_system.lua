@@ -907,9 +907,25 @@ addEventHandler("moveItemToVehicle", getRootElement(), moveItemToVehicle)
 function moveWeaponToVehicle(vehicle, weaponID, weaponAmmo)
 	takeWeapon(source, weaponID)
 
-	local give = exports.global:giveVehicleItem(vehicle, 9000+weaponID, weaponAmmo)
-	outputChatBox(tostring(give))
+	exports.global:giveVehicleItem(vehicle, 9000+weaponID, weaponAmmo)
 	exports.global:sendLocalMeAction(source, "puts a " .. getWeaponNameFromID(weaponID) .. " inside the " .. getVehicleName(vehicle) .. ".")
 end
 addEvent("moveWeaponToVehicle", true)
 addEventHandler("moveWeaponToVehicle", getRootElement(), moveWeaponToVehicle)
+
+function moveItemToPlayer(vehicle, itemID, itemValue, itemName)
+	exports.global:takeVehicleItem(vehicle, itemID, itemValue)
+	exports.global:givePlayerItem(source, itemID, itemValue)
+	exports.global:sendLocalMeAction(source, "takes a " .. itemName .. " from the " .. getVehicleName(vehicle) .. ".")
+end
+addEvent("moveItemToPlayer", true)
+addEventHandler("moveItemToPlayer", getRootElement(), moveItemToPlayer)
+
+function moveWeaponToPlayer(vehicle, weaponID, weaponAmmo)
+	giveWeapon(source, weaponID, weaponAmmo, true)
+
+	exports.global:takeVehicleItem(vehicle, 9000+weaponID, weaponAmmo)
+	exports.global:sendLocalMeAction(source, "takes a " .. getWeaponNameFromID(weaponID) .. " from the " .. getVehicleName(vehicle) .. ".")
+end
+addEvent("moveWeaponToPlayer", true)
+addEventHandler("moveWeaponToPlayer", getRootElement(), moveWeaponToPlayer)

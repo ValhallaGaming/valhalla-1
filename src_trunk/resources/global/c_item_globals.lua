@@ -1,7 +1,7 @@
 function cDoesPlayerHaveSpaceForItem(thePlayer)
 	local items = getElementData(thePlayer, "items")
 	
-	for i=1, 30 do
+	for i=1, 10 do
 		if not (items) or not (itemvalues) then -- no items
 			return true
 		else
@@ -18,7 +18,7 @@ function cdoesPlayerHaveItem(thePlayer, itemID, itemValue)
 	local items = getElementData(thePlayer, "items")
 	local itemvalues = getElementData(thePlayer, "itemvalues")
 
-	for i=1, 30 do
+	for i=1, 10 do
 		if not (items) or not (itemvalues) then -- no items
 			return false
 		else
@@ -92,4 +92,48 @@ function cgetItemName(itemID)
 	elseif (itemID==47) then return "Handcuff Keys"
 	else return false 
 	end
+end
+
+function cDoesVehicleHaveSpaceForItem(theVehicle)
+	local items = getElementData(theVehicle, "items")
+	
+	for i=1, 20 do
+		if not (items) or not (itemvalues) then -- no items
+			return true
+		else
+			local token = tonumber(gettok(items, i, string.byte(',')))
+			if not (token) then
+				return true
+			end
+		end
+	end
+	return false
+end
+
+function cdoesVehicleHaveItem(theVehicle, itemID, itemValue)
+	local items = getElementData(theVehicle, "items")
+	local itemvalues = getElementData(theVehicle, "itemvalues")
+
+	for i=1, 10 do
+		if not (items) or not (itemvalues) then -- no items
+			return false
+		else
+			local token = tonumber(gettok(items, i, string.byte(',')))
+			if (token) then
+				if (token==itemID) then
+					if (itemValue==-1) or not (itemValue) then -- any value is okay
+						return true, i
+					else
+						
+						local value = tonumber(gettok(itemvalues, i, string.byte(',')))
+						local value = tonumber(gettok(itemvalues, i, string.byte(',')))
+						if (value==itemValue) then
+							return true, i, value
+						end
+					end
+				end
+			end
+		end
+	end
+	return false
 end

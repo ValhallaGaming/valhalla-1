@@ -71,7 +71,7 @@ function givePlayerItem(thePlayer, itemID, itemValue)
 			end
 		end
 	end
-	
+
 	if (count==slots) then
 		return false
 	elseif (count==0) then

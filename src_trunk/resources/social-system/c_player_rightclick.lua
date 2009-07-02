@@ -198,6 +198,11 @@ function takePlayerItem(button, state, x, y)
 			local itemValue = tonumber(gettok(itemvalues, row+1, string.byte(',')))
 			local itemName = exports.global:cgetItemName(itemID)
 			
+			if (itemID==48) then -- BACKPACK
+				outputChatBox("You cannot take this item from the player.", 255, 0, 0)
+				return
+			end
+			
 			if (itemName) then -- ITEM
 				if not (exports.global:cdoesPlayerHaveSpaceForItem(getLocalPlayer())) then
 					outputChatBox("You do not have space for this item.", 255, 0, 0)

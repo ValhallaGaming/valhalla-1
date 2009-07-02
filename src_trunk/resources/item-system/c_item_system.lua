@@ -384,9 +384,9 @@ function showInventory()
 		items = { }
 		
 		local slots = 10
-	if (exports.global:cdoesPlayerHaveItem(getLocalPlayer(), 48, -1)) then
-		slots = 20
-	end
+		if (exports.global:cdoesPlayerHaveItem(getLocalPlayer(), 48, -1)) then
+			slots = 20
+		end
 		
 		if (itemstring) then
 			for i = 1, slots do
@@ -718,6 +718,23 @@ function destroyItem(button)
 			local itemID = items[itemSlot][3]
 			local itemValue = items[itemSlot][4]
 			
+			local backpackitems = nil
+			local backpackvalues = nil
+			if (itemID==48) then -- BACKPACK, destroy the items inside it too
+				backpackitems = { }
+				backpackvalues = { }
+				
+				for i = 11, 20 do
+					if (items[i]~=nil) then
+						backpackitems[i-10] = items[i][3]
+						backpackvalues[i-10] = items[i][4]
+						guiGridListSetItemText(gItems, i-1, colName, "Empty", false, false)
+						guiGridListSetItemText(gItems, i-1, colValue, "None", false, false)
+						items[i] = nil
+					end
+				end
+			end
+			
 			guiGridListSetSelectedItem(gItems, 0, 0)
 			guiGridListSetItemText(gItems, row, colName, "Empty", false, false)
 			guiGridListSetItemText(gItems, row, colValue, "None", false, false)
@@ -729,7 +746,11 @@ function destroyItem(button)
 			guiSetEnabled(bShowItem, false)
 			guiSetEnabled(bDestroyItem, false)
 			
-			triggerServerEvent("destroyItem", getLocalPlayer(), itemID, itemValue, itemName)
+			if (backpackitems) then
+				triggerServerEvent("destroyItem", getLocalPlayer(), itemID, itemValue, itemName, false, backpackitems, backpackvalues)
+			else
+				triggerServerEvent("destroyItem", getLocalPlayer(), itemID, itemValue, itemName)
+			end
 		elseif (guiGetSelectedTab(tabPanel)==tabWeapons) then -- WEAPONS
 			local row, col = guiGridListGetSelectedItem(gWeapons)
 			local itemSlot = tonumber(guiGridListGetItemText(gWeapons, row, 1))
@@ -761,6 +782,23 @@ function dropItem(button)
 			local itemID = items[itemSlot][3]
 			local itemValue = items[itemSlot][4]
 			
+			local backpackitems = nil
+			local backpackvalues = nil
+			if (itemID==48) then -- BACKPACK, destroy the items inside it too
+				backpackitems = { }
+				backpackvalues = { }
+				
+				for i = 11, 20 do
+					if (items[i]~=nil) then
+						backpackitems[i-10] = items[i][3]
+						backpackvalues[i-10] = items[i][4]
+						guiGridListSetItemText(gItems, i-1, colName, "Empty", false, false)
+						guiGridListSetItemText(gItems, i-1, colValue, "None", false, false)
+						items[i] = nil
+					end
+				end
+			end
+			
 			guiGridListSetSelectedItem(gItems, 0, 0)
 			guiGridListSetItemText(gItems, row, colName, "Empty", false, false)
 			guiGridListSetItemText(gItems, row, colValue, "None", false, false)
@@ -778,7 +816,11 @@ function dropItem(button)
 			y = y - math.cos( math.rad( rot ) ) * 1
 			
 			local gz = getGroundPosition(x, y, z)
-			triggerServerEvent("dropItem", getLocalPlayer(), itemID, itemValue, itemName, x, y, z, gz)
+			if (backpackitems) then
+				triggerServerEvent("dropItem", getLocalPlayer(), itemID, itemValue, itemName, x, y, z, gz, false, backpackitems, backpackvalues)
+			else
+				triggerServerEvent("dropItem", getLocalPlayer(), itemID, itemValue, itemName, x, y, z, gz)
+			end
 		elseif (guiGetSelectedTab(tabPanel)==tabWeapons) then -- WEAPONS
 			local row, col = guiGridListGetSelectedItem(gWeapons)
 			local itemSlot = tonumber(guiGridListGetItemText(gWeapons, row, 1))

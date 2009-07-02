@@ -213,6 +213,7 @@ function getItemsForSale(shop_type, race)
 		item[19] = {"MP3 Player", "A white, sleek looking MP3 Player. The brand reads EyePod.", "120", 19, 1,1,false,7}
 		item[20] = {"Chemistry Set", "A small chemistry set.", "2000", 44, 1,1,false,15}
 		item[21] = {"Rope", "A long rope.", "15", 46, 1,1,false,2}
+		item[22] = {"Backpack", "A reasonably sized backpack.", "30", 48, 1,1,false,2}
 
 		
 

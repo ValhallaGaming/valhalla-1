@@ -113,6 +113,11 @@ function moveItemToVehicle(button, state)
 			local itemValue = tonumber(gettok(itemvalues, row+1, string.byte(',')))
 			local itemName = exports.global:cgetItemName(itemID)
 			
+			if (itemID==48) then -- BACKPACK
+				outputChatBox("This item cannot be stored in a vehicle.", 255, 0, 0)
+				return
+			end
+			
 			if (itemName) and not (exports.global:cdoesPlayerHaveItem(localPlayer, itemID, itemValue)) then
 				outputChatBox("You no longer have that item", 255, 0, 0)
 				hideVehicleMenu()

@@ -202,6 +202,13 @@ function givePlayerBoughtItem(itemID, itemValue, theCost, isWeapon, name, supply
 	local interior = getElementDimension(source)
 	local money = tonumber(getElementData(source, "money"))
 	
+	if (itemID==48) then -- BACKPACK = UNIQUE
+		if (exports.global:doesPlayerHaveItem(source, itemID, -1)) then
+			outputChatBox("You already have one of this item, this item is unique.", source, 255, 0, 0)
+			return
+		end
+	end
+	
 	local thePickup = nil
 	local inttype = nil
 	local supplies = nil
@@ -243,6 +250,8 @@ function givePlayerBoughtItem(itemID, itemValue, theCost, isWeapon, name, supply
 					else
 						outputChatBox("You stole some " .. name .. ".", source, 255, 194, 14)
 					end
+				else
+					outputChatBox("You do not have enough space to purchase that item.", source, 255, 0, 0)
 				end
 			elseif (isWeapon) and (itemValue==-1) then -- fighting styles!
 				exports.global:takePlayerSafeMoney(source, tonumber(theCost))
@@ -328,6 +337,8 @@ function givePlayerBoughtItem(itemID, itemValue, theCost, isWeapon, name, supply
 						exports.global:takePlayerSafeMoney(source, tonumber(theCost))
 						outputChatBox("You bought a " .. name .. ".", source, 255, 194, 14)
 						outputChatBox("You have $"..getElementData(source, "money").." left in your wallet.", source, 255, 194, 14)
+					else
+						outputChatBox("You do not have enough space to purchase that item.", source, 255, 0, 0)
 					end
 				elseif (isWeapon) and (itemValue==-1) then -- fighting styles!
 					exports.global:takePlayerSafeMoney(source, tonumber(theCost))

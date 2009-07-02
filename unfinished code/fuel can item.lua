@@ -22,6 +22,8 @@ elseif (itemID==26) then -- Fuel Can
 							exports.global:sendLocalMeAction(source, " refuels the "..vehicleName.." using a fuel can.") -- Chat output
 							
 							-- Set the itemValue to 0 but keep the item. The player can then refill it at a gas station.
+							exports.global:takePlayerItem(source, itemID, itemValue)
+							exports.global:givePlayerItem(source, itemID, 0)
 							
 							showInventory(source)
 						else
@@ -69,16 +71,28 @@ function fillCan(thePlayer, commandName)
 		
 		if (colShape) then
 			-- loop through the inventory and find the first fuel can's value.
-			-- if there are no fuel cans output a message "you need to buy a fuel can".
-			-- if the first fuel can's value is >=5 move on to find the next fuel can.
-			-- if there are no more fuel cans output the message "All your fuel cans are full".
-			-- If the player has another fuel can that has a value of less than 5 output global /me "PlayerName fills the fuels can" and "please wait while the can is filled" messages.
-			-- after a delay check they are still in the colShape.
-				-- if they are then set the fuel can's value to 5.
-				-- price = fuel price * 5.
-				-- remove price from player money.
-				-- Output a message "fuel can filled at a cost of $".. price .."."
-			-- if they have left the colShape output message "Don't you want any fuel?"
+			if not (exports.global:doesPlayerHaveItem(thePlayer, ??temID, 0)) then
+				-- if there are no fuel cans output a message "you need to buy a fuel can".
+				outputChatBox("You don't have an empty fuel can to fill.", thePlayer, 255, 0, 0)
+			else -- If the player has another fuel can that has a value of less than 5 output global /me "PlayerName fills the fuels can" and "please wait while the can is filled" messages.
+				local money = getElementData(thePlayer, "money")
+					
+				local tax = exports.global:getTaxAmount()
+				local cost = FUEL_PRICE + (tax*FUEL_PRICE)
+					
+				if (money<cost) then
+					outputChatBox("You cannot afford to fill the fuel can.", thePlayer, 255, 0, 0)
+				else
+					exports.global:takePlayerItem(source, ??itemID, 0)
+					exports.global:givePlayerItem(source, ??itemID, 5) -- set the fuel can's value to 5.
+				
+					exports.global:sendLocalMeAction(source, " fills a fuel can.") -- Chat output
+
+					exports.global:takePlayerSafeMoney(thePlayer, cost) -- remove price from player money.
+				
+					outputChatBox("Fuel can filled at a cost of "..cost..".", source, 255, 194, 14) -- Output a message confirmation.
+				end
+			end
 		end
 	end
 end

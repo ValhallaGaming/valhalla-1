@@ -116,8 +116,8 @@ function applyMods(res)
 		-- tag6 = engineLoadTXD ( "tags/tags_temple.txd" )
 		-- engineImportTXD ( tag6, 1529 )
 
-		tag7 = engineLoadTXD ( "tags/tags_laazteca.txd" ) -- Bay Crest Bloods
-		engineImportTXD ( tag7, 1530 )
+		-- tag7 = engineLoadTXD ( "tags/tags_laazteca.txd" )
+		-- engineImportTXD ( tag7, 1530 )
 
 		-- tag8 = engineLoadTXD ( "tags/tags_lavagos.txd" )
 		-- engineImportTXD ( tag8, 1531 )

@@ -9,7 +9,9 @@ Scripts in "unfinished code" need to be completed, checked and added to the corr
 - admin-system
 	- HelpCommandsv1
 
-
+- mods-resource
+	- meta
+	-c_mods_system
 
 --------------------
 Jack's changes.

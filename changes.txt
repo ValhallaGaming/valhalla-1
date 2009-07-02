@@ -4,11 +4,12 @@ Chamberlains changes.
 Scripts in "unfinished code" need to be completed, checked and added to the correct resources by someone who knows what they are doing.
 
 - map-system
-	- meta
-	- vice backroom small.map
+	- basslineStudios.map
 
-- job-system
-	- c_job_system - Disabled the sweeper job due to bug abuse.
+- admin-system
+	- HelpCommandsv1
+
+
 
 --------------------
 Jack's changes.

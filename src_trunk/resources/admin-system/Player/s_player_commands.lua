@@ -112,7 +112,7 @@ function lookPlayer(thePlayer, commandName, targetPlayer)
 				
 				outputChatBox("~~~~~~~~~~~~ " .. targetPlayerName .. " ~~~~~~~~~~~~", thePlayer, 255, 194, 14)
 				outputChatBox("Age: " .. age .. " years old", thePlayer, 255, 194, 14)
-				outputChatBox("Weight: " .. weight .. "cm", thePlayer, 255, 194, 14)
+				outputChatBox("Weight: " .. weight .. "kg", thePlayer, 255, 194, 14)
 				outputChatBox("Height: " .. height .. "cm", thePlayer, 255, 194, 14)
 				outputChatBox("Description: " .. description, thePlayer, 255, 194, 14)
 			end

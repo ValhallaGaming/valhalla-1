@@ -86,6 +86,41 @@ function gluePlayer(thePlayer, commandName)
 end
 addCommandHandler("glue", gluePlayer, false, false)
 
+-- /LOOK
+function lookPlayer(thePlayer, commandName, targetPlayer)
+	if not (targetPlayer) then
+		outputChatBox("SYNTAX: /" .. commandName .. " [Player Partial Nick / ID]", thePlayer, 255, 194, 14)
+	else
+		local targetPlayer = exports.global:findPlayerByPartialNick(targetPlayer)
+		
+		if not (targetPlayer) then
+			outputChatBox("Player not found.", thePlayer, 255, 0, 0)
+		else
+			local targetPlayerName = getPlayerName(targetPlayer)
+			local logged = getElementData(targetPlayer, "loggedin")
+			local username = getPlayerName(thePlayer)
+			
+			if (logged==0) then
+				outputChatBox("Player is not logged in.", thePlayer, 255, 0, 0)
+			else
+				local query = mysql_query(handler, "SELECT description, age, weight, height FROM characters WHERE charactername='" .. targetPlayerName .. "'")
+				local description = tostring(mysql_result(query, 1, 1))
+				local age = tostring(mysql_result(query, 1, 2))
+				local weight = tostring(mysql_result(query, 1, 3))
+				local height = tostring(mysql_result(query, 1, 4))
+				mysql_free_result(query)
+				
+				outputChatBox("~~~~~~~~~~~~ " .. targetPlayerName .. " ~~~~~~~~~~~~", 255, 194, 14)
+				outputChatBox("Age: " .. age .. " years old", 255, 194, 14)
+				outputChatBox("Weight: " .. weight .. "cm", 255, 194, 14)
+				outputChatBox("Height: " .. height .. "cm", 255, 194, 14)
+				outputChatBox("Description: " .. description, 255, 194, 14)
+			end
+		end
+	end
+end
+addCommandHandler("look", lookPlayer, false, false)
+
 --/AUNCUFF
 function adminUncuff(thePlayer, commandName, targetPlayer)
 	if (exports.global:isPlayerAdmin(thePlayer)) then

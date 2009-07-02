@@ -1,13 +1,17 @@
 wRightClick = nil
-bAddAsFriend, bFrisk, bRestrain, bCloseMenu = nil
+bAddAsFriend, bFrisk, bRestrain, bCloseMenu, bInformation = nil
 sent = false
 ax, ay = nil
 player = nil
 gotClick = false
 closing = false
+description = nil
+age = nil
+weight = nil
+height = nil
 
 function clickPlayer(button, state, absX, absY, wx, wy, wz, element)
-	if (element) and (getElementType(element)=="player") and (button=="right") and (state=="down") and (sent==false) and (element~=getLocalPlayer()) then
+	if (element) and (getElementType(element)=="player") and (button=="right") and (state=="down") and (sent==false) and (element==getLocalPlayer()) then
 		local x, y, z = getElementPosition(getLocalPlayer())
 		
 		if (getDistanceBetweenPoints3D(x, y, z, wx, wy, wz)<=5) then
@@ -26,7 +30,7 @@ function clickPlayer(button, state, absX, absY, wx, wy, wz, element)
 end
 addEventHandler("onClientClick", getRootElement(), clickPlayer, true)
 
-function showPlayerMenu(targetPlayer, friends, description)
+function showPlayerMenu(targetPlayer, friends, sdescription, sage, sweight, sheight)
 	wRightClick = guiCreateWindow(ax, ay, 150, 200, string.gsub(getPlayerName(targetPlayer), "_", " "), false)
 	
 	local targetid = tonumber(getElementData(targetPlayer, "gameaccountid"))
@@ -37,6 +41,11 @@ function showPlayerMenu(targetPlayer, friends, description)
 		end
 	end
 	
+	age = sage
+	weight = sweight
+	description = sdescription
+	height = sheight
+	
 	if (found==false) then
 		bAddAsFriend = guiCreateButton(0.05, 0.13, 0.87, 0.1, "Add as friend", true, wRightClick)
 		addEventHandler("onClientGUIClick", bAddAsFriend, caddFriend, false)
@@ -45,7 +54,7 @@ function showPlayerMenu(targetPlayer, friends, description)
 		addEventHandler("onClientGUIClick", bAddAsFriend, cremoveFriend, false)
 	end
 	
-	bCloseMenu = guiCreateButton(0.05, 0.38, 0.87, 0.1, "Close Menu", true, wRightClick)
+	bCloseMenu = guiCreateButton(0.05, 0.51, 0.87, 0.1, "Close Menu", true, wRightClick)
 	addEventHandler("onClientGUIClick", bCloseMenu, hidePlayerMenu, false)
 	sent = false
 	
@@ -63,9 +72,22 @@ function showPlayerMenu(targetPlayer, friends, description)
 		bRestrain = guiCreateButton(0.555, 0.25, 0.45, 0.1, "Unrestrain", true, wRightClick)
 		addEventHandler("onClientGUIClick", bRestrain, cunrestrainPlayer, false)
 	end
+	
+	bInformation = guiCreateButton(0.05, 0.38, 0.87, 0.1, "Information", true, wRightClick)
+	addEventHandler("onClientGUIClick", bInformation, showPlayerInfo, false)
 end
 addEvent("displayPlayerMenu", true)
 addEventHandler("displayPlayerMenu", getRootElement(), showPlayerMenu)
+
+function showPlayerInfo(button, state)
+	if (button=="left") then
+		outputChatBox("~~~~~~~~~~~~ " .. getPlayerName(player) .. " ~~~~~~~~~~~~", 255, 194, 14)
+		outputChatBox("Age: " .. age .. " years old", 255, 194, 14)
+		outputChatBox("Weight: " .. weight .. "cm", 255, 194, 14)
+		outputChatBox("Height: " .. height .. "cm", 255, 194, 14)
+		outputChatBox("Description: " .. description, 255, 194, 14)
+	end
+end
 
 --------------------
 --  RESTRAINING   --
@@ -264,6 +286,11 @@ function hidePlayerMenu()
 	
 	ax = nil
 	ay = nil
+	
+	description = nil
+	age = nil
+	weight = nil
+	height = nil
 	
 	removeEventHandler("onClientPlayerQuit", player, hidePlayerMenu)
 	

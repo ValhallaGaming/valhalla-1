@@ -673,3 +673,29 @@ function pickupItem(object, id, itemID, itemValue, itemName)
 end
 addEvent("pickupItem", true)
 addEventHandler("pickupItem", getRootElement(), pickupItem)
+
+-- /itemlist (admin command to get item IDs)
+function adminItemList(thePlayer)
+	if (exports.global:isPlayerAdmin(thePlayer)) then
+		local result = mysql_query(handler, "SELECT id, item_name, item_description FROM items")
+				
+		if (result) then
+			local items = { }
+			local key = 1
+			
+			for result, row in mysql_rows(result) do
+				items[key] = { }
+				items[key][1] = row[1]
+				items[key][2] = row[2]
+				items[key][3] = row[3]
+				key = key + 1
+			end
+			
+			mysql_free_result(result)
+			triggerClientEvent(thePlayer, "showItemList", getRootElement(), factions)
+		else
+			outputChatBox("Error 300001 - Report on forums.", thePlayer, 255, 0, 0)
+		end
+	end
+end
+addCommandHandler("itemlist", adminItemList, false, false)

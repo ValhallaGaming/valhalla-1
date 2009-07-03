@@ -13,11 +13,10 @@ setElementData(getLocalPlayer(), "chatting", true, 0)
 function render()
 	local x, y, z = getElementPosition(getLocalPlayer())
 	for key, value in ipairs(getElementsByType("player")) do
-		if (value==getLocalPlayer()) then
+		if (value~=getLocalPlayer()) then
 			local chatting = getElementData(value, "chatting")
 			
 			if (chatting==1) then
-				--local px, py, pz = getElementPosition(value)
 				local px, py, pz = getPedBonePosition(value, 6)
 				
 				local dist = getDistanceBetweenPoints3D(x, y, z, px, py, pz)

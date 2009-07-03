@@ -60,6 +60,8 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 			else
 				local locked = getElementData(found, "locked")
 				
+				exports.global:applyAnimation(thePlayer, "GHANDS", "gsign3LH", -1, false, false, true)
+				
 				if (isVehicleLocked(found)) then
 					setVehicleLocked(found, false)
 					mysql_query(handler, "UPDATE vehicles SET locked='0' WHERE id='" .. id .. "' LIMIT 1")

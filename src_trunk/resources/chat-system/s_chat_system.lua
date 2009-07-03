@@ -899,6 +899,8 @@ function payPlayer(thePlayer, commandName, targetPlayerNick, amount)
 						outputChatBox("You gave $" .. amount .. " to " .. getPlayerName(targetPlayer) .. ".", thePlayer)
 						outputChatBox(getPlayerName(thePlayer) .. " gave you $" .. amount .. ".", targetPlayer)
 						exports.irc:sendMessage("[MONEY TRANSFER] From '" .. getPlayerName(thePlayer) .. "' to " .. getPlayerName(targetPlayer) .. "' Amount: $" .. amount .. ".")
+						
+						exports.global:applyAnimation(thePlayer, "DEALER", "shop_pay", -1, false, false, true)
 					end
 				else
 					outputChatBox("You are too far away from " .. getPlayerName(targetPlayer) .. ".", thePlayer, 255, 0, 0)

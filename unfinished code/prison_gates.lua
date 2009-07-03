@@ -1,3 +1,5 @@
+-- Exterior gates are disabled so that all players can get into the visiting area.
+
 function resetState()
 	open = false
 end
@@ -5,7 +7,7 @@ end
 ---------------------
 -- Exterior gate 1 --
 ---------------------
-objGatea = createObject(7657, 1071.1484, 1361.8896, 11.5154, 0, 0, 180)
+-- objGatea = createObject(7657, 1071.1484, 1361.8896, 11.5154, 0, 0, 180)
 exports.pool:allocateElement(objGatea)
 setElementInterior(objGatea, 0)
 setElementDimension(objGatea, 0)
@@ -40,8 +42,8 @@ end
 -------------------------
 -- Exterior gate 2 / 3 --
 -------------------------
-objGatea2 = createObject(969, 1068.267, 1338.885, 9.820, 0, 0, 180)
-objGatea3 = createObject(969, 1068.288, 1039.103, 9.820, 0, 0, 0)
+-- objGatea2 = createObject(969, 1068.267, 1338.885, 9.820, 0, 0, 180)
+-- objGatea3 = createObject(969, 1068.288, 1039.103, 9.820, 0, 0, 0)
 exports.pool:allocateElement(objGatea2)
 exports.pool:allocateElement(objGatea3)
 setElementInterior(objGatea2, 0)
@@ -83,10 +85,10 @@ end
 -------------------
 -- Interior Gate --
 -------------------
-objGatea4 = createObject(2930, 1049.3933, 1253.0361, 1480.2933, 0, 0, 90)
+objGate4 = createObject(2930, 1049.3933, 1253.0361, 1480.2933, 0, 0, 90)
 exports.pool:allocateElement(objGatea4)
-setElementInterior(objGatea4, 0)
-setElementDimension(objGatea4, 4)
+setElementInterior(objGate4, 0)
+setElementDimension(objGate4, 4)
 
 -- Gate code
 function usePrisonIntGate(thePlayer)
@@ -99,7 +101,7 @@ function usePrisonIntGate(thePlayer)
 		if (distance<=10) and (open==false) then
 			open = true
 			outputChatBox("Prison gate open!", thePlayer, 0, 255, 0)
-			moveObject(objGatea4, 2000, 1048.1711, 1253.6361, 1480.2933, 0, 0, 180)
+			moveObject(objGate4, 2000, 1048.1711, 1253.6361, 1480.2933, 0, 0, 180)
 			setTimer(closePrisonIntGate, 50000, 1, thePlayer)
 		end
 	end
@@ -111,6 +113,6 @@ function closePrisonIntGate(thePlayer)
 		outputChatBox("Prison gate Closed!", thePlayer, 255, 0, 0)
 	end
 	
-	moveObject(objGatea4, 2000, 1049.3933, 1253.0361, 1480.2933, 0, 0, 90)
+	moveObject(objGate4, 2000, 1049.3933, 1253.0361, 1480.2933, 0, 0, 90)
 	setTimer(resetState, 2000, 1)
 end

@@ -12,15 +12,15 @@
 
 -- Server side /sedate function
 function sedatePlayer(thePlayer, CommandName, targetPartialNick)
-	if not(exports.global:doesPlayerHaveItem(thePlayer, ??)) then -- does the player have the sedative item?
-		outputChatBox("You need something to sedate them with.", thePlayer, 255, 0, 0)
-	else
-		if not (targetPartialNick) then -- if missing target player arg.
-			outputChatBox("SYNTAX: /" .. commandName .. " [Player Partial Nick / ID]", thePlayer, 255, 194, 14)
+	if not (targetPartialNick) then -- if missing target player arg.
+		outputChatBox("SYNTAX: /" .. commandName .. " [Player Partial Nick / ID]", thePlayer, 255, 194, 14)
+	else	
+		local targetPlayer = exports.global:findPlayerByPartialNick(targetPartialNick)
+		if not (targetPlayer) then -- is the player online?
+			outputChatBox("Player not found.", thePlayer, 255, 0, 0)
 		else
-			local targetPlayer = exports.global:findPlayerByPartialNick(targetPartialNick)
-			if not (targetPlayer) then -- is the player online?
-				outputChatBox("Player not found.", thePlayer, 255, 0, 0)
+			if not(exports.global:doesPlayerHaveItem(thePlayer, ??Item ID)) then -- does the player have the sedative item?
+				outputChatBox("You need something to sedate them with.", thePlayer, 255, 0, 0)
 			else
 				local logged = getElementData(targetPlayerName, "loggedin")
 				if (logged==0) then -- Are they logged in?
@@ -29,12 +29,11 @@ function sedatePlayer(thePlayer, CommandName, targetPartialNick)
 					local targetPlayerName = getPlayerName(targetPlayer)
 					local x, y, z = getElementPosition(thePlayer)
 					local tx, ty, tz = getElementPosition(targetPlayer)
-					if (getDistanceBetweenPoints3D(x, y, z, tx, ty, tz)>4) then -- Are they standing next to each other?
+					if (getDistanceBetweenPoints3D(x, y, z, tx, ty, tz)>2) then -- Are they standing next to each other?
 						outputChatBox("You are too far away to inject "..targetPlayerName..".", thePlayer, 255, 0, 0)
 					else
 						exports.global:sendLocalMeAction(thePlayer,"injects "..targetPlayerName.." with a sedative.")
-						exports.global:takePlayerItem(thePlayer, itemID, itemValue)
-						triggerClientEvent("sedativeEffect", targetPlayer)
+						exports.global:takePlayerItem(thePlayer, ??itemID)
 						setTimer(sedativeDelay, 3000, 1, targetPlayer)
 					end
 				end
@@ -42,19 +41,19 @@ function sedatePlayer(thePlayer, CommandName, targetPartialNick)
 		end
 	end
 end
-addCommandHandler("sedate", blindfoldPlayer, false, false)
+addCommandHandler("sedate", sedatePlayer, false, false)
 
 -- Server side /antidote function
 function antidotePlayer (thePlayer, CommandName, targetPartialNick)
-	if not(exports.global:doesPlayerHaveItem(thePlayer, ??)) then -- does the player have the antidote item?
-		outputChatBox("You need an antidote to revive them.", thePlayer, 255, 0, 0)
+	if not (targetPartialNick) then -- if missing target player arg.
+		outputChatBox("SYNTAX: /" .. commandName .. " [Player Partial Nick / ID]", thePlayer, 255, 194, 14)
 	else
-		if not (targetPartialNick) then -- if missing target player arg.
-			outputChatBox("SYNTAX: /" .. commandName .. " [Player Partial Nick / ID]", thePlayer, 255, 194, 14)
+		local targetPlayer = exports.global:findPlayerByPartialNick(targetPartialNick)
+		if not (targetPlayer) then -- is the player online?
+			outputChatBox("Player not found.", thePlayer, 255, 0, 0)
 		else
-			local targetPlayer = exports.global:findPlayerByPartialNick(targetPartialNick)
-			if not (targetPlayer) then -- is the player online?
-				outputChatBox("Player not found.", thePlayer, 255, 0, 0)
+			if not(exports.global:doesPlayerHaveItem(thePlayer, ??)) then -- does the player have the antidote item?
+				outputChatBox("You need an antidote to revive them.", thePlayer, 255, 0, 0)
 			else
 				local logged = getElementData(targetPlayerName, "loggedin")
 				if (logged==0) then -- Are they logged in?
@@ -67,8 +66,7 @@ function antidotePlayer (thePlayer, CommandName, targetPartialNick)
 						outputChatBox("You are too far away to inject "..targetPlayerName..".", thePlayer, 255, 0, 0)
 					else
 						exports.global:sendLocalMeAction(thePlayer,"injects "..targetPlayerName.." with an antidote.")
-						exports.global:takePlayerItem(thePlayer, itemID, itemValue)
-						triggerClientEvent("cancelSedativeEffect", targetPlayer)
+						exports.global:takePlayerItem(thePlayer, ??itemID)
 						setTimer(antidoteDelay, 3000, 1, targetPlayer)
 					end
 				end
@@ -79,12 +77,14 @@ end
 addCommandHandler("antidote", blindfoldPlayer, false, false)
 
 function sedativeDelay()
+	triggerClientEvent("sedativeEffect", targetPlayer)
 	setElementData(targetPlayer, "freeze", 1)
 	exports.global:applyAnimation(targetPlayer, "ped", "FLOOR_hit", true, 1.0, 1.0, 0.0, false, false)
 	exports.global:sendLocalMeAction(targetPlayer,"staggers and collapses.")
 end
 
 function antidoteDelay()
+	triggerClientEvent("cancelSedativeEffect", targetPlayer)
 	setElementData(targetPlayer, "freeze", 0)
 	exports.global:removeAnimation(targetPlayer)
 	exports.global:sendLocalMeAction(targetPlayer,"slowly regains consciousness.")

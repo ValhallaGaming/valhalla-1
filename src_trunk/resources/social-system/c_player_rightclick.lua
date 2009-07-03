@@ -46,7 +46,17 @@ function showPlayerMenu(targetPlayer, friends, sdescription, sage, sweight, shei
 	weight = sweight
 	description = sdescription
 	height = sheight
-	race = srace
+	
+	if (srace==0) then
+		race = "Black"
+	elseif (srace==1) then
+		race = "White"
+	elseif (srace==2) then
+		race = "Asian"
+	else
+		race = "Alien"
+	end
+
 	
 	if (found==false) then
 		bAddAsFriend = guiCreateButton(0.05, 0.13, 0.87, 0.1, "Add as friend", true, wRightClick)

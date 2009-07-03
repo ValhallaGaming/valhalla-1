@@ -9,6 +9,7 @@ description = nil
 age = nil
 weight = nil
 height = nil
+race = nil
 
 function clickPlayer(button, state, absX, absY, wx, wy, wz, element)
 	if (element) and (getElementType(element)=="player") and (button=="right") and (state=="down") and (sent==false) and (element~=getLocalPlayer()) then
@@ -30,7 +31,7 @@ function clickPlayer(button, state, absX, absY, wx, wy, wz, element)
 end
 addEventHandler("onClientClick", getRootElement(), clickPlayer, true)
 
-function showPlayerMenu(targetPlayer, friends, sdescription, sage, sweight, sheight)
+function showPlayerMenu(targetPlayer, friends, sdescription, sage, sweight, sheight, srace)
 	wRightClick = guiCreateWindow(ax, ay, 150, 200, string.gsub(getPlayerName(targetPlayer), "_", " "), false)
 	
 	local targetid = tonumber(getElementData(targetPlayer, "gameaccountid"))
@@ -45,6 +46,7 @@ function showPlayerMenu(targetPlayer, friends, sdescription, sage, sweight, shei
 	weight = sweight
 	description = sdescription
 	height = sheight
+	race = srace
 	
 	if (found==false) then
 		bAddAsFriend = guiCreateButton(0.05, 0.13, 0.87, 0.1, "Add as friend", true, wRightClick)
@@ -82,6 +84,7 @@ addEventHandler("displayPlayerMenu", getRootElement(), showPlayerMenu)
 function showPlayerInfo(button, state)
 	if (button=="left") then
 		outputChatBox("~~~~~~~~~~~~ " .. getPlayerName(player) .. " ~~~~~~~~~~~~", 255, 194, 14)
+		outputChatBox("Age: " .. race, 255, 194, 14)
 		outputChatBox("Age: " .. age .. " years old", 255, 194, 14)
 		outputChatBox("Weight: " .. weight .. "cm", 255, 194, 14)
 		outputChatBox("Height: " .. height .. "cm", 255, 194, 14)

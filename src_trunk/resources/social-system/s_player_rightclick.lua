@@ -25,14 +25,15 @@ function retrievePlayerInfo(targetPlayer)
 		end
 		mysql_free_result(result)
 		
-		local result = mysql_query(handler, "SELECT description, age, weight, height FROM characters WHERE charactername='" .. getPlayerName(targetPlayer) .. "'")
+		local result = mysql_query(handler, "SELECT description, age, weight, height, skincolour FROM characters WHERE charactername='" .. getPlayerName(targetPlayer) .. "'")
 		local description = tostring(mysql_result(result, 1, 1))
 		local age = tostring(mysql_result(result, 1, 2))
 		local weight = tostring(mysql_result(result, 1, 3))
 		local height = tostring(mysql_result(result, 1, 4))
+		local race = tostring(mysql_result(result, 1, 5))
 		mysql_free_result(result)
 		
-		triggerClientEvent(source, "displayPlayerMenu", source, targetPlayer, friends, description, age, weight, height)
+		triggerClientEvent(source, "displayPlayerMenu", source, targetPlayer, friends, description, age, weight, height, skincolour)
 	end
 end
 addEvent("sendPlayerInfo", true)

@@ -55,6 +55,8 @@ function sitInHelicopter(vehicle)
 			
 			attachElements(source, vehicle, -1.3, 0, 0)
 			setPedRotation(source, rz+90)
+			exports.global:applyAnimation(source, "FOOD", "FF_Sit_Look", 999999, true, true, false)
+			setPedWeaponSlot(source, 5)
 		elseif not (s2) then
 			seat = 1
 			

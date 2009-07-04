@@ -22,5 +22,4 @@
 	<script src="c_lasers.lua" type="client"/>
 	
 	<script src="helicopters/s_helicopters.lua" type="server"/>
-	<script src="helicopters/c_helicopters.lua" type="client"/>
 </meta>

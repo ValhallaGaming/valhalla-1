@@ -6,10 +6,8 @@ local colshape
 local routescompleted = 0
 
 routes = { }
-routes[1] = { 2869.48046875, 906.296875, 10.843698501587 }
-routes[2] = { 2870.3837890625, 923.04296875, 10.843739509583 }
---routes[1] = { 2648.64453125, 846.005859375, 6.1870636940002 }
---routes[2] = { 2119.5634765625, 950.6748046875, 10.519774436951 }
+routes[1] = { 2648.64453125, 846.005859375, 6.1870636940002 }
+routes[2] = { 2119.5634765625, 950.6748046875, 10.519774436951 }
 routes[3] = { 2372.2021484375, 2548.2451171875, 10.526019096375 }
 routes[4] = { 2288.5732421875, 2418.6533203125, 10.458553314209 }
 routes[5] = { 2090.205078125, 2086.9130859375, 10.526629447937 }
@@ -43,7 +41,7 @@ function startTruckerJob()
 				outputChatBox("#FF9933Drive to the #FF66CCblip#FF9933 on the radar and use /dumpload.", 255, 194, 15, true)
 				destroyElement(blip)
 				
-				local rand = math.random(1, 2)
+				local rand = math.random(1, 10)
 				route = routes[rand]
 				local x, y, z = routes[rand][1], routes[rand][2], routes[rand][3]
 				blip = createBlip(x, y, z, 0, 4, 255, 127, 255)
@@ -77,7 +75,7 @@ function dumpTruckLoad()
 					outputChatBox("#FF9933You can now either return to the warehouse and obtain your wage using /quitjob", 0, 0, 0, true)
 					outputChatBox("#FF9933or continue onto the next #FF66CCdrop off point#FF9933 and increase your wage.", 0, 0, 0, true)
 					
-					local rand = math.random(1, 2)
+					local rand = math.random(1, 10)
 					route = routes[rand]
 					local x, y, z = routes[rand][1], routes[rand][2], routes[rand][3]
 					blip = createBlip(x, y, z, 0, 4, 255, 127, 255)

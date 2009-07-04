@@ -7,7 +7,7 @@ function doesPlayerHaveSpaceForItem(thePlayer)
 	end
 	
 	for i=1, slots do
-		if not (items) or not (itemvalues) then -- no items
+		if not (items) then -- no items
 			return true
 		else
 			local token = tonumber(gettok(items, i, string.byte(',')))

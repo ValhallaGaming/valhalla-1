@@ -168,7 +168,7 @@ function takeItemFromVehicle(button, state)
 					guiGridListRemoveRow(gVehicleItems, row)
 					local row = guiGridListAddRow(gUserItems)
 					guiGridListSetItemText(gUserItems, row, UIColName, tostring(itemName), false, false)
-					triggerServerEvent("moveItemToPlayer", getLocalPlayer(), vehicle, itemID, itemValue, itemName)
+					triggerServerEvent("moveItemToPlayer", localPlayer, vehicle, itemID, itemValue, itemName)
 				else -- WEAPON
 					if (getPedWeapon(localPlayer, getSlotFromWeapon(itemID-9000))==itemID-9000) then
 						outputChatBox("You already have one of this item, this item is Unique.", 255, 0, 0)
@@ -178,7 +178,7 @@ function takeItemFromVehicle(button, state)
 						guiGridListRemoveRow(gVehicleItems, row)
 						local row = guiGridListAddRow(gUserItems)
 						guiGridListSetItemText(gUserItems, row, UIColName, getWeaponNameFromID(weaponID), false, false)
-						triggerServerEvent("moveWeaponToPlayer", getLocalPlayer(), vehicle, weaponID, weaponAmmo)
+						triggerServerEvent("moveWeaponToPlayer", localPlayer, vehicle, weaponID, weaponAmmo)
 					end
 				end
 			end

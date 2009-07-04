@@ -5,7 +5,7 @@ ax, ay = nil
 localPlayer = getLocalPlayer()
 vehicle = nil
 
-wInventory, gVehicleItems, gUserItems, lYou, lVehicle, bGiveItem, bTakeItem, bCloseInventory, lPlate, UIColName, VIColName = nil
+wInventory, gVehicleItems, gUserItems, lYou, lVehicle, bGiveItem, bTakeItem, bCloseInventory, lPlate, UIColName, VIColName, bSit = nil
 
 -- INVENTORY
 function cVehicleInventory(button, state)
@@ -213,8 +213,45 @@ function showVehicleMenu()
 	bInventory = guiCreateButton(0.05, 0.23, 0.87, 0.1, "Inventory", true, wRightClick)
 	addEventHandler("onClientGUIClick", bInventory, cVehicleInventory, false)
 	
-	bCloseMenu = guiCreateButton(0.05, 0.37, 0.87, 0.1, "Close Menu", true, wRightClick)
+	local y = 0.37
+	if (getElementModel(vehicle)==497) then -- HELICOPTER
+		local players = getElementData(vehicle, "players")
+		local found = false
+		
+		if (players) then
+			for key, value in ipairs(players) do
+				if (value==localPlayer) then
+					found = true
+				end
+			end
+		end
+		
+		if not (found) then
+			bSit = guiCreateButton(0.05, 0.37, 0.87, 0.1, "Sit", true, wRightClick)
+			addEventHandler("onClientGUIClick", bSit, sitInHelicopter, false)
+		else
+			bSit = guiCreateButton(0.05, 0.37, 0.87, 0.1, "Stand up", true, wRightClick)
+			addEventHandler("onClientGUIClick", bSit, unsitInHelicopter, false)
+		end
+		y = y + 0.14
+	end
+	
+	bCloseMenu = guiCreateButton(0.05, y, 0.87, 0.1, "Close Menu", true, wRightClick)
 	addEventHandler("onClientGUIClick", bCloseMenu, hideVehicleMenu, false)
+end
+
+function sitInHelicopter(button, state)
+	if (button=="left") then
+		triggerServerEvent("sitInHelicopter", localPlayer, vehicle)
+		hideVehicleMenu()
+	end
+end
+
+function unsitInHelicopter(button, state)
+	if (button=="left") then
+		triggerServerEvent("unsitInHelicopter", localPlayer, vehicle)
+		hideVehicleMenu()
+	end
 end
 
 function hideVehicleMenu()

@@ -29,7 +29,7 @@
 		<setting name="driveby_steer_bikes" value="[false]"/>
 		
 		<!--Whether a weapon should be equiped as soon as you enter a vehicle. -->
-		<setting name="driveby_auto_equip" value="[false]"/>
+		<setting name="driveby_auto_equip" value="[true]"/>
 	</settings>
 	<export function="setDriverDrivebyAbility" type="client" />
 	<export function="setPassengerDrivebyAbility" type="client" />

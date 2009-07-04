@@ -305,7 +305,7 @@ function createFinishQuizWindow()
 		-- if the player has passed the quiz and clicks on register
 		addEventHandler ( "onClientGUIClick", guiFinalRegisterButton,  function(button, state)
 			if(button == "left" and state == "up") then
-				triggerServerEvent("acceptLicense", getLocalPlayer(), 1, 350)
+				triggerServerEvent("DrivingTestPart2", getLocalPlayer())
 				-- reset their correct answers
 				correctAnswers = 0
 				guiSetVisible(guiFinishWindow, false)

@@ -65,7 +65,7 @@ function acceptJob(button, state)
 			end
 			
 			if (job>0) then
-				triggerServerEvent("acceptJob", getLocalPlayer(), job)
+				setElementData(localPlayer, "job", job)
 			end
 			
 			destroyElement(jobList)
@@ -88,3 +88,14 @@ function cancelJob(button, state)
 		showCursor(false)
 	end
 end
+
+function quitJob()
+	local job = getElementData(localPlayer, "job")
+	
+	if (job>0) then
+		if ( job == 1 ) then -- trucker
+			endTruckJob()
+		end
+	end
+end
+addCommandHandler("quitjob", quitJob)

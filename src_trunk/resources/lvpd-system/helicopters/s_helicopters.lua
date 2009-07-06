@@ -1,7 +1,38 @@
 function unsitInHelicopter(vehicle)
 	local seat = getElementData(source, "seat")
 	
-	if (seat) and (seat>0) then
+	
+	if not (getElementType(vehicle)=="vehicle") then
+		local vehicles = exports.pool:getPoolElementsByType("vehicle")
+		local helicopters = { }
+		for key, value in ipairs(vehicles) do
+			if (getElementModel(value)==497) then
+				table.insert(helicopters, value)
+			end
+		end
+		
+		for key, value in ipairs(helicopters) do
+			local players = getElementData(value, "players")
+			
+			if (players) then				
+				local removed = false
+				for key, value in ipairs(players) do
+					if (value==source) then
+						removed = true
+						table.remove(players, key)
+					end
+				end
+				
+				if (removed) then
+					setElementData(value, "players", players)
+				end
+			end
+		end
+		
+		removeElementData(source, "seat")
+		detachElements(source, vehicle)
+		exports.global:removeAnimation(source)
+	elseif (seat) and (seat>0) then
 		local players = getElementData(vehicle, "players")
 		
 		for key, value in ipairs(players) do

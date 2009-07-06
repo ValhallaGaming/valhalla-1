@@ -19,6 +19,41 @@ function isValidType(elementType)
     return false
 end
 
+function showsize(thePlayer)
+	local players = #poolTable["player"]
+	local vehicles = #poolTable["vehicle"]
+	local colshapes = #poolTable["colshape"]
+	local peds = #poolTable["ped"]
+	local markers = #poolTable["marker"]
+	local objects = #poolTable["object"]
+	local pickups = #poolTable["pickup"]
+	local teams = #poolTable["team"]
+	local blips = #poolTable["blip"]
+	
+	local tplayers = #getElementsByType("player")
+	local tvehicles = #getElementsByType("vehicle")
+	local tcolshapes = #getElementsByType("colshape")
+	local tpeds = #getElementsByType("ped")
+	local tmarkers = #getElementsByType("marker")
+	local tobjects = #getElementsByType("object")
+	local tpickups = #getElementsByType("pickup")
+	local tteams = #getElementsByType("team")
+	local tblips = #getElementsByType("blip")
+	
+	
+	outputChatBox("PLAYERS: " .. tostring(players) .. ":" .. tostring(tplayers), thePlayer)
+	outputChatBox("VEHICLES: " .. tostring(vehicles) .. ":" .. tostring(tvehicles), thePlayer)
+	outputChatBox("COLSHAPES: " .. tostring(colshapes) .. ":" .. tostring(tcolshapes), thePlayer)
+	outputChatBox("PEDS: " .. tostring(peds) .. ":" .. tostring(tpeds), thePlayer)
+	outputChatBox("MARKERS: " .. tostring(markers) .. ":" .. tostring(tmarkers), thePlayer)
+	outputChatBox("OBJECTS: " .. tostring(objects) .. ":" .. tostring(tobjects), thePlayer)
+	outputChatBox("PICKUPS: " .. tostring(pickups) .. ":" .. tostring(tpickups), thePlayer)
+	outputChatBox("TEAMS: " .. tostring(teams) .. ":" .. tostring(tteams), thePlayer)
+	outputChatBox("BLIPS: " .. tostring(blips) .. ":" .. tostring(tblips), thePlayer)
+	
+end
+addCommandHandler("size", showsize)
+
 function deallocateElement(element)
     local elementType = getElementType(element)
     if (isValidType(elementType)) then

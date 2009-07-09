@@ -214,6 +214,7 @@ function getItemsForSale(shop_type, race)
 		item[20] = {"Chemistry Set", "A small chemistry set.", "2000", 44, 1,1,false,15}
 		item[21] = {"Rope", "A long rope.", "15", 46, 1,1,false,2}
 		item[22] = {"Backpack", "A reasonably sized backpack.", "30", 48, 1,1,false,2}
+		item[23] = {"Fishing Rod", "A 7 foot carbon steel fishing rod.", "300", 49, 1,1,false, 175}
 
 		
 

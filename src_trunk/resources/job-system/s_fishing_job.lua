@@ -19,7 +19,7 @@ function startFishing(thePlayer)
 				if (x < 3000) then -- the further out to sea you go the bigger the fish you will catch.
 					outputChatBox("You must be out at sea to fish.", thePlayer, 255, 0, 0)
 				else
-					if not(exports.global:doesPlayerHaveItem(thePlayer, 1)) then -- does the player have the fishing rod item? ***Change the ID to the fishing rod item.***
+					if not(exports.global:doesPlayerHaveItem(thePlayer, 49)) then -- does the player have the fishing rod item?
 						outputChatBox("You need a fishing rod to fish.", thePlayer, 255, 0, 0)
 					else
 						if (catchTimer) then -- Are they already fishing?
@@ -59,7 +59,7 @@ addCommandHandler("fish", startFishing, false, false)
 function catchFish(thePlayer)
 	local lineSnap = math.random(1,10)
 	if (lineSnap > 9) then
-		exports.global:takePlayerItem(thePlayer, 1) -- replace item ID with fishing rod.
+		exports.global:takePlayerItem(thePlayer, 49) -- fishing rod
 		exports.global:sendLocalMeAction(thePlayer,"snaps their fishing line.")
 		outputChatBox("Your fishing rod has broken. You need to buy a new one to continue fishing.", thePlayer, 255, 0, 0)
 	else

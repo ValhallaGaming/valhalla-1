@@ -5,6 +5,7 @@ function applyMods(res)
 		------------------------------------
 		fishMarket = engineLoadTXD("lv/melrose03_lawn.txd")
 		engineImportTXD(fishMarket, 5782)
+		
 		------------------------------
 		-- Petrelli's Cafe Exterior --
 		------------------------------

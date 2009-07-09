@@ -29,7 +29,7 @@ function startFishing(thePlayer)
 								outputChatBox("#FF9933The boat can't hold any more fish. #FF66CCSell#FF9933 the fish you have caught before continuing.", thePlayer, 255, 104, 91, true)
 							else
 								--local biteTimer = math.random(60000,300000)
-								local biteTimer = math.random(1000,60000)
+								local biteTimer = math.random(60000,300000)
 								local catchTimer = setTimer (catchFish, biteTimer, 1, thePlayer) -- A fish will bite within 1 and 5 minutes.
 								exports.global:sendLocalMeAction(thePlayer,"casts a fishing line.")
 										
@@ -44,7 +44,7 @@ function startFishing(thePlayer)
 									setElementVisibleTo(marker, thePlayer, true)
 
 									outputChatBox("#FF9933When you are done fishing you can sell your catch at the fish monger ((#FF66CCblip#FF9933 added to radar)).", thePlayer, 255, 104, 91, true)
-									outputChatBox("#FF9933To sell your catch enter /sellfish in the #FF66CCmarker#FF9933.)).", thePlayer, 255, 104, 91, true)
+									outputChatBox("#FF9933((To sell your catch enter /sellfish in the #FF66CCmarker#FF9933.))", thePlayer, 255, 104, 91, true)
 								end
 							end
 						end

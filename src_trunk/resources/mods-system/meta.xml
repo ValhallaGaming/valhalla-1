@@ -12,7 +12,8 @@
 	<file src="lv/bustopm.txd"/>
 	<file src="lv/gen_pol_vegas.txd"/>
 	<file src="lv/vegasdwntwn1.txd"/>	
-
+	<file src="lv/melrose03_lawn.txd"/>
+	
 	<file src="skins/lvpd/lapd1.txd"/>
 	<file src="skins/lvpd/sfpd1.txd"/>
 	<file src="skins/lvpd/swat.txd"/>

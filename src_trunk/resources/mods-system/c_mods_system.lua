@@ -1,5 +1,10 @@
 function applyMods(res)
 	if (res==getThisResource()) then
+		------------------------------------
+		-- Fish market sign (fishing job) --
+		------------------------------------
+		fishMarket = engineLoadTXD("lv/melrose03_lawn.txd")
+		engineImportTXD(fishMarket, 5782)
 		------------------------------
 		-- Petrelli's Cafe Exterior --
 		------------------------------

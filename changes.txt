@@ -1,17 +1,31 @@
+---
+SQL
+---
+INSERT INTO items SET id='49', item_name='Fishing Rod', item_description='A 7 foot carbon steel fishing rod.';
+
 ---------------------
 Chamberlains changes.
 ---------------------
 Scripts in "unfinished code" need to be completed, checked and added to the correct resources by someone who knows what they are doing.
 
+- item-system
+	- s_item_system.lua
+	- c_item_system.lua
+
 - map-system
-	- basslineStudios.map
-
-- admin-system
-	- HelpCommandsv1
-
-- mods-resource
+	- fishMarket.map
 	- meta
-	-c_mods_system
+
+- mods-system
+	- c_mods_system.lua
+	- lv/melrose03_lawn.txd
+
+- job-system
+	- meta
+	- s_fishing_job.lua
+
+- global
+	- c_item_globals
 
 --------------------
 Jack's changes.

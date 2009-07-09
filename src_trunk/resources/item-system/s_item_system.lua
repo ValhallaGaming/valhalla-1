@@ -325,6 +325,8 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 			outputChatBox("Right click a player to use this item.", source, 255, 0, 0)
 		elseif (itemID==48) then
 			outputChatBox("Your inventory is extended.", source, 0, 255, 0)
+		elseif (itemID==49) then
+			outputChatBox("Head out to sea and /fish to use this item.", source, 255, 0, 0)
 		else
 			outputChatBox("Error 800001 - Report on http://bugs.valhallagaming.net", source, 255, 0, 0)
 		end

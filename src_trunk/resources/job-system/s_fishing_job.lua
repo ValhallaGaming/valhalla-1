@@ -55,6 +55,8 @@ function startFishing(thePlayer)
 	end
 end	
 addCommandHandler("fish", startFishing, false, false)
+addEvent("fish")
+addEventHandler("fish", getRootElement(), startFishing)
 
 function catchFish(thePlayer)
 	local lineSnap = math.random(1,10)

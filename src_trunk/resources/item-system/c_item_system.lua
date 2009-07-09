@@ -875,34 +875,35 @@ addEventHandler("onClientPlayerDamage", getLocalPlayer(), stopGasmaskDamage)
 
 -- /itemlist (admin command to get item IDs)
 wItemList, bItemListClose = nil
+
 function showItemList(items)
 	if not (wItemsList) then
 		wItemsList = guiCreateWindow(0.15, 0.15, 0.7, 0.7, "Items List", true)
 		local gridItems = guiCreateGridList(0.025, 0.1, 0.95, 0.775, true, wItemsList)
 		
-		local colID = guiGridListAddColumn(gridItems, "ID", 0.18)
-		local colName = guiGridListAddColumn(gridItems, "Item Name", 0.6)
-		local colType = guiGridListAddColumn(gridItems, "Description", 0.18)
-		local scrollPane = guiCreateScrollPane(0.02, 0.02, 0.95, 0.95, true, wItemsList)
+		local colID = guiGridListAddColumn(gridItems, "ID", 0.1)
+		local colName = guiGridListAddColumn(gridItems, "Item Name", 0.3)
+		local colDesc = guiGridListAddColumn(gridItems, "Description", 0.6)
+		local scrollPane = guiCreateScrollPane(0.02, 0.02, 0.95, 0.95, true, gridItems)
 		
 		for key, value in pairs(items) do
-			local itemID = factions[key][1]
-			local itemName = tostring(factions[key][2])
-			local itemDescription = tonumber(factions[key][3])
+			local itemID = items[key][1]
+			local itemName = tostring(items[key][2])
+			local itemDescription = tostring(items[key][3])
 
-			local row = guiGridListAddRow(gridFactions)
-			guiGridListSetItemText(gridFactions, row, colID, itemID, false, true)
-			guiGridListSetItemText(gridFactions, row, colName, itemName, false, false)
-			guiGridListSetItemText(gridFactions, row, colType, itemDescription, false, false)
+			local row = guiGridListAddRow(gridItems)
+			guiGridListSetItemText(gridItems, row, colID, itemID, false, true)
+			guiGridListSetItemText(gridItems, row, colName, itemName, false, false)
+			guiGridListSetItemText(gridItems, row, colDesc, itemDescription, false, false)
 		end
 
 		bItemListClose = guiCreateButton(0.025, 0.9, 0.95, 0.1, "Close", true, wItemsList)
-		addEventHandler("onClientGUIClick", bItemsListClose, closeItemsList, false)
+		addEventHandler("onClientGUIClick", bItemListClose, closeItemsList, false)
 		
 		showCursor(true)
 	else
-		guiSetVisible(wFactionList, true)
-		guiBringToFront(wFactionList)
+		guiSetVisible(wItemsList, true)
+		guiBringToFront(wItemsList)
 		showCursor(true)
 	end
 end
@@ -910,10 +911,11 @@ addEvent("showItemList", true)
 addEventHandler("showItemList", getRootElement(), showItemList)
 
 function closeItemsList(button, state)
-	if (source==bItemsListClose) and (button=="left") and (state=="up") then
+	if (source==bItemListClose) and (button=="left") and (state=="up") then
 		showCursor(false)
-		guiSetInputEnabled(false)
+		destroyElement(bItemClose)
 		destroyElement(wItemsList)
-		wItemsList, bItemsListClose = nil, nil
+		bItemListClose = nil
+		wItemsList = nil
 	end
 end

@@ -1336,7 +1336,7 @@ function sellProperty(thePlayer, commandName)
 					exports.global:givePlayerSafeMoney(thePlayer, money)
 					outputChatBox("You sold your property for " .. money .. "$.", thePlayer, 0, 255, 0)
 				else
-					outputChatBox("You set this property to unowned.")
+					outputChatBox("You set this property to unowned.", thePlayer, 0, 255, 0)
 				end
 				reloadOneInterior(tonumber(dbid))
 			else

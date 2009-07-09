@@ -674,7 +674,6 @@ end
 addEvent("pickupItem", true)
 addEventHandler("pickupItem", getRootElement(), pickupItem)
 
--- /itemlist (admin command to get item IDs)
 function adminItemList(thePlayer)
 	if (exports.global:isPlayerAdmin(thePlayer)) then
 		local result = mysql_query(handler, "SELECT id, item_name, item_description FROM items")
@@ -692,7 +691,7 @@ function adminItemList(thePlayer)
 			end
 			
 			mysql_free_result(result)
-			triggerClientEvent(thePlayer, "showItemList", getRootElement(), factions)
+			triggerClientEvent(thePlayer, "showItemList", getRootElement(), items)
 		else
 			outputChatBox("Error 300001 - Report on forums.", thePlayer, 255, 0, 0)
 		end

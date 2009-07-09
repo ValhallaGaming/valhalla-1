@@ -37,6 +37,7 @@ function clearChatBox()
 end
 
 function hideInterfaceComponents()
+	--triggerEvent("hideHud", getLocalPlayer())
 	showPlayerHudComponent("weapon", false)
 	showPlayerHudComponent("ammo", false)
 	showPlayerHudComponent("vehicle_name", false)
@@ -47,6 +48,7 @@ function hideInterfaceComponents()
 	showPlayerHudComponent("breath", false)
 	showPlayerHudComponent("area_name", false)
 	showPlayerHudComponent("radar", false)
+	--triggerEvent("hideHud", getLocalPlayer())
 end
 addEventHandler("onClientResourceStart", getResourceRootElement(getThisResource()), hideInterfaceComponents)
 
@@ -1240,6 +1242,7 @@ function showCharacterUI(accounts, achievementCount, achievementPointsCount, ach
 		bChangeChar = nil
 	end
 	
+	--triggerEvent("hideHud", getLocalPlayer())
 	if not (firstTime) then
 		showChat(false)
 	end
@@ -1502,6 +1505,7 @@ function dcselectedCharacter(button, state)
 					showChat(true)
 					showLogoutPanel()
 					
+					--triggerEvent("showHud", getLocalPlayer())
 					showPlayerHudComponent("weapon", true)
 					showPlayerHudComponent("ammo", true)
 					showPlayerHudComponent("vehicle_name", false)
@@ -3486,28 +3490,15 @@ function toggleNametags()
 	if (nametags) then
 		nametags = false
 		outputChatBox("Nametags are no longer visible.", 255, 0, 0)
-		for key, value in ipairs(getElementsByType("player")) do
-			setPlayerNametagShowing(value, false)
-		end
+		triggerEvent("hidenametags", getLocalPlayer())
 	elseif not (nametags) then
 		nametags = true
 		outputChatBox("Nametags are now visible.", 0, 255, 0)
-		for key, value in ipairs(getElementsByType("player")) do
-			setPlayerNametagShowing(value, true)
-		end
+		triggerEvent("shownametags", getLocalPlayer())
 	end
 end
 addCommandHandler("tognametags", toggleNametags)
 addCommandHandler("togglenametags", toggleNametags)
-
-function onPlayerJoinSetNametagsState()
-	if (nametags) then
-		setPlayerNametagShowing(source, true)
-	else
-		setPlayerNametagShowing(source, false)
-	end
-end
-addEventHandler("onClientPlayerJoin", getRootElement(), onPlayerJoinSetNametagsState)
 
 timeinserver = 0
 function updateTimeInServer()

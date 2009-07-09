@@ -18,7 +18,9 @@ function removeRoadblock(thePlayer, commandName, id)
 				if (roadblocks[id]==nil) then
 					outputChatBox("No roadblock was found with this ID.", thePlayer, 255, 0, 0)
 				else
-					destroyElement(roadblocks[id])
+					local object = roadblocks[id]
+					exports.pool:deallocateElement(object)
+					destroyElement(object)
 					table.remove(roadblocks, id)
 					rbcount = rbcount - 1
 					outputChatBox("Removed roadblock with ID #" .. id .. ".", thePlayer, 0, 255, 0)
@@ -28,6 +30,37 @@ function removeRoadblock(thePlayer, commandName, id)
 	end
 end
 addCommandHandler("delroadblock", removeRoadblock, false, false)
+
+function getNearbyRoadblocks(thePlayer, commandName)
+	local posX, posY, posZ = getElementPosition(thePlayer)
+	outputChatBox("Nearby Roadblocks:", thePlayer, 255, 126, 0)
+	local count = 0
+	
+	for k, theObject in ipairs(exports.pool:getPoolElementsByType("object")) do
+		local model = getObjectModel(theObject)
+		
+		if (model==981) or (model==1422) then
+			local x, y, z = getElementPosition(theObject)
+			local distance = getDistanceBetweenPoints3D(posX, posY, posZ, x, y, z)
+			if (distance<=10) then
+				local dbid = -1
+				
+				for key, value in ipairs(roadblocks) do
+					if (value==theObject) then
+						dbid = key
+						break
+					end
+				end
+				outputChatBox("   Roadblock with ID " .. dbid .. ".", thePlayer, 255, 126, 0)
+				count = count + 1
+			end
+		end
+	end
+	if (count==0) then
+		outputChatBox("   None.", thePlayer, 255, 126, 0)
+	end
+end
+addCommandHandler("nearbyrb", getNearbyRoadblocks, false, false)
 
 function removeAllRoadblocks(thePlayer, commandName)
 	local logged = getElementData(thePlayer, "loggedin")
@@ -42,7 +75,9 @@ function removeAllRoadblocks(thePlayer, commandName)
 			else
 				for i = 1, rbcount do
 					if (roadblocks[i]) then
-						destroyElement(roadblocks[i])
+						local object = roadblocks[id]
+						exports.pool:deallocateElement(object)
+						destroyElement(object)
 						rbcount = rbcount - 1
 					end
 				end
@@ -69,6 +104,8 @@ function createBigRoadblock(thePlayer, commandName)
 				local rotation = getPedRotation(thePlayer)
 				local x, y, z = getElementPosition(thePlayer)
 				local object = createObject(981, x, y, z, 0, 0, rotation)
+				
+				exports.pool:allocateElement(object)
 				
 				x = x + ( ( math.cos ( math.rad ( rotation ) ) ) * 5 )
 				y = y + ( ( math.sin ( math.rad ( rotation ) ) ) * 5 )
@@ -107,6 +144,8 @@ function createSmallRoadblock(thePlayer, commandName)
 				local rotation = getPedRotation(thePlayer)
 				local x, y, z = getElementPosition(thePlayer)
 				local object = createObject(1422, x, y, z-0.7, 0, 0, rotation)
+				
+				exports.pool:allocateElement(object)
 				
 				x = x + ( ( math.cos ( math.rad ( rotation ) ) ) * 5 )
 				y = y + ( ( math.sin ( math.rad ( rotation ) ) ) * 5 )

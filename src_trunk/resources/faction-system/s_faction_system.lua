@@ -809,26 +809,27 @@ function payAllWages()
 						
 						-- DONATOR PERKS
 						local donator = getElementData(value, "donatorlevel")
+						local donatormoney = 0 
 						if (donator==1) then
-							pay = pay + 25
+							donatormoney = donatormoney + 25
 							interestrate = interestrate + 0.0001
 						elseif (donator==2) then
-							pay = pay + 25
+							donatormoney = donatormoney + 25
 							interestrate = interestrate + 0.0002
 						elseif (donator==3) then
-							pay = pay + 75
+							donatormoney = donatormoney + 75
 							interestrate = interestrate + 0.0004
 						elseif (donator==4) then
-							pay = pay + 100
+							donatormoney = donatormoney + 100
 							interestrate = interestrate + 0.0004
 						elseif (donator==5) then
-							pay = pay + 125
+							donatormoney = donatormoney + 125
 							interestrate = interestrate + 0.0005
 						elseif (donator==6) then
-							pay = pay + 150
+							donatormoney = donatormoney + 150
 							interestrate = interestrate + 0.0006
 						elseif (donator==7) then
-							pay = pay + 250
+							donatormoney = donatormoney + 250
 							interestrate = interestrate + 0.0006
 						end
 						
@@ -841,15 +842,18 @@ function payAllWages()
 						
 						-- business money
 						local profit = getElementData(value, "businessprofit")
-						setElementData(value, "bankmoney", bankmoney+pay+interest+profit)
+						setElementData(value, "bankmoney", bankmoney+pay+interest+profit+donatormoney)
 						
 						outputChatBox("~-~-~-~-~-~-~-~~-~-~-~-~ PAY SLIP ~-~-~-~-~-~-~-~~-~-~-~-~", value, 255, 194, 14)
 						outputChatBox("    Wage Paid: " .. rankWage .. "$", value, 255, 194, 14)
 						outputChatBox("    Business Profit: " .. profit .. "$", value, 255, 194, 14)
 						outputChatBox("    Income Tax of " .. (incomeTax*100) .. "%: " .. (incomeTax*(rankWage+profit)) .. "$", value, 255, 194, 14)
 						outputChatBox("    Bank Interest (" .. interestrate*1000 .. "%): " .. interest .. "$", value, 255, 194, 14)
+						if (donator>0) then
+							outputChatBox("    Donator Money: " .. donatormoney .. "$", value, 255, 194, 14)
+						end
 						outputChatBox("----------------------------------------------------------", value, 255, 194, 14)
-						outputChatBox("  Gross Income: " .. pay+profit+interest .. "$ (Wire-Transferred to bank)", value, 255, 194, 14)
+						outputChatBox("  Gross Income: " .. donatormoney+pay+profit+interest .. "$ (Wire-Transferred to bank)", value, 255, 194, 14)
 					end
 				else
 					local unemployedPay = 150
@@ -865,26 +869,27 @@ function payAllWages()
 						
 						-- DONATOR PERKS
 						local donator = getElementData(value, "donatorlevel")
+						local donatormoney = 0 
 						if (donator==1) then
-							pay = pay + 25
+							donatormoney = donatormoney + 25
 							interestrate = interestrate + 0.0001
 						elseif (donator==2) then
-							pay = pay + 25
+							donatormoney = donatormoney + 25
 							interestrate = interestrate + 0.0002
 						elseif (donator==3) then
-							pay = pay + 75
+							donatormoney = donatormoney + 75
 							interestrate = interestrate + 0.0004
 						elseif (donator==4) then
-							pay = pay + 100
+							donatormoney = donatormoney + 100
 							interestrate = interestrate + 0.0004
 						elseif (donator==5) then
-							pay = pay + 125
+							donatormoney = donatormoney + 125
 							interestrate = interestrate + 0.0005
 						elseif (donator==6) then
-							pay = pay + 150
+							donatormoney = donatormoney + 150
 							interestrate = interestrate + 0.0006
 						elseif (donator==7) then
-							pay = pay + 250
+							donatormoney = donatormoney + 250
 							interestrate = interestrate + 0.0006
 						end
 						
@@ -892,14 +897,17 @@ function payAllWages()
 						
 						-- business money
 						local profit = getElementData(value, "businessprofit")
-						setElementData(value, "bankmoney", bankmoney+unemployedPay+interest+profit)
+						setElementData(value, "bankmoney", bankmoney+unemployedPay+interest+profit+donatormoney)
 						
 						outputChatBox("~-~-~-~-~-~-~-~~-~-~-~-~ PAY SLIP ~-~-~-~-~-~-~-~~-~-~-~-~", value, 255, 194, 14)
 						outputChatBox("    State Benefits: " .. pay .. "$", value, 255, 194, 14)
 						outputChatBox("    Business Profit: " .. profit .. "$", value, 255, 194, 14)
 						outputChatBox("    Bank Interest (" .. interestrate*1000 .. "%): " .. interest .. "$", value, 255, 194, 14)
+						if (donator>0) then
+							outputChatBox("    Donator Money: " .. donatormoney .. "$", value, 255, 194, 14)
+						end
 						outputChatBox("----------------------------------------------------------", value, 255, 194, 14)
-						outputChatBox("  Gross Income: " .. unemployedPay+profit+interest .. "$ (Wire-Transferred to bank)", value, 255, 194, 14)
+						outputChatBox("  Gross Income: " .. unemployedPay+profit+interest+donatormoney .. "$ (Wire-Transferred to bank)", value, 255, 194, 14)
 					end
 				end
 			else
@@ -916,26 +924,27 @@ function payAllWages()
 					
 					-- DONATOR PERKS
 						local donator = getElementData(value, "donatorlevel")
+						local donatormoney = 0 
 						if (donator==1) then
-							pay = pay + 25
+							donatormoney = donatormoney + 25
 							interestrate = interestrate + 0.0001
 						elseif (donator==2) then
-							pay = pay + 25
+							donatormoney = donatormoney + 25
 							interestrate = interestrate + 0.0002
 						elseif (donator==3) then
-							pay = pay + 75
+							donatormoney = donatormoney + 75
 							interestrate = interestrate + 0.0004
 						elseif (donator==4) then
-							pay = pay + 100
+							donatormoney = donatormoney + 100
 							interestrate = interestrate + 0.0004
 						elseif (donator==5) then
-							pay = pay + 125
+							donatormoney = donatormoney + 125
 							interestrate = interestrate + 0.0005
 						elseif (donator==6) then
-							pay = pay + 150
+							donatormoney = donatormoney + 150
 							interestrate = interestrate + 0.0006
 						elseif (donator==7) then
-							pay = pay + 250
+							donatormoney = donatormoney + 250
 							interestrate = interestrate + 0.0006
 						end
 						
@@ -944,21 +953,24 @@ function payAllWages()
 					
 					-- business money
 					local profit = getElementData(value, "businessprofit")
-					setElementData(value, "bankmoney", bankmoney+unemployedPay+interest+profit)
+					setElementData(value, "bankmoney", bankmoney+unemployedPay+interest+profit+donatormoney)
 					
 					outputChatBox("~-~-~-~-~-~-~-~~-~-~-~-~ PAY SLIP ~-~-~-~-~-~-~-~~-~-~-~-~", value, 255, 194, 14)
 					outputChatBox("    State Benefits: " .. pay .. "$", value, 255, 194, 14)
 					outputChatBox("    Business Profit: " .. profit .. "$", value, 255, 194, 14)
 					outputChatBox("    Bank Interest (" .. interestrate*1000 .. "%): " .. interest .. "$", value, 255, 194, 14)
+					if (donator>0) then
+						outputChatBox("    Donator Money: " .. donatormoney .. "$", value, 255, 194, 14)
+					end
 					outputChatBox("----------------------------------------------------------", value, 255, 194, 14)
-					outputChatBox("  Gross Income: " .. unemployedPay+profit+interest .. "$ (Wire-Transferred to bank)", value, 255, 194, 14)
+					outputChatBox("  Gross Income: " .. unemployedPay+profit+interest+donatormoney .. "$ (Wire-Transferred to bank)", value, 255, 194, 14)
 				end
 			end
 			local hoursplayed = getElementData(value, "hoursplayed")
 			setElementData(value, "hoursplayed", hoursplayed+1)
 			
-			setElementData(value, "timeinserver", 0)
-			triggerClientEvent(value, "syncTimeInServer", value, 0)
+			setElementData(value, "timeinserver", timeinserver-60)
+			triggerClientEvent(value, "syncTimeInServer", value, timeinserver-60)
 		elseif (timeinserver<60) then
 			outputChatBox("You have not played long enough to recieve a payday. (You require another " .. 60-timeinserver .. " Minutes of play.)", value, 255, 0, 0)
 		end
@@ -987,6 +999,11 @@ function timeSaved(thePlayer)
 	
 	if (logged==1) then
 		local timeinserver = getElementData(thePlayer, "timeinserver")
+		
+		if (timeinserver>60) then
+			timeinserver = 60
+		end
+		
 		outputChatBox("You currently have " .. timeinserver .. " Minutes played.", thePlayer, 255, 195, 14)
 		outputChatBox("You require another " .. 60-timeinserver .. " Minutes to obtain a payday.", thePlayer, 255, 195, 14)
 	end

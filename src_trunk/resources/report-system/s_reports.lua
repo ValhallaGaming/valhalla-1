@@ -14,13 +14,75 @@ function resourceStart(res)
 end
 addEventHandler("onResourceStart", getRootElement(), resourceStart)
 
+function showReports(thePlayer)
+	if (exports.global:isPlayerAdmin(thePlayer)) then
+		outputChatBox("~~~~~~~~~ Reports ~~~~~~~~~", thePlayer, 255, 194, 15)
+		
+		for i = 1, #reports do
+			local reporter = reports[i][1]
+			local reported = reports[i][2]
+			local timestring = reports[i][4]
+			local admin = reports[i][5]
+			
+			local handler = ""
+			if (isElement(admin)) then
+				handler = getPlayerName(admin)
+			else
+				handler = "None."
+			end
+			
+			outputChatBox("Report #" .. i .. ": '" .. getPlayerName(reporter) .. "' reporting '" .. getPlayerName(reported) .. "' at " .. timestring .. ". Handler: " .. handler .. ".", thePlayer, 255, 195, 15)
+		end
+		
+		if (#reports==0) then
+			outputChatBox("None.", thePlayer, 255, 194, 15)
+		else
+			outputChatBox("Type /reportinfo [id] to obtain more information about the report.", thePlayer, 255, 194, 15)
+		end
+	end
+end
+addCommandHandler("reports", showReports, false, false)
+
+function reportInfo(thePlayer, commandName, id)	
+	if (exports.global:isPlayerAdmin(thePlayer)) then
+		if not (id) then
+			outputChatBox("SYNTAX: " .. commandName .. " [ID]", thePlayer, 255, 194, 15)
+		else
+			if (reports[id]~= nil) then
+				id = tonumber(id)
+				local reporter = reports[id][1]
+				local reported = reports[id][2]
+				local reason = reports[id][3]
+				local timestring = reports[id][4]
+				local admin = reports[id][5]
+				
+				local playerID = getElementData(reporter, "playerid")
+				
+				
+				outputChatBox(" [-ADMIN REPORT-] (" .. playerID .. ") " .. tostring(getPlayerName(reporter)) .. " reported " .. tostring(getPlayerName(reported)) .. " at " .. timestring .. ".", thePlayer, 0, 255, 255)
+				outputChatBox(" [-ADMIN REPORT-] " .. "Reason: " .. tostring(reason), thePlayer, 0, 255, 255)
+				
+				local handler = ""
+				if (isElement(admin)) then
+					outputChatBox(" [-ADMIN REPORT-] This report is being handled by " .. getPlayerName(admin) .. ".", thePlayer, 0, 255, 255)
+				else
+					outputChatBox(" [-ADMIN REPORT-] Type /ar " .. id .. " to accept this report.", thePlayer, 0, 255, 255)
+				end
+			else
+				outputChatBox("Invalid Report ID.", thePlayer, 255, 0, 0)
+			end
+		end
+	end
+end
+addCommandHandler("reportinfo", reportInfo, false, false)
+
 function playerQuit()
 	local report = getElementData(source, "report")
 	
 	if (report) then
 		local theAdmin = reports[report][5]
 		
-		if (theAdmin) then
+		if (isElement(theAdmin)) then
 			outputChatBox("Player " .. getPlayerName(source) .. " left the game. Report #" .. report .. " has been closed.", theAdmin, 0, 255, 255)
 		end
 		
@@ -220,8 +282,8 @@ function falseReport(thePlayer, commandName, id)
 		end
 	end
 end
-addCommandHandler("falsereport", falseReport)
-addCommandHandler("fr", falseReport)
+addCommandHandler("falsereport", falseReport, false, false)
+addCommandHandler("fr", falseReport, false, false)
 
 function acceptReport(thePlayer, commandName, id)
 	if (exports.global:isPlayerAdmin(thePlayer)) then
@@ -279,8 +341,37 @@ function acceptReport(thePlayer, commandName, id)
 		end
 	end
 end
-addCommandHandler("acceptreport", acceptReport)
-addCommandHandler("ar", acceptReport)
+addCommandHandler("acceptreport", acceptReport, false, false)
+addCommandHandler("ar", acceptReport, false, false)
+
+function closeReport(thePlayer, commandName, id)
+	if (exports.global:isPlayerAdmin(thePlayer)) then
+		if not (id) then
+			outputChatBox("SYNTAX: " .. commandName .. " [ID]", thePlayer, 255, 195, 14)
+		else
+			id = tonumber(id)
+			if (reports[id]==nil) then
+				outputChatBox("Invalid Report ID.", thePlayer, 255, 0, 0)
+			else							
+				local reporter = reports[id][1]
+				
+				reports[id] = nil
+				
+				if (isElement(reporter)) then
+					setElementData(thePlayer, "report", nil)
+					outputChatBox(getPlayerName(thePlayer) .. " has closed your report. Please re-submit your report if you weren't happy that it was resolved.", reporter, 0, 255, 255)
+				end
+				
+				local admins = exports.global:getAdmins()
+				for key, value in ipairs(admins) do
+					outputChatBox(" [-ADMIN REPORT-] - " .. getPlayerName(thePlayer) .. " has closed the report #" .. id .. ". -", value, 0, 255, 255)
+				end
+			end
+		end
+	end
+end
+addCommandHandler("closereport", closeReport, false, false)
+addCommandHandler("cr", closeReport, false, false)
 
 function endReport(thePlayer, commandName)
 	local report = getElementData(thePlayer, "report")
@@ -310,9 +401,9 @@ function endReport(thePlayer, commandName)
 		
 		outputChatBox("[" .. timestring .. "] You have closed your report (#" .. report .. ").", thePlayer, 255, 194, 14)
 		
-		if (reportHandler) then
+		if (isElement(reportHandler)) then
 			outputChatBox(getPlayerName(thePlayer) .. " has closed the report (#" .. report .. "). Thank you for dealing with this report.", reportHandler, 0, 255, 255)
 		end
 	end
 end
-addCommandHandler("endreport", endReport)
+addCommandHandler("endreport", endReport, false, false)

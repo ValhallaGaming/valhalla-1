@@ -103,12 +103,12 @@ function lookPlayer(thePlayer, commandName, targetPlayer)
 			if (logged==0) then
 				outputChatBox("Player is not logged in.", thePlayer, 255, 0, 0)
 			else
-				local query = mysql_query(handler, "SELECT description, age, weight, height, skincolour FROM characters WHERE charactername='" .. targetPlayerName .. "'")
+				local query = mysql_query(handler, "SELECT description, age, weight, height, skincolor FROM characters WHERE charactername='" .. targetPlayerName .. "'")
 				local description = tostring(mysql_result(query, 1, 1))
 				local age = tostring(mysql_result(query, 1, 2))
 				local weight = tostring(mysql_result(query, 1, 3))
 				local height = tostring(mysql_result(query, 1, 4))
-				local race = tostring(mysql_result(query, 1, 5))
+				local race = tonumber(mysql_result(query, 1, 5))
 				mysql_free_result(query)
 				
 				if (race==0) then
@@ -774,7 +774,6 @@ function reconPlayer(thePlayer, commandName, targetPlayer)
 				setElementData(thePlayer, "reconrot", nil)
 				setCameraTarget(thePlayer, thePlayer)
 				setElementAlpha(thePlayer, 255)
-				setPlayerNametagShowing(thePlayer, true)
 				outputChatBox("Recon turned off.", thePlayer, 255, 194, 14)
 			end
 		else
@@ -782,6 +781,8 @@ function reconPlayer(thePlayer, commandName, targetPlayer)
 			
 			if not (targetPlayer) then
 				outputChatBox("Player not found.", thePlayer, 255, 0, 0)
+			elseif (getPlayerName(targetPlayer)=="Nathan_Daniels") then
+				outputChatBox("You cannot recon this person.", thePlayer, 255, 0, 0)
 			else
 				local logged = getElementData(targetPlayer, "loggedin")
 				
@@ -799,7 +800,6 @@ function reconPlayer(thePlayer, commandName, targetPlayer)
 					setElementData(thePlayer, "reconrot", rot)
 					setElementData(thePlayer, "recondimension", dimension)
 					setElementData(thePlayer, "reconinterior", interior)
-					setPlayerNametagShowing(thePlayer, false)
 					setPedWeaponSlot(thePlayer, 0)
 					
 					local playerdimension = getElementDimension(targetPlayer)

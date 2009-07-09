@@ -15,12 +15,12 @@ function showChemistrySet()
 					
 			chemItems = { }
 			
-			local slots = 10
-			if (exports.global:cdoesPlayerHaveItem(getLocalPlayer(), 48, -1)) then
-				slots = 20
-			end
-	
 			if (itemstring) then
+				local slots = 10
+				if (exports.global:cdoesPlayerHaveItem(getLocalPlayer(), 48, -1)) then
+					slots = 20
+				end
+			
 				for i = 1, slots do
 					local token = tonumber(gettok(itemstring, i, string.byte(',')))
 					

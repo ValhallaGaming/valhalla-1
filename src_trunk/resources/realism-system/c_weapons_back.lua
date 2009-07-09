@@ -13,15 +13,7 @@ function weaponSwitched()
 		return
 	end
 	
-	local seat = getElementData(getLocalPlayer(), "seat")
-	
-	if (seat) and (objectmade) then
-		objectmade = false
-		triggerServerEvent("destroyWeaponBackModel", getLocalPlayer())
-		return
-	end
-	
-	if (getPedWeaponSlot(getLocalPlayer())~=5 and getPedWeapon(getLocalPlayer(), 5)~=0) and not (isPedInVehicle(getLocalPlayer())) and not (seat) then
+	if (getPedWeaponSlot(getLocalPlayer())~=5 and getPedWeapon(getLocalPlayer(), 5)~=0) and not (isPedInVehicle(getLocalPlayer())) then
 		local weap = getPedWeapon(getLocalPlayer(), 5)
 		if (weap==30 or weap==31) then
 			if not (objectmade) or (isPedDucked(getLocalPlayer())~=crouched) or (weap~=weapon) then -- no object, so lets create it

@@ -3,6 +3,7 @@ SQL
 ---
 INSERT INTO items SET id='49', item_name='Fishing Rod', item_description='A 7 foot carbon steel fishing rod.';
 
+INSERT INTO achievementlist SET id='35', name='Whale Hunter', description='Catch a fish weighing 100lbs or more.', points='50';
 ---------------------
 Chamberlains changes.
 ---------------------

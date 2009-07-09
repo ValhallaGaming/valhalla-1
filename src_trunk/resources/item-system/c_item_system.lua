@@ -170,6 +170,9 @@ function getItemDescription(itemID)
 	elseif (itemID==47) then return "A small pair of handcuff keys."
 	elseif (itemID==48) then return "A reasonably sized backpack."
 	elseif (itemID==49) then return "A 7 foot carbon steel fishing rod."
+	elseif (itemID==50) then return "The Las Venturas Highway Code."
+	elseif (itemID==51) then return "Chemistry 101."
+	elseif (itemID==52) then return "The Police Officer's Manual."
 	else return false 
 	end
 end
@@ -281,6 +284,12 @@ function getItemType(itemID)
 		return 4
 	elseif (itemID==49) then
 		return 4
+	elseif (itemID==50) then -- book
+		return 5
+	elseif (itemID==51) then -- book
+		return 5
+	elseif (itemID==52) then -- book
+		return 5
 	else
 		return false
 	end
@@ -698,6 +707,10 @@ function useItem(button)
 				doDrug4Effect()
 				doDrug1Effect()
 				doDrug6Effect()
+			end
+			
+			if (itemID==50) or (itemID==51) or (itemID==52) then
+				hideInventory()
 			end
 			
 			triggerServerEvent("useItem", getLocalPlayer(), itemID, itemName, itemValue, false, groundz)

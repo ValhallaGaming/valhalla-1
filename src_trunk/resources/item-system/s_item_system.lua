@@ -327,6 +327,20 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 			outputChatBox("Your inventory is extended.", source, 0, 255, 0)
 		elseif (itemID==49) then
 			triggerServerEvent( "fish", source )
+		elseif (itemID==50) then -- highway code book
+			local bookTitle = "The Las Venturas Highway Code"
+			local bookName = "LVHighwayCode"
+			exports.global:sendLocalMeAction(source, "reads ".. bookTitle ..".")
+			triggerClientEvent( "showBook", source, bookName, bookTitle )
+		elseif (itemID==51) then -- chemistry book
+			local bookTitle = "Chemistry 101"
+			local bookName = "Chemistry101"
+			exports.global:sendLocalMeAction(source, "reads ".. bookTitle ..".")
+		elseif (itemID==52) then -- PD manual book
+			local bookTitle = "The Police Officer's Manual"
+			local bookName = "PDmanual"
+			exports.global:sendLocalMeAction(source, "reads ".. bookTitle ..".")
+			triggerClientEvent( source, "showBook", source, bookName, bookTitle )
 		else
 			outputChatBox("Error 800001 - Report on http://bugs.valhallagaming.net", source, 255, 0, 0)
 		end

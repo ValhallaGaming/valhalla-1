@@ -55,33 +55,29 @@ addEventHandler("onResourceStop", getResourceRootElement(getThisResource()), clo
 	setElementInterior (stevie, 1)
 	setElementDimension (stevie, 406)
 	setPedAnimation(stevie, "FOOD", "FF_Sit_Loop",  -1, true, false, true) -- Set the Peds Animation.
+	setElementData(stevie, "name", "Steven Pullman")
+	setElementData(stevie, "talk", true)
 	setElementData (stevie, "activeConvo",  0) -- Set the convo state to 0 so people can start talking to him.
 	setElementData(stevie, "deals", 0) -- reset how many deals he has made today. Stevie will do 5 deals over the phone each day. He can't be called while he is in the game world (19:00-22:00).
-	local triggerSphere = createColSphere( 677, -456, -25, 1 )
-	exports.pool:allocateElement(triggerSphere)
 --end
 
-function stevieIntro (thePlayer, matchingDimension) -- When player enters the colSphere create GUI with intro output to all local players as local chat.
-	
-	local convoState = getElementData(stevie, "activeConvo")
-	if (convoState == 0) then -- If stevie is not already talking to someone...
+function stevieIntro (thePlayer) -- When player enters the colSphere create GUI with intro output to all local players as local chat.
 		
-		-- Give the player the "Find Stevie" achievement.
+	-- Give the player the "Find Stevie" achievement.
 			
-		setElementData (stevie, "activeConvo", 1) -- set the NPCs conversation state to active so no one else can begin to talk to him.
+	setElementData (stevie, "activeConvo", 1) -- set the NPCs conversation state to active so no one else can begin to talk to him.
 		
-		local pedX, pedY, pedZ = getElementPosition( stevie )
-		local chatSphere = createColSphere( pedX, pedY, pedZ, 10 )
-		exports.pool:allocateElement(chatSphere) -- Create the colSphere for chat output to local players
-		local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
-		for i, key in ipairs( targetPlayers ) do
-			outputChatBox("Steven Pulman says: Do you want something, pal?", targetPlayers, 255, 255, 255) -- Stevies next question
-		end
-		destroyElement(chatSphere)
-		triggerClientEvent ( thePlayer, "introEvent", getRootElement() ) -- Trigger Client side function to create GUI.
-	end	
+	local pedX, pedY, pedZ = getElementPosition( stevie )
+	local chatSphere = createColSphere( pedX, pedY, pedZ, 10 )
+	exports.pool:allocateElement(chatSphere) -- Create the colSphere for chat output to local players
+	local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
+	for i, key in ipairs( targetPlayers ) do
+		outputChatBox("Steven Pulman says: Do you want something, pal?", targetPlayers, 255, 255, 255) -- Stevies next question
+	end
+	destroyElement(chatSphere)
 end
-addEventHandler ( "onColShapeHit", triggerSphere, stevieIntro ) -- when player enters the colSphere start the conversation / open the GUI.
+addEvent( "startStevieConvo", true )
+addEventHandler( "startStevieConvo", getRootElement(), stevieIntro )
 
 -- Quick Close
 function quickClose_S()
@@ -353,9 +349,9 @@ function startPhoneCall(thePlayer)
 						exports.global:applyAnimation(thePlayer, "ped", "phone_in", 1.0, 1.0, 0.0, false, false, true)
 						toggleAllControls(thePlayer, true, true, true)
 						setTimer(startPhoneAnim, 1000, 2, thePlayer)
-						local friend = getElementData(thePlayer, "stevie")-- check the sql that the player has meet stevie and completed the conversation.
+						local friend = mysql_query(handler, "SELECT stevie FROM characters WHERE charactername='" .. mysql_escape_string(handler, getPlayerName(name)) .. "'")-- check the sql that the player has meet stevie and completed the conversation.
 						local factionID = getElementData(thePlayer, "faction") -- get the player's faction type to see if they are in law enforcement and later to determine what deal they are offered. -- NOT WORKING
-						local factionType = tonumber(mysql_query(handler, "SELECT type FROM factions WHERE id='" .. factionID .. "'")) -- NOT WORKING
+						local factionType = mysql_query(handler, "SELECT type FROM factions WHERE id='" .. factionID .. "'") -- NOT WORKING
 						if not(friend==1) or (factionType==4) then
 							setTimer( endCall, 6000, 1, thePlayer)
 							outputChatBox("#081016 [Cellphone]: Yeah?", thePlayer)

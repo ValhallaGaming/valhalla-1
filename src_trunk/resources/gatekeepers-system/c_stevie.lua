@@ -27,8 +27,8 @@ function createStevieGUI()
 		showCursor(true)
 	end
 end
-addEvent( "introEvent", true )
-addEventHandler( "introEvent", getRootElement(), createStevieGUI )
+addEvent( "stevieIntroEvent", true )
+addEventHandler( "stevieIntroEvent", getRootElement(), createStevieGUI )
 
 -- Quick Close
 function quickClose()
@@ -40,7 +40,6 @@ function quickClose()
 	destroyElement ( optionTwo )
 	destroyElement ( stevieText )
 	destroyElement ( wStevie )
-	destroyElement ( chatSphere )
 	optionOne = nil
 	optionTwo = nil
 	stevieText = nil

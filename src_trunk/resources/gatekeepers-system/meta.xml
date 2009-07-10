@@ -1,6 +1,7 @@
 <meta>
 	<info author="vG MTA Scripting Team" type="script" description="Gatekeepers System"/>
-
+	
+	<script src="C_ped_rightclick.lua" type="client" />
 	<script src="s_stevie.lua" type="server" />
 	<script src="C_stevie.lua" type="client" />
 	<script src="s_hunter.lua" type="server" />

@@ -11,6 +11,7 @@
 	<script src="trucker/c_trucker_job.lua" type="client"/>
 
 	<script src="s_fishing_job.lua" type="server"/>
+	<script src="s_carjacker_job.lua" type="server"/>
 	
 	<file src="images/Background.png" />
 	<file src="images/Off.png" />

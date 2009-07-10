@@ -19,10 +19,10 @@ function createhunterGUI()
 		
 		-- Create close, previous and Next Button
 		optionOne = guiCreateButton( 0.05, 0.35, 0.9, 0.2, "Hey. I'm looking for a mechanic to change some spark plugs.", true, wHunter )
-		addEventHandler( "onClientGUIClick", optionOne, statement2, false )
+		addEventHandler( "onClientGUIClick", optionOne, hunterStatement2, false )
 
 		optionTwo = guiCreateButton( 0.05, 0.55, 0.9, 0.2, "Nice ride. Is it yours?", true, wHunter )
-		addEventHandler( "onClientGUIClick", optionTwo, statement3, false ) -- Trigger Server side event
+		addEventHandler( "onClientGUIClick", optionTwo, hunterStatement3, false ) -- Trigger Server side event
 		
 		showCursor(true)
 	end
@@ -31,7 +31,7 @@ addEvent( "hunterIntroEvent", true )
 addEventHandler( "hunterIntroEvent", getRootElement(), createhunterGUI )
 
 -- statement 2
-function statement2()
+function hunterStatement2()
 	
 	triggerServerEvent( "hunterStatement2ServerEvent", getLocalPlayer() ) -- Trigger Server Event to output previous option
 
@@ -50,7 +50,7 @@ function statement2()
 end
 
 -- Statement 3
-function statement3()
+function hunterStatement3()
 	
 	triggerServerEvent( "hunterStatement3ServerEvent", getLocalPlayer() ) -- Trigger Server Event to output previous option
 	
@@ -65,15 +65,15 @@ function statement3()
 	
 	-- Create the new options
 	optionOne = guiCreateButton( 0.05, 0.35, 0.9, 0.2, "What are you running under there?", true, wHunter )
-	addEventHandler( "onClientGUIClick", optionOne, statement4, false ) -- New event handlers to different functions.
+	addEventHandler( "onClientGUIClick", optionOne, hunterStatement4, false ) -- New event handlers to different functions.
 
 	optionTwo = guiCreateButton( 0.05, 0.55, 0.9, 0.2, "I like the paint job.", true, wHunter )
-	addEventHandler( "onClientGUIClick", optionTwo, statement5, false )
+	addEventHandler( "onClientGUIClick", optionTwo, hunterStatement5, false )
 	
 end
 
 -- statement 4
-function statement4()
+function hunterStatement4()
 	
 	triggerServerEvent( "hunterStatement4ServerEvent", getLocalPlayer() ) -- Trigger Server Event to output previous option
 	
@@ -88,15 +88,15 @@ function statement4()
 	
 	-- Create the new options
 	optionOne = guiCreateButton( 0.05, 0.35, 0.9, 0.2, "Looks like all show and no go to me.", true, wHunter )
-	addEventHandler( "onClientGUIClick", optionOne, statement6, false )
+	addEventHandler( "onClientGUIClick", optionOne, hunterStatement6, false )
 
 	optionTwo = guiCreateButton( 0.05, 0.55, 0.9, 0.2, "Is that an AIC controller? .. And direct port nitrous injection?!", true, wHunter )
-	addEventHandler( "onClientGUIClick", optionTwo, statement7, false )
+	addEventHandler( "onClientGUIClick", optionTwo, hunterStatement7, false )
 	
 end
 
 -- statement 5
-function statement5()
+function hunterStatement5()
 	
 	triggerServerEvent( "hunterStatement5ServerEvent", getLocalPlayer() ) -- Trigger Server Event to output previous option
 
@@ -115,7 +115,7 @@ function statement5()
 end
 
 -- statement 6
-function statement6()
+function hunterStatement6()
 	
 	triggerServerEvent( "hunterStatement6ServerEvent", getLocalPlayer() ) -- Trigger Server Event to output previous option
 
@@ -134,7 +134,7 @@ function statement6()
 end
 
 -- Statement 7
-function statement7()
+function hunterStatement7()
 	
 	triggerServerEvent( "hunterStatement7ServerEvent", getLocalPlayer() ) -- Trigger Server Event to output previous option
 	
@@ -149,14 +149,14 @@ function statement7()
 	
 	-- Create the new options
 	optionOne = guiCreateButton( 0.05, 0.35, 0.9, 0.2, "There’s nothing better than living a quarter mile at a time.", true, wHunter )
-	addEventHandler( "onClientGUIClick", optionOne, statement8, false )
+	addEventHandler( "onClientGUIClick", optionOne, hunterStatement8, false )
 	
 end
 
 
 
 -- Statement 8
-function statement8()
+function hunterStatement8()
 	
 	triggerServerEvent( "hunterStatement8ServerEvent", getLocalPlayer() ) -- Trigger Server Event to output previous option
 	
@@ -169,15 +169,15 @@ function statement8()
 	
 	-- Create the new options
 	optionOne = guiCreateButton( 0.05, 0.35, 0.9, 0.2, "You work here alone?", true, wHunter )
-	addEventHandler( "onClientGUIClick", optionOne, statement9, false )
+	addEventHandler( "onClientGUIClick", optionOne, hunterStatement9, false )
 
 	optionTwo = guiCreateButton( 0.05, 0.55, 0.9, 0.2, "My mother taught me never to trust a man that won’t even tell you his name.", true, wHunter )
-	addEventHandler( "onClientGUIClick", optionTwo, statement10, false )
+	addEventHandler( "onClientGUIClick", optionTwo, hunterStatement10, false )
 	
 end
 
 -- Statement 9
-function statement9()
+function hunterStatement9()
 	
 	triggerServerEvent( "hunterStatement9ServerEvent", getLocalPlayer() ) -- Trigger Server Event to output previous option
 	
@@ -196,7 +196,7 @@ function statement9()
 end
 
 -- Statement 10
-function statement10()
+function hunterStatement10()
 	
 	triggerServerEvent( "hunterStatement10ServerEvent", getLocalPlayer() ) -- Trigger Server Event to output previous option
 	
@@ -211,15 +211,15 @@ function statement10()
 	
 	-- Create the new options
 	optionOne = guiCreateButton( 0.05, 0.45, 0.9, 0.2, "Sounds like easy money. Give me a call.", true, wHunter )
-	addEventHandler( "onClientGUIClick", optionOne, statement11, false )
+	addEventHandler( "onClientGUIClick", optionOne, hunterStatement11, false )
 
 	optionTwo = guiCreateButton( 0.05, 0.65, 0.9, 0.2, "I’d rather not get involved in all that.", true, wHunter )
-	addEventHandler( "onClientGUIClick", optionTwo, statement12, false )
+	addEventHandler( "onClientGUIClick", optionTwo, hunterStatement12, false )
 	
 end
 
 -- Hunter Success
-function statement11()
+function hunterStatement11()
 	
 	triggerServerEvent( "hunterStatement11ServerEvent", getLocalPlayer() ) -- Trigger Server Event to output previous option
 	
@@ -238,7 +238,7 @@ function statement11()
 end
 
 -- Hunter Decline
-function statement12()
+function hunterStatement12()
 	
 	triggerServerEvent( "hunterStatement12ServerEvent", getLocalPlayer() ) -- Trigger Server Event to output previous option
 	

@@ -1,32 +1,4 @@
--- ////////////////////////////////////
--- //			MYSQL				 //
--- ////////////////////////////////////		
-sqlUsername = exports.mysql:getMySQLUsername()
-sqlPassword = exports.mysql:getMySQLPassword()
-sqlDB = exports.mysql:getMySQLDBName()
-sqlHost = exports.mysql:getMySQLHost()
-sqlPort = exports.mysql:getMySQLPort()
-
-handler = mysql_connect(sqlHost, sqlUsername, sqlPassword, sqlDB, sqlPort)
-
-function checkMySQL()
-	if not (mysql_ping(handler)) then
-		handler = mysql_connect(sqlHost, sqlUsername, sqlPassword, sqlDB, sqlPort)
-	end
-end
-setTimer(checkMySQL, 300000, 0)
-
-function closeMySQL()
-	if (handler~=nil) then
-		mysql_close(handler)
-	end
-end
-addEventHandler("onResourceStop", getResourceRootElement(getThisResource()), closeMySQL)
--- ////////////////////////////////////
--- //			MYSQL END			 //
--- ////////////////////////////////////
-
-local huntersCar = createVehicle ( 541, 618.575193, -74.190429, 997.9921875, 0, 0, 110, D34M0N)
+local huntersCar = createVehicle ( 506, 618.575193, -74.190429, 997.9921875, 0, 0, 110, D34M0N)
 setElementDimension(huntersCar, 1000)
 setElementInterior(huntersCar, 2)
 
@@ -37,30 +9,26 @@ setElementInterior (hunter, 2)
 setElementDimension (hunter, 1000)
 setPedAnimation(hunter, "CAR_CHAT", "car_talkm_loop", -1, true, false, true) -- Set the Peds Animation.
 setElementData (hunter, "activeConvo",  0) -- Set the convo state to 0 so people can start talking to him.
-local hunterTriggerSphere = createColSphere( 616.162109, -75.3720, 997.992, 4)
-exports.pool:allocateElement(hunterTriggerSphere)
+setElementData(hunter, "name", "Hunter")
+setElementData(hunter, "talk", true)
 
-function hunterIntro (thePlayer, matchingDimension) -- When player enters the colSphere create GUI with intro output to all local players as local chat.
+function hunterIntro (thePlayer) -- When player enters the colSphere create GUI with intro output to all local players as local chat.	
 	
-	local convoState = getElementData(hunter, "activeConvo")
-	if (convoState == 0) then -- If hunter is not already talking to someone...
+	-- Give the player the "Find Hunter" achievement.
 		
-		-- Give the player the "Find Hunter" achievement.
-			
-		setElementData (hunter, "activeConvo", 1) -- set the NPCs conversation state to active so no one else can begin to talk to him.
+	setElementData (hunter, "activeConvo", 1) -- set the NPCs conversation state to active so no one else can begin to talk to him.
 		
-		local pedX, pedY, pedZ = getElementPosition( hunter )
-		local chatSphere = createColSphere( pedX, pedY, pedZ, 10 )
-		exports.pool:allocateElement(chatSphere) -- Create the colSphere for chat output to local players
-		local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
-		for i, key in ipairs( targetPlayers ) do
-			outputChatBox("* A muscular man works under the car’s hood.", targetPlayers, 255, 51, 102)
-		end
-		destroyElement(chatSphere)
-		triggerClientEvent ( thePlayer, "hunterIntroEvent", getRootElement() ) -- Trigger Client side function to create GUI.
-	end	
+	local pedX, pedY, pedZ = getElementPosition( hunter )
+	local chatSphere = createColSphere( pedX, pedY, pedZ, 10 )
+	exports.pool:allocateElement(chatSphere) -- Create the colSphere for chat output to local players
+	local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
+	for i, key in ipairs( targetPlayers ) do
+		outputChatBox("* A muscular man works under the car’s hood.", targetPlayers, 255, 51, 102)
+	end
+	destroyElement(chatSphere)
 end
-addEventHandler ( "onColShapeHit", hunterTriggerSphere, hunterIntro ) -- when player enters the colSphere start the conversation / open the GUI.
+addEvent( "startHunterConvo", true )
+addEventHandler( "startHunterConvo", getRootElement(), hunterIntro )
 
 -- Statement 2
 function statement2_S()

@@ -69,6 +69,40 @@ end
 addEvent("createTag", true )
 addEventHandler("createTag", getRootElement(), makeTagObject)
 
+function clearNearbyTag(thePlayer)
+	if (exports.global:isPlayerAdmin(thePlayer)) then
+		local x, y, z = getElementPosition(thePlayer)
+		local colshape = createColSphere(x, y, z, 10)
+		exports.pool:allocateElement(colshape)
+		local objects = getElementsWithinColShape(colshape, "object")
+		
+		local object = nil
+		local dist = 999999
+		for key, value in ipairs(objects) do
+			local objtype = getElementData(value, "type")
+			if (objtype=="tag") then
+				local ox, oy, oz = getElementPosition(value)
+				local distance = getDistanceBetweenPoints3D(x, y, z, ox, oy, oz)
+				if (distance<dist) then
+					object = value
+					dist = distance
+				end
+			end
+		end
+		
+		if (object) then
+			local id = getElementData(object, "dbid")
+			destroyElement(object)
+			mysql_query(handler, "DELETE FROM tags WHERE id='" .. id .. "'")
+			outputChatBox("Deleted tag with id #" .. id .. ".", thePlayer, 0, 255, 0)
+		else
+			outputChatBox("You are not near any tag.", thePlayer, 255, 0, 0)
+		end
+		destroyElement(colshape)
+	end
+end
+addCommandHandler("clearnearbytag", clearNearbyTag, false, false)
+
 function loadAllTags(res)
 	if (res==getThisResource()) then
 		local result = mysql_query(handler, "SELECT id, x, y, z, interior, dimension, rx, ry, rz, modelid FROM tags")

@@ -355,8 +355,10 @@ function pmPlayer(thePlayer, commandName, who, ...)
 					end
 					
 					-- Send the message
-					outputChatBox("PM From " .. playerName .. ": " .. message, targetPlayer, 255, 255, 0)
-					outputChatBox("PM Sent to " .. targetPlayerName .. ": " .. message, thePlayer, 255, 255, 0)
+					local playerid = getElementData(thePlayer, "playerid")
+					local targetid = getElementData(thePlayer, "playerid")
+					outputChatBox("PM From (" .. playerid .. ") " .. playerName .. ": " .. message, targetPlayer, 255, 255, 0)
+					outputChatBox("PM Sent to (" .. playerid .. ") " .. targetPlayerName .. ": " .. message, thePlayer, 255, 255, 0)
 				elseif (logged==0) then
 					outputChatBox("Player is not logged in yet.", thePlayer, 255, 255, 0)
 				elseif (pmblocked==1) then

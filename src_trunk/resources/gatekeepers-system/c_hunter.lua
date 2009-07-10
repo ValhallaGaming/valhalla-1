@@ -28,12 +28,12 @@ function createhunterGUI()
 	end
 end
 addEvent( "hunterIntroEvent", true )
-addEventHandler( "hunterIntroEvent", getRootElement(), createStevieGUI )
+addEventHandler( "hunterIntroEvent", getRootElement(), createhunterGUI )
 
 -- statement 2
 function statement2()
 	
-	triggerServerEvent( "hunterStatement3ServerEvent", getLocalPlayer() ) -- Trigger Server Event to output previous option
+	triggerServerEvent( "hunterStatement2ServerEvent", getLocalPlayer() ) -- Trigger Server Event to output previous option
 
 	-- Destroy elements
 	destroyElement ( optionOne )
@@ -52,7 +52,7 @@ end
 -- Statement 3
 function statement3()
 	
-	triggerServerEvent( "hunterStatementServerEvent", getLocalPlayer() ) -- Trigger Server Event to output previous option
+	triggerServerEvent( "hunterStatement3ServerEvent", getLocalPlayer() ) -- Trigger Server Event to output previous option
 	
 	-- Destroy the old options
 	destroyElement ( optionOne )
@@ -75,7 +75,7 @@ end
 -- statement 4
 function statement4()
 	
-	triggerServerEvent( "hunterStatementServerEvent", getLocalPlayer() ) -- Trigger Server Event to output previous option
+	triggerServerEvent( "hunterStatement4ServerEvent", getLocalPlayer() ) -- Trigger Server Event to output previous option
 	
 	-- Destroy the old options
 	destroyElement ( optionOne )
@@ -92,6 +92,25 @@ function statement4()
 
 	optionTwo = guiCreateButton( 0.05, 0.55, 0.9, 0.2, "Is that an AIC controller? .. And direct port nitrous injection?!", true, wHunter )
 	addEventHandler( "onClientGUIClick", optionTwo, statement7, false )
+	
+end
+
+-- statement 5
+function statement5()
+	
+	triggerServerEvent( "hunterStatement5ServerEvent", getLocalPlayer() ) -- Trigger Server Event to output previous option
+
+	-- Destroy elements
+	destroyElement ( optionOne )
+	destroyElement ( optionTwo )
+	destroyElement ( hunterText )
+	destroyElement ( wHunter )
+	optionOne = nil
+	optionTwo = nil
+	hunterText = nil
+	wHunter = nil
+	
+	showCursor(false)
 	
 end
 
@@ -143,10 +162,8 @@ function statement8()
 	
 	-- Destroy the old options
 	destroyElement ( optionOne )
-	destroyElement ( optionTwo )
 	optionOne = nil
-	optionTwo = nil
-
+	
 	-- Create Stevies text box
 	guiSetText ( hunterText, "Hunter says: Oh, you’re a racer? They call me Hunter. I got a real name but unless you’re the government you don’t need to know it." )
 	
@@ -193,7 +210,7 @@ function statement10()
 	guiSetText ( hunterText, "Hunter says: Well here’s the thing. One of my usual guys got busted a couple days ago. If you’re looking to make some money I could use a new go to guy. See running a car like this isn’t cheap so we ...borrow from other cars if you know what I’m saying." )
 	
 	-- Create the new options
-	optionOne = guiCreateButton( 0.05, 0.45, 0.9, 0.2, "Sounds like easy money. Give me a call on [phone number].", true, wHunter )
+	optionOne = guiCreateButton( 0.05, 0.45, 0.9, 0.2, "Sounds like easy money. Give me a call.", true, wHunter )
 	addEventHandler( "onClientGUIClick", optionOne, statement11, false )
 
 	optionTwo = guiCreateButton( 0.05, 0.65, 0.9, 0.2, "I’d rather not get involved in all that.", true, wHunter )
@@ -221,9 +238,9 @@ function statement11()
 end
 
 -- Hunter Decline
-function statement11()
+function statement12()
 	
-	triggerServerEvent( "hunterStatement11ServerEvent", getLocalPlayer() ) -- Trigger Server Event to output previous option
+	triggerServerEvent( "hunterStatement12ServerEvent", getLocalPlayer() ) -- Trigger Server Event to output previous option
 	
 	-- Destroy elements
 	destroyElement ( optionOne )

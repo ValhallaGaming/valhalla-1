@@ -238,6 +238,9 @@ vehicleCosts["Broadway"] = 62000
 vehicleIDs["Slamvan"] = 535
 vehicleCosts["Slamvan"] = 67400
 
+vehicleIDs["Patriot"] = 470
+vehicleCosts["Patriot"] = 68250
+
 vehicleIDs["Sultan"] = 560
 vehicleCosts["Sultan"] = 72000
 

@@ -1,6 +1,9 @@
 ---
 SQL
 ---
+-- columns
+to new columns in characters, "stevie" and "hunter", both int, 1 character long and defualt to 0.
+
 -- items
 
 INSERT INTO items SET id='49', item_name='Fishing Rod', item_description='A 7 foot carbon steel fishing rod.';
@@ -40,6 +43,9 @@ Scripts in "unfinished code" need to be completed, checked and added to the corr
 
 - shop-System
 	-c_generalshop_system.lua
+
+- carshop-system
+	-c_carshop_system
 
 --------------------
 Jack's changes.

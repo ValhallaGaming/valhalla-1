@@ -22,24 +22,23 @@ function closeMySQL()
 	end
 end
 addEventHandler("onResourceStop", getResourceRootElement(getThisResource()), closeMySQL)
-
 -- ////////////////////////////////////
 -- //			MYSQL END			 //
 -- ////////////////////////////////////
 
-local huntersCar = createVehicle ( 541, 618.575193, -74.190429, 997.992.1875, 0, 0, 110, D34M0N)
+local huntersCar = createVehicle ( 541, 618.575193, -74.190429, 997.9921875, 0, 0, 110, D34M0N)
 setElementDimension(huntersCar, 1000)
-setElementInteiror(huntersCar, 2)
+setElementInterior(huntersCar, 2)
 
-local hunter = createPed (258, 616.162109, -75.3720, 997.992)
+local hunter = createPed (250, 616.162109, -75.3720, 997.992)
 exports.pool:allocateElement(hunter)
 setPedRotation (hunter, 300.6221)
 setElementInterior (hunter, 2)
 setElementDimension (hunter, 1000)
 setPedAnimation(hunter, "CAR_CHAT", "car_talkm_loop", -1, true, false, true) -- Set the Peds Animation.
 setElementData (hunter, "activeConvo",  0) -- Set the convo state to 0 so people can start talking to him.
-local triggerSphere = createColSphere( 677, -456, -25, 1 )
-exports.pool:allocateElement(triggerSphere)
+local hunterTriggerSphere = createColSphere( 616.162109, -75.3720, 997.992, 4)
+exports.pool:allocateElement(hunterTriggerSphere)
 
 function hunterIntro (thePlayer, matchingDimension) -- When player enters the colSphere create GUI with intro output to all local players as local chat.
 	
@@ -58,10 +57,10 @@ function hunterIntro (thePlayer, matchingDimension) -- When player enters the co
 			outputChatBox("* A muscular man works under the car’s hood.", targetPlayers, 255, 51, 102)
 		end
 		destroyElement(chatSphere)
-		triggerClientEvent ( thePlayer, "introEvent", getRootElement() ) -- Trigger Client side function to create GUI.
+		triggerClientEvent ( thePlayer, "hunterIntroEvent", getRootElement() ) -- Trigger Client side function to create GUI.
 	end	
 end
-addEventHandler ( "onColShapeHit", triggerSphere, hunterIntro ) -- when player enters the colSphere start the conversation / open the GUI.
+addEventHandler ( "onColShapeHit", hunterTriggerSphere, hunterIntro ) -- when player enters the colSphere start the conversation / open the GUI.
 
 -- Statement 2
 function statement2_S()
@@ -72,7 +71,7 @@ function statement2_S()
 	local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
 	local name = string.gsub(getPlayerName(source), "_", " ")
 	for i, key in ipairs( targetPlayers ) do
-		outputChatBox(name .. " says: Hey. I’m logging for a mechanic to change a spark plug.", targetPlayers, 255, 255, 255) -- Players response to last question
+		outputChatBox(name .. " says: Hey. I’m looking for a mechanic to change a spark plug.", targetPlayers, 255, 255, 255) -- Players response to last question
 		outputChatBox("Hunter says: I’m busy. There’s a place on ... that can do it.", targetPlayers, 255, 255, 255) -- Hunter's next question
 	end
 	destroyElement (chatSphere)
@@ -95,8 +94,8 @@ function statement3_S()
 	end
 	destroyElement (chatSphere)
 end
-addEvent( "hunterStatement2ServerEvent", true )
-addEventHandler( "hunterStatement2ServerEvent", getRootElement(), statement2_S )
+addEvent( "hunterStatement3ServerEvent", true )
+addEventHandler( "hunterStatement3ServerEvent", getRootElement(), statement3_S )
 
 -- Statement 4
 function statement4_S()
@@ -112,8 +111,8 @@ function statement4_S()
 	end
 	destroyElement (chatSphere)
 end
-addEvent( "hunterStatement2ServerEvent", true )
-addEventHandler( "hunterStatement2ServerEvent", getRootElement(), statement2_S )
+addEvent( "hunterStatement4ServerEvent", true )
+addEventHandler( "hunterStatement4ServerEvent", getRootElement(), statement4_S )
 
 -- Statement 5
 function statement5_S()
@@ -130,8 +129,8 @@ function statement5_S()
 	destroyElement (chatSphere)
 	setElementData (hunter, "activeConvo", 0)
 end
-addEvent( "hunterStatement2ServerEvent", true )
-addEventHandler( "hunterStatement2ServerEvent", getRootElement(), statement2_S )
+addEvent( "hunterStatement5ServerEvent", true )
+addEventHandler( "hunterStatement5ServerEvent", getRootElement(), statement5_S )
 
 -- Statement 6
 function statement6_S()
@@ -148,8 +147,8 @@ function statement6_S()
 	destroyElement (chatSphere)
 	setElementData (hunter, "activeConvo", 0)
 end
-addEvent( "hunterStatement2ServerEvent", true )
-addEventHandler( "hunterStatement2ServerEvent", getRootElement(), statement2_S )
+addEvent( "hunterStatement6ServerEvent", true )
+addEventHandler( "hunterStatement6ServerEvent", getRootElement(), statement6_S )
 
 -- Statement 7
 function statement7_S()
@@ -165,8 +164,8 @@ function statement7_S()
 	end
 	destroyElement (chatSphere)
 end
-addEvent( "hunterStatement2ServerEvent", true )
-addEventHandler( "hunterStatement2ServerEvent", getRootElement(), statement2_S )
+addEvent( "hunterStatement7ServerEvent", true )
+addEventHandler( "hunterStatement7ServerEvent", getRootElement(), statement7_S )
 
 -- Statement 8
 function statement8_S()
@@ -182,8 +181,8 @@ function statement8_S()
 	end
 	destroyElement (chatSphere)
 end
-addEvent( "hunterStatement2ServerEvent", true )
-addEventHandler( "hunterStatement2ServerEvent", getRootElement(), statement2_S )
+addEvent( "hunterStatement8ServerEvent", true )
+addEventHandler( "hunterStatement8ServerEvent", getRootElement(), statement8_S )
 
 -- Statement 9
 function statement9_S()
@@ -200,11 +199,11 @@ function statement9_S()
 	destroyElement (chatSphere)
 	setElementData (hunter, "activeConvo", 0)
 end
-addEvent( "hunterStatement2ServerEvent", true )
-addEventHandler( "hunterStatement2ServerEvent", getRootElement(), statement2_S )
+addEvent( "hunterStatement9ServerEvent", true )
+addEventHandler( "hunterStatement9ServerEvent", getRootElement(), statement9_S )
 
 -- Statement 10
-function statement9_S()
+function statement10_S()
 	-- Output the text from the last option to all player in radius
 	local pedX, pedY, pedZ = getElementPosition( source )
 	local chatSphere = createColSphere( pedX, pedY, pedZ, 10 )
@@ -218,11 +217,11 @@ function statement9_S()
 	end
 	destroyElement (chatSphere)
 end
-addEvent( "hunterStatement2ServerEvent", true )
-addEventHandler( "hunterStatement2ServerEvent", getRootElement(), statement2_S )
+addEvent( "hunterStatement10ServerEvent", true )
+addEventHandler( "hunterStatement10ServerEvent", getRootElement(), statement10_S )
 
 -- Statement 11
-function statement9_S()
+function statement11_S()
 	-- Output the text from the last option to all player in radius
 	local pedX, pedY, pedZ = getElementPosition( source )
 	local chatSphere = createColSphere( pedX, pedY, pedZ, 10 )
@@ -230,19 +229,20 @@ function statement9_S()
 	local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
 	local name = string.gsub(getPlayerName(source), "_", " ")
 	for i, key in ipairs( targetPlayers ) do
-		outputChatBox(name .. " says: Sounds like easy money. Give me a call on ".. phoneNumber ..".", targetPlayers, 255, 255, 255) -- Players response to last question
+		outputChatBox(name .. " says: Sounds like easy money. Give me a call.", targetPlayers, 255, 255, 255) -- Players response to last question
 		outputChatBox("Hunter says: You can expect my call. I might see you on the circuit some time too.", targetPlayers, 255, 255, 255) -- Hunter's next question
+		exports.global:sendLocalMeAction( source,"jots down their number on a scrap of paper and hands it to Hunter.")
 	end
 	destroyElement (chatSphere)
 	setElementData (hunter, "activeConvo", 0)
 	mysql_query(handler, "UPDATE characters SET hunter='1' WHERE charactername='" .. mysql_escape_string(handler, getPlayerName(source)) .. "' LIMIT 1") -- NOT WORKING
 
 end
-addEvent( "hunterStatement2ServerEvent", true )
-addEventHandler( "hunterStatement2ServerEvent", getRootElement(), statement2_S )
+addEvent( "hunterStatement11ServerEvent", true )
+addEventHandler( "hunterStatement11ServerEvent", getRootElement(), statement11_S )
 
 -- Statement 12
-function statement9_S()
+function statement12_S()
 	-- Output the text from the last option to all player in radius
 	local pedX, pedY, pedZ = getElementPosition( source )
 	local chatSphere = createColSphere( pedX, pedY, pedZ, 10 )
@@ -256,5 +256,5 @@ function statement9_S()
 	destroyElement (chatSphere)
 	setElementData (hunter, "activeConvo", 0)
 end
-addEvent( "hunterStatement2ServerEvent", true )
-addEventHandler( "hunterStatement2ServerEvent", getRootElement(), statement2_S )
+addEvent( "hunterStatement12ServerEvent", true )
+addEventHandler( "hunterStatement12ServerEvent", getRootElement(), statement12_S )

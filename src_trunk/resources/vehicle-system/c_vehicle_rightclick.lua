@@ -11,8 +11,9 @@ wInventory, gVehicleItems, gUserItems, lYou, lVehicle, bGiveItem, bTakeItem, bCl
 function cVehicleInventory(button, state)
 	if (button=="left") then
 		local locked = isVehicleLocked(vehicle)
+		local theVehicle = getPedOccupiedVehicle(localPlayer)
 		
-		if (locked) then
+		if (locked) and (vehicle~=theVehicle) then
 			outputChatBox("This vehicle is locked.", 255, 0, 0)
 		else
 			local dbid = getElementData(vehicle, "dbid")

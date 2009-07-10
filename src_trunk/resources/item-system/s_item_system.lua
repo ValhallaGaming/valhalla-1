@@ -336,6 +336,7 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 			local bookTitle = "Chemistry 101"
 			local bookName = "Chemistry101"
 			exports.global:sendLocalMeAction(source, "reads ".. bookTitle ..".")
+			triggerClientEvent( source, "showBook", source, bookName, bookTitle )
 		elseif (itemID==52) then -- PD manual book
 			local bookTitle = "The Police Officer's Manual"
 			local bookName = "PDmanual"

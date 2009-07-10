@@ -51,7 +51,7 @@ The dispatch keeps track of all on duty units and organise them and their radio 
 10-16 	Requesting towtruck
 
 10-17	Description of Suspect(s)
-10-18 	MDC on <suspects name>
+10-18 	MDC on suspects name
 10-19 	Response to MDC
 
 10-20 	Location (should be given as much as possible)
@@ -144,17 +144,17 @@ Quickly get handcuffs on the suspect to detain him. Most murder suspects will cl
 
 Backup is helpful for these stops but not necessarily required. Of course if the suspect attempts to run at any time you should taze the suspect and finish the arrest. It is important to detain the  suspect once you're at the scene for your safety; in other words put cuffs on the suspect and inform them it is for your safety and they are not under arrest at the moment (Again, this keeps us in the clear and allows us to RP the arrest, if they run with handcuffs on and get into a car, report them; They're not RP'ing).
 
-Investigate the situation and determine if the suspect should pay a fine or go to jail. This decision is left to you. If the suspect does manage to get away, this is a felony and should be treated as such.</PAGE>
+Investigate the situation and determine if the suspect should pay a fine or go to jail. This decision is left to you. If the suspect does manage to get away, this is a felony and should be treated as such.</page>
 
 	<page>INFRACTIONS
 
 Backup is usually never required on a citation as it is a simple ticket. Generally the suspect does not have a warrant at this point. You can freely talk to the suspect through their driver-side window. If at any time they run or pull a firearm the stop immediately becomes a felony and should be treated as such. If the suspect is unable to pay the fine then you should work with the suspect in order to secure the fine. If the suspect does not have the money in his bank, though, it becomes a misdemeanour and the suspect should be arrested. 
 
-And of course, it goes without saying if anyone is shooting at you, you're fully authorized to return fire at the suspect. If another officer is able to sneak behind the suspect and taze him  then by all means go for it, but in no situation should you run straight for a felon with a firearm because you will wind up dead. (Also it is bad RP to run right up to someone with a weapon and /taser. As I said, if another officer can sneak behind to do so, it's fine, but in no situation should you run up to him like Rambo and /tazer).</page10>
+And of course, it goes without saying if anyone is shooting at you, you're fully authorized to return fire at the suspect. If another officer is able to sneak behind the suspect and taze him  then by all means go for it, but in no situation should you run straight for a felon with a firearm because you will wind up dead. (Also it is bad RP to run right up to someone with a weapon and /taser. As I said, if another officer can sneak behind to do so, it's fine, but in no situation should you run up to him like Rambo and /tazer).</page>
 
 	<page>MIRANDA WARNING
 
-You have the right to remain silent. Anything you do say may be used against you in a court of law. You also have the right to hire an attorney. If you do not hire one you will be questioned without one present. Knowing and understanding your rights as I have explained them to you, are you willing to answer my questions without an attorney present?</page11>
+You have the right to remain silent. Anything you do say may be used against you in a court of law. You also have the right to hire an attorney. If you do not hire one you will be questioned without one present. Knowing and understanding your rights as I have explained them to you, are you willing to answer my questions without an attorney present?</page>
 
 	<page>CREDITS
 
@@ -164,7 +164,4 @@ Ex-Captain Angelo Pappas 83 (Now Hugo Riviera)
 Ex-Lieutenant Tony Fox 13 (Fox)
 Ex-Lieutenant. Rod Farva XX
 Deputy Chief Nathan Daniels 64</page>
-
-
-
-
+</content>

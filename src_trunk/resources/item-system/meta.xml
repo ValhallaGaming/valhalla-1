@@ -12,12 +12,10 @@
 	<script src="c_books.lua" type="client" />
 	
 	<file src="books/PDmanual.xml" />
-	<file src="books/PDmanual.xml" />
-
 	<file src="books/LVHighwayCode.xml" />
-	<file src="books/LVHighwayCode.xml" />
-
 	<file src="books/Chemistry101.xml" />
-	<file src="books/Chemistry101.xml" />
-
+	
+	<file src="books/PDmanual.png" />
+	<file src="books/LVHighwayCode.png" />
+	<file src="books/Chemistry101.png" />
 </meta>

@@ -158,9 +158,12 @@ function handleReport(reportedPlayer, reportedReason)
 	local admins = exports.global:getAdmins()
 	-- Show to admins
 	for key, value in ipairs(admins) do
-		outputChatBox(" [-ADMIN REPORT-] (" .. playerID .. ") " .. tostring(getPlayerName(source)) .. " reported (" .. reportedID .. ") " .. tostring(getPlayerName(reportedPlayer)) .. " at " .. timestring .. ".", value, 0, 255, 255)
-		outputChatBox(" [-ADMIN REPORT-] " .. "Reason: " .. tostring(reportedReason), value, 0, 255, 255)
-		outputChatBox(" [-ADMIN REPORT-] Type /ar " .. slot .. " to accept this report.", value, 0, 255, 255)
+		local adminduty = getElementData(value, "adminduty")
+		if (adminduty==1) then
+			outputChatBox(" [-ADMIN REPORT-] (" .. playerID .. ") " .. tostring(getPlayerName(source)) .. " reported (" .. reportedID .. ") " .. tostring(getPlayerName(reportedPlayer)) .. " at " .. timestring .. ".", value, 0, 255, 255)
+			outputChatBox(" [-ADMIN REPORT-] " .. "Reason: " .. tostring(reportedReason), value, 0, 255, 255)
+			outputChatBox(" [-ADMIN REPORT-] Type /ar " .. slot .. " to accept this report.", value, 0, 255, 255)
+		end
 	end
 	
 	outputChatBox("[" .. timestring .. "] Thank you for submitting your admin report, Your report reference number is #" .. tostring(slot) .. ".", source, 255, 194, 14)
@@ -184,10 +187,13 @@ function alertPendingReport(id)
 		
 		-- Show to admins
 		for key, value in ipairs(admins) do
-			outputChatBox(" [-ADMIN REPORT-] - REPORT #" .. id .. " has still not been answered! -", value, 0, 255, 255)
-			outputChatBox(" [-ADMIN REPORT-] (" .. playerID .. ") " .. tostring(getPlayerName(reportingPlayer)) .. " reported (" .. reportedID .. ") " .. tostring(getPlayerName(reportedPlayer)) .. " at " .. timestring .. ".", value, 0, 255, 255)
-			outputChatBox(" [-ADMIN REPORT-] " .. "Reason: " .. tostring(reportedReason), value, 0, 255, 255)
-			outputChatBox(" [-ADMIN REPORT-] Type /ar " .. id .. " to accept this report.", value, 0, 255, 255)
+			local adminduty = getElementData(value, "adminduty")
+			if (adminduty==1) then
+				outputChatBox(" [-ADMIN REPORT-] - REPORT #" .. id .. " has still not been answered! -", value, 0, 255, 255)
+				outputChatBox(" [-ADMIN REPORT-] (" .. playerID .. ") " .. tostring(getPlayerName(reportingPlayer)) .. " reported (" .. reportedID .. ") " .. tostring(getPlayerName(reportedPlayer)) .. " at " .. timestring .. ".", value, 0, 255, 255)
+				outputChatBox(" [-ADMIN REPORT-] " .. "Reason: " .. tostring(reportedReason), value, 0, 255, 255)
+				outputChatBox(" [-ADMIN REPORT-] Type /ar " .. id .. " to accept this report.", value, 0, 255, 255)
+			end
 		end
 	end
 end
@@ -227,7 +233,10 @@ function pendingReportTimeout(id)
 		
 		-- Show to admins
 		for key, value in ipairs(admins) do
-			outputChatBox(" [-ADMIN REPORT-] - REPORT #" .. id .. " has expired! Be quicker next time!! -", value, 0, 255, 255)
+			local adminduty = getElementData(value, "adminduty")
+			if (adminduty==1) then
+				outputChatBox(" [-ADMIN REPORT-] - REPORT #" .. id .. " has expired! Be quicker next time!! -", value, 0, 255, 255)
+			end
 		end
 		
 		outputChatBox("[" .. timestring .. "] Your report (#" .. id .. ") has expired.", reportingPlayer, 255, 194, 14)
@@ -276,7 +285,10 @@ function falseReport(thePlayer, commandName, id)
 					
 					local admins = exports.global:getAdmins()
 					for key, value in ipairs(admins) do
-						outputChatBox(" [-ADMIN REPORT-] - " .. getPlayerName(thePlayer) .. " has marked report #" .. id .. " as false. -", value, 0, 255, 255)
+						local adminduty = getElementData(value, "adminduty")
+						if (adminduty==1) then
+							outputChatBox(" [-ADMIN REPORT-] - " .. getPlayerName(thePlayer) .. " has marked report #" .. id .. " as false. -", value, 0, 255, 255)
+						end
 					end
 				end
 			end
@@ -335,7 +347,10 @@ function acceptReport(thePlayer, commandName, id)
 					
 					local admins = exports.global:getAdmins()
 					for key, value in ipairs(admins) do
-						outputChatBox(" [-ADMIN REPORT-] - " .. getPlayerName(thePlayer) .. " has accepted report #" .. id .. " -", value, 0, 255, 255)
+						local adminduty = getElementData(value, "adminduty")
+						if (adminduty==1) then
+							outputChatBox(" [-ADMIN REPORT-] - " .. getPlayerName(thePlayer) .. " has accepted report #" .. id .. " -", value, 0, 255, 255)
+						end
 					end
 				end
 			end
@@ -365,7 +380,10 @@ function closeReport(thePlayer, commandName, id)
 				
 				local admins = exports.global:getAdmins()
 				for key, value in ipairs(admins) do
-					outputChatBox(" [-ADMIN REPORT-] - " .. getPlayerName(thePlayer) .. " has closed the report #" .. id .. ". -", value, 0, 255, 255)
+					local adminduty = getElementData(value, "adminduty")
+					if (adminduty==1) then
+						outputChatBox(" [-ADMIN REPORT-] - " .. getPlayerName(thePlayer) .. " has closed the report #" .. id .. ". -", value, 0, 255, 255)
+					end
 				end
 			end
 		end

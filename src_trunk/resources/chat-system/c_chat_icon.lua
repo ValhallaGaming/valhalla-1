@@ -20,7 +20,7 @@ function render()
 				local px, py, pz = getPedBonePosition(value, 6)
 				
 				local dist = getDistanceBetweenPoints3D(x, y, z, px, py, pz)
-				if (dist < 300) then
+				if (dist < 50) then
 					local reconning = getElementData(value, "reconx")
 					if (isLineOfSightClear(x, y, z, px, py, pz, true, false, false, false ) and isElementOnScreen(value)) and not (reconning) then
 						local screenX, screenY = getScreenFromWorldPosition(px, py, pz+0.5)

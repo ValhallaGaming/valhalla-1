@@ -1743,23 +1743,28 @@ function ejectPlayer(thePlayer, commandName, target)
 			outputChatBox("You are not in a vehicle.", thePlayer, 255, 0, 0)
 		else
 			local vehicle = getPedOccupiedVehicle(thePlayer)
+			local seat = getPedOccupiedVehicleSeat(thePlayer)
 			
-			local targetPlayer = exports.global:findPlayerByPartialNick(target)
-			
-			if not (targetPlayer) then
-				outputChatBox("Player not found.", thePlayer, 255, 0, 0)
-			elseif (targetPlayer==thePlayer) then
-				outputChatBox("You cannot eject yourself.", thePlayer, 255, 0, 0)
+			if (seat~=0) then
+				outputChatBox("You must be the driver to eject.", thePlayer, 255, 0, 0)
 			else
-				local targetPlayerName = getPlayerName(targetPlayer)
+				local targetPlayer = exports.global:findPlayerByPartialNick(target)
 				
-				local targetvehicle = getPedOccupiedVehicle(targetPlayer)
-				
-				if (targetvehicle~=vehicle) then
-					outputChatBox("This player is not in your vehicle.", thePlayer, 255, 0, 0)
+				if not (targetPlayer) then
+					outputChatBox("Player not found.", thePlayer, 255, 0, 0)
+				elseif (targetPlayer==thePlayer) then
+					outputChatBox("You cannot eject yourself.", thePlayer, 255, 0, 0)
 				else
-					outputChatBox("You have thrown " .. targetPlayerName .. " out of your vehicle.", thePlayer, 0, 255, 0)
-					removePedFromVehicle(targetPlayer)
+					local targetPlayerName = getPlayerName(targetPlayer)
+					
+					local targetvehicle = getPedOccupiedVehicle(targetPlayer)
+					
+					if (targetvehicle~=vehicle) then
+						outputChatBox("This player is not in your vehicle.", thePlayer, 255, 0, 0)
+					else
+						outputChatBox("You have thrown " .. targetPlayerName .. " out of your vehicle.", thePlayer, 0, 255, 0)
+						removePedFromVehicle(targetPlayer)
+					end
 				end
 			end
 		end

@@ -80,15 +80,21 @@ end
 
 function pickupItem(button, state)
 	if (button=="left") then
-		local id = getElementData(item, "id")
-		local itemID = getElementData(item, "itemID")
-		local itemValue = getElementData(item, "itemValue")
-		local itemName = getElementData(item, "itemName")
-		setElementData(item, "pickedup", true)
-		showCursor(false)
-		triggerEvent("cursorHide", getLocalPlayer())
-		triggerServerEvent("pickupItem", getLocalPlayer(), item, id, itemID, itemValue, itemName)
-		hideItemMenu()
+		local restrain = getElementData(getLocalPlayer(), "restrain")
+		
+		if (restrain) and (restrain==1) then
+			outputChatBox("You are cuffed.", 255, 0, 0)
+		else
+			local id = getElementData(item, "id")
+			local itemID = getElementData(item, "itemID")
+			local itemValue = getElementData(item, "itemValue")
+			local itemName = getElementData(item, "itemName")
+			setElementData(item, "pickedup", true)
+			showCursor(false)
+			triggerEvent("cursorHide", getLocalPlayer())
+			triggerServerEvent("pickupItem", getLocalPlayer(), item, id, itemID, itemValue, itemName)
+			hideItemMenu()
+		end
 	end
 end
 	
@@ -791,77 +797,83 @@ end
 
 function dropItem(button)
 	if (button=="left") then
-		if (guiGetSelectedTab(tabPanel)==tabItems) then -- ITEMS
-			local row, col = guiGridListGetSelectedItem(gItems)
-			local itemSlot = tonumber(guiGridListGetItemText(gItems, row, 1))
-			local itemName = items[itemSlot][1]
-			local itemID = items[itemSlot][3]
-			local itemValue = items[itemSlot][4]
-			
-			local backpackitems = nil
-			local backpackvalues = nil
-			if (itemID==48) then -- BACKPACK, destroy the items inside it too
-				backpackitems = { }
-				backpackvalues = { }
+		local restrain = getElementData(getLocalPlayer(), "restrain")
+		
+		if (restrain) and (restrain==1) then
+			outputChatBox("You are cuffed.", 255, 0, 0)
+		else
+			if (guiGetSelectedTab(tabPanel)==tabItems) then -- ITEMS
+				local row, col = guiGridListGetSelectedItem(gItems)
+				local itemSlot = tonumber(guiGridListGetItemText(gItems, row, 1))
+				local itemName = items[itemSlot][1]
+				local itemID = items[itemSlot][3]
+				local itemValue = items[itemSlot][4]
 				
-				for i = 11, 20 do
-					if (items[i]~=nil) then
-						backpackitems[i-10] = items[i][3]
-						backpackvalues[i-10] = items[i][4]
-						guiGridListSetItemText(gItems, i-1, colName, "Empty", false, false)
-						guiGridListSetItemText(gItems, i-1, colValue, "None", false, false)
-						items[i] = nil
+				local backpackitems = nil
+				local backpackvalues = nil
+				if (itemID==48) then -- BACKPACK, destroy the items inside it too
+					backpackitems = { }
+					backpackvalues = { }
+					
+					for i = 11, 20 do
+						if (items[i]~=nil) then
+							backpackitems[i-10] = items[i][3]
+							backpackvalues[i-10] = items[i][4]
+							guiGridListSetItemText(gItems, i-1, colName, "Empty", false, false)
+							guiGridListSetItemText(gItems, i-1, colValue, "None", false, false)
+							items[i] = nil
+						end
 					end
 				end
+				
+				guiGridListSetSelectedItem(gItems, 0, 0)
+				guiGridListSetItemText(gItems, row, colName, "Empty", false, false)
+				guiGridListSetItemText(gItems, row, colValue, "None", false, false)
+				guiGridListSetSelectedItem(gItems, row, col)
+				guiSetText(lDescription, "An empty slot.")
+				items[itemSlot] = nil
+				guiSetEnabled(bUseItem, false)
+				guiSetEnabled(bDropItem, false)
+				guiSetEnabled(bShowItem, false)
+				guiSetEnabled(bDestroyItem, false)
+				
+				local x, y, z = getElementPosition(getLocalPlayer())
+				local rot = getPedRotation(getLocalPlayer())
+				x = x - math.sin( math.rad( rot ) ) * 1
+				y = y - math.cos( math.rad( rot ) ) * 1
+				
+				local gz = getGroundPosition(x, y, z)
+				if (backpackitems) then
+					triggerServerEvent("dropItem", getLocalPlayer(), itemID, itemValue, itemName, x, y, z, gz, false, backpackitems, backpackvalues)
+				else
+					triggerServerEvent("dropItem", getLocalPlayer(), itemID, itemValue, itemName, x, y, z, gz)
+				end
+			elseif (guiGetSelectedTab(tabPanel)==tabWeapons) then -- WEAPONS
+				local row, col = guiGridListGetSelectedItem(gWeapons)
+				local itemSlot = tonumber(guiGridListGetItemText(gWeapons, row, 1))
+				local itemName = tostring(guiGridListGetItemText(gWeapons, row, 2))
+				local itemValue = tonumber(guiGridListGetItemText(gWeapons, row, 3))
+				local itemID = tonumber(getPedWeapon(getLocalPlayer(), itemSlot))
+				
+				guiGridListSetSelectedItem(gWeapons, 0, 0)
+				guiGridListSetItemText(gWeapons, row, colName, "Empty", false, false)
+				guiGridListSetItemText(gWeapons, row, colValue, "None", false, false)
+				guiGridListSetSelectedItem(gWeapons, row, col)
+				guiSetText(lDescription, "An empty slot.")
+				guiSetEnabled(bUseItem, false)
+				guiSetEnabled(bDropItem, false)
+				guiSetEnabled(bShowItem, false)
+				guiSetEnabled(bDestroyItem, false)
+				
+				local x, y, z = getElementPosition(getLocalPlayer())
+				local rot = getPedRotation(getLocalPlayer())
+				x = x + math.sin( math.rad( rot ) ) * 1
+				y = y + math.cos( math.rad( rot ) ) * 1
+				
+				local gz = getGroundPosition(x, y, z)
+				
+				triggerServerEvent("dropItem", getLocalPlayer(), itemID, itemValue, itemName, x, y, z, gz, true)
 			end
-			
-			guiGridListSetSelectedItem(gItems, 0, 0)
-			guiGridListSetItemText(gItems, row, colName, "Empty", false, false)
-			guiGridListSetItemText(gItems, row, colValue, "None", false, false)
-			guiGridListSetSelectedItem(gItems, row, col)
-			guiSetText(lDescription, "An empty slot.")
-			items[itemSlot] = nil
-			guiSetEnabled(bUseItem, false)
-			guiSetEnabled(bDropItem, false)
-			guiSetEnabled(bShowItem, false)
-			guiSetEnabled(bDestroyItem, false)
-			
-			local x, y, z = getElementPosition(getLocalPlayer())
-			local rot = getPedRotation(getLocalPlayer())
-			x = x - math.sin( math.rad( rot ) ) * 1
-			y = y - math.cos( math.rad( rot ) ) * 1
-			
-			local gz = getGroundPosition(x, y, z)
-			if (backpackitems) then
-				triggerServerEvent("dropItem", getLocalPlayer(), itemID, itemValue, itemName, x, y, z, gz, false, backpackitems, backpackvalues)
-			else
-				triggerServerEvent("dropItem", getLocalPlayer(), itemID, itemValue, itemName, x, y, z, gz)
-			end
-		elseif (guiGetSelectedTab(tabPanel)==tabWeapons) then -- WEAPONS
-			local row, col = guiGridListGetSelectedItem(gWeapons)
-			local itemSlot = tonumber(guiGridListGetItemText(gWeapons, row, 1))
-			local itemName = tostring(guiGridListGetItemText(gWeapons, row, 2))
-			local itemValue = tonumber(guiGridListGetItemText(gWeapons, row, 3))
-			local itemID = tonumber(getPedWeapon(getLocalPlayer(), itemSlot))
-			
-			guiGridListSetSelectedItem(gWeapons, 0, 0)
-			guiGridListSetItemText(gWeapons, row, colName, "Empty", false, false)
-			guiGridListSetItemText(gWeapons, row, colValue, "None", false, false)
-			guiGridListSetSelectedItem(gWeapons, row, col)
-			guiSetText(lDescription, "An empty slot.")
-			guiSetEnabled(bUseItem, false)
-			guiSetEnabled(bDropItem, false)
-			guiSetEnabled(bShowItem, false)
-			guiSetEnabled(bDestroyItem, false)
-			
-			local x, y, z = getElementPosition(getLocalPlayer())
-			local rot = getPedRotation(getLocalPlayer())
-			x = x + math.sin( math.rad( rot ) ) * 1
-			y = y + math.cos( math.rad( rot ) ) * 1
-			
-			local gz = getGroundPosition(x, y, z)
-			
-			triggerServerEvent("dropItem", getLocalPlayer(), itemID, itemValue, itemName, x, y, z, gz, true)
 		end
 	end
 end

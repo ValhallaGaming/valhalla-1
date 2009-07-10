@@ -269,6 +269,7 @@ function spawnCharacter(charname)
 				setPlayerNametagColor(source, 255, 255, 255)
 			end
 		end
+		setPlayerNametagShowing(source, false)
 		
 		-- Server message
 		exports.irc:sendMessage("[SERVER] Character " .. charname .. " logged in.")

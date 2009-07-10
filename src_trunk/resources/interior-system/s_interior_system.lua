@@ -1928,7 +1928,7 @@ function setPlayerInsideInterior(thePickup, thePlayer)
 	local owner = getElementData(thePickup, "owner")
 	local inttype = getElementData(thePickup, "inttype")
 	local cost = getElementData(thePickup, "cost")
-	
+
     triggerEvent("onPlayerInteriorEnter", thePlayer, thePickup)
     
 	-- fade camera to black

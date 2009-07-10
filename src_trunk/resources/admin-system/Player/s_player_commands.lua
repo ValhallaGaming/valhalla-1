@@ -1803,17 +1803,18 @@ addCommandHandler("warn", warnPlayer, false, false)
 
 -- recon fix for interior changing
 function interiorChanged(thePickup)
-	local cameraTarget = getCameraTarget(source)
-	
-	if (cameraTarget) then
-		if (cameraTarget~=source) then
-			local interior = getElementInterior(cameraTarget)
-			local dimension = getElementDimension(cameraTarget)
-			setCameraInterior(source, interior)
-			setElementInterior(source, interior)
-			setElementDimension(source, dimension)
+	for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
+		local cameraTarget = getCameraTarget(value)
+		if (cameraTarget) then
+			if (cameraTarget==source) then
+				local interior = getElementInterior(source)
+				local dimension = getElementDimension(source)
+				setCameraInterior(source, interior)
+				setElementInterior(source, interior)
+				setElementDimension(source, dimension)
+			end
 		end
-	end	
+	end
 end
 addEventHandler("onPlayerInteriorEnter", getRootElement(), interiorChanged)
 addEventHandler("onPlayerInteriorExit", getRootElement(), interiorChanged)

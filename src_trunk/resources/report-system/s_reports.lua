@@ -48,6 +48,7 @@ function reportInfo(thePlayer, commandName, id)
 		if not (id) then
 			outputChatBox("SYNTAX: " .. commandName .. " [ID]", thePlayer, 255, 194, 15)
 		else
+			id = tonumber(id)
 			if (reports[id]~= nil) then
 				id = tonumber(id)
 				local reporter = reports[id][1]

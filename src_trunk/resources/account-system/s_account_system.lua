@@ -325,6 +325,8 @@ function spawnCharacter(charname)
 			setCameraInterior(source, 6)
 		end
 		
+		outputDebugString(tostring(pdjail))
+		outputDebugString(tostring(pdjail_time))
 		-- PD JAIL
 		if (pdjail==1) then
 			outputChatBox("You still have " .. pdjail_time .. " minute(s) to serve of your state jail sentance.", source, 255, 0, 0)
@@ -334,14 +336,14 @@ function spawnCharacter(charname)
 			setElementData(source, "pd.jailtime", pdjail_time)
 			setElementData(source, "pd.jailtimer", theTimer)
 			setElementData(source, "pd.jailstation", pdjail_station)
-		else
-			setElementData(source, "pd.jailserved", 1)
-			setElementData(source, "pd.jailtime", 0)
-			setElementData(source, "pd.jailtimer", nil)
-			setElementData(source, "pd.jailstation", nil)
-			if (pdjail_time<0) then
-				timerPDUnjailPlayer(source)
-			end
+		--else
+			--setElementData(source, "pd.jailserved", 1)
+			--setElementData(source, "pd.jailtime", 0)
+			--setElementData(source, "pd.jailtimer", nil)
+			--setElementData(source, "pd.jailstation", nil)
+			--if (pdjail_time==0) then
+			--	timerPDUnjailPlayer(source)
+			--end
 		end
 			
 		-- FACTIONS

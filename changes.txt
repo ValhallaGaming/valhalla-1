@@ -1,7 +1,16 @@
 ---
 SQL
 ---
+-- items
+
 INSERT INTO items SET id='49', item_name='Fishing Rod', item_description='A 7 foot carbon steel fishing rod.';
+INSERT INTO items SET id='50', item_name='The Las Venturas Highway Code', item_description='A copy of the Las Venturas highway code.';
+INSERT INTO items SET id='51', item_name='Chemistry 101', item_description='A copy of Chemistry 101.';
+INSERT INTO items SET id='52', item_name='Police Officer's Manual', item_description='The LVMPD Police Officer's Manual.';
+INSERT INTO items SET id='53', item_name='Breathalizer', item_description='A small black breathalizer.';
+
+
+-- achievements
 
 INSERT INTO achievementlist SET id='35', name='Whale Hunter', description='Catch a fish weighing 100lbs or more.', points='50';
 

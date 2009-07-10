@@ -97,34 +97,6 @@ function pickupItem(button, state)
 		end
 	end
 end
-	
-
---[[
-function pickupItem(button, state, absoluteX, absoluteY, worldX, worldY, worldZ, clickedElement)
-	if (clickedElement) then
-		if (getElementType(clickedElement)=="object") then
-			local objtype = getElementData(clickedElement, "type")
-			local pickedup = getElementData(clickedElement, "pickedup")
-			
-			if (objtype) and not (pickedup) then
-				if (objtype=="worlditem") then
-					local id = getElementData(clickedElement, "id")
-					local itemID = getElementData(clickedElement, "itemID")
-					local itemValue = getElementData(clickedElement, "itemValue")
-					local itemName = getElementData(clickedElement, "itemName")
-					setElementData(clickedElement, "pickedup", true)
-					showCursor(false)
-					triggerEvent("cursorHide", getLocalPlayer())
-					triggerServerEvent("pickupItem", getLocalPlayer(), clickedElement, id, itemID, itemValue, itemName)
-				end
-			end
-		end
-	end
-end
-addEventHandler("onClientClick", getRootElement(), pickupItem)
-]]--
-
-
 
 function getItemDescription(itemID)
 	if (itemID==1) then return "A plump haggis animal, straight from the hills of Scotland."
@@ -179,6 +151,7 @@ function getItemDescription(itemID)
 	elseif (itemID==50) then return "The Las Venturas Highway Code."
 	elseif (itemID==51) then return "Chemistry 101."
 	elseif (itemID==52) then return "The Police Officer's Manual."
+	elseif (itemID==53) then return "A small black breathalizer."
 	else return false 
 	end
 end
@@ -296,6 +269,8 @@ function getItemType(itemID)
 		return 5
 	elseif (itemID==52) then -- book
 		return 5
+	elseif (itemID==53) then -- breathalizer
+		return 4
 	else
 		return false
 	end

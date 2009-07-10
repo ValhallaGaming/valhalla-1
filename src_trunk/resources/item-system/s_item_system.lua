@@ -342,6 +342,8 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 			local bookName = "PDmanual"
 			exports.global:sendLocalMeAction(source, "reads ".. bookTitle ..".")
 			triggerClientEvent( source, "showBook", source, bookName, bookTitle )
+		elseif (itemID==53) then -- Breathalizer
+			outputChatBox("Use /breathtest to use this item.", source, 255, 194, 15)
 		else
 			outputChatBox("Error 800001 - Report on http://bugs.valhallagaming.net", source, 255, 0, 0)
 		end
@@ -715,3 +717,32 @@ function adminItemList(thePlayer)
 	end
 end
 addCommandHandler("itemlist", adminItemList, false, false)
+
+function breathTest(thePlayer, commandName, targetPlayer)
+	if (exports.global:doesPlayerHaveItem(thePlayer, 53, -1)) then
+		if not (targetPlayer) then
+			outputChatBox("SYNTAX: /" .. commandName .. " [Player Partial Nick / ID]", thePlayer, 255, 194, 14)
+		else
+			local targetPlayer = exports.global:findPlayerByPartialNick(targetPlayer)
+			
+			if not (targetPlayer) then
+				outputChatBox("Player not found.", thePlayer, 255, 0, 0)
+			else
+				local targetPlayerName = getPlayerName(targetPlayer)
+				local logged = getElementData(targetPlayer, "loggedin")
+				local username = getPlayerName(thePlayer)
+				
+				if (logged==0) then
+					outputChatBox("Player is not logged in.", thePlayer, 255, 0, 0)
+				else
+					local alcohollevel = getElementData(targetPlayer, "alcohollevel")
+					
+					if not (alcohollevel) then alcohollevel = 0 end
+					
+					outputChatBox(targetPlayerName .. "'s Alcohol Levels: " .. alcohollevel .. ".", thePlayer, 255, 194, 15)
+				end
+			end
+		end
+	end
+end
+addCommandHandler("breathtest", breathTest, false, false)

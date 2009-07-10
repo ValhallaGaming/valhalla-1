@@ -62,7 +62,7 @@ function showFriendsUI(friends)
 		-- STANDARD UI
 		paneFriend[key] = {}
 		paneFriend[key][7] = guiCreateScrollPane(0.05, dy, 1.0, 0.35, true, paneFriends)
-		paneFriend[key][1] = guiCreateStaticImage(0.0, 0.1, 0.9, 0.5, "img/charbg0.png", true, paneFriend[key][7], getResourceFromName("account-system"))
+		paneFriend[key][1] = guiCreateStaticImage(0.0, 0.1, 0.9, 0.5, ":account-system/img/charbg0.png", true, paneFriend[key][7])
 		
 		if (name~=nil) then
 			paneFriend[key][2] = guiCreateLabel(0.12, 0.1, 0.8, 0.2, username .. " as " .. name, true, paneFriend[key][7])

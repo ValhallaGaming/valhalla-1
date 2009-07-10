@@ -326,7 +326,7 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 		elseif (itemID==48) then
 			outputChatBox("Your inventory is extended.", source, 0, 255, 0)
 		elseif (itemID==49) then
-			triggerServerEvent( "fish", source )
+			triggerEvent( "fish", source )
 		elseif (itemID==50) then -- highway code book
 			local bookTitle = "The Las Venturas Highway Code"
 			local bookName = "LVHighwayCode"

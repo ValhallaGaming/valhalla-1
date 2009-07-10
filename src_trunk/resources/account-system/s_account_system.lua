@@ -283,6 +283,11 @@ function spawnCharacter(charname)
 		
 		-- Load the character info
 		spawnPlayer(source, x, y, z, rot, skin)
+		
+		if (interior==0) then
+			health = health / 2
+		end
+		
 		setElementHealth(source, health)
 		setPedArmor(source, armor)
 		

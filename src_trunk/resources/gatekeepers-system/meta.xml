@@ -1,0 +1,8 @@
+<meta>
+	<info author="vG MTA Scripting Team" type="script" description="Gatekeepers System"/>
+
+	<script src="s_stevie.lua" type="server" />
+	<script src="C_stevie.lua" type="client" />
+	<script src="s_hunter.lua" type="server" />
+	<script src="C_hunter.lua" type="client" />
+</meta>

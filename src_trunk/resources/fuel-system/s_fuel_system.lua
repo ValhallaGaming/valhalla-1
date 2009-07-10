@@ -192,8 +192,8 @@ function fillVehicle(thePlayer, commandName)
 		if (colShape) then
 			local veh = getPedOccupiedVehicle(thePlayer)
 			local currFuel = getElementData(veh, "fuel")
-				
-			if (currFuel==MAX_FUEL) then
+
+			if (math.ceil(currFuel)==MAX_FUEL) then
 				outputChatBox("This vehicle is already full.", thePlayer)
 			else
 				local faction = getPlayerTeam(thePlayer)

@@ -128,8 +128,8 @@ function applyMods(res)
 		-- tag4 = engineLoadTXD ( "tags/tags_larollin.txd" )
 		-- engineImportTXD ( tag4, 1527 )
 
-		tag5 = engineLoadTXD ( "tags/tags_laseville.txd" ) -- Dem Redsands Green Boys
-		engineImportTXD ( tag5, 1528 )
+		--tag5 = engineLoadTXD ( "tags/tags_laseville.txd" )
+		--engineImportTXD ( tag5, 1528 )
 
 		-- tag6 = engineLoadTXD ( "tags/tags_temple.txd" )
 		-- engineImportTXD ( tag6, 1529 )

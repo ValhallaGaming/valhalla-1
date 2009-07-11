@@ -2,9 +2,4 @@
     -- Vice
 	<object id="object (nightclub01_lvs) (1)" dimension="724" interior="1" model="8399" posX="-2176.3635253906" posY="649.4248046875" posZ="1051.8255615234" rotX="0" rotY="0" rotZ="90" />
     <object id="object (Gen_doorEXT15) (1)" dimension="724" interior="1" model="1536" posX="-2171.029296875" posY="639.7841796875" posZ="1051.328125" rotX="0" rotY="0" rotZ="0" />
-	
-	-- House
-    <object id="object (nightclub01_lvs) (1)" dimension="613" interior="1" model="8399" posX="-2176.3635253906" posY="649.4248046875" posZ="1051.8255615234" rotX="0" rotY="0" rotZ="90" />
-    <object id="object (Gen_doorEXT15) (1)" dimension="613" interior="1" model="1536" posX="-2171.029296875" posY="639.7841796875" posZ="1051.328125" rotX="0" rotY="0" rotZ="0" />
-
 </map>

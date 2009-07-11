@@ -1,19 +1,15 @@
 <meta>
-	<map src="china.map" />
-	<map src="Spawn_Bus_Stop.map"/>
-	<map src="Vice_Back_Room.map"/>
-	<map src="Las_Venturas_Transport.map"/>
-	<map src="glenbrook_apartments_doors.map"/>
-	<map src="steak_floor.map"/>
-	<map src="Police Academy.map"/>
 	<map src="2nd Precinct.map"/>
-	<map src="LVMPD.map"/>
-	<map src="Creek Ghetto.map"/>
 	<map src="Bank Int.map"/>
-	<map src="LV Hospital.map"/>
-	<map src="Pigpen proom solidwalls.map"/>
-	<map src="Phils Bistro Map.map"/>
-	<map src="vice backroom small.map"/>
 	<map src="Bassline_Studios.map"/>
+	<map src="china.map" />
+	<map src="Creek Ghetto.map"/>
+	<map src="Dragon Lady Strip Club.map"/>
 	<map src="fishMarket.map"/>
+	<map src="glenbrook_apartments_doors.map"/>
+	<map src="LV Hospital.map"/>
+	<map src="LVMPD.map"/>
+	<map src="steak_floor.map"/>
+	<map src="Vice_Back_Room.map"/>
+	<map src="Yakuza HQ.map"/>
 </meta>

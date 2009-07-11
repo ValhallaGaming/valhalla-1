@@ -1,8 +1,0 @@
-<map edf:definitions="editor_main">
-
-	-- Vice WC door
-	<object id="object (Gen_doorEXT15) (2)" dimension="413" interior="10" model="1536" posX="364.1397" posY="-63.7950" posZ="1000.5078125" rotX="0" rotY="0" rotZ="180" />
-	
-	--Dragon Lady WC Door
-	<object id="object (Gen_doorEXT15) (2)" dimension="686" interior="10" model="1536" posX="364.1397" posY="-63.7950" posZ="1000.5078125" rotX="0" rotY="0" rotZ="180" />
-</map>

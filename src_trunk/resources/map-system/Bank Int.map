@@ -1,6 +1,6 @@
 <map edf:definitions="editor_main">
     <object id="object (vault_door) (1)" dimension="0" interior="3" model="14576" posX="2344.8464355469" posY="2368.1811523438" posZ="2017.4688720703" rotX="0" rotY="0" rotZ="0" />
-    <object id="object (paperchase01) (1)" dimension="0" interior="3" model="14602" posX="2338.5180664063" posY="2369.5163574219" posZ="2027.29296875" rotX="0" rotY="0" rotZ="180" />
+    <object id="object (paperchase01) (1)" dimension="0" interior="3" model="14602" posX="2338.4763183594" posY="2369.5141601563" posZ="2027.29296875" rotX="0" rotY="0" rotZ="180" />
     <object id="object (freezer_door) (1)" dimension="0" interior="3" model="2963" posX="2341.4772949219" posY="2378.0336914063" posZ="2011.3068847656" rotX="0" rotY="0" rotZ="0" />
     <object id="object (freezer_door) (2)" dimension="0" interior="3" model="2963" posX="2341.4772949219" posY="2382.1953125" posZ="2011.3068847656" rotX="0" rotY="0" rotZ="0" />
     <object id="object (freezer_door) (3)" dimension="0" interior="3" model="2963" posX="2341.4772949219" posY="2385.9440917969" posZ="2011.3068847656" rotX="0" rotY="0" rotZ="0" />
@@ -116,10 +116,8 @@
     <object id="object (CJ_MONEY_BAG) (10)" dimension="0" interior="3" model="1550" posX="2345.2041015625" posY="2390.6057128906" posZ="2010.6849365234" rotX="0" rotY="89.999938964844" rotZ="227.41320800781" />
     <object id="object (CJ_MONEY_BAG) (11)" dimension="0" interior="3" model="1550" posX="2345.0671386719" posY="2390.8708496094" posZ="2010.8868408203" rotX="0" rotY="45.999938964844" rotZ="296.39099121094" />
     <object id="object (kb_planter_bush2) (1)" dimension="0" interior="3" model="640" posX="2340.5859375" posY="2364.3747558594" posZ="2022.6228027344" rotX="0" rotY="0" rotZ="89.72998046875" />
-    <object id="object (MED_OFFICE3_DESK_09) (1)" dimension="0" interior="3" model="2183" posX="2351.1721191406" posY="2371.6804199219" posZ="2021.92578125" rotX="0" rotY="0" rotZ="89.72998046875" />
-    <object id="object (MED_OFFICE3_DESK_09) (2)" dimension="0" interior="3" model="2183" posX="2351.0556640625" posY="2364.2229003906" posZ="2021.92578125" rotX="0" rotY="0" rotZ="89.72998046875" />
     <object id="object (MED_OFFICE3_DESK_09) (4)" dimension="0" interior="3" model="2183" posX="2351.1721191406" posY="2379.4750976563" posZ="2021.92578125" rotX="0" rotY="0" rotZ="89.72998046875" />
-    <object id="object (MED_OFFICE3_DESK_09) (5)" dimension="0" interior="3" model="2183" posX="2351.0556640625" posY="2357.0883789063" posZ="2021.92578125" rotX="0" rotY="0" rotZ="89.72998046875" />
+    <object id="object (MED_OFFICE3_DESK_09) (5)" dimension="0" interior="3" model="2183" posX="2351.8298339844" posY="2358.2150878906" posZ="2021.92578125" rotX="0" rotY="0" rotZ="89.72998046875" />
     <object id="object (MED_OFFICE4_DESK_2) (1)" dimension="0" interior="3" model="2174" posX="2340.4123535156" posY="2354.3015136719" posZ="2021.9322509766" rotX="0" rotY="0" rotZ="179.45971679688" />
     <object id="object (MED_OFFICE_DESK_2) (1)" dimension="0" interior="3" model="2166" posX="2339.2102050781" posY="2363.0336914063" posZ="2021.92578125" rotX="0" rotY="0" rotZ="270.26989746094" />
     <object id="object (MED_OFFICE_DESK_1) (1)" dimension="0" interior="3" model="2165" posX="2340.1970214844" posY="2361.0576171875" posZ="2021.92578125" rotX="0" rotY="0" rotZ="270.26989746094" />
@@ -131,13 +129,6 @@
     <object id="object (kb_swivelchair2) (3)" dimension="0" interior="3" model="1715" posX="2339.2626953125" posY="2360.5444335938" posZ="2021.9322509766" rotX="0" rotY="0" rotZ="89.729675292969" />
     <object id="object (kb_swivelchair2) (5)" dimension="0" interior="3" model="1715" posX="2341.8244628906" posY="2356.6479492188" posZ="2021.9322509766" rotX="0" rotY="0" rotZ="269.18908691406" />
     <object id="object (kb_swivelchair2) (6)" dimension="0" interior="3" model="1715" posX="2341.5422363281" posY="2360.4445800781" posZ="2021.92578125" rotX="0" rotY="0" rotZ="269.18908691406" />
-    <object id="object (nu_plant_ofc) (1)" dimension="0" interior="3" model="2001" posX="2338.087890625" posY="2354.2685546875" posZ="2021.9322509766" rotX="0" rotY="0" rotZ="0" />
-    <object id="object (nu_plant_ofc) (2)" dimension="0" interior="3" model="2001" posX="2343.4650878906" posY="2363.0139160156" posZ="2021.92578125" rotX="0" rotY="0" rotZ="0" />
-    <object id="object (nu_plant_ofc) (3)" dimension="0" interior="3" model="2001" posX="2325.6381835938" posY="2365.85546875" posZ="2021.92578125" rotX="0" rotY="0" rotZ="0" />
-    <object id="object (nu_plant_ofc) (4)" dimension="0" interior="3" model="2001" posX="2325.4147949219" posY="2372.7709960938" posZ="2021.92578125" rotX="0" rotY="0" rotZ="0" />
-    <object id="object (nu_plant_ofc) (5)" dimension="0" interior="3" model="2001" posX="2338.2490234375" posY="2376.0515136719" posZ="2021.92578125" rotX="0" rotY="0" rotZ="0" />
-    <object id="object (nu_plant_ofc) (6)" dimension="0" interior="3" model="2001" posX="2346.7238769531" posY="2384.2270507813" posZ="2021.92578125" rotX="0" rotY="0" rotZ="0" />
-    <object id="object (nu_plant_ofc) (7)" dimension="0" interior="3" model="2001" posX="2346.5532226563" posY="2354.2531738281" posZ="2021.92578125" rotX="0" rotY="0" rotZ="0" />
     <object id="object (paperchase_glass) (1)" dimension="0" interior="3" model="14598" posX="2350.296875" posY="2369.4431152344" posZ="2037.4827880859" rotX="0" rotY="0" rotZ="180" />
     <object id="object (BinNt07_LA) (2)" dimension="0" interior="3" model="1337" posX="2356.4509277344" posY="2265.3439941406" posZ="2030.9592285156" rotX="0" rotY="0" rotZ="0" />
     <object id="object (ab_casdorLok) (1)" dimension="0" interior="3" model="3089" posX="2350.4470214844" posY="2352.3798828125" posZ="2019.0076904297" rotX="0" rotY="0" rotZ="270.26989746094" />

@@ -28,4 +28,7 @@
 	<file src="tags/tags_lakilo.txd"/>
 	<file src="tags/tags_laseville.txd"/>
 	<file src="tags/tags_larifa.txd"/>
+	
+	<file src="copcarvg.dff"/>
+	<file src="copcarvg.txd"/>
 </meta>

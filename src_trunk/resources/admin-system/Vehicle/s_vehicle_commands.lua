@@ -297,13 +297,14 @@ function respawnAllVehicles(thePlayer, commandName)
 		local vehicles = exports.pool:getPoolElementsByType("vehicle")
 		local counter = 0
 		local tempcounter = 0
+		local occupiedcounter = 0
 		
 		-- Remove all players from vehicles
-		for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
-			if (isPedInVehicle(value)) then
-				removePedFromVehicle(value)
-			end
-		end
+		--for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
+		--	if (isPedInVehicle(value)) then
+		--		removePedFromVehicle(value)
+		--	end
+		--end
 		
 		for k, theVehicle in ipairs(vehicles) do
 			local dbid = getElementData(theVehicle, "dbid")
@@ -311,12 +312,21 @@ function respawnAllVehicles(thePlayer, commandName)
 				destroyElement(theVehicle)
 				tempcounter = tempcounter + 1
 			else
-				respawnVehicle(theVehicle)
-				counter = counter + 1
+				local driver = getVehicleOccupant(theVehicle)
+				local pass1 = getVehicleOccupant(theVehicle, 1)
+				local pass2 = getVehicleOccupant(theVehicle, 2)
+				local pass3 = getVehicleOccupant(theVehicle, 3)
+
+				if (pass1) or (pass2) or (pass3) or (driver) then
+					occupiedcounter = occupiedcounter + 1
+				else
+					respawnVehicle(theVehicle)
+					counter = counter + 1
+				end
 			end
 		end
 		outputChatBox(" =-=-=-=-=-=- All Vehicles Respawned =-=-=-=-=-=-=")
-		outputChatBox("Respawned " .. counter .. " vehicles.", thePlayer)
+		outputChatBox("Respawned " .. counter .. " vehicles. (" .. occupiedcounter .. " Occupied).", thePlayer)
 		outputChatBox("Deleted " .. tempcounter .. " temporary vehicles.", thePlayer)
 		unlockAllCivilianCars(thePlayer, "unlockcivcars")
 		exports.irc:sendMessage("[ADMIN] " .. getPlayerName(thePlayer) .. " respawned all vehicles.")

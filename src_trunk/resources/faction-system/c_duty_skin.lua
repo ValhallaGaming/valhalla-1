@@ -79,7 +79,7 @@ function changeDutySkin()
 	ointerior = getElementInterior(localPlayer)
 	ox, oy, oz = getElementPosition(localPlayer)
 	orot = getPedRotation(localPlayer)
-	oskin = getPedSkin(localPlayer)
+	oskin = getElementModel(localPlayer)
 	
 	local dimension = 65000 + getElementData(localPlayer, "gameaccountid")
 	setElementDimension(localPlayer, dimension)
@@ -95,7 +95,7 @@ function changeDutySkin()
 	bindKey("arrow_l", "down", prevDutySkin)
 	bindKey("arrow_r", "down", nextDutySkin)
 	
-	setPedSkin(localPlayer, skins[1][1])
+	setElementModel(localPlayer, skins[1][1])
 	
 	toggleAllControls(false, true, false)
 end
@@ -107,7 +107,7 @@ function prevDutySkin()
 		curr = skincount
 	end
 	
-	setPedSkin(localPlayer, skins[curr][1])
+	setElementModel(localPlayer, skins[curr][1])
 end
 
 function nextDutySkin()
@@ -116,7 +116,7 @@ function nextDutySkin()
 		curr = 1
 	end
 	
-	setPedSkin(localPlayer, skins[curr][1])
+	setElementModel(localPlayer, skins[curr][1])
 end
 
 function displayHelpText()
@@ -140,7 +140,7 @@ function finishDutySkin()
 		setElementDimension(localPlayer, odimension)
 		setElementInterior(localPlayer, ointerior)
 		triggerServerEvent("finishDutySkin", localPlayer, ox, oy, oz, orot, odimension, ointerior, skins[curr][1])
-		setPedSkin(localPlayer, oskin)
+		setElementModel(localPlayer, oskin)
 		unbindKey("Enter", "down", finishDutySkin)
 	end
 end

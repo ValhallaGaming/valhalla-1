@@ -37,7 +37,7 @@ function getNearbyRoadblocks(thePlayer, commandName)
 	local count = 0
 	
 	for k, theObject in ipairs(exports.pool:getPoolElementsByType("object")) do
-		local model = getObjectModel(theObject)
+		local model = getElementModel(theObject)
 		
 		if (model==981) or (model==1422) then
 			local x, y, z = getElementPosition(theObject)

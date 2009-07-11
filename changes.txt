@@ -2,7 +2,9 @@
 SQL
 ---
 -- columns
+
 to new columns in characters, "stevie" and "hunter", both int, 1 character long and defualt to 0.
+
 
 -- items
 
@@ -46,6 +48,9 @@ Scripts in "unfinished code" need to be completed, checked and added to the corr
 
 - carshop-system
 	-c_carshop_system
+
+- lvpd-system
+	- s_policecommands (/takelicense, currently disabled to be checked).
 
 --------------------
 Jack's changes.

@@ -244,3 +244,52 @@ function ticketPlayer(thePlayer, commandName, targetPlayerNick, amount, ...)
 	end
 end
 addCommandHandler("ticket", ticketPlayer, false, false)
+
+function takeLicense(thePlayer, commandName, targetPartialNick, licenseType)
+
+	local username = getPlayerName(thePlayer)
+	local logged = getElementData(thePlayer, "loggedin")
+	
+	if (logged==1) then
+	
+		local faction = getPlayerTeam(thePlayer)
+		local ftype = getElementData(faction, "type")
+	
+		if (ftype==2) then
+			if not (targetPartialNick) then
+				outputChatBox("SYNTAX: /" .. commandName .. " [Player Partial Nick][license Type 1:Driving 2:Weapon]", thePlayer)
+			else
+				if not (licenseType) then
+					outputChatBox("SYNTAX: /" .. commandName .. " [Player Partial Nick][license Type 1:Driving 2:Weapon]", thePlayer)
+				else
+					local targetPlayer = exports.global:findPlayerByPartialNick(targetPartialNick)
+					local targetPlayerName = getPlayerName(targetPlayer)
+					local name = getPlayerName(thePlayer)
+					
+					if (tonumber(licenseType)==1) then
+						if(tonumber(getElementData(targetPlayer, "license.car")) == 1) then
+							mysql_query(handler, "UPDATE characters SET car_license='0' WHERE charactername='" .. mysql_escape_string(handler, getPlayerName(targetPlayer)) .. "' LIMIT 1")
+							outputChatBox(name.." has revoked your driving license.", targetPlayer, 255, 194, 14)
+							outputChatBox("You have revoked " .. targetPlayerName .. "'s driving license.", thePlayer, 255, 194, 14)
+							setElementData(targetPlayer, "license.car", 0)
+						else
+							outputChatBox(targetPlayerName .. " does not have a driving license.", thePlayer, 255, 0, 0)
+						end
+					elseif (tonumber(licenseType)==2) then
+						if(tonumber(getElementData(targetPlayer, "license.gun")) == 1) then
+							mysql_query(handler, "UPDATE characters SET gun_license='0' WHERE charactername='" .. mysql_escape_string(handler, getPlayerName(targetPlayer)) .. "' LIMIT 1")
+							outputChatBox(name.." has revoked your weapon license.", targetPlayer, 255, 194, 14)
+							outputChatBox("You have revoked " .. targetPlayerName .. "'s weapon license.", thePlayer, 255, 194, 14)
+							setElementData(targetPlayer, "license.gun", 0)
+						else
+							outputChatBox(targetPlayerName .. " does not have a weapon license.", thePlayer, 255, 0, 0)
+						end
+					else
+						outputChatBox("License type not recognised.", thePlayer, 255, 194, 14)
+					end
+				end
+			end
+		end
+	end
+end
+-- addCommandHandler("takelicense", takeLicense, false, false)

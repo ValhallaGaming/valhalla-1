@@ -32,6 +32,11 @@ addEvent("onPlayerJoinFaction", false)
 function loadAllFactions(res)
 	if (res==getThisResource()) then
 		
+		-- work out how many minutes it is until the next hour
+		local mins = getRealTime().minute
+		local minutes = 60 - mins
+		setTimer(payAllWages, 60000*minutes, 0)
+		
 		local result = mysql_query(handler, "SELECT id, name, bankbalance, type FROM factions")
 		local counter = 0
 		
@@ -966,6 +971,7 @@ function payAllWages()
 					outputChatBox("  Gross Income: " .. unemployedPay+profit+interest+donatormoney .. "$ (Wire-Transferred to bank)", value, 255, 194, 14)
 				end
 			end
+			triggerClientEvent(value, "cPayDay", value)
 			local hoursplayed = getElementData(value, "hoursplayed")
 			setElementData(value, "hoursplayed", hoursplayed+1)
 			
@@ -975,13 +981,14 @@ function payAllWages()
 			outputChatBox("You have not played long enough to recieve a payday. (You require another " .. 60-timeinserver .. " Minutes of play.)", value, 255, 0, 0)
 		end
 	end
+	setTimer(payAllWages, 3600000, 1)
 	
-	-- Store the government moeny
+	-- Store the government money
 	local update = mysql_query(handler, "UPDATE factions SET bankbalance='" .. govAmount .. "' WHERE id='3'")
 	mysql_free_result(update)
 	exports.irc:sendMessage("[SCRIPT] All wages & state benefits paid.")
 end
-setTimer(payAllWages, 3600000, 0)
+
 
 function adminDoPayday(thePlayer)
 	local logged = getElementData(thePlayer, "loggedin")

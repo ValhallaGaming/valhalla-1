@@ -640,3 +640,10 @@ function btRespawnVehicles(button, state)
 		triggerServerEvent("cguiRespawnVehicles", getLocalPlayer())
 	end
 end
+
+function cPayDay()
+	local sound = playSound("mission_accomplished.mp3")
+	setSoundVolume(sound, 0.5)
+end
+addEvent("cPayDay", true)
+addEventHandler("cPayDay", getRootElement(), cPayDay)

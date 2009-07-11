@@ -42,7 +42,8 @@ function giveLicense(license, cost)
 	if (license==1) then -- car drivers license
 		setElementData(source, "license.car", 1)
 		mysql_query(handler, "UPDATE characters SET car_license='1' WHERE charactername='" .. mysql_escape_string(handler, getPlayerName(source)) .. "' LIMIT 1")
-		outputChatBox("You obtained your drivers license.", source, 255, 194, 14)
+		outputChatBox("Congratulations, you've passed the second part of your driving examination.", thePlayer, 255, 194, 14)
+		outputChatBox("You are now fully licenses to drive on the public streets. You have paid the $350 processing fee.", thePlayer, 255, 194, 14)
 		exports.global:takePlayerSafeMoney(source, cost)
 	elseif (license==2) then
 		setElementData(source, "license.gun", 1)
@@ -53,6 +54,19 @@ function giveLicense(license, cost)
 end
 addEvent("acceptLicense", true)
 addEventHandler("acceptLicense", getRootElement(), giveLicense)
+
+function payFee(amount)
+	exports.global:takePlayerSafeMoney(source, amount)
+end
+addEvent("payFee", true)
+addEventHandler("payFee", getRootElement(), payFee)
+
+function passTheory()
+	setElementData(source,"license.car",3)
+	mysql_query(handler, "UPDATE characters SET gun_license='3' WHERE charactername='" .. mysql_escape_string(handler, getPlayerName(source)) .. "' LIMIT 1")
+end
+addEvent("theoryComplete", true)
+addEventHandler("theoryComplete", getRootElement(), passTheory)
 
 function showLicenses(thePlayer, commandName, targetPlayer)
 	local loggedin = getElementData(thePlayer, "loggedin")
@@ -88,6 +102,8 @@ function showLicenses(thePlayer, commandName, targetPlayer)
 					
 					if (carlicense==0) then
 						cars = "No"
+					elseif (carlicense==3)then
+						cars = "Theory test passed"
 					else
 						cars = "Yes"
 					end

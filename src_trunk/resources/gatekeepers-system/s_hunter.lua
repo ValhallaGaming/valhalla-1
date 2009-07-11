@@ -13,19 +13,21 @@ setElementData(hunter, "name", "Hunter")
 setElementData(hunter, "talk", true)
 
 function hunterIntro (thePlayer) -- When player enters the colSphere create GUI with intro output to all local players as local chat.	
-	
 	-- Give the player the "Find Hunter" achievement.
-		
-	setElementData (hunter, "activeConvo", 1) -- set the NPCs conversation state to active so no one else can begin to talk to him.
-		
-	local pedX, pedY, pedZ = getElementPosition( hunter )
-	local chatSphere = createColSphere( pedX, pedY, pedZ, 10 )
-	exports.pool:allocateElement(chatSphere) -- Create the colSphere for chat output to local players
-	local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
-	for i, key in ipairs( targetPlayers ) do
-		outputChatBox("* A muscular man works under the car’s hood.", targetPlayers, 255, 51, 102)
+	
+	if(getElementData( thePlayer, "hunterCooldown"))then
+		outputChatBox("Hunter doesn't want to talk to you.", thePlayer, 255, 0, 0)
+	else
+		local pedX, pedY, pedZ = getElementPosition( hunter )
+		local chatSphere = createColSphere( pedX, pedY, pedZ, 10 )
+		exports.pool:allocateElement(chatSphere) -- Create the colSphere for chat output to local players
+		local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
+		for i, key in ipairs( targetPlayers ) do
+			outputChatBox("* A muscular man works under the car’s hood.", targetPlayers, 255, 51, 102)
+		end
+		destroyElement(chatSphere)
+		setElementData (hunter, "activeConvo", 1) -- set the NPCs conversation state to active so no one else can begin to talk to him.
 	end
-	destroyElement(chatSphere)
 end
 addEvent( "startHunterConvo", true )
 addEventHandler( "startHunterConvo", getRootElement(), hunterIntro )

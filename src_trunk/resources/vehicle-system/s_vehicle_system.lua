@@ -822,7 +822,7 @@ function setRealInVehicle(thePlayer)
 	local carName = getVehicleName(source)
 	
 	if (owner<0) then
-		outputChatBox("(( This " .. carName .. " is an admin vehicle. ))", thePlayer, 255, 195, 14)
+		outputChatBox("(( This " .. carName .. " is an civilian vehicle. ))", thePlayer, 255, 195, 14)
 	elseif (faction==-1) and (owner>0) then
 		local query = mysql_query(handler, "SELECT charactername FROM characters WHERE id='" .. owner .. "' LIMIT 1")
 		

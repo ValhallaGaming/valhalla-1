@@ -35,10 +35,14 @@ function clickPed(button, state, absX, absY, wx, wy, wz, element)
 							local ped = getElementData(element, "name")
 							if (ped=="Steven Pullman") then
 								triggerServerEvent( "startStevieConvo", getLocalPlayer())
-								triggerEvent ( "stevieIntroEvent", getLocalPlayer()) -- Trigger Client side function to create GUI.
+								if not(getElementData(getLocalPlayer(),"stevieCooldown"))
+									triggerEvent ( "stevieIntroEvent", getLocalPlayer()) -- Trigger Client side function to create GUI.
+								end
 							elseif (ped=="Hunter") then
-								triggerServerEvent( "startHunterConvo", getLocalPlayer())
-								triggerEvent ( "hunterIntroEvent", getLocalPlayer()) -- Trigger Client side function to create GUI.
+									triggerServerEvent( "startHunterConvo", getLocalPlayer())
+								if not (getElementData(getLocalPlayer(),"hunterCooldown"))
+									triggerEvent ( "hunterIntroEvent", getLocalPlayer()) -- Trigger Client side function to create GUI.
+								end
 							else
 								outputChatBox("Error: Unknown ped.", 255, 0, 0)
 							end

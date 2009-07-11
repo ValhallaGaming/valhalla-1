@@ -62,19 +62,27 @@ addEventHandler("onResourceStop", getResourceRootElement(getThisResource()), clo
 --end
 
 function stevieIntro (thePlayer) -- When player enters the colSphere create GUI with intro output to all local players as local chat.
-		
 	-- Give the player the "Find Stevie" achievement.
-			
-	setElementData (stevie, "activeConvo", 1) -- set the NPCs conversation state to active so no one else can begin to talk to him.
-		
-	local pedX, pedY, pedZ = getElementPosition( stevie )
-	local chatSphere = createColSphere( pedX, pedY, pedZ, 10 )
-	exports.pool:allocateElement(chatSphere) -- Create the colSphere for chat output to local players
-	local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
-	for i, key in ipairs( targetPlayers ) do
-		outputChatBox("Steven Pulman says: Do you want something, pal?", targetPlayers, 255, 255, 255) -- Stevies next question
+	if(getElementData(thePlayer, "stevieCoolDown")==1)then
+		local pedX, pedY, pedZ = getElementPosition( source )
+		local chatSphere = createColSphere( pedX, pedY, pedZ, 10 )
+		exports.pool:allocateElement(chatSphere) -- Create the colSphere for chat output to local players
+		local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
+		local name = string.gsub(getPlayerName(source), "_", " ")
+		for i, key in ipairs( targetPlayers ) do
+			outputChatBox("* Stevie ignore the person trying to talk to him and contiues to eat.", targetPlayers,  255, 51, 102)
+		end
+	else
+		local pedX, pedY, pedZ = getElementPosition( stevie )
+		local chatSphere = createColSphere( pedX, pedY, pedZ, 10 )
+		exports.pool:allocateElement(chatSphere) -- Create the colSphere for chat output to local players
+		local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
+		for i, key in ipairs( targetPlayers ) do
+			outputChatBox("Steven Pulman says: Do you want something, pal?", targetPlayers, 255, 255, 255) -- Stevies next question
+		end
+		setElementData (stevie, "activeConvo", 1) -- set the NPCs conversation state to active so no one else can begin to talk to him.
+		destroyElement(chatSphere)
 	end
-	destroyElement(chatSphere)
 end
 addEvent( "startStevieConvo", true )
 addEventHandler( "startStevieConvo", getRootElement(), stevieIntro )

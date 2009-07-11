@@ -1,5 +1,9 @@
 wStevie, optionOne, optionTwo, buttonClose, stevieText = nil
 
+function resetStevieCoolDown()
+	removeElementData(source,"stevieCooldown")
+end
+
 function createStevieGUI() 
 	
 	-- Window variables
@@ -34,7 +38,8 @@ addEventHandler( "stevieIntroEvent", getRootElement(), createStevieGUI )
 function quickClose()
 	
 	triggerServerEvent( "quickCloseServerEvent", getLocalPlayer() ) -- Trigger Server Event to output previous option
-	
+	setElementData(thePlayer, "stevieCoolDown", true)
+	local StevieCoolDownTimer = setTimer(resetStevieCoolDown, 1800000, 1)
 	-- Destroy elements
 	destroyElement ( optionOne )
 	destroyElement ( optionTwo )
@@ -84,7 +89,8 @@ end
 function statement3()
 	
 	triggerServerEvent( "statement3ServerEvent", getLocalPlayer() ) -- Trigger Server Event to output previous option
-
+	setElementData(thePlayer, "stevieCoolDown", true)
+	local StevieCoolDownTimer = setTimer(resetStevieCoolDown, 1800000, 1)
 	-- Destroy elements
 	destroyElement ( optionOne )
 	destroyElement ( optionTwo )
@@ -128,7 +134,8 @@ end
 function statement5()
 	
 	triggerServerEvent( "statement5ServerEvent", getLocalPlayer() ) -- Trigger Server Event to output previous option
-	
+	setElementData(thePlayer, "stevieCoolDown", true)
+	local StevieCoolDownTimer = setTimer(resetStevieCoolDown, 1800000, 1)
 	-- Destroy elements
 	destroyElement ( optionOne )
 	destroyElement ( optionTwo )
@@ -172,7 +179,8 @@ end
 function statement7()
 	
 	triggerServerEvent( "statement7ServerEvent", getLocalPlayer() ) -- Trigger Server Event to output previous option
-	
+	setElementData(thePlayer, "stevieCoolDown", true)
+	local StevieCoolDownTimer = setTimer(resetStevieCoolDown, 1800000, 1)
 	-- Destroy elements
 	destroyElement ( optionOne )
 	destroyElement ( optionTwo )
@@ -241,7 +249,8 @@ end
 function stevieSuccess()
 	
 	triggerServerEvent( "stevieSuccessServerEvent", getLocalPlayer() ) -- Trigger Server Event to output previous option
-	
+	setElementData(thePlayer, "stevieCoolDown", true)
+	local StevieCoolDownTimer = setTimer(resetStevieCoolDown, 1800000, 1)
 	-- Destroy elements
 	destroyElement ( optionOne )
 	destroyElement ( optionTwo )
@@ -261,7 +270,8 @@ end
 function CloseButtonClick()
 	
 	triggerServerEvent( "CloseButtonClickServerEvent", getLocalPlayer() ) -- Trigger Server Event to output previous option
-	
+	setElementData(thePlayer, "stevieCoolDown", true)
+	local StevieCoolDownTimer = setTimer(resetStevieCoolDown, 1800000, 1)
 	-- Destroy elements
 	destroyElement ( optionOne )
 	destroyElement ( optionTwo )

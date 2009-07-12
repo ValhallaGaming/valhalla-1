@@ -37,7 +37,10 @@ function startFishing(thePlayer)
 									blip = createBlip( 2243.7339, 578.905, 6.78, 0, 2, 255, 0, 255, 255 )
 									marker = createMarker( 2243.7339, 578.905, 6.78, "cylinder", 2, 255, 0, 255, 150 )
 									colsphere = createColSphere (2243.7339, 578.905, 6.78, 3)
-									
+									exports.pool:allocateElement(blip)
+									exports.pool:allocateElement(marker)
+									exports.pool:allocateElement(colsphere)
+	
 									setElementVisibleTo(blip, getRootElement(), false)
 									setElementVisibleTo(blip, thePlayer, true)
 									setElementVisibleTo(marker, getRootElement(), false)
@@ -78,7 +81,7 @@ addEventHandler("lineSnap", getRootElement(), lineSnap)
 ----- Successfully reeled in the fish.
 function catchFish(fishSize)
 		exports.global:sendLocalMeAction(source,"catches a fish weighing ".. fishSize .."lbs.")
-	totalCatch = totalCatch + fishSize
+	totalCatch = math.floor(totalCatch + fishSize)
 	outputChatBox("You have caught "..totalCatch.."lbs of fish so far.", source, 255, 194, 14)
 	if (fishSize >= 100) then
 		exports.global:givePlayerAchievement(source, 35)
@@ -99,7 +102,7 @@ function unloadCatch(thePlayer)
 		if (totalCatch == 0) then
 			outputChatBox("You need to catch some fish to sell first." ,thePlayer, 255, 0, 0)
 		else
-			local profit = math.floor(totalCatch)/2
+			local profit = math.floor(totalCatch/2)
 			exports.global:sendLocalMeAction(thePlayer,"sells " .. totalCatch .."lbs of fish.")
 			exports.global:givePlayerSafeMoney(thePlayer, profit)
 			outputChatBox("You made $".. profit .." from the fish you caught." ,thePlayer, 255, 104, 91)

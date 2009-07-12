@@ -6,18 +6,6 @@ function applyMods(res)
 		fishMarket = engineLoadTXD("lv/melrose03_lawn.txd")
 		engineImportTXD(fishMarket, 5782)
 		
-		------------------------------
-		-- Petrelli's Cafe Exterior --
-		------------------------------
-		Petrelli1 = engineLoadTXD("lv/vgndwntwn21.txd")
-		engineImportTXD(Petrelli1, 6908)
-		
-		------------------------
-		-- Phil's Bistro sign --
-		------------------------
-		PhilsBistroSign = engineLoadTXD("lv/vegasdwntwn1.txd")
-		engineImportTXD(PhilsBistroSign, 7658)
-		
 		----------------------
 		-- Pig Pen Interior --
 		----------------------

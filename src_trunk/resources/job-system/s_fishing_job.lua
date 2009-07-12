@@ -29,7 +29,8 @@ function startFishing(thePlayer)
 								outputChatBox("#FF9933The boat can't hold any more fish. #FF66CCSell#FF9933 the fish you have caught before continuing.", thePlayer, 255, 104, 91, true)
 							else
 								local biteTimer = math.random(60000,300000)
-								local catchTimer = setTimer( theyHaveABite, biteTimer, 1, thePlayer) -- A fish will bite within 1 and 5 minutes.
+								--catchTimer = setTimer( theyHaveABite, biteTimer, 1, thePlayer) -- A fish will bite within 1 and 5 minutes.
+								catchTimer = setTimer( theyHaveABite, 10000, 1, thePlayer)
 								exports.global:sendLocalMeAction(thePlayer,"casts a fishing line.")
 								
 								if not (colsphere) then -- If the /sellfish marker isnt already being shown...
@@ -59,6 +60,8 @@ addEventHandler("fish", getRootElement(), startFishing)
 
 ------ triggers the mini game.
 function theyHaveABite(source)
+	killTimer(catchTimer)
+	catchTimer=nil
 	triggerClientEvent("createReel", source) 
 	exports.global:sendLocalMeAction(source,"has a bite!")
 end
@@ -74,7 +77,7 @@ addEventHandler("lineSnap", getRootElement(), lineSnap)
 
 ----- Successfully reeled in the fish.
 function catchFish(fishSize)
-	exports.global:sendLocalMeAction(source,"catches a fish weighing ".. fishSize .."lbs.")
+		exports.global:sendLocalMeAction(source,"catches a fish weighing ".. fishSize .."lbs.")
 	totalCatch = totalCatch + fishSize
 	outputChatBox("You have caught "..totalCatch.."lbs of fish so far.", source, 255, 194, 14)
 	if (fishSize >= 100) then

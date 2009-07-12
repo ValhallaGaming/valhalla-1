@@ -28,15 +28,15 @@ function fishOnLine()
 	else
 		local x, y, z = getElementPosition(getLocalPlayer())
 		if ( y > 4500) then
-			fishSize = math.random(75, 99)
+			fishSize = math.random(75, 111)
 		elseif (x > 5500) then
-			fishSize = math.random(75, 99)
+			fishSize = math.random(75, 103)
 		elseif (x > 4500) then
-			fishSize = math.random(50, 99)
+			fishSize = math.random(54, 83)
 		elseif (x > 3500) then
-			fishSize = math.random(25,75)
+			fishSize = math.random(22,76)
 		else
-			fishSize = math.random(1, 50)
+			fishSize = math.random(1, 56)
 		end
 	end
 	

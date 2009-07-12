@@ -140,7 +140,20 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 			
 		elseif (itemID==10) then -- red dice
 			local output = math.random(1, 6)
-			exports.global:sendLocalMeAction(source, "rolls a dice and gets " .. output .. ".")
+			local x, y, z = getElementPosition(thePlayer)
+			local chatSphere = createColSphere(x, y, z, 20)
+			exports.pool:allocateElement(chatSphere)
+			local nearbyPlayers = getElementsWithinColShape(chatSphere, "player")
+			local playerName = string.gsub(getPlayerName(thePlayer), "_", " ")
+			
+			destroyElement(chatSphere)
+
+			for index, nearbyPlayer in ipairs(nearbyPlayers) do
+				local logged = getElementData(nearbyPlayer, "loggedin")
+				if not(isPedDead(nearbyPlayer)) and (logged==1) then
+					outputChatBox(" *((Dice)) " .. playerName .. " rolls a dice and gets " .. output ..".", nearbyPlayer, 255, 51, 102)
+				end
+			end
 		elseif (itemID==11) then -- taco
 			
 			local health = getElementHealth(source)

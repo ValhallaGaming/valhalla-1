@@ -71,54 +71,56 @@ function selectPlayer()
 	outputChatBox("You have been selected.", theChosenOne, 255, 0, 0) -- trace
 	
 	-- are they a friend of hunter?
-	local huntersFriend = mysql_query(handler, "SELECT hunter FROM characters WHERE charactername='" .. mysql_escape_string(handler, getPlayerName(theChosenOne)) .."'")
-	if (huntersFriend == 0) then
-		outputChatBox("You are not a friend of Hunter.", theChosenOne, 255, 0, 0) -- trace
-		if (count<10) then -- check 10 players before resetting the timer.
-			selectPlayer() -- if this player is not a friend of Hunter's go back and select another player
-			count = count+1
-		else
-			local selectionTime = math.random(1200000,3600000) -- random time between 20 and 60 minutes
-			selectPlayerTimer = setTimer(selectPlayer, selectionTime, 1)
-		end
-	else
-		-- are they already on a mission?
-		if (getElementData(theChosenOne,"missionModel")) then
-			outputChatBox("You are already on car jacking mission.", theChosenOne, 255, 0, 0) -- trace
-			if (count<10) then
-				selectPlayer() -- if this player is already on a car jacking mission go back and select another player.
+	if (isElement(theChosenOne)) then
+		local huntersFriend = mysql_query(handler, "SELECT hunter FROM characters WHERE charactername='" .. mysql_escape_string(handler, getPlayerName(theChosenOne)) .."'")
+		if (huntersFriend == 0) then
+			outputChatBox("You are not a friend of Hunter.", theChosenOne, 255, 0, 0) -- trace
+			if (count<10) then -- check 10 players before resetting the timer.
+				selectPlayer() -- if this player is not a friend of Hunter's go back and select another player
 				count = count+1
 			else
 				local selectionTime = math.random(1200000,3600000) -- random time between 20 and 60 minutes
 				selectPlayerTimer = setTimer(selectPlayer, selectionTime, 1)
 			end
 		else
-		
-			outputChatBox("Let me select a car for you to steal...", theChosenOne, 255, 0, 0) -- trace
+			-- are they already on a mission?
+			if (getElementData(theChosenOne,"missionModel")) then
+				outputChatBox("You are already on car jacking mission.", theChosenOne, 255, 0, 0) -- trace
+				if (count<10) then
+					selectPlayer() -- if this player is already on a car jacking mission go back and select another player.
+					count = count+1
+				else
+					local selectionTime = math.random(1200000,3600000) -- random time between 20 and 60 minutes
+					selectPlayerTimer = setTimer(selectPlayer, selectionTime, 1)
+				end
+			else
 			
-			checkcount = 0
-			-- select a random car model.
-			local modelID = math.random(1, 47) -- random vehicle ID from the list above.
-			local vehicleID = vehicles[modelID]
-			local vehicleName = getVehicleNameFromModel (vehicleID) 
-			-- set the players element data to the car model
-			setElementData(theChosenOne, "missionModel", model)
-			-- output the message
-			local rand = math.random(1, 5) -- random car part from the list above.
-			local carPart = parts[rand]
-			outputChatBox("SMS From: Hunter - Hey, man. I need a ".. carPart .." from a ".. vehicleName ..". Can you help me out?", theChosenOne)
-			outputChatBox("#FF9933((Steal a ".. vehicleName .." and /delivercar at #FF66CCHunter's garage#FF9933.))", theChosenOne, 255, 104, 91, true )
-			
-			carJackerMarker = createMarker(1108.7441, 1903.98535, 10.52469, "cylinder", 4, 255, 127, 255, 150)
-			addEventHandler("onMarkerHit", carJackerColshape, dropOffCar, false)
-			
-			setElementVisibleTo(carJackerMarker, getRootElement(), false)
-			setElementVisibleTo(carJackerMarker, thePlayer, true)
-			
-			-- start the selectPlayerTimer again for the next person.
-			--local selectionTime = math.random(1200000,3600000) -- random time between 20 and 60 minutes
-			--selectPlayerTimer = setTimer(selectPlayer, selectionTime, 1)
-			selectPlayerTimer = setTimer(selectPlayer, 3000000, 1)
+				outputChatBox("Let me select a car for you to steal...", theChosenOne, 255, 0, 0) -- trace
+				
+				checkcount = 0
+				-- select a random car model.
+				local modelID = math.random(1, 47) -- random vehicle ID from the list above.
+				local vehicleID = vehicles[modelID]
+				local vehicleName = getVehicleNameFromModel (vehicleID) 
+				-- set the players element data to the car model
+				setElementData(theChosenOne, "missionModel", model)
+				-- output the message
+				local rand = math.random(1, 5) -- random car part from the list above.
+				local carPart = parts[rand]
+				outputChatBox("SMS From: Hunter - Hey, man. I need a ".. carPart .." from a ".. vehicleName ..". Can you help me out?", theChosenOne)
+				outputChatBox("#FF9933((Steal a ".. vehicleName .." and /delivercar at #FF66CCHunter's garage#FF9933.))", theChosenOne, 255, 104, 91, true )
+				
+				carJackerMarker = createMarker(1108.7441, 1903.98535, 10.52469, "cylinder", 4, 255, 127, 255, 150)
+				addEventHandler("onMarkerHit", carJackerColshape, dropOffCar, false)
+				
+				setElementVisibleTo(carJackerMarker, getRootElement(), false)
+				setElementVisibleTo(carJackerMarker, thePlayer, true)
+				
+				-- start the selectPlayerTimer again for the next person.
+				--local selectionTime = math.random(1200000,3600000) -- random time between 20 and 60 minutes
+				--selectPlayerTimer = setTimer(selectPlayer, selectionTime, 1)
+				selectPlayerTimer = setTimer(selectPlayer, 3000000, 1)
+			end
 		end
 	end
 end

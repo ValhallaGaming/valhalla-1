@@ -66,7 +66,9 @@ function displayStatus()
 		totalping = totalping + getPlayerPing(value)
 	end
 	
-	averageping = math.floor(totalping / playerCount)
+	if (playerCount>0) then
+		averageping = math.floor(totalping / playerCount)
+	end
 		
 	local output = servername .. " - " .. playerCount .. "/" .. maxPlayers .. "(" .. math.ceil((playerCount/maxPlayers)*100) .. "%) - " .. ip .. " - GameMode: Roleplay - Average Ping: " .. averageping .. "."
 	ircMessage(conn, channel, output)

@@ -1,5 +1,5 @@
 <content>
-	<numPages>3</numPages>
+	<numPages>4</numPages>
 
 	<page>Page SPEED LIMITS
 You must not exceed the maximum speed limit for the road and for your vehicle. The speed limit within Las Ventuas city limits is 60kmph or 40mph except for when driving on the Julius Thruway or Harry Gold Parkway.
@@ -25,6 +25,14 @@ At an intersection with a four-way stop you should give way to the vehicle trave
 
 PARKING
 When parking your vehicle ensure you are not impeeding any access roads or other road users. You may not park within 10ft of a fire hydrent.</page>
+	<page>((BINDING INDICATORS
+To use the scripted turn signals on vehicles enter the following commands:
+
+/bind [the key you wish to bind it to] indicator_left
+/bind [the key you wish to bind it to] indicator_right
+
+Now you will be able to toggle the turn signals on and off by pressing the key you bound them to.))</page>
+
 	<page>ROAD RELATED LAWS
 Nitrous Possession: Possessing Nitrous Oxide in your vehicle.
 Fine: 500 - 4500

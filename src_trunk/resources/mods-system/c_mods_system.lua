@@ -53,15 +53,15 @@ function applyMods(res)
 		------------------------
 		--		 Cop Cars     --
 		------------------------
-		copcarvg = engineLoadTXD ( "copcarvg.txd" )
-		engineImportTXD ( copcarvg, 596 )
-		copcarvgdff = engineLoadDFF ( "copcarvg.dff", 596 )
-		engineReplaceModel ( copcarvgdff, 596 )
+		--copcarvg = engineLoadTXD ( "copcarvg.txd" )
+		--engineImportTXD ( copcarvg, 596 )
+		--copcarvgdff = engineLoadDFF ( "copcarvg.dff", 596 )
+		--engineReplaceModel ( copcarvgdff, 596 )
 		
-		copcarvgswat = engineLoadTXD ( "copcarvg.txd" )
-		engineImportTXD ( copcarvgswat, 597 )
-		copcarvgswatdff = engineLoadDFF ( "copcarvg.dff", 597 )
-		engineReplaceModel ( copcarvgswatdff, 597 )
+		--copcarvgswat = engineLoadTXD ( "copcarvg.txd" )
+		--engineImportTXD ( copcarvgswat, 597 )
+		--copcarvgswatdff = engineLoadDFF ( "copcarvg.dff", 597 )
+		--engineReplaceModel ( copcarvgswatdff, 597 )
 		------------------------
 		-- bus Stop --
 		------------------------

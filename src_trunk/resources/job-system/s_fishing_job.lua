@@ -28,9 +28,8 @@ function startFishing(thePlayer)
 							if (totalCatch >= 2000) then
 								outputChatBox("#FF9933The boat can't hold any more fish. #FF66CCSell#FF9933 the fish you have caught before continuing.", thePlayer, 255, 104, 91, true)
 							else
-								--local biteTimer = math.random(60000,300000)
 								local biteTimer = math.random(60000,300000)
-								local catchTimer = setTimer (catchFish, biteTimer, 1, thePlayer) -- A fish will bite within 1 and 5 minutes.
+								local catchTimer = setTimer( theyHaveABite, biteTimer, 1, thePlayer) -- A fish will bite within 1 and 5 minutes.
 								exports.global:sendLocalMeAction(thePlayer,"casts a fishing line.")
 										
 								if not (colsphere) then -- If the /sellfish marker isnt already being shown...
@@ -58,14 +57,20 @@ addCommandHandler("fish", startFishing, false, false)
 addEvent("fish")
 addEventHandler("fish", getRootElement(), startFishing)
 
-function catchFish(thePlayer)
+
+function theyHaveABite(source)
+	triggerClientEvent("createReel", source) 
+	exports.global:sendLocalMeAction(source,"has a bite!")
+end
+
+function catchFish()
 	local lineSnap = math.random(1,10)
 	if (lineSnap > 9) then
-		exports.global:takePlayerItem(thePlayer, 49, 1) -- fishing rod
-		exports.global:sendLocalMeAction(thePlayer,"snaps their fishing line.")
-		outputChatBox("Your fishing rod has broken. You need to buy a new one to continue fishing.", thePlayer, 255, 0, 0)
+		exports.global:takePlayerItem(source, 49, 1) -- fishing rod
+		exports.global:sendLocalMeAction(source,"snaps their fishing line.")
+		outputChatBox("Your fishing rod has broken. You need to buy a new one to continue fishing.", source, 255, 0, 0)
 	else
-		local x, y, z = getElementPosition(thePlayer)
+		local x, y, z = getElementPosition(source)
 		if ( y > 4500) then -- the further out to sea you go the bigger the fish you will catch.
 			fishSize = math.random(100, 300)
 		elseif (x > 5500) then 
@@ -78,15 +83,18 @@ function catchFish(thePlayer)
 			fishSize = math.random(1, 50)
 		end
 		
-		exports.global:sendLocalMeAction(thePlayer,"catches a fish weighing ".. fishSize .."lbs.")
+		exports.global:sendLocalMeAction(source,"catches a fish weighing ".. fishSize .."lbs.")
 		totalCatch = totalCatch + fishSize
-		outputChatBox("You have "..totalCatch.."lbs of fish caught so far.", thePlayer, 255, 194, 14)
+		outputChatBox("You have "..totalCatch.."lbs of fish caught so far.", source, 255, 194, 14)
 		
 		if (fishSize >= 100) then
-			exports.global:givePlayerAchievement(thePlayer, 35)
+			exports.global:givePlayerAchievement(source, 35)
 		end
 	end
 end
+addEvent("catchFish", true)
+addEventHandler("catchFish", getRootElement(), catchFish)
+
 function currentCatch(thePlayer)
 	outputChatBox("You have "..totalCatch.."lbs of fish caught so far.", thePlayer, 255, 194, 14)
 end

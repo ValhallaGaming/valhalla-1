@@ -51,4 +51,7 @@
 	<script src="c_cruise_control.lua" type="client"/>
 
 	<script src="s_alarm.lua" type="server"/>
+	
+	<file src="siren.wav"/>
+	<script src="c_unoccupied_sirens.lua" type="client"/>
 </meta>

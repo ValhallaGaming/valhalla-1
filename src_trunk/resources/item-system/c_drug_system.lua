@@ -136,11 +136,13 @@ function doDrug1Effect()
 		setSkyGradient(0, 0, 255, 0, 0, 255)
 		
 		
-		local x, y, z = getElementPosition(localPlayer)
-		vehicles = { }
-		for i = 1, 20 do
-			vehicles[i] = createVehicle(423, x+(i*3), y+(i*3), z)
-			setVehicleColor(vehicles[i], 126, 126, 126, 126)
+		if not (drug1effect) then
+			local x, y, z = getElementPosition(localPlayer)
+			vehicles = { }
+			for i = 1, 20 do
+				vehicles[i] = createVehicle(423, x+(i*3), y+(i*3), z)
+				setVehicleColor(vehicles[i], 126, 126, 126, 126)
+			end
 		end
 		setTimer(setWeather, 100, 1, 9)
 	end
@@ -212,19 +214,14 @@ end
 
 local count = 1
 function createRandomPeds()
-	if (count>50) then
-		for key, value in ipairs(peds) do
-			destroyElement(value)
-		end
-		count = 1
+	if (count<25) then
+		local x, y, z = getElementPosition(localPlayer)
+		local rand1 = math.random(1, 5)
+		local rand2 = math.random(1, 5)
+		
+		peds[count] = createPed(264, x+rand1, y+rand2, z)
+		count = count + 1
 	end
-	
-	local x, y, z = getElementPosition(localPlayer)
-	local rand1 = math.random(1, 5)
-	local rand2 = math.random(1, 5)
-	
-	peds[count] = createPed(264, x+rand1, y+rand2, z)
-	count = count + 1
 end
 
 function resetDrug4Effect()

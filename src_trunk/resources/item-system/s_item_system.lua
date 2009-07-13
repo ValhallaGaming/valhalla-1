@@ -680,7 +680,7 @@ function pickupItem(object, id, itemID, itemValue, itemName)
 		
 		-- Animation
 		exports.global:applyAnimation(source, "CARRY", "liftup", -1, false, true, true)
-		setTimer(resetAnim, 2000, 1, source)
+		setTimer(resetAnim, 1600, 1, source)
 		
 		exports.global:sendLocalMeAction(source, "bends over and picks up a " .. itemName .. ".")
 		local items = getElementData(object, "items")

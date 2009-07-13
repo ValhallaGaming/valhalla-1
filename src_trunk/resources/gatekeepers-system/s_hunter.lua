@@ -1,4 +1,5 @@
-local huntersCar = createVehicle ( 506, 618.575193, -74.190429, 997.9921875, 0, 0, 110, D34M0N)
+local huntersCar = createVehicle ( 506, 618.575193, -74.190429, 997.9921875, 0, 0, 110, "D34M0N")
+setVehicleLocked(huntersCar, true)
 setElementDimension(huntersCar, 1000)
 setElementInterior(huntersCar, 2)
 

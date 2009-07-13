@@ -70,7 +70,7 @@ function selectPlayer()
 	count = count+1
 	
 	if (isElement(theChosenOne)) then
-		local huntersFriend = mysql_query(handler, "SELECT hunter FROM characters WHERE charactername='" .. mysql_escape_string(handler, getPlayerName(theChosenOne)) .."'")
+		local huntersFriend = tonumber(mysql_query(handler, "SELECT hunter FROM characters WHERE charactername='" .. mysql_escape_string(handler, getPlayerName(theChosenOne)) .."'"))
 		if (huntersFriend == 0) then  -- are they a friend of hunter?
 			if (count<10) then -- check 10 players before resetting the timer.
 				selectPlayer() -- if this player is not a friend of Hunter's go back and select another player

@@ -789,3 +789,40 @@ function getNearbyItems(thePlayer, commandName)
 	end
 end
 addCommandHandler("nearbyitems", getNearbyItems, false, false)
+
+function delItem(thePlayer, commandName, targetID)
+	if (exports.global:isPlayerAdmin(thePlayer)) then
+		if not (targetID) then
+			outputChatBox("SYNTAX: " .. commandName .. " [ID]", thePlayer, 255, 194, 14)
+		else
+			local object = nil
+				
+			for key, value in ipairs(exports.pool:getPoolElementsByType("object")) do
+				local dbid = getElementData(value, "id")
+				local objtype = getElementData(value, "type")
+
+				if (dbid) and (objtype=="worlditem") then
+					if (dbid==tonumber(targetID)) then
+						object = value
+					end
+				end
+			end
+			
+			if (object) then
+				local id = getElementData(object, "id")
+				local result = mysql_query(handler, "DELETE FROM worlditems WHERE id='" .. id .. "'")
+						
+				if (result) then
+					mysql_free_result(result)
+				end
+						
+				outputChatBox("Item #" .. id .. " deleted.", thePlayer)
+				exports.irc:sendMessage(getPlayerName(thePlayer) .. " deleted Item #" .. id .. ".")
+				destroyElement(object)
+			else
+				outputChatBox("Invalid item ID.", thePlayer, 255, 0, 0)
+			end
+		end
+	end
+end
+addCommandHandler("delitem", delItem, false, false)

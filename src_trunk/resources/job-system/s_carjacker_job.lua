@@ -68,7 +68,7 @@ function selectPlayer()
 	-- get a random player
 	local theChosenOne = getRandomPlayer()
 	count = count+1
-	
+
 	if (isElement(theChosenOne)) then
 		local huntersFriend = tonumber(mysql_query(handler, "SELECT hunter FROM characters WHERE charactername='" .. mysql_escape_string(handler, getPlayerName(theChosenOne)) .."'"))
 		if (huntersFriend == 0) then  -- are they a friend of hunter?
@@ -96,13 +96,9 @@ function selectPlayer()
 				local rand = math.random(1, 5) -- random car part from the list above.
 				local carPart = parts[rand][1]
 				outputChatBox("SMS From: Hunter - Hey, man. I need ".. carPart .." from a ".. vehicleName ..". Can you help me out?", theChosenOne)
-				outputChatBox("#FF9933((Steal a ".. vehicleName .." and delivercar to Hunter's #FF66CCgarage#FF9933.))", theChosenOne, 255, 104, 91, true )
+				outputChatBox("#FF9933((Steal a ".. vehicleName .." and deliver the car to Hunter's #FF66CCgarage#FF9933.))", theChosenOne, 255, 104, 91, true )
 				
-				carJackerMarker = createMarker(1108.7441, 1903.98535, 9.52469, "cylinder", 4, 255, 127, 255, 150)
-				addEventHandler("onMarkerHit", carJackerMarker, dropOffCar, false)
-				
-				setElementVisibleTo(carJackerMarker, getRootElement(), false)
-				setElementVisibleTo(carJackerMarker, theChosenOne, true)
+				triggerClientEvent(theChosenOne, "createHunterMarkers", theChosenOne)
 				
 				-- start the selectPlayerTimer again for the next person.
 				local selectionTime = math.random(1200000,3600000) -- random time between 20 and 60 minutes
@@ -111,8 +107,10 @@ function selectPlayer()
 		end
 	end
 end
+addCommandHandler("starthunter", selectPlayer)
 
-function dropOffCar(thePlayer)
+function dropOffCar()
+	local thePlayer = source
 	if(getElementData(thePlayer, "missionModel")) then
 		local vehicle = getPedOccupiedVehicle(thePlayer)
 		if not(vehicle) then
@@ -137,15 +135,25 @@ function dropOffCar(thePlayer)
 					outputChatBox("Hunter says: Thanks, man. Here's $" .. profit .. " for the car. I'll call you again soon.", thePlayer, 255, 255, 255)
 				end
 				destroyElement(chatSphere)
-				destroyElement(carJackerMarker)
 				
 				-- cleanup
 				removePedFromVehicle(thePlayer, vehicle)
-				respawnVehicle (vehicle)
-				setElementData(vehicle, "locked", 0)
-				setVehicleLocked(vehicle, false)
+				
+				
+				local dbid = tonumber(getElementData(vehicle, "dbid"))
+				
+				if (dbid>0) then
+					respawnVehicle (vehicle)
+					setElementData(vehicle, "locked", 0)
+					setVehicleLocked(vehicle, false)
+				else
+					destroyElement(vehicle)
+				end
 				setElementData(thePlayer, "missionModel", nil)
+				triggerClientEvent(thePlayer, "jackerCleanup", thePlayer)
 			end
 		end
 	end
 end
+addEvent("dropOffCar", true)
+addEventHandler("dropOffCar", getRootElement(), dropOffCar)

@@ -3,7 +3,7 @@ setVehicleLocked(huntersCar, true)
 setElementDimension(huntersCar, 1000)
 setElementInterior(huntersCar, 2)
 
-local hunter = createPed (250, 616.162109, -75.3720, 997.992)
+local hunter = createPed (250, 616.162109, -75.3720, 997.99)
 exports.pool:allocateElement(hunter)
 setPedRotation (hunter, 300.6221)
 setElementInterior (hunter, 2)
@@ -12,11 +12,14 @@ setPedAnimation(hunter, "CAR_CHAT", "car_talkm_loop", -1, true, false, true) -- 
 setElementData (hunter, "activeConvo",  0) -- Set the convo state to 0 so people can start talking to him.
 setElementData(hunter, "name", "Hunter")
 setElementData(hunter, "talk", true)
+setPedAnimation(hunter, "CAR_CHAT", "car_talkm_loop", -1, true, false, true)
 
-function hunterIntro (thePlayer) -- When player enters the colSphere create GUI with intro output to all local players as local chat.	
+function hunterIntro () -- When player enters the colSphere create GUI with intro output to all local players as local chat.	
 	-- Give the player the "Find Hunter" achievement.
+	local thePlayer = source
+	local state = getElementData( thePlayer, "hunterCoolDown")
 	
-	if(getElementData( thePlayer, "hunterCooldown"))then
+	if(getElementData( thePlayer, "hunterCoolDown"))then
 		outputChatBox("Hunter doesn't want to talk to you.", thePlayer, 255, 0, 0)
 	else
 		local pedX, pedY, pedZ = getElementPosition( hunter )

@@ -759,3 +759,33 @@ function breathTest(thePlayer, commandName, targetPlayer)
 	end
 end
 addCommandHandler("breathtest", breathTest, false, false)
+
+function getNearbyItems(thePlayer, commandName)
+	if (exports.global:isPlayerAdmin(thePlayer)) then
+		local posX, posY, posZ = getElementPosition(thePlayer)
+		outputChatBox("Nearby Items:", thePlayer, 255, 126, 0)
+		local count = 0
+		
+		for k, theObject in ipairs(exports.pool:getPoolElementsByType("object")) do
+			local dbid = getElementData(theObject, "id")
+
+			if (dbid) then
+				local x, y, z = getElementPosition(theObject)
+				local distance = getDistanceBetweenPoints3D(posX, posY, posZ, x, y, z)
+
+				if (distance<=10) then
+					local objtype = getElementData(theObject, "type")
+					if (objtype=="worlditem") then
+						outputChatBox("   Item with ID " .. dbid .. ".", thePlayer, 255, 126, 0)
+						count = count + 1
+					end
+				end
+			end
+		end
+		
+		if (count==0) then
+			outputChatBox("   None.", thePlayer, 255, 126, 0)
+		end
+	end
+end
+addCommandHandler("nearbyitems", getNearbyItems, false, false)

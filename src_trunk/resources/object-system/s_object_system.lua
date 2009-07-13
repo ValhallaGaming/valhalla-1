@@ -110,7 +110,7 @@ function getNearbyObjects(thePlayer, commandName)
 			local dbid = getElementData(theObject, "dbid")
 			if (dbid) then
 				local x, y, z = getElementPosition(theObject)
-				local distance = getDistanceBetweenPoints2D(posX, posY, posZ, x, y, z)
+				local distance = getDistanceBetweenPoints3D(posX, posY, posZ, x, y, z)
 				if (distance<=10) then
 					local modelid = getElementModel(theObject)
 					outputChatBox("   Object (" .. modelid .. ") with ID " .. dbid .. ".", thePlayer, 255, 126, 0)

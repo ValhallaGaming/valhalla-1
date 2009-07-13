@@ -10,7 +10,7 @@ function createBook( bookName, bookTitle )
 	local screenwidth, screenheight = guiGetScreenSize()
 	local X = (screenwidth - Width)/2
 	local Y = (screenheight - Height)/2
-	outputChatBox(tostring(wBook))
+
 	if not (wBook) then
 		pageNumber = 0
 		

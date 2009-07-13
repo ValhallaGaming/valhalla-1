@@ -10,11 +10,11 @@
 	<script src="trucker/s_trucker_job.lua" type="server"/>
 	<script src="trucker/c_trucker_job.lua" type="client"/>
 
-	<script src="s_fishing_job.lua" type="server"/>
-	<script src="c_fishing_job.lua" type="client"/>
+	<script src="fishing/s_fishing_job.lua" type="server"/>
+	<script src="fishing/c_fishing_job.lua" type="client"/>
 	
-	<script src="s_carjacker_job.lua" type="server"/>
-	<script src="c_carjacker_job.lua" type="client"/>
+	<script src="carjacker/s_carjacker_job.lua" type="server"/>
+	<script src="carjacker/c_carjacker_job.lua" type="client"/>
 	
 	<file src="images/Background.png" />
 	<file src="images/Off.png" />

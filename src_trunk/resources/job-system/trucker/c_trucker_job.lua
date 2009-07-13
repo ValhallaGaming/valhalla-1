@@ -41,7 +41,6 @@ function displayTruckerJob()
 		outputChatBox("#FF9933Type /startjob once you are in the van.", 255, 194, 15, true)
 	end
 end
-addCommandHandler("job", displayTruckerJob)
 
 function startTruckerJob()
 	if (jobstate==1) then

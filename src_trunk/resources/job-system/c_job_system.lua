@@ -17,16 +17,12 @@ function showEmploymentWindow()
     local column = guiGridListAddColumn(jobList, "Job Title", 0.9)
 
 	-- TRUCKER
-	--local row = guiGridListAddRow(jobList)
-	--guiGridListSetItemText(jobList, row, column, "Intercity Trucker", false, false)
+	local row = guiGridListAddRow(jobList)
+	guiGridListSetItemText(jobList, row, column, "Delivery Driver", false, false)
 	
-	-- TAXI
-	local rowtaxi = guiGridListAddRow(jobList)
-	guiGridListSetItemText(jobList, rowtaxi, column, "Taxi Driver", false, false)
-	
-	-- STREET CLEANER
-	--local rowstreetcleaner = guiGridListAddRow(jobList)
-	--guiGridListSetItemText(jobList, rowstreetcleaner, column, "Street Cleaner", false, false)
+	-- MECHANIC
+	local row = guiGridListAddRow(jobList)
+	guiGridListSetItemText(jobList, row, column, "Mechanic", false, false)
 	
 	-- CITY MAINTENACE
 	local rowmaintenance = guiGridListAddRow(jobList)
@@ -54,18 +50,14 @@ function acceptJob(button, state)
 			local job = 0
 			local jobtext = guiGridListGetItemText(jobList, guiGridListGetSelectedItem(jobList), 1)
 			
-			if (jobtext=="Intercity Trucker") then
+			if (jobtext=="Delivery Driver") then
+				displayTruckerJob()
 				job = 1
-			elseif (jobtext=="Street Cleaner") then
-				job = 2
-			elseif (jobtext=="Taxi Driver") then
-				job = 3
+			--elseif (jobtext=="Mechanic") then
+			--	displayMechanicJob()
+			--	job = 2
 			elseif (jobtext=="City Maintenance") then
 				job = 4
-			end
-			
-			if (job>0) then
-				setElementData(localPlayer, "job", job)
 			end
 			
 			destroyElement(jobList)

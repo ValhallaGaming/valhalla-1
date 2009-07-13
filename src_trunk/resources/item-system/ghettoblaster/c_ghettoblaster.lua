@@ -1,15 +1,25 @@
 sound = nil
 blaster = nil
+ox, oy, oz = nil
 
 function elementStreamIn()
 	if (getElementType(source)=="object") then
 		local model = getElementModel(source)
 		if (model==2226) then
 			local x, y, z = getElementPosition(source)
+			local tx, ty, tz = getElementPosition(getLocalPlayer())
 			
-			if (blaster==nil) then
+			if (blaster==nil) or (getDistanceBetweenPoints3D(x, y, z, tx, ty, tz)<getDistanceBetweenPoints3D(x, y, z, ox, oy, oz)) then
+				ox, oy, oz = x, y, z
+				
+				if (blaster) then
+					blaster = nil
+					stopSound(sound)
+					sound = nil
+				end
 				blaster = source
 				sound = playSound3D("ghettoblaster/loop.mp3", x, y, z, true)
+				setSoundMaxDistance(sound, 20)
 				
 				if (isPedInVehicle(getLocalPlayer())) then
 					setSoundVolume(sound, 0.5)

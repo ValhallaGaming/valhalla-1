@@ -69,7 +69,7 @@ function acceptLicense(button, state)
 					if (license == 1) then
 						if (getElementData(getLocalPlayer(),"license.car")==0) then
 							triggerServerEvent("payFee", getLocalPlayer(), 100)
-							createQuizIntroWindow() -- take the drivers theory test.
+							createlicenseTestIntroWindow() -- take the drivers theory test.
 							destroyElement(licenseList)
 							destroyElement(bAcceptLicense)
 							destroyElement(bCancel)
@@ -142,7 +142,7 @@ local passPercent = 80
 selection = {}
 
 -- functon makes the intro window for the quiz
-function createQuizIntroWindow()
+function createlicenseTestIntroWindow()
 	
 	showCursor(true)
 	
@@ -174,7 +174,7 @@ function createQuizIntroWindow()
 		if(button == "left" and state == "up") then
 		
 			-- start the quiz and hide the intro window
-			startQuiz()
+			startLicenceTest()
 			guiSetVisible(guiIntroWindow, false)
 		
 		end
@@ -184,7 +184,7 @@ end
 
 
 -- function create the question window
-function createQuestionWindow(number)
+function createLicenseQuestionWindow(number)
 
 	local screenwidth, screenheight = guiGetScreenSize ()
 	
@@ -243,7 +243,7 @@ function createQuestionWindow(number)
 				
 					-- hide the current window, then create a new window for the next question
 					guiSetVisible(guiQuestionWindow, false)
-					createQuestionWindow(number+1)
+					createLicenseQuestionWindow(number+1)
 				end
 			end
 		end, false)
@@ -280,7 +280,7 @@ function createQuestionWindow(number)
 				
 					-- hide the current window, then create the finish window
 					guiSetVisible(guiQuestionWindow, false)
-					createFinishQuizWindow()
+					createTestFinishWindow()
 
 
 				end
@@ -291,7 +291,7 @@ end
 
 
 -- funciton create the window that tells the
-function createFinishQuizWindow()
+function createTestFinishWindow()
 
 	local score = (correctAnswers/NoQuestionToAnswer)*100
 
@@ -410,36 +410,20 @@ function createFinishQuizWindow()
 	end
 	
 end
-
-
--- function is triggerd by the server when it is time for the player to take the quiz
-function startShowQuizIntro()
-	
-	-- reset the players correct answers to 0
-	correctAnswers = 0
-	-- create the intro window
-	createQuizIntroWindow()
-	-- Set input enabled
-	guiSetInputEnabled(true)
-
-end
- addEvent("onClientStartQuiz", true)
- addEventHandler( "onClientStartQuiz", getLocalPlayer() ,  startShowQuizIntro)
- 
  
  -- function starts the quiz
- function startQuiz()
+ function startLicenceTest()
  
 	-- choose a random set of questions
-	chooseQuizQuestions()
+	chooseTestQuestions()
 	-- create the question window with question number 1
-	createQuestionWindow(1)
+	createLicenseQuestionWindow(1)
  
  end
  
  
  -- functions chooses the questions to be used for the quiz
- function chooseQuizQuestions()
+ function chooseTestQuestions()
  
 	-- loop through selections and make each one a random question
 	for i=1, 10 do
@@ -447,10 +431,10 @@ end
 		local number = math.random(1, NoQuestions)
 		
 		-- check to see if the question has already been selected
-		if(questionAlreadyUsed(number)) then
+		if(testQuestionAlreadyUsed(number)) then
 			repeat -- if it has, keep changing the number until it hasn't
 				number = math.random(1, NoQuestions)
-			until (questionAlreadyUsed(number) == false)
+			until (testQuestionAlreadyUsed(number) == false)
 		end
 		
 		-- set the question to the random one
@@ -460,7 +444,7 @@ end
  
  
  -- function returns true if the queston is already used
- function questionAlreadyUsed(number)
+ function testQuestionAlreadyUsed(number)
  
 	local same = 0
  

@@ -5,6 +5,8 @@ local fishSize = 0
 function startFishing(thePlayer)
 	local element = getPedContactElement(thePlayer)
 	
+	if not (thePlayer) then thePlayer = source end
+	
 	if not (isElement(element)) then
 		outputChatBox("You must be on a boat to fish.", thePlayer, 255, 0, 0)
 	else

@@ -17,6 +17,22 @@ routes[8] = { 1144.14453125, 1368.0986328125, 10.434799194336 }
 routes[9] = { 635.9775390625, 1252.9892578125, 11.357774734497 }
 routes[10] = { 261.623046875, 1412.3564453125, 10.20871925354 }
 
+function resetTruckerJob()
+	jobstate = 0
+	
+	if (isElement(marker)) then
+		destroyElement(marker)
+	end
+	
+	if (isElement(colshape)) then
+		destroyElement(colshape)
+	end
+	
+	if (isElement(blip)) then
+		destroyElement(blip)
+	end
+end
+
 function displayTruckerJob()
 	if (jobstate==0) then
 		jobstate = 1

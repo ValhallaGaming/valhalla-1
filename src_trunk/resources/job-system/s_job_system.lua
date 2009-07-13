@@ -48,16 +48,10 @@ function givePlayerJob(jobID)
 	local charname = getPlayerName(source)
 	
 	setElementData(source, "job", jobID)
-	mysql_query(handler, "UPDATE characters SET job='" .. jobID .. "' WHERE characteranme='" .. charname .. "' LIMIT 1")
 	
 	exports.global:givePlayerAchievement(source, 30)
-	if (jobID==1) then -- TRUCKER
-		initiateTruckerJob(source)
-	elseif (jobID==2) then -- STREETCLEANER
-		initiateCleanerJob(source)
-	elseif (jobID==3) then -- TAXI
-		outputChatBox("Please visit the LV Transport office and enquire about employment. ((Visit the Forums)).", source, 255, 194, 14)
-	elseif (jobID==4) then -- CITY MAINTENANCE
+
+	if (jobID==4) then -- CITY MAINTENANCE
 		giveWeapon(source, 41, 2500, true)
 		outputChatBox("Use this paint to paint over tags you find.", source, 255, 194, 14)
 		setElementData(source, "tag", 9)

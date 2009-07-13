@@ -27,7 +27,11 @@ Scripts in "unfinished code" need to be completed, checked and added to the corr
 	- s_carjacker_job.lua
 
 - lvpd-system
-	- s_policecommands (/takelicense, currently disabled to be checked).
+	- s_policecommands (enabled /takelicense)
+
+- license-system
+	- c_license
+	- s_license
 
 --------------------
 Jack's changes.

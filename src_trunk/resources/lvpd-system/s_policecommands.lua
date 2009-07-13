@@ -292,4 +292,4 @@ function takeLicense(thePlayer, commandName, targetPartialNick, licenseType)
 		end
 	end
 end
--- addCommandHandler("takelicense", takeLicense, false, false)
+addCommandHandler("takelicense", takeLicense, false, false)

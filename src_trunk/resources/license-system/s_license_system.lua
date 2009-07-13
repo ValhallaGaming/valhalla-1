@@ -40,6 +40,9 @@ addEventHandler("onColShapeHit", licenseColSphere, hitLicenseColShape)
 
 function giveLicense(license, cost)
 	if (license==1) then -- car drivers license
+		local theVehicle = getPedOccupiedVehicle(source)
+		removePedFromVehicle(source)
+		respawnVehicle(theVehicle)
 		setElementData(source, "license.car", 1)
 		mysql_query(handler, "UPDATE characters SET car_license='1' WHERE charactername='" .. mysql_escape_string(handler, getPlayerName(source)) .. "' LIMIT 1")
 		outputChatBox("Congratulations, you've passed the second part of your driving examination.", thePlayer, 255, 194, 14)

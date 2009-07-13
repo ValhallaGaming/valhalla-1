@@ -119,6 +119,19 @@ questions[8] = {"On a road with two or more lanes traveling in the same directio
 questions[9] = {"In bad weather, you should make your car easier for others to see by:", " Turning on your headlights.", "Turning on your emergency flashers.", "Flash your high beams.", 1}
 questions[10] = {"You may not park within how many feet of a fire hydrant?", "10 feet", "15 feet", "20 feet", 1}
 
+guiIntroLabel1 = nil
+guiIntroProceedButton = nil
+guiIntroWindow = nil
+guiQuestionLabel = nil
+guiQuestionAnswer1Radio = nil
+guiQuestionAnswer2Radio = nil
+guiQuestionAnswer3Radio = nil
+guiQuestionWindow = nil
+guiFinalPassTextLabel = nil
+guiFinalFailTextLabel = nil
+guiFinalRegisterButton = nil
+guiFinalCloseButton = nil
+guiFinishWindow = nil
 
 -- variable for the max number of possible questions
 local NoQuestions = 10
@@ -130,6 +143,8 @@ selection = {}
 
 -- functon makes the intro window for the quiz
 function createQuizIntroWindow()
+	
+	showCursor(true)
 	
 	outputChatBox("You have paid the $100 fee to take the driving theory test.", source, 255, 194, 14)
 	
@@ -155,8 +170,6 @@ function createQuizIntroWindow()
 	
 	guiIntroProceedButton = guiCreateButton ( 0.4 , 0.75 , 0.2, 0.1 , "Start Test" , true ,guiIntroWindow)
 	
-	guiSetVisible(guiIntroWindow, true)
-	
 	addEventHandler ( "onClientGUIClick", guiIntroProceedButton,  function(button, state)
 		if(button == "left" and state == "up") then
 		
@@ -166,8 +179,6 @@ function createQuizIntroWindow()
 		
 		end
 	end, false)
-	
-	showCursor(true)
 	
 end
 
@@ -317,9 +328,36 @@ function createFinishQuizWindow()
 				initiateDrivingTest()
 				-- reset their correct answers
 				correctAnswers = 0
-				guiSetVisible(guiFinishWindow, false)
 				toggleAllControls ( true )
-				createMainUI(getThisResource())
+				
+				--cleanup
+				destroyElement(guiIntroLabel1)
+				destroyElement(guiIntroProceedButton)
+				destroyElement(guiIntroWindow)
+				destroyElement(guiQuestionLabel)
+				destroyElement(guiQuestionAnswer1Radio)
+				destroyElement(guiQuestionAnswer2Radio)
+				destroyElement(guiQuestionAnswer3Radio)
+				destroyElement(guiQuestionWindow)
+				destroyElement(guiFinalPassTextLabel)
+				destroyElement(guiFinalRegisterButton)
+				destroyElement(guiFinishWindow)
+				guiIntroLabel1 = nil
+				guiIntroProceedButton = nil
+				guiIntroWindow = nil
+				guiQuestionLabel = nil
+				guiQuestionAnswer1Radio = nil
+				guiQuestionAnswer2Radio = nil
+				guiQuestionAnswer3Radio = nil
+				guiQuestionWindow = nil
+				guiFinalPassTextLabel = nil
+				guiFinalRegisterButton = nil
+				guiFinishWindow = nil
+				
+				correctAnswers = 0
+				selection = {}
+				
+				showCursor(false)
 			end
 		end, false)
 		
@@ -340,7 +378,32 @@ function createFinishQuizWindow()
 		-- if player click the close button
 		addEventHandler ( "onClientGUIClick", guiFinalCloseButton,  function(button, state)
 			if(button == "left" and state == "up") then
-				guiSetVisible(guiFinishWindow, false) -- remove the window.
+				destroyElement(guiIntroLabel1)
+				destroyElement(guiIntroProceedButton)
+				destroyElement(guiIntroWindow)
+				destroyElement(guiQuestionLabel)
+				destroyElement(guiQuestionAnswer1Radio)
+				destroyElement(guiQuestionAnswer2Radio)
+				destroyElement(guiQuestionAnswer3Radio)
+				destroyElement(guiQuestionWindow)
+				destroyElement(guiFinalFailTextLabel)
+				destroyElement(guiFinalCloseButton)
+				destroyElement(guiFinishWindow)
+				guiIntroLabel1 = nil
+				guiIntroProceedButton = nil
+				guiIntroWindow = nil
+				guiQuestionLabel = nil
+				guiQuestionAnswer1Radio = nil
+				guiQuestionAnswer2Radio = nil
+				guiQuestionAnswer3Radio = nil
+				guiQuestionWindow = nil
+				guiFinalFailTextLabel = nil
+				guiFinalCloseButton = nil
+				guiFinishWindow = nil
+				
+				selection = {}
+				correctAnswers = 0
+				
 				showCursor(false)
 			end
 		end, false)
@@ -445,7 +508,7 @@ testRoute[19] = { 2310.5205, 1463.1201, 10.6294 }	-- 19 -- Parking exercise
 testRoute[20] = { 2301.7207, 1451.6406, 10.6252 }	-- 20 -- Parking exercise
 testRoute[21] = { 2310.9482, 1438.4736, 10.6266 }	-- 21 -- Parking exercise
 testRoute[22] = { 2381.1210, 1370.7363, 10.5272 }	-- 22
-testRoute[23] = { 2425.0205, 1221.6035, 10.4880 }	-- 23
+testRoute[23] = { 2425.0205, 1220.6035, 10.4880 }	-- 23
 
 testVehicle = { [436]=true } -- Previons need to be spawned at the start point.
 

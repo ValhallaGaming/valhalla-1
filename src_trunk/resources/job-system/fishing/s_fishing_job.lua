@@ -6,6 +6,9 @@ function startFishing(thePlayer)
 	if not (thePlayer) then thePlayer = source end
 	
 	local element = getPedContactElement(thePlayer)
+	local totalCatch = getElementData(thePlayer, "totalcatch")
+	
+	if not (totalCatch) then totalCatch = 0 end
 	
 	if not (isElement(element)) then
 		outputChatBox("You must be on a boat to fish.", thePlayer, 255, 0, 0)
@@ -83,6 +86,7 @@ addEventHandler("lineSnap", getRootElement(), lineSnap)
 ----- Successfully reeled in the fish.
 function catchFish(fishSize)
 		exports.global:sendLocalMeAction(source,"catches a fish weighing ".. fishSize .."lbs.")
+	local totalCatch = getElementData(thePlayer, "totalcatch")
 	totalCatch = math.floor(totalCatch + fishSize)
 	outputChatBox("You have caught "..totalCatch.."lbs of fish so far.", source, 255, 194, 14)
 	if (fishSize >= 100) then
@@ -94,6 +98,7 @@ addEventHandler("catchFish", getRootElement(), catchFish)
 
 ------ /totalcatch command
 function currentCatch(thePlayer)
+	local totalCatch = getElementData(thePlayer, "totalcatch")
 	outputChatBox("You have "..totalCatch.."lbs of fish caught so far.", thePlayer, 255, 194, 14)
 end
 addCommandHandler("totalcatch", currentCatch, false, false)
@@ -101,6 +106,7 @@ addCommandHandler("totalcatch", currentCatch, false, false)
 ------ /sellfish
 function unloadCatch(thePlayer)
 	if (isElementWithinColShape(thePlayer, colsphere)) then
+		local totalCatch = getElementData(thePlayer, "totalcatch")
 		if (totalCatch == 0) then
 			outputChatBox("You need to catch some fish to sell first." ,thePlayer, 255, 0, 0)
 		else

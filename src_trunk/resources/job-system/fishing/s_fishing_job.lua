@@ -1,5 +1,14 @@
-local totalCatch = 0
+--local totalCatch = 0
 local fishSize = 0
+
+function resourceStart(res)
+	if (res==getThisResource()) then
+		for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
+			setElementData(value, "totalcatch", 0)
+		end
+	end
+end
+addEventHandler("onResourceStart", getRootElement(), resourceStart)
 
 -- /fish to start fishing.
 function startFishing(thePlayer)
@@ -86,8 +95,9 @@ addEventHandler("lineSnap", getRootElement(), lineSnap)
 ----- Successfully reeled in the fish.
 function catchFish(fishSize)
 		exports.global:sendLocalMeAction(source,"catches a fish weighing ".. fishSize .."lbs.")
-	local totalCatch = getElementData(thePlayer, "totalcatch")
+	local totalCatch = getElementData(source, "totalcatch")
 	totalCatch = math.floor(totalCatch + fishSize)
+	setElementData(source, "totalcatch", totalCatch)
 	outputChatBox("You have caught "..totalCatch.."lbs of fish so far.", source, 255, 194, 14)
 	if (fishSize >= 100) then
 		exports.global:givePlayerAchievement(source, 35)
@@ -99,6 +109,8 @@ addEventHandler("catchFish", getRootElement(), catchFish)
 ------ /totalcatch command
 function currentCatch(thePlayer)
 	local totalCatch = getElementData(thePlayer, "totalcatch")
+	
+	if not totalCatch then totalCatch = 0 end
 	outputChatBox("You have "..totalCatch.."lbs of fish caught so far.", thePlayer, 255, 194, 14)
 end
 addCommandHandler("totalcatch", currentCatch, false, false)

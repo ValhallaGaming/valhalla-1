@@ -447,7 +447,7 @@ testRoute[21] = { 2310.9482, 1438.4736, 10.6266 }	-- 21 -- Parking exercise
 testRoute[22] = { 2381.1210, 1370.7363, 10.5272 }	-- 22
 testRoute[23] = { 2425.0205, 1221.6035, 10.4880 }	-- 23
 
-testVehicle = { [507]=true } -- need to /makecivveh. The test cars are permanently spawned.
+testVehicle = { [436]=true } -- Previons need to be spawned at the start point.
 
 local blip = nil
 local marker = nil

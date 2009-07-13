@@ -62,8 +62,8 @@ addEvent("payFee", true)
 addEventHandler("payFee", getRootElement(), payFee)
 
 function passTheory()
-	setElementData(source,"license.car",3)
-	mysql_query(handler, "UPDATE characters SET gun_license='3' WHERE charactername='" .. mysql_escape_string(handler, getPlayerName(source)) .. "' LIMIT 1")
+	setElementData(source,"license.car",3) -- Set data to "theory passed"
+	mysql_query(handler, "UPDATE characters SET car_license='3' WHERE charactername='" .. mysql_escape_string(handler, getPlayerName(source)) .. "' LIMIT 1")
 end
 addEvent("theoryComplete", true)
 addEventHandler("theoryComplete", getRootElement(), passTheory)

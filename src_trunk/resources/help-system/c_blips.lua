@@ -11,16 +11,4 @@ hb9 = createBlip(2413.1391601563, 1121.5885009766, 10.8203125, 41) -- city hall
 hb10 = createBlip(2447.3969726563, 2376.2377929688, 12.163512229919, 52) -- bank
 hb11 = createBlip(2581.4555664063, 1060.7387695313, 11.714573860168, 54) -- gym
 hb12 = createBlip(2177.6333007813, 963.21447753906, 10.81298828125, 6) -- ammunation 1
-
-exports.pool:allocateElement(hb1)
-exports.pool:allocateElement(hb2)
-exports.pool:allocateElement(hb3)
-exports.pool:allocateElement(hb4)
-exports.pool:allocateElement(hb5)
-exports.pool:allocateElement(hb6)
-exports.pool:allocateElement(hb7)
-exports.pool:allocateElement(hb8)
-exports.pool:allocateElement(hb9)
-exports.pool:allocateElement(hb10)
-exports.pool:allocateElement(hb11)
-exports.pool:allocateElement(hb12)
+hb13 = createBlip(2530.5546875, 1833.8544921875, 10.8203125, 48) -- ammunation 1

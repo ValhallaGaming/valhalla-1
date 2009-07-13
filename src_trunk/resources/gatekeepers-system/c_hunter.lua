@@ -271,3 +271,7 @@ function hunterStatement12()
 	showCursor(false)
 	
 end
+
+function resetHunterCooldown()
+	setElementData(getLocalPlayer(), "hunterCoolDown", false, true)
+end

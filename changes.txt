@@ -5,16 +5,6 @@ SQL
 
 to new columns in characters, "stevie" and "hunter", both int, 1 character long and defualt to 0.
 
-
--- items
-
-INSERT INTO items SET id='49', item_name='Fishing Rod', item_description='A 7 foot carbon steel fishing rod.';
-INSERT INTO items SET id='50', item_name='The Las Venturas Highway Code', item_description='A copy of the Las Venturas highway code.';
-INSERT INTO items SET id='51', item_name='Chemistry 101', item_description='A copy of Chemistry 101.';
-INSERT INTO items SET id='52', item_name='Police Officer's Manual', item_description='The LVMPD Police Officer's Manual.';
-INSERT INTO items SET id='53', item_name='Breathalizer', item_description='A small black breathalizer.';
-
-
 -- achievements
 
 INSERT INTO achievementlist SET id='35', name='Whale Hunter', description='Catch a fish weighing 100lbs or more.', points='50';
@@ -24,30 +14,17 @@ Chamberlains changes.
 ---------------------
 Scripts in "unfinished code" need to be completed, checked and added to the correct resources by someone who knows what they are doing.
 
-- item-system
-	- s_item_system.lua
-	- c_item_system.lua
-
-- map-system
-	- fishMarket.map
-	- meta
-
-- mods-system
-	- c_mods_system.lua
-	- lv/melrose03_lawn.txd
+- gatekeepers-system
+	- c_hunter
+	- s_hunter
+	- c_stevie
+	- s_stevie
 
 - job-system
-	- meta
+	- c_fishing_job.lua
 	- s_fishing_job.lua
-
-- global
-	- c_item_globals.lua
-
-- shop-System
-	-c_generalshop_system.lua
-
-- carshop-system
-	-c_carshop_system
+	- c_carjacker_job.lua
+	- s_carjacker_job.lua
 
 - lvpd-system
 	- s_policecommands (/takelicense, currently disabled to be checked).

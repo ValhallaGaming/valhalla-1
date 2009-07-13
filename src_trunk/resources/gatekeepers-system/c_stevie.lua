@@ -249,7 +249,7 @@ end
 function stevieSuccess()
 	
 	triggerServerEvent( "stevieSuccessServerEvent", getLocalPlayer() ) -- Trigger Server Event to output previous option
-	setElementData(thePlayer, "stevieCoolDown", true)
+	setElementData(thePlayer, "stevieCoolDown", true, true)
 	local StevieCoolDownTimer = setTimer(resetStevieCoolDown, 1800000, 1)
 	-- Destroy elements
 	destroyElement ( optionOne )
@@ -286,6 +286,10 @@ function CloseButtonClick()
 	
 	showCursor(false)
 	
+end
+
+function stevieCoolDown()
+	setElementData(getLocalPlayer(), "stevieCoolDown", false, true)
 end
 
 ------------------------------------------------------------------------------------

@@ -26,8 +26,8 @@ function hunterIntro () -- When player enters the colSphere create GUI with intr
 		local chatSphere = createColSphere( pedX, pedY, pedZ, 10 )
 		exports.pool:allocateElement(chatSphere) -- Create the colSphere for chat output to local players
 		local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
-		for i, key in ipairs( targetPlayers ) do
-			outputChatBox("* A muscular man works under the car’s hood.", targetPlayers, 255, 51, 102)
+		for i, player in ipairs( targetPlayers ) do
+			outputChatBox("* A muscular man works under the car’s hood.", player, 255, 51, 102)
 		end
 		destroyElement(chatSphere)
 		setElementData (hunter, "activeConvo", 1) -- set the NPCs conversation state to active so no one else can begin to talk to him.
@@ -44,9 +44,9 @@ function statement2_S()
 	exports.pool:allocateElement(chatSphere) -- Create the colSphere for chat output to local players
 	local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
 	local name = string.gsub(getPlayerName(source), "_", " ")
-	for i, key in ipairs( targetPlayers ) do
-		outputChatBox(name .. " says: Hey. I’m looking for a mechanic to change a spark plug.", targetPlayers, 255, 255, 255) -- Players response to last question
-		outputChatBox("Hunter says: I’m busy. There’s a place on ... that can do it.", targetPlayers, 255, 255, 255) -- Hunter's next question
+	for i, player in ipairs( targetPlayers ) do
+		outputChatBox(name .. " says: Hey. I’m looking for a mechanic to change a spark plug.", player, 255, 255, 255) -- Players response to last question
+		outputChatBox("Hunter says: I’m busy. There’s a place on ... that can do it.", player, 255, 255, 255) -- Hunter's next question
 	end
 	destroyElement (chatSphere)
 	setElementData (hunter, "activeConvo", 0)
@@ -62,9 +62,9 @@ function statement3_S()
 	exports.pool:allocateElement(chatSphere) -- Create the colSphere for chat output to local players
 	local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
 	local name = string.gsub(getPlayerName(source), "_", " ")
-	for i, key in ipairs( targetPlayers ) do
-		outputChatBox(name .. " says: Nice ride. Is it yours?", targetPlayers, 255, 255, 255) -- Players response to last question
-		outputChatBox("Hunter says: It sure is.", targetPlayers, 255, 255, 255) -- Hunter's next question
+	for i, player in ipairs( targetPlayers ) do
+		outputChatBox(name .. " says: Nice ride. Is it yours?", player, 255, 255, 255) -- Players response to last question
+		outputChatBox("Hunter says: It sure is.", player, 255, 255, 255) -- Hunter's next question
 	end
 	destroyElement (chatSphere)
 end
@@ -79,9 +79,9 @@ function statement4_S()
 	exports.pool:allocateElement(chatSphere) -- Create the colSphere for chat output to local players
 	local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
 	local name = string.gsub(getPlayerName(source), "_", " ")
-	for i, key in ipairs( targetPlayers ) do
-		outputChatBox(name .. " says: Whatcha running under there?", targetPlayers, 255, 255, 255) -- Players response to last question
-		outputChatBox("Hunter says: Sport air intake, NOS, fogger system and a T4 turbo. But you wouldn’t know much about that, would you?", targetPlayers, 255, 255, 255) -- Hunter's next question
+	for i, player in ipairs( targetPlayers ) do
+		outputChatBox(name .. " says: Whatcha running under there?", player, 255, 255, 255) -- Players response to last question
+		outputChatBox("Hunter says: Sport air intake, NOS, fogger system and a T4 turbo. But you wouldn’t know much about that, would you?", player, 255, 255, 255) -- Hunter's next question
 	end
 	destroyElement (chatSphere)
 end
@@ -96,9 +96,9 @@ function statement5_S()
 	exports.pool:allocateElement(chatSphere) -- Create the colSphere for chat output to local players
 	local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
 	local name = string.gsub(getPlayerName(source), "_", " ")
-	for i, key in ipairs( targetPlayers ) do
-		outputChatBox(name .. " says: I like the paint job.", targetPlayers, 255, 255, 255) -- Players response to last question
-		outputChatBox("Hunter says: It’s not about how it looks, man. This car will rip your insides out and throw ‘em at you, rookie.", targetPlayers, 255, 255, 255) -- Hunter's next question
+	for i, player in ipairs( targetPlayers ) do
+		outputChatBox(name .. " says: I like the paint job.", player, 255, 255, 255) -- Players response to last question
+		outputChatBox("Hunter says: It’s not about how it looks, man. This car will rip your insides out and throw ‘em at you, rookie.", player, 255, 255, 255) -- Hunter's next question
 	end
 	destroyElement (chatSphere)
 	setElementData (hunter, "activeConvo", 0)
@@ -114,9 +114,9 @@ function statement6_S()
 	exports.pool:allocateElement(chatSphere) -- Create the colSphere for chat output to local players
 	local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
 	local name = string.gsub(getPlayerName(source), "_", " ")
-	for i, key in ipairs( targetPlayers ) do
-		outputChatBox(name .. " says: Looks like all show and no go to me.", targetPlayers, 255, 255, 255) -- Players response to last question
-		outputChatBox("Hunter says: Just goes to show you aren’t a real gear head. Come back when you have a clue.", targetPlayers, 255, 255, 255) -- Hunter's next question
+	for i, player in ipairs( targetPlayers ) do
+		outputChatBox(name .. " says: Looks like all show and no go to me.", player, 255, 255, 255) -- Players response to last question
+		outputChatBox("Hunter says: Just goes to show you aren’t a real gear head. Come back when you have a clue.", player, 255, 255, 255) -- Hunter's next question
 	end
 	destroyElement (chatSphere)
 	setElementData (hunter, "activeConvo", 0)
@@ -132,9 +132,9 @@ function statement7_S()
 	exports.pool:allocateElement(chatSphere) -- Create the colSphere for chat output to local players
 	local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
 	local name = string.gsub(getPlayerName(source), "_", " ")
-	for i, key in ipairs( targetPlayers ) do
-		outputChatBox(name .. " says: Is that an AIC controller? ...And direct port nitrous injection?", targetPlayers, 255, 255, 255) -- Players response to last question
-		outputChatBox("Hunter says: You almost sound like you know what you’re talking about.", targetPlayers, 255, 255, 255) -- Hunter's next question
+	for i, player in ipairs( targetPlayers ) do
+		outputChatBox(name .. " says: Is that an AIC controller? ...And direct port nitrous injection?", player, 255, 255, 255) -- Players response to last question
+		outputChatBox("Hunter says: You almost sound like you know what you’re talking about.", player, 255, 255, 255) -- Hunter's next question
 	end
 	destroyElement (chatSphere)
 end
@@ -149,9 +149,9 @@ function statement8_S()
 	exports.pool:allocateElement(chatSphere) -- Create the colSphere for chat output to local players
 	local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
 	local name = string.gsub(getPlayerName(source), "_", " ")
-	for i, key in ipairs( targetPlayers ) do
-		outputChatBox(name .. " says: There’s nothing better than living a quarter mile at a time.", targetPlayers, 255, 255, 255) -- Players response to last question
-		outputChatBox("Hunter says: Oh, you’re a racer? They call me Hunter. I got a real name but unless you’re the government you don’t need to know it.", targetPlayers, 255, 255, 255) -- Hunter's next question
+	for i, player in ipairs( targetPlayers ) do
+		outputChatBox(name .. " says: There’s nothing better than living a quarter mile at a time.", player, 255, 255, 255) -- Players response to last question
+		outputChatBox("Hunter says: Oh, you’re a racer? They call me Hunter. I got a real name but unless you’re the government you don’t need to know it.", player, 255, 255, 255) -- Hunter's next question
 	end
 	destroyElement (chatSphere)
 end
@@ -166,9 +166,9 @@ function statement9_S()
 	exports.pool:allocateElement(chatSphere) -- Create the colSphere for chat output to local players
 	local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
 	local name = string.gsub(getPlayerName(source), "_", " ")
-	for i, key in ipairs( targetPlayers ) do
-		outputChatBox(name .. " says: You work here alone?", targetPlayers, 255, 255, 255) -- Players response to last question
-		outputChatBox("Hunter says: Yeah so I got work to do. Nice talkin’ to ya.", targetPlayers, 255, 255, 255) -- Hunter's next question
+	for i, player in ipairs( targetPlayers ) do
+		outputChatBox(name .. " says: You work here alone?", player, 255, 255, 255) -- Players response to last question
+		outputChatBox("Hunter says: Yeah so I got work to do. Nice talkin’ to ya.", player, 255, 255, 255) -- Hunter's next question
 	end
 	destroyElement (chatSphere)
 	setElementData (hunter, "activeConvo", 0)
@@ -184,10 +184,11 @@ function statement10_S()
 	exports.pool:allocateElement(chatSphere) -- Create the colSphere for chat output to local players
 	local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
 	local name = string.gsub(getPlayerName(source), "_", " ")
-	for i, key in ipairs( targetPlayers ) do
-		outputChatBox(name .. " says: My mother taught me never to trust a man that won’t even tell you his name.", targetPlayers, 255, 255, 255) -- Players response to last question
-		outputChatBox("Hunter says: Well here’s the thing. One of my usual guys got busted a couple days ago. If you’re looking to make some money I could use a new go to guy.", targetPlayers, 255, 255, 255) -- Hunter's next question
-		outputChatBox("Hunter says: See running a car like this isn’t cheap so we ...borrow from other cars if you know what I’m saying.", targetPlayers, 255, 255, 255) -- Hunter's next question
+	for i, player in ipairs( targetPlayers ) do
+		outputChatBox(name .. " says: My mother taught me never to trust a man that won’t even tell you his name.", player, 255, 255, 255) -- Players response to last question
+		outputChatBox("Hunter says: Well here’s the thing. One of my usual guys got busted a couple days ago.", player, 255, 255, 255) -- Hunter's next question
+		outputChatBox("If you’re looking to make some money I could use a new go to guy.", player, 255, 255, 255)
+		outputChatBox("Hunter says: See running a car like this isn’t cheap so we ...borrow from other cars if you know what I’m saying.", player, 255, 255, 255) -- Hunter's next question
 	end
 	destroyElement (chatSphere)
 end
@@ -202,9 +203,9 @@ function statement11_S()
 	exports.pool:allocateElement(chatSphere) -- Create the colSphere for chat output to local players
 	local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
 	local name = string.gsub(getPlayerName(source), "_", " ")
-	for i, key in ipairs( targetPlayers ) do
-		outputChatBox(name .. " says: Sounds like easy money. Give me a call.", targetPlayers, 255, 255, 255) -- Players response to last question
-		outputChatBox("Hunter says: You can expect my call. I might see you on the circuit some time too.", targetPlayers, 255, 255, 255) -- Hunter's next question
+	for i, player in ipairs( targetPlayers ) do
+		outputChatBox(name .. " says: Sounds like easy money. Give me a call.", player, 255, 255, 255) -- Players response to last question
+		outputChatBox("Hunter says: You can expect my call. I might see you on the circuit some time too.", player, 255, 255, 255) -- Hunter's next question
 		exports.global:sendLocalMeAction( source,"jots down their number on a scrap of paper and hands it to Hunter.")
 	end
 	destroyElement (chatSphere)
@@ -223,9 +224,9 @@ function statement12_S()
 	exports.pool:allocateElement(chatSphere) -- Create the colSphere for chat output to local players
 	local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
 	local name = string.gsub(getPlayerName(source), "_", " ")
-	for i, key in ipairs( targetPlayers ) do
-		outputChatBox(name .. " says: . I’d rather not get involved in all that.", targetPlayers, 255, 255, 255) -- Players response to last question
-		outputChatBox("Hunter says: Whatever. I got work to do.", targetPlayers, 255, 255, 255) -- Hunter's next question
+	for i, player in ipairs( targetPlayers ) do
+		outputChatBox(name .. " says: . I’d rather not get involved in all that.", player, 255, 255, 255) -- Players response to last question
+		outputChatBox("Hunter says: Whatever. I got work to do.", player, 255, 255, 255) -- Hunter's next question
 	end
 	destroyElement (chatSphere)
 	setElementData (hunter, "activeConvo", 0)

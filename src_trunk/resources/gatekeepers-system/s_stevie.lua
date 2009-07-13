@@ -69,16 +69,16 @@ function stevieIntro (thePlayer) -- When player enters the colSphere create GUI 
 		exports.pool:allocateElement(chatSphere) -- Create the colSphere for chat output to local players
 		local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
 		local name = string.gsub(getPlayerName(source), "_", " ")
-		for i, key in ipairs( targetPlayers ) do
-			outputChatBox("* Stevie ignore the person trying to talk to him and contiues to eat.", targetPlayers,  255, 51, 102)
+		for i, player in ipairs( targetPlayers ) do
+			outputChatBox("* Stevie ignore the person trying to talk to him and contiues to eat.", player,  255, 51, 102)
 		end
 	else
 		local pedX, pedY, pedZ = getElementPosition( stevie )
 		local chatSphere = createColSphere( pedX, pedY, pedZ, 10 )
 		exports.pool:allocateElement(chatSphere) -- Create the colSphere for chat output to local players
 		local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
-		for i, key in ipairs( targetPlayers ) do
-			outputChatBox("Steven Pulman says: Do you want something, pal?", targetPlayers, 255, 255, 255) -- Stevies next question
+		for i, player in ipairs( targetPlayers ) do
+			outputChatBox("Steven Pulman says: Do you want something, pal?", player, 255, 255, 255) -- Stevies next question
 		end
 		setElementData (stevie, "activeConvo", 1) -- set the NPCs conversation state to active so no one else can begin to talk to him.
 		destroyElement(chatSphere)
@@ -100,8 +100,8 @@ function quickClose_S()
 	exports.pool:allocateElement(chatSphere) -- Create the colSphere for chat output to local players
 	local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
 	local name = string.gsub(getPlayerName(source), "_", " ")
-	for i, key in ipairs( targetPlayers ) do
-		outputChatBox(name .." says: No. Sorry to bother you.", targetPlayers, 255, 255, 255) -- Stevies next question
+	for i, player in ipairs( targetPlayers ) do
+		outputChatBox(name .." says: No. Sorry to bother you.", player, 255, 255, 255) -- Stevies next question
 	end
 	destroyElement(chatSphere)
 end
@@ -116,9 +116,9 @@ function statement2_S()
 	exports.pool:allocateElement(chatSphere) -- Create the colSphere for chat output to local players
 	local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
 	local name = string.gsub(getPlayerName(source), "_", " ")
-	for i, key in ipairs( targetPlayers ) do
-		outputChatBox(name .. " says: Can I take a seat?", targetPlayers, 255, 255, 255) -- Players response to last question
-		outputChatBox("Steven Pullman says: Sure, sit down. Have you tried the food here? It's f****** unbelievable.", targetPlayers, 255, 255, 255) -- Stevies next question
+	for i, player in ipairs( targetPlayers ) do
+		outputChatBox(name .. " says: Can I take a seat?", player, 255, 255, 255) -- Players response to last question
+		outputChatBox("Steven Pullman says: Sure, sit down. Have you tried the food here? It's f****** unbelievable.", player, 255, 255, 255) -- Stevies next question
 	end
 	destroyElement (chatSphere)
 	
@@ -145,9 +145,9 @@ function statement3_S()
 	exports.pool:allocateElement(chatSphere) -- Create the colSphere for chat output to local players
 	local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
 	local name = string.gsub(getPlayerName(source), "_", " ")
-	for i, key in ipairs( targetPlayers ) do
-		outputChatBox(name .. " says: I’m a vegetarian. The thought of those poor animals suffering for you to stuff your face makes me sick.", targetPlayers, 255, 255, 255)
-		outputChatBox("Steven Pullman says: Hey f*** you, pal. You don’t like it, go save a whale or some shit.", targetPlayers, 255, 255, 255)
+	for i, player in ipairs( targetPlayers ) do
+		outputChatBox(name .. " says: I’m a vegetarian. The thought of those poor animals suffering for you to stuff your face makes me sick.", player, 255, 255, 255)
+		outputChatBox("Steven Pullman says: Hey f*** you, pal. You don’t like it, go save a whale or some shit.", player, 255, 255, 255)
 	end
 	destroyElement (chatSphere)
 end	
@@ -163,11 +163,11 @@ function statement4_S()
 	exports.pool:allocateElement(chatSphere) -- Create the colSphere for chat output to local players
 	local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
 	local name = string.gsub(getPlayerName(source), "_", " ")
-	for i, key in ipairs( targetPlayers ) do
-		outputChatBox(name .. " says: Yeah I heard it’s good. I was just about to order something.", targetPlayers, 255, 255, 255)
-		outputChatBox("Steven Pullman says: Get the Angus rib-eye. You won’t regret it. Where’s my manners...", targetPlayers, 255, 255, 255)
-		outputChatBox("* Steven Pullman wipes his hands on a napkin and offers "..name.." a hand shake.", 255, 51, 102)
-		outputChatBox("Steven Pullman says: The name’s Stevie.", targetPlayers, 255, 194, 14)
+	for i, player in ipairs( targetPlayers ) do
+		outputChatBox(name .. " says: Yeah I heard it’s good. I was just about to order something.", player, 255, 255, 255)
+		outputChatBox("Steven Pullman says: Get the Angus rib-eye. You won’t regret it. Where’s my manners...", player, 255, 255, 255)
+		outputChatBox("* Steven Pullman wipes his hands on a napkin and offers "..name.." a hand shake.", player, 255, 51, 102)
+		outputChatBox("Steven Pullman says: The name’s Stevie.", player, 255, 255, 255)
 	end
 	destroyElement (chatSphere)
 end
@@ -187,8 +187,8 @@ function statement5_S()
 	local chatSphere = createColSphere( pedX, pedY, pedZ, 10 )
 	exports.pool:allocateElement(chatSphere) -- Create the colSphere for chat output to local players
 	local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
-	for i, key in ipairs( targetPlayers ) do
-		outputChatBox("Steven Pullman says: I was just being polite but if you want to be an ass about it how about you leave me to eat in peace.", targetPlayers, 255, 255, 255)
+	for i, player in ipairs( targetPlayers ) do
+		outputChatBox("Steven Pullman says: I was just being polite but if you want to be an ass about it how about you leave me to eat in peace.", player, 255, 255, 255)
 	end
 	destroyElement (chatSphere)
 end	
@@ -204,10 +204,10 @@ function statement6_S()
 	exports.pool:allocateElement(chatSphere) -- Create the colSphere for chat output to local players
 	local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
 	local name = string.gsub(getPlayerName(source), "_", " ")
-	for i, key in ipairs( targetPlayers ) do
-		outputChatBox("*"..name.." shakes Stevie's hand.", targetPlayers, 255, 51, 102)
-		outputChatBox("Steven Pullman says: Me and the boys from the freight depot come down here every week.", targetPlayers, 255, 255, 255)
-		outputChatBox("Steven Pullman says: Football and steaks make a damn good combination don’t you think?", targetPlayers, 255, 255, 255)
+	for i, player in ipairs( targetPlayers ) do
+		outputChatBox("* "..name.." shakes Stevie's hand.", player, 255, 51, 102)
+		outputChatBox("Steven Pullman says: Me and the boys from the freight depot come down here every week.", player, 255, 255, 255)
+		outputChatBox("Steven Pullman says: Football and steaks make a damn good combination don’t you think?", player, 255, 255, 255)
 	end
 	destroyElement (chatSphere)
 end
@@ -228,11 +228,11 @@ function statement7_S()
 	exports.pool:allocateElement(chatSphere) -- Create the colSphere for chat output to local players
 	local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
 	local name = string.gsub(getPlayerName(source), "_", " ")
-	for i, key in ipairs( targetPlayers ) do
-		outputChatBox(name.." says: Are you kidding me? I’ve been a Beavers fan my whole life!", targetPlayers, 255, 255, 255)
-		outputChatBox("Steven Pullman says: What?! The Beavers?", targetPlayers, 255, 255, 255)
-		outputChatBox("Steven Pullman says: You’re lucky I don’t punch your lights out right here and now you piece-a beaver scum.", targetPlayers, 255, 255, 255)
-		outputChatBox("Steven Pullman says: Look... now you made me lose my appetite.", targetPlayers, 255, 255, 255)
+	for i, player in ipairs( targetPlayers ) do
+		outputChatBox(name.." says: Are you kidding me? I’ve been a Beavers fan my whole life!", player, 255, 255, 255)
+		outputChatBox("Steven Pullman says: What?! The Beavers?", player, 255, 255, 255)
+		outputChatBox("Steven Pullman says: You’re lucky I don’t punch your lights out right here and now you piece-a beaver scum.", player, 255, 255, 255)
+		outputChatBox("Steven Pullman says: Look... now you made me lose my appetite.", player, 255, 255, 255)
 	end
 	destroyElement (chatSphere)
 end
@@ -248,9 +248,9 @@ function statement8_S()
 	exports.pool:allocateElement(chatSphere) -- Create the colSphere for chat output to local players
 	local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
 	local name = string.gsub(getPlayerName(source), "_", " ")
-	for i, key in ipairs( targetPlayers ) do
-		outputChatBox( name.." says: I never really liked football.", targetPlayers, 255, 255, 255)
-		outputChatBox("Steven Pullman says: Yeah, maybe it isn’t to everyone’s taste. So what do you do?", targetPlayers, 255, 255, 255)
+	for i, player in ipairs( targetPlayers ) do
+		outputChatBox( name.." says: I never really liked football.", player, 255, 255, 255)
+		outputChatBox("Steven Pullman says: Yeah, maybe it isn’t to everyone’s taste. So what do you do?", player, 255, 255, 255)
 	end
 	destroyElement (chatSphere)
 end
@@ -269,11 +269,11 @@ function statement9_S()
 	exports.pool:allocateElement(chatSphere) -- Create the colSphere for chat output to local players
 	local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
 	local name = string.gsub(getPlayerName(source), "_", " ")
-	for i, key in ipairs( targetPlayers ) do
-		outputChatBox( name.." says: Over worked and underappreciated. You know how it is.", targetPlayers, 255, 255, 255)
-		outputChatBox("Steven Pullman says: Tell me about it! They got me bustin’ my ass at the freight yard for change.", targetPlayers, 255, 255, 255)
-		outputChatBox("Steven Pullman says: See it’s people like you and me that need to help each other out.", targetPlayers, 255, 255, 255)
-		outputChatBox("Steven Pullman says: Tell you what, here’s my card. You ever need anything I can help you out with, just give me a call.", targetPlayers, 255, 255, 255)
+	for i, player in ipairs( targetPlayers ) do
+		outputChatBox( name.." says: Over worked and underappreciated. You know how it is.", player, 255, 255, 255)
+		outputChatBox("Steven Pullman says: Tell me about it! They got me bustin’ my ass at the freight yard for change.", player, 255, 255, 255)
+		outputChatBox("Steven Pullman says: See it’s people like you and me that need to help each other out.", player, 255, 255, 255)
+		outputChatBox("Steven Pullman says: Tell you what, here’s my card. You ever need anything I can help you out with, just give me a call.", player, 255, 255, 255)
 	end
 	destroyElement (chatSphere)
 	
@@ -318,9 +318,9 @@ function CloseButtonClick_S()
 	exports.pool:allocateElement(chatSphere) -- Create the colSphere for chat output to local players
 	local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
 	local name = string.gsub(getPlayerName(source), "_", " ")
-	for i, key in ipairs( targetPlayers ) do
-		outputChatBox(name .. " says: Is that the time? I have to go.", targetPlayers, 255, 255, 255, false)
-		outputChatBox("Steven Pullman says: You take it easy. Maybe I'll run into you again some time.", targetPlayers, 255, 255, 255, false)
+	for i, player in ipairs( targetPlayers ) do
+		outputChatBox(name .. " says: Is that the time? I have to go.", player, 255, 255, 255, false)
+		outputChatBox("Steven Pullman says: You take it easy. Maybe I'll run into you again some time.", player, 255, 255, 255, false)
 	end
 	destroyElement (chatSphere)
 end
@@ -398,8 +398,8 @@ function declineDeal_S ()
 	exports.pool:allocateElement(chatSphere) -- Create the colSphere for chat output to local players
 	local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
 	local name = string.gsub(getPlayerName(source), "_", " ")
-	for i, key in ipairs( targetPlayers ) do
-		outputChatBox(name.. " says: Maybe another time.", targetPlayers, 255, 255, 255)
+	for i, player in ipairs( targetPlayers ) do
+		outputChatBox(name.. " says: Maybe another time.", player, 255, 255, 255)
 	end			
 	destroyElement (chatSphere)
 	outputChatBox("((Steven Pullman)) #081016 [Cellphone]: Okay. Give me a call if you change your mind.", source)

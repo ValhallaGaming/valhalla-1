@@ -29,7 +29,7 @@ addEventHandler("onResourceStop", getResourceRootElement(getThisResource()), clo
 function createGeneralshop(thePlayer, commandName, shoptype)
 	if (exports.global:isPlayerAdmin(thePlayer)) then
 		if(tonumber(shoptype)) then
-			if((tonumber(shoptype) >= 1) and (tonumber(shoptype) < 8)) then
+			if((tonumber(shoptype) >= 1) and (tonumber(shoptype) < 9)) then
 			
 				local x, y, z = getElementPosition(thePlayer)
 				local dimension = getElementDimension(thePlayer)
@@ -56,7 +56,7 @@ function createGeneralshop(thePlayer, commandName, shoptype)
 					outputChatBox("Error creating shop.", thePlayer, 255, 0, 0)
 				end
 			else
-				outputChatBox("Type must be between 1 and 6.", thePlayer, 255, 194, 14)
+				outputChatBox("Type must be between 1 and 8.", thePlayer, 255, 194, 14)
 			end
 		else
 			outputChatBox("SYNTAX: /" .. commandName .. " [shop type]", thePlayer, 255, 194, 14)
@@ -67,6 +67,7 @@ function createGeneralshop(thePlayer, commandName, shoptype)
 			outputChatBox("TYPE 5 = Clothes Store", thePlayer, 255, 194, 14)
 			outputChatBox("TYPE 6 = Gym Store", thePlayer, 255, 194, 14)
 			outputChatBox("TYPE 7 = Drug Store", thePlayer, 255, 194, 14)
+			outputChatBox("TYPE 8 = Electronics Store", thePlayer, 255, 194, 14)
 		end
 	end
 end

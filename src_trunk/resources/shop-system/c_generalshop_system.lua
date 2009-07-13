@@ -155,6 +155,10 @@ function  getShopTypeName(shop_type)
 		return "Clothes Shop"
 	elseif(shop_type == 6) then
 		return "Gym"
+	elseif(shop_type == 7) then
+		return "Drug Closet"
+	elseif(shop_type == 8) then
+		return "Electronics Store"
 	else
 		return "This isn't a shop. Go Away."
 	end
@@ -177,6 +181,8 @@ function getShopTabTitles(shop_type)
 		return {"Fighting Styles"}
 	elseif(shop_type == 7) then
 		return {"Chemicals"}
+	elseif(shop_type == 8) then
+		return {"Electronics"}
 	else
 		return "This isn't a shop. Go Away."
 	end
@@ -287,6 +293,10 @@ function getItemsForSale(shop_type, race)
 		item[2] = {"Cocaine Alkaloid","A chemical used to make drugs.", "0", 31, 1, 1, false,0}
 		item[3] = {"Lysergic Acid","A chemical used to make drugs.", "0", 32, 1, 1, false,0}
 		item[4] = {"Unprocessed PCP","A chemical used to make drugs.", "0", 33, 1, 1, false,0}
+		
+	-- electronics
+	elseif(shop_type == 8) then
+		item[1] = {"Ghettoblaster","A black ghettoblaster.", "250", 54, 1, 1, false,0}
 	end
 		
 	return item
@@ -314,6 +324,8 @@ function getImageName(shop_type)
 		return "general.png"
 	elseif(shop_type == 7) then
 		return "general.png"
+	elseif(shop_type == 8) then
+		return "general.png"
 	else
 		return "This isn't a shop. Go Away."
 	end
@@ -337,6 +349,8 @@ function getIntroMessage(shop_type)
 		return "This gym is the best in town for hand-to-hand combat."
 	elseif(shop_type == 7) then
 		return "You thief!"
+	elseif(shop_type == 8) then
+		return "We've got the latest technology just for you."
 	else
 		return "This isn't a shop. Go Away."
 	end

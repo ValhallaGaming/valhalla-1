@@ -35,7 +35,7 @@ function loadAllFactions(res)
 		-- work out how many minutes it is until the next hour
 		local mins = getRealTime().minute
 		local minutes = 60 - mins
-		setTimer(payAllWages, 60000*minutes, 0)
+		setTimer(payAllWages, 60000*minutes, 1)
 		
 		local result = mysql_query(handler, "SELECT id, name, bankbalance, type FROM factions")
 		local counter = 0

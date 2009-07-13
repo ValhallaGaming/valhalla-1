@@ -4,11 +4,11 @@ local state = 0
 local fishSize = 0
 local hotSpot1 = nil
 local hotSpot2 = nil
+local totalCatch = 0
 
 function castLine()
 
 	local element = getPedContactElement(getLocalPlayer())
-	local totalCatch = getElementData(getLocalPlayer(), "totalcatch")	
 	if not (isElement(element)) then
 		outputChatBox("You must be on a boat to fish.", 255, 0, 0)
 	else
@@ -28,8 +28,8 @@ function castLine()
 						if (totalCatch >= 2000) then
 							outputChatBox("#FF9933The boat can't hold any more fish. #FF66CCSell#FF9933 the fish you have caught before continuing.", 255, 104, 91, true)
 						else
-							local biteTimer = math.random(3000,300000) -- 30 seconds to 5 minutes for a bite.
-							catchTimer = setTimer( fishOnLine, biteTimer, 1 ) -- A fish will bite within 1 and 5 minutes.
+							--local biteTimer = math.random(3000,300000) -- 30 seconds to 5 minutes for a bite.
+							catchTimer = setTimer( fishOnLine, 1000, 1 ) -- A fish will bite within 1 and 5 minutes.
 							triggerServerEvent("castOutput", getLocalPlayer())	
 							if not (colsphere) then -- If the /sellfish marker isnt already being shown...
 								blip = createBlip( 2243.7339, 578.905, 6.78, 0, 2, 255, 0, 255, 255 )
@@ -137,10 +137,8 @@ function reelItIn()
 		pFish = nil
 		unbindKey("-", "down", reelItIn)
 		unbindKey("=", "down", reelItIn)
-		
-		local totalCatch = getElementData(getLocalPlayer(),"totalcatch")
+
 		totalCatch = math.floor(totalCatch + fishSize)
-		setElementData(getLocalPlayer(), "totalcatch", totalCatch, true)
 		outputChatBox("You have caught "..totalCatch.."lbs of fish so far.", 255, 194, 14)
 		triggerServerEvent("catchFish", getLocalPlayer(), fishSize)
 	end
@@ -168,27 +166,23 @@ end
 
 -- /totalcatch command
 function currentCatch()
-	local totalCatch = getElementData(getLocalPlayer(), "totalcatch")
-	
-	if not totalCatch then totalCatch = 0 end
 	outputChatBox("You have "..totalCatch.."lbs of fish caught so far.", 255, 194, 14)
 end
 addCommandHandler("totalcatch", currentCatch, false, false)
 
--- clean up
+-- sellfish
 function unloadCatch()
 	if (isElementWithinColShape(getLocalPlayer(), colsphere)) then
-		local totalCatch = getElementData(getLocalPlayer(), "totalcatch")
 		if (totalCatch == 0) then
 			outputChatBox("You need to catch some fish to sell first.", 255, 0, 0)
 		else
-			local profit = math.floor(totalCatch/2)
+			local profit = math.floor(totalCatch*0.66)
 			outputChatBox("You made $".. profit .." from the fish you caught.", 255, 104, 91)
 			triggerServerEvent("sellcatch", getLocalPlayer(), totalCatch, profit)
-			setElementData(getLocalPlayer(), "totalcatch", 0, true)
 			destroyElement(blip)
 			destroyElement(marker)
 			destroyElement(colsphere)
+			totalCatch = 0
 		end
 	else
 		outputChatBox("You need to be at the fish market to sell your catch.", 255, 0, 0)

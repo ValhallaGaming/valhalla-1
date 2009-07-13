@@ -1,12 +1,3 @@
-function resourceStart(res)
-	if (res==getThisResource()) then
-		for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
-			setElementData(value, "totalcatch", 0)
-		end
-	end
-end
-addEventHandler("onResourceStart", getRootElement(), resourceStart)
-
 -- /fish to start fishing.
 function startFishing(thePlayer)
 	if not (thePlayer) then
@@ -54,7 +45,7 @@ addEventHandler("catchFish", getRootElement(), catchFish)
 
 ------ /sellfish
 function unloadCatch( totalCatch, profit)
-	exports.global:sendLocalMeAction(thePlayer,"sells " .. totalCatch .."lbs of fish.")
+	exports.global:sendLocalMeAction(source,"sells " .. totalCatch .."lbs of fish.")
 	exports.global:givePlayerSafeMoney(source, profit)
 end
 addEvent("sellcatch", true)

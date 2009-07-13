@@ -43,11 +43,20 @@ function clientTagWall(weapon, ammo, ammoInClip, hitX, hitY, hitZ, hitElement)
 						local newYright = oldXright * matrix[1][2] + oldYright * matrix [2][2] + oldZright * matrix [3][2] + matrix [4][2]
 						local newZright = oldXright * matrix[1][3] + oldYright * matrix [2][3] + oldZright * matrix [3][3] + matrix [4][3]
 						
+						-- TO TOP OF PLAYER
+						local oldXtop = 0
+						local oldYtop = 1
+						local oldZtop = 1
+						local newXtop = oldXtop * matrix[1][1] + oldYtop * matrix [2][1] + oldZtop * matrix [3][1] + matrix [4][1]
+						local newYtop = oldXtop * matrix[1][2] + oldYtop * matrix [2][2] + oldZtop * matrix [3][2] + matrix [4][2]
+						local newZtop = oldXtop * matrix[1][3] + oldYtop * matrix [2][3] + oldZtop * matrix [3][3] + matrix [4][3]
+						
 						local facingWall, cx, cy, cz, element = processLineOfSight(x, y, z, newX, newY, newZ, true, false, false, true, false)
 						local facingWallleft, lx, ly, lz, lelement = processLineOfSight(x, y, z, newXleft, newYleft, newZleft, true, false, false, true, false)
 						local facingWallright, rx, ry, rz, relement = processLineOfSight(x, y, z, newXright, newYright, newZright, true, false, false, true, false)
+						local facingWalltop, tx, ty, tz, telement = processLineOfSight(x, y, z, newXtop, newYtop, newZtop, true, false, false, true, false)
 						
-						if not (facingWall) or not (facingWallleft) or not (facingWallright) then
+						if not (facingWall) or not (facingWallleft) or not (facingWallright) or not (facingWalltop) then
 							outputChatBox("You are not near a wall.", 255, 0, 0)
 							count = 0
 							cooldown = 1

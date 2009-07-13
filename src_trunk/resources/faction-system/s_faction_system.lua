@@ -73,18 +73,20 @@ function loadAllFactions(res)
 					setElementData(thePlayer, "faction", factionID)
 					
 					mysql_free_result(result)
-					if (factionID~=-1) then
-						result = mysql_query(handler, "SELECT name FROM factions WHERE id='" .. factionID .. "' LIMIT 1")
+					if (factionID) then
+						if (factionID~=-1) then
+							result = mysql_query(handler, "SELECT name FROM factions WHERE id='" .. factionID .. "' LIMIT 1")
 
-						if (result) then
-							local factionName = tostring(mysql_result(result, 1, 1))
-							local theTeam = getTeamFromName(factionName)
+							if (result) then
+								local factionName = tostring(mysql_result(result, 1, 1))
+								local theTeam = getTeamFromName(factionName)
+								setPlayerTeam(thePlayer, theTeam)
+								mysql_free_result(result)
+							end
+						else
+							local theTeam = getTeamFromName("Citizen")
 							setPlayerTeam(thePlayer, theTeam)
-							mysql_free_result(result)
 						end
-					else
-						local theTeam = getTeamFromName("Citizen")
-						setPlayerTeam(thePlayer, theTeam)
 					end
 				end
 			end
@@ -869,7 +871,9 @@ function payAllWages()
 						govAmount = govAmount - unemployedPay
 						
 						local pay = unemployedPay
-						local bankmoney = getElementData(value, "bankmoney")
+						local bankmoney = tonumber(getElementData(value, "bankmoney"))
+						
+						if not bankmoney then bankmoney = 0 end
 						local interestrate = 0.0004
 						
 						-- DONATOR PERKS

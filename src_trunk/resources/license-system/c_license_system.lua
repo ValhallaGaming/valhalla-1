@@ -462,7 +462,6 @@ function initiateDrivingTest()
 	outputChatBox("#FF9933You are now ready to take your practical driving examination. Collect a DMV test car and begin the route.", 255, 194, 14, true)
 	outputChatBox("#FF9933((The #00FF00start point #FF9933has been added to your radar.))", 255, 194, 14, true)
 end
-addCommandHandler("st", initiateDrivingTest, true)
 
 function startDrivingTest()
 	local vehicle = getPedOccupiedVehicle(getLocalPlayer())

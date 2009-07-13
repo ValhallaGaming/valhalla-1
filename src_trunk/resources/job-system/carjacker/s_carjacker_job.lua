@@ -131,8 +131,8 @@ function dropOffCar()
 				exports.pool:allocateElement(chatSphere) -- Create the colSphere for chat output to local players.
 				local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
 				local name = string.gsub(getPlayerName(thePlayer), "_", " ")
-				for i, key in ipairs( targetPlayers ) do
-					outputChatBox("Hunter says: Thanks, man. Here's $" .. profit .. " for the car. I'll call you again soon.", thePlayer, 255, 255, 255)
+				for i, player in ipairs( targetPlayers ) do
+					outputChatBox("Hunter says: Thanks, man. Here's $" .. profit .. " for the car. I'll call you again soon.", player, 255, 255, 255)
 				end
 				destroyElement(chatSphere)
 				

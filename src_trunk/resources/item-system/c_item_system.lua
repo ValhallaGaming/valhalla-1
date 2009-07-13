@@ -152,6 +152,7 @@ function getItemDescription(itemID)
 	elseif (itemID==51) then return "Chemistry 101."
 	elseif (itemID==52) then return "The Police Officer's Manual."
 	elseif (itemID==53) then return "A small black breathalizer."
+	elseif (itemID==54) then return "A black Ghettoblaster."
 	else return false 
 	end
 end
@@ -271,6 +272,8 @@ function getItemType(itemID)
 		return 5
 	elseif (itemID==53) then -- breathalizer
 		return 4
+	elseif (itemID==54) then -- ghettoblaster
+		return 7
 	else
 		return false
 	end

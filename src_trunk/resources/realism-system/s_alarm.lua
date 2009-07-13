@@ -1,6 +1,7 @@
 function pickLock(thePlayer)
 	if(isVehicleLocked(source))then
-		CarAlarm(source, thePlayer)
+		--CarAlarm(source, thePlayer)
+		setTimer(CarAlarm, 1000, 20, source, thePlayer)
 	end
 end
 addEventHandler("onVehicleStartEnter", getRootElement(), pickLock)

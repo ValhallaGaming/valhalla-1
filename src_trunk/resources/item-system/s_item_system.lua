@@ -357,6 +357,14 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 			triggerClientEvent( source, "showBook", source, bookName, bookTitle )
 		elseif (itemID==53) then -- Breathalizer
 			outputChatBox("Use /breathtest to use this item.", source, 255, 194, 15)
+		elseif (itemID==54) then -- GHETTOBLASTER
+			exports.global:sendLocalMeAction(source, "places a ghettoblaster on the ground.")
+			local x, y, z = getElementPosition(source)
+			local rot = getPedRotation(source)
+			x = x - math.sin( math.rad( rot-180 ) ) * 1
+			y = y - math.cos( math.rad( rot-180 ) ) * 1
+			
+			triggerEvent("dropItem", source, itemID, itemValue, itemName, x, y, z, groundz-0.3, nil, nil, true)
 		else
 			outputChatBox("Error 800001 - Report on http://bugs.valhallagaming.net", source, 255, 0, 0)
 		end
@@ -428,7 +436,7 @@ addEventHandler("destroyItem", getRootElement(), destroyItem)
 
 weaponmodels = { [1]=331, [2]=333, [3]=326, [4]=335, [5]=336, [6]=337, [7]=338, [8]=339, [9]=341, [15]=326, [22]=346, [23]=347, [24]=348, [25]=349, [26]=350, [27]=351, [28]=352, [29]=353, [32]=372, [30]=355, [31]=356, [33]=357, [34]=358, [35]=359, [36]=360, [37]=361, [38]=362, [16]=342, [17]=343, [18]=344, [39]=363, [41]=365, [42]=366, [43]=367, [10]=321, [11]=322, [12]=323, [14]=325, [44]=368, [45]=369, [46]=371, [40]=364, [100]=373 }
 
-function dropItem(itemID, itemValue, itemName, x, y, z, gz, isWeapon, items, itemvalues)
+function dropItem(itemID, itemValue, itemName, x, y, z, gz, isWeapon, items, itemvalues, forced)
 	if not (isWeapon) then
 		local removed = exports.global:takePlayerItem(source, tonumber(itemID), tonumber(itemValue))
 		
@@ -539,10 +547,11 @@ function loadWorldItems(res)
 			local time = getRealTime()
 			local yearday = time.yearday
 			
-			if (yearday>(wyearday+30)) then
-				mysql_query(handler, "DELETE FROM worlditems WHERE id='" .. tonumber(row[1]) .. "' LIMIT 1")
-			elseif (wyearday>yearday) then -- a new year
-				mysql_query(handler, "UPDATE worlditems SET yearday='" .. yearday .. "' WHERE id='" .. tonumber(row[1]) .. "' LIMIT 1")
+			--[[
+			--if (yearday>(wyearday+30)) then
+				--mysql_query(handler, "DELETE FROM worlditems WHERE id='" .. tonumber(row[1]) .. "' LIMIT 1")
+			--elseif (wyearday>yearday) then -- a new year
+				--mysql_query(handler, "UPDATE worlditems SET yearday='" .. yearday .. "' WHERE id='" .. tonumber(row[1]) .. "' LIMIT 1")
 				
 				local x = tonumber(row[6])
 				local y = tonumber(row[7])
@@ -595,6 +604,7 @@ function loadWorldItems(res)
 					end
 				end
 			else
+			]]--
 				local interior = tonumber(row[10])
 				local dimension = tonumber(row[9])
 				local x = tonumber(row[6])
@@ -643,7 +653,7 @@ function loadWorldItems(res)
 						setElementData(obj, "itemvalues", itemvalues)
 					end
 				end
-			end
+			--end
 		end
 		exports.irc:sendMessage("[SCRIPT] Loaded " .. tonumber(mysql_num_rows(result)) .. " world items.")
 		mysql_free_result(result)

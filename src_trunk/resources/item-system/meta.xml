@@ -18,4 +18,7 @@
 	<file src="books/PDmanual.png" />
 	<file src="books/LVHighwayCode.png" />
 	<file src="books/Chemistry101.png" />
+	
+	<script src="ghettoblaster/c_ghettoblaster.lua" type="client"/>
+	<file src="ghettoblaster/loop.mp3" />
 </meta>

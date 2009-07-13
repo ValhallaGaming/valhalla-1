@@ -62,7 +62,7 @@ function startTruckerJob()
 				blip = createBlip(x, y, z, 0, 4, 255, 127, 255)
 				marker = createMarker(x, y, z, "cylinder", 4, 255, 127, 255, 150)
 				colshape = createColCircle(x, y, z, 4)
-				
+								
 				jobstate = 2
 			else
 				outputChatBox("You are not in a van.", 255, 0, 0)
@@ -87,9 +87,10 @@ function dumpTruckLoad()
 					destroyElement(blip)
 					outputChatBox("You completed your trucking run.", 0, 255, 0)
 					routescompleted = routescompleted + 1
-					outputChatBox("#FF9933You can now either return to the warehouse and obtain your wage using /quitjob", 0, 0, 0, true)
+					outputChatBox("#FF9933You can now either return to the warehouse and obtain your wage", 0, 0, 0, true)
 					outputChatBox("#FF9933or continue onto the next #FF66CCdrop off point#FF9933 and increase your wage.", 0, 0, 0, true)
 					
+					-- next drop off
 					local rand = math.random(1, 10)
 					route = routes[rand]
 					local x, y, z = routes[rand][1], routes[rand][2], routes[rand][3]
@@ -97,6 +98,12 @@ function dumpTruckLoad()
 					marker = createMarker(x, y, z, "cylinder", 4, 255, 127, 255, 150)
 					colshape = createColCircle(x, y, z, 4)
 					
+					-- end marker
+					endblip = createBlip(x, y, z, 0, 4, 255, 0, 255)
+					endmarker = createMarker(x, y, z, "cylinder", 4, 255, 0, 255, 150)
+					endcolshape = createColCircle(x, y, z, 4)
+					addEventHandler("onClientColShapeHit", endcolshape, endTruckJob, false)
+				
 					jobstate = 3
 				else
 					outputChatBox("#FF0066You are not at your #FF66CCdrop off point#FF0066.", 255, 0, 0, true)
@@ -117,14 +124,12 @@ function endTruckJob()
 		local model = getElementModel(vehicle)
 		if (model==414) then -- MULE
 			if (jobstate==3) then
-				local x, y, z = getElementPosition(vehicle)
-				
-				if (getDistanceBetweenPoints3D(2842.4677734375, 956.3330078125, 10.843829154968, x, y,z)<100) then
-					local wage = 50*routescompleted
-					outputChatBox("You earnt " .. wage .. "$ on your trucking runs.", 255, 194, 15)
-					local vehicle = getPedOccupiedVehicle(localPlayer)
-					triggerServerEvent("giveTruckingMoney", localPlayer, wage)
-				end
+
+				local wage = 50*routescompleted
+				outputChatBox("You earned $" .. wage .. " on your trucking runs.", 255, 194, 15)
+				local vehicle = getPedOccupiedVehicle(localPlayer)
+				triggerServerEvent("giveTruckingMoney", localPlayer, wage)
+
 			end
 			
 			triggerServerEvent("respawnTruck", localPlayer, vehicle)
@@ -132,6 +137,9 @@ function endTruckJob()
 			destroyElement(colshape)
 			destroyElement(marker)
 			destroyElement(blip)
+			destroyElement(endblip)
+			destroyElement(endmarker)
+			destroyElement(endcolshape)
 			routescompleted = 0
 			setElementData(localPlayer, "job", true, 0)
 		else

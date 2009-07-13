@@ -18,6 +18,8 @@ function clientTagWall(weapon, ammo, ammoInClip, hitX, hitY, hitZ, hitElement)
 						local rot = getPedRotation(localPlayer)
 
 						local matrix = getElementMatrix (localPlayer)
+						
+						-- DIRECTLY INFRONT OF PLAYER
 						local oldX = 0
 						local oldY = 1
 						local oldZ = 0
@@ -25,9 +27,27 @@ function clientTagWall(weapon, ammo, ammoInClip, hitX, hitY, hitZ, hitElement)
 						local newY = oldX * matrix[1][2] + oldY * matrix [2][2] + oldZ * matrix [3][2] + matrix [4][2]
 						local newZ = oldX * matrix[1][3] + oldY * matrix [2][3] + oldZ * matrix [3][3] + matrix [4][3]
 						
-						local facingWall, cx, cy, cz, element = processLineOfSight(x, y, z, newX, newY, newZ, true, false, false, true, false)
+						-- TO LEFT OF PLAYER
+						local oldXleft = -1.5
+						local oldYleft = 1
+						local oldZleft = 0
+						local newXleft = oldXleft * matrix[1][1] + oldYleft * matrix [2][1] + oldZleft * matrix [3][1] + matrix [4][1]
+						local newYleft = oldXleft * matrix[1][2] + oldYleft * matrix [2][2] + oldZleft * matrix [3][2] + matrix [4][2]
+						local newZleft = oldXleft * matrix[1][3] + oldYleft * matrix [2][3] + oldZleft * matrix [3][3] + matrix [4][3]
 						
-						if not (facingWall) then
+						-- TO RIGHT OF PLAYER
+						local oldXright = 1.5
+						local oldYright = 1
+						local oldZright = 0
+						local newXright = oldXright * matrix[1][1] + oldYright * matrix [2][1] + oldZright * matrix [3][1] + matrix [4][1]
+						local newYright = oldXright * matrix[1][2] + oldYright * matrix [2][2] + oldZright * matrix [3][2] + matrix [4][2]
+						local newZright = oldXright * matrix[1][3] + oldYright * matrix [2][3] + oldZright * matrix [3][3] + matrix [4][3]
+						
+						local facingWall, cx, cy, cz, element = processLineOfSight(x, y, z, newX, newY, newZ, true, false, false, true, false)
+						local facingWallleft, lx, ly, lz, lelement = processLineOfSight(x, y, z, newXleft, newYleft, newZleft, true, false, false, true, false)
+						local facingWallright, rx, ry, rz, relement = processLineOfSight(x, y, z, newXright, newYright, newZright, true, false, false, true, false)
+						
+						if not (facingWall) or not (facingWallleft) or not (facingWallright) then
 							outputChatBox("You are not near a wall.", 255, 0, 0)
 							count = 0
 							cooldown = 1

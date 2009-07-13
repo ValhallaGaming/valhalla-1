@@ -40,7 +40,12 @@ function cVehicleInventory(button, state)
 				
 				local items = getElementData(localPlayer, "items")
 				
-				for i = 1, 10 do
+				local slots = 10
+				if (exports.global:cdoesPlayerHaveItem(getLocalPlayer(), 48, -1)) then
+					slots = 20
+				end
+				
+				for i = 1, slots do
 					local itemID = tonumber(gettok(items, i, string.byte(',')))
 					if (itemID~=nil) then
 						local itemName = exports.global:cgetItemName(itemID)
@@ -113,6 +118,11 @@ function moveItemToVehicle(button, state)
 			local itemID = tonumber(gettok(items, row+1, string.byte(',')))
 			local itemValue = tonumber(gettok(itemvalues, row+1, string.byte(',')))
 			local itemName = exports.global:cgetItemName(itemID)
+			
+			outputChatBox(tostring(row+1))
+			--outputChatBox(tostring(itemID))
+			--outputChatBox(tostring(itemValue))
+			outputChatBox(tostring(itemName))
 			
 			if (itemID==48) then -- BACKPACK
 				outputChatBox("This item cannot be stored in a vehicle.", 255, 0, 0)

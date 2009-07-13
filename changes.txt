@@ -1,6 +1,9 @@
 ---
 SQL
 ---
+-- New Item Stevies business card
+INSERT INTO items SET id='55', item_name='Business Card', item_description='Steven Pullman - LV Freight Depot Tel: 081016';
+
 -- columns
 
 to new columns in characters, "stevie" and "hunter", both int, 1 character long and defualt to 0.
@@ -32,6 +35,13 @@ Scripts in "unfinished code" need to be completed, checked and added to the corr
 - license-system
 	- c_license
 	- s_license
+
+- item-system
+	- s_item_system
+	- c_item_system
+
+- globals
+	-c_item_global
 
 --------------------
 Jack's changes.

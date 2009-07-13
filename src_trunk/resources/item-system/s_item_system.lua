@@ -365,6 +365,9 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 			y = y - math.cos( math.rad( rot-180 ) ) * 1
 			
 			triggerEvent("dropItem", source, itemID, itemValue, itemName, x, y, z, groundz-0.3, nil, nil, true)
+		elseif (itemID==55) then -- Stevie's business card
+			exports.global:sendLocalMeAction(source, "looks at a piece of paper.")
+			outputChatBox("The card reads: 'Steven Pullman - L.V. Freight Depot, Tel: 081016'", source, 255, 51, 102)
 		else
 			outputChatBox("Error 800001 - Report on http://bugs.valhallagaming.net", source, 255, 0, 0)
 		end

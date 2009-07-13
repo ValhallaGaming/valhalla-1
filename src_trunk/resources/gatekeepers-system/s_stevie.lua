@@ -26,9 +26,6 @@ addEventHandler("onResourceStop", getResourceRootElement(getThisResource()), clo
 -- //			MYSQL END			 //
 -- ////////////////////////////////////
 
--- new item
--- INSERT INTO items SET id='??ItemID', item_name='Business Card', item_description='Steven Pullman - L.V. Freight Depot, Tel: 081016';
-
 --function timeCheck(res)
 	--if (res==getThisResource()) then
 		--local realTime = getRealTime()
@@ -289,15 +286,12 @@ function stevieSuccess_S()
 	exports.global:removeAnimation(source)
 	setElementData (stevie, "activeConvo", 0) -- set the NPCs conversation state to not active so others can begin to talk to him.
 	
-	-- set the player to a friend of stevie in the sql "stevie","1".
-	
 	exports.global:sendLocalMeAction( source,"takes Stevie's business card.")
 	
 	-- Give the player an item. Name = "Business card"  Description = "Steven Pullman, L.V. Freight Depot, Tel: 081016"  !NEEDS NEW ITEM!
-	exports.global:givePlayerItem(source, 1, 1) -- change the ID.
+	exports.global:givePlayerItem(source, 55, 1) -- change the ID.
 	
 	-- set the players "stevie" stat to "1" meaning they have met him and successfully made it through the conversation.
-	
 	setElementData(source, "stevie", 1)
 	mysql_query(handler, "UPDATE characters SET stevie='1' WHERE charactername='" .. mysql_escape_string(handler, getPlayerName(source)) .. "' LIMIT 1") -- NOT WORKING
 end

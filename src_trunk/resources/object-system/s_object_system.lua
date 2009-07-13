@@ -109,7 +109,7 @@ function getNearbyObjects(thePlayer, commandName)
 		for k, theObject in ipairs(exports.pool:getPoolElementsByType("object")) do
 			local dbid = getElementData(theObject, "dbid")
 			if (dbid) then
-				local x, y, z = getElementPosition(theColshape)
+				local x, y, z = getElementPosition(theObject)
 				local distance = getDistanceBetweenPoints2D(posX, posY, posZ, x, y, z)
 				if (distance<=10) then
 					local modelid = getElementModel(theObject)

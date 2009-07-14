@@ -6,15 +6,20 @@ pubchannel = "#mta"
 password = "adminmtavg"
 
 conn = nil
+conn2 = nil
 timer = nil
+useSecond = false
 
 function initIRC()
 	ircInit()
 	conn = ircOpen(server, port, username, channel, password)
+	conn2 = ircOpen(server, port, username, channel, password)
+	
 	sendMessage("Server Started.")
 	displayStatus()
-	timer = setTimer(displayStatus, 600000, 0)
+	timer = setTimer(displayStatus, 300000, 0)
 	ircJoin(conn, pubchannel)
+	ircJoin(conn2, pubchannel)
 end
 addEventHandler("onResourceStart", getResourceRootElement(getThisResource()), initIRC)
 
@@ -50,7 +55,12 @@ function sendMessage(message)
 	end
 	
 	outputDebugString(tostring(message))
-	ircMessage(conn, channel, "[" .. hour .. ":" .. mins .. "] " .. tostring(message))
+	
+	if not (useSecond) then
+		ircMessage(conn, channel, "[" .. hour .. ":" .. mins .. "] " .. tostring(message))
+	else
+		ircMessage(conn2, channel, "[" .. hour .. ":" .. mins .. "] " .. tostring(message))
+	end
 end
 
 function displayStatus()
@@ -71,5 +81,10 @@ function displayStatus()
 	end
 		
 	local output = servername .. " - " .. playerCount .. "/" .. maxPlayers .. "(" .. math.ceil((playerCount/maxPlayers)*100) .. "%) - " .. ip .. " - GameMode: Roleplay - Average Ping: " .. averageping .. "."
-	ircMessage(conn, channel, output)
+	
+	if not (useSecond) then
+		ircMessage(conn, channel, output)
+	else
+		ircMessage(conn2, channel, output)
+	end
 end

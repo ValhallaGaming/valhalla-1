@@ -98,12 +98,13 @@ function dumpTruckLoad()
 					marker = createMarker(x, y, z, "cylinder", 4, 255, 127, 255, 150)
 					colshape = createColCircle(x, y, z, 4)
 					
-					-- end marker
-					endblip = createBlip(2836, 975, 9.75, 0, 4, 0, 255, 0)
-					endmarker = createMarker(2836, 975, 9.75, "cylinder", 4, 0, 255, 0, 150)
-					endcolshape = createColCircle(2836, 975, 9.75, 4)
-					addEventHandler("onClientColShapeHit", endcolshape, endTruckJob, false)
-				
+					if not(endblip)then
+						-- end marker
+						endblip = createBlip(2836, 975, 9.75, 0, 4, 0, 255, 0)
+						endmarker = createMarker(2836, 975, 9.75, "cylinder", 4, 0, 255, 0, 150)
+						endcolshape = createColCircle(2836, 975, 9.75, 4)
+						addEventHandler("onClientColShapeHit", endcolshape, endTruckJob, false)
+					end				
 					jobstate = 3
 				else
 					outputChatBox("#FF0066You are not at your #FF66CCdrop off point#FF0066.", 255, 0, 0, true)

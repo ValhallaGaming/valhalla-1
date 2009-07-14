@@ -43,6 +43,9 @@ Scripts in "unfinished code" need to be completed, checked and added to the corr
 - globals
 	-c_item_global
 
+- realism-system
+	-s_alarms
+
 --------------------
 Jack's changes.
 -------------------

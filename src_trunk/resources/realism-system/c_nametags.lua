@@ -71,7 +71,7 @@ function renderNametags()
 									dxDrawRectangle(sx-offset, sy+5, hpsize/distance, 10 / distance, color, false)
 									dxDrawRectangle((sx-offset)+(hpsize/distance), sy+5, barsize/distance, 10 / distance, tocolor(162, 162, 162, 100), false)
 								else
-									dxDrawRectangle(sx-offset, sy+5, hpsize/distance-5, 10 / distance-3, tocolor(0, 255, 0, 130), false)
+									dxDrawRectangle(sx-offset, sy+5, hpsize/distance-5, 10 / distance-3, color, false)
 									dxDrawRectangle((sx-offset)+(hpsize/distance-5), sy+5, barsize/distance-5, 10 / distance-3, tocolor(162, 162, 162, 100), false)
 								end
 							end

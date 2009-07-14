@@ -596,7 +596,7 @@ function showFactionList(factions)
 				factionType = "Medical"
 			elseif (factionType==5) then
 				factionType = "Other"
-			elseif (factionType==5) then
+			elseif (factionType==6) then
 				factionType = "News"
 			end
 			

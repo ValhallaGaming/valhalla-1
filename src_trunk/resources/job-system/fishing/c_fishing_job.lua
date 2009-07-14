@@ -19,7 +19,7 @@ function castLine()
 				outputChatBox("You must be on a boat to fish.", 255, 0, 0)
 			else
 				local x, y, z = getElementPosition(getLocalPlayer())	
-				if (x < 3000) or (y > 4000) then -- Are they out at sea.
+				if (x < 3000) and ( y < 3000) then -- Are they out at sea.
 					outputChatBox("You must be out at sea to fish.", 255, 0, 0)
 				else
 					if (catchTimer) then -- Are they already fishing?

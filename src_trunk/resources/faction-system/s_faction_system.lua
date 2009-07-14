@@ -909,7 +909,7 @@ function payAllWages()
 						setElementData(value, "bankmoney", bankmoney+unemployedPay+interest+profit+donatormoney)
 						
 						outputChatBox("~-~-~-~-~-~-~-~~-~-~-~-~ PAY SLIP ~-~-~-~-~-~-~-~~-~-~-~-~", value, 255, 194, 14)
-						outputChatBox("    State Benefits: $" .. pay .., value, 255, 194, 14)
+						outputChatBox("    State Benefits: $" .. pay, value, 255, 194, 14)
 						outputChatBox("    Business Profit: $" .. profit, value, 255, 194, 14)
 						outputChatBox("    Bank Interest (" .. interestrate*1000 .. "%): $" .. interest, value, 255, 194, 14)
 						if (donator>0) then

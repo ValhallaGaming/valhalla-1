@@ -1011,3 +1011,153 @@ function localCarWhisper(thePlayer, commandName, ...)
 	end
 end
 addCommandHandler("cw", localCarWhisper, false, false)
+
+------------------
+-- News Faction --
+------------------
+-- /n(ews)
+function newsMessage(thePlayer, commandName, ...)
+	local logged = getElementData(thePlayer, "loggedin")
+	
+	if (logged==1) then
+		local theTeam = getPlayerTeam(thePlayer)
+		local factionType = getElementData(theTeam, "type")
+		
+		if(factionType==6)then -- news faction
+			
+			if not(...)then
+				outputChatBox("SYNTAX: /" .. commandName .. " [Message]", thePlayer, 255, 194, 14)
+			else
+				message = table.concat({...}, " ")
+				local name = string.gsub(getPlayerName(thePlayer), "_", " ")
+				for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
+						
+					if (getElementData(value, "loggedin")==1) then
+							
+						if not(getElementData(value, "tognews")==1) then
+							outputChatBox("[NEWS] ".. name .." says: ".. message, value, 200, 100, 200)
+						end
+					end
+				end
+			end
+		end
+	end
+end
+addCommandHandler("n", newsMessage, false, false)
+addCommandHandler("news", newsMessage, false, false)
+
+-- /tognews
+function togNews(thePlayer, commandName)
+	local logged = getElementData(thePlayer, "loggedin")
+	
+	if (logged==1) then
+		local newsTog = getElementData(thePlayer, "tognews")
+		
+		if (newsTog~=1) then
+			outputChatBox("/news disabled.", thePlayer, 255, 194, 14)
+			setElementData(thePlayer, "tognews", 1)
+		else
+			outputChatBox("/news enabled.", thePlayer, 255, 194, 14)
+			setElementData(thePlayer, "tognews", 0)
+		end
+	end
+end
+addCommandHandler("tognews", togNews, false, false)
+
+
+-- /startinterview
+function StartInterview(thePlayer, commandName, targetPartialPlayer)
+	local logged = getElementData(thePlayer, "loggedin")
+	if (logged==1) then
+		local theTeam = getPlayerTeam(thePlayer)
+		local factionType = getElementData(theTeam, "type")
+		if(factionType==6)then -- news faction
+			if not (targetPartialPlayer) then
+				outputChatBox("SYNTAX: /" .. commandName .. " [Player Partial Nick]", thePlayer, 255, 194, 14)
+			else
+				local targetPlayer = exports.global:findPlayerByPartialNick(targetPartialPlayer)
+				if not(targetPlayer) then
+					outputChatBox("Player not found.", thePlayer, 255, 255, 0)
+				else
+					local targetLogged = getElementData(targetPlayer, "loggedin")
+					if (targetLogged==1) then
+						if(getElementData(targetPlayer,"interview"))then
+							outputChatBox("This player is already being interviewed.", thePlayer, 255, 0, 0)
+						else
+							setElementData(targetPlayer, "interview", true)
+							local playerName = string.gsub(getPlayerName(thePlayer), "_", " ")
+							local targetPlayerName = string.gsub(getPlayerName(targetPlayer), "_", " ")
+							outputChatBox(playerName .." has offered you for an interview.", targetPlayer, 0, 255, 0)
+							outputChatBox("((Use /i to talk during the interview.))", targetPlayer, 0, 255, 0)
+							local NewsFaction = getPlayersInTeam(getPlayerTeam(thePlayer))
+							for key, value in ipairs(NewsFaction) do
+								outputChatBox("((".. playerName .." has invited " .. targetPlayerName .. " for an interview.))", value, 0, 255, 0)
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+end
+addCommandHandler("interview", StartInterview, false, false)
+
+-- /endinterview
+function endInterview(thePlayer, commandName, targetPartialPlayer)
+	local logged = getElementData(thePlayer, "loggedin")
+	if (logged==1) then
+		local theTeam = getPlayerTeam(thePlayer)
+		local factionType = getElementData(theTeam, "type")
+		if(factionType==6)then -- news faction
+			if not (targetPartialPlayer) then
+				outputChatBox("SYNTAX: /" .. commandName .. " [Player Partial Nick]", thePlayer, 255, 194, 14)
+			else
+				local targetPlayer = exports.global:findPlayerByPartialNick(targetPartialPlayer)
+				if not(targetPlayer) then
+					outputChatBox("Player not found.", thePlayer, 255, 255, 0)
+				else
+					local targetLogged = getElementData(targetPlayer, "loggedin")
+					if (targetLogged==1) then
+						if not(getElementData(targetPlayer,"interview"))then
+							outputChatBox("This player is not being interviewed.", thePlayer, 255, 0, 0)
+						else
+							removeElementData(targetPlayer, "interview")
+							local playerName = string.gsub(getPlayerName(thePlayer), "_", " ")
+							local targetPlayerName = string.gsub(getPlayerName(targetPlayer), "_", " ")
+							outputChatBox(playerName .." has ended your interview.", targetPlayer, 255, 0, 0)
+						
+							local NewsFaction = getPlayersInTeam(getPlayerTeam(thePlayer))
+							for key, value in ipairs(NewsFaction) do
+								outputChatBox("((".. playerName .." has ended " .. targetPlayerName .. "'s interview.))", value, 255, 0, 0)
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+end
+addCommandHandler("endinterview", endInterview, false, false)
+
+-- /i
+function interviewChat(thePlayer, commandName, ...)
+	local logged = getElementData(thePlayer, "loggedin")
+	if (logged==1) then
+		if(getElementData(thePlayer, "interview"))then			
+			if not(...)then
+				outputChatBox("SYNTAX: /" .. commandName .. "[Message]", thePlayer, 255, 194, 14)
+			else
+				message = table.concat({...}, " ")
+				local name = string.gsub(getPlayerName(thePlayer), "_", " ")
+				for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
+					if (getElementData(value, "loggedin")==1) then
+						if not (getElementData(value, "tognews")==1) then
+							outputChatBox("[NEWS] Interview Guest " .. name .." says: ".. message, value, 200, 100, 200)
+						end
+					end
+				end
+			end
+		end
+	end
+end
+addCommandHandler("i", interviewChat, false, false)

@@ -3,7 +3,7 @@ local count = 0
 function createTimer(res)
 	if (res==getThisResource()) then
 		local selectionTime = math.random(300000, 1200000) -- random time between 5 and 20 minutes
-		local selectPlayerTimer = setTimer(selectPlayer, 10000, 1)
+		local selectPlayerTimer = setTimer(selectPlayer, selectionTime, 1)
 	end
 end
 addEventHandler("onResourceStart", getRootElement(), createTimer)
@@ -26,33 +26,32 @@ function selectPlayer()
 				count = 0
 			end
 		else
-			huntersFriend = tonumber(mysql_query(handler, "SELECT hunter FROM characters WHERE charactername='" .. mysql_escape_string(handler, getPlayerName(theChosenOne)) .."'"))
+			local query = mysql_query(handler, "SELECT hunter FROM characters WHERE charactername='" .. mysql_escape_string(handler, getPlayerName(theChosenOne)) .."'")
+			local huntersFriend = tonumber(mysql_result(query, 1, 1))
+			mysql_free_result(query)
+			
 			if (huntersFriend == 0) then  -- are they a friend of hunter?
 				if (count<10) then -- check 10 players before resetting the timer.
 					selectPlayer() -- if this player is not a friend of Hunter's go back and select another player
-					outputDebugString("Player not a friend")
 				else
 					local selectionTime = math.random(1200000,3600000) -- random time between 20 and 60 minutes
 					selectPlayerTimer = setTimer(selectPlayer, selectionTime, 1)
-					outputDebugString("no players found")
 					count = 0
 				end
 			else
 				if (getElementData(theChosenOne,"missionModel")) then -- player is already on car jacking mission.
 					if (count<10) then
 						selectPlayer() -- if this player is already on a car jacking mission go back and select another player.
-						outputDebugString("Player already has a mission.")
 					else
 						local selectionTime = math.random(1200000,3600000) -- random time between 20 and 60 minutes
 						selectPlayerTimer = setTimer(selectPlayer, selectionTime, 1)
-						outputDebugString("no players found")
 						count = 0
 					end
 				else				
 					count = 0
 					
 					triggerClientEvent(theChosenOne, "createHunterMarkers", theChosenOne)
-					outputDebugString(getPlayerName(theChosenOne).." was selected the car jacking mission.")
+					--outputDebugString(getPlayerName(theChosenOne).." was selected the car jacking mission.")
 					-- start the selectPlayerTimer again for the next person.
 					local selectionTime = math.random(1200000,3600000) -- random time between 20 and 60 minutes
 					selectPlayerTimer = setTimer(selectPlayer, selectionTime, 1)

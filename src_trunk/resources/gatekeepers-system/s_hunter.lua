@@ -210,7 +210,7 @@ function statement11_S()
 	end
 	destroyElement (chatSphere)
 	setElementData (hunter, "activeConvo", 0)
-	mysql_query(handler, "UPDATE characters SET hunter='1' WHERE charactername='" .. mysql_escape_string(handler, getPlayerName(source)) .. "' LIMIT 1") -- NOT WORKING
+	mysql_query(handler, "UPDATE characters SET hunter='1' WHERE charactername='" .. mysql_escape_string(handler, getPlayerName(source)) .. "' LIMIT 1")
 
 end
 addEvent( "hunterStatement11ServerEvent", true )

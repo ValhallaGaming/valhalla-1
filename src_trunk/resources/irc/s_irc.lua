@@ -89,7 +89,7 @@ function displayStatus()
 	if not (useSecond) then
 		useSecond = true
 		ircMessage(conn, channel, output)
-		ircMessage(conn, channeladmins, output)
+		ircMessage(conn2, channeladmins, output)
 	else
 		useSecond = false
 		ircMessage(conn2, channel, output)

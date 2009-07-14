@@ -12,6 +12,11 @@ esColShape = createColSphere(1581.2067871094, 1790.4083251953, 2083.3837890625, 
 exports.pool:allocateElement(esColShape)
 setElementInterior(esColShape, 4)
 
+fbiColShape = createColSphere(222.822265625, 123.501953125, 1010.2117919922, 5)
+exports.pool:allocateElement(fbiColShape)
+setElementDimension(pdColShape2, 795)
+setElementInterior(fbiColShape, 10)
+
 --- DUTY TYPE
 -- 0 = NONE
 -- 1 = SWAT
@@ -19,6 +24,7 @@ setElementInterior(esColShape, 4)
 -- 3 = Cadet
 -- 4 = ES
 -- 5 = FIRE ES
+-- 6 = FBI
 
 -- ES
 function lvesHeal(thePlayer, commandName, targetPartialNick, price)
@@ -427,6 +433,58 @@ function cadetduty(thePlayer, commandName)
 					setElementData(thePlayer, "duty", 0)
 					
 					exports.global:takePlayerItem(thePlayer, 45, -1)
+					
+					local casualskin = getElementData(thePlayer, "casualskin")
+					setPedSkin(thePlayer, casualskin)
+				end
+			end
+		end
+	end
+end
+addCommandHandler("cadet", cadetduty, false, false)
+
+function fbiduty(thePlayer, commandName)	
+	local logged = getElementData(thePlayer, "loggedin")
+	
+	if (logged==1) then
+		if (isElementWithinColShape(thePlayer, fbiColShape)) then
+		
+			local duty = tonumber(getElementData(thePlayer, "duty"))
+			local theTeam = getPlayerTeam(thePlayer)
+			local factionType = getElementData(theTeam, "type")
+			
+			if (factionType==2) then
+				if (duty==0) then
+					local dutyskin = getElementData(thePlayer, "dutyskin")
+					
+					if (dutyskin==-1) then
+						outputChatBox("You have not picked a uniform yet, press F4 to pick a uniform.", thePlayer, 255, 0, 0)
+					else
+						outputChatBox("You are now on FBI Duty.", thePlayer)
+						exports.global:sendLocalMeAction(thePlayer, "takes their FBI gear from their locker.")
+						
+						setElementData(thePlayer, "casualskin", getPedSkin(thePlayer))
+						
+						takeAllWeapons(thePlayer)
+						
+						setPedArmor(thePlayer, 100)
+						setElementHealth(thePlayer, 100)
+						
+						giveWeapon(thePlayer, 22, 1000) -- Colt 45
+						exports.global:givePlayerItem(thePlayer, 45, 999) -- Cuffs
+						
+						setPedSkin(thePlayer, dutyskin)
+						
+						setElementData(thePlayer, "duty", 6)
+					end
+				elseif (duty==6) then -- FBI
+					takeAllWeapons(thePlayer)
+					outputChatBox("You are now off FBI duty.", thePlayer)
+					exports.global:sendLocalMeAction(thePlayer, "puts their FBI gear into their locker.")
+					setPedArmor(thePlayer, 0)
+					setElementData(thePlayer, "duty", 0)
+					
+					exports.global:takePlayerItem(thePlayer, 45, 999)
 					
 					local casualskin = getElementData(thePlayer, "casualskin")
 					setPedSkin(thePlayer, casualskin)

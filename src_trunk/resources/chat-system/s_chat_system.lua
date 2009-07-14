@@ -235,12 +235,13 @@ function departmentradio(thePlayer, commandName, ...)
 	if (theTeam) then
 		local teamID = tonumber(getElementData(theTeam, "id"))
 
-		if (teamID==1 or teamID==2) then
+		if (teamID==1 or teamID==2 or teamID==4) then
 			if (...) then
 				local message = table.concat({...}, " ")
 				
 				local PDFaction = getPlayersInTeam(getTeamFromName("Las Venturas Metropolitan Police Department"))
 				local ESFaction = getPlayersInTeam(getTeamFromName("Las Venturas Emergency Services"))
+				local FBIFaction = getPlayersInTeam(getTeamFromName("Federal Bureau of Investigation"))
 				local playerName = string.gsub(getPlayerName(thePlayer), "_", " ")
 				
 				for key, value in ipairs(PDFaction) do
@@ -248,6 +249,10 @@ function departmentradio(thePlayer, commandName, ...)
 				end
 				
 				for key, value in ipairs(ESFaction) do
+					outputChatBox("[DEPARTMENT RADIO] " .. playerName .. " says: " .. message, value, 0, 102, 255)
+				end
+				
+				for key, value in ipairs(FBIFaction) do
 					outputChatBox("[DEPARTMENT RADIO] " .. playerName .. " says: " .. message, value, 0, 102, 255)
 				end
 			else

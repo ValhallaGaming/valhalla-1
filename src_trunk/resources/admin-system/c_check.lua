@@ -4,7 +4,7 @@ function CreateCheckWindow()
 	Window = {}
 	Button = {}
 	Label = {}
-	Image = {}
+	--Image = {}
 	Window[1] = guiCreateWindow(28,271,454,248,"Player check.",false)
 	--Button[1] = guiCreateButton(0.3524,0.8387,0.2026,0.0968,"Recon player.",true,Window[1])
 	--addEventHandler( "onClientGUIClick", Button[1], ReconPlayer)
@@ -66,7 +66,7 @@ function CreateCheckWindow()
 	Label[17] = guiCreateLabel(0.6674,0.1935,0.2907,0.0806,"Dimension: N/A",true,Window[1])
 	guiLabelSetVerticalAlign(Label[17],"top")
 	guiLabelSetHorizontalAlign(Label[17],"left",false)
-	Image[1] = guiCreateStaticImage(0.4758,0.1089,0.1278,0.2177,"search.png",true,Window[1])
+	--Image[1] = guiCreateStaticImage(0.4758,0.1089,0.1278,0.2177,"search.png",true,Window[1])
 	guiSetVisible(Window[1], false)
 end
 addEventHandler("onClientResourceStart", getResourceRootElement(getThisResource()),

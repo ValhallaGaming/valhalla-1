@@ -25,7 +25,7 @@ function renderNametags()
 			local reconx = getElementData(localPlayer, "reconx")
 			
 			
-			if (player==localPlayer) and (isElementOnScreen(player)) and ((distance<limitdistance) or reconx) then
+			if (player~=localPlayer) and (isElementOnScreen(player)) and ((distance<limitdistance) or reconx) then
 				local rreconx = getElementData(player, "reconx")
 
 				if not (rreconx) then

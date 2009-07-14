@@ -1,6 +1,7 @@
 server = "irc.gtanet.com"
 port = 6667
 username = "ValhallaGaming"
+username2 = "ValhallaGaming2"
 channel = "#vgmta.admins"
 pubchannel = "#mta"
 password = "adminmtavg"
@@ -13,9 +14,9 @@ useSecond = false
 function initIRC()
 	ircInit()
 	conn = ircOpen(server, port, username, channel, password)
-	conn2 = ircOpen(server, port, username, channel, password)
-	
+
 	sendMessage("Server Started.")
+	conn2 = ircOpen(server, port, username2, channel, password)
 	displayStatus()
 	timer = setTimer(displayStatus, 300000, 0)
 	ircJoin(conn, pubchannel)
@@ -57,8 +58,10 @@ function sendMessage(message)
 	outputDebugString(tostring(message))
 	
 	if not (useSecond) then
+		useSecond = true
 		ircMessage(conn, channel, "[" .. hour .. ":" .. mins .. "] " .. tostring(message))
 	else
+		useSecond = false
 		ircMessage(conn2, channel, "[" .. hour .. ":" .. mins .. "] " .. tostring(message))
 	end
 end
@@ -83,8 +86,10 @@ function displayStatus()
 	local output = servername .. " - " .. playerCount .. "/" .. maxPlayers .. "(" .. math.ceil((playerCount/maxPlayers)*100) .. "%) - " .. ip .. " - GameMode: Roleplay - Average Ping: " .. averageping .. "."
 	
 	if not (useSecond) then
+		useSecond = true
 		ircMessage(conn, channel, output)
 	else
+		useSecond = false
 		ircMessage(conn2, channel, output)
 	end
 end

@@ -24,6 +24,7 @@ function findPlayerByPartialNick(partialNick)
 	local partialNick = string.lower(partialNick)
 
 	local players = exports.pool:getPoolElementsByType("player")
+	local count = 0
 	
 	-- IDS
 	if ((tostring(type(tonumber(partialNick)))) == "number") then
@@ -46,13 +47,15 @@ function findPlayerByPartialNick(partialNick)
 				if ((posEnd-posStart) > matchNickAccuracy) then
 					matchNickAccuracy = posEnd-posStart
 					matchNick = playerName
-					break
+					count = count + 1
 				end
 			end
 		end
 	end
 
 	if(matchNick==nil) then
+		return false
+	elseif (count>1) then
 		return false
 	else
 		local matchPlayer = getPlayerFromNick(matchNick)

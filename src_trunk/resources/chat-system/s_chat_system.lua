@@ -810,11 +810,59 @@ function call911(thePlayer, commandName, ...)
 			end
 			
 			outputChatBox("Thank you for calling the Las Venturas Emergency Dispatch Board. A unit has been dispatched to your location.", thePlayer, 255, 194, 14)
+			
+			local x, y, z = getElementPosition(thePlayer)
+			local chatSphere = createColSphere(x, y, z, 20)
+			exports.pool:allocateElement(chatSphere)
+			local nearbyPlayers = getElementsWithinColShape(chatSphere, "player")
+			local playerName = string.gsub(getPlayerName(thePlayer), "_", " ")
+			local dimension = getElementDimension(thePlayer)
+			local interior = getElementInterior(thePlayer)
+			destroyElement(chatSphere)
+			message = string.gsub(message, "#%x%x%x%x%x%x", "") -- Remove colour codes
+			
+			-- Show chat to console, for admins + log
+			exports.irc:sendMessage("[IC: Local Chat] " .. playerName .. ": " .. message)
+			exports.global:sendLocalMeAction(thePlayer,"dials a number on their cellphone.")
+			for index, nearbyPlayer in ipairs(nearbyPlayers) do
+				local nearbyPlayerDimension = getElementDimension(nearbyPlayer)
+				local nearbyPlayerInterior = getElementInterior(nearbyPlayer)
+				if (nearbyPlayerDimension==dimension) and (nearbyPlayerInterior==interior) then
+					local logged = tonumber(getElementData(nearbyPlayer, "loggedin"))
+					if not (isPedDead(nearbyPlayer)) and (logged==1) then
+						chatSphere = createColSphere(x, y, z, 20*0.2)
+						exports.pool:allocateElement(chatSphere)
+						if isElementWithinColShape(nearbyPlayer, chatSphere) then
+							outputChatBox( "#EEEEEE" .. playerName .. " [Cellphone]: " .. message, nearbyPlayer, 255, 255, 255, true)
+							destroyElement(chatSphere)
+							chatSphere = createColSphere(x, y, z, 20*0.4)
+							exports.pool:allocateElement(chatSphere)
+						elseif isElementWithinColShape(nearbyPlayer, chatSphere) then
+							outputChatBox( "#DDDDDD" .. playerName .. " [Cellphone]: " .. message, nearbyPlayer, 255, 255, 255, true)
+							destroyElement(chatSphere)
+							chatSphere = createColSphere(x, y, z, 20*0.6)
+							exports.pool:allocateElement(chatSphere)
+						elseif isElementWithinColShape(nearbyPlayer, chatSphere) then          
+							outputChatBox( "#CCCCCC" .. playerName .. " [Cellphone]: " .. message, nearbyPlayer, 255, 255, 255, true)
+							destroyElement(chatSphere)
+							chatSphere = createColSphere(x, y, z, 20*0.8)
+							exports.pool:allocateElement(chatSphere)
+						elseif isElementWithinColShape(nearbyPlayer, chatSphere) then
+							outputChatBox( "#BBBBBB" .. playerName .. " [Cellphone]: " .. message, nearbyPlayer, 255, 255, 255, true)
+						else
+							outputChatBox( "#AAAAAA" .. playerName .. " [Cellphone]: " .. message, nearbyPlayer, 255, 255, 255, true)
+						end
+						
+						if (chatSphere) then
+							destroyElement(chatSphere)
+						end
+					end
+				end
+			end
 		end
 	end
 end
 addCommandHandler("911", call911, false, false)
-
 
 -- Taxi Call
 function calltaxi(thePlayer, commandName, ...)

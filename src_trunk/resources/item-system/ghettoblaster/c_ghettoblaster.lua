@@ -1,17 +1,21 @@
 blasters = { }
+local localPlayer = getLocalPlayer()
 
 function elementStreamIn()
 	if (getElementType(source)=="object") then
 		local model = getElementModel(source)
 		if (model==2226) then
 			local x, y, z = getElementPosition(source)
+			local px, py, pz = getElementPosition(localPlayer)
 			
-			local sound = playSound3D("ghettoblaster/loop.mp3", x, y, z, true)
-			blasters[source] = sound
-			setSoundMaxDistance(sound, 20)
-			
-			if (isPedInVehicle(getLocalPlayer())) then
-				setSoundVolume(sound, 0.5)
+			if (getDistanceBetweenPoints3D(x, y, z, px, py, pz)<300) then
+				local sound = playSound3D("ghettoblaster/loop.mp3", x, y, z, true)
+				blasters[source] = sound
+				setSoundMaxDistance(sound, 20)
+				
+				if (isPedInVehicle(getLocalPlayer())) then
+					setSoundVolume(sound, 0.5)
+				end
 			end
 		end
 	end

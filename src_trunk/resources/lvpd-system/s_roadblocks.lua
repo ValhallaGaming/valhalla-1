@@ -75,8 +75,7 @@ function removeAllRoadblocks(thePlayer, commandName)
 			else
 				for i = 1, rbcount do
 					if (roadblocks[i]) then
-						local object = roadblocks[id]
-						exports.pool:deallocateElement(object)
+						local object = roadblocks[i]
 						destroyElement(object)
 						rbcount = rbcount - 1
 					end

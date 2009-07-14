@@ -154,8 +154,10 @@ function resetDrug1Effect()
 	drug1effect = false
 	resetSkyGradient()
 	setTimer(setWeather, 100, 1, weather)
-	for key, value in ipairs(vehicles) do
-		destroyElement(value)
+	if (vehicles) then
+		for key, value in ipairs(vehicles) do
+			destroyElement(value)
+		end
 	end
 	vehicles = nil
 end

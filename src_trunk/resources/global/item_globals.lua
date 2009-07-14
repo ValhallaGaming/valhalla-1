@@ -239,7 +239,7 @@ function takeVehicleItem(theVehicle, itemID, itemValue)
 	if not (items) or not (itemvalues) then -- no items
 		found = false
 	else
-		for i=1, 10 do
+		for i=1, 20 do
 			local token = tonumber(gettok(items, i, string.byte(',')))
 			local vtoken = tonumber(gettok(itemvalues, i, string.byte(',')))
 			

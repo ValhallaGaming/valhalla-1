@@ -12,7 +12,7 @@ height = nil
 race = nil
 
 function clickPlayer(button, state, absX, absY, wx, wy, wz, element)
-	if (element) and (getElementType(element)=="player") and (button=="right") and (state=="down") and (sent==false) and (element~=getLocalPlayer()) then
+	if (element) and (getElementType(element)=="player") and (button=="right") and (state=="down") and (sent==false) and (element==getLocalPlayer()) then
 		local x, y, z = getElementPosition(getLocalPlayer())
 		
 		if (getDistanceBetweenPoints3D(x, y, z, wx, wy, wz)<=5) then

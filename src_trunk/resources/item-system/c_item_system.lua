@@ -22,17 +22,23 @@ function clickItem(button, state, absX, absY, wx, wy, wz, element)
 		local objtype = getElementData(element, "type")
 		local pickedup = getElementData(element, "pickedup")
 		
-		if (objtype) and not (pickedup) then
-			if (objtype=="worlditem") then
-				if (wRightClick) then
-					hideItemMenu()
+		local x, y, z = getElementPosition(getLocalPlayer())
+		
+		if (getDistanceBetweenPoints3D(x, y, z, wx, wy, wz)<10) then
+			if (objtype) and not (pickedup) then
+				if (objtype=="worlditem") then
+					if (wRightClick) then
+						hideItemMenu()
+					end
+					showCursor(true)
+					ax = absX
+					ay = absY
+					item = element
+					showItemMenu()
 				end
-				showCursor(true)
-				ax = absX
-				ay = absY
-				item = element
-				showItemMenu()
 			end
+		else
+			outputChatBox("You are too far away from that item.", 255, 0, 0)
 		end
 	end
 end

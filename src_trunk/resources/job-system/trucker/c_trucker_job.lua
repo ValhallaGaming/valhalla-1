@@ -87,7 +87,7 @@ function dumpTruckLoad()
 					destroyElement(blip)
 					outputChatBox("You completed your trucking run.", 0, 255, 0)
 					routescompleted = routescompleted + 1
-					outputChatBox("#FF9933You can now either return to the warehouse and obtain your wage", 0, 0, 0, true)
+					outputChatBox("#FF9933You can now either return to the #00CC00warehouse #FF9933and obtain your wage", 0, 0, 0, true)
 					outputChatBox("#FF9933or continue onto the next #FF66CCdrop off point#FF9933 and increase your wage.", 0, 0, 0, true)
 					
 					-- next drop off
@@ -99,9 +99,9 @@ function dumpTruckLoad()
 					colshape = createColCircle(x, y, z, 4)
 					
 					-- end marker
-					endblip = createBlip(x, y, z, 0, 4, 255, 0, 255)
-					endmarker = createMarker(x, y, z, "cylinder", 4, 255, 0, 255, 150)
-					endcolshape = createColCircle(x, y, z, 4)
+					endblip = createBlip(2836, 975, 9.75, 0, 4, 0, 255, 0)
+					endmarker = createMarker(2836, 975, 9.75, "cylinder", 4, 0, 255, 0, 150)
+					endcolshape = createColCircle(2836, 975, 9.75, 4)
 					addEventHandler("onClientColShapeHit", endcolshape, endTruckJob, false)
 				
 					jobstate = 3

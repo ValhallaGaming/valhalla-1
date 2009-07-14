@@ -533,7 +533,7 @@ addEventHandler("cguiInvitePlayer", getRootElement(), callbackInvitePlayer)
 function createFaction(thePlayer, commandName, factionType, ...)
 	if (exports.global:isPlayerLeadAdmin(thePlayer)) then
 		if not (...) then
-			outputChatBox("SYNTAX: /" .. commandName .. " [Faction Type 0=GANG, 1=MAFIA, 2=LAW, 3=GOV, 4=MED, 5=OTHER][Faction Name]", thePlayer, 255, 194, 14)
+			outputChatBox("SYNTAX: /" .. commandName .. " [Faction Type 0=GANG, 1=MAFIA, 2=LAW, 3=GOV, 4=MED, 5=OTHER, 6=NEWS][Faction Name]", thePlayer, 255, 194, 14)
 		else
 			factionName = table.concat({...}, " ")
 			factionType = tonumber(factionType)
@@ -793,7 +793,7 @@ function payAllWages()
 				if (factionType==2) or (factionType==3) or (factionType==4) then -- Factions with wages
 					local username = getPlayerName(value)
 					
-					local factionRankresult = mysql_query(handler, "SELECT faction_rank FROM characters WHERe charactername='" .. mysql_escape_string(handler, username) .. "' LIMIT 1")
+					local factionRankresult = mysql_query(handler, "SELECT faction_rank FROM characters WHERE charactername='" .. mysql_escape_string(handler, username) .. "' LIMIT 1")
 					local factionRank = mysql_result(factionRankresult, 1, 1)
 					mysql_free_result(factionRankresult)
 					
@@ -909,14 +909,14 @@ function payAllWages()
 						setElementData(value, "bankmoney", bankmoney+unemployedPay+interest+profit+donatormoney)
 						
 						outputChatBox("~-~-~-~-~-~-~-~~-~-~-~-~ PAY SLIP ~-~-~-~-~-~-~-~~-~-~-~-~", value, 255, 194, 14)
-						outputChatBox("    State Benefits: " .. pay .. "$", value, 255, 194, 14)
-						outputChatBox("    Business Profit: " .. profit .. "$", value, 255, 194, 14)
-						outputChatBox("    Bank Interest (" .. interestrate*1000 .. "%): " .. interest .. "$", value, 255, 194, 14)
+						outputChatBox("    State Benefits: $" .. pay .., value, 255, 194, 14)
+						outputChatBox("    Business Profit: $" .. profit, value, 255, 194, 14)
+						outputChatBox("    Bank Interest (" .. interestrate*1000 .. "%): $" .. interest, value, 255, 194, 14)
 						if (donator>0) then
-							outputChatBox("    Donator Money: " .. donatormoney .. "$", value, 255, 194, 14)
+							outputChatBox("    Donator Money: $" .. donatormoney, value, 255, 194, 14)
 						end
 						outputChatBox("----------------------------------------------------------", value, 255, 194, 14)
-						outputChatBox("  Gross Income: " .. unemployedPay+profit+interest+donatormoney .. "$ (Wire-Transferred to bank)", value, 255, 194, 14)
+						outputChatBox("  Gross Income: $" .. unemployedPay+profit+interest+donatormoney .. "(Wire-Transferred to bank)", value, 255, 194, 14)
 					end
 				end
 			else

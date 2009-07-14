@@ -596,6 +596,8 @@ function showFactionList(factions)
 				factionType = "Medical"
 			elseif (factionType==5) then
 				factionType = "Other"
+			elseif (factionType==5) then
+				factionType = "News"
 			end
 			
 			local row = guiGridListAddRow(gridFactions)

@@ -90,18 +90,6 @@ function fishOnLine()
 	
 	local lineSnap = math.random(1,10) -- Chances of line snapping 1/10. Fish over 100lbs are twice as likely to snap your line.
 	if (fishSize>=100)then
-		if (lineSnap > 8) then
-			outputChatBox("The monster of a fish has broken your line. You need to buy a new fishing rod to continue fishing.", 255, 0, 0)
-			triggerServerEvent("lineSnap",getLocalPlayer())
-			killTimer (resetTimer)
-			killTimer (gotAwayTimer)
-			destroyElement(pFish)
-			pFish = nil
-			unbindKey("-", "down", reelItIn)
-			unbindKey("=", "down", reelItIn)
-			fishSize = 0
-		end
-	else
 		if (lineSnap > 9) then
 			outputChatBox("The monster of a fish has broken your line. You need to buy a new fishing rod to continue fishing.", 255, 0, 0)
 			triggerServerEvent("lineSnap",getLocalPlayer())

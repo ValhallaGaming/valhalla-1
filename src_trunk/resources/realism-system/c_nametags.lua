@@ -25,7 +25,7 @@ function renderNametags()
 			local reconx = getElementData(localPlayer, "reconx")
 			
 			
-			if (player~=localPlayer) and (isElementOnScreen(player)) and ((distance<limitdistance) or reconx) then
+			if (player==localPlayer) and (isElementOnScreen(player)) and ((distance<limitdistance) or reconx) then
 				local rreconx = getElementData(player, "reconx")
 
 				if not (rreconx) then
@@ -48,13 +48,13 @@ function renderNametags()
 								if (distance>2) then distance = 2 end
 								if (reconx) then distance = 1 end
 								
-								local offset = 65 / distance
+								local offset = 45 / distance
 								
 								-- DRAW BG
-								dxDrawRectangle(sx-offset-5, sy, 150 / distance, 20 / distance, tocolor(0, 0, 0, 100), false)
+								dxDrawRectangle(sx-offset-5, sy, 95 / distance, 20 / distance, tocolor(0, 0, 0, 100), false)
 								
 								-- DRAW HEALTH
-								local width = 140
+								local width = 85
 								local hpsize = (width / 100) * health
 								local barsize = (width / 100) * (100-health)
 								
@@ -83,13 +83,13 @@ function renderNametags()
 							local armor = getPedArmor(player)
 							
 							if (armor>0) then
-								local offset = 65 / distance
+								local offset = 45 / distance
 								
 								-- DRAW BG
-								dxDrawRectangle(sx-offset-5, sy, 150 / distance, 20 / distance, tocolor(0, 0, 0, 100), false)
+								dxDrawRectangle(sx-offset-5, sy, 95 / distance, 20 / distance, tocolor(0, 0, 0, 100), false)
 								
 								-- DRAW HEALTH
-								local width = 140
+								local width = 85
 								local armorsize = (width / 100) * armor
 								local barsize = (width / 100) * (100-armor)
 								

@@ -1,8 +1,9 @@
-server = "irc.gtanet.com"
+server = "irc.multitheftauto.com"
 port = 6667
 username = "ValhallaGaming"
 username2 = "ValhallaGaming2"
-channel = "#vgmta.admins"
+channel = "#Valhalla.echo"
+channeladmins = "#Valhalla.admins"
 pubchannel = "#mta"
 password = "adminmtavg"
 
@@ -18,7 +19,7 @@ function initIRC()
 	sendMessage("Server Started.")
 	conn2 = ircOpen(server, port, username2, channel, password)
 	displayStatus()
-	timer = setTimer(displayStatus, 300000, 0)
+	timer = setTimer(displayStatus, 600000, 0)
 	ircJoin(conn, pubchannel)
 	ircJoin(conn2, pubchannel)
 end
@@ -88,8 +89,10 @@ function displayStatus()
 	if not (useSecond) then
 		useSecond = true
 		ircMessage(conn, channel, output)
+		ircMessage(conn, channeladmins, output)
 	else
 		useSecond = false
 		ircMessage(conn2, channel, output)
+		ircMessage(conn, channeladmins, output)
 	end
 end

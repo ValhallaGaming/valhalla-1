@@ -53,9 +53,7 @@ function findPlayerByPartialNick(partialNick)
 		end
 	end
 
-	if(matchNick==nil) then
-		return false
-	elseif (count>1) then
+	if(matchNick==nil) or (count>1) then
 		return false
 	else
 		local matchPlayer = getPlayerFromNick(matchNick)

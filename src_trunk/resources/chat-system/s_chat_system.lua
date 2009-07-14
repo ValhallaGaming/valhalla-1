@@ -365,7 +365,7 @@ function pmPlayer(thePlayer, commandName, who, ...)
 					outputChatBox("Player is ignoring whispers!", thePlayer, 255, 255, 0)
 				end
 			else
-				outputChatBox("Player not found.", thePlayer, 255, 255, 0)
+				outputChatBox("Player not found or multiple were found.", thePlayer, 255, 255, 0)
 			end
 		end
 end
@@ -930,7 +930,7 @@ function localWhisper(thePlayer, commandName, targetPlayerNick, ...)
 			local targetPlayer = exports.global:findPlayerByPartialNick(targetPlayerNick)
 			
 			if not (targetPlayer) then
-				outputChatBox("Player not found.", thePlayer, 255, 0, 0)
+				outputChatBox("Player not found or multiple were found.", thePlayer, 255, 0, 0)
 			else
 				local x, y, z = getElementPosition(thePlayer)
 				local tx, ty, tz = getElementPosition(targetPlayer)

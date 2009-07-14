@@ -102,7 +102,7 @@ function adminReportUI(button, state)
 				
 				tPlayerName = guiCreateEdit(0.525, 0.14, 0.25, 0.05, "Firstname_Lastname", true, wHelp)
 				
-				lNameCheck = guiCreateLabel(0.525, 0.2, 1.0, 0.3, "Player Not Found.", true, wHelp)
+				lNameCheck = guiCreateLabel(0.525, 0.2, 1.0, 0.3, "Player not found or multiple were found.", true, wHelp)
 				guiSetFont(lNameCheck, "default-bold-small")
 				guiLabelSetColor(lNameCheck, 255, 0, 0)
 				addEventHandler("onClientGUIChanged", tPlayerName, checkNameExists)
@@ -186,7 +186,7 @@ function checkNameExists(theEditBox)
 		guiMemoSetReadOnly(tReport, false)
 		guiSetEnabled(bSubmitReport, true)
 	elseif (count==0) then
-		guiSetText(lNameCheck, "Player Not Found.")
+		guiSetText(lNameCheck, "Player not found or multiple were found.")
 		guiLabelSetColor(lNameCheck, 255, 0, 0)
 		guiMemoSetReadOnly(tReport, true)
 		guiSetEnabled(bSubmitReport, false)

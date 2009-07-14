@@ -27,7 +27,7 @@ function lvesHeal(thePlayer, commandName, targetPartialNick, price)
 	else
 	    local targetPlayer = exports.global:findPlayerByPartialNick(targetPartialNick)
 		if not (targetPlayer) then -- is the player online?
-			outputChatBox("Player not found.", thePlayer, 255, 0, 0)
+			outputChatBox("Player not found or multiple were found.", thePlayer, 255, 0, 0)
 	    else
 		    local logged = getElementData(thePlayer, "loggedin")
 	

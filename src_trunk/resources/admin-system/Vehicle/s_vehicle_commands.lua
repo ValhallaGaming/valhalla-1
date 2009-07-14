@@ -343,7 +343,7 @@ function addUpgrade(thePlayer, commandName, target, upgradeID)
 			local targetPlayer = exports.global:findPlayerByPartialNick(target)
 			
 			if not (targetPlayer) then
-				outputChatBox("Player not found.", thePlayer, 255, 0, 0)
+				outputChatBox("Player not found or multiple were found.", thePlayer, 255, 0, 0)
 			else
 				if not (isPedInVehicle(targetPlayer)) then
 					outputChatBox("That player is not in a vehicle.", thePlayer, 255, 0, 0)
@@ -394,7 +394,7 @@ function fixPlayerVehicle(thePlayer, commandName, target)
 			local targetPlayer = exports.global:findPlayerByPartialNick(target)
 			
 			if not (targetPlayer) then
-				outputChatBox("Player not found.", thePlayer, 255, 0, 0)
+				outputChatBox("Player not found or multiple were found.", thePlayer, 255, 0, 0)
 			else
 				local logged = getElementData(targetPlayer, "loggedin")
 				if (logged==0) then
@@ -427,7 +427,7 @@ function fixPlayerVehicleVisual(thePlayer, commandName, target)
 			local targetPlayer = exports.global:findPlayerByPartialNick(target)
 			
 			if not (targetPlayer) then
-				outputChatBox("Player not found.", thePlayer, 255, 0, 0)
+				outputChatBox("Player not found or multiple were found.", thePlayer, 255, 0, 0)
 			else
 				local logged = getElementData(targetPlayer, "loggedin")
 				if (logged==0) then
@@ -461,7 +461,7 @@ function blowPlayerVehicle(thePlayer, commandName, target)
 			local targetPlayer = exports.global:findPlayerByPartialNick(target)
 			
 			if not (targetPlayer) then
-				outputChatBox("Player not found.", thePlayer, 255, 0, 0)
+				outputChatBox("Player not found or multiple were found.", thePlayer, 255, 0, 0)
 			else
 				local logged = getElementData(targetPlayer, "loggedin")
 				if (logged==0) then
@@ -492,7 +492,7 @@ function setCarHP(thePlayer, commandName, target, hp)
 			local targetPlayer = exports.global:findPlayerByPartialNick(target)
 			
 			if not (targetPlayer) then
-				outputChatBox("Player not found.", thePlayer, 255, 0, 0)
+				outputChatBox("Player not found or multiple were found.", thePlayer, 255, 0, 0)
 			else
 				local logged = getElementData(targetPlayer, "loggedin")
 				if (logged==0) then
@@ -539,7 +539,7 @@ function fuelPlayerVehicle(thePlayer, commandName, target)
 			local targetPlayer = exports.global:findPlayerByPartialNick(target)
 			
 			if not (targetPlayer) then
-				outputChatBox("Player not found.", thePlayer, 255, 0, 0)
+				outputChatBox("Player not found or multiple were found.", thePlayer, 255, 0, 0)
 			else
 				local logged = getElementData(targetPlayer, "loggedin")
 				if (logged==0) then
@@ -582,7 +582,7 @@ function setPlayerVehicleColor(thePlayer, commandName, target, col1, col2)
 			local targetPlayer = exports.global:findPlayerByPartialNick(target)
 			
 			if not (targetPlayer) then
-				outputChatBox("Player not found.", thePlayer, 255, 0, 0)
+				outputChatBox("Player not found or multiple were found.", thePlayer, 255, 0, 0)
 			else
 				local logged = getElementData(targetPlayer, "loggedin")
 				if (logged==0) then

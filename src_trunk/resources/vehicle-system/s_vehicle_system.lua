@@ -205,10 +205,13 @@ end
 addCommandHandler("makeveh", createPermVehicle, false, false)
 
 -- /makecivveh
-function createCivilianPermVehicle(thePlayer, commandName, id, col1, col2, userName, factionVehicle, cost)
+function createCivilianPermVehicle(thePlayer, commandName, id, col1, col2, job)
 	if (exports.global:isPlayerLeadAdmin(thePlayer)) then
 		if not (id) or not (col1) or not (col2) then
-			outputChatBox("SYNTAX: /" .. commandName .. " [id] [color1 (-1 for random)] [color2 (-1 for random)]", thePlayer, 255, 194, 14)
+			outputChatBox("SYNTAX: /" .. commandName .. " [id] [color1 (-1 for random)] [color2 (-1 for random)] [Job ID -1 for none]", thePlayer, 255, 194, 14)
+			outputChatBox("Job 1 = Delivery Driver", thePlayer, 255, 194, 14)
+			outputChatBox("Job 2 = Taxi Driver", thePlayer, 255, 194, 14)
+			outputChatBox("Job 3 = Bus Driver", thePlayer, 255, 194, 14)
 		else
 			local r = getPedRotation(thePlayer)
 			local x, y, z = getElementPosition(thePlayer)
@@ -222,6 +225,8 @@ function createCivilianPermVehicle(thePlayer, commandName, id, col1, col2, userN
 			if (tonumber(col2)==-1) then
 				col2 = math.random(0, 126)
 			end
+			
+			job = tonumber(job)
 			
 			local letter1 = exports.global:randChar()
 			local letter2 = exports.global:randChar()
@@ -252,13 +257,14 @@ function createCivilianPermVehicle(thePlayer, commandName, id, col1, col2, userN
 				setElementData(veh, "interior", interior)
 				setElementData(veh, "currdimension", dimension)
 				setElementData(veh, "currinterior", interior)
+				setElementData(veh, "job", job)
 				
 				-- Set the vehicle armored if it is armored
 				if (armoredCars[tonumber(id)]) then
 					setVehicleDamageProof(veh, true)
 				end
 					
-				local query = mysql_query(handler, "INSERT INTO vehicles SET model='" .. id .. "', x='" .. x .. "', y='" .. y .. "', z='" .. z .. "', rotx='" .. rx .. "', roty='" .. ry .. "', rotz='" .. rz .. "', color1='" .. col1 .. "', color2='" .. col2 .. "', faction='-1', owner='-2', plate='" .. plate .. "', currx='" .. x .. "', curry='" .. y .. "', currz='" .. z .. "', currrx='0', currry='0', currrz='" .. r .. "', interior='" .. interior .. "', currinterior='" .. interior .. "', dimension='" .. dimension .. "', currdimension='" .. dimension .. "'")
+				local query = mysql_query(handler, "INSERT INTO vehicles SET job='" .. job .. "', model='" .. id .. "', x='" .. x .. "', y='" .. y .. "', z='" .. z .. "', rotx='" .. rx .. "', roty='" .. ry .. "', rotz='" .. rz .. "', color1='" .. col1 .. "', color2='" .. col2 .. "', faction='-1', owner='-2', plate='" .. plate .. "', currx='" .. x .. "', curry='" .. y .. "', currz='" .. z .. "', currrx='0', currry='0', currrz='" .. r .. "', interior='" .. interior .. "', currinterior='" .. interior .. "', dimension='" .. dimension .. "', currdimension='" .. dimension .. "'")
 				
 				if (query) then
 					mysql_free_result(query)
@@ -861,6 +867,24 @@ function removeFromFactionVehicle(thePlayer)
 				end
 			end
 			outputChatBox("You are not a member of '" .. factionName .. "'.", thePlayer, 255, 194, 14)
+			removePedFromVehicle(thePlayer)
+			local x, y, z = getElementPosition(thePlayer)
+			setElementPosition(thePlayer, x, y, z)
+		end
+	end
+	
+	local vjob = tonumber(getElementData(source, "job"))
+	local job = getElementData(thePlayer, "job")
+	outputDebugString(tostring(vjob))
+	if (vjob>0) then
+		if (job~=vjob) then
+			if (vjob==1) then
+				outputChatBox("You are not a delivery driver. Visit city hall to obtain this job.", thePlayer, 255, 0, 0)
+			elseif (vjob==2) then
+				outputChatBox("You are not a taxi driver. Visit city hall to obtain this job.", thePlayer, 255, 0, 0)
+			elseif (vjob==3) then
+				outputChatBox("You are not a bus driver. Visit city hall to obtain this job.", thePlayer, 255, 0, 0)
+			end
 			removePedFromVehicle(thePlayer)
 			local x, y, z = getElementPosition(thePlayer)
 			setElementPosition(thePlayer, x, y, z)

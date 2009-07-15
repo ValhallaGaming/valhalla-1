@@ -3,6 +3,10 @@ SQL
 ---
 -- New Item Stevies business card
 INSERT INTO items SET id='55', item_name='Business Card', item_description='Steven Pullman - LV Freight Depot Tel: 081016';
+INSERT INTO achievementslist SET id=36, NAME="Quality Assurance", description="Took part in the MTA 1.0 2nd Beta Test.", points=100;
+INSERT INTO items SET id=56, item_name="Mask", item_description="A comical mask.", modelid=1271;
+INSERT INTO items SET id=57, item_name="Fuel Can", item_description="A small metal fuel canister.", modelid=1271;
+INSERT INTO items SET id=58, item_name="Ziebrand Beer", item_description="The finest beer, imported from Holland.", modelid=1271;
 
 -- columns
 

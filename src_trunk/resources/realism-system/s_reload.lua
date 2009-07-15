@@ -19,7 +19,7 @@ function reloadWeapon(thePlayer)
 					toggleAllControls(thePlayer, true, true, true)
 				end
 				setTimer(giveReload, 1001, 1, thePlayer, weapon, ammo)
-				triggerClientEvent(thePlayer, "cleanupUI", thePlayer)
+				triggerClientEvent(thePlayer, "cleanupUI", thePlayer, true)
 			end
 		end
 	end
@@ -75,15 +75,3 @@ function giveFakeBullet(weapon, ammo)
 end
 addEvent("addFakeBullet", true)
 addEventHandler("addFakeBullet", getRootElement(), giveFakeBullet)
-
-function giveWeaponAmmoOnSwitch(weapon, ammo, ammoInClip)
-	setWeaponAmmo(source, weapon, ammo, ammoInClip)
-	
-	-- weapon skill fixes
-	setPedStat(source, 77, 999)
-	setPedStat(source, 78, 999)
-	setPedStat(source, 71, 999)
-	setPedStat(source, 72, 999)
-end
-addEvent("giveWeaponOnSwitch", true)
-addEventHandler("giveWeaponOnSwitch", getRootElement(), giveWeaponAmmoOnSwitch)

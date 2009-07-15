@@ -3,23 +3,6 @@ savedAmmo = { }
 
 function weaponAmmo(prevSlot, currSlot)
 	cleanupUI()
-	-- store the previous weapons ammo
-	savedAmmo[prevSlot] = { }
-	savedAmmo[prevSlot][1] = getPedWeapon(source, prevSlot) -- Store the weapon ID
-	savedAmmo[prevSlot][2] = getPedAmmoInClip(source, prevSlot) -- Store the weapon's ammo in clip
-
-	-- give the ammo for the current (new) weapon
-	if (savedAmmo[currSlot]~=nil) and not (isPedInVehicle(getLocalPlayer())) then -- could be a new gun - we may not have stored ammo for it yet
-		
-		local weapon = savedAmmo[currSlot][1]
-		local ammoInClip = savedAmmo[currSlot][2]
-		
-		if (weapon==getPedWeapon(source)) and (weapon>21) and (weapon<35) and not (noReloadGuns[weapon]) then -- The gun has not changed, don't want to give ammo for a different gun
-			local ammo = getPedTotalAmmo(source)
-			triggerServerEvent("giveWeaponOnSwitch", getLocalPlayer(), weapon, ammo, ammoInClip)
-			disableAutoReload(weapon, ammo, ammoInClip)
-		end
-	end
 end
 addEventHandler("onClientPlayerWeaponSwitch", getLocalPlayer(), weaponAmmo)
 
@@ -43,7 +26,11 @@ function drawText()
 	dxDrawText("Hit 'R' to Reload!", 0, 0, scrWidth, scrHeight, tocolor(255, 255, 255, 170), 1.02, "pricedown", "center", "bottom")
 end
 
-function cleanupUI()
+function cleanupUI(bplaySound)
+	if (bplaySound) then
+		playSound("reload.wav")
+		setTimer(playSound, 500, 1, "reload.wav")
+	end
 	removeEventHandler("onClientRender", getRootElement(), drawText)
 end
 addEvent("cleanupUI", true)

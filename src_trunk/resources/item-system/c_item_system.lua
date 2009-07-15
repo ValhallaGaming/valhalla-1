@@ -161,6 +161,7 @@ function getItemDescription(itemID)
 	elseif (itemID==54) then return "A black Ghettoblaster."
 	elseif (itemID==55) then return "Steven Pullman - L.V. Freight Depot, Tel: 081016"
 	elseif (itemID==56) then return "A comical mask."
+	elseif (itemID==57) then return "A small metal fuel canister."
 	else return false 
 	end
 end
@@ -286,6 +287,8 @@ function getItemType(itemID)
 		return 4
 	elseif (itemID==56) then -- Mask
 		return 6
+	elseif (itemID==57) then -- Fuel Can
+		return 4
 	else
 		return false
 	end

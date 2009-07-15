@@ -1,7 +1,7 @@
 function anticheatStarted(res)
 	if (res==getThisResource()) then
-		outputChatBox("[ANTICHEAT] Version 2.0 Protection Started.")
-		exports.irc:sendMessage("[ANTICHEAT] Version 2.0 Protection Started.")
+		outputChatBox("[ANTICHEAT] Version 2.1 Protection Started.")
+		exports.irc:sendMessage("[ANTICHEAT] Version 2.1 Protection Started.")
 	end
 end
 addEventHandler("onResourceStart", getRootElement(), anticheatStarted)

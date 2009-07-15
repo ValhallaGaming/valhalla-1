@@ -104,6 +104,7 @@ function cgetItemName(itemID)
 	elseif (itemID==54) then return "Ghettoblaster"
 	elseif (itemID==55) then return "Business Card"
 	elseif (itemID==56) then return "Mask"
+	elseif (itemID==57) then return "Fuel Can"
 	else return false 
 	end
 end

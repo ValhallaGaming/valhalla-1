@@ -159,6 +159,8 @@ function  getShopTypeName(shop_type)
 		return "Drug Closet"
 	elseif(shop_type == 8) then
 		return "Electronics Store"
+	elseif(shop_type == 9) then
+		return "Alcohol Store"
 	else
 		return "This isn't a shop. Go Away."
 	end
@@ -183,6 +185,8 @@ function getShopTabTitles(shop_type)
 		return {"Chemicals"}
 	elseif(shop_type == 8) then
 		return {"Electronics"}
+	elseif(shop_type == 9) then
+		return { "Alcohol" }
 	else
 		return "This isn't a shop. Go Away."
 	end
@@ -297,7 +301,11 @@ function getItemsForSale(shop_type, race)
 		
 	-- electronics
 	elseif(shop_type == 8) then
-		item[1] = {"Ghettoblaster","A black ghettoblaster.", "250", 54, 1, 1, false,0}
+		item[1] = {"Ghettoblaster","A black ghettoblaster.", "250", 54, 1, 1, false,10}
+		
+	-- alcohol shop
+	elseif(shop_type == 9) then
+		item[1] = {"Ziebrand Beer","The finest beer, imported from Holland.", "10", 58, 1, 1, false, 2}
 	end
 		
 	return item
@@ -327,6 +335,8 @@ function getImageName(shop_type)
 		return "general.png"
 	elseif(shop_type == 8) then
 		return "general.png"
+	elseif(shop_type == 9) then
+		return "general.png"
 	else
 		return "This isn't a shop. Go Away."
 	end
@@ -352,6 +362,8 @@ function getIntroMessage(shop_type)
 		return "You thief!"
 	elseif(shop_type == 8) then
 		return "We've got the latest technology just for you."
+	elseif(shop_type == 9) then
+		return "We got everything from Buckfast to Moet."
 	else
 		return "This isn't a shop. Go Away."
 	end

@@ -230,6 +230,73 @@ function fillVehicle(thePlayer, commandName)
 end
 addCommandHandler("fill", fillVehicle)
 
+function fillCan(thePlayer, commandName)
+	if not (exports.global:doesPlayerHaveItem(thePlayer, 57, -1)) then
+		outputChatBox("You do not have a fuel can.", thePlayer, 255, 0, 0)
+	else
+		local colShape = nil
+		
+		for key, value in ipairs(exports.pool:getPoolElementsByType("colshape")) do
+			local shapeType = getElementData(value, "type")
+			if (shapeType) then
+				if (shapeType=="fuel") then
+					if (isElementWithinColShape(thePlayer, value)) then
+						colShape = value
+					end
+				end
+			end
+		end
+		
+		if (colShape) then
+			local hasItem, slot, currFuel = exports.global:doesPlayerHaveItem(thePlayer, 57, -1)
+
+			if (math.ceil(currFuel)==25) then
+				outputChatBox("This fuel can is already full.", thePlayer)
+			else
+				local faction = getPlayerTeam(thePlayer)
+				local ftype = getElementData(faction, "type")
+				
+				if (ftype~=2) and (ftype~=3) and (ftype~=4) then
+					local money = getElementData(thePlayer, "money")
+					
+					local tax = exports.global:getTaxAmount()
+					local cost = FUEL_PRICE + (tax*FUEL_PRICE)
+					local litresAffordable = math.ceil(money/cost)
+					
+					if (litresAffordable>25) then
+						litresAffordable=25
+					end
+					
+					if (litresAffordable+currFuel>25) then
+						litresAffordable = 25 - currFuel
+					end
+						
+					if (litresAffordable==0) then
+						outputChatBox("You cannot afford any fuel.", thePlayer, 255, 0, 0)
+					else
+						outputChatBox("Gas Station Receipt:", thePlayer)
+						outputChatBox("    " .. math.ceil(litresAffordable) .. " Litres of petrol    -    " .. cost .. "$", thePlayer)
+						exports.global:takePlayerItem(thePlayer, 57, currFuel)
+						exports.global:givePlayerItem(thePlayer, 57, litresAffordable)
+					end
+				else
+					litresAffordable = 25
+					if (litresAffordable+currFuel>25) then
+						litresAffordable = 25 - currFuel
+					end
+					
+					cost = 0
+					outputChatBox("Gas Station Receipt:", thePlayer)
+					outputChatBox("    " .. math.ceil(litresAffordable) .. " Litres of petrol    -    " .. cost .. "$", thePlayer)
+					exports.global:takePlayerItem(thePlayer, 57, tonumber(currFuel))
+					exports.global:givePlayerItem(thePlayer, 57, litresAffordable)
+				end
+			end
+		end
+	end
+end
+addCommandHandler("fillcan", fillCan)
+
 function fuelTheVehicle(thePlayer, theVehicle, theShape, theLitres)
 	local colShape = nil
 		

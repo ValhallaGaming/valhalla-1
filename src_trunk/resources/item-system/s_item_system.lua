@@ -391,6 +391,36 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 
 				setElementData(source, "mask", 0)
 			end
+		elseif (itemID==57) then -- FUEL CAN
+			if not (isPedInVehicle(source)) then
+				outputChatBox("You are not in a vehicle.", source, 255, 0, 0)
+			else
+				local fuel = itemValue
+				
+				local veh = getPedOccupiedVehicle(source)
+				local currFuel = getElementData(veh, "fuel")
+				
+				if (math.ceil(currFuel)==100) then
+					outputChatBox("This vehicle is already full.", source)
+				elseif (fuel==0) then
+					outputChatBox("This fuel can is empty.", source, 255, 0, 0)
+				else
+					local fuelAdded = fuel
+					
+					if (fuelAdded+currFuel>100) then
+						fuelAdded = 100 - currFuel
+					end
+					
+					outputChatBox("You added " .. fuelAdded .. " litres of petrol to your car from your fuel can.", source, 0, 255, 0 )
+					exports.global:sendLocalMeAction(source, "fills up his vehicle from a small petrol canister.")
+					
+					exports.global:takePlayerItem(source, 57, itemValue)
+					exports.global:givePlayerItem(source, 57, itemValue-fuelAdded)
+					
+					setElementData(veh, "fuel", currFuel+fuelAdded)
+					triggerClientEvent(source, "setClientFuel", source, currFuel+fuelAdded)
+				end
+			end
 		else
 			outputChatBox("Error 800001 - Report on http://bugs.valhallagaming.net", source, 255, 0, 0)
 		end

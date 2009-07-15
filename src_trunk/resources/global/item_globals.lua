@@ -31,7 +31,8 @@ function doesPlayerHaveItem(thePlayer, itemID, itemValue)
 			if (token) then
 				if (token==itemID) then
 					if (itemValue==-1) or not (itemValue) then -- any value is okay
-						return true, i
+						local itemValue = tonumber(gettok(itemvalues, i, string.byte(',')))
+						return true, i, itemValue
 					else
 						
 						local value = tonumber(gettok(itemvalues, i, string.byte(',')))

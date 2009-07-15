@@ -673,6 +673,8 @@ function useItem(button)
 				guiSetEnabled(bDropItem, false)
 				guiSetEnabled(bShowItem, false)
 				guiSetEnabled(bDestroyItem, false)
+			elseif (itemID==57) then -- FUEL CAN
+				hideInventory()
 			end
 			
 			if (itemID==44) then

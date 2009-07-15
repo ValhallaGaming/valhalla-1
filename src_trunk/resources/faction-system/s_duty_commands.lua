@@ -14,7 +14,7 @@ setElementInterior(esColShape, 4)
 
 fbiColShape = createColSphere(222.822265625, 123.501953125, 1010.2117919922, 5)
 exports.pool:allocateElement(fbiColShape)
-setElementDimension(pdColShape2, 795)
+setElementDimension(fbiColShape, 795)
 setElementInterior(fbiColShape, 10)
 
 --- DUTY TYPE
@@ -445,7 +445,7 @@ addCommandHandler("cadet", cadetduty, false, false)
 
 function fbiduty(thePlayer, commandName)	
 	local logged = getElementData(thePlayer, "loggedin")
-	
+
 	if (logged==1) then
 		if (isElementWithinColShape(thePlayer, fbiColShape)) then
 		
@@ -488,9 +488,13 @@ function fbiduty(thePlayer, commandName)
 					
 					local casualskin = getElementData(thePlayer, "casualskin")
 					setPedSkin(thePlayer, casualskin)
+				else
+					local casualskin = getElementData(thePlayer, "casualskin")
+					setPedSkin(thePlayer, casualskin)
+					setElementData(thePlayer, "duty", 0)
 				end
 			end
 		end
 	end
 end
-addCommandHandler("cadet", cadetduty, false, false)
+addCommandHandler("fbi", fbiduty, false, false)

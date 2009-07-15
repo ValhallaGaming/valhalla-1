@@ -289,7 +289,7 @@ function fillCan(thePlayer, commandName)
 					outputChatBox("Gas Station Receipt:", thePlayer)
 					outputChatBox("    " .. math.ceil(litresAffordable) .. " Litres of petrol    -    " .. cost .. "$", thePlayer)
 					exports.global:takePlayerItem(thePlayer, 57, tonumber(currFuel))
-					exports.global:givePlayerItem(thePlayer, 57, litresAffordable)
+					exports.global:givePlayerItem(thePlayer, 57, math.ceil(litresAffordable))
 				end
 			end
 		end

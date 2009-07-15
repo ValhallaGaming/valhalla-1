@@ -411,11 +411,11 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 						fuelAdded = 100 - currFuel
 					end
 					
-					outputChatBox("You added " .. fuelAdded .. " litres of petrol to your car from your fuel can.", source, 0, 255, 0 )
+					outputChatBox("You added " .. math.ceil(fuelAdded) .. " litres of petrol to your car from your fuel can.", source, 0, 255, 0 )
 					exports.global:sendLocalMeAction(source, "fills up his vehicle from a small petrol canister.")
 					
 					exports.global:takePlayerItem(source, 57, itemValue)
-					exports.global:givePlayerItem(source, 57, itemValue-fuelAdded)
+					exports.global:givePlayerItem(source, 57, math.ceil(itemValue-fuelAdded))
 					
 					setElementData(veh, "fuel", currFuel+fuelAdded)
 					triggerClientEvent(source, "setClientFuel", source, currFuel+fuelAdded)

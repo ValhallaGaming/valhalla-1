@@ -369,7 +369,7 @@ function dance2Animation(thePlayer)
 	local logged = getElementData(thePlayer, "loggedin")
 	
 	if (logged==1) then
-	exports.global:applyAnimation( thePlayer, "DANCING", "DAN_Down_A", 999999, true, false, false)
+		exports.global:applyAnimation( thePlayer, "DANCING", "DAN_Down_A", 999999, true, false, false)
 	end
 end
 addCommandHandler ( "dance2", dance2Animation, false, false )

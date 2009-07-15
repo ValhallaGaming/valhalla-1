@@ -27,6 +27,11 @@ function quitJob()
 			resetTruckerJob()
 			setElementData(localPlayer, "job", true, 0)
 			outputChatBox("You have now quit your job as a delivery driver.", 0, 255, 0)
+		elseif (job==4) then -- CITY MAINTENANCE
+			outputChatBox("You have now quit your job as a city maintenance worker.", 0, 255, 0)
+			setElementData(localPlayer, "tag", true, 1)
+			setElementData(localPlayer, "job", true, 0)
+			triggerServerEvent("cancelCityMaintenance", localPlayer)
 		end
 	end
 end

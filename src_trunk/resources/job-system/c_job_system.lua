@@ -21,8 +21,8 @@ function showEmploymentWindow()
 	guiGridListSetItemText(jobList, row, column, "Delivery Driver", false, false)
 	
 	-- MECHANIC
-	local row = guiGridListAddRow(jobList)
-	guiGridListSetItemText(jobList, row, column, "Mechanic", false, false)
+	--local row = guiGridListAddRow(jobList)
+	--guiGridListSetItemText(jobList, row, column, "Mechanic", false, false)
 	
 	-- CITY MAINTENACE
 	local rowmaintenance = guiGridListAddRow(jobList)
@@ -43,9 +43,12 @@ addEventHandler("onEmployment", getRootElement(), showEmploymentWindow)
 function acceptJob(button, state)
 	if (button=="left") then
 		local row, col = guiGridListGetSelectedItem(jobList)
+		local job = getElementData(getLocalPlayer(), "job")
 		
 		if (row==-1) or (col==-1) then
 			outputChatBox("Please select a job first!", 255, 0, 0)
+		elseif (job>0) then
+			outputChatBox("You are already employed, please quit your other job first (( /quitjob )).", 255, 0, 0)
 		else
 			local job = 0
 			local jobtext = guiGridListGetItemText(jobList, guiGridListGetSelectedItem(jobList), 1)
@@ -59,6 +62,8 @@ function acceptJob(button, state)
 			elseif (jobtext=="City Maintenance") then
 				job = 4
 			end
+			
+			triggerServerEvent("acceptJob", getLocalPlayer(), job)
 			
 			destroyElement(jobList)
 			destroyElement(bAcceptJob)

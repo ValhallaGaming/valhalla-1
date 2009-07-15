@@ -884,12 +884,14 @@ function calltaxi(thePlayer, commandName, ...)
 			else
 
 				local message = table.concat({...}, " ")
-				local theTeam = getTeamFromName("Las Venturas Transport")
-				local teamMembers = getPlayersInTeam(theTeam)
 				local playerNumber = getElementData(thePlayer, "cellnumber")
 				
-				for key, value in ipairs(teamMembers) do
-					outputChatBox("[New Fare] " .. getPlayerName(thePlayer) .." Ph:" .. playerNumber .. " " .. message .."." , value, 0, 183, 239)
+				for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
+					local job = getElementData(value, "job")
+					
+					if (job==2) then
+						outputChatBox("[New Fare] " .. getPlayerName(thePlayer) .." Ph:" .. playerNumber .. " " .. message .."." , value, 0, 183, 239)
+					end
 				end
 				
 				setElementData(thePlayer, "TaxiAbuse", 1)

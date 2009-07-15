@@ -3,13 +3,19 @@ localPlayer = getLocalPlayer()
 
 function playerSpawn()
 	local logged = getElementData(source, "loggedin")
-	
-	if (logged==1) then
-		job = getElementData(source, "job")
 
+	if (logged==1) then
+		job = tonumber(getElementData(source, "job"))
+		outputDebugString(tostring(job))
 		if (job==1) then -- TRUCKER
 			resetTruckerJob()
 			setTimer(displayTruckerJob, 1000, 1)
+		elseif (job==2) then -- TAXI
+			resetTaxiJob()
+			setTimer(displayTaxiJob, 1000, 1)
+		elseif (job==3) then -- BUS
+			resetBusJob()
+			setTimer(displayBusJob, 1000, 1)
 		end
 	end
 end

@@ -20,6 +20,12 @@ function showEmploymentWindow()
 	local row = guiGridListAddRow(jobList)
 	guiGridListSetItemText(jobList, row, column, "Delivery Driver", false, false)
 	
+	local row = guiGridListAddRow(jobList)
+	guiGridListSetItemText(jobList, row, column, "Taxi Driver", false, false)
+	
+	local row = guiGridListAddRow(jobList)
+	guiGridListSetItemText(jobList, row, column, "Bus Driver", false, false)
+	
 	-- MECHANIC
 	--local row = guiGridListAddRow(jobList)
 	--guiGridListSetItemText(jobList, row, column, "Mechanic", false, false)
@@ -56,6 +62,12 @@ function acceptJob(button, state)
 			if (jobtext=="Delivery Driver") then
 				displayTruckerJob()
 				job = 1
+			elseif (jobtext=="Taxi Driver") then
+				job = 2
+				displayTaxiJob()
+			elseif  (jobtext=="Bus Driver") then
+				job = 3
+				displayBusJob()
 			--elseif (jobtext=="Mechanic") then
 			--	displayMechanicJob()
 			--	job = 2

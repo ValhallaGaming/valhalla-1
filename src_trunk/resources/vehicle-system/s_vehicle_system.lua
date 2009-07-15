@@ -875,8 +875,9 @@ function removeFromFactionVehicle(thePlayer)
 	
 	local vjob = tonumber(getElementData(source, "job"))
 	local job = getElementData(thePlayer, "job")
-	outputDebugString(tostring(vjob))
-	if (vjob>0) then
+	local seat = getPedOccupiedVehicleSeat(thePlayer)
+	
+	if (vjob>0) and (seat==0) then
 		if (job~=vjob) then
 			if (vjob==1) then
 				outputChatBox("You are not a delivery driver. Visit city hall to obtain this job.", thePlayer, 255, 0, 0)

@@ -22,6 +22,8 @@ function initIRC()
 	timer = setTimer(displayStatus, 600000, 0)
 	ircJoin(conn, pubchannel)
 	ircJoin(conn2, pubchannel)
+	ircJoin(conn, channeladmins)
+	ircJoin(conn2, channeladmins)
 end
 addEventHandler("onResourceStart", getResourceRootElement(getThisResource()), initIRC)
 

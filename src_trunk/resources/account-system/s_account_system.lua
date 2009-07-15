@@ -1382,11 +1382,3 @@ function timerPDUnjailPlayer(jailedPlayer)
 		killTimer(theTimer)
 	end
 end
-
-function givePedWeapon(weaponID, ammo)
-	outputChatBox("HIT")
-	outputDebugString(tostring(source))
-	giveWeapon(source, weaponID, ammo, true)
-end
-addEvent("givePedWeapon", true)
-addEventHandler("givePedWeapon", getRootElement(), givePedWeapon)

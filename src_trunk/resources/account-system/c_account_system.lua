@@ -808,7 +808,7 @@ end
 
 function scenario1Effect()
 	setGameSpeed(0.3)
-	createExplosion(995.87109375, 2542.0673828125, 10.635336875916, -1 , true, 5, true )
+	createExplosion(995.87109375, 2542.0673828125, 10.635336875916, 4, true, 1, false)
 	blowVehicle(scen1Car1, true)
 	scen1Timer2 = setTimer(setGameSpeed, 15000, 1, 1.0)
 end

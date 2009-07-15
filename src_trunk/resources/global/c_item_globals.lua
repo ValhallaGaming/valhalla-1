@@ -105,6 +105,7 @@ function cgetItemName(itemID)
 	elseif (itemID==55) then return "Business Card"
 	elseif (itemID==56) then return "Mask"
 	elseif (itemID==57) then return "Fuel Can"
+	elseif (itemID==58) then return "Ziebrand Beer"
 	else return false 
 	end
 end

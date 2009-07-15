@@ -162,6 +162,7 @@ function getItemDescription(itemID)
 	elseif (itemID==55) then return "Steven Pullman - L.V. Freight Depot, Tel: 081016"
 	elseif (itemID==56) then return "A comical mask."
 	elseif (itemID==57) then return "A small metal fuel canister."
+	elseif (itemID==58) then return "The finest beer, imported from Holland."
 	else return false 
 	end
 end
@@ -289,6 +290,8 @@ function getItemType(itemID)
 		return 6
 	elseif (itemID==57) then -- Fuel Can
 		return 4
+	elseif (itemID==58) then -- BEER
+		return 1
 	else
 		return false
 	end

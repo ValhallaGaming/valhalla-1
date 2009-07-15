@@ -3,6 +3,7 @@ local blip
 function resetTaxiJob()
 	if (isElement(blip)) then
 		destroyElement(blip)
+		removeEventHandler("onClientVehicleEnter", getRootElement(), startTaxiJob)
 	end
 end
 

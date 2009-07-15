@@ -397,10 +397,17 @@ addEventHandler("onManualChangeWeatherType", getRootElement() , manualChangeWeat
 
 -- function sets the weather to a certain type
 function showForecast(thePlayer, command)
-	if (exports.global:isPlayerAdmin(thePlayer)) then
-		triggerClientEvent ( thePlayer, "onCreateWeatherForecastGUI", thePlayer, weather , nextWeather , laterWeather )
-	else
-		outputChatBox("You are not authorised to use that command!", thePlayer, 255, 0, 0, true)
+	local logged = getElementData(thePlayer, "loggedin")
+	
+	if (logged==1) then
+		local theTeam = getPlayerTeam(thePlayer)
+		local factionType = getElementData(theTeam, "type")
+
+		if (exports.global:isPlayerAdmin(thePlayer)) or (factionType==6) then
+			triggerClientEvent ( thePlayer, "onCreateWeatherForecastGUI", thePlayer, weather , nextWeather , laterWeather )
+		else
+			outputChatBox("You are not authorised to use that command!", thePlayer, 255, 0, 0, true)
+		end
 	end
 end
 addCommandHandler("forecast", showForecast)

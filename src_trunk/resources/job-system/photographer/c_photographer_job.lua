@@ -30,82 +30,92 @@ end
 addEventHandler("onClientResourceStart", getRootElement(), photoResStart)
 
 function snapPicture(weapon, ammo, ammoInClip, hitX, hitY, hitZ, hitElement )
-	if weapon == 43 then
-		pictureValue = 0
-		local onScreenPlayers = {}
-		local players = getElementsByType ( "player" )
-		for theKey, thePlayer in ipairs(players) do 
-			if (isElementOnScreen(thePlayer)) then
-				table.insert(onScreenPlayers, thePlayer) -- Identify everyone who is on the screen as the picture is taken.
+	thePlayer=source
+	local logged = getElementData(thePlayer, "loggedin")
+	
+	if (logged==1) then
+		local theTeam = getPlayerTeam(thePlayer)
+		local factionType = getElementData(theTeam, "type")
+		
+		if (factionType==6) then
+			if (weapon == 43) then
+				pictureValue = 0
+				local onScreenPlayers = {}
+				local players = getElementsByType ( "player" )
+				for theKey, thePlayer in ipairs(players) do 
+					if (isElementOnScreen(thePlayer)) then
+						table.insert(onScreenPlayers, thePlayer) -- Identify everyone who is on the screen as the picture is taken.
+					end
+				end
+				for theKey,thePlayer in ipairs(onScreenPlayers) do
+					local Tx,Ty,Tz = getElementPosition(thePlayer)
+					local Px,Py,Pz = getElementPosition(getLocalPlayer())
+					local isclear = isLineOfSightClear (Px, Py, Pz +1, Tx, Ty, Tz, true, true, false, true, true, false)
+					if (isclear) then
+						-------------------
+						-- Player Checks --
+						-------------------
+						local skin = getElementModel(thePlayer)
+						if(beautifulPeople[skin]) then -- beautiful people (beach skins)
+							pictureValue=pictureValue+50
+						end
+						if(getPedWeapon(thePlayer)~=0)and(getPedTotalAmmo(thePlayer)~=0) then -- Armed player.
+							pictureValue=pictureValue+25
+							if (cop[skin])then -- armed Cop
+								pictureValue=pictureValue+5
+							end
+						end
+						if(swat[skin])then -- SWAT officer
+							pictureValue=pictureValue+50
+						end
+						if(getPedControlState(thePlayer, "fire"))then -- Player is attacking.
+							pictureValue=pictureValue+50
+						end
+						if(isPedChoking(thePlayer))then -- Are they choking?
+							pictureValue=pictureValue+50
+						end
+						if(isPedDoingGangDriveby(thePlayer))then -- if drivebying
+							pictureValue=pictureValue+100
+						end
+						if(isPedHeadless(thePlayer))then -- if headless
+							pictureValue=pictureValue+200
+						end
+						if(isPedOnFire(thePlayer))then -- if on fire
+							pictureValue=pictureValue+250
+						end
+						if(isPlayerDead(thePlayer))then -- if dead
+							pictureValue=pictureValue+150
+						end
+						if (#onScreenPlayers>3)then
+							pictureValue=pictureValue+10
+						end
+						--------------------
+						-- Vehicle checks --
+						--------------------
+						local vehicle = getPedOccupiedCar(thePlayer)
+						if(vehicle)then -- Are they in a vehicle?
+							if(flashCar[vehicle])then -- Sports cars.
+								pictureValue=pictureValue+200
+							end
+							if(emergencyVehicle[vehicle])and(getVehicleSirensOn(vehicle)) then -- Emergency vehicle with sirens on.
+								pictureValue=pictureValue+100
+							end
+							if not (isVehicleOnGround(vehicle))then -- Vehicle in the air / stunts.
+								pictureValue=pictureValue+200
+							end
+						end
+					end
+				end
+				if(pictureValue==0)then
+					outputChatBox("No one is going to pay for that picture...", 255, 0, 0)
+				else
+					collectionValue = collectionValue + pictureValue
+					outputChatBox("#FF9933That's a keeper! Picture value: $"..pictureValue, 255, 104, 91, true)
+				end
+				outputChatBox("#FF9933Collection value: $"..collectionValue, 255, 104, 91, true)
 			end
 		end
-		for theKey,thePlayer in ipairs(onScreenPlayers) do
-			local Tx,Ty,Tz = getElementPosition(thePlayer)
-			local Px,Py,Pz = getElementPosition(getLocalPlayer())
-			local isclear = isLineOfSightClear (Px, Py, Pz +1, Tx, Ty, Tz, true, true, false, true, true, false)
-			if (isclear) then
-				-------------------
-				-- Player Checks --
-				-------------------
-				local skin = getElementModel(thePlayer)
-				if(beautifulPeople[skin]) then -- beautiful people (beach skins)
-					pictureValue=pictureValue+50
-				end
-				if((getPedWeapon(thePlayer)~=0)and(getPedTotalAmmo(thePLayer)~=0) then -- Armed player.
-					pictureValue=pictureValue+25
-					if cop[skin]) and -- armed Cop
-						pictureValue=pictureValue+5
-					end
-				end
-				if(swat[skin])then -- SWAT officer
-					pictureValue=pictureValue+50
-				end
-				if(getPedControlState(thePlayer, "fire"))then -- Player is attacking.
-					pictureValue=pictureValue+50
-				end
-				if(isPedChoking(thePlayer))then -- Are they choking?
-					pictureValue=pictureValue+50
-				end
-				if(isPedDoingGangDriveby(thePlayer))then -- if drivebying
-					pictureValue=pictureValue+100
-				end
-				if(isPedHeadless(thePlayer))then -- if headless
-					pictureValue=pictureValue+200
-				end
-				if(isPedOnFire(thePlayer))then -- if on fire
-					pictureValue=pictureValue+250
-				end
-				if(isPlayerDead(thePlayer))then -- if dead
-					pictureValue=pictureValue+150
-				end
-				if (#onScreenPlayers>3)then
-					pictureValue=pictureValue+10
-				end
-				--------------------
-				-- Vehicle checks --
-				--------------------
-				local vehicle = getPedOccupiedCar(thePlayer)
-				if(vehicle)then -- Are they in a vehicle?
-					if(flashCar[vehicle])then -- Sports cars.
-						pictureValue=pictureValue+200
-					end
-					if(emergencyVehicle[vehicle])and(getVehicleSirensOn(vehicle)) then -- Emergency vehicle with sirens on.
-						pictureValue=pictureValue+100
-					end
-					if not (isVehicleOnGround(vehicle))then -- Vehicle in the air / stunts.
-						pictureValue=pictureValue+200
-					end
-				end
-			end
-		end
-		if(pictureValue==0)then
-			outputChatBox("No one is going to pay for that picture...", 255, 0, 0)
-		else
-			collectionValue = collectionValue + pictureValue
-			outputChatBox("#FF9933That's a keeper! Picture value: $"..pictureValue, 255, 104, 91, true)
-		end
-		outputChatBox("#FF9933Collection value: $"..collectionValue, 255, 104, 91, true)
-	end		
+	end
 end
 addEventHandler("onClientPlayerWeaponFire", getLocalPlayer(), snapPicture)
 

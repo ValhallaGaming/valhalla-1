@@ -49,12 +49,12 @@ function selectPlayer()
 					end
 				else				
 					count = 0
-					
-					triggerClientEvent(theChosenOne, "createHunterMarkers", theChosenOne)
-					--outputDebugString(getPlayerName(theChosenOne).." was selected the car jacking mission.")
-					-- start the selectPlayerTimer again for the next person.
+					if(exports.global:doesPlayerHaveItem(theChosenOne,2))then
+						exports.global:sendLocalMeAction(theChosenOne,"receives a text message.")
+						triggerClientEvent(theChosenOne, "createHunterMarkers", theChosenOne)
+					end	
 					local selectionTime = math.random(1200000,3600000) -- random time between 20 and 60 minutes
-					selectPlayerTimer = setTimer(selectPlayer, selectionTime, 1)
+					selectPlayerTimer = setTimer(selectPlayer, selectionTime, 1) -- start the selectPlayerTimer again for the next person.
 				end
 			end
 		end

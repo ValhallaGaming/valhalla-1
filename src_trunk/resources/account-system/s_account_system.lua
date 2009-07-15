@@ -36,7 +36,33 @@ function sendSalt()
 		version = tonumber(string.sub(getVersion().type, 10, string.len(getVersion().type)))
 	end
 	
-	triggerClientEvent(source, "sendSalt", source, salt, version)
+	-- login peds
+	scen1Officer1 = createPed(282, 1009.5, 2565.2958984375, 10.627165794373)
+	setPedRotation(scen1Officer1, 110)
+	setElementDimension(scen1Officer1, 60000)
+	giveWeapon(scen1Officer1, 24, 15000, true)
+	
+	scen1Officer2 = createPed(285, 1010.5, 2562.2958984375, 10.627165794373)
+	setPedRotation(scen1Officer2, 110)
+	setElementDimension(scen1Officer2, 60000)
+	giveWeapon(scen1Officer2, 29, 15000, true)
+	
+	scen1Officer3 = createPed(285, 1004.5, 2566.2958984375, 10.627165794373)
+	setPedRotation(scen1Officer3, 110)
+	setElementDimension(scen1Officer3, 60000)
+	giveWeapon(scen1Officer3, 31, 15000, true)
+	
+	scen1Crip1 = createPed(21, 992.87109375, 2543.0673828125, 10.635336875916)
+	setPedRotation(scen1Crip1, 300)
+	setElementDimension(scen1Crip1, 60000)
+	giveWeapon(scen1Crip1, 32, 15000, true)
+	
+	scen1Crip2 = createPed(143, 994.87109375, 2541.0673828125, 10.635336875916)
+	setPedRotation(scen1Crip2, 300)
+	setElementDimension(scen1Crip2, 60000)
+	giveWeapon(scen1Crip2, 22, 15000, true)
+	
+	triggerClientEvent(source, "sendSalt", source, salt, version, scen1Officer1, scen1Officer2, scen1Officer3, scen1Crip1, scen1Crip2)
 end
 addEvent("getSalt", true)
 addEventHandler("getSalt", getRootElement(), sendSalt)
@@ -1356,3 +1382,11 @@ function timerPDUnjailPlayer(jailedPlayer)
 		killTimer(theTimer)
 	end
 end
+
+function givePedWeapon(weaponID, ammo)
+	outputChatBox("HIT")
+	outputDebugString(tostring(source))
+	giveWeapon(source, weaponID, ammo, true)
+end
+addEvent("givePedWeapon", true)
+addEventHandler("givePedWeapon", getRootElement(), givePedWeapon)

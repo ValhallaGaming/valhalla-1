@@ -23,6 +23,8 @@
 	<file src="fueldisc.png"/>
 	
 	<file src="whoopee.wav"/>
+	<file src="reload.wav"/>
+	<file src="horn.wav"/>
 	
 	<script src="c_nametags.lua" type="client" />
 	
@@ -51,6 +53,7 @@
 	<script src="c_cruise_control.lua" type="client"/>
 
 	<script src="s_alarm.lua" type="server"/>
+	<script src="c_alarm.lua" type="client"/>
 	
 	<file src="siren.wav"/>
 	<script src="c_unoccupied_sirens.lua" type="client"/>

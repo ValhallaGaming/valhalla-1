@@ -16,7 +16,7 @@ local function setupDriveby( player, seat )
 	end
 	--By default, we set the player's equiped weapon to nothing.
 	setPedWeaponSlot( localPlayer, 0 )
-	if settings.autoEquip then
+	if settings.autoEquip and (seat>0) then
 		toggleDriveby()
 	end
 end
@@ -62,14 +62,17 @@ addEventHandler("doSendDriveBySettings",localPlayer,
 function toggleDriveby()
 	--If he's not in a vehicle dont bother
 	if not isPedInVehicle( localPlayer ) then return end
+
 	--If its a blocked vehicle dont allow it
 	local vehicleID = getElementModel ( getPedOccupiedVehicle ( localPlayer ) )
 	if settings.blockedVehicles[vehicleID] then return end
 	--Has he got a weapon equiped?
+
 	local equipedWeapon = getPedWeaponSlot( localPlayer )
 	if equipedWeapon == 0 then
 		--Decide whether he is a driver or passenger
-		if ( driver ) then weaponsTable = settings.driver
+		if ( driver ) then return
+
 		else weaponsTable = settings.passenger end
 		--We need to get the switchTo weapon by finding any valid IDs
 		local switchTo

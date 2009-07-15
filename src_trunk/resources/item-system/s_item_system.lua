@@ -247,7 +247,7 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 				
 				-- can't see their name
 				local pid = getElementData(source, "playerid")
-				local fixedName = "(" .. tostring(pid) .. ") Unknown_Person"
+				local fixedName = "(" .. tostring(pid) .. ") Unknown Person"
 				setPlayerNametagText(source, tostring(fixedName))
 
 				setElementData(source, "gasmask", 1)
@@ -368,6 +368,29 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 		elseif (itemID==55) then -- Stevie's business card
 			exports.global:sendLocalMeAction(source, "looks at a piece of paper.")
 			outputChatBox("The card reads: 'Steven Pullman - L.V. Freight Depot, Tel: 081016'", source, 255, 51, 102)
+		elseif (itemID==56) then -- MASK
+			local mask = getElementData(source, "mask")
+			
+			if not (mask) or (mask==0) then
+				exports.global:sendLocalMeAction(source, "slips a mask over their face.")
+				
+				-- can't see their name
+				local pid = getElementData(source, "playerid")
+				local fixedName = "(" .. tostring(pid) .. ") Unknown Person"
+				setPlayerNametagText(source, tostring(fixedName))
+
+				setElementData(source, "mask", 1)
+			elseif (mask==1) then
+				exports.global:sendLocalMeAction(source, "slips a mask off their face.")
+				
+				-- can't see their name
+				local pid = getElementData(source, "playerid")
+				local name = getPlayerName(source)
+				local fixedName = "(" .. tostring(pid) .. ") " .. name
+				setPlayerNametagText(source, tostring(fixedName))
+
+				setElementData(source, "mask", 0)
+			end
 		else
 			outputChatBox("Error 800001 - Report on http://bugs.valhallagaming.net", source, 255, 0, 0)
 		end

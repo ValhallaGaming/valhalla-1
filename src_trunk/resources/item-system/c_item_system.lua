@@ -160,6 +160,7 @@ function getItemDescription(itemID)
 	elseif (itemID==53) then return "A small black breathalizer."
 	elseif (itemID==54) then return "A black Ghettoblaster."
 	elseif (itemID==55) then return "Steven Pullman - L.V. Freight Depot, Tel: 081016"
+	elseif (itemID==56) then return "A comical mask."
 	else return false 
 	end
 end
@@ -281,8 +282,10 @@ function getItemType(itemID)
 		return 4
 	elseif (itemID==54) then -- ghettoblaster
 		return 7
-	elseif (itemID==5) then -- Stevie's business card.
+	elseif (itemID==55) then -- Stevie's business card.
 		return 4
+	elseif (itemID==56) then -- Mask
+		return 6
 	else
 		return false
 	end

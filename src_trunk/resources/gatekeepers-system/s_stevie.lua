@@ -25,59 +25,83 @@ addEventHandler("onResourceStop", getResourceRootElement(getThisResource()), clo
 -- ////////////////////////////////////
 -- //			MYSQL END			 //
 -- ////////////////////////////////////
+local phoneState = 0
+local doneDeals = 0
 
---function timeCheck(res)
-	--if (res==getThisResource()) then
-		--local realTime = getRealTime()
-		--local hours = realTime.hour
-		--hour = hours + 8
-		--if (hours>=19) and (hours<=22) then -- If the time is between 1900 and 2200 create Stevie.
-			--local minutesLeft = 60 - realTime.minute
-			--local hoursLeft = 21 - realTimer.hour
-			--setTimer ( removeStevie, time until 2200, 1 ) -- remove stevie at 2200.
-		--else -- Start a timer to create him at 1900.
-			--Calculate how long is left until it's 1900 in the server.
-			--local minutesLeft = 60 - realTime.minute
-			--local hoursLeft = 18 - realTime.hour
-			--setTimer ( createStevie, time until 1900, 1 )	
-		--end
-	--end
---end
---addEventHandler("onResourceStart", getRootElement(), timeCheck)
+function timeCheck(res) -- When the resource starts check what time it is. If the time is between 1900 and 2359 spawn stevie in the steak house.
+	if (res==getThisResource()) then
+		
+		hour, minutes = getTime()
+		
+		if (hour>=19) and (hour<=23) then -- If the time is between 1900 and 0000 create Stevie. Start a timer that will remove him at 0000.
+			createStevie()
+		else -- If the time is not between 1900 and 0000 calculate how many minutes are left start a timer to create stevie  at 1900.
+			local minutesLeft = 60 - minutes
+			local hoursLeft = 18 - hour
+			local spawnTime = (hoursLeft*60) + minutesLeft
+			stevieSpawnTimer = setTimer ( createStevie, spawnTime*60000, 1 ) -- spawn stevie at 1900
+			outputDebugString("Stevie will spawn in "..spawnTime.." minutes.")			
+		end
+	end	
+end
+addEventHandler("onResourceStart", getRootElement(), timeCheck)
 
---function createStevie()
-	local stevie = createPed (258, 675.89807128906, -455.46102905273, -24.4140625)
+function createStevie()
+
+	stevie = createPed (258, 675.89807128906, -455.46102905273, -24.4140625)
 	exports.pool:allocateElement(stevie)
 	setPedRotation (stevie, 180.01502990723)
 	setElementInterior (stevie, 1)
 	setElementDimension (stevie, 406)
 	setPedAnimation(stevie, "FOOD", "FF_Sit_Loop",  -1, true, false, true) -- Set the Peds Animation.
 	setElementData(stevie, "name", "Steven Pullman")
-	setElementData(stevie, "talk", true)
-	setElementData (stevie, "activeConvo",  0) -- Set the convo state to 0 so people can start talking to him.
 	setElementData(stevie, "deals", 0) -- reset how many deals he has made today. Stevie will do 5 deals over the phone each day. He can't be called while he is in the game world (19:00-22:00).
---end
+	setElementData(stevie,"talk",true) -- allows the player to right click on him.
+	doneDeals = 0
+	
+	hours,minues = getTime()
+	
+	local minutesLeft = 60 - minutes
+	local hoursLeft = 23 - hour
+	local removeTime = (hoursLeft*60) + minutesLeft
+	stevieRemoveTimer = setTimer ( removeStevie, removeTime*60000, 1 ) -- remove stevie at 2200.
+	outputDebugString("Stevie will leave in "..removeTime.." minutes.")
+	
+end
+
+function removeStevie()
+	destroyElement(stevie)
+	outputDebugString("Stevie was removed.")
+	stevieSpawnTimer = setTimer ( createStevie, 68400000, 1 ) -- spawn stevie at 1900	
+end
 
 function stevieIntro (thePlayer) -- When player enters the colSphere create GUI with intro output to all local players as local chat.
+		
 	-- Give the player the "Find Stevie" achievement.
-	if(getElementData(thePlayer, "stevieCoolDown")==1)then
+	if(getElementData(stevie, "activeConvo"))then
+		
 		local pedX, pedY, pedZ = getElementPosition( source )
-		local chatSphere = createColSphere( pedX, pedY, pedZ, 10 )
+		local chatSphere = createColSphere( pedX, pedY, pedZ, 5 )
 		exports.pool:allocateElement(chatSphere) -- Create the colSphere for chat output to local players
 		local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
 		local name = string.gsub(getPlayerName(source), "_", " ")
 		for i, player in ipairs( targetPlayers ) do
-			outputChatBox("* Stevie ignore the person trying to talk to him and contiues to eat.", player,  255, 51, 102)
+			outputChatBox("* Stevie ignores the person trying to talk to him and contiues to eat.", player,  255, 51, 102)
 		end
+		
 	else
+		
+		setElementData (stevie, "activeConvo", true) -- set the NPCs conversation state to active so no one else can begin to talk to him.
+		outputDebugString("Stevie is talking.")
+		
 		local pedX, pedY, pedZ = getElementPosition( stevie )
-		local chatSphere = createColSphere( pedX, pedY, pedZ, 10 )
+		local chatSphere = createColSphere( pedX, pedY, pedZ, 5 )
 		exports.pool:allocateElement(chatSphere) -- Create the colSphere for chat output to local players
 		local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
 		for i, player in ipairs( targetPlayers ) do
 			outputChatBox("Steven Pulman says: Do you want something, pal?", player, 255, 255, 255) -- Stevies next question
 		end
-		setElementData (stevie, "activeConvo", 1) -- set the NPCs conversation state to active so no one else can begin to talk to him.
+		
 		destroyElement(chatSphere)
 	end
 end
@@ -90,10 +114,11 @@ function quickClose_S()
 	exports.global:removeAnimation(source)
 	toggleAllControls(source, true, true, true)
 	
-	setElementData (stevie, "activeConvo", 0) -- set the NPCs conversation state to not active so others can begin to talk to him.
+	removeElementData (stevie, "activeConvo") -- set the NPCs conversation state to not active so others can begin to talk to him.
+	outputDebugString("Stevie is no longer talking.")
 	
 	local pedX, pedY, pedZ = getElementPosition( source )
-	local chatSphere = createColSphere( pedX, pedY, pedZ, 10 )
+	local chatSphere = createColSphere( pedX, pedY, pedZ, 5 )
 	exports.pool:allocateElement(chatSphere) -- Create the colSphere for chat output to local players
 	local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
 	local name = string.gsub(getPlayerName(source), "_", " ")
@@ -109,7 +134,7 @@ addEventHandler( "quickCloseServerEvent", getRootElement(), quickClose_S )
 function statement2_S()
 	-- Output the text from the last option to all player in radius
 	local pedX, pedY, pedZ = getElementPosition( source )
-	local chatSphere = createColSphere( pedX, pedY, pedZ, 10 )
+	local chatSphere = createColSphere( pedX, pedY, pedZ, 5)
 	exports.pool:allocateElement(chatSphere) -- Create the colSphere for chat output to local players
 	local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
 	local name = string.gsub(getPlayerName(source), "_", " ")
@@ -134,11 +159,11 @@ function statement3_S()
 	exports.global:removeAnimation(source)
 	toggleAllControls(source, true, true, true)
 	
-	setElementData (stevie, "activeConvo", 0) -- set the NPCs conversation state to not active so others can begin to talk to him.
+	setTimer(resetStevieConvoState, 360000, 1)
 	
 	-- Output the text from the last option to all player in radius
 	local pedX, pedY, pedZ = getElementPosition( source )
-	local chatSphere = createColSphere( pedX, pedY, pedZ, 10 )
+	local chatSphere = createColSphere( pedX, pedY, pedZ, 5 )
 	exports.pool:allocateElement(chatSphere) -- Create the colSphere for chat output to local players
 	local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
 	local name = string.gsub(getPlayerName(source), "_", " ")
@@ -156,7 +181,7 @@ function statement4_S()
 	
 	-- Output the text from the last option to all player in radius
 	local pedX, pedY, pedZ = getElementPosition( source )
-	local chatSphere = createColSphere( pedX, pedY, pedZ, 10 )
+	local chatSphere = createColSphere( pedX, pedY, pedZ, 5 )
 	exports.pool:allocateElement(chatSphere) -- Create the colSphere for chat output to local players
 	local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
 	local name = string.gsub(getPlayerName(source), "_", " ")
@@ -177,11 +202,12 @@ function statement5_S()
 	exports.global:removeAnimation(source)
 	toggleAllControls(source, true, true, true)
 	
-	setElementData (stevie, "activeConvo", 0) -- set the NPCs conversation state to not active so others can begin to talk to him.
+	setTimer(resetStevieConvoState, 360000, 1)
+	
 	exports.global:sendLocalMeAction( source,"leaves Stevie's hand lingering in the air.")
 	-- Output the text from the last option to all player in radius
 	local pedX, pedY, pedZ = getElementPosition( source )
-	local chatSphere = createColSphere( pedX, pedY, pedZ, 10 )
+	local chatSphere = createColSphere( pedX, pedY, pedZ, 5 )
 	exports.pool:allocateElement(chatSphere) -- Create the colSphere for chat output to local players
 	local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
 	for i, player in ipairs( targetPlayers ) do
@@ -197,7 +223,7 @@ function statement6_S()
 	
 	-- Output the text from the last option to all player in radius
 	local pedX, pedY, pedZ = getElementPosition( source )
-	local chatSphere = createColSphere( pedX, pedY, pedZ, 10 )
+	local chatSphere = createColSphere( pedX, pedY, pedZ, 5 )
 	exports.pool:allocateElement(chatSphere) -- Create the colSphere for chat output to local players
 	local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
 	local name = string.gsub(getPlayerName(source), "_", " ")
@@ -217,11 +243,11 @@ function statement7_S()
 	exports.global:removeAnimation(source)
 	toggleAllControls(source, true, true, true)
 	
-	setElementData (stevie, "activeConvo", 0) -- set the NPCs conversation state to not active so others can begin to talk to him.
+	setTimer(resetStevieConvoState, 360000, 1) -- set the NPCs conversation state to not active so others can begin to talk to him.
 	
 	-- Output the text from the last option to all player in radius
 	local pedX, pedY, pedZ = getElementPosition( source )
-	local chatSphere = createColSphere( pedX, pedY, pedZ, 10 )
+	local chatSphere = createColSphere( pedX, pedY, pedZ, 5 )
 	exports.pool:allocateElement(chatSphere) -- Create the colSphere for chat output to local players
 	local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
 	local name = string.gsub(getPlayerName(source), "_", " ")
@@ -241,7 +267,7 @@ function statement8_S()
 	
 	-- Output the text from the last option to all player in radius
 	local pedX, pedY, pedZ = getElementPosition( source )
-	local chatSphere = createColSphere( pedX, pedY, pedZ, 10 )
+	local chatSphere = createColSphere( pedX, pedY, pedZ, 5 )
 	exports.pool:allocateElement(chatSphere) -- Create the colSphere for chat output to local players
 	local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
 	local name = string.gsub(getPlayerName(source), "_", " ")
@@ -262,7 +288,7 @@ function statement9_S()
 	
 	-- Output the text from the last option to all player in radius
 	local pedX, pedY, pedZ = getElementPosition( source )
-	local chatSphere = createColSphere( pedX, pedY, pedZ, 10 )
+	local chatSphere = createColSphere( pedX, pedY, pedZ, 5 )
 	exports.pool:allocateElement(chatSphere) -- Create the colSphere for chat output to local players
 	local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
 	local name = string.gsub(getPlayerName(source), "_", " ")
@@ -284,7 +310,8 @@ addEventHandler( "statement9ServerEvent", getRootElement(), statement9_S )
 function stevieSuccess_S()
 	
 	exports.global:removeAnimation(source)
-	setElementData (stevie, "activeConvo", 0) -- set the NPCs conversation state to not active so others can begin to talk to him.
+	
+	setTimer(resetStevieConvoState, 360000, 1) -- set the NPCs conversation state to not active so others can begin to talk to him.
 	
 	exports.global:sendLocalMeAction( source,"takes Stevie's business card.")
 	
@@ -304,7 +331,7 @@ function CloseButtonClick_S()
 	exports.global:removeAnimation(source)
 	toggleAllControls(source, true, true, true)
 	
-	setElementData (stevie, "activeConvo", 0) -- set the NPCs conversation state to not active so others can begin to talk to him.
+	setTimer(resetStevieConvoState, 360000, 1) -- set the NPCs conversation state to not active so others can begin to talk to him.
 	
 	-- Output the text from the last option to all player in radius
 	local pedX, pedY, pedZ = getElementPosition( source )
@@ -321,6 +348,10 @@ end
 addEvent( "CloseButtonClickServerEvent", true )
 addEventHandler( "CloseButtonClickServerEvent", getRootElement(), CloseButtonClick_S )
 
+function resetStevieConvoState()
+	removeElementData(stevie,"activeConvo")
+	outputDebugString("Stevie is no longer talking.")
+end
 
 ------------------------------------------------------------------------------------
 ------------------------------ telephone conversation ------------------------------
@@ -338,44 +369,47 @@ function startPhoneCall(thePlayer)
 			if (money<10) then
 				outputChatBox("You cannot afford a call.", thePlayer, 255, 0, 0)
 			else
-				--if (stevie) then -- If stevie is currently spawned (i.e., if it's between 1900 and 2200).   -- disabled while testing.
+				if(stevie)then -- If stevie is currently spawned (i.e., if it's between 1900 and 2200).   -- disabled while testing.
 					outputChatBox("The phone you are trying to call is switched off.", thePlayer, 255, 0, 0)
-				--else
-					local phoneState = getElementData(stevie, "phoneState")
+				else
 					if (phoneState==1) then -- is someone already speaking to stevie?
 						outputChatBox("The number you are trying to call is engaged.", thePlayer, 255, 0, 0)
 					else
-						setElementData (stevie, "phoneConvoState", 1)
+						phoneState = 1
 						setElementData(thePlayer, "calling", "stevie")
 						exports.global:sendLocalMeAction(thePlayer, "takes out a cell phone.")
 						exports.global:applyAnimation(thePlayer, "ped", "phone_in", 1.0, 1.0, 0.0, false, false, true)
 						toggleAllControls(thePlayer, true, true, true)
 						setTimer(startPhoneAnim, 1000, 2, thePlayer)
-						local friend = mysql_query(handler, "SELECT stevie FROM characters WHERE charactername='" .. mysql_escape_string(handler, getPlayerName(name)) .. "'")-- check the sql that the player has meet stevie and completed the conversation.
-						local factionID = getElementData(thePlayer, "faction") -- get the player's faction type to see if they are in law enforcement and later to determine what deal they are offered. -- NOT WORKING
-						local factionType = mysql_query(handler, "SELECT type FROM factions WHERE id='" .. factionID .. "'") -- NOT WORKING
-						if not(friend==1) or (factionType==4) then
+						-- are they a friend?
+						local query = mysql_query(handler, "SELECT stevie FROM characters WHERE charactername='" .. mysql_escape_string(handler, getPlayerName(thePlayer)) .."'")
+						local steviesFriend = tonumber(mysql_result(query, 1, 1))
+						mysql_free_result(query)
+						-- are they in law enforcement?
+						local theTeam = getPlayerTeam(thePlayer)
+						local factionType = getElementData(theTeam, "type")
+						
+						if not(steviesFriend==1) or (factionType==2) then
 							setTimer( endCall, 6000, 1, thePlayer)
 							outputChatBox("#081016 [Cellphone]: Yeah?", thePlayer)
 							setTimer(outputChatBox, 3000, 1, "#081016 [Cellphone]: How did you get this number? ", thePlayer)
 							setTimer(outputChatBox, 6000, 1, "#081016 [Cellphone]: Sorry you must have the wrong number, pal.", thePlayer)
 							setTimer(outputChatBox, 6000, 1, "They hung up.", thePlayer)
-							setTimer(setElementData, 6500, 1, stevie, "phoneConvoState", 0) -- reset Stevie's convo state.
+							phoneState = 0
 						else
-							local doneDeals = getElementData(stevie,"deals")
-							if(doneDeals > 5) then
+							if(doneDeals >= 5) then
 								triggerClientEvent ( thePlayer, "outOfDeals", getRootElement() ) -- Trigger Client side function to create GUI.
 							else
 								triggerClientEvent ( thePlayer, "showPhoneConvo", getRootElement(), factionType) -- Trigger Client side function to create GUI.
 							end
 						end
 					end
-				--end
+				end
 			end
 		end
 	end
 end
-addCommandHandler ( "081016", startPhoneCall )
+--addCommandHandler ( "081016", startPhoneCall )
 
 function startPhoneAnim() -- taken from phone res.
 	exports.global:applyAnimation(source, "ped", "phone_talk", 1.0, 1.0, 0.0, true, true, true)
@@ -396,7 +430,7 @@ function declineDeal_S ()
 		outputChatBox(name.. " says: Maybe another time.", player, 255, 255, 255)
 	end			
 	destroyElement (chatSphere)
-	outputChatBox("((Steven Pullman)) #081016 [Cellphone]: Okay. Give me a call if you change your mind.", source)
+	outputChatBox("((Steven Pullman)) #081016 [Cellphone]: Sure thing.", source)
 	
 	endCall(source)
 	
@@ -409,86 +443,232 @@ addEventHandler( "declineSteviePhoneDeal", getRootElement(), declineDeal_S )
 ------------------------------
 
 -- The item spawn locations. Stack the items 3 high to give 15 items in total.
-locations_1 = { } 
-locations_1[1] = { 1609, 889.6044921875, 10.701148033142 } -- x
-locations_1[2] = { 1609.5, 889.6044921875, 10.701148033142 } -- x
-locations_1[3] = { 1610, 889.6044921875, 10.701148033142 } -- x
-locations_1[4] = { 1610.5, 889.6044921875, 10.701148033142 } -- x
-locations_1[5] = { 1611, 889.6044921875, 10.701148033142 } -- x
+locations = { } 
+locations[1] = { 1610, 889.6044921875, 9.701148033142 } -- x
+locations[2] = { 1612, 889.6044921875, 9.701148033142 } -- x
+locations[3] = { 1614, 889.6044921875, 9.701148033142 } -- x
+locations[4] = { 1616, 889.6044921875, 9.701148033142 } -- x
+locations[5] = { 1618, 889.6044921875, 9.701148033142 } -- x
+--locations[2] = { 1313.4462890625, 1144.5, 9.8203125 } -- y
+--locations[3] = { 1125, 1892.029296875, 9.8203125 } -- x
 
-location_2 = {}
-location_2[1] = { 1313.4462890625, 1144, 10.8203125 } -- y
-location_2[2] = { 1313.4462890625, 1144.5, 10.8203125 } -- y
-location_2[3] = { 1313.4462890625, 1145, 10.8203125 } -- y
-location_2[4] = { 1313.4462890625, 1145.5, 10.8203125 } -- y
-location_2[5] = { 1313.4462890625, 1146, 10.8203125 } -- y
-
-location_3 = {}
-location_3[1] = { 1123, 1892.029296875, 10.8203125 } -- x
-location_3[2] = { 1123.5, 1892.029296875, 10.8203125 } -- x
-location_3[3] = { 1124, 1892.029296875, 10.8203125 } -- x
-location_3[4] = { 1124.5, 1892.029296875, 10.8203125 } -- x
-location_3[5] = { 1125, 1892.029296875, 10.8203125 } -- x
 
 function acceptDeal_S( dealNumber )
 	
 	if(dealNumber==1)then -- work out the cost of the selected deal.
-		local cost = 4000
+		cost = 4000
 		outputChatBox("Cost = $4000.", source, 255, 0, 0) -- trace
 	elseif(dealNumber==2)then
-		local cost = 2000
+		cost = 2000
 		outputChatBox("Cost = $2000.", source, 255, 0, 0) -- trace
 	elseif(dealNumber==3)then
-		local cost = 30000
+		cost = 30000
 		outputChatBox("Cost = $30000.", source, 255, 0, 0) -- trace
 	elseif(dealNumber==4)then
-		local cost = 10000
+		cost = 10000
 		outputChatBox("Cost = $10000.", source, 255, 0, 0) -- trace
 	end
 	
-	local money = getElementData (source, "money") -- NOT WORKING
+	local money = getElementData(source, "money") -- NOT WORKING
 	if (money<cost) then -- can the player afford the deal?
 		outputChatBox("((Steven Pullman)) #081016 [Cellphone]: Call me when you've got some money.", source)
 		outputChatBox("You can't afford to pay Stevie for the deal.", source, 255, 0, 0)
+		endCall()
 	else
 		exports.global:takePlayerSafeMoney(source, cost) -- pay the money.
-		outputChatBox("You have sent Stevie $".. cost .." for the deal.", source, 255, 0, 0)
+		outputChatBox("You have sent Stevie $".. cost .." for the deal.", source, 0, 255, 0)
 		
-		local rand = math.random(1,3) -- select one of the drop off locations at the freight Depo.		
-	
-		-- create the items at the selected location.
-		if(dealNumber == 1) then
-			outputChatBox("Deal 1 selected.", source, 255, 0, 0) -- trace
-			-- Ammunation weapons (colt, rifle, shotgun) Ammunation weapons.
-		elseif(dealNumber == 2) then
-			outputChatBox("Deal 2 selected.", source, 255, 0, 0) -- trace
-			-- MP3 players, cellphones, radios.
-		elseif(dealNumber == 3) then
-			outputChatBox("Deal 3 selected.", source, 255, 0, 0) -- trace
-			-- Snipers, M4, AK47, SMG, gas mask?, army skin.
-		elseif(dealNumber == 4) then
-			outputChatBox("Deal 4 selected.", source, 255, 0, 0) -- trace
-			-- Cocaine Alkaloid, Unprocessed PCP, Lysergic Acid.
+		if not(stevieBlip)then
+			local x, y, z = locations[1][1], locations[1][2], locations[1][3]
+			
+			stevieBlip = createBlip(x, y, z, 0, 2, 255, 127, 255)
+			stevieMarker = createMarker(x, y, z, "cylinder", 2, 255, 127, 255, 150)
+			stevieCol = createColSphere(x, y, z, 2)
+				
+			exports.pool:allocateElement(stevieBlip)
+			exports.pool:allocateElement(stevieMarker)
+			exports.pool:allocateElement(stevieCol)
+				
+			setElementVisibleTo(stevieBlip, getRootElement(), false) -- everyone can see the marker. Only the caller sees the blip.
+			setElementVisibleTo(stevieBlip, source, true)
+			
+			setElementData(stevieCol, "dealNumber", dealNumber)
+			
+			addEventHandler("onColShapeHit", stevieCol, giveGoods)		
+		else
+			if not(stevieBlip2)then				
+				local x, y, z = locations[2][1], locations[2][2], locations[2][3]
+				
+				stevieBlip2 = createBlip(x, y, z, 0, 2, 255, 127, 255)
+				stevieMarker2 = createMarker(x, y, z, "cylinder", 2, 255, 127, 255, 150)
+				stevieCol2 = createColSphere(x, y, z, 2)
+					
+				exports.pool:allocateElement(stevieBlip2)
+				exports.pool:allocateElement(stevieMarker2)
+				exports.pool:allocateElement(stevieCol2)
+					
+				setElementVisibleTo(stevieBlip2, getRootElement(), false) -- everyone can see the marker. Only the caller sees the blip.
+				setElementVisibleTo(stevieBlip2, source, true)
+				
+				setElementData(stevieCol2, "dealNumber", dealNumber)
+				
+				addEventHandler("onColShapeHit", stevieCol2, giveGoods)			
+			else				
+				if not(stevieBlip3)then
+					local x, y, z = locations[3][1], locations[3][2], locations[3][3]
+				
+					stevieBlip3 = createBlip(x, y, z, 0, 2, 255, 127, 255)
+					stevieMarker3 = createMarker(x, y, z, "cylinder", 2, 255, 127, 255, 150)
+					stevieCol3 = createColSphere(x, y, z, 2)
+						
+					exports.pool:allocateElement(stevieBlip3)
+					exports.pool:allocateElement(stevieMarker3)
+					exports.pool:allocateElement(stevieCol3)
+						
+					setElementVisibleTo(stevieBlip3, getRootElement(), false) -- everyone can see the marker. Only the caller sees the blip.
+					setElementVisibleTo(stevieBlip3, source, true)
+					
+					setElementData(stevieCol3, "dealNumber", dealNumber)
+					
+					addEventHandler("onColShapeHit", stevieCol3, giveGoods)
+				else
+					if not(stevieBlip4)then				
+						local x, y, z = locations[4][1], locations[4][2], locations[4][3]
+						
+						stevieBlip4 = createBlip(x, y, z, 0, 2, 255, 127, 255)
+						stevieMarker4 = createMarker(x, y, z, "cylinder", 2, 255, 127, 255, 150)
+						stevieCol4 = createColSphere(x, y, z, 2)
+							
+						exports.pool:allocateElement(stevieBlip4)
+						exports.pool:allocateElement(stevieMarker4)
+						exports.pool:allocateElement(stevieCol4)
+							
+						setElementVisibleTo(stevieBlip4, getRootElement(), false) -- everyone can see the marker. Only the caller sees the blip.
+						setElementVisibleTo(stevieBlip4, source, true)
+						
+						setElementData(stevieCol4, "dealNumber", dealNumber)
+							
+						addEventHandler("onColShapeHit", stevieCol4, giveGoods)					
+					else					
+						if not(stevieBlip5)then
+							local x, y, z = locations[5][1], locations[5][2], locations[5][3]
+							
+							stevieBlip5 = createBlip(x, y, z, 0, 2, 255, 127, 255)
+							stevieMarker5 = createMarker(x, y, z, "cylinder", 2, 255, 127, 255, 150)
+							stevieCol5 = createColSphere(x, y, z, 2)
+								
+							exports.pool:allocateElement(stevieBlip5)
+							exports.pool:allocateElement(stevieMarker5)
+							exports.pool:allocateElement(stevieCol5)
+								
+							setElementVisibleTo(stevieBlip5, getRootElement(), false) -- everyone can see the marker. Only the caller sees the blip.
+							setElementVisibleTo(stevieBlip5, source, true)
+							
+							setElementData(stevieCol5, "dealNumber", dealNumber)
+								
+							addEventHandler("onColShapeHit", stevieCol5, giveGoods)						
+						end
+					end
+				end
+			end
 		end
 		
-		-- create a blip and marker on the players screen radar so they know where to collect the items from.
+		endCall() -- end the call.
 		
-		endCall(source) -- end the call.
-		
-		setElementData(stevie, "deals", doneDeals+1)
+		doneDeals = doneDeals + 1
 	end
 end
 addEvent( "acceptSteviePhoneDeal", true )
 addEventHandler( "acceptSteviePhoneDeal", getRootElement(), acceptDeal_S )
 
+deal1={}
+deal1[1] = { 1,1 }		-- colt
+deal1[2]  = { 1,1 }		-- rifle
+deal1[3]  = { 1,1 }		-- shotgun
+deal1[4]  = { 1,1 }		-- tec 9
+deal1[5]  = { 1,1 }		-- vest
+
+deal2={}
+deal2[1]  = { 1,1 }		-- MP3
+deal2[2]  = { 1,1 }		-- Ghettoblaster
+deal2[3]  = { 1,1 }		-- radio
+deal2[4]  = { 1,1 }		-- cellphone
+
+deal3={}
+deal3[1]  = { 1,1 }		-- AK47
+deal3[2]  = { 1,1 }		-- Door ram
+deal3[3]  = { 1,1 }		-- radio
+deal3[4]  = { 1,1 }		-- Sniper rifle
+deal3[5]  = { 1,1 }		-- grenade
+deal3[6]  = { 1,1 }		-- satchel
+deal3[7]  = { 1,1 }		-- uniform
+deal3[8]  = { 1,1 }		-- vests
+deal3[9]  = { 1,1 }		-- MP5
+deal3[10]  = { 1,1 }		-- M4
+deal3[11]  = { 1,1 }		-- grenade
+
+deal4={}
+deal4[1] = { 1,1 }		-- Sativa
+deal4[2] = { 1,1 }		-- Lysergic acid
+deal4[3] = { 1,1 }		-- PCP
+deal4[4] = { 1,1 }		-- Cocaine Alcaloid
+
+
+function giveGoods(thePlayer, dealNumber)
+	if(source==stevieCol)then
+		destroyElement(stevieBlip)
+		destroyElement(stevieMarker)
+		destroyElement(stevieCol)
+		stevieBlip = nil
+		stevieMarker = nil
+		stevieCol = nil
+	end
+	if(source==stevieCol2)then
+		destroyElement(stevieBlip2)
+		destroyElement(stevieMarker2)
+		destroyElement(stevieCol2)
+		stevieBlip2 = nil
+		stevieMarker2 = nil
+		stevieCol2 = nil
+	end
+	if(source==stevieCol3)then
+		destroyElement(stevieBlip3)
+		destroyElement(stevieMarker3)
+		destroyElement(stevieCol3)
+		stevieBlip3 = nil
+		stevieMarker3 = nil
+		stevieCol3 = nil
+	end
+	if(source==stevieCol4)then
+		destroyElement(stevieBlip4)
+		destroyElement(stevieMarker4)
+		destroyElement(stevieCol4)
+		stevieBlip4 = nil
+		stevieMarker4 = nil
+		stevieCol4 = nil
+	end
+	if(source==stevieCol5)then
+		destroyElement(stevieBlip5)
+		destroyElement(stevieMarker5)
+		destroyElement(stevieCol5)
+		stevieBlip5 = nil
+		stevieMarker5 = nil
+		stevieCol5 = nil
+	end
+	
+	local deal = getElementData(source, "dealNumber")
+	
+	-- give the player the items.
+	
+end
+
 ---------------------
 -- ending the call --
 ---------------------
-function endCall(thePlayer) -- to cancel the phone animation and reset the phone states. -- NOT WORKING
-	outputChatBox("endCall function triggered.", thePlayer, 255, 0, 0) -- trace
-	exports.global:removeAnimation(thePlayer)
-	toggleAllControls(thePlayer, true, true, true)
-	setElementData(thePlayer, "calling", nil)
-	setElementData(stevie, "phoneConvoState", 0) -- reset the convo state so other players can call Stevie.
-	exports.global:takePlayerSafeMoney(thePlayer, 10)
+function endCall() -- to cancel the phone animation and reset the phone states.
+	exports.global:removeAnimation(source)
+	toggleAllControls(source, true, true, true)
+	removeElementData(source, "calling")
+	exports.global:takePlayerSafeMoney(source, 10)
+	phoneState = 0
 end

@@ -9,8 +9,8 @@ function clickPed(button, state, absX, absY, wx, wy, wz, element)
 		local gatekeeper = getElementData(element, "talk")
 		if (gatekeeper) then
 			local x, y, z = getElementPosition(getLocalPlayer())
-		
-			if (getDistanceBetweenPoints3D(x, y, z, wx, wy, wz)<=5) then
+			
+			if (getDistanceBetweenPoints3D(x, y, z, wx, wy, wz)<=3) then
 				if (wPedRightClick) then
 					hidePlayerMenu()
 				end
@@ -21,36 +21,32 @@ function clickPed(button, state, absX, absY, wx, wy, wz, element)
 				player = element
 				closing = false
 				
-				wPedRightClick = guiCreateWindow(ax, ay, 150, 200, getElementData(element, "name"), false)
+				wPedRightClick = guiCreateWindow(ax, ay, 150, 75, getElementData(element, "name"), false)
 				
-				local convoState = getElementData(element, "activeConvo")
-				if (convoState == 0) then
-				
-					bTalkToPed = guiCreateButton(0.05, 0.13, 0.87, 0.1, "Talk", true, wPedRightClick)
-					addEventHandler("onClientGUIClick", bTalkToPed,  function (button, state)
-						if(button == "left" and state == "up") then
+				bTalkToPed = guiCreateButton(0.05, 0.3, 0.87, 0.25, "Talk", true, wPedRightClick)
+				addEventHandler("onClientGUIClick", bTalkToPed,  function (button, state)
+					if(button == "left" and state == "up") then
 					
-							hidePedMenu()
-							
-							local ped = getElementData(element, "name")
-							if (ped=="Steven Pullman") then
-								triggerServerEvent( "startStevieConvo", getLocalPlayer())
-								if not(getElementData(getLocalPlayer(),"stevieCooldown")) then
-									triggerEvent ( "stevieIntroEvent", getLocalPlayer()) -- Trigger Client side function to create GUI.
-								end
-							elseif (ped=="Hunter") then
-									triggerServerEvent( "startHunterConvo", getLocalPlayer())
-								if not (getElementData(getLocalPlayer(),"hunterCoolDown")) then
-									triggerEvent ( "hunterIntroEvent", getLocalPlayer()) -- Trigger Client side function to create GUI.
-								end
-							else
-								outputChatBox("Error: Unknown ped.", 255, 0, 0)
+						hidePedMenu()
+						
+						local ped = getElementData(element, "name")
+						if (ped=="Steven Pullman") then
+							triggerServerEvent( "startStevieConvo", getLocalPlayer())
+							if not(getElementData(element, "activeConvo")) then
+								triggerEvent ( "stevieIntroEvent", getLocalPlayer()) -- Trigger Client side function to create GUI.
 							end
-						end	
-					end, false)
-				end
+						elseif (ped=="Hunter") then
+								triggerServerEvent( "startHunterConvo", getLocalPlayer())
+							if not (getElementData(element,"activeConvo")) then
+								triggerEvent ( "hunterIntroEvent", getLocalPlayer()) -- Trigger Client side function to create GUI.
+							end
+						else
+							outputChatBox("Error: Unknown ped.", 255, 0, 0)
+						end
+					end	
+				end, false)
 				
-				bClosePedMenu = guiCreateButton(0.05, 0.51, 0.87, 0.1, "Close Menu", true, wPedRightClick)
+				bClosePedMenu = guiCreateButton(0.05, 0.6, 0.87, 0.25, "Close Menu", true, wPedRightClick)
 				addEventHandler("onClientGUIClick", bClosePedMenu, hidePedMenu, false)
 				sent=true
 			end

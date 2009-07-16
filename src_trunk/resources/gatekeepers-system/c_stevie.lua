@@ -1,9 +1,5 @@
 wStevie, optionOne, optionTwo, buttonClose, stevieText = nil
 
-function resetStevieCoolDown()
-	removeElementData(source,"stevieCooldown")
-end
-
 function createStevieGUI() 
 	
 	-- Window variables
@@ -38,8 +34,7 @@ addEventHandler( "stevieIntroEvent", getRootElement(), createStevieGUI )
 function quickClose()
 	
 	triggerServerEvent( "quickCloseServerEvent", getLocalPlayer() ) -- Trigger Server Event to output previous option
-	setElementData(thePlayer, "stevieCoolDown", true)
-	local StevieCoolDownTimer = setTimer(resetStevieCoolDown, 1800000, 1)
+
 	-- Destroy elements
 	destroyElement ( optionOne )
 	destroyElement ( optionTwo )
@@ -58,11 +53,6 @@ end
 function statement2()
 	
 	triggerServerEvent( "statement2ServerEvent", getLocalPlayer() ) -- Trigger Server Event to output previous option
-	
-	-- Set players position and anim so they are sitting opposite Stevie. Freeze them so they can't move until they end the conversation
-	setElementPosition (source, 675.81127929688, -457.45016479492, -24.406700134277)
-	setElementRotation (source, 11.667144775391)
-	setPedAnimation ( source, "INT_OFFICE", "OFF_Sit_Watch", -1, true, false, false)
 	
 	-- Destroy the old options
 	destroyElement ( optionOne )
@@ -89,8 +79,7 @@ end
 function statement3()
 	
 	triggerServerEvent( "statement3ServerEvent", getLocalPlayer() ) -- Trigger Server Event to output previous option
-	setElementData(thePlayer, "stevieCoolDown", true)
-	local StevieCoolDownTimer = setTimer(resetStevieCoolDown, 1800000, 1)
+
 	-- Destroy elements
 	destroyElement ( optionOne )
 	destroyElement ( optionTwo )
@@ -134,8 +123,7 @@ end
 function statement5()
 	
 	triggerServerEvent( "statement5ServerEvent", getLocalPlayer() ) -- Trigger Server Event to output previous option
-	setElementData(thePlayer, "stevieCoolDown", true)
-	local StevieCoolDownTimer = setTimer(resetStevieCoolDown, 1800000, 1)
+
 	-- Destroy elements
 	destroyElement ( optionOne )
 	destroyElement ( optionTwo )
@@ -179,8 +167,7 @@ end
 function statement7()
 	
 	triggerServerEvent( "statement7ServerEvent", getLocalPlayer() ) -- Trigger Server Event to output previous option
-	setElementData(thePlayer, "stevieCoolDown", true)
-	local StevieCoolDownTimer = setTimer(resetStevieCoolDown, 1800000, 1)
+
 	-- Destroy elements
 	destroyElement ( optionOne )
 	destroyElement ( optionTwo )
@@ -249,8 +236,7 @@ end
 function stevieSuccess()
 	
 	triggerServerEvent( "stevieSuccessServerEvent", getLocalPlayer() ) -- Trigger Server Event to output previous option
-	setElementData(thePlayer, "stevieCoolDown", true, true)
-	local StevieCoolDownTimer = setTimer(resetStevieCoolDown, 1800000, 1)
+
 	-- Destroy elements
 	destroyElement ( optionOne )
 	destroyElement ( optionTwo )
@@ -270,8 +256,7 @@ end
 function CloseButtonClick()
 	
 	triggerServerEvent( "CloseButtonClickServerEvent", getLocalPlayer() ) -- Trigger Server Event to output previous option
-	setElementData(thePlayer, "stevieCoolDown", true)
-	local StevieCoolDownTimer = setTimer(resetStevieCoolDown, 1800000, 1)
+
 	-- Destroy elements
 	destroyElement ( optionOne )
 	destroyElement ( optionTwo )
@@ -287,11 +272,6 @@ function CloseButtonClick()
 	showCursor(false)
 	
 end
-
-function stevieCoolDown()
-	setElementData(getLocalPlayer(), "stevieCoolDown", false, true)
-end
-
 ------------------------------------------------------------------------------------
 ------------------------------ telephone conversation ------------------------------
 ------------------------------------------------------------------------------------
@@ -309,16 +289,13 @@ function noDeal()
 		-- Create the window
 		pwStevie = guiCreateWindow(X, Y, Width, Height, "Phone Conversation with a stranger", false )
 		
-		doneDeals = getElementData(stevie, "deals")
-			
 		-- Create Stevies text box
 		pstevieText = guiCreateLabel ( 0.05, 0.1, 0.9, 0.3, "Hey! How you doin'? I know I said I would help you out but I've got nothing here for ya. Sorry.", true, pwStevie )
-			guiLabelSetHorizontalAlign ( pstevieText, "left", true )
+		guiLabelSetHorizontalAlign ( pstevieText, "left", true )
 		
 		-- Create close Button
 		poptionOne = guiCreateButton( 0.05, 0.45, 0.9, 0.2, "Hang up.", true, pwStevie )
 		addEventHandler( "onClientGUIClick", poptionOne, cdeclineSteviePhoneDeal, false )
-		
 		
 		showCursor(true)
 	end
@@ -363,14 +340,22 @@ addEventHandler( "showPhoneConvo", getRootElement(), createPhoneConvo )
 ------------------------
 
 function cdeclineSteviePhoneDeal()
-	destroyElement ( poptionOne )
-	destroyElement ( poptionTwo )
-	destroyElement ( pstevieText )
-	destroyElement ( pwStevie )
-	poptionOne = nil
-	poptionTwo = nil
-	pstevieText = nil
-	pwStevie = nil
+	if(poptionOne)then 
+		destroyElement ( poptionOne )
+		poptionOne = nil
+	end
+	if(poptionTwo)then 
+		destroyElement ( poptionTwo )
+		poptionTwo = nil
+	end
+	if(pstevieText)then
+		destroyElement ( pstevieText )
+		pstevieText = nil
+	end
+	if(pwStevie)then
+		destroyElement ( pwStevie )
+		pwStevie = nil
+	end	
 	
 	showCursor(false)
 	
@@ -393,22 +378,44 @@ function cacceptSteviePhoneDeal( factionType )
 	-- Create Stevies text box
 	guiSetText ( pstevieText, "I got a couple crates here. Which one tickles ya fancy?")
 	
-	--if (factionType==0) then -- Gang
+	if (factionType==0) then -- Gang
 
 		-- Create close, previous and Next Button
-		--poptionOne = guiCreateButton( 0.05, 0.45, 0.45, 0.2, "To: Ammu-nation LTD.               - $4,000", true, pwStevie )
-		--addEventHandler( "onClientGUIClick", poptionOne, triggerServerEvent( "acceptSteviePhoneDeal.", getLocalPlayer(), 1), false )
-
-		--poptionTwo = guiCreateButton( 0.05, 0.65, 0.45, 0.2, "From: Suny Corp., Tokyo.", true, pwStevie )
-		--addEventHandler( "onClientGUIClick", poptionTwo, triggerServerEvent( "acceptSteviePhoneDeal.", getLocalPlayer(), 2), false )
+		-- Create close, previous and Next Button
+		poptionOne = guiCreateButton( 0.05, 0.45, 0.45, 0.2, "To: Ammu-nation LTD.\
+															- $4,000", true, pwStevie )
+		addEventHandler ( "onClientGUIClick", poptionOne,  function(button, state)
+			if(button == "left" and state == "up") then
+				
+				c_closePhoneGUI()
+				triggerServerEvent( "acceptSteviePhoneDeal", getLocalPlayer(), 1)
+				
+			end
+		end, false)
 		
-		--poptionThree = guiCreateButton( 0.45, 0.45, 0.45, 0.2, "To: Area 69 US Military Base.", true, pwStevie )
-		--addEventHandler( "onClientGUIClick", poptionOne, triggerServerEvent( "acceptSteviePhoneDeal", getLocalPlayer(), 3), false )
+		poptionTwo = guiCreateButton( 0.05, 0.65, 0.45, 0.2, "From: Suny Corp., Tokyo.\
+															- $2,000", true, pwStevie )
+		addEventHandler ( "onClientGUIClick", poptionTwo,  function(button, state)
+			if(button == "left" and state == "up") then
+				
+				c_closePhoneGUI()
+				triggerServerEvent( "acceptSteviePhoneDeal", getLocalPlayer(), 2)
+				
+			end
+		end, false)
 
-		--poptionFour = guiCreateButton( 0.45, 0.65, 0.45, 0.2, "To: RaNu Chemical Research.", true, pwStevie )
-		--addEventHandler( "onClientGUIClick", poptionTwo, triggerServerEvent( "acceptSteviePhoneDeal", getLocalPlayer(), 4), false )
+		poptionFour = guiCreateButton( 0.5, 0.65, 0.45, 0.2, "To: RaNu Chemical Research.\
+															- $10,000", true, pwStevie )
+		addEventHandler ( "onClientGUIClick", poptionFour,  function(button, state)
+			if(button == "left" and state == "up") then
+				
+				c_closePhoneGUI()
+				triggerServerEvent( "acceptSteviePhoneDeal", getLocalPlayer(), 4)
+				
+			end
+		end, false)
 		
-	-- elseif (factionType==1) then -- Mafia
+	elseif (factionType==1) then -- Mafia
 	
 		-- Create close, previous and Next Button
 		poptionOne = guiCreateButton( 0.05, 0.45, 0.45, 0.2, "To: Ammu-nation LTD.\
@@ -455,32 +462,56 @@ function cacceptSteviePhoneDeal( factionType )
 			end
 		end, false)
 	
-	--else -- Other
+	else -- Other
 
-		--Create close, previous and Next Button
-		--poptionOne = guiCreateButton( 0.05, 0.45, 0.45, 0.2, "To: Ammu-nation LTD.               - $4,000", true, pwStevie )
-		--addEventHandler( "onClientGUIClick", poptionOne, triggerServerEvent( "acceptSteviePhoneDeal.", getLocalPlayer(), 1), false )
-
-		--poptionTwo = guiCreateButton( 0.05, 0.65, 0.45, 0.2, "From: Suny Corp., Tokyo.", true, pwStevie )
-		--addEventHandler( "onClientGUIClick", poptionTwo, triggerServerEvent( "acceptSteviePhoneDeal.", getLocalPlayer(), 2), false )
+		-- Create close, previous and Next Button
+		poptionOne = guiCreateButton( 0.05, 0.45, 0.45, 0.2, "To: Ammu-nation LTD.\
+															- $4,000", true, pwStevie )
+		addEventHandler ( "onClientGUIClick", poptionOne,  function(button, state)
+			if(button == "left" and state == "up") then
+				
+				c_closePhoneGUI()
+				triggerServerEvent( "acceptSteviePhoneDeal", getLocalPlayer(), 1)
+				
+			end
+		end, false)
 		
-	--end
+		poptionTwo = guiCreateButton( 0.05, 0.65, 0.45, 0.2, "From: Suny Corp., Tokyo.\
+															- $2,000", true, pwStevie )
+		addEventHandler ( "onClientGUIClick", poptionTwo,  function(button, state)
+			if(button == "left" and state == "up") then
+				
+				c_closePhoneGUI()
+				triggerServerEvent( "acceptSteviePhoneDeal", getLocalPlayer(), 2)
+				
+			end
+		end, false)
+		
+	end
 end
 
 ----------------------------------
 -- removing the phone convo GUI --
 ----------------------------------
 function c_closePhoneGUI()
-	destroyElement ( poptionOne )
-	destroyElement ( poptionTwo )
-	destroyElement ( poptionThree )
-	destroyElement ( poptionFour )
+	if(poptionOne)then 
+		destroyElement ( poptionOne )
+		poptionOne = nil
+	end
+	if(poptionTwo)then 
+		destroyElement ( poptionTwo )
+		poptionTwo = nil
+	end
+	if(poptionThree)then 
+		destroyElement ( poptionThree )
+		poptionThree = nil
+	end
+	if(poptionFour)then 
+		destroyElement ( poptionFour )
+		poptionFour = nil
+	end
 	destroyElement ( pstevieText )
 	destroyElement ( pwStevie )
-	poptionOne = nil
-	poptionTwo = nil
-	poptionThree = nil
-	poptionFour = nil
 	pstevieText = nil
 	pwStevie = nil
 	

@@ -14,12 +14,13 @@ setElementDimension(victoria, 787)
 setElementInterior(victoria, 3)
 setPedAnimation ( victoria, "INT_OFFICE", "OFF_Sit_Idle_Loop", -1, true, false, false )
 
-setElementData(getLocalPlayer(),"job",5)
-
 -- Setup the markers.
 function photoResStart(res)
 	if (res==getThisResource())then
-		if(getElementData(getLocalPlayer(),"job", 5))then
+		local theTeam = getPlayerTeam(getLocalPlayer())
+		local factionType = getElementData(theTeam, "type")
+		
+		if (factionType==6) then
 			photoSubmitEntranceMarker = createMarker( 2462.765625, 2245.14257812, 9.8203125, "cylinder", 2, 0,100, 255, 170 )
 			photoSubmitDeskMarker = createMarker( 360, 177, 1008, "cylinder", 2, 0, 100, 255, 170 )
 			photoSubmitEntranceBlip = createBlip( 2462.765625, 2245.14257812, 9.8203125, 0, 2, 0, 100, 255, 255 )
@@ -129,7 +130,7 @@ addCommandHandler("totalvalue", showValue, false, false)
 function sellPhotos()
 	if (isElementWithinColShape(getLocalPlayer(), photoSubmitDeskColSphere))then
 		if(collectionValue==0)then
-			outputChatBox("#FF9933You need to take some photographs before you can sell them.", 255, 255, 255, true)
+			outputChatBox("None of the pictures you have are worth anything.", 255, 0, 0, true)
 		else
 			triggerServerEvent("submitCollection", getLocalPlayer(), collectionValue)
 		end

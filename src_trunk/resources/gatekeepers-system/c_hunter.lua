@@ -40,8 +40,7 @@ addEventHandler( "hunterIntroEvent", getRootElement(), createhunterGUI )
 function hunterStatement2()
 	
 	triggerServerEvent( "hunterStatement2ServerEvent", getLocalPlayer() ) -- Trigger Server Event to output previous option
-	setElementData(getLocalPlayer(), "hunterCoolDown", true, true)
-	local hunterCoolDownTimer = setTimer(resetHunterCoolDown, 1800000, 1)
+
 	-- Destroy elements
 	destroyElement ( optionOne )
 	destroyElement ( optionTwo )
@@ -106,8 +105,7 @@ end
 function hunterStatement5()
 	
 	triggerServerEvent( "hunterStatement5ServerEvent", getLocalPlayer() ) -- Trigger Server Event to output previous option
-	setElementData(getLocalPlayer(), "hunterCoolDown", true, true)
-	local hunterCoolDownTimer = setTimer(resetHunterCoolDown, 1800000, 1)
+
 	-- Destroy elements
 	destroyElement ( optionOne )
 	destroyElement ( optionTwo )
@@ -126,8 +124,7 @@ end
 function hunterStatement6()
 	
 	triggerServerEvent( "hunterStatement6ServerEvent", getLocalPlayer() ) -- Trigger Server Event to output previous option
-	setElementData(getLocalPlayer(), "hunterCoolDown", true, true)
-	local hunterCoolDownTimer = setTimer(resetHunterCoolDown, 1800000, 1)
+
 	-- Destroy elements
 	destroyElement ( optionOne )
 	destroyElement ( optionTwo )
@@ -146,8 +143,7 @@ end
 function hunterStatement7()
 	
 	triggerServerEvent( "hunterStatement7ServerEvent", getLocalPlayer() ) -- Trigger Server Event to output previous option
-	setElementData(getLocalPlayer(), "hunterCoolDown", true, true)
-	local hunterCoolDownTimer = setTimer(resetHunterCoolDown, 1800000, 1)	
+
 	-- Destroy the old options
 	destroyElement ( optionOne )
 	destroyElement ( optionTwo )
@@ -190,8 +186,6 @@ end
 function hunterStatement9()
 	
 	triggerServerEvent( "hunterStatement9ServerEvent", getLocalPlayer() ) -- Trigger Server Event to output previous option
-	setElementData(getLocalPlayer(), "hunterCoolDown", true, true)
-	local hunterCoolDownTimer = setTimer(resetHunterCoolDown, 1800000, 1)
 	
 	-- Destroy elements
 	destroyElement ( optionOne )
@@ -234,8 +228,6 @@ end
 function hunterStatement11()
 	
 	triggerServerEvent( "hunterStatement11ServerEvent", getLocalPlayer() ) -- Trigger Server Event to output previous option
-	setElementData(getLocalPlayer(), "hunterCoolDown", true, true)
-	local hunterCoolDownTimer = setTimer(resetHunterCoolDown, 1800000, 1)
 	
 	-- Destroy elements
 	destroyElement ( optionOne )
@@ -255,8 +247,6 @@ end
 function hunterStatement12()
 	
 	triggerServerEvent( "hunterStatement12ServerEvent", getLocalPlayer() ) -- Trigger Server Event to output previous option
-	setElementData(getLocalPlayer(), "hunterCoolDown", true, true)
-	local hunterCoolDownTimer = setTimer(resetHunterCoolDown, 1800000, 1)
 	
 	-- Destroy elements
 	destroyElement ( optionOne )

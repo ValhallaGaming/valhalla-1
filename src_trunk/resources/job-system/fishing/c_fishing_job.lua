@@ -54,7 +54,7 @@ function fishOnLine()
 	catchTimer=nil
 	triggerServerEvent("fishOnLine", getLocalPlayer()) -- outputs /me
 	
-	-- create the progress bar
+	--  the progress bar
 	count = 0
 	state = 0
 			
@@ -148,7 +148,7 @@ function gotAway()
 	pFish = nil
 	unbindKey("-", "down", reelItIn)
 	unbindKey("=", "down", reelItIn)
-	outputChatBox("#FF9933The fish get away.", 255, 0, 0, true)
+	outputChatBox("#FF9933The fish got away.", 255, 0, 0, true)
 	fishSize = 0
 end
 

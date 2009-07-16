@@ -21,37 +21,19 @@ Chamberlains changes.
 ---------------------
 Scripts in "unfinished code" need to be completed, checked and added to the correct resources by someone who knows what they are doing.
 
-- gatekeepers-system
-	- c_hunter
-	- s_hunter
-	- c_stevie
-	- s_stevie
-
-- job-system
-	- c_fishing_job.lua
-	- s_fishing_job.lua
-	- c_carjacker_job.lua
-	- s_carjacker_job.lua
-
-- lvpd-system
-	- s_policecommands (enabled /takelicense)
-
-- license-system
-	- c_license
-	- s_license
-
-- item-system
-	- s_item_system
-	- c_item_system
-
-- globals
-	-c_item_global
-
-- realism-system
-	-s_alarms
-
-- chat-system
+chat-system
 	- s_chat_system
+
+job-system
+	- S_carjacker_job
+	- c_photographer_job (not yet in server)
+
+weather-system
+	- S_weather_job
+
+map-system
+	- san.map
+	- meta
 
 --------------------
 Jack's changes.

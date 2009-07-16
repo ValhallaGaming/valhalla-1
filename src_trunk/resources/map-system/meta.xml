@@ -10,8 +10,10 @@
 	<map src="glenbrook_apartments_doors.map"/>
 	<map src="LV Hospital.map"/>
 	<map src="LVMPD.map"/>
+	<map src="Las_Venturas_Transport.map"/>
+	<map src="san.map"/>
 	<map src="steak_floor.map"/>
 	<map src="Vice_Back_Room.map"/>
 	<map src="Yakuza HQ.map"/>
-	<map src="Las_Venturas_Transport.map"/>
+
 </meta>

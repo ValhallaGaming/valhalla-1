@@ -1490,8 +1490,14 @@ function unfreezePlayer(thePlayer, commandName, target)
             if (veh) then
                 setVehicleFrozen(veh, false)
 				toggleAllControls(targetPlayer, true, true, true)
-				outputChatBox(" You have been unfrozen by an admin. Thanks for your co-operation.", targetPlayer)
-				outputChatBox(" You have unfrozen " ..targetPlayerName.. ".", thePlayer)
+				
+				if (isElement(targetPlayer)) then
+					outputChatBox(" You have been unfrozen by an admin. Thanks for your co-operation.", targetPlayer)
+				end
+				
+				if (isElement(thePlayer)) then
+					outputChatBox(" You have unfrozen " ..targetPlayerName.. ".", thePlayer)
+				end
 			else	
 				toggleAllControls(targetPlayer, true, true, true)
 				setPedWeaponSlot(targetPlayer, 0)

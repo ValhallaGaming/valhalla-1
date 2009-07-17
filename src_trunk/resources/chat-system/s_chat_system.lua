@@ -343,7 +343,7 @@ function pmPlayer(thePlayer, commandName, who, ...)
 					setElementData(targetPlayer, "pmblocked", 0)
 				end
 				
-				if (logged==1) and (pmblocked==0) then
+				if (logged==1) and (pmblocked==0 or exports.global:isPlayerAdmin(thePlayer)) then
 					local playerName = string.gsub(getPlayerName(thePlayer), "_", " ")
 					local targetPlayerName = string.gsub(getPlayerName(targetPlayer), "_", " ")
 				
@@ -361,7 +361,7 @@ function pmPlayer(thePlayer, commandName, who, ...)
 					
 					-- Send the message
 					local playerid = getElementData(thePlayer, "playerid")
-					local targetid = getElementData(thePlayer, "playerid")
+					local targetid = getElementData(targetPlayer, "playerid")
 					outputChatBox("PM From (" .. playerid .. ") " .. playerName .. ": " .. message, targetPlayer, 255, 255, 0)
 					outputChatBox("PM Sent to (" .. targetid .. ") " .. targetPlayerName .. ": " .. message, thePlayer, 255, 255, 0)
 				elseif (logged==0) then

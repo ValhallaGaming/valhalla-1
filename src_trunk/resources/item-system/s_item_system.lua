@@ -140,11 +140,11 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 			
 		elseif (itemID==10) then -- red dice
 			local output = math.random(1, 6)
-			local x, y, z = getElementPosition(thePlayer)
+			local x, y, z = getElementPosition(source)
 			local chatSphere = createColSphere(x, y, z, 20)
 			exports.pool:allocateElement(chatSphere)
 			local nearbyPlayers = getElementsWithinColShape(chatSphere, "player")
-			local playerName = string.gsub(getPlayerName(thePlayer), "_", " ")
+			local playerName = string.gsub(getPlayerName(source), "_", " ")
 			
 			destroyElement(chatSphere)
 

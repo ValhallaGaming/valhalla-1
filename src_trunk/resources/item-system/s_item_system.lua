@@ -60,7 +60,7 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 			else
 				local locked = getElementData(found, "locked")
 				
-				exports.global:applyAnimation(thePlayer, "GHANDS", "gsign3LH", -1, false, false, true)
+				exports.global:applyAnimation(source, "GHANDS", "gsign3LH", -1, false, false, false)
 				
 				if (isVehicleLocked(found)) then
 					setVehicleLocked(found, false)

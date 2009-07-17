@@ -50,7 +50,7 @@ end
 function cgetItemName(itemID)
 	if (itemID==1) then return "Haggis"
 	elseif (itemID==2) then return "Cellphone"
-	elseif (itemID==3) then return "Car Key"
+	elseif (itemID==3) then return "Vehiclei Key"
 	elseif (itemID==4) then return "House Key"
 	elseif (itemID==5) then return "Business Key"
 	elseif (itemID==6) then return "Radio"

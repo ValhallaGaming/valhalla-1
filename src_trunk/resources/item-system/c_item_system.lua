@@ -107,7 +107,7 @@ end
 function getItemDescription(itemID)
 	if (itemID==1) then return "A plump haggis animal, straight from the hills of Scotland."
 	elseif (itemID==2) then return "A sleek cellphone, look's like a new one too."
-	elseif (itemID==3) then return "A car key with a small car badge on it. (( Opens Car ##v ))"
+	elseif (itemID==3) then return "A vehicle key with a small manufacturers badge on it. (( Opens vehicle ##v ))"
 	elseif (itemID==4) then return "A green house key."
 	elseif (itemID==5) then return "A blue business key."
 	elseif (itemID==6) then return "A black radio."

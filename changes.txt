@@ -25,6 +25,7 @@ chat-system
 	- s_chat_system
 
 job-system
+	- c_fishing_job
 	- S_carjacker_job
 	- c_photographer_job (not yet in server)
 
@@ -33,7 +34,10 @@ weather-system
 
 map-system
 	- san.map
+	- blackfield chapel int.map
 	- meta
+
+gatekeepers-system
 
 --------------------
 Jack's changes.

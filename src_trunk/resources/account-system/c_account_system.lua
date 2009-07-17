@@ -729,6 +729,16 @@ function renderWelcomeMessage()
 end
 
 function cleanupScenarioOne()
+	if (scen1Timer) then
+		killTimer(scen1Timer)
+		scen1Timer = nil
+	end
+	
+	if (scen1Timer2) then
+		killTimer(scen1Timer2)
+		scen1Timer2 = nil
+	end
+
 	if (scen1Car1) then
 		destroyElement(scen1Car1)
 		scen1Car1 = nil
@@ -738,15 +748,35 @@ function cleanupScenarioOne()
 		destroyElement(scen1Car2)
 		scen1Car2 = nil
 	end
-	killTimer(scen1Timer)
-	killTimer(scen1Timer2)
-	removeEventHandler("onClientRender", getRootElement(), updateScenarioCamera)
-	setElementAlpha(getLocalPlayer(), 255)
-	setGameSpeed(1.0)
+	
+	if (scen1Car3) then
+		destroyElement(scen1Car3)
+		scen1Car3 = nil
+	end
+	
+	if (scen1Car4) then
+		destroyElement(scen1Car4)
+		scen1Car4 = nil
+	end
+	
+	if (scen1Car5) then
+		destroyElement(scen1Car5)
+		scen1Car5 = nil
+	end
+	
+	if (scen1Car6) then
+		destroyElement(scen1Car6)
+		scen1Car6 = nil
+	end
+	
+	if (scen1Officer) then
+		destroyElement(scen1Officer)
+		scen1Officer = nil
+	end
 end
 
 scenario = -1
-scen1Car1, scen1Car2, scen1Car3, scen1Car4, scen1Car5, scen1Car6, scen1Officer1, scen1Officer2, scen1Officer3, scen1Timer, scen1Timer2 = nil
+scen1Car1, scen1Car2, scen1Car3, scen1Car4, scen1Car5, scen1Car6, scen1Officer, scen1Timer, scen1Timer2 = nil
 function loadScenarioOne()
 	scenario = 1
 	local id = getElementData(getLocalPlayer(), "playerid")
@@ -754,86 +784,81 @@ function loadScenarioOne()
 	if not (id) then
 		id = 0
 	end
-
-	setElementDimension(getLocalPlayer(), 60000)
-	setElementAlpha(getLocalPlayer(), 0)
-	setElementPosition(getLocalPlayer(), 950.87109375, 2542.0673828125, 10.635336875916)
+	
+	setElementDimension(getLocalPlayer(), 65400+id)
+	setElementAlpha(getLocalPlayer(), 255)
+	setElementPosition(getLocalPlayer(), 1944.0075683594, -1750.8298339844, 14.382812)
 	setElementInterior(getLocalPlayer(), 0)
 	setCameraInterior(0)
 
 	-- Car
-	scen1Car1 = createVehicle(567, 995.87109375, 2542.0673828125, 10.635336875916, 0, 0, 250)
-	setElementDimension(scen1Car1, 60000)
-	setVehicleColor(scen1Car1, 87, 87, 87, 87)
+	scen1Car1 = createVehicle(542, 2074.8247070313, 1012.0288085938, 10.671875, 0, 0, 1.2417)
+	setElementDimension(scen1Car1, 65400+id)
 	setVehicleEngineState(scen1Car1, true)
 	setVehicleOverrideLights(scen1Car1, 2)
 	
 	-- Car 2
-	scen1Car2 = createVehicle(597, 1006.36328125, 2563.2958984375, 10.627165794373, 0, 0, 250)
-	setVehicleColor(scen1Car2, 0, 0, 0, 0)
-	setElementDimension(scen1Car2, 60000)
+	scen1Car2 = createVehicle(598, 2074.8215332031, 1005.6492919922, 10.671875, 0, 0, 1.2417)
+	setElementDimension(scen1Car2, 65400+id)
 	setVehicleEngineState(scen1Car2, true)
 	setVehicleSirensOn(scen1Car2, true)
 	setVehicleOverrideLights(scen1Car2, 2)
 	
-	-- OFFICER 1
-	setPedControlState(scen1Officer1, "aim_weapon", true)
-	setPedAimTarget(scen1Officer1, 995.87109375, 2542.0673828125, 10.635336875916)
-	setPedControlState(scen1Officer1, "fire", true)
+	-- Car 3
+	scen1Car3 = createVehicle(598, 2074.8215332031, 1018.6492919922, 10.671875, 0, 0, 1.2417)
+	setElementDimension(scen1Car3, 65400+id)
+	setVehicleEngineState(scen1Car3, true)
+	setVehicleSirensOn(scen1Car3, true)
+	setVehicleOverrideLights(scen1Car3, 2)
 	
-	setPedControlState(scen1Officer2, "aim_weapon", true)
-	setPedAimTarget(scen1Officer2, 995.87109375, 2542.0673828125, 10.635336875916)
-	setPedControlState(scen1Officer2, "fire", true)
+	-- CHASE
+	-- Car
+	scen1Car4 = createVehicle(542, 2066.4184570313, 883.01971435547, 7.1771411895752, 0, 0, 360)
+	setElementDimension(scen1Car4, 65400+id)
+	setVehicleEngineState(scen1Car4, true)
+	setVehicleOverrideLights(scen1Car4, 2)
 	
-	setPedControlState(scen1Officer3, "aim_weapon", true)
-	setPedAimTarget(scen1Officer3, 995.87109375, 2542.0673828125, 10.635336875916)
-	setPedControlState(scen1Officer3, "fire", true)
+	-- Car
+	scen1Car5 = createVehicle(598, 2069.53515625, 868.87261962891, 6.8626842498779, 0, 0, 360)
+	setElementDimension(scen1Car5, 65400+id)
+	setVehicleEngineState(scen1Car5, true)
+	setVehicleOverrideLights(scen1Car5, 2)
+	setVehicleSirensOn(scen1Car5, true)
 	
-	setPedControlState(scen1Crip1, "aim_weapon", true)
-	setPedAimTarget(scen1Crip1, 1006.36328125, 2563.2958984375, 10.627165794373)
-	setPedControlState(scen1Crip1, "fire", true)
+	-- Car
+	scen1Car6 = createVehicle(598, 2063.2297363281, 866.16375732422, 6.8054342269897, 0, 0, 360)
+	setElementDimension(scen1Car6, 65400+id)
+	setVehicleEngineState(scen1Car6, true)
+	setVehicleOverrideLights(scen1Car6, 2)
+	setVehicleSirensOn(scen1Car6, true)
 	
-	setPedControlState(scen1Crip2, "aim_weapon", true)
-	setPedAimTarget(scen1Crip2, 1006.36328125, 2563.2958984375, 10.627165794373)
-	setPedControlState(scen1Crip2, "fire", true)
+	scen1Timer = setTimer(updateScenario1, 50, 300)
+	scen1Timer2 = setTimer(resetScenario1, 16000, 1)
 	
+	-- OFFICER
+	scen1Officer1 = createPed(282, 2072.5834960938, 1011.3972167969, 10.67187)
+	setPedRotation(scen1Officer1, 274.4475)
+	setElementDimension(scen1Officer1, 65400+id)
+
 	-- CAMERA
-	setCameraInterior(0)
-	setCameraMatrix(960.681640625, 2575.4169921875, 16.115365982056, 983.630859375, 2560.5458984375, 16.192846298218)
-	
-	scen1Timer = setTimer(updateScenario1, 4000, 0)
-	scen1Timer2 = setTimer(scenario1Effect, 10000, 1)
-	--addEventHandler("onClientRender", getRootElement(), updateScenarioCamera)
+	setCameraMatrix(2064.0795898438, 987.72485351563, 19.671875, 2064.5834960938, 1010.3972167969, 10.67187)
 end
 
-function scenario1Effect()
-	setGameSpeed(0.3)
-	createExplosion(995.87109375, 2542.0673828125, 10.635336875916, 4, true, 1, false)
-	blowVehicle(scen1Car1, true)
-	scen1Timer2 = setTimer(setGameSpeed, 15000, 1, 1.0)
-end
-
-crot = 0
 function updateScenario1()
-	playSoundFrontEnd(27)
-	fxAddGunshot(1010.5, 2562.2958984375, 10.627165794373, 995.87109375, 2542.0673828125, 10.635336875916)
-end
-
-function updateScenarioCamera()
-	--local pX, pY, pZ = 983.630859375, 2560.5458984375, 18.692846298218
-	local pX, pY, pZ = 999.17578125, 2553.96484375, 18.750291824341
-	local x = pX + math.cos(math.deg(crot))*40
-	local y = pY + math.sin(math.deg(crot))*40
-		
-	setCameraMatrix(x, y, pZ+1, pX, pY, pZ+0.2)
-	crot = crot + 0.0001
+	local x1, y1, z1 = getElementPosition(scen1Car4)
+	setElementPosition(scen1Car4, x1, y1+2.5, z1)
+	
+	local x2, y2, z2 = getElementPosition(scen1Car5)
+	setElementPosition(scen1Car5, x2, y2+2.5, z2)
+	
+	local x3, y3, z3 = getElementPosition(scen1Car6)
+	setElementPosition(scen1Car6, x3, y3+2.5, z3)
 end
 
 function resetScenario1()
-	
 	killTimer(scen1Timer)
 	killTimer(scen1Timer2)
-	--[[
+	
 	local id = getElementData(getLocalPlayer(), "playerid")
 	
 	if not (id) then
@@ -872,21 +897,13 @@ function resetScenario1()
 	
 	scen1Timer = setTimer(updateScenario1, 50, 300)
 	scen1Timer2 = setTimer(resetScenario1, 15000, 1)
-	--]]
-	setCameraMatrix(960.681640625, 2575.4169921875, 17.615365982056, 983.630859375, 2560.5458984375, 17.692846298218)
 end
 
 triggerServerEvent("getSalt", getLocalPlayer())
 
-function storeSalt(theSalt, version, ped1, ped2, ped3, ped4, ped5)
+function storeSalt(theSalt, version)
 	sversion = version
 	salt = theSalt
-	
-	scen1Officer1 = ped1
-	scen1Officer2 = ped2
-	scen1Officer3 = ped3
-	scen1Crip1 = ped4
-	scen1Crip2 = ped5
 	
 	createMainUI(getThisResource())
 end

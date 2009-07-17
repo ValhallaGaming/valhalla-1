@@ -39,6 +39,10 @@ map-system
 
 gatekeepers-system
 
+gate-system
+	- meta
+	- Chinatown_Gate.lua
+
 --------------------
 Jack's changes.
 -------------------

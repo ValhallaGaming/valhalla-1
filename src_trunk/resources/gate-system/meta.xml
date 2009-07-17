@@ -19,4 +19,6 @@
 	<script src="pd_southeast_door1.lua" type="server"/>
 	
 	<script src="bank_door.lua" type="server"/>
+
+	<script src="Chinatown_Gate.lua" type="server"/>
 </meta>

@@ -383,7 +383,7 @@ function cacceptSteviePhoneDeal( factionType )
 		-- Create close, previous and Next Button
 		-- Create close, previous and Next Button
 		poptionOne = guiCreateButton( 0.05, 0.45, 0.45, 0.2, "To: Ammu-nation LTD.\
-															- $4,000", true, pwStevie )
+															- $10,000", true, pwStevie )
 		addEventHandler ( "onClientGUIClick", poptionOne,  function(button, state)
 			if(button == "left" and state == "up") then
 				
@@ -394,7 +394,7 @@ function cacceptSteviePhoneDeal( factionType )
 		end, false)
 		
 		poptionTwo = guiCreateButton( 0.05, 0.65, 0.45, 0.2, "From: Suny Corp., Tokyo.\
-															- $2,000", true, pwStevie )
+															- $1,000", true, pwStevie )
 		addEventHandler ( "onClientGUIClick", poptionTwo,  function(button, state)
 			if(button == "left" and state == "up") then
 				
@@ -405,7 +405,7 @@ function cacceptSteviePhoneDeal( factionType )
 		end, false)
 
 		poptionFour = guiCreateButton( 0.5, 0.65, 0.45, 0.2, "To: RaNu Chemical Research.\
-															- $10,000", true, pwStevie )
+															- $1,000", true, pwStevie )
 		addEventHandler ( "onClientGUIClick", poptionFour,  function(button, state)
 			if(button == "left" and state == "up") then
 				
@@ -419,7 +419,7 @@ function cacceptSteviePhoneDeal( factionType )
 	
 		-- Create close, previous and Next Button
 		poptionOne = guiCreateButton( 0.05, 0.45, 0.45, 0.2, "To: Ammu-nation LTD.\
-															- $4,000", true, pwStevie )
+															- $10,000", true, pwStevie )
 		addEventHandler ( "onClientGUIClick", poptionOne,  function(button, state)
 			if(button == "left" and state == "up") then
 				
@@ -430,7 +430,7 @@ function cacceptSteviePhoneDeal( factionType )
 		end, false)
 		
 		poptionTwo = guiCreateButton( 0.05, 0.65, 0.45, 0.2, "From: Suny Corp., Tokyo.\
-															- $2,000", true, pwStevie )
+															- $1,000", true, pwStevie )
 		addEventHandler ( "onClientGUIClick", poptionTwo,  function(button, state)
 			if(button == "left" and state == "up") then
 				
@@ -441,7 +441,7 @@ function cacceptSteviePhoneDeal( factionType )
 		end, false)
 		
 		poptionThree = guiCreateButton( 0.5, 0.45, 0.45, 0.2, "To: Area 69 US Military Base.\
-															- $30,000", true, pwStevie )
+															- $15,000", true, pwStevie )
 		addEventHandler ( "onClientGUIClick", poptionThree,  function(button, state)
 			if(button == "left" and state == "up") then
 				
@@ -452,7 +452,7 @@ function cacceptSteviePhoneDeal( factionType )
 		end, false)
 
 		poptionFour = guiCreateButton( 0.5, 0.65, 0.45, 0.2, "To: RaNu Chemical Research.\
-															- $10,000", true, pwStevie )
+															- $1,000", true, pwStevie )
 		addEventHandler ( "onClientGUIClick", poptionFour,  function(button, state)
 			if(button == "left" and state == "up") then
 				
@@ -466,7 +466,7 @@ function cacceptSteviePhoneDeal( factionType )
 
 		-- Create close, previous and Next Button
 		poptionOne = guiCreateButton( 0.05, 0.45, 0.45, 0.2, "To: Ammu-nation LTD.\
-															- $4,000", true, pwStevie )
+															- $10,000", true, pwStevie )
 		addEventHandler ( "onClientGUIClick", poptionOne,  function(button, state)
 			if(button == "left" and state == "up") then
 				
@@ -477,7 +477,7 @@ function cacceptSteviePhoneDeal( factionType )
 		end, false)
 		
 		poptionTwo = guiCreateButton( 0.05, 0.65, 0.45, 0.2, "From: Suny Corp., Tokyo.\
-															- $2,000", true, pwStevie )
+															- $1,000", true, pwStevie )
 		addEventHandler ( "onClientGUIClick", poptionTwo,  function(button, state)
 			if(button == "left" and state == "up") then
 				

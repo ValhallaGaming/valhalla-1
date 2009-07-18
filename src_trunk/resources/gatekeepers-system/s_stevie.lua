@@ -444,26 +444,22 @@ addEventHandler( "declineSteviePhoneDeal", getRootElement(), declineDeal_S )
 
 -- The item spawn locations. Stack the items 3 high to give 15 items in total.
 locations = { } 
-locations[1] = { 1610, 889.6044921875, 9.701148033142 } -- x
-locations[2] = { 1313.4462890625, 1144.5, 9.8203125 } -- y
-locations[3] = { 1125, 1892.029296875, 9.8203125 } -- x
-locations[4] = { 1125, 1895.029296875, 9.8203125 } -- x
-locations[5] = { 1125, 1898.029296875, 9.8203125 } -- x
+locations[1] = { 1610, 889.6044921875, 9.701148033142 } 
+locations[2] = { 1313.4462890625, 1144.5, 9.8203125 }
+locations[3] = { 1125, 1892.029296875, 9.8203125 }
+locations[4] = { 1628.8, 1033.72, 9.91 }
+locations[5] = { 1754.33, 682.533, 9.914 }
 
 function acceptDeal_S( dealNumber )
 	
 	if(dealNumber==1)then -- work out the cost of the selected deal.
-		cost = 4000
-		outputChatBox("Cost = $4000.", source, 255, 0, 0) -- trace
-	elseif(dealNumber==2)then
-		cost = 2000
-		outputChatBox("Cost = $2000.", source, 255, 0, 0) -- trace
-	elseif(dealNumber==3)then
-		cost = 30000
-		outputChatBox("Cost = $30000.", source, 255, 0, 0) -- trace
-	elseif(dealNumber==4)then
 		cost = 10000
-		outputChatBox("Cost = $10000.", source, 255, 0, 0) -- trace
+	elseif(dealNumber==2)then
+		cost = 1000
+	elseif(dealNumber==3)then
+		cost = 15000
+	elseif(dealNumber==4)then
+		cost = 1000
 	end
 	
 	local money = getElementData(source, "money") -- NOT WORKING
@@ -570,10 +566,10 @@ addEventHandler( "acceptSteviePhoneDeal", getRootElement(), acceptDeal_S )
 
 -- { isWeapon, item/weapon ID, Value/Ammo }
 deal1={}
-deal1[1] = { true, 22, 100 }		-- colt
+deal1[1] = { true, 22, 100 }	-- colt
 deal1[2] = { true, 33, 30 }		-- rifle
 deal1[3] = { true, 25, 30 }		-- shotgun
-deal1[4] = { true, 32, 250 }		-- tec 9
+deal1[4] = { true, 32, 250 }	-- tec 9
 
 deal2={}
 deal2[1] = { false, 19, 1 }		-- MP3
@@ -583,9 +579,9 @@ deal2[4] = { false, 2, 1 }		-- cellphone
 
 deal3={}
 deal3[1] = { true, 30, 500 }	-- AK47
-deal3[2] = { true, 29, 1 }		-- Door ram
-deal3[3] = { true, 6, 1 }		-- radio
-deal3[4] = { true, 34, 25 }		-- Sniper rifle
+deal3[2] = { false, 29, 1 }		-- Door ram
+deal3[3] = { false, 6, 1 }		-- radio
+deal3[4] = { true, 34, 10 }		-- Sniper rifle
 deal3[5] = { true, 16, 6 }		-- grenade
 deal3[6] = { true, 39, 4 }		-- satchel
 deal3[7] = { false, 16, 287 }	-- uniform

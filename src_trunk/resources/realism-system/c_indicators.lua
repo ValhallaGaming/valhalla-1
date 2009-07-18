@@ -55,7 +55,10 @@ function checkLeftAngle(veh)
 	
 	if (rz) then
 		if (rz>=rotation+70) then
-			killTimer(leftTimer)
+			if (leftTimer) then
+				killTimer(leftTimer)
+			end
+			
 			setElementData(veh, "leftindicator", nil, true)
 			local key = vehicleids[veh]
 					
@@ -87,7 +90,9 @@ function checkRightAngle(veh)
 
 	if (rz) then
 		if (rz<=rotation-70) then
-			killTimer(rightTimer)
+			if (rightTimer) then
+				killTimer(rightTimer)
+			end
 			setElementData(veh, "rightindicator", nil, true)
 			local key = vehicleids[veh]
 					

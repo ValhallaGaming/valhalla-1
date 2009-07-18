@@ -3374,7 +3374,7 @@ function displayAccountManagement()
 	local donator = tonumber(getElementData(getLocalPlayer(), "donatorlevel"))
 	lDonator = guiCreateLabel(0.2, 0.05, 0.5, 0.05, "Donator: ", true, tabAccount)
 	guiSetFont(lDonator, "default-bold-small")
-	outputDebugString(tostring(donator))
+
 	if (donator==0) then
 		guiSetText(lDonator, "Donator: No")
 	elseif (donator>1) then

@@ -16,7 +16,6 @@ function giveAchievementOnVehicleEnter(thePlayer)
 		outputChatBox("Engine: Press J", thePlayer, 255, 194, 14)
 		outputChatBox("Locks: Press K", thePlayer, 255, 194, 14)
 		outputChatBox("Headlights: Press L", thePlayer, 255, 194, 14)
-		outputChatBox("Indicators: Press Q and E", thePlayer, 255, 194, 14)
 	end
 	exports.global:givePlayerAchievement(thePlayer, 3)
 end

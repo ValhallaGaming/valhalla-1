@@ -522,10 +522,10 @@ function spawnCharacter(charname)
 		end
 		
 		-- MTA BETA ONLY
-		setTimer(giveBetaAchievement, 10000, 1, source)
+		--setTimer(giveBetaAchievement, 10000, 1, source)
 		
-		outputChatBox("Welcome to the MTA 1.0 Beta Test #2.", source, 0, 255, 0)
-		outputChatBox("Please report any bugs you encounter on http://bugs.multitheftauto.com", source, 0, 255, 0)
+		--outputChatBox("Welcome to the MTA 1.0 Beta Test #2.", source, 0, 255, 0)
+		--outputChatBox("Please report any bugs you encounter on http://bugs.multitheftauto.com", source, 0, 255, 0)
 		
 		fadeCamera(source, true, 2)
 		triggerEvent("onCharacterLogin", source, charname, factionID)
@@ -537,7 +537,7 @@ addEventHandler("spawnCharacter", getRootElement(), spawnCharacter)
 
 function giveBetaAchievement(player)
 	-- MTA BETA ONLY
-	exports.global:givePlayerAchievement(player, 36) -- MTA BETA ONLY
+	--exports.global:givePlayerAchievement(player, 36) -- MTA BETA ONLY
 end
 
 function timerUnjailPlayer(jailedPlayer)

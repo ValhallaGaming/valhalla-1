@@ -41,7 +41,7 @@
 	<export function="doesPlayerHaveItem" type="server"/>
 	<export function="givePlayerItem" type="server"/>
 	<export function="takePlayerItem" type="server"/>
-	<export function="doesVehicleHaveSpaceForItem" type="client"/>
+	<export function="doesVehicleHaveSpaceForItem" type="server"/>
 	<export function="doesVehicleHaveItem" type="server"/>
 	<export function="giveVehicleItem" type="server"/>
 	<export function="takeVehicleItem" type="server"/>

@@ -93,15 +93,12 @@ function checkSelectedItems()
 	end
 end
 
---alreadySent = false
 function mixItems(button, state)
 	if (button=="left" and state=="up") then
-		outputDebugString(tostring("MIX"))
 		if (guiGridListGetSelectedCount(gChemicals)==4) then
 			selected = guiGridListGetSelectedItems(gChemicals)
 			
 			if (selected) then
-				--alreadySent = true
 				local row1 = selected[1]["row"]
 				local row2 = selected[3]["row"]
 				

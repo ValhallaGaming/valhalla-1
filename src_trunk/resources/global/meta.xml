@@ -68,6 +68,17 @@
 	<export function="getPlayerDonatorTitle" type="server"/>
 	<export function="getDonators" type="server"/>
 	
+	<script src="c_donator_globals.lua" type="client"/>
+	<export function="cisPlayerBronzeDonator" type="client"/>
+	<export function="cisPlayerSilverDonator" type="client"/>
+	<export function="cisPlayerGoldDonator" type="client"/>
+	<export function="cisPlayerPlatinumDonator" type="client"/>
+	<export function="cisPlayerPearlDonator" type="client"/>
+	<export function="cisPlayerDiamondDonator" type="client"/>
+	<export function="cisPlayerGodleyDonator" type="client"/>
+	<export function="cgetPlayerDonatorLevel" type="client"/>
+	<export function="cgetPlayerDonatorTitle" type="client"/>
+	
 	<script src="c_version_globals.lua" type="client"/>
 	<export function="cgetScriptVersion" type="client"/>
 	

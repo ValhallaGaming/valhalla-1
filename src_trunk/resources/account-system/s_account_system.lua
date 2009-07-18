@@ -1194,7 +1194,8 @@ function createCharacter(name, gender, skincolour, weight, height, fatness, musc
 	-- Fix the name and check if its already taken...
 	local charname = string.gsub(tostring(name), " ", "_")
 	local safecharname = mysql_escape_string(handler, charname)
-
+	description = string.gsub(tostring(description), "'", "")
+	
 	local result = mysql_query(handler, "SELECT charactername FROM characters WHERE charactername='" .. safecharname .. "'")
 
 	local accountID = getElementData(source, "gameaccountid")

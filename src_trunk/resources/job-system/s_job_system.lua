@@ -33,7 +33,6 @@ exports.pool:allocateElement(employmentCollision)
 
 -- /employment at cityhall
 function employment(thePlayer, matchingDimension)
-	if (matchingDimension) then
 		local logged = getElementData(thePlayer, "loggedin")
 		
 		if (logged==1) then
@@ -41,7 +40,6 @@ function employment(thePlayer, matchingDimension)
 				triggerClientEvent(thePlayer, "onEmployment", thePlayer)
 			end
 		end
-	end
 end
 addEventHandler("onColShapeHit", employmentCollision, employment)
 

@@ -914,7 +914,7 @@ function createMainUI(res, isChangeAccount)
 	if (res==getThisResource()) then
 		local tutFile = xmlLoadFile("vgrptut.xml")
 		
-		if (tutFile) then
+		if (tutFile) or not (tutFile) then
 			-- Set the camera to a nice view
 			local cameraRand = math.random(1, 1)
 			

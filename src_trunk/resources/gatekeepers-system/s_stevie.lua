@@ -400,7 +400,7 @@ function startPhoneCall(thePlayer)
 							if(doneDeals >= 5) then
 								triggerClientEvent ( thePlayer, "outOfDeals", getRootElement() ) -- Trigger Client side function to create GUI.
 							else
-								triggerClientEvent ( thePlayer, "showPhoneConvo", getRootElement(), factionType) -- Trigger Client side function to create GUI.
+								triggerClientEvent ( thePlayer, "showPhoneConvo", getRootElement(), factionType ) -- Trigger Client side function to create GUI.
 							end
 						end
 					end
@@ -409,7 +409,7 @@ function startPhoneCall(thePlayer)
 		end
 	end
 end
---addCommandHandler ( "081016", startPhoneCall )
+addCommandHandler ( "081016", startPhoneCall )
 
 function startPhoneAnim() -- taken from phone res.
 	exports.global:applyAnimation(source, "ped", "phone_talk", 1.0, 1.0, 0.0, true, true, true)
@@ -445,13 +445,10 @@ addEventHandler( "declineSteviePhoneDeal", getRootElement(), declineDeal_S )
 -- The item spawn locations. Stack the items 3 high to give 15 items in total.
 locations = { } 
 locations[1] = { 1610, 889.6044921875, 9.701148033142 } -- x
-locations[2] = { 1612, 889.6044921875, 9.701148033142 } -- x
-locations[3] = { 1614, 889.6044921875, 9.701148033142 } -- x
-locations[4] = { 1616, 889.6044921875, 9.701148033142 } -- x
-locations[5] = { 1618, 889.6044921875, 9.701148033142 } -- x
---locations[2] = { 1313.4462890625, 1144.5, 9.8203125 } -- y
---locations[3] = { 1125, 1892.029296875, 9.8203125 } -- x
-
+locations[2] = { 1313.4462890625, 1144.5, 9.8203125 } -- y
+locations[3] = { 1125, 1892.029296875, 9.8203125 } -- x
+locations[4] = { 1125, 1895.029296875, 9.8203125 } -- x
+locations[5] = { 1125, 1898.029296875, 9.8203125 } -- x
 
 function acceptDeal_S( dealNumber )
 	
@@ -475,10 +472,11 @@ function acceptDeal_S( dealNumber )
 		outputChatBox("You can't afford to pay Stevie for the deal.", source, 255, 0, 0)
 		endCall()
 	else
+	
 		exports.global:takePlayerSafeMoney(source, cost) -- pay the money.
 		outputChatBox("You have sent Stevie $".. cost .." for the deal.", source, 0, 255, 0)
 		
-		if not(stevieBlip)then
+		if (doneDeals==0)then
 			local x, y, z = locations[1][1], locations[1][2], locations[1][3]
 			
 			stevieBlip = createBlip(x, y, z, 0, 2, 255, 127, 255)
@@ -495,180 +493,245 @@ function acceptDeal_S( dealNumber )
 			setElementData(stevieCol, "dealNumber", dealNumber)
 			
 			addEventHandler("onColShapeHit", stevieCol, giveGoods)		
-		else
-			if not(stevieBlip2)then				
-				local x, y, z = locations[2][1], locations[2][2], locations[2][3]
+		elseif (doneDeals==1)then			
+			local x, y, z = locations[2][1], locations[2][2], locations[2][3]
 				
-				stevieBlip2 = createBlip(x, y, z, 0, 2, 255, 127, 255)
-				stevieMarker2 = createMarker(x, y, z, "cylinder", 2, 255, 127, 255, 150)
-				stevieCol2 = createColSphere(x, y, z, 2)
-					
-				exports.pool:allocateElement(stevieBlip2)
-				exports.pool:allocateElement(stevieMarker2)
-				exports.pool:allocateElement(stevieCol2)
-					
-				setElementVisibleTo(stevieBlip2, getRootElement(), false) -- everyone can see the marker. Only the caller sees the blip.
-				setElementVisibleTo(stevieBlip2, source, true)
-				
-				setElementData(stevieCol2, "dealNumber", dealNumber)
-				
-				addEventHandler("onColShapeHit", stevieCol2, giveGoods)			
-			else				
-				if not(stevieBlip3)then
-					local x, y, z = locations[3][1], locations[3][2], locations[3][3]
-				
-					stevieBlip3 = createBlip(x, y, z, 0, 2, 255, 127, 255)
-					stevieMarker3 = createMarker(x, y, z, "cylinder", 2, 255, 127, 255, 150)
-					stevieCol3 = createColSphere(x, y, z, 2)
-						
-					exports.pool:allocateElement(stevieBlip3)
-					exports.pool:allocateElement(stevieMarker3)
-					exports.pool:allocateElement(stevieCol3)
-						
-					setElementVisibleTo(stevieBlip3, getRootElement(), false) -- everyone can see the marker. Only the caller sees the blip.
-					setElementVisibleTo(stevieBlip3, source, true)
-					
-					setElementData(stevieCol3, "dealNumber", dealNumber)
-					
-					addEventHandler("onColShapeHit", stevieCol3, giveGoods)
-				else
-					if not(stevieBlip4)then				
-						local x, y, z = locations[4][1], locations[4][2], locations[4][3]
-						
-						stevieBlip4 = createBlip(x, y, z, 0, 2, 255, 127, 255)
-						stevieMarker4 = createMarker(x, y, z, "cylinder", 2, 255, 127, 255, 150)
-						stevieCol4 = createColSphere(x, y, z, 2)
-							
-						exports.pool:allocateElement(stevieBlip4)
-						exports.pool:allocateElement(stevieMarker4)
-						exports.pool:allocateElement(stevieCol4)
-							
-						setElementVisibleTo(stevieBlip4, getRootElement(), false) -- everyone can see the marker. Only the caller sees the blip.
-						setElementVisibleTo(stevieBlip4, source, true)
-						
-						setElementData(stevieCol4, "dealNumber", dealNumber)
-							
-						addEventHandler("onColShapeHit", stevieCol4, giveGoods)					
-					else					
-						if not(stevieBlip5)then
-							local x, y, z = locations[5][1], locations[5][2], locations[5][3]
-							
-							stevieBlip5 = createBlip(x, y, z, 0, 2, 255, 127, 255)
-							stevieMarker5 = createMarker(x, y, z, "cylinder", 2, 255, 127, 255, 150)
-							stevieCol5 = createColSphere(x, y, z, 2)
-								
-							exports.pool:allocateElement(stevieBlip5)
-							exports.pool:allocateElement(stevieMarker5)
-							exports.pool:allocateElement(stevieCol5)
-								
-							setElementVisibleTo(stevieBlip5, getRootElement(), false) -- everyone can see the marker. Only the caller sees the blip.
-							setElementVisibleTo(stevieBlip5, source, true)
-							
-							setElementData(stevieCol5, "dealNumber", dealNumber)
-								
-							addEventHandler("onColShapeHit", stevieCol5, giveGoods)						
-						end
-					end
-				end
-			end
+			stevieBlip2 = createBlip(x, y, z, 0, 2, 255, 127, 255)
+			stevieMarker2 = createMarker(x, y, z, "cylinder", 2, 255, 127, 255, 150)
+			stevieCol2 = createColSphere(x, y, z, 2)
+			
+			exports.pool:allocateElement(stevieBlip2)
+			exports.pool:allocateElement(stevieMarker2)
+			exports.pool:allocateElement(stevieCol2)
+			
+			setElementVisibleTo(stevieBlip2, getRootElement(), false) -- everyone can see the marker. Only the caller sees the blip.
+			setElementVisibleTo(stevieBlip2, source, true)
+			
+			setElementData(stevieCol2, "dealNumber", dealNumber)
+			
+			addEventHandler("onColShapeHit", stevieCol2, giveGoods)			
+		elseif (doneDeals==2)then				
+			local x, y, z = locations[3][1], locations[3][2], locations[3][3]
+			
+			stevieBlip3 = createBlip(x, y, z, 0, 2, 255, 127, 255)
+			stevieMarker3 = createMarker(x, y, z, "cylinder", 2, 255, 127, 255, 150)
+			stevieCol3 = createColSphere(x, y, z, 2)
+			
+			exports.pool:allocateElement(stevieBlip3)
+			exports.pool:allocateElement(stevieMarker3)
+			exports.pool:allocateElement(stevieCol3)
+			
+			setElementVisibleTo(stevieBlip3, getRootElement(), false) -- everyone can see the marker. Only the caller sees the blip.
+			setElementVisibleTo(stevieBlip3, source, true)
+			
+			setElementData(stevieCol3, "dealNumber", dealNumber)
+			
+			addEventHandler("onColShapeHit", stevieCol3, giveGoods)
+		elseif (doneDeals==3)then
+			local x, y, z = locations[4][1], locations[4][2], locations[4][3]
+			
+			stevieBlip4 = createBlip(x, y, z, 0, 2, 255, 127, 255)
+			stevieMarker4 = createMarker(x, y, z, "cylinder", 2, 255, 127, 255, 150)
+			stevieCol4 = createColSphere(x, y, z, 2)
+			
+			exports.pool:allocateElement(stevieBlip4)
+			exports.pool:allocateElement(stevieMarker4)
+			exports.pool:allocateElement(stevieCol4)
+			
+			setElementVisibleTo(stevieBlip4, getRootElement(), false) -- everyone can see the marker. Only the caller sees the blip.
+			setElementVisibleTo(stevieBlip4, source, true)
+			
+			setElementData(stevieCol4, "dealNumber", dealNumber)
+			
+			addEventHandler("onColShapeHit", stevieCol4, giveGoods)					
+		elseif (doneDeals==4)then					
+			local x, y, z = locations[5][1], locations[5][2], locations[5][3]
+			stevieBlip5 = createBlip(x, y, z, 0, 2, 255, 127, 255)
+			stevieMarker5 = createMarker(x, y, z, "cylinder", 2, 255, 127, 255, 150)
+			stevieCol5 = createColSphere(x, y, z, 2)
+			
+			exports.pool:allocateElement(stevieBlip5)
+			exports.pool:allocateElement(stevieMarker5)
+			exports.pool:allocateElement(stevieCol5)
+			
+			setElementVisibleTo(stevieBlip5, getRootElement(), false) -- everyone can see the marker. Only the caller sees the blip.
+			setElementVisibleTo(stevieBlip5, source, true)
+			
+			setElementData(stevieCol5, "dealNumber", dealNumber)
+			
+			addEventHandler("onColShapeHit", stevieCol5, giveGoods)						
 		end
-		
 		endCall() -- end the call.
-		
 		doneDeals = doneDeals + 1
 	end
 end
 addEvent( "acceptSteviePhoneDeal", true )
 addEventHandler( "acceptSteviePhoneDeal", getRootElement(), acceptDeal_S )
 
+-- { isWeapon, item/weapon ID, Value/Ammo }
 deal1={}
-deal1[1] = { 1,1 }		-- colt
-deal1[2]  = { 1,1 }		-- rifle
-deal1[3]  = { 1,1 }		-- shotgun
-deal1[4]  = { 1,1 }		-- tec 9
-deal1[5]  = { 1,1 }		-- vest
+deal1[1] = { true, 22, 100 }		-- colt
+deal1[2] = { true, 33, 30 }		-- rifle
+deal1[3] = { true, 25, 30 }		-- shotgun
+deal1[4] = { true, 32, 250 }		-- tec 9
 
 deal2={}
-deal2[1]  = { 1,1 }		-- MP3
-deal2[2]  = { 1,1 }		-- Ghettoblaster
-deal2[3]  = { 1,1 }		-- radio
-deal2[4]  = { 1,1 }		-- cellphone
+deal2[1] = { false, 19, 1 }		-- MP3
+deal2[2] = { false, 54, 1 }		-- Ghettoblaster
+deal2[3] = { false, 6, 1 }		-- radio
+deal2[4] = { false, 2, 1 }		-- cellphone
 
 deal3={}
-deal3[1]  = { 1,1 }		-- AK47
-deal3[2]  = { 1,1 }		-- Door ram
-deal3[3]  = { 1,1 }		-- radio
-deal3[4]  = { 1,1 }		-- Sniper rifle
-deal3[5]  = { 1,1 }		-- grenade
-deal3[6]  = { 1,1 }		-- satchel
-deal3[7]  = { 1,1 }		-- uniform
-deal3[8]  = { 1,1 }		-- vests
-deal3[9]  = { 1,1 }		-- MP5
-deal3[10]  = { 1,1 }		-- M4
-deal3[11]  = { 1,1 }		-- grenade
+deal3[1] = { true, 30, 500 }	-- AK47
+deal3[2] = { true, 29, 1 }		-- Door ram
+deal3[3] = { true, 6, 1 }		-- radio
+deal3[4] = { true, 34, 25 }		-- Sniper rifle
+deal3[5] = { true, 16, 6 }		-- grenade
+deal3[6] = { true, 39, 4 }		-- satchel
+deal3[7] = { false, 16, 287 }	-- uniform
+deal3[8] = { true, 29, 500 }	-- MP5
+deal3[9] = { true, 31, 400 }	-- M4
+deal3[10] = { true, 17, 6 }		-- teargas
 
 deal4={}
-deal4[1] = { 1,1 }		-- Sativa
-deal4[2] = { 1,1 }		-- Lysergic acid
-deal4[3] = { 1,1 }		-- PCP
-deal4[4] = { 1,1 }		-- Cocaine Alcaloid
+deal4[1] = { false, 30, 1 }		-- Sativa
+deal4[2] = { false, 32, 1 }		-- Lysergic acid
+deal4[3] = { false, 33, 1 }		-- PCP
+deal4[4] = { false, 31, 1 }		-- Cocaine Alcaloid
 
 
 function giveGoods(thePlayer, dealNumber)
-	if(source==stevieCol)then
-		destroyElement(stevieBlip)
-		destroyElement(stevieMarker)
-		destroyElement(stevieCol)
-		stevieBlip = nil
-		stevieMarker = nil
-		stevieCol = nil
+	local veh = getPedOccupiedVehicle(thePlayer)
+	if not(veh)then
+		outputChatBox("You'll need a vehicle to carry all these items", thePlayer, 255, 0, 0)
+	else
+		
+		local deal = getElementData(source, "dealNumber")
+		
+		if(source==stevieCol)then
+			destroyElement(stevieBlip)
+			destroyElement(stevieMarker)
+			destroyElement(stevieCol)
+			stevieBlip = nil
+			stevieMarker = nil
+			stevieCol = nil
+		end
+		if(source==stevieCol2)then
+			destroyElement(stevieBlip2)
+			destroyElement(stevieMarker2)
+			destroyElement(stevieCol2)
+			stevieBlip2 = nil
+			stevieMarker2 = nil
+			stevieCol2 = nil
+		end
+		if(source==stevieCol3)then
+			destroyElement(stevieBlip3)
+			destroyElement(stevieMarker3)
+			destroyElement(stevieCol3)
+			stevieBlip3 = nil
+			stevieMarker3 = nil
+			stevieCol3 = nil
+		end
+		if(source==stevieCol4)then
+			destroyElement(stevieBlip4)
+			destroyElement(stevieMarker4)
+			destroyElement(stevieCol4)
+			stevieBlip4 = nil
+			stevieMarker4 = nil
+			stevieCol4 = nil
+		end
+		if(source==stevieCol5)then
+			destroyElement(stevieBlip5)
+			destroyElement(stevieMarker5)
+			destroyElement(stevieCol5)
+			stevieBlip5 = nil
+			stevieMarker5 = nil
+			stevieCol5 = nil
+		end
+		
+		-- give the player the items.
+		giveItemsTimer = setTimer(givePlayerStevieItems, 2000, 21, thePlayer, veh, deal)
+		exports.global:sendLocalMeAction(thePlayer,"loads the car up with packages.")
+		outputChatBox("((Wait while the vehicle is loaded with the items.))", thePlayer)
+		local x,y,z = getElementPosition(veh)
+		collectionCol = createColSphere(x, y, z, 4)
 	end
-	if(source==stevieCol2)then
-		destroyElement(stevieBlip2)
-		destroyElement(stevieMarker2)
-		destroyElement(stevieCol2)
-		stevieBlip2 = nil
-		stevieMarker2 = nil
-		stevieCol2 = nil
+end
+
+function givePlayerStevieItems(thePlayer, veh, deal)
+	if not(isElementWithinColShape(veh, collectionCol)) then
+		outputChatBox("You didn't wait to load the vehicle!", thePlayer, 255, 0, 0)
+		if(giveItemsTimer)then
+			killTimer(giveItemsTimer)
+		end
+	else
+		if not(exports.global:doesVehicleHaveSpaceForItem(veh))then
+			outputChatBox("The vehicle is full.", thePlayer, 255, 0, 0)
+			destroyElement(collectionCol)
+			collectionCol = nil
+			if(giveItemsTimer)then
+				killTimer(giveItemsTimer)
+			end
+		else
+			if(deal==1)then
+				local rand = math.random(1,4) -- select a random item to give the player.
+				
+				local isWeapon = deal1[rand][1]
+				local itemID = deal1[rand][2]
+				local value = deal1[rand][3]
+				if(isWeapon==true)then
+					exports.global:giveVehicleItem(veh, 9000+itemID, value)
+				else
+					exports.global:giveVehicleItem(veh, itemID, value)
+				end
+			elseif(deal==2)then
+				local rand = math.random(1,4) -- select a random item to give the player.
+				
+				local isWeapon = deal2[rand][1]
+				local itemID = deal2[rand][2]
+				local value = deal2[rand][3]
+				if(isWeapon==true)then
+					exports.global:giveVehicleItem(veh, 9000+itemID, value)
+				else
+					exports.global:giveVehicleItem(veh, itemID, value)
+				end
+			elseif(deal==3)then
+				local rand = math.random(1,10) -- select a random item to give the player.
+				
+				local isWeapon = deal3[rand][1]
+				local itemID = deal3[rand][2]
+				local value = deal3[rand][3]
+				if(isWeapon==true)then
+					exports.global:giveVehicleItem(veh, 9000+itemID, value)
+				else
+					exports.global:giveVehicleItem(veh, itemID, value)
+				end
+			elseif(deal==4)then
+				local rand = math.random(1,4) -- select a random item to give the player.
+				
+				local isWeapon = deal4[rand][1]
+				local itemID = deal4[rand][2]
+				local value = deal4[rand][3]
+				if(isWeapon==true)then
+					exports.global:giveVehicleItem(veh, 9000+itemID, value)
+				else
+					exports.global:giveVehicleItem(veh, itemID, value)
+				end
+			end
+		end
 	end
-	if(source==stevieCol3)then
-		destroyElement(stevieBlip3)
-		destroyElement(stevieMarker3)
-		destroyElement(stevieCol3)
-		stevieBlip3 = nil
-		stevieMarker3 = nil
-		stevieCol3 = nil
-	end
-	if(source==stevieCol4)then
-		destroyElement(stevieBlip4)
-		destroyElement(stevieMarker4)
-		destroyElement(stevieCol4)
-		stevieBlip4 = nil
-		stevieMarker4 = nil
-		stevieCol4 = nil
-	end
-	if(source==stevieCol5)then
-		destroyElement(stevieBlip5)
-		destroyElement(stevieMarker5)
-		destroyElement(stevieCol5)
-		stevieBlip5 = nil
-		stevieMarker5 = nil
-		stevieCol5 = nil
-	end
-	
-	local deal = getElementData(source, "dealNumber")
-	
-	-- give the player the items.
-	
 end
 
 ---------------------
 -- ending the call --
 ---------------------
-function endCall() -- to cancel the phone animation and reset the phone states.
-	exports.global:removeAnimation(source)
-	toggleAllControls(source, true, true, true)
-	removeElementData(source, "calling")
-	exports.global:takePlayerSafeMoney(source, 10)
+function endCall(thePlayer) -- to cancel the phone animation and reset the phone states.
+	if not (thePlayer) then
+		thePlayer = source
+	end
+	exports.global:removeAnimation(thePlayer)
+	toggleAllControls(thePlayer, true, true, true)
+	removeElementData(thePlayer, "calling")
+	exports.global:takePlayerSafeMoney(thePlayer, 10)
 	phoneState = 0
 end

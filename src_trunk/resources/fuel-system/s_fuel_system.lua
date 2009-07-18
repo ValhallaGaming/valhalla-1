@@ -218,7 +218,7 @@ function fillVehicle(thePlayer, commandName)
 						outputChatBox("You cannot afford any fuel.", thePlayer, 255, 0, 0)
 					else
 						outputChatBox("Refilling Vehicle...", thePlayer)
-						setTimer(fuelTheVehicle, 15000, 1, thePlayer, veh, colShape, litresAffordable)
+						setTimer(fuelTheVehicle, 5000, 1, thePlayer, veh, colShape, litresAffordable, false)
 					end
 				else
 					outputChatBox("Refilling Vehicle...", thePlayer)
@@ -228,7 +228,7 @@ function fillVehicle(thePlayer, commandName)
 						litresAffordable = 100 - currFuel
 					end
 					
-					setTimer(fuelTheVehicle, 15000, 1, thePlayer, veh, colShape, litresAffordable)
+					setTimer(fuelTheVehicle, 5000, 1, thePlayer, veh, colShape, litresAffordable, true)
 				end
 			end
 		end
@@ -304,7 +304,7 @@ function fillCan(thePlayer, commandName)
 end
 addCommandHandler("fillcan", fillCan)
 
-function fuelTheVehicle(thePlayer, theVehicle, theShape, theLitres)
+function fuelTheVehicle(thePlayer, theVehicle, theShape, theLitres, free)
 	local colShape = nil
 		
 	for key, value in ipairs(exports.pool:getPoolElementsByType("colshape")) do
@@ -323,6 +323,11 @@ function fuelTheVehicle(thePlayer, theVehicle, theShape, theLitres)
 		if (colShape==theShape) then
 			local tax = exports.global:getTaxAmount()
 			local fuelCost = math.ceil(theLitres*(FUEL_PRICE + (tax*FUEL_PRICE)))
+		
+			if (free) then
+				fuelCost = 0
+			end
+			
 			exports.global:takePlayerSafeMoney(thePlayer, fuelCost)
 		
 			local oldFuel = getElementData(theVehicle, "fuel")

@@ -913,8 +913,9 @@ addEventHandler("sendSalt", getRootElement(), storeSalt)
 function createMainUI(res, isChangeAccount)
 	if (res==getThisResource()) then
 		local tutFile = xmlLoadFile("vgrptut.xml")
+		local regFile = xmlLoadFile("vgrpreg.xml")
 		
-		if (tutFile) then
+		if (tutFile) or (regFile) then
 			-- Set the camera to a nice view
 			local cameraRand = math.random(1, 1)
 			
@@ -955,7 +956,6 @@ function createMainUI(res, isChangeAccount)
 			end
 				
 			tabPanelMain = guiCreateTabPanel(x, y, width, height, false)
-			local regFile = xmlLoadFile("vgrpreg.xml")
 			
 			if (regFile) then -- User has already registered on this PC before.
 				tabLogin = guiCreateTab("Login to Account", tabPanelMain)

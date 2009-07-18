@@ -232,7 +232,7 @@ function doFlashes()
 					vehicles[key][9] = nil
 				end
 		end
-
+		
 		-- left indicator
 		if (isElement(veh)) then
 			if (getElementData(veh, "leftindicator")) then
@@ -251,6 +251,7 @@ function doFlashes()
 					attachElements(vehicles[key][5], vehicles[key][4], 0, 0, 0)
 					setElementAlpha(vehicles[key][4], 0)
 				else
+					
 					destroyElement(vehicles[key][2])
 					destroyElement(vehicles[key][3])
 					destroyElement(vehicles[key][4])
@@ -260,6 +261,15 @@ function doFlashes()
 					vehicles[key][4] = nil
 					vehicles[key][5] = nil
 				end
+			elseif (vehicles[key][2]~=nil) then
+				destroyElement(vehicles[key][2])
+				destroyElement(vehicles[key][3])
+				destroyElement(vehicles[key][4])
+				destroyElement(vehicles[key][5])
+				vehicles[key][2] = nil
+				vehicles[key][3] = nil
+				vehicles[key][4] = nil
+				vehicles[key][5] = nil
 			end
 		end
 		
@@ -290,8 +300,18 @@ function doFlashes()
 					vehicles[key][8] = nil
 					vehicles[key][9] = nil
 				end
+			elseif (vehicles[key][6]~=nil) then
+				destroyElement(vehicles[key][6])
+				destroyElement(vehicles[key][7])
+				destroyElement(vehicles[key][8])
+				destroyElement(vehicles[key][9])
+				vehicles[key][6] = nil
+				vehicles[key][7] = nil
+				vehicles[key][8] = nil
+				vehicles[key][9] = nil
 			end
 		end
+
 	end
 end
 setTimer(doFlashes, 500, 0)

@@ -114,7 +114,7 @@ function cdoesVehicleHaveSpaceForItem(theVehicle)
 	local items = getElementData(theVehicle, "items")
 	
 	for i=1, 20 do
-		if not (items) or not (itemvalues) then -- no items
+		if not (items) then -- no items
 			return true
 		else
 			local token = tonumber(gettok(items, i, string.byte(',')))

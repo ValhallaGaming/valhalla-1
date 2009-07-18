@@ -18,6 +18,7 @@ routes[9] = { 635.9775390625, 1252.9892578125, 11.357774734497 }
 routes[10] = { 261.623046875, 1412.3564453125, 10.20871925354 }
 
 function resetTruckerJob()
+	outputChatBox("RESET!")
 	jobstate = 0
 	
 	if (isElement(marker)) then
@@ -41,6 +42,7 @@ function displayTruckerJob()
 		outputChatBox("#FF9933Type /startjob once you are in the van.", 255, 194, 15, true)
 	end
 end
+addCommandHandler("job", displayTruckerJob)
 
 function startTruckerJob()
 	if (jobstate==1) then
@@ -117,34 +119,36 @@ function dumpTruckLoad()
 end
 addCommandHandler("dumpload", dumpTruckLoad)
 
-function endTruckJob()
-	local vehicle = getPedOccupiedVehicle(localPlayer)
-	if not (vehicle) then
-		outputChatBox("You are not in the van.", 255, 0, 0)
-	else
-		local model = getElementModel(vehicle)
-		if (model==414) then -- MULE
-			if (jobstate==3) then
-
-				local wage = 50*routescompleted
-				outputChatBox("You earned $" .. wage .. " on your trucking runs.", 255, 194, 15)
-				local vehicle = getPedOccupiedVehicle(localPlayer)
-				triggerServerEvent("giveTruckingMoney", localPlayer, wage)
-
-			end
-			
-			triggerServerEvent("respawnTruck", localPlayer, vehicle)
-			outputChatBox("Thank you for your services to RS Haul.", 0, 255, 0)
-			destroyElement(colshape)
-			destroyElement(marker)
-			destroyElement(blip)
-			destroyElement(endblip)
-			destroyElement(endmarker)
-			destroyElement(endcolshape)
-			routescompleted = 0
-			setElementData(localPlayer, "job", true, 0)
-		else
+function endTruckJob(theElement)
+	if (theElement==localPlayer) then
+		local vehicle = getPedOccupiedVehicle(localPlayer)
+		if not (vehicle) then
 			outputChatBox("You are not in the van.", 255, 0, 0)
+		else
+			local model = getElementModel(vehicle)
+			if (model==414) then -- MULE
+				if (jobstate==3) then
+
+					local wage = 50*routescompleted
+					outputChatBox("You earned $" .. wage .. " on your trucking runs.", 255, 194, 15)
+					local vehicle = getPedOccupiedVehicle(localPlayer)
+					triggerServerEvent("giveTruckingMoney", localPlayer, wage)
+
+				end
+				
+				triggerServerEvent("respawnTruck", localPlayer, vehicle)
+				outputChatBox("Thank you for your services to RS Haul.", 0, 255, 0)
+				destroyElement(colshape)
+				destroyElement(marker)
+				destroyElement(blip)
+				destroyElement(endblip)
+				destroyElement(endmarker)
+				destroyElement(endcolshape)
+				routescompleted = 0
+				setElementData(localPlayer, "job", true, 0)
+			else
+				outputChatBox("You are not in the van.", 255, 0, 0)
+			end
 		end
 	end
 end

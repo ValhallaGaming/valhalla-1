@@ -945,13 +945,14 @@ function createMainUI(res, isChangeAccount)
 			
 			local version = tonumber(string.sub(getVersion().type, 10, string.len(getVersion().type)))
 			if (getVersion().type~="Custom" and getVersion().type~="Release") and sversion then
-				
-				if (version<sversion) then
-					clearChatBox()
-					showChat(true)
-					outputChatBox("You are using an older nightly. You require r" .. sversion .. ".")
-					outputChatBox("You can obtain this at http://nightly.mtasa.com")
-					return
+				if (version~=nil) then
+					if (version<sversion) then
+						clearChatBox()
+						showChat(true)
+						outputChatBox("You are using an older nightly. You require r" .. sversion .. ".")
+						outputChatBox("You can obtain this at http://nightly.mtasa.com")
+						return
+					end
 				end
 			end
 				

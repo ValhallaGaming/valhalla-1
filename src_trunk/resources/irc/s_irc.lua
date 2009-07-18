@@ -22,8 +22,8 @@ function initIRC()
 	timer = setTimer(displayStatus, 600000, 0)
 	ircJoin(conn, pubchannel)
 	ircJoin(conn2, pubchannel)
-	--ircJoin(conn, channeladmins)
-	--ircJoin(conn2, channeladmins)
+	ircJoin(conn, channeladmins)
+	ircJoin(conn2, channeladmins)
 end
 addEventHandler("onResourceStart", getResourceRootElement(getThisResource()), initIRC)
 
@@ -61,11 +61,11 @@ function sendMessage(message)
 	outputDebugString(tostring(message))
 	
 	if not (useSecond) then
-		--useSecond = true
-		--ircMessage(conn, channel, "[" .. hour .. ":" .. mins .. "] " .. tostring(message))
+		useSecond = true
+		ircMessage(conn, channel, "[" .. hour .. ":" .. mins .. "] " .. tostring(message))
 	else
-		--useSecond = false
-		--ircMessage(conn2, channel, "[" .. hour .. ":" .. mins .. "] " .. tostring(message))
+		useSecond = false
+		ircMessage(conn2, channel, "[" .. hour .. ":" .. mins .. "] " .. tostring(message))
 	end
 end
 
@@ -90,11 +90,9 @@ function displayStatus()
 	
 	if not (useSecond) then
 		useSecond = true
-		ircMessage(conn, pubchannel, output)
-		--ircMessage(conn2, channeladmins, output)
+		ircMessage(conn2, channeladmins, output)
 	else
 		useSecond = false
-		ircMessage(conn2, pubchannel, output)
-		--ircMessage(conn, channeladmins, output)
+		ircMessage(conn, channeladmins, output)
 	end
 end

@@ -1,7 +1,7 @@
 local objGateg = createObject(3055, 2335.5135253906, 2443.5122070313, 6.9781973838806, 0, 0, 240)
 exports.pool:allocateElement(objGateg)
 
-open = false
+local open = false
 
 -- Gate code
 function usePDFrontGarageGate(thePlayer)
@@ -26,6 +26,10 @@ function closePDFrontGarageGate(thePlayer)
 		outputChatBox("LVMPD Front Garage Gate is now Closed!", thePlayer, 255, 0, 0)
 	end
 	
-	open = false
+	setTimer(resetState8, 1000, 1)
 	moveObject(objGateg, 1000, 2335.5135253906, 2443.5122070313, 6.9781973838806, -90, 0, 0)
+end
+
+function resetState8()
+	open = false
 end

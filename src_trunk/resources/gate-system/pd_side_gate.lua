@@ -45,7 +45,11 @@ function closePDSideGate(thePlayer)
 		outputChatBox("LVMPD Side Gate is now Closed!", thePlayer, 255, 0, 0)
 	end
 	
-	open = false
+	setTimer(resetState9, 1000, 1)
 	moveObject(objGatei, 1000, 2237.5334472656, 2448.87109375, 9.8203125)
 	moveObject(objGatei2, 1000, 2237.5334472656, 2448.87109375, 12.8203125)
+end
+
+function resetState9()
+	open = false
 end

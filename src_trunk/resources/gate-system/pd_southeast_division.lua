@@ -27,6 +27,10 @@ function closePDBarrier(thePlayer)
 		outputChatBox("LVMPD South-East Division Barrier is now Closed!", thePlayer, 255, 0, 0)
 	end
 	
-	open = false
+	setTimer(resetState10, 1000, 1)
 	moveObject(objDivision1, 1000,2303.1500078125, 623.0060546875, 10.704789924622, 0, 90, 0)
+end
+
+function resetState10()
+	open = false
 end

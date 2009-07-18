@@ -29,7 +29,7 @@ function closeChinaGate(thePlayer)
 		outputChatBox("Yakuza gate is now Closed!", thePlayer, 255, 0, 0)
 	end
 	
-	moveObject(objChinaGate, 3000, 2562.5, 1822, 10, 0, 0, 0,)
+	moveObject(objChinaGate, 3000, 2562.5, 1822, 10, 0, 0, 0)
 	setTimer(resetChinaGateState, 1000, 1)
 end
 

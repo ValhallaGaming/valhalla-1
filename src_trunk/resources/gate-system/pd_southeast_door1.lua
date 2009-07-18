@@ -8,7 +8,7 @@ exports.pool:allocateElement(objDivGate2)
 setElementInterior(objDivGate2, 6)
 setElementDimension(objDivGate2, 681) -- 1557
 
-open = false
+local open = false
 
 -- Gate code
 function usePDDivDoor1(thePlayer)
@@ -18,7 +18,7 @@ function usePDDivDoor1(thePlayer)
 		local x, y, z = getElementPosition(thePlayer)
 		local distance = getDistanceBetweenPoints3D(247.9, 72.4765625, 1002.640625, x, y, z)
 
-		if (distance<=10) and (open==false) then
+		if (distance<=5) and (open==false) then
 			open = true
 			outputChatBox("LVMPD South-East Division Door is now Open!", thePlayer, 0, 255, 0)
 			moveObject(objDivGate1, 1000, 244.9, 72.4765625, 1003.940625, 0, 0, 90)
@@ -36,10 +36,10 @@ function closePDDivDoor1(thePlayer)
 	
 	moveObject(objDivGate1, 1000, 244.9, 72.4765625, 1003.940625, 0, 0, -90)
 	moveObject(objDivGate2, 1000, 247.9, 72.4765625, 1003.940625, 0, 0, 90)
-	setTimer(resetState, 1000, 1)
+	setTimer(resetState11, 1000, 1)
 end
 
 
-function resetState()
+function resetState11()
 	open = false
 end

@@ -8,7 +8,7 @@ exports.pool:allocateElement(objGatec2)
 setElementInterior(objGatec2, 3)
 setElementDimension(objGatec2, 1)
 
-open = false
+local open = false
 
 -- Gate code
 function usePDDoor3(thePlayer)
@@ -18,7 +18,7 @@ function usePDDoor3(thePlayer)
 		local x, y, z = getElementPosition(thePlayer)
 		local distance = getDistanceBetweenPoints3D(229.92783508301, 169.94030761719, 1002.0234375, x, y, z)
 
-		if (distance<=10) and (open==false) then
+		if (distance<=5) and (open==false) then
 			open = true
 			outputChatBox("LVMPD Door is now Open!", thePlayer, 0, 255, 0)
 			moveObject(objGatec, 1000, 229.92783508301, 169.94030761719, 1003.3234375, 0, 0, -90)
@@ -36,10 +36,10 @@ function closePDDoor3(thePlayer)
 	
 	moveObject(objGatec, 1000, 229.92783508301, 169.94030761719, 1003.3234375, 0, 0, 90)
 	moveObject(objGatec2, 1000, 232.82783508301, 169.94030761719, 1003.3234375, 0, 0, -90)
-	setTimer(resetState, 1000, 1)
+	setTimer(resetState3, 1000, 1)
 end
 
 
-function resetState()
+function resetState3()
 	open = false
 end

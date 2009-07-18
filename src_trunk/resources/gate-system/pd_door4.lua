@@ -8,7 +8,7 @@ exports.pool:allocateElement(objGated2)
 setElementInterior(objGated2, 3)
 setElementDimension(objGated2, 1)
 
-open = false
+local open = false
 
 -- Gate code
 function usePDDoor4(thePlayer)
@@ -18,7 +18,7 @@ function usePDDoor4(thePlayer)
 		local x, y, z = getElementPosition(thePlayer)
 		local distance = getDistanceBetweenPoints3D(295.12623901367, 189.35, 1006.171875, x, y, z)
 
-		if (distance<=10) and (open==false) then
+		if (distance<=5) and (open==false) then
 			open = true
 			outputChatBox("LVMPD Door is now Open!", thePlayer, 0, 255, 0)
 			moveObject(objGated, 1000, 295.22623901367, 189.35, 1007.471875, 0, 0, -90)
@@ -36,10 +36,10 @@ function closePDDoor4(thePlayer)
 	
 	moveObject(objGated, 1000, 295.22623901367, 189.35, 1007.471875, 0, 0, 90)
 	moveObject(objGated2, 1000, 298.12623901367, 189.35, 1007.471875, 0, 0, -90)
-	setTimer(resetState, 1000, 1)
+	setTimer(resetState4, 1000, 1)
 end
 
 
-function resetState()
+function resetState4()
 	open = false
 end

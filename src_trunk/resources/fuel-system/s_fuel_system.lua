@@ -191,7 +191,7 @@ function fillVehicle(thePlayer, commandName)
 		
 		if (colShape) then
 			local veh = getPedOccupiedVehicle(thePlayer)
-			local currFuel = getElementData(veh, "fuel")
+			local currFuel = tonumber(getElementData(veh, "fuel"))
 
 			if (math.ceil(currFuel)==MAX_FUEL) then
 				outputChatBox("This vehicle is already full.", thePlayer)
@@ -213,7 +213,7 @@ function fillVehicle(thePlayer, commandName)
 					if (litresAffordable+currFuel>100) then
 						litresAffordable = 100 - currFuel
 					end
-						
+					
 					if (litresAffordable==0) then
 						outputChatBox("You cannot afford any fuel.", thePlayer, 255, 0, 0)
 					else
@@ -222,7 +222,13 @@ function fillVehicle(thePlayer, commandName)
 					end
 				else
 					outputChatBox("Refilling Vehicle...", thePlayer)
-					setTimer(fuelTheVehicle, 15000, 1, thePlayer, veh, colShape, MAX_FUEL)
+					
+					litresAffordable = 100
+					if (litresAffordable+currFuel>100) then
+						litresAffordable = 100 - currFuel
+					end
+					
+					setTimer(fuelTheVehicle, 15000, 1, thePlayer, veh, colShape, litresAffordable)
 				end
 			end
 		end

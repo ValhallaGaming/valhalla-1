@@ -10,7 +10,7 @@ open = false
 function useChinaGate(thePlayer)
 	local team = getPlayerTeam(thePlayer)
 	
-	if (team==getTeamFromName("Yamaguchi Gumi")) then
+	if (team==getTeamFromName("Yamaguchi-Gumi")) then
 		local x, y, z = getElementPosition(thePlayer)
 		local distance = getDistanceBetweenPoints3D( x, y, z)
 

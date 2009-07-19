@@ -37,9 +37,9 @@ function clickPed(button, state, absX, absY, wx, wy, wz, element)
 							end
 						elseif (ped=="Hunter") then
 								triggerServerEvent( "startHunterConvo", getLocalPlayer())
-							--if not (getElementData(element,"activeConvo")) then
+							if not (getElementData(element,"activeConvo")) then
 								triggerEvent ( "hunterIntroEvent", getLocalPlayer()) -- Trigger Client side function to create GUI.
-							--end
+							end
 						else
 							outputChatBox("Error: Unknown ped.", 255, 0, 0)
 						end

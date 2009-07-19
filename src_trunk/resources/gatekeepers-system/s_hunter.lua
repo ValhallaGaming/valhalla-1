@@ -19,7 +19,7 @@ function hunterIntro () -- When player enters the colSphere create GUI with intr
 	local thePlayer = source
 	local state = getElementData( thePlayer, "hunterCoolDown")
 	
-	if(getElementData( thePlayer, "hunterCoolDown"))then
+	if(getElementData( hunter, "activeConvo"))then
 		outputChatBox("Hunter doesn't want to talk to you.", thePlayer, 255, 0, 0)
 	else
 		local pedX, pedY, pedZ = getElementPosition( hunter )

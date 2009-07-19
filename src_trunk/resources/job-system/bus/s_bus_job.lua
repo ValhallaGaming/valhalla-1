@@ -18,7 +18,10 @@ function payBusDriver(stop)
 	exports.global:givePlayerSafeMoney(source, 18)
 	local nextStopNumber = stop+1
 	local thisStop = tostring(stopNumber[stop][1])
-	local nextStop = tostring(stopNumber[nextStopNumber][1])
+	
+	if(stop<13)then
+		nextStop = tostring(stopNumber[nextStopNumber][1])
+	end
 	
 	local x, y, z = getElementPosition(source)
 	local chatSphere = createColSphere(x, y, z, 20)
@@ -41,7 +44,9 @@ function payBusDriver(stop)
 			local logged = getElementData(nearbyPlayer, "loggedin")
 			if not(isPedDead(nearbyPlayer)) and (logged==1) then
 				outputChatBox(" -- This stop: [".. thisStop .. "] --", nearbyPlayer, 255, 51, 102)
-				outputChatBox(" -- Next stop: [".. nextStop .. "] --", nearbyPlayer, 255, 51, 102)
+				if(stop<13)then
+					outputChatBox(" -- Next stop: [".. nextStop .. "] --", nearbyPlayer, 255, 51, 102)
+				end
 			end
 		end
 	end	

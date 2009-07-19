@@ -8,44 +8,27 @@ local pictureValue = 0
 local collectionValue = 0
 
 -- Ped at submission desk just for the aesthetics.
-local victoria = createPed(141, 359.7131652832, 173.87419128418, 1008.3893432617)
+local victoria = createPed(141, 359.7, 173.57419128418, 1008.3893432617)
 setPedRotation(victoria, 270)
 setElementDimension(victoria, 787)
 setElementInterior(victoria, 3)
 setPedAnimation ( victoria, "INT_OFFICE", "OFF_Sit_Idle_Loop", -1, true, false, false )
 
--- Setup the markers.
-function photoResStart(res)
-	if (res==getThisResource())then
-		local theTeam = getPlayerTeam(getLocalPlayer())
-		local factionType = getElementData(theTeam, "type")
-		
-		if (factionType==6) then
-			photoSubmitEntranceMarker = createMarker( 2462.765625, 2245.14257812, 9.8203125, "cylinder", 2, 0,100, 255, 170 )
-			photoSubmitDeskMarker = createMarker( 360, 177, 1008, "cylinder", 2, 0, 100, 255, 170 )
-			photoSubmitEntranceBlip = createBlip( 2462.765625, 2245.14257812, 9.8203125, 0, 2, 0, 100, 255, 255 )
-			photoSubmitDeskColSphere = createColSphere( 360, 177, 1008, 2 )
-		end
-	end
-end
-addEventHandler("onClientResourceStart", getRootElement(), photoResStart)
-
 function snapPicture(weapon, ammo, ammoInClip, hitX, hitY, hitZ, hitElement )
-	thePlayer=source
-	local logged = getElementData(thePlayer, "loggedin")
+	local logged = getElementData(source, "loggedin")
 	
 	if (logged==1) then
-		local theTeam = getPlayerTeam(thePlayer)
+		local theTeam = getPlayerTeam(source)
 		local factionType = getElementData(theTeam, "type")
 		
 		if (factionType==6) then
 			if (weapon == 43) then
 				pictureValue = 0
 				local onScreenPlayers = {}
-				local players = getElementsByType ( "player" )
-				for theKey, thePlayer in ipairs(players) do 
+				local players = getElementsByType( "player" )
+				for theKey, thePlayer in ipairs(players) do			-- thePlayer ~= source
 					if (isElementOnScreen(thePlayer)) then
-						table.insert(onScreenPlayers, thePlayer) -- Identify everyone who is on the screen as the picture is taken.
+						table.insert(onScreenPlayers, thePlayer)	-- Identify everyone who is on the screen as the picture is taken.
 					end
 				end
 				for theKey,thePlayer in ipairs(onScreenPlayers) do
@@ -128,14 +111,31 @@ addCommandHandler("totalvalue", showValue, false, false)
 
 -- /submitpics to sell your collection of pictures to the news company.
 function sellPhotos()
-	if (isElementWithinColShape(getLocalPlayer(), photoSubmitDeskColSphere))then
-		if(collectionValue==0)then
-			outputChatBox("None of the pictures you have are worth anything.", 255, 0, 0, true)
+	local theTeam = getPlayerTeam(getLocalPlayer())
+	local factionType = getElementData(theTeam, "type")
+			
+	if (factionType==6) then
+		if not(photoSubmitDeskMarker)then
+			photoSubmitDeskMarker = createMarker( 362, 173, 1007, "cylinder", 1, 0, 100, 255, 170 )
+			photoSubmitDeskColSphere = createColSphere( 362, 173, 1007, 2 )
+			setElementInterior(photoSubmitDeskMarker,3)
+			setElementInterior(photoSubmitDeskColSphere,3)			
+			setElementDimension(photoSubmitDeskMarker, 787)
+			setElementDimension(photoSubmitDeskColSphere, 787)
+			
+			outputChatBox("#FF9933You can sell your photographs at the #3399FFSan Andreas Network Tower #FF9933((/sellpics at the front desk)).", 255, 255, 255, true)
 		else
-			triggerServerEvent("submitCollection", getLocalPlayer(), collectionValue)
+			if (isElementWithinColShape(getLocalPlayer(), photoSubmitDeskColSphere))then
+				if(collectionValue==0)then
+					outputChatBox("None of the pictures you have are worth anything.", 255, 0, 0, true)
+				else
+					triggerServerEvent("submitCollection", getLocalPlayer(), collectionValue)
+					collectionValue = 0
+				end
+			else
+				outputChatBox("#FF9933You can sell your photographs at the #3399FFSan Andreas Network Tower #FF9933((/sellpics at the front desk)).", 255, 255, 255, true)
+			end
 		end
-	else
-		outputChatBox("#FF9933You can sell your photographs at the #3399FFSan Andreas Network News building #FF9933((/sellpics)).", 255, 255, 255, true)
 	end
 end
 addCommandHandler("sellpics", sellPhotos, false, false)

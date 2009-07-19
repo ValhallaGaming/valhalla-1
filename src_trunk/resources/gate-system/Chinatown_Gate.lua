@@ -12,8 +12,8 @@ function useChinaGate(thePlayer)
 	
 	if (team==getTeamFromName("Yamaguchi-Gumi")) then
 		local x, y, z = getElementPosition(thePlayer)
-		local distance = getDistanceBetweenPoints3D( x, y, z)
-
+		local distance = getDistanceBetweenPoints3D( 2565.1757, 1820.6582, 10.8203, x, y, z )
+		outputDebugString(tonumber(distance))
 		if (distance<=10) and (open==false) then
 			open = true
 			outputChatBox("Yakuza gate is now Open!", thePlayer, 0, 255, 0)

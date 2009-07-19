@@ -80,7 +80,7 @@ function startBusJob(thePlayer)
 				addEventHandler("onClientMarkerHit", busMarker, updateBusCheckpoint)
 				
 				setElementData(getLocalPlayer(), "busRoute.marker", 1)
-				setElementData(getLocalPlayer(), "busRoute.totalmarkers", 40)
+				setElementData(getLocalPlayer(), "busRoute.totalmarkers", 39)
 				
 				outputChatBox("#FF9933Drive around the bus #FFCC00route #FF9933stopping at the #A00101stops #FF9933along the way.", 255, 194, 14, true)
 				outputChatBox("#FF9933You will be paid for each stop you make.", 255, 194, 14, true)
@@ -120,10 +120,9 @@ function updateBusCheckpoint()
 			busMarker = createMarker( x, y, z, "checkpoint", 4, 255, 200, 0, 150) -- Red marker
 			busBlip = createBlip( x, y, z, 0, 2, 255, 200, 0, 255) -- Red blip
 			
-			addEventHandler("onClientMarkerHit", busMarker, startBusJob)
+			addEventHandler("onClientMarkerHit", busMarker, endOfTheLine)
 			
-		else
-			
+		else			
 			if(busRoute[newnumber][4]==true)then -- If it is a stop.
 			
 				if(busBlip)then
@@ -144,7 +143,8 @@ function updateBusCheckpoint()
 				
 				addEventHandler("onClientMarkerHit", busMarker, waitAtStop)
 				
-			else
+			else -- it is just a route.
+			
 				if(busBlip)then
 					-- Remove the old marker.
 					destroyElement(busBlip)
@@ -178,11 +178,20 @@ function waitAtStop()
 	busBlip = nil
 	busMarker = nil
 	busStopTimer = setTimer(updateBusCheckpoint, 5000, 1)
-	outputChatBox("#FF9933Wait at the bus stop for a moment.", 255, 0, 0, true ) -- Wrong car type.
+	outputChatBox("#FF9933Wait at the bus stop for a moment.", 255, 0, 0, true )
 	
 	local m_number = getElementData(getLocalPlayer(), "busRoute.marker")
 	local stopNumber = busRoute[m_number][5]
 	triggerServerEvent("payBusDriver", getLocalPlayer(), stopNumber)
+end
+
+function endOfTheLine()
+	-- Remove the old marker.
+	destroyElement(busBlip)
+	destroyElement(busMarker)
+	busBlip = nil
+	busMarker = nil
+	outputChatBox("#FF9933End of the Line. Use /startbus to begin the route again.", 0, 255, 0, true )
 end
 
 function enterBus ( thePlayer, seat, jacked )

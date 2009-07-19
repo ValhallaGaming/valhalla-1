@@ -20,7 +20,7 @@ function selectPlayer()
 				selectPlayer() -- if this player is not a friend of Hunter's go back and select another player
 				outputDebugString("Player not logged in")
 			else
-				local selectionTime = math.random(1200000,3600000) -- random time between 20 and 60 minutes
+				local selectionTime = math.random(1200000,2400000) -- random time between 20 and 40 minutes
 				selectPlayerTimer = setTimer(selectPlayer, selectionTime, 1)
 				outputDebugString("no players found")
 				count = 0
@@ -34,7 +34,7 @@ function selectPlayer()
 				if (count<10) then -- check 10 players before resetting the timer.
 					selectPlayer() -- if this player is not a friend of Hunter's go back and select another player
 				else
-					local selectionTime = math.random(1200000,3600000) -- random time between 20 and 60 minutes
+					local selectionTime = math.random(1200000,2400000) -- random time between 20 and 40 minutes
 					selectPlayerTimer = setTimer(selectPlayer, selectionTime, 1)
 					count = 0
 				end
@@ -43,7 +43,7 @@ function selectPlayer()
 					if (count<10) then
 						selectPlayer() -- if this player is already on a car jacking mission go back and select another player.
 					else
-						local selectionTime = math.random(1200000,3600000) -- random time between 20 and 60 minutes
+						local selectionTime = math.random(1200000,2400000) -- random time between 20 and 40 minutes
 						selectPlayerTimer = setTimer(selectPlayer, selectionTime, 1)
 						count = 0
 					end
@@ -53,7 +53,7 @@ function selectPlayer()
 						exports.global:sendLocalMeAction(theChosenOne,"receives a text message.")
 						triggerClientEvent(theChosenOne, "createHunterMarkers", theChosenOne)
 					end	
-					local selectionTime = math.random(1200000,3600000) -- random time between 20 and 60 minutes
+					local selectionTime = math.random(1200000,2400000) -- random time between 20 and 40 minutes
 					selectPlayerTimer = setTimer(selectPlayer, selectionTime, 1) -- start the selectPlayerTimer again for the next person.
 				end
 			end

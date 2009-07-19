@@ -293,7 +293,7 @@ end
 -- funciton create the window that tells the
 function createTestFinishWindow()
 
-	local score = (correctAnswers/NoQuestionToAnswer)*100
+	local score = math.floor((correctAnswers/NoQuestionToAnswer)*100)
 
 	local screenwidth, screenheight = guiGetScreenSize ()
 		

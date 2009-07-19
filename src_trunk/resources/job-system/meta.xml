@@ -17,7 +17,9 @@
 	<script src="carjacker/c_carjacker_job.lua" type="client"/>	
 	
 	<script src="taxi/c_taxi_job.lua" type="client"/>
+
 	<script src="bus/c_bus_job.lua" type="client"/>
+	<script src="bus/s_bus_job.lua" type="server"/>
 
 	<file src="images/Background.png" />
 	<file src="images/Off.png" />

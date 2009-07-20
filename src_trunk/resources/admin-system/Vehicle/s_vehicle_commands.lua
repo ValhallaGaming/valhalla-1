@@ -365,6 +365,32 @@ function addUpgrade(thePlayer, commandName, target, upgradeID)
 end
 addCommandHandler("addupgrade", addUpgrade, false, false)
 
+function resetUpgrades(thePlayer, commandName, target)
+	if (exports.global:isPlayerAdmin(thePlayer)) then
+		if not (target) then
+			outputChatBox("SYNTAX: /" .. commandName .. " [Partial Player Nick]", thePlayer, 255, 194, 14)
+		else
+			local username = getPlayerName(thePlayer)
+			local targetPlayer = exports.global:findPlayerByPartialNick(target)
+			
+			if not (targetPlayer) then
+				outputChatBox("Player not found or multiple were found.", thePlayer, 255, 0, 0)
+			else
+				if not (isPedInVehicle(targetPlayer)) then
+					outputChatBox("That player is not in a vehicle.", thePlayer, 255, 0, 0)
+				else
+					local theVehicle = getPedOccupiedVehicle(targetPlayer)
+					for key, value in ipairs(getVehicleUpgrades(theVehicle)) do
+						removeVehicleUpgrade(theVehicle, value)
+					end
+					setVehiclePaintjob(theVehicle, 3)
+				end
+			end
+		end
+	end
+end
+addCommandHandler("resetupgrades", resetUpgrades, false, false)
+
 function findVehID(thePlayer, commandName, ...)
 	if (exports.global:isPlayerAdmin(thePlayer)) then
 		if not (...) then

@@ -73,20 +73,20 @@ function applyMods(res)
 		-- Police Skins --
 		------------------
 		-- LSPD
-		lspd = engineLoadTXD("skins/lvpd/lapd1.txd")
-		engineImportTXD(lspd, 280)
+		--lspd = engineLoadTXD("skins/lvpd/lapd1.txd")
+		--engineImportTXD(lspd, 280)
 		
 		-- SFPD
-		sfpd = engineLoadTXD("skins/lvpd/sfpd1.txd")
-		engineImportTXD(sfpd, 281)
+		--sfpd = engineLoadTXD("skins/lvpd/sfpd1.txd")
+		--engineImportTXD(sfpd, 281)
 		
 		-- SWAT
-		swatCop = engineLoadTXD("skins/lvpd/swat.txd")
-		engineImportTXD(swatCop, 285)
+		--swatCop = engineLoadTXD("skins/lvpd/swat.txd")
+		--engineImportTXD(swatCop, 285)
 		
 		-- Cadet
-		cadet = engineLoadTXD("skins/lvpd/wmysgrd.txd")
-		engineImportTXD(cadet, 71)
+		--cadet = engineLoadTXD("skins/lvpd/wmysgrd.txd")
+		--engineImportTXD(cadet, 71)
 		
 		-----------
 		-- Gangs --

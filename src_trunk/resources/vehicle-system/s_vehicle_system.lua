@@ -757,19 +757,25 @@ function toggleLock(source, key, keystate)
 	
 	if (veh) and (inVehicle==1) then
 		local model = getElementModel(veh)
-		if not (locklessVehicle[model]) then
-			local locked = isVehicleLocked(veh)
-			local seat = getPedOccupiedVehicleSeat(source)
-			if (seat==0) then
-				if (locked) then
-					setVehicleLocked(veh, false)
-					exports.global:sendLocalMeAction(source, "unlocks the vehicle doors.")
-				else
-					setVehicleLocked(veh, true)
-					exports.global:sendLocalMeAction(source, "locks the vehicle doors.")
-				end
-			end
-		end
+        local owner = getElementData(veh, "owner")
+        
+        if (owner ~= -2) then
+    		if not (locklessVehicle[model]) then
+    			local locked = isVehicleLocked(veh)
+    			local seat = getPedOccupiedVehicleSeat(source)
+    			if (seat==0) then
+    				if (locked) then
+    					setVehicleLocked(veh, false)
+    					exports.global:sendLocalMeAction(source, "unlocks the vehicle doors.")
+    				else
+    					setVehicleLocked(veh, true)
+    					exports.global:sendLocalMeAction(source, "locks the vehicle doors.")
+    				end
+    			end
+    		end
+        else
+            outputChatBox("(( You can't lock civilian vehicles. ))", source, 255, 195, 14)
+        end
 	end
 end
 

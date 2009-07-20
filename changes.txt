@@ -1,9 +1,8 @@
 ---
 SQL
 ---
--- columns
-
-A new columns in characters called "stevie". int, 1 character long and defualt to 0.
+-- Achievement
+INSERT INTO achievementslist SET id='37', name='The Good Samaritan', description='Donate $1000 or more to charity', points='100';
 
 ---------------------
 Chamberlains changes.
@@ -16,25 +15,14 @@ chat-system
 job-system
 	- c_fishing_job
 	- S_carjacker_job
-	- c_photographer_job (not yet in server)
-
-weather-system
-	- S_weather_job
+	- c_photographer_job
+	- s_photographer
+	- c_mechanic_job
+	- s_mechanic_job
+	- c_locksmith_job
+	- s_locksmith_job
+	- meta
 
 map-system
-	- san.map
-	- blackfield chapel int.map
+	- FBI Office.map
 	- meta
-
-gatekeepers-system
-
-gate-system
-	- meta
-	- Chinatown_Gate.lua
-
-item-system
-	- c_item_system
-	- s_item_system
-
-globals
-	- c_item_global

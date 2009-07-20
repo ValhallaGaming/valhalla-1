@@ -6,7 +6,7 @@ function playerSpawn()
 
 	if (logged==1) then
 		job = tonumber(getElementData(source, "job"))
-		
+		outputDebugString(tostring(job))
 		if (job==1) then -- TRUCKER
 			resetTruckerJob()
 			setTimer(displayTruckerJob, 1000, 1)
@@ -46,6 +46,10 @@ function quitJob()
 			setElementData(localPlayer, "tag", true, 1)
 			setElementData(localPlayer, "job", true, 0)
 			triggerServerEvent("cancelCityMaintenance", localPlayer)
+		elseif (job==5) then -- MECHANIC
+			resetBusJob()
+			setElementData(localPlayer, "job", true, 0)
+			outputChatBox("You have now quit your job as a mechanic.", 0, 255, 0)
 		end
 	end
 end

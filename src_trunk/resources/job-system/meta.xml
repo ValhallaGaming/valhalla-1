@@ -15,15 +15,19 @@
 	
 	<script src="carjacker/s_carjacker_job.lua" type="server"/>
 	<script src="carjacker/c_carjacker_job.lua" type="client"/>
-
+	
 	<script src="photographer/s_photographer_job.lua" type="server"/>
 	<script src="photographer/c_photographer_job.lua" type="client"/>
+
+	<script src="mechanic/s_mechanic_job.lua" type="server"/>
+	<script src="mechanic/c_mechanic_job.lua" type="client"/>	
+	<file src="mechanic/colourChart.png" />	
 	
 	<script src="taxi/c_taxi_job.lua" type="client"/>
 
 	<script src="bus/c_bus_job.lua" type="client"/>
 	<script src="bus/s_bus_job.lua" type="server"/>
-
+	
 	<file src="images/Background.png" />
 	<file src="images/Off.png" />
 	<file src="images/OFFlight.png" />

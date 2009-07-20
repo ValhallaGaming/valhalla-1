@@ -20,19 +20,21 @@ function showEmploymentWindow()
 	local row = guiGridListAddRow(jobList)
 	guiGridListSetItemText(jobList, row, column, "Delivery Driver", false, false)
 	
+	-- TAXI
 	local row = guiGridListAddRow(jobList)
 	guiGridListSetItemText(jobList, row, column, "Taxi Driver", false, false)
 	
+	-- BUS
 	local row = guiGridListAddRow(jobList)
 	guiGridListSetItemText(jobList, row, column, "Bus Driver", false, false)
-	
-	-- MECHANIC
-	--local row = guiGridListAddRow(jobList)
-	--guiGridListSetItemText(jobList, row, column, "Mechanic", false, false)
 	
 	-- CITY MAINTENACE
 	local rowmaintenance = guiGridListAddRow(jobList)
 	guiGridListSetItemText(jobList, rowmaintenance, column, "City Maintenance", false, false)
+	
+	-- MECHANIC
+	local row = guiGridListAddRow(jobList)
+	guiGridListSetItemText(jobList, row, column, "Mechanic", false, false)
 	
 	bAcceptJob = guiCreateButton(0.05, 0.85, 0.45, 0.1, "Accept Job", true, wEmployment)
 	bCancel = guiCreateButton(0.5, 0.85, 0.45, 0.1, "Cancel", true, wEmployment)
@@ -68,11 +70,11 @@ function acceptJob(button, state)
 			elseif  (jobtext=="Bus Driver") then
 				job = 3
 				displayBusJob()
-			--elseif (jobtext=="Mechanic") then
-			--	displayMechanicJob()
-			--	job = 2
 			elseif (jobtext=="City Maintenance") then
 				job = 4
+			elseif (jobtext=="Mechanic") then
+				displayMechanicJob()
+				job = 5
 			end
 			
 			triggerServerEvent("acceptJob", getLocalPlayer(), job)

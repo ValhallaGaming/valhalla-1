@@ -7,7 +7,7 @@ exports.pool:allocateElement(objGatefbi2)
 local open = false
 
 -- Gate code
-function useFBISideGate(thePlayer)
+function useFBISideGate2(thePlayer)
 	local team = getPlayerTeam(thePlayer)
 	
 	if (team==getTeamFromName("Federal Bureau of Investigation")) then
@@ -19,13 +19,13 @@ function useFBISideGate(thePlayer)
 			outputChatBox("FBI Side Gate is now Open!", thePlayer, 0, 255, 0)
 			moveObject(objGatefbi1, 1000, 2517.62109375, 2423.92421875, 9.91203125, 0, 0, 0)
 			moveObject(objGatefbi2, 1000, 2544.12109375, 2423.92421875, 9.91203125, 0, 0, 0)
-			setTimer(closeFBISideGate, 5000, 1, thePlayer)
+			setTimer(closeFBISideGate2, 5000, 1, thePlayer)
 		end
 	end
 end
-addCommandHandler("gate", useFBISideGate)
+addCommandHandler("gate", useFBISideGate2)
 
-function closeFBISideGate(thePlayer)
+function closeFBISideGate2(thePlayer)
 	if (getElementType(thePlayer)) then
 		outputChatBox("FBI Side Gate is now Closed!", thePlayer, 255, 0, 0)
 	end

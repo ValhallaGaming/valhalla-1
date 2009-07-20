@@ -764,7 +764,7 @@ function setFactionMoney(thePlayer, commandName, factionID, amount)
 			
 			if (theTeam) then
 				setElementData(theTeam, "money", amount)
-				local result = mysql_query(handler, "UPDATE factions SET bankbalance='" .. amount .. "'")
+				local result = mysql_query(handler, "UPDATE factions SET bankbalance='" .. amount .. "' WHERE id='" .. tonumber(factionID) .. "'")
 				mysql_free_result(result)
 				outputChatBox("Set faction '" .. getTeamName(theTeam) .. "'s money to " .. amount .. " $.", thePlayer, 255, 194, 14)
 			else

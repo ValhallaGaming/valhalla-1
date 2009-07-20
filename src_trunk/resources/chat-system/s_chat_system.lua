@@ -1226,7 +1226,6 @@ function newsHotline(thePlayer, commandName, ...)
 		if not (...) then
 			outputChatBox("SYNTAX: /" .. commandName .. " [Description of Situation]", thePlayer, 255, 194, 14)
 		else
-			
 			local x, y, z = getElementPosition(thePlayer)
 			local chatSphere = createColSphere(x, y, z, 20)
 			exports.pool:allocateElement(chatSphere)
@@ -1277,8 +1276,9 @@ function newsHotline(thePlayer, commandName, ...)
 					end
 				end
 			end
-			
+		
 			outputChatBox("Thank you for calling the San Andreas Network News Desk. You tip will be forwarded to our staff.", thePlayer, 255, 194, 14)
+			exports.global:sendLocalMeAction(thePlayer,"hangs up their cellphone.")
 			
 			local theTeam = getTeamFromName("San Andreas Network News")
 			local teamMembers = getPlayersInTeam(theTeam)
@@ -1288,8 +1288,7 @@ function newsHotline(thePlayer, commandName, ...)
 					exports.global:sendLocalMeAction(value,"receives a text message.")
 					outputChatBox("SMS From: News Desk: - '".. message.."' (("..getPlayerName(thePlayer) .."))", value)
 				end
-			end
-			
+			end			
 		end
 	end
 end
@@ -1313,3 +1312,29 @@ function displayRoadmap(thePlayer, version1, percent1, changes1, version2, perce
 		outputChatBox("MultiTheftAuto " .. mtaversion .. ": " .. mtapercent .. ". Changes: " .. mtachanges .. ".", thePlayer, 255, 194, 15)
 	end
 end
+
+-- /charity
+function charityCash(thePlayer, commandName, amount)
+	if not (amount) then
+		outputChatBox("SYNTAX: /" .. commandName .. " [Amount]", thePlayer, 255, 194, 14)
+	else
+		local donation = tonumber(amount)
+		local money = getElementData(thePlayer, "money")
+		if (money<donation) then
+			outputChatBox("You don't have that much money to remove.", thePlayer, 255, 0, 0)
+		else
+			exports.global:takePlayerSafeMoney(thePlayer, donation)
+			outputChatBox("You have donated $".. donation .." to charity.", thePlayer, 0, 255, 0)
+			if(donation>=100)then
+				local name = string.gsub(getPlayerName(thePlayer), "_", " ")
+				
+				for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
+					if (getElementData(value, "loggedin")==1) then
+						outputChatBox("The hungry orphans would like to thank " ..name.. " for his sizable $" ..donation.. " donation to charity.", value)
+					end
+				end
+			end
+		end
+	end
+end
+addCommandHandler("charity", charityCash, false, false)

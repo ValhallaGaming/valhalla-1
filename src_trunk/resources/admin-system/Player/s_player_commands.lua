@@ -1176,8 +1176,8 @@ function jailPlayer(thePlayer, commandName, who, minutes, ...)
 					killTimer(jailTimer)
 				end
 				
-				if (isPedInVehicle(thePlayer)) then
-					removePedFromVehicle(thePlayer)
+				if (isPedInVehicle(targetPlayer)) then
+					removePedFromVehicle(targetPlayer)
 				end
 				
 				if (minutes<999) then

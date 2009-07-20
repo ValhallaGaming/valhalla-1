@@ -119,4 +119,4 @@ function raidForChemicals(thePlayer)
 		end
 	end
 end
-addCommandHandler("raid", raidForChemicals, false, false)
+--addCommandHandler("raid", raidForChemicals, false, false)

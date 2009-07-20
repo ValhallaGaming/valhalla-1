@@ -36,6 +36,10 @@ function showEmploymentWindow()
 	local row = guiGridListAddRow(jobList)
 	guiGridListSetItemText(jobList, row, column, "Mechanic", false, false)
 	
+	-- LOCKSMITH
+	local row = guiGridListAddRow(jobList)
+	guiGridListSetItemText(jobList, row, column, "Locksmith", false, false)
+	
 	bAcceptJob = guiCreateButton(0.05, 0.85, 0.45, 0.1, "Accept Job", true, wEmployment)
 	bCancel = guiCreateButton(0.5, 0.85, 0.45, 0.1, "Cancel", true, wEmployment)
 	
@@ -75,6 +79,9 @@ function acceptJob(button, state)
 			elseif (jobtext=="Mechanic") then
 				displayMechanicJob()
 				job = 5
+			elseif (jobtext=="Locksmith") then
+				displayLocksmithJob()
+				job = 6
 			end
 			
 			triggerServerEvent("acceptJob", getLocalPlayer(), job)

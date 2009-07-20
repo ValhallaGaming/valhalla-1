@@ -47,9 +47,11 @@ function quitJob()
 			setElementData(localPlayer, "job", true, 0)
 			triggerServerEvent("cancelCityMaintenance", localPlayer)
 		elseif (job==5) then -- MECHANIC
-			resetBusJob()
 			setElementData(localPlayer, "job", true, 0)
 			outputChatBox("You have now quit your job as a mechanic.", 0, 255, 0)
+		elseif (job==6) then -- LOCKSMITH
+			setElementData(localPlayer, "job", true, 0)
+			outputChatBox("You have now quit your job as a locksmith.", 0, 255, 0)
 		end
 	end
 end

@@ -173,7 +173,7 @@ function shapeHit(element, matchingDimension)
 				local faction = getPlayerTeam(thePlayer)
 				local ftype = getElementData(faction, "type")
 				
-				if (money<50) and (ftype~=2  and ftype~=3 and ftype~=4) then
+				if (money<250) and (ftype~=2  and ftype~=3 and ftype~=4) then
 					outputChatBox("You cannot afford to have your car worked on.", thePlayer, 255, 0, 0)
 				else
 					outputChatBox("Welcome to Pay 'n' Spray. Please wait while we work on your " .. getVehicleName(element) .. ".", thePlayer, 255, 194, 14)
@@ -198,7 +198,7 @@ function sprayEffect(vehicle, thePlayer, shape)
 		local ftype = getElementData(faction, "type")
 			
 		if (ftype~=2) then
-			exports.global:takePlayerSafeMoney(thePlayer, 50)
+			exports.global:takePlayerSafeMoney(thePlayer, 250)
 		end
 		
 		local id = getElementModel(vehicle)

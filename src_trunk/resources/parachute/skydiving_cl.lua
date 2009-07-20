@@ -87,20 +87,22 @@ local function onRender()
 	end
 	--Process remote players
 	for k,player in ipairs(getElementsByType"player") do
-		if player ~= localPlayer and getElementData ( player, "skydiving" ) and isElementStreamedIn(player) then
-			local velX,velY,velZ = getElementVelocity ( player )
-			local rotz = 6.2831853071796 - math.atan2 ( ( velX ), ( velY ) ) % 6.2831853071796
-			local animation = getElementData ( player, "animation_state" )
-			setPedNewAnimation ( player, nil, "PARACHUTE", animation, -1, false, true, false )
-			local rotX = getElementRotation(player)
-			if ( animation == "FALL_SkyDive_Accel" ) then
-				if ( rotX < x_rotation ) then
-					rotX = rotX + rotation_accelerate
+		if (isElement(player)) then
+			if player ~= localPlayer and getElementData ( player, "skydiving" ) and isElementStreamedIn(player) then
+				local velX,velY,velZ = getElementVelocity ( player )
+				local rotz = 6.2831853071796 - math.atan2 ( ( velX ), ( velY ) ) % 6.2831853071796
+				local animation = getElementData ( player, "animation_state" )
+				setPedNewAnimation ( player, nil, "PARACHUTE", animation, -1, false, true, false )
+				local rotX = getElementRotation(player)
+				if ( animation == "FALL_SkyDive_Accel" ) then
+					if ( rotX < x_rotation ) then
+						rotX = rotX + rotation_accelerate
+					end
+				elseif rotX > 0 then
+					rotX = rotX - rotation_accelerate
 				end
-			elseif rotX > 0 then
-				rotX = rotX - rotation_accelerate
+				setElementRotation ( player, rotX, 0, -math.deg(rotz) )
 			end
-			setElementRotation ( player, rotX, 0, -math.deg(rotz) )
 		end
 	end
 end

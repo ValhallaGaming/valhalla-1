@@ -109,29 +109,31 @@ local function onRender ( )
 	end
 	--Render remote players
 	for k,player in ipairs(getElementsByType"player") do
-		if player ~= localPlayer and getElementData ( player, "parachuting" ) and isElementStreamedIn(player) then
-			local velX,velY,velZ = getElementVelocity ( player )
-			local rotz = 6.2831853071796 - math.atan2 ( ( velX ), ( velY ) ) % 6.2831853071796
-			local animation = getElementData ( player, "animation_state" )
-			setPedNewAnimation ( player, nil, "PARACHUTE", animation, -1, false, true, false )
-			local _,rotY = getElementRotation(player)
-			--Sync the turning rotation
-			if animation == "PARA_steerL" then
-				if y_turn_offset > rotY then
-					rotY = rotY + rotation_accelerate
+		if (isElement(player)) then
+			if player ~= localPlayer and getElementData ( player, "parachuting" ) and isElementStreamedIn(player) then
+				local velX,velY,velZ = getElementVelocity ( player )
+				local rotz = 6.2831853071796 - math.atan2 ( ( velX ), ( velY ) ) % 6.2831853071796
+				local animation = getElementData ( player, "animation_state" )
+				setPedNewAnimation ( player, nil, "PARACHUTE", animation, -1, false, true, false )
+				local _,rotY = getElementRotation(player)
+				--Sync the turning rotation
+				if animation == "PARA_steerL" then
+					if y_turn_offset > rotY then
+						rotY = rotY + rotation_accelerate
+					end
+				elseif animation == "PARA_steerR" then
+					if -y_turn_offset < rotY then
+						rotY = rotY - rotation_accelerate
+					end
+				else
+					if 0 > math.floor(rotY) then
+						rotY = rotY + rotation_accelerate
+					elseif 0 < math.floor(rotY) then
+						rotY = rotY - rotation_accelerate
+					end
 				end
-			elseif animation == "PARA_steerR" then
-				if -y_turn_offset < rotY then
-					rotY = rotY - rotation_accelerate
-				end
-			else
-				if 0 > math.floor(rotY) then
-					rotY = rotY + rotation_accelerate
-				elseif 0 < math.floor(rotY) then
-					rotY = rotY - rotation_accelerate
-				end
+				setElementRotation ( player, 0, rotY, -math.deg(rotz) )
 			end
-			setElementRotation ( player, 0, rotY, -math.deg(rotz) )
 		end
 	end
 end

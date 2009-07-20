@@ -1046,20 +1046,23 @@ function localCarWhisper(thePlayer, commandName, ...)
 			outputChatBox("SYNTAX: /" .. commandName .. " [Message]", thePlayer, 255, 194, 14)
 		else
 			local vehicle = getPedOccupiedVehicle(thePlayer)
-			local id = getElementModel(vehicle)
 			
-			if (bike[id]) then
-				outputChatBox("Car whisper is not available in this vehicle", thePlayer, 255, 194, 14)
-			else
-				exports.global:sendLocalDoAction(thePlayer, "Strangers whisper in the car." )
+			if (isElement(vehicle)) then
+				local id = getElementModel(vehicle)
 				
-				for i = 0, 3 do
-					player = getVehicleOccupant(vehicle, i)
+				if (bike[id]) then
+					outputChatBox("Car whisper is not available in this vehicle", thePlayer, 255, 194, 14)
+				else
+					exports.global:sendLocalDoAction(thePlayer, "Strangers whisper in the car." )
 					
-					if (player) then
-						message = table.concat({...}, " ")
-						local name = string.gsub(getPlayerName(thePlayer), "_", " ")
-						outputChatBox("((In Car)) " .. name .. " whispers: " .. message, player, 255, 255, 255)
+					for i = 0, 3 do
+						player = getVehicleOccupant(vehicle, i)
+						
+						if (player) then
+							message = table.concat({...}, " ")
+							local name = string.gsub(getPlayerName(thePlayer), "_", " ")
+							outputChatBox("((In Car)) " .. name .. " whispers: " .. message, player, 255, 255, 255)
+						end
 					end
 				end
 			end

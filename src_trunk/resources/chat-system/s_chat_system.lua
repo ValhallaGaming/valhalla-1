@@ -1095,6 +1095,13 @@ function newsMessage(thePlayer, commandName, ...)
 						end
 					end
 				end
+								
+				local factionFunds = getElementData(theTeam, "money")
+				local newFunds = factionFunds + 200
+				setElementData(theTeam, "money", tonumber(newFunds))
+				local id = getElementData(theTeam, "id")
+				local result = mysql_query(handler, "UPDATE factions SET bankbalance='" .. newFunds .. "' WHERE id='" .. id .. "' LIMIT 1")
+				mysql_free_result(result)
 			end
 		end
 	end

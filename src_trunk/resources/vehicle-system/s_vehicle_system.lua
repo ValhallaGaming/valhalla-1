@@ -760,7 +760,7 @@ function toggleLock(source, key, keystate)
         local owner = getElementData(veh, "owner")
         
         if (owner ~= -2) then
-    		if not (locklessVehicle[model]) then
+    		if not (locklessVehicle[model] and (getVehicleType(veh)~="boat")) then
     			local locked = isVehicleLocked(veh)
     			local seat = getPedOccupiedVehicleSeat(source)
     			if (seat==0) then

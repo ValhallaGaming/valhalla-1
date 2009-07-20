@@ -390,7 +390,9 @@ function spawnCharacter(charname)
 			end
 		end
 		
-		local factiononline = #getPlayersInTeam(theTeam)
+		if (isElement(theTeam)) then
+			local factiononline = #getPlayersInTeam(theTeam)
+		end
 		
 		
 		if (factionName~="Citizen") then

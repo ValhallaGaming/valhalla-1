@@ -6,7 +6,6 @@ function playerSpawn()
 
 	if (logged==1) then
 		job = tonumber(getElementData(source, "job"))
-		outputDebugString(tostring(job))
 		if (job==1) then -- TRUCKER
 			resetTruckerJob()
 			setTimer(displayTruckerJob, 1000, 1)

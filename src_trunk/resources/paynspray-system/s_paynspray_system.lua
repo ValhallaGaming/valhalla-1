@@ -168,18 +168,25 @@ function shapeHit(element, matchingDimension)
 			if (shapetype=="paynspray") then
 				local thePlayer = getVehicleOccupant(element)
 				
-				local money = getElementData(thePlayer, "money")
-				
-				local faction = getPlayerTeam(thePlayer)
-				local ftype = getElementData(faction, "type")
-				
-				if (money<250) and (ftype~=2  and ftype~=3 and ftype~=4) then
-					outputChatBox("You cannot afford to have your car worked on.", thePlayer, 255, 0, 0)
-				else
-					outputChatBox("Welcome to Pay 'n' Spray. Please wait while we work on your " .. getVehicleName(element) .. ".", thePlayer, 255, 194, 14)
-					setTimer(spraySoundEffect, 2000, 5, thePlayer, source)
-					setTimer(sprayEffect, 10000, 1, element, thePlayer, source)
-				end
+                if (thePlayer) then
+                    local money = getElementData(thePlayer, "money")
+    				
+    				local faction = getPlayerTeam(thePlayer)
+    				local ftype = getElementData(faction, "type")
+                    local free = false
+                    
+                    if (ftype~=2  and ftype~=3 and ftype~=4) then
+                        free = true
+                    end
+    				
+    				if ((money<250) and (not free)) then
+    					outputChatBox("You cannot afford to have your car worked on.", thePlayer, 255, 0, 0)
+    				else
+    					outputChatBox("Welcome to Pay 'n' Spray. Please wait while we work on your " .. getVehicleName(element) .. ".", thePlayer, 255, 194, 14)
+    					setTimer(spraySoundEffect, 2000, 5, thePlayer, source)
+    					setTimer(sprayEffect, 10000, 1, element, thePlayer, source, free)
+    				end
+                end
 			end
 		end
 	end
@@ -192,12 +199,12 @@ function spraySoundEffect(thePlayer, shape)
 	end
 end
 
-function sprayEffect(vehicle, thePlayer, shape)
+function sprayEffect(vehicle, thePlayer, shape, free)
 	if (isElementWithinColShape(thePlayer, shape)) then
 		local faction = getPlayerTeam(thePlayer)
 		local ftype = getElementData(faction, "type")
 			
-		if (ftype~=2) then
+		if ((ftype~=2) and (not free)) then
 			exports.global:takePlayerSafeMoney(thePlayer, 250)
 		end
 		

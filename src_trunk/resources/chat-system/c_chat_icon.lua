@@ -13,25 +13,27 @@ setElementData(getLocalPlayer(), "chatting", true, 0)
 function render()
 	local x, y, z = getElementPosition(getLocalPlayer())
 	for key, value in ipairs(getElementsByType("player")) do
-		if (value~=getLocalPlayer()) then
-			local chatting = getElementData(value, "chatting")
-			
-			if (chatting==1) then
-				local px, py, pz = getPedBonePosition(value, 6)
+		if (isElement(value)) then
+			if (value~=getLocalPlayer()) then
+				local chatting = getElementData(value, "chatting")
 				
-				local dist = getDistanceBetweenPoints3D(x, y, z, px, py, pz)
-				if (dist < 25) then
-					local reconning = getElementData(value, "reconx")
-					if (isLineOfSightClear(x, y, z, px, py, pz, true, false, false, false ) and isElementOnScreen(value)) and not (reconning) then
-						local screenX, screenY = getScreenFromWorldPosition(px, py, pz+0.5)
-						if (screenX and screenY) then
-							dist = dist / 5
+				if (chatting==1) then
+					local px, py, pz = getPedBonePosition(value, 6)
+					
+					local dist = getDistanceBetweenPoints3D(x, y, z, px, py, pz)
+					if (dist < 25) then
+						local reconning = getElementData(value, "reconx")
+						if (isLineOfSightClear(x, y, z, px, py, pz, true, false, false, false ) and isElementOnScreen(value)) and not (reconning) then
+							local screenX, screenY = getScreenFromWorldPosition(px, py, pz+0.5)
+							if (screenX and screenY) then
+								dist = dist / 5
+									
+								if (dist<1) then dist = 1 end
+								--if (dist>2) then dist = 2 end
+								local offset = 70 / dist
 								
-							if (dist<1) then dist = 1 end
-							--if (dist>2) then dist = 2 end
-							local offset = 70 / dist
-							
-							local draw = dxDrawImage(screenX, screenY, 60 / dist, 60 / dist, "chat.png")
+								local draw = dxDrawImage(screenX, screenY, 60 / dist, 60 / dist, "chat.png")
+							end
 						end
 					end
 				end

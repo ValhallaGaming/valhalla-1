@@ -11,7 +11,7 @@ end
 addEventHandler("onPlayerDamage", getRootElement(), startBleeding)
 
 function bleedPlayer(thePlayer, playerName)
-	if (getElementType(thePlayer)) then -- still logged in & playing
+	if (isElement(thePlayer)) then -- still logged in & playing
 		if (playerName==getPlayerName(thePlayer)) then -- make sure they havent changed character
 			local health = getElementHealth(thePlayer)
 			

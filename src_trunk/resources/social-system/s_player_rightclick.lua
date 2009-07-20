@@ -7,23 +7,25 @@ function retrievePlayerInfo(targetPlayer)
 		
 		local friends = { }
 		local count = 1
-				
-		for i=1, 100 do
-			local fid = gettok(sfriends, i, 59)
+		
+		if (sfriends) then
+			for i=1, 100 do
+				local fid = gettok(sfriends, i, 59)
+						
+				if (fid) then
+					local fresult = mysql_query(handler, "SELECT username, friendsmessage, yearday, year, country, os FROM accounts WHERE id='" .. fid .. "' LIMIT 1")
 					
-			if (fid) then
-				local fresult = mysql_query(handler, "SELECT username, friendsmessage, yearday, year, country, os FROM accounts WHERE id='" .. fid .. "' LIMIT 1")
-				
-				local aresult = mysql_query(handler, "SELECT id FROM achievements WHERE account='" .. fid .. "'")
-				local numachievements = mysql_num_rows(aresult)
-				mysql_free_result(aresult)
-				
-				friends[i] = tonumber(fid)
-			else
-				break
+					local aresult = mysql_query(handler, "SELECT id FROM achievements WHERE account='" .. fid .. "'")
+					local numachievements = mysql_num_rows(aresult)
+					mysql_free_result(aresult)
+					
+					friends[i] = tonumber(fid)
+				else
+					break
+				end
 			end
+			mysql_free_result(result)
 		end
-		mysql_free_result(result)
 		
 		local result = mysql_query(handler, "SELECT description, age, weight, height, skincolor FROM characters WHERE charactername='" .. getPlayerName(targetPlayer) .. "'")
 		local description = tostring(mysql_result(result, 1, 1))

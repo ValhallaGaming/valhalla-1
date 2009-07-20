@@ -18,7 +18,6 @@ routes[9] = { 635.9775390625, 1252.9892578125, 11.357774734497 }
 routes[10] = { 261.623046875, 1412.3564453125, 10.20871925354 }
 
 function resetTruckerJob()
-	outputChatBox("RESET!")
 	jobstate = 0
 	
 	if (isElement(marker)) then

@@ -45,17 +45,18 @@ function changeTyre( wheelNumber )
 		local money = getElementData(source, "money")
 		if(money<10)then
 			outputChatBox("You can't afford the parts to chnge this vehicle's tyres.", source, 255, 0, 0)
-			local wheel1, wheel2, wheel3, wheel4 = getVehicleWheelStates( veh )
 		else
+			local wheel1, wheel2, wheel3, wheel4 = getVehicleWheelStates( veh )
+
 			if (wheelNumber==1) then -- front left
 				outputDebugString("Tyre 1 changed.")
 				setVehicleWheelStates ( veh, 0, wheel2, wheel3, wheel4 )
 			elseif (wheelNumber==2) then -- back left
 				outputDebugString("Tyre 2 changed.")
-				setVehicleWheelStates ( veh, wheel1, 0, wheel3, wheel4 )
+				setVehicleWheelStates ( veh, wheel1, wheel2, 0, wheel4 )
 			elseif (wheelNumber==3) then -- front right
 				outputDebugString("Tyre 3 changed.")
-				setVehicleWheelStates ( veh, wheel1, wheel2, 0, wheel4 )
+				setVehicleWheelStates ( veh, wheel1, 0, wheel2, wheel4 )
 			elseif (wheelNumber==4) then -- back right
 				outputDebugString("Tyre 4 changed.")
 				setVehicleWheelStates ( veh, wheel1, wheel2, wheel3, 0 )			

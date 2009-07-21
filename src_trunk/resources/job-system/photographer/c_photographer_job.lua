@@ -27,7 +27,7 @@ function snapPicture(weapon, ammo, ammoInClip, hitX, hitY, hitZ, hitElement )
 				local onScreenPlayers = {}
 				local players = getElementsByType( "player" )
 				for theKey, thePlayer in ipairs(players) do			-- thePlayer ~= source
-					if (isElementOnScreen(thePlayer)) then
+					if (isElementOnScreen(thePlayer) == true ) then
 						table.insert(onScreenPlayers, thePlayer)	-- Identify everyone who is on the screen as the picture is taken.
 					end
 				end
@@ -40,34 +40,34 @@ function snapPicture(weapon, ammo, ammoInClip, hitX, hitY, hitZ, hitElement )
 						-- Player Checks --
 						-------------------
 						local skin = getElementModel(thePlayer)
-						if(beautifulPeople[skin]) then -- beautiful people (beach skins)
+						if(beautifulPeople[skin]) then
 							pictureValue=pictureValue+50
 						end
-						if(getPedWeapon(thePlayer)~=0)and(getPedTotalAmmo(thePlayer)~=0) then -- Armed player.
+						if(getPedWeapon(thePlayer)~=0)and(getPedTotalAmmo(thePlayer)~=0) then
 							pictureValue=pictureValue+25
-							if (cop[skin])then -- armed Cop
+							if (cop[skin])then
 								pictureValue=pictureValue+5
 							end
 						end
-						if(swat[skin])then -- SWAT officer
+						if(swat[skin])then
 							pictureValue=pictureValue+50
 						end
-						if(getPedControlState(thePlayer, "fire"))then -- Player is attacking.
+						if(getPedControlState(thePlayer, "fire"))then
 							pictureValue=pictureValue+50
 						end
-						if(isPedChoking(thePlayer))then -- Are they choking?
+						if(isPedChoking(thePlayer))then
 							pictureValue=pictureValue+50
 						end
-						if(isPedDoingGangDriveby(thePlayer))then -- if drivebying
+						if(isPedDoingGangDriveby(thePlayer))then
 							pictureValue=pictureValue+100
 						end
-						if(isPedHeadless(thePlayer))then -- if headless
+						if(isPedHeadless(thePlayer))then
 							pictureValue=pictureValue+200
 						end
-						if(isPedOnFire(thePlayer))then -- if on fire
+						if(isPedOnFire(thePlayer))then
 							pictureValue=pictureValue+250
 						end
-						if(isPlayerDead(thePlayer))then -- if dead
+						if(isPlayerDead(thePlayer))then
 							pictureValue=pictureValue+150
 						end
 						if (#onScreenPlayers>3)then
@@ -76,15 +76,15 @@ function snapPicture(weapon, ammo, ammoInClip, hitX, hitY, hitZ, hitElement )
 						--------------------
 						-- Vehicle checks --
 						--------------------
-						local vehicle = getPedOccupiedCar(thePlayer)
-						if(vehicle)then -- Are they in a vehicle?
-							if(flashCar[vehicle])then -- Sports cars.
+						local vehicle = getPedOccupiedVehicle(thePlayer)
+						if(vehicle)then
+							if(flashCar[vehicle])then
 								pictureValue=pictureValue+200
 							end
-							if(emergencyVehicle[vehicle])and(getVehicleSirensOn(vehicle)) then -- Emergency vehicle with sirens on.
+							if(emergencyVehicle[vehicle])and(getVehicleSirensOn(vehicle)) then
 								pictureValue=pictureValue+100
 							end
-							if not (isVehicleOnGround(vehicle))then -- Vehicle in the air / stunts.
+							if not (isVehicleOnGround(vehicle))then
 								pictureValue=pictureValue+200
 							end
 						end
@@ -109,9 +109,9 @@ function showValue()
 end
 addCommandHandler("totalvalue", showValue, false, false)
 
--- /submitpics to sell your collection of pictures to the news company.
-function sellPhotos()
-	local theTeam = getPlayerTeam(getLocalPlayer())
+-- /sellpics to sell your collection of pictures to the news company.
+function sellPhotos(thePlayer, commandName)
+	local theTeam = getPlayerTeam(thePlayer)
 	local factionType = getElementData(theTeam, "type")
 			
 	if (factionType==6) then
@@ -125,11 +125,11 @@ function sellPhotos()
 			
 			outputChatBox("#FF9933You can sell your photographs at the #3399FFSan Andreas Network Tower #FF9933((/sellpics at the front desk)).", 255, 255, 255, true)
 		else
-			if (isElementWithinColShape(getLocalPlayer(), photoSubmitDeskColSphere))then
+			if (isElementWithinColShape(thePlayer, photoSubmitDeskColSphere))then
 				if(collectionValue==0)then
 					outputChatBox("None of the pictures you have are worth anything.", 255, 0, 0, true)
 				else
-					triggerServerEvent("submitCollection", getLocalPlayer(), collectionValue)
+					triggerServerEvent("submitCollection", thePlayer, collectionValue)
 					collectionValue = 0
 				end
 			else

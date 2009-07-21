@@ -195,16 +195,18 @@ function endOfTheLine()
 end
 
 function enterBus ( thePlayer, seat, jacked )
-	local vehID = getElementModel (source)
-	if(bus[vehID])then
-		if(seat~=0)then
-			local money = getElementData(getLocalPlayer(),"money")
-			if(money<2)then
-				triggerServerEvent("removePlayerFromBus", getLocalPlayer(), thePlayer)
-				outputChatBox("You can't afford the $2 bus fare.", 255, 0, 0)
-			else
-				triggerServerEvent("payBusFare", getLocalPlayer(), thePlayer)
-				outputChatBox("You have paid $2 to ride the bus")
+	if(thePlayer == getLocalPlayer())then
+		local vehID = getElementModel (source)
+		if(bus[vehID])then
+			if(seat~=0)then
+				local money = getElementData(getLocalPlayer(),"money")
+				if(money<2)then
+					triggerServerEvent("removePlayerFromBus", getLocalPlayer(), thePlayer)
+					outputChatBox("You can't afford the $2 bus fare.", 255, 0, 0)
+				else
+					triggerServerEvent("payBusFare", getLocalPlayer(), thePlayer)
+					outputChatBox("You have paid $2 to ride the bus", 0, 255, 0)
+				end
 			end
 		end
 	end

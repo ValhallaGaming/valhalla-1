@@ -29,8 +29,8 @@ function castLine()
 						if (totalCatch >= 2000) then
 							outputChatBox("#FF9933The boat can't hold any more fish. #FF66CCSell#FF9933 the fish you have caught before continuing.", 255, 104, 91, true)
 						else
-							--local biteTimer = math.random(3000,300000) -- 30 seconds to 5 minutes for a bite.
-							catchTimer = setTimer( fishOnLine, 5000, 1 ) -- A fish will bite within 1 and 5 minutes.
+							local biteTimer = math.random(3000,300000) -- 30 seconds to 5 minutes for a bite.
+							catchTimer = setTimer( fishOnLine, biteTimer, 1 ) -- A fish will bite within 1 and 5 minutes.
 							triggerServerEvent("castOutput", getLocalPlayer())	
 							if not (fishingBlip) then -- If the /sellfish marker isnt already being shown...
 								fishingBlip = createBlip( 2243.7339, 578.905, 6.78, 0, 2, 255, 0, 255, 255 )
@@ -163,7 +163,7 @@ end
 addCommandHandler("totalcatch", currentCatch, false, false)
 
 -- sellfish
-function unloadCatch()
+function unloadCatch(thePlayer, commandName)
 	if (isElementWithinColShape(getLocalPlayer(), fishingCol)) then
 		if (totalCatch == 0) then
 			outputChatBox("You need to catch some fish to sell first.", 255, 0, 0)

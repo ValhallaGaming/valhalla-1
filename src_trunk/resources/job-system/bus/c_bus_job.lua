@@ -47,6 +47,13 @@ local bus = { [431]=true, [437]=true }
 
 local blip
 
+function resetBusJob()
+	if (isElement(blip)) then
+		destroyElement(blip)
+		removeEventHandler("onClientVehicleEnter", getRootElement(), startBusJob)
+	end
+end
+
 function displayBusJob()
 	blip = createBlip(1902.5610351563, 2319.673828125, 11.024569511414, 0, 4, 255, 127, 255)
 	outputChatBox("#FF9933Approach the #FF66CCblip#FF9933 on your radar and enter the bus/coach. Use /startbus to start a bus route.", 255, 194, 15, true)
@@ -148,7 +155,7 @@ function waitAtStop(thePlayer)
 		destroyElement(busMarker)
 		busBlip = nil
 		busMarker = nil
-		busStopTimer = setTimer(updateBusCheckpoint, 5000, 1)
+		busStopTimer = setTimer(updateBusCheckpoint, 5000, 1, thePlayer)
 		outputChatBox("#FF9933Wait at the bus stop for a moment.", 255, 0, 0, true )
 		
 		local m_number = getElementData(getLocalPlayer(), "busRoute.marker")

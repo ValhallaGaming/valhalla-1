@@ -4,6 +4,8 @@ setPedRotation(ped, 271.4609375)
 setElementDimension(ped, 125)
 setElementInterior(ped, 3)
 
+local localPlayer = getLocalPlayer()
+
 function showLicenseWindow()
 	local width, height = 300, 400
 	local scrWidth, scrHeight = guiGetScreenSize()
@@ -540,94 +542,98 @@ function startDrivingTest()
 	end
 end
 
-function UpdateCheckpoints()
-	local vehicle = getPedOccupiedVehicle(getLocalPlayer())
-	local id = getElementModel(vehicle)
-	if not (testVehicle[id]) then
-		outputChatBox("You must be in a DMV test car when passing through the check points.", 255, 0, 0) -- Wrong car type.
-	else
-		destroyElement(blip)
-		destroyElement(marker)
-		blip = nil
-		marker = nil
-			
-		local m_number = getElementData(getLocalPlayer(), "drivingTest.marker")
-		local max_number = getElementData(getLocalPlayer(), "drivingTest.checkmarkers")
-		
-		if (tonumber(max_number-1) == tonumber(m_number)) then -- if the next checkpoint is the final checkpoint.
-			
-			outputChatBox("#FF9933Pull over at the #FF66CCside of the road #FF9933ahead to complete the test.", 255, 194, 14, true)
-			
-			local newnumber = m_number+1
-			setElementData(getLocalPlayer(), "drivingTest.marker", newnumber)
-				
-			local x2, y2, z2 = nil
-			x2 = testRoute[newnumber][1]
-			y2 = testRoute[newnumber][2]
-			z2 = testRoute[newnumber][3]
-			
-			marker = createMarker( x2, y2, z2, "checkpoint", 4, 255, 0, 255, 150)
-			blip = createBlip( x2, y2, z2, 0, 2, 255, 0, 255, 255)
-			
-			
-			addEventHandler("onClientMarkerHit", marker, EndTest)
-		
-		else
-		
-			local newnumber = m_number+1
-			setElementData(getLocalPlayer(), "drivingTest.marker", newnumber)
-					
-			local x2, y2, z2 = nil
-			x2 = testRoute[newnumber][1]
-			y2 = testRoute[newnumber][2]
-			z2 = testRoute[newnumber][3]
-					
-			marker = createMarker( x2, y2, z2, "checkpoint", 4, 255, 0, 255, 150)
-			blip = createBlip( x2, y2, z2, 0, 2, 255, 0, 255, 255)
-			
-			addEventHandler("onClientMarkerHit", marker, UpdateCheckpoints)
-		
-		end
-	end
+function UpdateCheckpoints(element)
+    if (element == localPlayer) then
+    	local vehicle = getPedOccupiedVehicle(getLocalPlayer())
+    	local id = getElementModel(vehicle)
+    	if not (testVehicle[id]) then
+    		outputChatBox("You must be in a DMV test car when passing through the check points.", 255, 0, 0) -- Wrong car type.
+    	else
+    		destroyElement(blip)
+    		destroyElement(marker)
+    		blip = nil
+    		marker = nil
+    			
+    		local m_number = getElementData(getLocalPlayer(), "drivingTest.marker")
+    		local max_number = getElementData(getLocalPlayer(), "drivingTest.checkmarkers")
+    		
+    		if (tonumber(max_number-1) == tonumber(m_number)) then -- if the next checkpoint is the final checkpoint.
+    			
+    			outputChatBox("#FF9933Pull over at the #FF66CCside of the road #FF9933ahead to complete the test.", 255, 194, 14, true)
+    			
+    			local newnumber = m_number+1
+    			setElementData(getLocalPlayer(), "drivingTest.marker", newnumber)
+    				
+    			local x2, y2, z2 = nil
+    			x2 = testRoute[newnumber][1]
+    			y2 = testRoute[newnumber][2]
+    			z2 = testRoute[newnumber][3]
+    			
+    			marker = createMarker( x2, y2, z2, "checkpoint", 4, 255, 0, 255, 150)
+    			blip = createBlip( x2, y2, z2, 0, 2, 255, 0, 255, 255)
+    			
+    			
+    			addEventHandler("onClientMarkerHit", marker, EndTest)
+    		
+    		else
+    		
+    			local newnumber = m_number+1
+    			setElementData(getLocalPlayer(), "drivingTest.marker", newnumber)
+    					
+    			local x2, y2, z2 = nil
+    			x2 = testRoute[newnumber][1]
+    			y2 = testRoute[newnumber][2]
+    			z2 = testRoute[newnumber][3]
+    					
+    			marker = createMarker( x2, y2, z2, "checkpoint", 4, 255, 0, 255, 150)
+    			blip = createBlip( x2, y2, z2, 0, 2, 255, 0, 255, 255)
+    			
+    			addEventHandler("onClientMarkerHit", marker, UpdateCheckpoints)
+    		
+    		end
+    	end
+    end
 end
 
-function EndTest()
-	local vehicle = getPedOccupiedVehicle(getLocalPlayer())
-	local id = getElementModel(vehicle)
-	if not (testVehicle[id]) then
-		outputChatBox("You must be in a DMV test car when passing through the check points.", 255, 0, 0)
-	else
-		local vehicleHealth = getElementHealth ( vehicle )
-		if (vehicleHealth >= 800) then
-			local playerMoney = getElementData(getLocalPlayer(), "money")
-			if (playerMoney < 250 ) then
-				outputChatBox("You can't afford the $250 processing fee.", 255, 0, 0)
-			else
-				----------
-				-- PASS --
-				----------
-				outputChatBox("After inspecting the vehicle we can see no damage.", 255, 194, 14)
-				triggerServerEvent("acceptLicense", getLocalPlayer(), 1, 250)
-			end
-		else
-			----------
-			-- Fail --
-			----------
-			outputChatBox("After inspecting the vehicle we can see that it's damage.", 255, 194, 14)
-			outputChatBox("You have failed the practical driving test.", 255, 0, 0)
+function EndTest(element)
+    if (element == localPlayer) then
+    	local vehicle = getPedOccupiedVehicle(getLocalPlayer())
+    	local id = getElementModel(vehicle)
+    	if not (testVehicle[id]) then
+    		outputChatBox("You must be in a DMV test car when passing through the check points.", 255, 0, 0)
+    	else
+    		local vehicleHealth = getElementHealth ( vehicle )
+    		if (vehicleHealth >= 800) then
+    			local playerMoney = getElementData(getLocalPlayer(), "money")
+    			if (playerMoney < 250 ) then
+    				outputChatBox("You can't afford the $250 processing fee.", 255, 0, 0)
+    			else
+    				----------
+    				-- PASS --
+    				----------
+    				outputChatBox("After inspecting the vehicle we can see no damage.", 255, 194, 14)
+    				triggerServerEvent("acceptLicense", getLocalPlayer(), 1, 250)
+    			end
+    		else
+    			----------
+    			-- Fail --
+    			----------
+    			outputChatBox("After inspecting the vehicle we can see that it's damage.", 255, 194, 14)
+    			outputChatBox("You have failed the practical driving test.", 255, 0, 0)
 
-		end
-		
-		destroyElement(blip)
-		destroyElement(marker)
-		blip = nil
-		marker = nil
-				
-		removeElementData(thePlayer, "drivingTest.vehicle")
-		
-		removeElementData(thePlayer, "drivingTest.vehicle")	-- cleanup data
-		removeElementData ( thePlayer, "drivingTest.marker" )
-		removeElementData ( thePlayer, "drivingTest.checkmarkers" )
-	end
+    		end
+    		
+    		destroyElement(blip)
+    		destroyElement(marker)
+    		blip = nil
+    		marker = nil
+    				
+    		removeElementData(thePlayer, "drivingTest.vehicle")
+    		
+    		removeElementData(thePlayer, "drivingTest.vehicle")	-- cleanup data
+    		removeElementData ( thePlayer, "drivingTest.marker" )
+    		removeElementData ( thePlayer, "drivingTest.checkmarkers" )
+    	end
+    end
 end
  

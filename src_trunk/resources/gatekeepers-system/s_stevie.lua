@@ -453,7 +453,7 @@ locations[5] = { 1754.33, 682.533, 9.914 }
 function acceptDeal_S( dealNumber )
 	
 	if(dealNumber==1)then -- work out the cost of the selected deal.
-		cost = 10000
+		cost = 7500
 	elseif(dealNumber==2)then
 		cost = 1000
 	elseif(dealNumber==3)then
@@ -566,9 +566,9 @@ addEventHandler( "acceptSteviePhoneDeal", getRootElement(), acceptDeal_S )
 
 -- { isWeapon, item/weapon ID, Value/Ammo }
 deal1={}
-deal1[1] = { true, 22, 100 }	-- colt
-deal1[2] = { true, 33, 30 }		-- rifle
+deal1[1] = { true, 23, 100 }	-- silenced pistol
 deal1[3] = { true, 25, 30 }		-- shotgun
+deal1[2] = { true, 28, 250 }	-- Uzi
 deal1[4] = { true, 32, 250 }	-- tec 9
 
 deal2={}

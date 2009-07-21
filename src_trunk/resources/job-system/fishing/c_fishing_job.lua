@@ -57,65 +57,65 @@ function fishOnLine()
 	if ( x < 3000) and ( y < 3000) then
 		outputChatBox("You should have stayed out at sea if you wanted to fish.", 255, 0, 0)
 	else
-		triggerServerEvent("fishOnLine", getLocalPlayer()) -- outputs /me
-		
-		--  the progress bar
-		count = 0
-		state = 0
-				
-		if (pFish) then
-			destroyElement(pFish)
-		end
+	triggerServerEvent("fishOnLine", getLocalPlayer()) -- outputs /me
+	
+	--  the progress bar
+	count = 0
+	state = 0
 			
-		pFish = guiCreateProgressBar(0.425, 0.75, 0.2, 0.035, true)
-		outputChatBox("You got a bite! ((Tap - and = to reel in the catch.))", 0, 255, 0)
-		bindKey("-", "down", reelItIn)
-				
-		-- create two timers
-		resetTimer = setTimer(resetProgress, 2750, 0)
-		gotAwayTimer = setTimer(gotAway, 60000, 1)
+	if (pFish) then
+		destroyElement(pFish)
+	end
 		
-		if(x>=3950) and (x<=4450) and (y>= 1220) and (y<=1750) or (x>=4250) and (x<=5000) and (y>= -103) and (y<=500) then
-			fishSize = math.random(100, 200)
+	pFish = guiCreateProgressBar(0.425, 0.75, 0.2, 0.035, true)
+	outputChatBox("You got a bite! ((Tap - and = to reel in the catch.))", 0, 255, 0)
+	bindKey("-", "down", "reelIn", "")
+			
+	-- create two timers
+	resetTimer = setTimer(resetProgress, 2750, 0)
+	gotAwayTimer = setTimer(gotAway, 60000, 1)
+		
+	if(x>=3950) and (x<=4450) and (y>= 1220) and (y<=1750) or (x>=4250) and (x<=5000) and (y>= -103) and (y<=500) then
+		fishSize = math.random(100, 200)
+	else
+		if ( y > 4500) then
+			fishSize = math.random(75, 111)
+		elseif (x > 5500) then
+			fishSize = math.random(75, 103)
+		elseif (x > 4500) then
+			fishSize = math.random(54, 83)
+		elseif (x > 3500) then
+			fishSize = math.random(22,76)
 		else
-			if ( y > 4500) then
-				fishSize = math.random(75, 111)
-			elseif (x > 5500) then
-				fishSize = math.random(75, 103)
-			elseif (x > 4500) then
-				fishSize = math.random(54, 83)
-			elseif (x > 3500) then
-				fishSize = math.random(22,76)
-			else
-				fishSize = math.random(1, 56)
-			end
+			fishSize = math.random(1, 56)
 		end
-		
-		local lineSnap = math.random(1,10) -- Chances of line snapping 1/10. Fish over 100lbs are twice as likely to snap your line.
-		if (fishSize>=100)then
-			if (lineSnap > 9) then
-				outputChatBox("The monster of a fish has broken your line. You need to buy a new fishing rod to continue fishing.", 255, 0, 0)
-				triggerServerEvent("lineSnap",getLocalPlayer())
-				killTimer (resetTimer)
-				killTimer (gotAwayTimer)
-				destroyElement(pFish)
-				pFish = nil
-				unbindKey("-", "down", reelItIn)
-				unbindKey("=", "down", reelItIn)
-				fishSize = 0
-			end
+	end
+	
+	local lineSnap = math.random(1,10) -- Chances of line snapping 1/10. Fish over 100lbs are twice as likely to snap your line.
+	if (fishSize>=100)then
+		if (lineSnap > 9) then
+			outputChatBox("The monster of a fish has broken your line. You need to buy a new fishing rod to continue fishing.", 255, 0, 0)
+			triggerServerEvent("lineSnap",getLocalPlayer())
+			killTimer (resetTimer)
+			killTimer (gotAwayTimer)
+			destroyElement(pFish)
+			pFish = nil
+			unbindKey("-", "down", "reelIn", "")
+			unbindKey("=", "down", "reelIn", "")
+			fishSize = 0
 		end
+	end
 	end
 end
 
 function reelItIn()
 	if (state==0) then
-		bindKey("=", "down", reelItIn)
-		unbindKey("-", "down", reelItIn)
+		bindKey("=", "down", "reelIn", "")
+		unbindKey("-", "down", "reelIn", "")
 		state = 1
 	elseif (state==1) then
-		bindKey("-", "down", reelItIn)
-		unbindKey("=", "down", reelItIn)
+		bindKey("-", "down", "reelIn", "")
+		unbindKey("=", "down", "reelIn", "")
 		state = 0
 	end
 	
@@ -127,14 +127,15 @@ function reelItIn()
 		killTimer (gotAwayTimer)
 		destroyElement(pFish)
 		pFish = nil
-		unbindKey("-", "down", reelItIn)
-		unbindKey("=", "down", reelItIn)
+		unbindKey("-", "down", "reelIn", "")
+		unbindKey("=", "down", "reelIn", "")
 
 		totalCatch = math.floor(totalCatch + fishSize)
 		outputChatBox("You have caught "..totalCatch.."lbs of fish so far.", 255, 194, 14)
 		triggerServerEvent("catchFish", getLocalPlayer(), fishSize)
 	end
 end
+addCommandHandler ("reelIn", reelItIn)
 
 function resetProgress()
 	if(count>=0)then
@@ -150,8 +151,8 @@ function gotAway()
 	killTimer (resetTimer)
 	destroyElement(pFish)
 	pFish = nil
-	unbindKey("-", "down", reelItIn)
-	unbindKey("=", "down", reelItIn)
+	unbindKey("-", "down", "reelIn", "")
+	unbindKey("=", "down", "reelIn", "")
 	outputChatBox("#FF9933The fish got away.", 255, 0, 0, true)
 	fishSize = 0
 end

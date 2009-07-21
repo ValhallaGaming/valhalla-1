@@ -92,39 +92,20 @@ function startBusJob(thePlayer)
 end
 addCommandHandler("startbus", startBusJob, false, false)
 
-function updateBusCheckpoint()
-	local vehicle = getPedOccupiedVehicle(getLocalPlayer())
-	local id = getElementModel(vehicle)
-	if not (bus[id]) then
-		outputChatBox("#FF9933You must be in a bus or coach to drive the bus route.", 255, 0, 0, true ) -- Wrong car type.
-	else
-		
-		-- Find out which marker is next.
-		local m_number = getElementData(getLocalPlayer(), "busRoute.marker")
-		local max_number = getElementData(getLocalPlayer(), "busRoute.totalmarkers")
-		local newnumber = m_number+1
-		
-		if (tonumber(max_number-1) == tonumber(m_number)) then -- if the next checkpoint is the final checkpoint.			
-			if(busBlip)then
-				-- Remove the old marker.
-				destroyElement(busBlip)
-				destroyElement(busMarker)
-				busBlip = nil
-				busMarker = nil
-			end
-			local x, y, z = nil
-			x = busRoute[newnumber][1]
-			y = busRoute[newnumber][2]
-			z = busRoute[newnumber][3]
+function updateBusCheckpoint(thePlayer)
+	if(thePlayer==getLocalPlayer())then
+		local vehicle = getPedOccupiedVehicle(getLocalPlayer())
+		local id = getElementModel(vehicle)
+		if not (bus[id]) then
+			outputChatBox("#FF9933You must be in a bus or coach to drive the bus route.", 255, 0, 0, true ) -- Wrong car type.
+		else
 			
-			busMarker = createMarker( x, y, z, "checkpoint", 4, 255, 200, 0, 150) -- Red marker
-			busBlip = createBlip( x, y, z, 0, 2, 255, 200, 0, 255) -- Red blip
+			-- Find out which marker is next.
+			local m_number = getElementData(getLocalPlayer(), "busRoute.marker")
+			local max_number = getElementData(getLocalPlayer(), "busRoute.totalmarkers")
+			local newnumber = m_number+1
 			
-			addEventHandler("onClientMarkerHit", busMarker, endOfTheLine)
-			
-		else			
-			if(busRoute[newnumber][4]==true)then -- If it is a stop.
-			
+			if (tonumber(max_number-1) == tonumber(m_number)) then -- if the next checkpoint is the final checkpoint.			
 				if(busBlip)then
 					-- Remove the old marker.
 					destroyElement(busBlip)
@@ -132,42 +113,63 @@ function updateBusCheckpoint()
 					busBlip = nil
 					busMarker = nil
 				end
+				local x, y, z = nil
+				x = busRoute[newnumber][1]
+				y = busRoute[newnumber][2]
+				z = busRoute[newnumber][3]
+				
+				busMarker = createMarker( x, y, z, "checkpoint", 4, 255, 200, 0, 150) -- Red marker
+				busBlip = createBlip( x, y, z, 0, 2, 255, 200, 0, 255) -- Red blip
+				
+				addEventHandler("onClientMarkerHit", busMarker, endOfTheLine)
+				
+			else			
+				if(busRoute[newnumber][4]==true)then -- If it is a stop.
+				
+					if(busBlip)then
+						-- Remove the old marker.
+						destroyElement(busBlip)
+						destroyElement(busMarker)
+						busBlip = nil
+						busMarker = nil
+					end
+						
+					local x, y, z = nil
+					x = busRoute[newnumber][1]
+					y = busRoute[newnumber][2]
+					z = busRoute[newnumber][3]
 					
-				local x, y, z = nil
-				x = busRoute[newnumber][1]
-				y = busRoute[newnumber][2]
-				z = busRoute[newnumber][3]
+					busMarker = createMarker( x, y, z, "checkpoint", 4, 255, 0, 0, 150) -- Red marker
+					busBlip = createBlip( x, y, z, 0, 2, 255, 0, 0, 255) -- Red blip
+					
+					addEventHandler("onClientMarkerHit", busMarker, waitAtStop)
+					
+				else -- it is just a route.
 				
-				busMarker = createMarker( x, y, z, "checkpoint", 4, 255, 0, 0, 150) -- Red marker
-				busBlip = createBlip( x, y, z, 0, 2, 255, 0, 0, 255) -- Red blip
-				
-				addEventHandler("onClientMarkerHit", busMarker, waitAtStop)
-				
-			else -- it is just a route.
-			
-				if(busBlip)then
-					-- Remove the old marker.
-					destroyElement(busBlip)
-					destroyElement(busMarker)
-					busBlip = nil
-					busMarker = nil
+					if(busBlip)then
+						-- Remove the old marker.
+						destroyElement(busBlip)
+						destroyElement(busMarker)
+						busBlip = nil
+						busMarker = nil
+					end
+					local x, y, z = nil
+					x = busRoute[newnumber][1]
+					y = busRoute[newnumber][2]
+					z = busRoute[newnumber][3]
+					
+					busMarker = createMarker( x, y, z, "checkpoint", 4, 255, 200, 0, 150) -- yellow marker
+					busBlip = createBlip( x, y, z, 0, 2, 255, 200, 0, 255) -- yellow blip
+					
+					setElementData(getLocalPlayer(), "busRoute.marker", newnumber)
+					
+					addEventHandler("onClientMarkerHit", busMarker, updateBusCheckpoint)
 				end
-				local x, y, z = nil
-				x = busRoute[newnumber][1]
-				y = busRoute[newnumber][2]
-				z = busRoute[newnumber][3]
-				
-				busMarker = createMarker( x, y, z, "checkpoint", 4, 255, 200, 0, 150) -- yellow marker
-				busBlip = createBlip( x, y, z, 0, 2, 255, 200, 0, 255) -- yellow blip
 				
 				setElementData(getLocalPlayer(), "busRoute.marker", newnumber)
 				
-				addEventHandler("onClientMarkerHit", busMarker, updateBusCheckpoint)
-			end
-			
-			setElementData(getLocalPlayer(), "busRoute.marker", newnumber)
-			
-		end		
+			end		
+		end
 	end
 end
 

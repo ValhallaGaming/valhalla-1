@@ -31,6 +31,20 @@ function resetTruckerJob()
 	if (isElement(blip)) then
 		destroyElement(blip)
 	end
+    
+    if (isElement(endmarker)) then
+		destroyElement(endmarker)
+	end
+	
+	if (isElement(endcolshape)) then
+		destroyElement(endcolshape)
+	end
+	
+	if (isElement(endblip)) then
+		destroyElement(endblip)
+	end
+    
+    endblip = nil
 end
 
 function displayTruckerJob()
@@ -143,6 +157,7 @@ function endTruckJob(theElement)
 				destroyElement(endblip)
 				destroyElement(endmarker)
 				destroyElement(endcolshape)
+                endblip = nil
 				routescompleted = 0
 				setElementData(localPlayer, "job", true, 0)
 			else

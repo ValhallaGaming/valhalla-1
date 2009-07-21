@@ -1,7 +1,7 @@
 function bindKeys(res)
 	if (res==getThisResource()) then
-		bindKey("vehicle_look_left", "down", "indicator_left")
-		bindKey("vehicle_look_right", "down", "indicator_right")
+		bindKey("vehicle_look_left", "down", "indicator_left", "")
+		bindKey("vehicle_look_right", "down", "indicator_right", "")
 	end
 end
 addEventHandler("onClientResourceStart", getRootElement(), bindKeys)

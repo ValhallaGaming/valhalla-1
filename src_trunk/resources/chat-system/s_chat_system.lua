@@ -936,7 +936,7 @@ function payPlayer(thePlayer, commandName, targetPlayerNick, amount)
 				local distance = getDistanceBetweenPoints3D(x, y, z, tx, ty, tz)
 				
 				if (distance<=10) then
-					amount = tonumber(amount)
+					amount = math.abs(tonumber(amount))
 					
 					local money = getElementData(thePlayer, "money")
 					local hoursplayed = getElementData(thePlayer, "hoursplayed")

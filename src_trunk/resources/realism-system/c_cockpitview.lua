@@ -24,7 +24,7 @@ function toggleCockpitView ()
     end        
 end
 
-addCommandHandler("cview", toggleCockpitView)
+--addCommandHandler("cview", toggleCockpitView)
 
 function vehicleExit()
     if (source == localPlayer) then

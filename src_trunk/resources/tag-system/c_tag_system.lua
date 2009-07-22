@@ -95,8 +95,15 @@ function setTag(commandName, newTag)
 	else
         local newTag = tonumber(newTag)
 		if (newTag>0) and (newTag<9) then
-			setElementData(getLocalPlayer(), "tag", true, newTag)
-			outputChatBox("Tag changed to #" .. newTag .. ".", 0, 255, 0)
+			local theTeam = getPlayerTeam(getLocalPlayer())
+			local teamName = getTeamName(theTeam)
+			
+			if (teamName~="Tatum Creek Crips") and (newTag==2) then
+				outputChatBox("You are not a member of Tatum Creek Crips", 255, 0, 0)
+			else
+				setElementData(getLocalPlayer(), "tag", true, newTag)
+				outputChatBox("Tag changed to #" .. newTag .. ".", 0, 255, 0)
+			end
 		else
 			outputChatBox("Invalid value, please enter a value between 1 and 8.", 255, 0, 0)
 		end

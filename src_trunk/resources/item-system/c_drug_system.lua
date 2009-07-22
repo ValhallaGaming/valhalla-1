@@ -245,15 +245,19 @@ function doDrug5Effect()
 		weather = getWeather()
 		setTimer(setWeather, 100, 1, 9)
 		drug5timer = setTimer(resetDrug5Effect, 300000, 1)
+		addEventHandler("onClientVehicleEnter", getRootElement(), resetDrug5Effect)
 		setGameSpeed(5)
 	end
 end
 
-function resetDrug5Effect()
-	drug5effect = false
-	setGameSpeed(1)
-	resetSkyGradient()
-	setTimer(setWeather, 100, 1, weather)
+function resetDrug5Effect(thePlayer)
+	if (thePlayer and thePlayer==getLocalPlayer()) or not (thePlayer) then
+		drug5effect = false
+		setGameSpeed(1)
+		resetSkyGradient()
+		setTimer(setWeather, 100, 1, weather)
+		removeEventHandler("onClientVehicleEnter", getRootElement(), resetDrug5Effect)
+	end
 end
 
 -- DRUG 6 EFFECT

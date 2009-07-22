@@ -204,50 +204,43 @@ function getItemsForSale(shop_type, race)
 	if(shop_type == 1) then
 		
 		-- General Items
-		item[1] = {"Camera", "A small black analogue camera.", "75", 43, 25,1,true, 30}
-		item[2] = {"Flowers", "A bouquet of lovely flowers.", "5", 14, 1,1, true,2}
-		item[3] = {"Phonebook", "A large phonebook of everyones phone numbers.", "30", 7, 1,1,false,20}
-		item[4] = {"Cellphone", "A stylish, slim cell phone.", "75", 2, 1,1,false,50}
-		item[5] = {"Radio", "A black radio.", "50", 6, 1,1,false,30}
-		item[6] = {"Dice", "A black dice with white dots, perfect for gambling.", "2", 10, 1,1,false,1}
-		item[7] = {"Golf Club", "Perfect golf club for hitting that hole-in-one.", "60", 2, 1,1,true,30}
-		item[8] = {"Knife", "You're only going to use this in the kitchen, right?", "50", 4,  1,1,true,40}
-		item[9] = {"Baseball Bat", "Hit a home run with this.", "60", 5, 1,1,true,40}
-		item[10] = {"Shovel", "Perfect tool to dig a hole.", "40", 6, 1,1,true,20}
-		item[11] = {"Pool Cue", "For that game of pub pool.", "35", 7, 1,1,true,15}
-		item[12] = {"Cane", "A stick has never been so classy.", "65", 15, 1,1,true,35}
-		item[13] = {"Fire Extinguisher", "There is never one of these around when there is a fire", "50", 42, 500, 1,true,25}
-		item[14] = {"Spray Can", "Hey, you better not tag with this punk!", "50", 41, 500, 1,true,35}
-		item[17] = {"Watch", "Telling the time was never so sexy!", "25", 17, 1, 1,false,10}
-		item[18] = {"City Guide", "A small city guide booklet.", "15", 18, 1,1,false,7}
-		item[19] = {"MP3 Player", "A white, sleek looking MP3 Player. The brand reads EyePod.", "120", 19, 1,1,false,7}
-		item[20] = {"Chemistry Set", "A small chemistry set.", "2000", 44, 1,1,false,15}
-		item[21] = {"Rope", "A long rope.", "15", 46, 1,1,false,2}
-		item[22] = {"Backpack", "A reasonably sized backpack.", "30", 48, 1,1,false,2}
-		item[23] = {"Fishing Rod", "A 7 foot carbon steel fishing rod.", "300", 49, 1,1,false, 175}
-		item[24] = {"Mask", "A comical mask.", "20", 56, 1, 1, false, 5}
-		item[25] = {"Fuel Can", "A small metal fuel canister.", "35", 57, 1, 1, false, 5}
+		item[1] = {"Flowers", "A bouquet of lovely flowers.", "5", 14, 1,1, true,2}
+		item[2] = {"Phonebook", "A large phonebook of everyones phone numbers.", "30", 7, 1,1,false,20}
+		item[3] = {"Dice", "A black dice with white dots, perfect for gambling.", "2", 10, 1,1,false,1}
+		item[4] = {"Golf Club", "Perfect golf club for hitting that hole-in-one.", "60", 2, 1,1,true,30}
+		item[5] = {"Knife", "You're only going to use this in the kitchen, right?", "50", 4,  1,1,true,40}
+		item[6] = {"Baseball Bat", "Hit a home run with this.", "60", 5, 1,1,true,40}
+		item[7] = {"Shovel", "Perfect tool to dig a hole.", "40", 6, 1,1,true,20}
+		item[8] = {"Pool Cue", "For that game of pub pool.", "35", 7, 1,1,true,15}
+		item[9] = {"Cane", "A stick has never been so classy.", "65", 15, 1,1,true,35}
+		item[10] = {"Fire Extinguisher", "There is never one of these around when there is a fire", "50", 42, 500, 1,true,25}
+		item[11] = {"Spray Can", "Hey, you better not tag with this punk!", "50", 41, 500, 1,true,35}
+		item[12] = {"City Guide", "A small city guide booklet.", "15", 18, 1,1,false,7}
+		item[13] = {"Rope", "A long rope.", "15", 46, 1,1,false,2}
+		item[14] = {"Backpack", "A reasonably sized backpack.", "30", 48, 1,1,false,2}
+		item[15] = {"Fishing Rod", "A 7 foot carbon steel fishing rod.", "300", 49, 1,1,false, 175}
+		item[16] = {"Mask", "A comical mask.", "20", 56, 1, 1, false, 5}
+		item[17] = {"Fuel Can", "A small metal fuel canister.", "35", 57, 1, 1, false, 5}
 
 		
 
 
 		-- Consumable
-		item[15] = {"Sandwich", "A yummy sandwich with cheese.", "8", 8, 1,2,false,4}
-		item[16] = {"Softdrink", "A can of coca cola.", "7", 9, 1,2,false,3}
+		item[17] = {"Sandwich", "A yummy sandwich with cheese.", "8", 8, 1,2,false,4}
+		item[18] = {"Softdrink", "A can of coca cola.", "7", 9, 1,2,false,3}
 		
 	-- gun shop
 	elseif(shop_type == 2) then
 	
 		-- guns --
 		item[1] = {"Brass Knuckles","A pair of brass knuckles, ouch.", "100", 1, 1, 1,true,50}
-		item[2] = {"Katana", "Your favourite Japanese sword.", "200", 8, 1, 1,true,100}
-		item[3] = {"9mm Pistol", "A silver, 9mm handgun, comes with 100 ammo.", "250",  22, 100, 1,true,200}
-		item[4] = {"Shotgun", "A silver shotgun - comes with 30 ammo.", "450", 25, 30, 1,true,400}
+		item[2] = {"9mm Pistol", "A silver, 9mm handgun, comes with 100 ammo.", "250",  22, 100, 1,true,200}
+		item[3] = {"Shotgun", "A silver shotgun - comes with 30 ammo.", "450", 25, 30, 1,true,400}
 		--item[5] = {"Uzi", "A small micro-uzi - comes with 250 ammo.", "450", 28, 250, 1,true,190}
 		--item[6] = {"Tec-9", "A Tec-9 micro-uzi - comes with 250 ammo", "500", 32, 250, 1,true,300}
-		item[5] = {"Country Rifle", "A country rifle - comes with 30 ammo", "750", 33, 30, 1,true,600}
-		item[6] = {"Body Armor", "Kevlar Body armor", "500", 999, 0, 1,true,600}
-		item[7] = {"Handcuffs", "A metal pair of handcuffs.", "90", 45, 1,1,false,2}
+		item[4] = {"Country Rifle", "A country rifle - comes with 30 ammo", "750", 33, 30, 1,true,600}
+		item[5] = {"Body Armor", "Kevlar Body armor", "500", 999, 0, 1,true,600}
+		item[6] = {"Handcuffs", "A metal pair of handcuffs.", "90", 45, 1,1,false,2}
 	
 	-- food + drink
 	elseif(shop_type == 3) then
@@ -303,6 +296,14 @@ function getItemsForSale(shop_type, race)
 	-- electronics
 	elseif(shop_type == 8) then
 		item[1] = {"Ghettoblaster","A black ghettoblaster.", "250", 54, 1, 1, false,10}
+		item[2] = {"Katana", "Your favourite Japanese sword.", "200", 8, 1, 1,true,100}
+		item[3] = {"Camera", "A small black analogue camera.", "75", 43, 25,1,true, 30}
+		item[4] = {"Cellphone", "A stylish, slim cell phone.", "75", 2, 1,1,false,50}
+		item[5] = {"Radio", "A black radio.", "50", 6, 1,1,false,30}
+		item[6] = {"Watch", "Telling the time was never so sexy!", "25", 17, 1, 1,false,10}
+		item[7] = {"MP3 Player", "A white, sleek looking MP3 Player. The brand reads EyePod.", "120", 19, 1,1,false,7}
+		item[8] = {"Chemistry Set", "A small chemistry set.", "2000", 44, 1,1,false,15}
+
 		
 	-- alcohol shop
 	elseif(shop_type == 9) then

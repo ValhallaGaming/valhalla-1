@@ -32,7 +32,11 @@ function realisticDamage(attacker, weapon, bodypart, loss)
 		local intLoss = loss * health
 		local armor = getPedArmor(source)
 			
-
+		if (weapon==9) then -- katana
+			setPedheadless(source, true)
+			killPed(source)
+		end
+			
 		if (bodypart==9) and not (armor>0) then -- Head and no armor.
 			setPedHeadless(source, true)
 			killPed(source)

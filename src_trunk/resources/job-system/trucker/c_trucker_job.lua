@@ -16,6 +16,7 @@ routes[7] = { 1630.2587890625, 1797.3447265625, 10.526601791382 }
 routes[8] = { 1144.14453125, 1368.0986328125, 10.434799194336 }
 routes[9] = { 635.9775390625, 1252.9892578125, 11.357774734497 }
 routes[10] = { 261.623046875, 1412.3564453125, 10.20871925354 }
+routes[11] = {  2830.3095703125, 954.38671875, 10.75 }
 
 function resetTruckerJob()
 	jobstate = 0
@@ -55,7 +56,7 @@ function displayTruckerJob()
 		outputChatBox("#FF9933Type /startjob once you are in the van.", 255, 194, 15, true)
 	end
 end
---addCommandHandler("job", displayTruckerJob)
+addCommandHandler("job", displayTruckerJob)
 
 function startTruckerJob()
 	if (jobstate==1) then
@@ -71,7 +72,7 @@ function startTruckerJob()
 				outputChatBox("#FF9933Drive to the #FF66CCblip#FF9933 on the radar and use /dumpload.", 255, 194, 15, true)
 				destroyElement(blip)
 				
-				local rand = math.random(1, 10)
+				local rand = math.random(11, 11)
 				route = routes[rand]
 				local x, y, z = routes[rand][1], routes[rand][2], routes[rand][3]
 				blip = createBlip(x, y, z, 0, 4, 255, 127, 255)
@@ -106,7 +107,7 @@ function dumpTruckLoad()
 					outputChatBox("#FF9933or continue onto the next #FF66CCdrop off point#FF9933 and increase your wage.", 0, 0, 0, true)
 					
 					-- next drop off
-					local rand = math.random(1, 10)
+					local rand = math.random(11, 11)
 					route = routes[rand]
 					local x, y, z = routes[rand][1], routes[rand][2], routes[rand][3]
 					blip = createBlip(x, y, z, 0, 4, 255, 127, 255)
@@ -141,12 +142,9 @@ function endTruckJob(theElement)
 			local model = getElementModel(vehicle)
 			if (model==414) then -- MULE
 				if (jobstate==3) then
-
 					local wage = 50*routescompleted
 					outputChatBox("You earned $" .. wage .. " on your trucking runs.", 255, 194, 15)
-					local vehicle = getPedOccupiedVehicle(localPlayer)
 					triggerServerEvent("giveTruckingMoney", localPlayer, wage)
-
 				end
 				
 				triggerServerEvent("respawnTruck", localPlayer, vehicle)
@@ -159,7 +157,9 @@ function endTruckJob(theElement)
 				destroyElement(endcolshape)
                 endblip = nil
 				routescompleted = 0
-				setElementData(localPlayer, "job", true, 0)
+				
+				jobstate = 0
+				displayTruckerJob()
 			else
 				outputChatBox("You are not in the van.", 255, 0, 0)
 			end

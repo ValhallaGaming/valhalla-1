@@ -818,8 +818,8 @@ end
 
 -- bike lock fix
 function checkBikeLock(thePlayer)
-	if (isVehicleLocked(source)) and (getVehicleType(source)=="Bike" or getVehicleType(source)=="BMX" or getVeihcleType(source)=="Quad") then
-		outputChatBox("That bike is locked.", thePlayer, 255, 194, 15)
+	if (isVehicleLocked(source)) and (getVehicleType(source)=="Bike" or getVehicleType(source)=="BMX" or getVehicleType(source)=="Quad") then
+		outputChatBox("That vehicle is locked.", thePlayer, 255, 194, 15)
 		cancelEvent()
 	end
 end

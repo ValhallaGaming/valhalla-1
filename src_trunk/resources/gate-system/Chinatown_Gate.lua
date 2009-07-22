@@ -1,7 +1,10 @@
-local objChinaGate = createObject(969, 2562.5, 1822, 10, 0, 0, 0)
+local objChinaGate = createObject(986, 2562.5, 1822, 10, 0, 0, 0)
 exports.pool:allocateElement(objChinaGate)
 
-local objChinaFence = createObject( 983, 2543.97, 1839.34, 10.5, 0, 0, 0)
+local objChinaGate2 = createObject(986, 2562.5, 1826, 10, 0, 0, 0)
+exports.pool:allocateElement(objChinaGate2)
+
+local objChinaFence = createObject( 987, 2544.3037109375, 1840.0390625, 10, 0, 0, 0)
 exports.pool:allocateElement(objChinaFence)
 
 open = false
@@ -18,7 +21,8 @@ function useChinaGate(thePlayer)
 			open = true
 			outputChatBox("Yakuza gate is now Open!", thePlayer, 0, 255, 0)
 			moveObject(objChinaGate, 3000, 2568, 1822, 10, 0, 0, 0)
-			setTimer(closeChinaGate, 5000, 1, thePlayer)
+            moveObject(objChinaGate2, 4000, 2568, 1826, 10, 0, 0, 0)
+			setTimer(closeChinaGate, 6000, 1, thePlayer)
 		end
 	end
 end
@@ -30,6 +34,7 @@ function closeChinaGate(thePlayer)
 	end
 	
 	moveObject(objChinaGate, 3000, 2562.5, 1822, 10, 0, 0, 0)
+    moveObject(objChinaGate2, 4000, 2562.5, 1826, 10, 0, 0, 0) 
 	setTimer(resetChinaGateState, 1000, 1)
 end
 

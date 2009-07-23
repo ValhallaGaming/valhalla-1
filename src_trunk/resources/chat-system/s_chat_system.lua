@@ -974,6 +974,9 @@ function payPlayer(thePlayer, commandName, targetPlayerNick, amount)
 end
 addCommandHandler("pay", payPlayer, false, false)
 
+function removeAnimation(thePlayer)
+	exports.global:removeAnimation(thePlayer)
+end
 
 -- /w(hisper)
 function localWhisper(thePlayer, commandName, targetPlayerNick, ...)

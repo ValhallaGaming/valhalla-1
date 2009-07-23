@@ -163,6 +163,7 @@ function getItemDescription(itemID)
 	elseif (itemID==56) then return "A comical mask."
 	elseif (itemID==57) then return "A small metal fuel canister."
 	elseif (itemID==58) then return "The finest beer, imported from Holland."
+	elseif (itemID==59) then return "So i herd u liek mudkips? Mabako's Favorite."
 	else return false 
 	end
 end
@@ -291,6 +292,8 @@ function getItemType(itemID)
 	elseif (itemID==57) then -- Fuel Can
 		return 4
 	elseif (itemID==58) then -- BEER
+		return 1
+	elseif (itemID==59) then -- MUDKIP
 		return 1
 	else
 		return false

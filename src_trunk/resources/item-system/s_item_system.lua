@@ -420,6 +420,9 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 					setElementData(veh, "fuel", currFuel+fuelAdded)
 					triggerClientEvent(source, "setClientFuel", source, currFuel+fuelAdded)
 				end
+			elseif (itemID==59) then -- MUDKIP
+				killPed(source)
+				exports.global:sendLocalMeAction(source, "eats a mudkip.")
 			end
 		else
 			outputChatBox("Error 800001 - Report on http://bugs.valhallagaming.net", source, 255, 0, 0)

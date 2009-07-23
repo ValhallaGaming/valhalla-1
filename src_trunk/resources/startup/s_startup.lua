@@ -26,7 +26,6 @@ end
 
 function freeRAM()
 	restartResource(getResourceFromName("elevator-system"))
-	restartResource(getResourceFromName("global"))
 	restartResource(getResourceFromName("paynspray-system"))
 	restartResource(getResourceFromName("shop-system"))
 end

@@ -422,8 +422,8 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 				end
 			end
 		elseif (itemID==59) then -- MUDKIP
-			killPed(source)
 			exports.global:sendLocalMeAction(source, "eats a mudkip.")
+			killPed(source)
 		else
 			outputChatBox("Error 800001 - Report on http://bugs.valhallagaming.net", source, 255, 0, 0)
 		end

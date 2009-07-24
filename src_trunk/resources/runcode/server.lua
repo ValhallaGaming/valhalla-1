@@ -52,32 +52,38 @@ end
 -- run command
 addCommandHandler("run",
 	function (player, command, ...)
+		if (exports.global:isPlayerHeadAdmin(player)) then
 		local commandstring = table.concat({...}, " ")
 		return runString(commandstring, rootElement, player)
+		end
 	end
 )
 
 -- silent run command
 addCommandHandler("srun",
 	function (player, command, ...)
+		if (exports.global:isPlayerHeadAdmin(player)) then
 		local commandstring = table.concat({...}, " ")
 		return runString(commandstring, player, player)
+		end
 	end
 )
 
 -- clientside run command
 addCommandHandler("crun",
 	function (player, command, ...)
+		if (exports.global:isPlayerHeadAdmin(player)) then
 		local commandstring = table.concat({...}, " ")
 		if player then
 			return triggerClientEvent(player, "doCrun", rootElement, commandstring)
 		else
 			return runString(commandstring, false, false)
 		end
+		end
 	end
 )
 
 -- http interface run export
 function httpRun(commandstring)
-	return pcall(loadstring(commandstring))
+	--return pcall(loadstring(commandstring))
 end

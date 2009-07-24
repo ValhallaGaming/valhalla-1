@@ -606,11 +606,11 @@ function loadWorldItems(res)
 			local time = getRealTime()
 			local yearday = time.yearday
 			
-			--[[
-			--if (yearday>(wyearday+30)) then
-				--mysql_query(handler, "DELETE FROM worlditems WHERE id='" .. tonumber(row[1]) .. "' LIMIT 1")
-			--elseif (wyearday>yearday) then -- a new year
-				--mysql_query(handler, "UPDATE worlditems SET yearday='" .. yearday .. "' WHERE id='" .. tonumber(row[1]) .. "' LIMIT 1")
+			
+			if (yearday>(wyearday+60)) then
+				mysql_query(handler, "DELETE FROM worlditems WHERE id='" .. tonumber(row[1]) .. "' LIMIT 1")
+			elseif (wyearday>yearday) then -- a new year
+				mysql_query(handler, "UPDATE worlditems SET yearday='" .. yearday .. "' WHERE id='" .. tonumber(row[1]) .. "' LIMIT 1")
 				
 				local x = tonumber(row[6])
 				local y = tonumber(row[7])
@@ -663,7 +663,6 @@ function loadWorldItems(res)
 					end
 				end
 			else
-			]]--
 				local interior = tonumber(row[10])
 				local dimension = tonumber(row[9])
 				local x = tonumber(row[6])

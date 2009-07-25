@@ -63,6 +63,8 @@ function checkMoneyHacks(thePlayer)
 
 	if (safemoney~=hackmoney) then
 		--banPlayer(thePlayer, getRootElement(), "Money Hacks: " .. hackmoney .. "$.")
+        setPlayerMoney(thePlayer, safemoney)
+        sendMessageToAdmins("Possible money hack detected: "..getPlayerName(thePlayer))
 		return true
 	else
 		return false

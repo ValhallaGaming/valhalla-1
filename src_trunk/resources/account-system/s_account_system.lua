@@ -278,7 +278,12 @@ function spawnCharacter(charname)
 		outputChatBox("Need Help? /helpme", source, 255, 194, 14)
 		
 	
-		
+		-- If in bank, freeze them
+		if (interior==3) then
+			triggerClientEvent(source, "usedElevator", source)
+			setPedFrozen(source, true)
+			setPedGravity(source, 0)
+		end
 		
 		-- Load the character info
 		spawnPlayer(source, x, y, z, rot, skin)

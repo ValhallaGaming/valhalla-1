@@ -9,12 +9,10 @@ addEvent( "onClientWeatherChange", true )
 addEventHandler( "onClientWeatherChange", getRootElement(), ChangePlayerWeather )
 
 elevatortimer = nil
-function usedElevator(interior)
+function usedElevator()
 	if (isTimer(elevatorTimer)) then killTimer(elevatortimer) end
 	
-	if (interior==3) then
-		elevatortimer = setTimer(doGroundCheck, 100, 0)
-	end
+	elevatortimer = setTimer(doGroundCheck, 100, 0)
 end
 addEvent( "usedElevator", true )
 addEventHandler( "usedElevator", getRootElement(), usedElevator )

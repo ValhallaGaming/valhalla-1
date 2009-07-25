@@ -548,7 +548,8 @@ function dropItem(itemID, itemValue, itemName, x, y, z, gz, isWeapon, items, ite
 		setElementData(obj, "items", stringitems)
 		setElementData(obj, "itemvalues", stringvalues)
 		
-		if (tonumber(itemID)==16) then
+		-- Check if he drops his current clothes
+		if tonumber(itemID) == 16 and tonumber(itemValue) == getPedSkin(source) and not exports.global:doesPlayerHaveItem(source, 16, tonumber(itemValue)) then
 			setPedSkin(source, 0)
 		end
 	else

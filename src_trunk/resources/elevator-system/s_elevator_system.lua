@@ -238,20 +238,26 @@ function enterElevator(playa, shape)
 			local interior = getElementData(shape, "interior")
 			local dimension = getElementData(shape, "dimension")
 			
+			local rand
 			if (interior==3) then
-				triggerClientEvent(playa, "usedElevator", playa)
+				rand = math.random(1, 10)
+				triggerClientEvent(playa, "usedElevator", playa, x, y, z)
 				setPedFrozen(playa, true)
 				setPedGravity(playa, 0)
 			end
 			
-			setElementPosition(playa, x, y, z)
+			if (rand) then
+				setElementPosition(playa, x+rand, y, z)
+			else
+				setElementPosition(playa, x, y, z)
+			end
+			
 			setElementInterior(playa, interior)
 			setCameraInterior(playa, interior)
 			setElementDimension(playa, dimension)
 			playSoundFrontEnd(playa, 40)
 			setElementData(playa,"UsedElevator", 1, false)
 			
-			--setTimer(resetPlayerData, , 1, playa)
 			resetPlayerData(playa)
 			
 		else
@@ -260,7 +266,8 @@ function enterElevator(playa, shape)
 	end
 end
 
-function resetGravity()
+function resetGravity(x, y, z)
+	setElementPosition(source, x, y, z)
 	setPedFrozen(source, false)
 	setPedGravity(source, 0.008)
 end

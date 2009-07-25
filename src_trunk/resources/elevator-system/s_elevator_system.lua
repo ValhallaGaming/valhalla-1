@@ -237,7 +237,13 @@ function enterElevator(playa, shape)
 			end
 			local interior = getElementData(shape, "interior")
 			local dimension = getElementData(shape, "dimension")
-			triggerClientEvent(playa, "usedElevator", playa, dimension)
+			
+			if (interior==3) then
+				local hp = getElementHealth(playa)
+				setTimer(setElementHealth, 2000, 1, playa, hp)
+			end
+			
+			triggerClientEvent(playa, "usedElevator", playa, interior)
 			setElementPosition(playa, x, y, z)
 			setElementInterior(playa, interior)
 			setCameraInterior(playa, interior)

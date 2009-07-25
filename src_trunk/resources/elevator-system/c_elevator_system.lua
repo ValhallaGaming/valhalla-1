@@ -9,11 +9,13 @@ addEvent( "onClientWeatherChange", true )
 addEventHandler( "onClientWeatherChange", getRootElement(), ChangePlayerWeather )
 
 elevatortimer = nil
-function usedElevator(dimension)
+function usedElevator(interior)
 	if (isTimer(elevatorTimer)) then killTimer(elevatortimer) end
 	
-	setPedFrozen(getLocalPlayer(), true)
-	elevatortimer = setTimer(doGroundCheck, 100, 0)
+	if (interior==3) then
+		setPedFrozen(getLocalPlayer(), true)
+		elevatortimer = setTimer(doGroundCheck, 100, 0)
+	end
 end
 addEvent( "usedElevator", true )
 addEventHandler( "usedElevator", getRootElement(), usedElevator )
@@ -28,7 +30,5 @@ function doGroundCheck()
 		setPedFrozen(getLocalPlayer(), false)
 		killTimer(elevatortimer)
 		elevatortimer = nil
-		setPedFrozen(getLocalPlayer(), false)
-		setElementVelocity(getLocalPlayer(), 0, 0, 0)
 	end
 end

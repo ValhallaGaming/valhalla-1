@@ -19,12 +19,14 @@ function toggleFlashers()
 			if (lights==2) then
 				if not (state) then
 					setElementData(veh, "flashers", true, true)
+					setVehicleHeadLightColor(source, 255, 0, 0)
 					setVehicleLightState(veh, 0, 1)
 					setVehicleLightState(veh, 1, 0)
 				else
 					setElementData(veh, "flashers", nil, true)
 					setVehicleLightState(veh, 0, 0)
 					setVehicleLightState(veh, 1, 0)
+					setVehicleHeadLightColor(veh, 255, 255, 255)
 				end
 			end
 		end
@@ -57,6 +59,7 @@ function streamOut()
 	if (getElementType(source)=="vehicle") then
 		if (policevehicleids[source]~=nil) then
 			local id = policevehicleids[source]
+			setVehicleHeadLightColor(source, 255, 255, 255)
 			policevehicleids[source] = nil
 			policevehicles[id] = nil
 		end
@@ -75,6 +78,12 @@ function doFlashes()
 		elseif (getElementData(veh, "flashers")) then
 			local state1 = getVehicleLightState(veh, 0)
 			local state2 = getVehicleLightState(veh, 1)
+			
+			if (state1==0) then
+				setVehicleHeadLightColor(veh, 0, 0, 255)
+			else
+				setVehicleHeadLightColor(veh, 255, 0, 0)
+			end
 			
 			setVehicleLightState(veh, 0, state2)
 			setVehicleLightState(veh, 1, state1)

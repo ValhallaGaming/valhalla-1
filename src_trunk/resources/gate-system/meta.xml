@@ -13,6 +13,8 @@
 	<script src="pd_door5.lua" type="server"/>
 	<script src="pd_door6.lua" type="server"/>
 	
+	<script src="c_pd_fences.lua" type="client"/>
+	
 	<script src="fbi_gates.lua" type="server"/>
 	<script src="fbi_gates2.lua" type="server"/>
 	

@@ -912,6 +912,7 @@ addEventHandler("sendSalt", getRootElement(), storeSalt)
 
 function createMainUI(res, isChangeAccount)
 	if (res==getThisResource()) then
+		sent = false
 		local tutFile = xmlLoadFile("vgrptut.xml")
 		local regFile = xmlLoadFile("vgrpreg.xml")
 		
@@ -1237,7 +1238,17 @@ tableAchievements, tableStatistics, iAchievementCount, iAchievementPointsCount =
 bDeleteChar = nil
 bChangeAccount = nil
 
-function showCharacterUI(accounts, achievementCount, achievementPointsCount, achievements, firstTime)
+sent = false
+function changedTab(tab)
+	if (tab==tabAchievements) and not (sent) then
+		sent = true
+		lLoading = guiCreateLabel(0.45, 0.4, 0.3, 0.3, "Loading...", true, tabAchievements)
+		guiSetFont(lLoading, "default-bold-small")
+		triggerServerEvent("requestAchievements", getLocalPlayer())
+	end
+end
+
+function showCharacterUI(accounts, firstTime)
 	if (bChangeChar) then
 		destroyElement(bChangeChar)
 		bChangeChar = nil
@@ -1254,9 +1265,9 @@ function showCharacterUI(accounts, achievementCount, achievementPointsCount, ach
 	fadeCamera(true)
 	
 	tableAccounts = accounts
-	iAchievementCount = achievementCount
-	iAchievementPointsCount = achievementPointsCount
-	tableAchievements = achievements
+	--iAchievementCount = achievementCount
+	--iAchievementPointsCount = achievementPointsCount
+	--tableAchievements = achievements
 	
 	toggleAllControls(false, true, false)
 
@@ -1270,9 +1281,10 @@ function showCharacterUI(accounts, achievementCount, achievementPointsCount, ach
 	tabCharacter = guiCreateTab("Character Selection", tabPanelCharacter)
 	tabAccount = guiCreateTab("Account Management", tabPanelCharacter)
 	tabAchievements = guiCreateTab("Achievements", tabPanelCharacter)
+	addEventHandler("onClientGUITabSwitched", tabPanelCharacter, changedTab)
 	
 	displayAccountManagement()
-	displayAchievements()
+	--displayAchievements()
 
 	-- Character Info
 	local charsDead, charsAlive = 0, 0
@@ -1496,6 +1508,7 @@ function dcselectedCharacter(button, state)
 					spawned = true
 					destroyElement(tabPanelCharacter)
 					playSoundFrontEnd(32)
+					sent = false
 					triggerServerEvent("spawnCharacter", getLocalPlayer(), charname)
 					setTimer(resetTriggers, 100, 1)
 					setTimer(showCursor, 50, 30, false)
@@ -3316,9 +3329,16 @@ tabPanel, tabMystats, tabAllstats = nil
 --/////////////////////////////////////////////////////////////////
 --DISPLAY ACHIEVEMENTS
 --/////////////////////////////////////////////////////////////////
-lAchievements, lPoints, paneAchievements, pane = nil
+lAchievements, lLoading, lPoints, paneAchievements, pane = nil
 tableAchievements, iAchievementCount, iAchievementPointsCount = nil
-function displayAchievements()
+function displayAchievements(achievementCount, achievementPointsCount, achievements)
+	tableAchievements = achievements
+	iAchievementCount = achievementCount
+	iAchievementPointsCount = achievementPointsCount
+	
+	destroyElement(lLoading)
+	lLoading = nil
+	
 	local numAchievements = 0
 	local currpoints = 0
 	for key, value in pairs(tableAchievements) do
@@ -3365,6 +3385,9 @@ function displayAchievements()
 		y = y + 0.205
 	end
 end
+addEvent("returnAchievements", true)
+addEventHandler("returnAchievements", getRootElement(), displayAchievements)
+
 
 --/////////////////////////////////////////////////////////////////
 --DISPLAY ACCOUNT MANAGEMENT

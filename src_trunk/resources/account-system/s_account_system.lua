@@ -849,7 +849,12 @@ function sendAccounts(thePlayer, id, isChangeChar)
 
 	spawnPlayer(thePlayer, 258.43417358398, -41.489139556885, 1002.0234375, 268.19247436523, 0, 14, 65000+playerid)
 	
-	
+	triggerClientEvent(thePlayer, "showCharacterSelection", thePlayer, accounts)
+end
+addEvent("sendAccounts", true)
+addEventHandler("sendAccounts", getRootElement(), sendAccounts)
+
+function requestAchievements()
 	-- Get achievements
 	local gameAccountID = getElementData(source, "gameaccountid")
 	local aresult = mysql_query(handler, "SELECT achievementid, date FROM achievements WHERE account='" .. gameAccountID .. "'")
@@ -893,13 +898,11 @@ function sendAccounts(thePlayer, id, isChangeChar)
 		end
 		mysql_free_result(aresult)
 	end
-	setElementData(thePlayer, "achievements.points", points, false)
-	setElementData(thePlayer, "achievements.count", amount, false)
 	
-	triggerClientEvent(thePlayer, "showCharacterSelection", thePlayer, accounts, achievementCount, achievementPointsCount, achievements)
+	--triggerClientEvent(source, "returnAchievements", source, achievementCount, achievementPointsCount, achievements)
 end
-addEvent("sendAccounts", true)
-addEventHandler("sendAccounts", getRootElement(), sendAccounts)
+addEvent("requestAchievements", true)
+addEventHandler("requestAchievements", getRootElement(), requestAchievements)
 
 function deleteCharacterByName(charname)
 	

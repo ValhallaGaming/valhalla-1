@@ -10,7 +10,7 @@ function playerJoin()
 	end
 	
 	ids[slot] = source
-	setElementData(source, "playerid", slot, false)
+	setElementData(source, "playerid", slot)
 	setElementData(source, "ID #", slot)
 	exports.irc:sendMessage("[SCRIPT] Player " .. getPlayerName(source) .. " was assigned ID #" .. slot .. ".")
 end
@@ -31,7 +31,7 @@ function resourceStart()
 	
 	for key, value in ipairs(players) do
 		ids[key] = value
-		setElementData(value, "playerid", key, false)
+		setElementData(value, "playerid", key)
 		setElementData(value, "ID #", key)
 	end
 	exports.irc:sendMessage("[SCRIPT] Assigned " .. #players .. " Player IDs.")

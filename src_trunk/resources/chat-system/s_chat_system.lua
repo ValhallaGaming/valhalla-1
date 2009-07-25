@@ -1343,12 +1343,8 @@ function charityCash(thePlayer, commandName, amount)
 				outputChatBox("You have donated $".. donation .." to charity.", thePlayer, 0, 255, 0)
 				if(donation>=1000)then
 					local name = string.gsub(getPlayerName(thePlayer), "_", " ")
-					for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
-						if (getElementData(value, "loggedin")==1) then
-							outputChatBox("The hungry orphans would like to thank " ..name.. " for his sizable $" ..donation.. " donation to charity.", value)
-							exports.global:givePlayerAchievement(thePlayer, 37) -- The Good Samaritan
-						end
-					end
+					outputChatBox("The hungry orphans would like to thank " ..name.. " for his sizable $" ..donation.. " donation to charity.", getRootElement())
+					exports.global:givePlayerAchievement(thePlayer, 37) -- The Good Samaritan
 				end
 			end
 		end

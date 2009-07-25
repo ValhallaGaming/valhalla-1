@@ -280,9 +280,10 @@ function fillCan(thePlayer, commandName)
 					if (litresAffordable==0) then
 						outputChatBox("You cannot afford any fuel.", thePlayer, 255, 0, 0)
 					else
+						local fuelCost = math.ceil(litresAffordable*cost)
 						outputChatBox("Gas Station Receipt:", thePlayer)
-						outputChatBox("    " .. math.ceil(litresAffordable) .. " Litres of petrol    -    " .. cost .. "$", thePlayer)
-						exports.global:takePlayerSafeMoney(thePlayer, litresAffordable)
+						outputChatBox("    " .. math.ceil(litresAffordable) .. " Litres of petrol    -    " .. fuelCost .. "$", thePlayer)
+						exports.global:takePlayerSafeMoney(thePlayer, fuelCost)
 						exports.global:takePlayerItem(thePlayer, 57, currFuel)
 						exports.global:givePlayerItem(thePlayer, 57, litresAffordable+currFuel)
 					end
@@ -292,9 +293,9 @@ function fillCan(thePlayer, commandName)
 						litresAffordable = 25 - currFuel
 					end
 					
-					cost = 0
+					fuelCost = 0
 					outputChatBox("Gas Station Receipt:", thePlayer)
-					outputChatBox("    " .. math.ceil(litresAffordable) .. " Litres of petrol    -    " .. cost .. "$", thePlayer)
+					outputChatBox("    " .. math.ceil(litresAffordable) .. " Litres of petrol    -    " .. fuelCost .. "$", thePlayer)
 					exports.global:takePlayerItem(thePlayer, 57, tonumber(currFuel))
 					exports.global:givePlayerItem(thePlayer, 57, math.ceil(litresAffordable+currFuel))
 				end

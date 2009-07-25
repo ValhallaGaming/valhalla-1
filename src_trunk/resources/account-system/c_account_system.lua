@@ -1249,6 +1249,7 @@ function changedTab(tab)
 end
 
 function showCharacterUI(accounts, firstTime)
+	sent = false
 	if (bChangeChar) then
 		destroyElement(bChangeChar)
 		bChangeChar = nil

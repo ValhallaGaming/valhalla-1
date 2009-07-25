@@ -19,7 +19,7 @@ function toggleFlashers()
 			if (lights==2) then
 				if not (state) then
 					setElementData(veh, "flashers", true, true)
-					setVehicleHeadLightColor(source, 255, 0, 0)
+					setVehicleHeadLightColor(veh, 255, 0, 0)
 					setVehicleLightState(veh, 0, 1)
 					setVehicleLightState(veh, 1, 0)
 				else

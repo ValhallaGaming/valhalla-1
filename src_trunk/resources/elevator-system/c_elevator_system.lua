@@ -13,7 +13,6 @@ function usedElevator(interior)
 	if (isTimer(elevatorTimer)) then killTimer(elevatortimer) end
 	
 	if (interior==3) then
-		setPedFrozen(getLocalPlayer(), true)
 		elevatortimer = setTimer(doGroundCheck, 100, 0)
 	end
 end
@@ -27,7 +26,7 @@ function doGroundCheck()
 	local clear = isLineOfSightClear(x, y, z, x, y, z-10, true, true, true, true, false, false, false, false, getLocalPlayer())
 
 	if (not clear) then
-		setPedFrozen(getLocalPlayer(), false)
+		triggerServerEvent("resetGravity", getLocalPlayer())
 		killTimer(elevatortimer)
 		elevatortimer = nil
 	end

@@ -239,8 +239,10 @@ function enterElevator(playa, shape)
 			local dimension = getElementData(shape, "dimension")
 			
 			if (interior==3) then
-				local hp = getElementHealth(playa)
-				setTimer(setElementHealth, 2000, 1, playa, hp)
+				setPedFrozen(playa, true)
+				setPedGravity(playa, 0)
+				--local hp = getElementHealth(playa)
+				--setTimer(setElementHealth, 2000, 1, playa, hp)
 			end
 			
 			triggerClientEvent(playa, "usedElevator", playa, interior)
@@ -259,6 +261,13 @@ function enterElevator(playa, shape)
 		end
 	end
 end
+
+function resetGravity()
+	setPedFrozen(source, false)
+	setPedGravity(source, 0.008)
+end
+addEvent("resetGravity", true)
+addEventHandler("resetGravity", getRootElement(), resetGravity)
 
 function resetPlayerData(playa)
 	removeElementData(playa,"UsedElevator")

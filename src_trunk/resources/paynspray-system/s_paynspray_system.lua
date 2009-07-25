@@ -214,7 +214,7 @@ function sprayEffect(vehicle, thePlayer, shape, free)
 		
 		outputChatBox(" ", thePlayer)
 		outputChatBox("Thank you for visting Pay 'n' Spray garage. Have a safe journey.", thePlayer, 255, 194, 14)
-		outputChatBox("BILL: Car Repair - 50$", thePlayer, 255, 194, 14)
+		outputChatBox("BILL: Car Repair - 250$", thePlayer, 255, 194, 14)
 	else
 		outputChatBox("You forgot to wait for your repair!", thePlayer, 255, 0, 0)
 	end

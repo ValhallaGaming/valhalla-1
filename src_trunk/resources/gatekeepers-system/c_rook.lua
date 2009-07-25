@@ -31,6 +31,34 @@ end
 addEvent( "rookIntroEvent", true )
 addEventHandler( "rookIntroEvent", getRootElement(), createRookGUI )
 
+function destroyRookGUI()
+	-- destroy all possibly created windows
+	if optionOne then
+		destroyElement ( optionOne )
+		optionOne = nil
+	end
+	
+	if optionTwo then
+		destroyElement ( optionTwo )
+		optionTwo = nil
+	end
+	
+	if rookText then
+		destroyElement ( rookText )
+		rookText = nil
+	end
+	
+	if wRook then
+		destroyElement ( wRook )
+		wRook = nil
+	end
+
+	showCursor(false)
+end
+
+-- make sure to quit the Convo GUI when player is killed
+addEventHandler("onClientPlayerWasted", getLocalPlayer(), destroyRookGUI)
+
 -- Statement 2
 function rookStatement2()
 	
@@ -60,17 +88,7 @@ function rookStatement3()
 	triggerServerEvent( "rookStatement3ServerEvent", getLocalPlayer() ) -- Trigger Server Event to output previous option
 
 	-- Destroy elements
-	destroyElement ( optionOne )
-	destroyElement ( optionTwo )
-	destroyElement ( rookText )
-	destroyElement ( wRook )
-	optionOne = nil
-	optionTwo = nil
-	rookText = nil
-	wRook = nil
-	
-	showCursor(false)
-	
+	destroyRookGUI()
 end
 
 -- Statement 4
@@ -148,15 +166,5 @@ function rookClose()
 	triggerServerEvent( "rookStatement7ServerEvent", getLocalPlayer() ) -- Trigger Server Event to output previous option
 
 	-- Destroy elements
-	destroyElement ( optionOne )
-	destroyElement ( optionTwo )
-	destroyElement ( rookText )
-	destroyElement ( wRook )
-	optionOne = nil
-	optionTwo = nil
-	rookText = nil
-	wRook = nil
-	
-	showCursor(false)
-	
+	destroyRookGUI()
 end

@@ -46,6 +46,9 @@ function hunterIntro () -- When player enters the colSphere create GUI with intr
 			end
 			destroyElement(chatSphere)
 			setElementData (hunter, "activeConvo", 1) -- set the NPCs conversation state to active so no one else can begin to talk to him.
+			talkingToHunter = source
+			addEventHandler("onPlayerQuit", source, resetHunterConvoStateDelayed)
+			addEventHandler("onPlayerWasted", source, resetHunterConvoStateDelayed)
 		end
 	end
 end
@@ -65,7 +68,7 @@ function statement2_S()
 		outputChatBox("Hunter says: I’m busy. There’s a place on ... that can do it.", player, 255, 255, 255) -- Hunter's next question
 	end
 	destroyElement (chatSphere)
-	setElementData (hunter, "activeConvo", 0)
+	resetHunterConvoStateDelayed()
 end
 addEvent( "hunterStatement2ServerEvent", true )
 addEventHandler( "hunterStatement2ServerEvent", getRootElement(), statement2_S )
@@ -117,7 +120,7 @@ function statement5_S()
 		outputChatBox("Hunter says: It’s not about how it looks, man. This car will rip your insides out and throw ‘em at you, rookie.", player, 255, 255, 255) -- Hunter's next question
 	end
 	destroyElement (chatSphere)
-	setTimer(resetHunterConvoState, 360000, 1)
+	resetHunterConvoStateDelayed()
 end
 addEvent( "hunterStatement5ServerEvent", true )
 addEventHandler( "hunterStatement5ServerEvent", getRootElement(), statement5_S )
@@ -135,7 +138,7 @@ function statement6_S()
 		outputChatBox("Hunter says: Just goes to show you aren’t a real gear head. Come back when you have a clue.", player, 255, 255, 255) -- Hunter's next question
 	end
 	destroyElement (chatSphere)
-	setTimer(resetHunterConvoState, 360000, 1)
+	resetHunterConvoStateDelayed()
 end
 addEvent( "hunterStatement6ServerEvent", true )
 addEventHandler( "hunterStatement6ServerEvent", getRootElement(), statement6_S )
@@ -187,7 +190,7 @@ function statement9_S()
 		outputChatBox("Hunter says: Yeah so I got work to do. Nice talkin’ to ya.", player, 255, 255, 255) -- Hunter's next question
 	end
 	destroyElement (chatSphere)
-	setTimer(resetHunterConvoState, 360000, 1)
+	resetHunterConvoStateDelayed()
 end
 addEvent( "hunterStatement9ServerEvent", true )
 addEventHandler( "hunterStatement9ServerEvent", getRootElement(), statement9_S )
@@ -225,7 +228,7 @@ function statement11_S()
 		exports.global:sendLocalMeAction( source,"jots down their number on a scrap of paper and hands it to Hunter.")
 	end
 	destroyElement (chatSphere)
-	setTimer(resetHunterConvoState, 360000, 1)
+	resetHunterConvoStateDelayed()
 	mysql_query(handler, "UPDATE characters SET hunter='1' WHERE charactername='" .. mysql_escape_string(handler, getPlayerName(source)) .. "' LIMIT 1")
 
 end
@@ -245,11 +248,20 @@ function statement12_S()
 		outputChatBox("Hunter says: Whatever. I got work to do.", player, 255, 255, 255) -- Hunter's next question
 	end
 	destroyElement (chatSphere)
-	setTimer(resetHunterConvoState, 360000, 1)
+	resetHunterConvoStateDelayed()
 end
 addEvent( "hunterStatement12ServerEvent", true )
 addEventHandler( "hunterStatement12ServerEvent", getRootElement(), statement12_S )
 
 function resetHunterConvoState()
 	setElementData(hunter, "activeConvo", 0)
+end
+
+function resetHunterConvoStateDelayed()
+	if talkingToHunter then
+		removeEventHandler("onPlayerQuit", talkingToHunter, resetHunterConvoStateDelayed)
+		removeEventHandler("onPlayerWasted", talkingToHunter, resetHunterConvoStateDelayed)
+		talkingToHunter = nil
+	end
+	setTimer(resetHunterConvoState, 360000, 1)
 end

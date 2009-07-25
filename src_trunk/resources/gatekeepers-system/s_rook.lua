@@ -47,6 +47,9 @@ function rookIntro () -- When player enters the colSphere create GUI with intro 
 				end
 				destroyElement(chatSphere)
 				setElementData (rook, "activeConvo", 1) -- set the NPCs conversation state to active so no one else can begin to talk to him.
+				talkingToRook = source
+				addEventHandler("onPlayerQuit", talkingToRook, resetRookConvoStateDelayed)
+				addEventHandler("onPlayerWasted", talkingToRook, resetRookConvoStateDelayed)
 			end
 		end
 	end
@@ -83,7 +86,7 @@ function rookStatement3_S()
 		outputChatBox("Rook says: Whatever, homie. I was just tryin' to help a brother out.", player, 255, 255, 255)
 	end
 	destroyElement (chatSphere)
-	setTimer(resetRookConvoState, 360000, 1)
+	resetRookConvoStateDelayed()
 end
 addEvent( "rookStatement3ServerEvent", true )
 addEventHandler( "rookStatement3ServerEvent", getRootElement(), rookStatement3_S )
@@ -153,11 +156,20 @@ function rookStatement7_S()
 	end
 	destroyElement (chatSphere)
 	mysql_query(handler, "UPDATE characters SET rook='1' WHERE charactername='" .. mysql_escape_string(handler, getPlayerName(source)) .. "' LIMIT 1")
-	setTimer(resetRookConvoState, 360000, 1)
+	resetRookConvoStateDelayed()
 end
 addEvent( "rookStatement7ServerEvent", true )
 addEventHandler( "rookStatement7ServerEvent", getRootElement(), rookStatement7_S )
 
 function resetRookConvoState()
 	setElementData(rook,"activeConvo", 0)
+end
+
+function resetRookConvoStateDelayed()
+	if talkingToRook then
+		removeEventHandler("onPlayerQuit", talkingToRook, resetTyConvoStateDelayed)
+		removeEventHandler("onPlayerWasted", talkingToRook, resetTyConvoStateDelayed)
+		talkingToRook = nil
+	end
+	setTimer(resetRookConvoState, 120000, 1)
 end

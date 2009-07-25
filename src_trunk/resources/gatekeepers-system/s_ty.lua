@@ -56,6 +56,9 @@ function tyIntro () -- When player enters the colSphere create GUI with intro ou
 		destroyElement(chatSphere)
 		
 		setElementData (tyrese, "activeConvo",  1)
+		talkingToTy = source
+		addEventHandler("onPlayerQuit", talkingToTy, resetTyConvoStateDelayed)
+		addEventHandler("onPlayerWasted", talkingToTy, resetTyConvoStateDelayed)
 		
 		triggerClientEvent( source, "callback", getRootElement(), rooksFriend, tysFriend)
 	end
@@ -149,7 +152,7 @@ function tyStatement7_S()
 	setElementDimension(source, 0)
 	setElementInterior(source, 0)
 	
-	setTimer(resetTyConvoState, 120000, 1)
+	resetTyConvoStateDelayed()
 	
 end
 addEvent( "tyStatement7ServerEvent", true )
@@ -169,7 +172,7 @@ function tyStatement8_S()
 	end
 	destroyElement (chatSphere)
 	
-	setTimer(resetTyConvoState, 120000, 1)
+	resetTyConvoStateDelayed()
 	
 end
 addEvent( "tyStatement8ServerEvent", true )
@@ -211,7 +214,7 @@ function tyStatement10_S()
 	setElementDimension(source, 0)
 	setElementInterior(source, 0)
 	
-	setTimer(resetTyConvoState, 120000, 1)
+	resetTyConvoStateDelayed()
 	
 	mysql_query(handler, "UPDATE characters SET tyrese='1' WHERE charactername='" .. mysql_escape_string(handler, getPlayerName(source)) .. "' LIMIT 1")
 	
@@ -237,7 +240,7 @@ function tyStatement11_S()
 	setElementDimension(source, 0)
 	setElementInterior(source, 0)
 	
-	setTimer(resetTyConvoState, 120000, 1)
+	resetTyConvoStateDelayed()
 	
 end
 addEvent( "tyStatement11ServerEvent", true )
@@ -305,7 +308,7 @@ function giveTyItems( itemNumber )
 		
 		triggerClientEvent(source, "closeTyWinodw", getRootElement())
 		
-		setTimer(resetTyConvoState, 120000, 1)
+		resetTyConvoStateDelayed()
 	
 	else
 		exports.global:givePlayerItem(source, itemID, 1)
@@ -333,8 +336,7 @@ function tyClose_S()
 	setElementDimension(source, 0)
 	setElementInterior(source, 0)
 	
-	setTimer(resetTyConvoState, 120000, 1)
-		
+	resetTyConvoStateDelayed()
 end
 addEvent("tyFriendClose", true)
 addEventHandler("tyFriendClose", getRootElement(), tyClose_S)
@@ -342,4 +344,14 @@ addEventHandler("tyFriendClose", getRootElement(), tyClose_S)
 ------------------------ Reset -----------------------------
 function resetTyConvoState()
 	setElementData(tyrese,"activeConvo", 0)
+end
+
+function resetTyConvoStateDelayed()
+	if talkingToTy then
+		removeEventHandler("onPlayerQuit", talkingToTy, resetTyConvoStateDelayed)
+		removeEventHandler("onPlayerWasted", talkingToTy, resetTyConvoStateDelayed)
+		triggerClientEvent(talkingToTy, "closeTyWinodw", getRootElement())
+		talkingToTy = nil
+	end
+	setTimer(resetTyConvoState, 120000, 1)
 end

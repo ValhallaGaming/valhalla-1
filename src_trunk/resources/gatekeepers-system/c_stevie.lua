@@ -30,23 +30,47 @@ end
 addEvent( "stevieIntroEvent", true )
 addEventHandler( "stevieIntroEvent", getRootElement(), createStevieGUI )
 
+
+function destroyStevieGUI()
+	-- destroy all possibly created windows
+	if optionOne then
+		destroyElement ( optionOne )
+		optionOne = nil
+	end
+	
+	if optionTwo then
+		destroyElement ( optionTwo )
+		optionTwo = nil
+	end
+	
+	if stevieText then
+		destroyElement ( stevieText )
+		stevieText = nil
+	end
+	
+	if wStevie then
+		destroyElement ( wStevie )
+		wStevie = nil
+	end
+	
+	if buttonClose then
+		destroyElement ( buttonClose )
+		buttonClose = nil
+	end
+
+	showCursor(false)
+end
+
+-- make sure to quit the Convo GUI when player is killed
+addEventHandler("onClientPlayerWasted", getLocalPlayer(), destroyStevieGUI)
+
 -- Quick Close
 function quickClose()
 	
 	triggerServerEvent( "quickCloseServerEvent", getLocalPlayer() ) -- Trigger Server Event to output previous option
 
 	-- Destroy elements
-	destroyElement ( optionOne )
-	destroyElement ( optionTwo )
-	destroyElement ( stevieText )
-	destroyElement ( wStevie )
-	optionOne = nil
-	optionTwo = nil
-	stevieText = nil
-	wStevie = nil
-	
-	showCursor(false)
-	
+	destroyStevieGUI()	
 end
 
 -- Statement 2
@@ -81,19 +105,7 @@ function statement3()
 	triggerServerEvent( "statement3ServerEvent", getLocalPlayer() ) -- Trigger Server Event to output previous option
 
 	-- Destroy elements
-	destroyElement ( optionOne )
-	destroyElement ( optionTwo )
-	destroyElement ( buttonClose )
-	destroyElement ( stevieText )
-	destroyElement ( wStevie )
-	optionOne = nil
-	optionTwo = nil
-	buttonClose = nil
-	stevieText = nil
-	wStevie = nil
-	
-	showCursor(false)
-	
+	destroyStevieGUI()
 end
 
 -- statement 4
@@ -125,19 +137,7 @@ function statement5()
 	triggerServerEvent( "statement5ServerEvent", getLocalPlayer() ) -- Trigger Server Event to output previous option
 
 	-- Destroy elements
-	destroyElement ( optionOne )
-	destroyElement ( optionTwo )
-	destroyElement ( buttonClose )
-	destroyElement ( stevieText )
-	destroyElement ( wStevie )
-	optionOne = nil
-	optionTwo = nil
-	buttonClose = nil
-	stevieText = nil
-	wStevie = nil
-	
-	showCursor(false)
-
+	destroyStevieGUI()
 end
 
 -- Statement 6
@@ -169,19 +169,7 @@ function statement7()
 	triggerServerEvent( "statement7ServerEvent", getLocalPlayer() ) -- Trigger Server Event to output previous option
 
 	-- Destroy elements
-	destroyElement ( optionOne )
-	destroyElement ( optionTwo )
-	destroyElement ( buttonClose )
-	destroyElement ( stevieText )
-	destroyElement ( wStevie )
-	optionOne = nil
-	optionTwo = nil
-	buttonClose = nil
-	stevieText = nil
-	wStevie = nil
-	
-	showCursor(false)
-
+	destroyStevieGUI()
 end
 
 -- Statement 8
@@ -238,19 +226,7 @@ function stevieSuccess()
 	triggerServerEvent( "stevieSuccessServerEvent", getLocalPlayer() ) -- Trigger Server Event to output previous option
 
 	-- Destroy elements
-	destroyElement ( optionOne )
-	destroyElement ( optionTwo )
-	destroyElement ( buttonClose )
-	destroyElement ( stevieText )
-	destroyElement ( wStevie )
-	optionOne = nil
-	optionTwo = nil
-	buttonClose = nil
-	stevieText = nil
-	wStevie = nil
-	
-	showCursor(false)
-
+	destroyStevieGUI()
 end
 
 function CloseButtonClick()
@@ -258,19 +234,7 @@ function CloseButtonClick()
 	triggerServerEvent( "CloseButtonClickServerEvent", getLocalPlayer() ) -- Trigger Server Event to output previous option
 
 	-- Destroy elements
-	destroyElement ( optionOne )
-	destroyElement ( optionTwo )
-	destroyElement ( buttonClose )
-	destroyElement ( stevieText )
-	destroyElement ( wStevie )
-	optionOne = nil
-	optionTwo = nil
-	buttonClose = nil
-	stevieText = nil
-	wStevie = nil
-	
-	showCursor(false)
-	
+	destroyStevieGUI()
 end
 ------------------------------------------------------------------------------------
 ------------------------------ telephone conversation ------------------------------

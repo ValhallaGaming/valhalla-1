@@ -30,23 +30,41 @@ end
 addEvent( "hunterIntroEvent", true )
 addEventHandler( "hunterIntroEvent", getRootElement(), createhunterGUI )
 
+function destroyHunterGUI()
+	-- destroy all possibly created windows
+	if optionOne then
+		destroyElement ( optionOne )
+		optionOne = nil
+	end
+	
+	if optionTwo then
+		destroyElement ( optionTwo )
+		optionTwo = nil
+	end
+	
+	if hunterText then
+		destroyElement ( hunterText )
+		hunterText = nil
+	end
+	
+	if wHunter then
+		destroyElement ( wHunter )
+		wHunter = nil
+	end
+
+	showCursor(false)
+end
+
+-- make sure to quit the Convo GUI when player is killed
+addEventHandler("onClientPlayerWasted", getLocalPlayer(), destroyHunterGUI)
+
 -- statement 2
 function hunterStatement2()
 	
 	triggerServerEvent( "hunterStatement2ServerEvent", getLocalPlayer() ) -- Trigger Server Event to output previous option
 
 	-- Destroy elements
-	destroyElement ( optionOne )
-	destroyElement ( optionTwo )
-	destroyElement ( hunterText )
-	destroyElement ( wHunter )
-	optionOne = nil
-	optionTwo = nil
-	hunterText = nil
-	wHunter = nil
-	
-	showCursor(false)
-	
+	destroyHunterGUI()
 end
 
 -- Statement 3
@@ -101,17 +119,7 @@ function hunterStatement5()
 	triggerServerEvent( "hunterStatement5ServerEvent", getLocalPlayer() ) -- Trigger Server Event to output previous option
 
 	-- Destroy elements
-	destroyElement ( optionOne )
-	destroyElement ( optionTwo )
-	destroyElement ( hunterText )
-	destroyElement ( wHunter )
-	optionOne = nil
-	optionTwo = nil
-	hunterText = nil
-	wHunter = nil
-	
-	showCursor(false)
-	
+	destroyHunterGUI()
 end
 
 -- statement 6
@@ -120,16 +128,7 @@ function hunterStatement6()
 	triggerServerEvent( "hunterStatement6ServerEvent", getLocalPlayer() ) -- Trigger Server Event to output previous option
 
 	-- Destroy elements
-	destroyElement ( optionOne )
-	destroyElement ( optionTwo )
-	destroyElement ( hunterText )
-	destroyElement ( wHunter )
-	optionOne = nil
-	optionTwo = nil
-	hunterText = nil
-	wHunter = nil
-	
-	showCursor(false)
+	destroyHunterGUI()
 	
 end
 
@@ -182,17 +181,7 @@ function hunterStatement9()
 	triggerServerEvent( "hunterStatement9ServerEvent", getLocalPlayer() ) -- Trigger Server Event to output previous option
 	
 	-- Destroy elements
-	destroyElement ( optionOne )
-	destroyElement ( optionTwo )
-	destroyElement ( hunterText )
-	destroyElement ( wHunter )
-	optionOne = nil
-	optionTwo = nil
-	hunterText = nil
-	wHunter = nil
-	
-	showCursor(false)
-
+	destroyHunterGUI()
 end
 
 -- Statement 10
@@ -224,17 +213,7 @@ function hunterStatement11()
 	triggerServerEvent( "hunterStatement11ServerEvent", getLocalPlayer() ) -- Trigger Server Event to output previous option
 	
 	-- Destroy elements
-	destroyElement ( optionOne )
-	destroyElement ( optionTwo )
-	destroyElement ( hunterText )
-	destroyElement ( wHunter )
-	optionOne = nil
-	optionTwo = nil
-	hunterText = nil
-	wHunter = nil
-	
-	showCursor(false)
-
+	destroyHunterGUI()
 end
 
 -- Hunter Decline
@@ -243,19 +222,5 @@ function hunterStatement12()
 	triggerServerEvent( "hunterStatement12ServerEvent", getLocalPlayer() ) -- Trigger Server Event to output previous option
 	
 	-- Destroy elements
-	destroyElement ( optionOne )
-	destroyElement ( optionTwo )
-	destroyElement ( hunterText )
-	destroyElement ( wHunter )
-	optionOne = nil
-	optionTwo = nil
-	hunterText = nil
-	wHunter = nil
-	
-	showCursor(false)
-	
-end
-
-function resetHunterCooldown()
-	setElementData(getLocalPlayer(), "hunterCoolDown", false, true)
+	destroyHunterGUI()
 end

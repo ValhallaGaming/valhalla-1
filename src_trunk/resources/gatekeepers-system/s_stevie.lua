@@ -103,6 +103,9 @@ function stevieIntro (thePlayer) -- When player enters the colSphere create GUI 
 		end
 		
 		destroyElement(chatSphere)
+		talkingToStevie = source
+		addEventHandler("onPlayerQuit", source, resetStevieConvoStateDelayed)
+		addEventHandler("onPlayerWasted", source, resetStevieConvoStateDelayed)
 	end
 end
 addEvent( "startStevieConvo", true )
@@ -159,7 +162,7 @@ function statement3_S()
 	exports.global:removeAnimation(source)
 	toggleAllControls(source, true, true, true)
 	
-	setTimer(resetStevieConvoState, 360000, 1)
+	resetStevieConvoStateDelayed()
 	
 	-- Output the text from the last option to all player in radius
 	local pedX, pedY, pedZ = getElementPosition( source )
@@ -202,7 +205,7 @@ function statement5_S()
 	exports.global:removeAnimation(source)
 	toggleAllControls(source, true, true, true)
 	
-	setTimer(resetStevieConvoState, 360000, 1)
+	resetStevieConvoStateDelayed()
 	
 	exports.global:sendLocalMeAction( source,"leaves Stevie's hand lingering in the air.")
 	-- Output the text from the last option to all player in radius
@@ -243,7 +246,7 @@ function statement7_S()
 	exports.global:removeAnimation(source)
 	toggleAllControls(source, true, true, true)
 	
-	setTimer(resetStevieConvoState, 360000, 1) -- set the NPCs conversation state to not active so others can begin to talk to him.
+	resetStevieConvoStateDelayed() -- set the NPCs conversation state to not active so others can begin to talk to him.
 	
 	-- Output the text from the last option to all player in radius
 	local pedX, pedY, pedZ = getElementPosition( source )
@@ -311,7 +314,7 @@ function stevieSuccess_S()
 	
 	exports.global:removeAnimation(source)
 	
-	setTimer(resetStevieConvoState, 360000, 1) -- set the NPCs conversation state to not active so others can begin to talk to him.
+	resetStevieConvoStateDelayed() -- set the NPCs conversation state to not active so others can begin to talk to him.
 	
 	exports.global:sendLocalMeAction( source,"takes Stevie's business card.")
 	
@@ -330,7 +333,7 @@ function CloseButtonClick_S()
 	exports.global:removeAnimation(source)
 	toggleAllControls(source, true, true, true)
 	
-	setTimer(resetStevieConvoState, 360000, 1) -- set the NPCs conversation state to not active so others can begin to talk to him.
+	resetStevieConvoStateDelayed() -- set the NPCs conversation state to not active so others can begin to talk to him.
 	
 	-- Output the text from the last option to all player in radius
 	local pedX, pedY, pedZ = getElementPosition( source )
@@ -349,6 +352,16 @@ addEventHandler( "CloseButtonClickServerEvent", getRootElement(), CloseButtonCli
 
 function resetStevieConvoState()
 	setElementData(stevie,"activeConvo", 0)
+end
+
+
+function resetStevieConvoStateDelayed()
+	if talkingToStevie then
+		removeEventHandler("onPlayerQuit", talkingToStevie, resetStevieConvoStateDelayed)
+		removeEventHandler("onPlayerWasted", talkingToStevie, resetStevieConvoStateDelayed)
+		talkingToStevie = nil
+	end
+	setTimer(resetStevieConvoState, 360000, 1)
 end
 
 ------------------------------------------------------------------------------------
@@ -399,6 +412,7 @@ function startPhoneCall(thePlayer)
 								triggerClientEvent ( thePlayer, "outOfDeals", getRootElement() ) -- Trigger Client side function to create GUI.
 							else
 								triggerClientEvent ( thePlayer, "showPhoneConvo", getRootElement(), factionType ) -- Trigger Client side function to create GUI.
+								addEventHandler ( "onPlayerQuit", thePlayer, endCall )
 							end
 						end
 					end
@@ -727,4 +741,5 @@ function endCall(thePlayer) -- to cancel the phone animation and reset the phone
 	removeElementData(thePlayer, "calling")
 	exports.global:takePlayerSafeMoney(thePlayer, 10)
 	phoneState = 0
+	removeEventHandler ( "onPlayerQuit", thePlayer, endCall )
 end

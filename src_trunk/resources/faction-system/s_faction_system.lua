@@ -776,6 +776,75 @@ end
 addCommandHandler("setfactionmoney", setFactionMoney, false, false)
 
 -- /////////////// WAGES
+function payWage(player, pay, faction, tax)
+	local bankmoney = getElementData(player, "bankmoney")
+	local interestrate = 0.0004
+	
+	-- DONATOR PERKS
+	local donator = getElementData(player, "donatorlevel")
+	local donatormoney = 0 
+	if (donator==1) then
+		donatormoney = donatormoney + 25
+		interestrate = interestrate + 0.0001
+	elseif (donator==2) then
+		donatormoney = donatormoney + 25
+		interestrate = interestrate + 0.0002
+	elseif (donator==3) then
+		donatormoney = donatormoney + 75
+		interestrate = interestrate + 0.0004
+	elseif (donator==4) then
+		donatormoney = donatormoney + 100
+		interestrate = interestrate + 0.0004
+	elseif (donator==5) then
+		donatormoney = donatormoney + 125
+		interestrate = interestrate + 0.0005
+	elseif (donator==6) then
+		donatormoney = donatormoney + 150
+		interestrate = interestrate + 0.0006
+	elseif (donator==7) then
+		donatormoney = donatormoney + 250
+		interestrate = interestrate + 0.0006
+	end
+	
+	local interest = math.ceil(interestrate * bankmoney)
+	
+	
+	-- business money
+	local profit = getElementData(player, "businessprofit")
+	setElementData(player, "bankmoney", bankmoney+pay+interest+profit+donatormoney)
+	
+	outputChatBox("~-~-~-~-~-~-~-~~-~-~-~-~ PAY SLIP ~-~-~-~-~-~-~-~~-~-~-~-~", player, 255, 194, 14)
+
+	if not faction then
+		if pay > 0 then
+			outputChatBox("    State Benefits: " .. pay .. "$", player, 255, 194, 14)
+		else
+			outputChatBox("    The government could not afford to pay you your state benefits.", player, 255, 0, 0)
+		end
+	else
+		if pay > 0 then
+			outputChatBox("    Wage Paid: " .. pay .. "$", player, 255, 194, 14)			
+		else
+			outputChatBox("    Your employer could not afford to pay your wages.", player, 255, 0, 0)
+		end
+	end
+	
+	outputChatBox("    Business Profit: " .. profit .. "$", player, 255, 194, 14)
+	
+	if tax > 0 then
+		local incomeTax = exports.global:getIncomeTaxAmount()
+		outputChatBox("    Income Tax of " .. (incomeTax*100) .. "%: " .. tax .. "$", player, 255, 194, 14)
+		pay = pay - tax
+	end
+	
+	outputChatBox("    Bank Interest (" .. interestrate*1000 .. "%): " .. interest .. "$", player, 255, 194, 14)
+	if (donator>0) then
+		outputChatBox("    Donator Money: " .. donatormoney .. "$", player, 255, 194, 14)
+	end
+	outputChatBox("----------------------------------------------------------", player, 255, 194, 14)
+	outputChatBox("  Gross Income: " .. pay+profit+interest+donatormoney .. "$ (Wire-Transferred to bank)", player, 255, 194, 14)
+end
+
 function payAllWages()
 	local players = exports.pool:getPoolElementsByType("player")
 	
@@ -806,177 +875,40 @@ function payAllWages()
 					
 					local factionMoney = getElementData(theTeam, "money")
 					
-					if (rankWage>factionMoney) then
-						outputChatBox("Your employer could not afford to pay your wages.", value, 255, 0, 0)
-					else
-						local incomeTax = exports.global:getIncomeTaxAmount()
-						
-						govAmount = govAmount + (incomeTax*rankWage)
-						local pay = rankWage - (incomeTax*rankWage)
-						
-						local bankmoney = getElementData(value, "bankmoney")
-						local interestrate = 0.0004
-						
-						-- DONATOR PERKS
-						local donator = getElementData(value, "donatorlevel")
-						local donatormoney = 0 
-						if (donator==1) then
-							donatormoney = donatormoney + 25
-							interestrate = interestrate + 0.0001
-						elseif (donator==2) then
-							donatormoney = donatormoney + 25
-							interestrate = interestrate + 0.0002
-						elseif (donator==3) then
-							donatormoney = donatormoney + 75
-							interestrate = interestrate + 0.0004
-						elseif (donator==4) then
-							donatormoney = donatormoney + 100
-							interestrate = interestrate + 0.0004
-						elseif (donator==5) then
-							donatormoney = donatormoney + 125
-							interestrate = interestrate + 0.0005
-						elseif (donator==6) then
-							donatormoney = donatormoney + 150
-							interestrate = interestrate + 0.0006
-						elseif (donator==7) then
-							donatormoney = donatormoney + 250
-							interestrate = interestrate + 0.0006
-						end
-						
-						local interest = math.ceil(interestrate * bankmoney)
-						
+					if rankWage >= factionMoney then
+						rankWage = 0
+					end
+					
+					local incomeTax = exports.global:getIncomeTaxAmount()
+					local taxes = math.ceil( incomeTax * rankWage )
+					govAmount = govAmount + taxes
+					
+					payWage( value, rankWage, true, taxes )
+					
+					if rankWage > 0 then
 						local factionAmount = factionMoney - rankWage
 						setElementData(theTeam, "money", tonumber(factionAmount), false)
 						local update = mysql_query(handler, "UPDATE factions SET bankbalance='" .. factionAmount .. "' WHERE id='" .. playerFaction .. "'")
 						mysql_free_result(update)
-						
-						-- business money
-						local profit = getElementData(value, "businessprofit")
-						setElementData(value, "bankmoney", bankmoney+pay+interest+profit+donatormoney)
-						
-						outputChatBox("~-~-~-~-~-~-~-~~-~-~-~-~ PAY SLIP ~-~-~-~-~-~-~-~~-~-~-~-~", value, 255, 194, 14)
-						outputChatBox("    Wage Paid: " .. rankWage .. "$", value, 255, 194, 14)
-						outputChatBox("    Business Profit: " .. profit .. "$", value, 255, 194, 14)
-						outputChatBox("    Income Tax of " .. (incomeTax*100) .. "%: " .. (incomeTax*(rankWage+profit)) .. "$", value, 255, 194, 14)
-						outputChatBox("    Bank Interest (" .. interestrate*1000 .. "%): " .. interest .. "$", value, 255, 194, 14)
-						if (donator>0) then
-							outputChatBox("    Donator Money: " .. donatormoney .. "$", value, 255, 194, 14)
-						end
-						outputChatBox("----------------------------------------------------------", value, 255, 194, 14)
-						outputChatBox("  Gross Income: " .. donatormoney+pay+profit+interest .. "$ (Wire-Transferred to bank)", value, 255, 194, 14)
 					end
+					
 				else
 					local unemployedPay = 150
-					
-					if (unemployedPay>govAmount) then
-						outputChatBox("The government could not afford to pay you your state benefits.", value, 255, 0, 0)
-					else
-						govAmount = govAmount - unemployedPay
-						
-						local pay = unemployedPay
-						local bankmoney = tonumber(getElementData(value, "bankmoney"))
-						
-						if not bankmoney then bankmoney = 0 end
-						local interestrate = 0.0004
-						
-						-- DONATOR PERKS
-						local donator = getElementData(value, "donatorlevel")
-						local donatormoney = 0 
-						if (donator==1) then
-							donatormoney = donatormoney + 25
-							interestrate = interestrate + 0.0001
-						elseif (donator==2) then
-							donatormoney = donatormoney + 25
-							interestrate = interestrate + 0.0002
-						elseif (donator==3) then
-							donatormoney = donatormoney + 75
-							interestrate = interestrate + 0.0004
-						elseif (donator==4) then
-							donatormoney = donatormoney + 100
-							interestrate = interestrate + 0.0004
-						elseif (donator==5) then
-							donatormoney = donatormoney + 125
-							interestrate = interestrate + 0.0005
-						elseif (donator==6) then
-							donatormoney = donatormoney + 150
-							interestrate = interestrate + 0.0006
-						elseif (donator==7) then
-							donatormoney = donatormoney + 250
-							interestrate = interestrate + 0.0006
-						end
-						
-						local interest = math.ceil(interestrate * bankmoney)
-						
-						-- business money
-						local profit = getElementData(value, "businessprofit")
-						setElementData(value, "bankmoney", bankmoney+unemployedPay+interest+profit+donatormoney)
-						
-						outputChatBox("~-~-~-~-~-~-~-~~-~-~-~-~ PAY SLIP ~-~-~-~-~-~-~-~~-~-~-~-~", value, 255, 194, 14)
-						outputChatBox("    State Benefits: $" .. pay, value, 255, 194, 14)
-						outputChatBox("    Business Profit: $" .. profit, value, 255, 194, 14)
-						outputChatBox("    Bank Interest (" .. interestrate*1000 .. "%): $" .. interest, value, 255, 194, 14)
-						if (donator>0) then
-							outputChatBox("    Donator Money: $" .. donatormoney, value, 255, 194, 14)
-						end
-						outputChatBox("----------------------------------------------------------", value, 255, 194, 14)
-						outputChatBox("  Gross Income: $" .. unemployedPay+profit+interest+donatormoney .. "(Wire-Transferred to bank)", value, 255, 194, 14)
+					if unemployedPay >= govAmount then
+						unemployedPay = 0
 					end
+					
+					payWage( value, unemployedPay, false, 0 )
+					govAmount = govAmount - unemployedPay
 				end
 			else
 				local unemployedPay = 150
-						
-				if (unemployedPay>tonumber(govAmount)) then
-					outputChatBox("The government could not afford to pay you your state benefits.", value, 255, 0, 0)
-				else
-					govAmount = govAmount - unemployedPay
-					local bankmoney = getElementData(value, "bankmoney")
-					local interestrate = 0.0004
-					
-					local pay = unemployedPay
-					
-					-- DONATOR PERKS
-						local donator = getElementData(value, "donatorlevel")
-						local donatormoney = 0 
-						if (donator==1) then
-							donatormoney = donatormoney + 25
-							interestrate = interestrate + 0.0001
-						elseif (donator==2) then
-							donatormoney = donatormoney + 25
-							interestrate = interestrate + 0.0002
-						elseif (donator==3) then
-							donatormoney = donatormoney + 75
-							interestrate = interestrate + 0.0004
-						elseif (donator==4) then
-							donatormoney = donatormoney + 100
-							interestrate = interestrate + 0.0004
-						elseif (donator==5) then
-							donatormoney = donatormoney + 125
-							interestrate = interestrate + 0.0005
-						elseif (donator==6) then
-							donatormoney = donatormoney + 150
-							interestrate = interestrate + 0.0006
-						elseif (donator==7) then
-							donatormoney = donatormoney + 250
-							interestrate = interestrate + 0.0006
-						end
-						
-						local interest = math.ceil(interestrate * bankmoney)
-					
-					
-					-- business money
-					local profit = getElementData(value, "businessprofit")
-					setElementData(value, "bankmoney", bankmoney+unemployedPay+interest+profit+donatormoney)
-					
-					outputChatBox("~-~-~-~-~-~-~-~~-~-~-~-~ PAY SLIP ~-~-~-~-~-~-~-~~-~-~-~-~", value, 255, 194, 14)
-					outputChatBox("    State Benefits: " .. pay .. "$", value, 255, 194, 14)
-					outputChatBox("    Business Profit: " .. profit .. "$", value, 255, 194, 14)
-					outputChatBox("    Bank Interest (" .. interestrate*1000 .. "%): " .. interest .. "$", value, 255, 194, 14)
-					if (donator>0) then
-						outputChatBox("    Donator Money: " .. donatormoney .. "$", value, 255, 194, 14)
-					end
-					outputChatBox("----------------------------------------------------------", value, 255, 194, 14)
-					outputChatBox("  Gross Income: " .. unemployedPay+profit+interest+donatormoney .. "$ (Wire-Transferred to bank)", value, 255, 194, 14)
+				if unemployedPay >= govAmount then
+					unemployedPay = 0
 				end
+				
+				payWage( value, unemployedPay, false, 0 )
+				govAmount = govAmount - unemployedPay
 			end
 			triggerClientEvent(value, "cPayDay", value)
 			local hoursplayed = getElementData(value, "hoursplayed")

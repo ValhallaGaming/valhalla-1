@@ -899,7 +899,7 @@ function requestAchievements()
 		mysql_free_result(aresult)
 	end
 	
-	--triggerClientEvent(source, "returnAchievements", source, achievementCount, achievementPointsCount, achievements)
+	triggerClientEvent(source, "returnAchievements", source, achievementCount, achievementPointsCount, achievements)
 end
 addEvent("requestAchievements", true)
 addEventHandler("requestAchievements", getRootElement(), requestAchievements)

@@ -760,7 +760,7 @@ function toggleLock(source, key, keystate)
         local owner = getElementData(veh, "owner")
         
         if (owner ~= -2) then
-    		if not (locklessVehicle[model] and (getVehicleType(veh)~="boat")) then
+    		if not (locklessVehicle[model] and (getVehicleType(veh)~="Boat")) then
     			local locked = isVehicleLocked(veh)
     			local seat = getPedOccupiedVehicleSeat(source)
     			if (seat==0) then
@@ -782,7 +782,7 @@ end
 function checkLock(thePlayer)
 	local locked = isVehicleLocked(source)
 	
-	if (locked) then
+	if (locked) and (getVehicleType(source)~="Boat") then
 		cancelEvent()
 		outputChatBox("The door is locked.", thePlayer)
 	end

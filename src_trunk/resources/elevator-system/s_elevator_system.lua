@@ -220,7 +220,7 @@ function enterElevator(playa, shape)
 	local check1 = isElementWithinColShape ( playa, shape )
 	if (check1 == true) then
 		local check2 = getElementData(playa, "UsedElevator")
-		if(check2 == nil) then
+		if not (check2) then
 			--unbindKeys(playa, shape)
 			local x = getElementData(shape, "x")
 			local y = getElementData(shape, "y")
@@ -237,6 +237,7 @@ function enterElevator(playa, shape)
 			end
 			local interior = getElementData(shape, "interior")
 			local dimension = getElementData(shape, "dimension")
+			triggerClientEvent(playa, "usedElevator", playa, dimension)
 			setElementPosition(playa, x, y, z)
 			setElementInterior(playa, interior)
 			setCameraInterior(playa, interior)

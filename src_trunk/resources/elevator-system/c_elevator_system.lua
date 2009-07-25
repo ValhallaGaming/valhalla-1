@@ -8,5 +8,27 @@ end
 addEvent( "onClientWeatherChange", true )
 addEventHandler( "onClientWeatherChange", getRootElement(), ChangePlayerWeather )
 
+elevatortimer = nil
+function usedElevator(dimension)
+	if (isTimer(elevatorTimer)) then killTimer(elevatortimer) end
+	
+	setPedFrozen(getLocalPlayer(), true)
+	elevatortimer = setTimer(doGroundCheck, 100, 0)
+end
+addEvent( "usedElevator", true )
+addEventHandler( "usedElevator", getRootElement(), usedElevator )
 
+function doGroundCheck()
+	local x, y, z = getElementPosition(getLocalPlayer())
+	local groundz = getGroundPosition(x, y, z)
+	
+	local clear = isLineOfSightClear(x, y, z, x, y, z-10, true, true, true, true, false, false, false, false, getLocalPlayer())
 
+	if (not clear) then
+		setPedFrozen(getLocalPlayer(), false)
+		killTimer(elevatortimer)
+		elevatortimer = nil
+		setPedFrozen(getLocalPlayer(), false)
+		setElementVelocity(getLocalPlayer(), 0, 0, 0)
+	end
+end

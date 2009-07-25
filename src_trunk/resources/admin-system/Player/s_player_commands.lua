@@ -1028,18 +1028,16 @@ function teleportToPresetPoint(thePlayer, commandName, target)
 			if (target=="ls") then -- LOS SANTOS
 				if (isPedInVehicle(thePlayer)) then
 					local veh = getPedOccupiedVehicle(thePlayer)
-					removePedFromVehicle(thePlayer)
+					setTimer(setVehicleTurnVelocity, 50, 20, veh, 0, 0, 0)
 					setElementPosition(veh, 1520.0029296875, -1701.2425537109, 16.546875)
 					setVehicleRotation(veh, 0, 0, 275.82763671875)
+					setTimer(setVehicleTurnVelocity, 50, 20, veh, 0, 0, 0)
 					setElementDimension(veh, 0)
 					setElementInterior(veh, 0)
 					
-					setElementPosition(thePlayer, 1520.0029296875, -1701.2425537109, 16.546875)
-					setVehicleRotation(thePlayer, 0, 0, 275.82763671875)
 					setElementDimension(thePlayer, 0)
 					setElementInterior(thePlayer, 0)
 					setCameraInterior(thePlayer, 0)
-					warpPedIntoVehicle(thePlayer, veh)
 				else
 					setElementPosition(thePlayer, 1520.0029296875, -1701.2425537109, 13.546875)
 					setPedRotation(thePlayer, 275.82763671875)
@@ -1051,18 +1049,17 @@ function teleportToPresetPoint(thePlayer, commandName, target)
 			elseif (target=="sf") then -- SAN FIERRO
 				if (isPedInVehicle(thePlayer)) then
 					local veh = getPedOccupiedVehicle(thePlayer)
-					removePedFromVehicle(thePlayer)
-					setElementPosition(veh, -1689.0689697266, -536.7919921875, 15.854997634888)
+					setVehicleTurnVelocity(veh, 0, 0, 0)
+					setElementPosition(veh, -1689.0689697266, -536.7919921875, 18.854997634888)
 					setVehicleRotation(veh, 0, 0, 252.35975646973)
+					setTimer(setVehicleTurnVelocity, 50, 20, veh, 0, 0, 0)
+					
 					setElementDimension(veh, 0)
 					setElementInterior(veh, 0)
 					
-					setElementPosition(thePlayer, -1689.0689697266, -536.7919921875, 15.854997634888)
-					setVehicleRotation(thePlayer, 0, 0, 252.35975646973)
 					setElementDimension(thePlayer, 0)
 					setElementInterior(thePlayer, 0)
 					setCameraInterior(thePlayer, 0)
-					warpPedIntoVehicle(thePlayer, veh)
 				else
 					setElementPosition(thePlayer, -1689.0689697266, -536.7919921875, 15.854997634888)
 					setPedRotation(thePlayer, 252.35975646973)
@@ -1074,18 +1071,16 @@ function teleportToPresetPoint(thePlayer, commandName, target)
 			elseif (target=="lv") then -- LAS VENTURAS
 				if (isPedInVehicle(thePlayer)) then
 					local veh = getPedOccupiedVehicle(thePlayer)
-					removePedFromVehicle(thePlayer)
+					setVehicleTurnVelocity(veh, 0, 0, 0)
 					setElementPosition(veh, 1691.6801757813, 1449.1293945313, 12.765375137329)
 					setVehicleRotation(veh, 0, 0, 268.20239257813)
+					setTimer(setVehicleTurnVelocity, 50, 20, veh, 0, 0, 0)
 					setElementDimension(veh, 0)
 					setElementInterior(veh, 0)
 					
-					setElementPosition(thePlayer, 1691.6801757813, 1449.1293945313, 12.765375137329)
-					setVehicleRotation(thePlayer, 0, 0, 268.20239257813)
 					setElementDimension(thePlayer, 0)
 					setElementInterior(thePlayer, 0)
 					setCameraInterior(thePlayer, 0)
-					warpPedIntoVehicle(thePlayer, veh)
 				else
 					setElementPosition(thePlayer, 1691.6801757813, 1449.1293945313, 12.765375137329)
 					setPedRotation(thePlayer, 268.20239257813)
@@ -1327,13 +1322,14 @@ function gotoPlayer(thePlayer, commandName, target)
 					
 					if (isPedInVehicle(thePlayer)) then
 						local veh = getPedOccupiedVehicle(thePlayer)
-						setElementPosition(thePlayer, x, y, z)
+						setVehicleTurnVelocity(veh, 0, 0, 0)
                         setElementInterior(thePlayer, interior)
                         setElementDimension(thePlayer, dimension)
                         setElementInterior(veh, interior)
                         setElementDimension(veh, dimension)
-                        setElementPosition(veh, x, y, z)
+                        setElementPosition(veh, x, y, z + 1)
                         warpPedIntoVehicle ( thePlayer, veh ) 
+						setTimer(setVehicleTurnVelocity, 50, 20, veh, 0, 0, 0)
 					else
 						setElementPosition(thePlayer, x, y, z)
 						setElementInterior(thePlayer, interior)
@@ -1380,7 +1376,9 @@ function getPlayer(thePlayer, commandName, target)
 					
 					if (isPedInVehicle(targetPlayer)) then
 						local veh = getPedOccupiedVehicle(targetPlayer)
-						setElementPosition(veh, x, y, z)
+						setVehicleTurnVelocity(veh, 0, 0, 0)
+						setElementPosition(veh, x, y, z + 1)
+						setTimer(setVehicleTurnVelocity, 50, 20, veh, 0, 0, 0)
 						setElementInterior(veh, interior)
 						setElementDimension(veh, dimension)
 						

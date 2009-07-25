@@ -45,9 +45,9 @@ function createGeneralshop(thePlayer, commandName, shoptype)
 					setElementDimension(colCircle, dimension)
 					setElementInterior(colCircle, interior)
 					
-					setElementData(colCircle, "dbid", id)
-					setElementData(colCircle, "type", "shop")
-					setElementData(colCircle, "shoptype", tonumber(shoptype))
+					setElementData(colCircle, "dbid", id, false)
+					setElementData(colCircle, "type", "shop", false)
+					setElementData(colCircle, "shoptype", tonumber(shoptype), false)
 					
 					exports.pool:allocateElement(colCircle)
 					exports.irc:sendMessage("[ADMIN] " .. getPlayerName(thePlayer) .. " created shop #" .. id .. " - type "..shoptype..".")
@@ -160,9 +160,9 @@ function loadAllGeneralshops(res)
 				
 				exports.pool:allocateElement(colCircle)
 				
-				setElementData(colCircle, "dbid", id)
-				setElementData(colCircle, "type", "shop")
-				setElementData(colCircle, "shoptype", tonumber(shoptype))
+				setElementData(colCircle, "dbid", id, false)
+				setElementData(colCircle, "type", "shop", false)
+				setElementData(colCircle, "shoptype", tonumber(shoptype), false)
 				counter = counter + 1
 			end
 			mysql_free_result(result)
@@ -240,7 +240,7 @@ function givePlayerBoughtItem(itemID, itemValue, theCost, isWeapon, name, supply
 				exports.global:takePlayerSafeMoney(source, tonumber(theCost))
 				exports.global:givePlayerItem(source, 16, tonumber(itemValue))
 				setPedSkin(source, tonumber(itemValue))
-				setElementData(source, "casualskin", tonumber(itemValue))
+				setElementData(source, "casualskin", tonumber(itemValue), false)
 				exports.global:givePlayerAchievement(source, 21)
 			elseif (isWeapon==false) then
 				if(exports.global:givePlayerItem(source, itemID, itemValue)) then
@@ -332,7 +332,7 @@ function givePlayerBoughtItem(itemID, itemValue, theCost, isWeapon, name, supply
 					exports.global:takePlayerSafeMoney(source, tonumber(theCost))
 					exports.global:givePlayerItem(source, 16, tonumber(itemValue))
 					setPedSkin(source, tonumber(itemValue))
-					setElementData(source, "casualskin", tonumber(itemValue))
+					setElementData(source, "casualskin", tonumber(itemValue), false)
 					exports.global:givePlayerAchievement(source, 21)
 				elseif (isWeapon==false) then
 					if(exports.global:givePlayerItem(source, itemID, itemValue)) then
@@ -384,7 +384,7 @@ function givePlayerBoughtItem(itemID, itemValue, theCost, isWeapon, name, supply
 				if (theOwner) then
 					--exports.global:givePlayerSafeMoney(theOwner, theCost)
 					local profits = getElementData(theOwner, "businessprofit")
-					setElementData(theOwner, "businessprofit", profits+theCost)
+					setElementData(theOwner, "businessprofit", profits+theCost, false)
 				end
 				
 				if (supplies-1<10) then

@@ -27,7 +27,7 @@ function monitorSpeed(element, matchingDimension)
 	if (matchingDimension) and (getElementType(element)=="vehicle")then
 		local thePlayer = getVehicleOccupant(element)
 		local timer = setTimer(checkSpeed, 200, 40, element, thePlayer, source)
-		setElementData(thePlayer, "cameratimer", timer)
+		setElementData(thePlayer, "cameratimer", timer, false)
 	end
 end
 

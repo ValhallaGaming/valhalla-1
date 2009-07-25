@@ -8,7 +8,7 @@ function engineBreak()
 
 			if (rand==1) then -- 20% chance
 				setVehicleEngineState(source, false)
-				setElementData(source, "engine", 0)
+				setElementData(source, "engine", 0, false)
 				exports.global:sendLocalDoAction(driver, "The engine stalls due to damage.")
 			end
 		elseif (health<=300) then
@@ -16,7 +16,7 @@ function engineBreak()
 
 			if (rand==1) then -- 50% chance
 				setVehicleEngineState(source, false)
-				setElementData(source, "engine", 0)
+				setElementData(source, "engine", 0, false)
 				exports.global:sendLocalDoAction(driver, "The engine breaks down.")
 			end
 		end

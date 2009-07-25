@@ -1241,9 +1241,9 @@ function updateInteriorExit(thePlayer, commandName)
 				elseif (pickupType=="interior") then
 					local pickupID = getElementData(thePickup, "dbid")
 					if (pickupID==dbid) then
-						setElementData(thePickup, "x", x)
-						setElementData(thePickup, "y", y)
-						setElementData(thePickup, "z", z)
+						setElementData(thePickup, "x", x, false)
+						setElementData(thePickup, "y", y, false)
+						setElementData(thePickup, "z", z, false)
 					end
 				end
 			end
@@ -1306,7 +1306,7 @@ function sellProperty(thePlayer, commandName)
 		if (tonumber(owner)==getElementData(thePlayer, "dbid") or exports.global:isPlayerAdmin(thePlayer)) and (inttype==3) then -- If a rentable interior.
 			setElementPosition(thePlayer, x, y, z)
 			setPedRotation(thePlayer, rot)
-			setElementData(thePlayer, "interiormarker", nil)
+			removeElementData(thePlayer, "interiormarker")
 			setElementInterior(thePlayer, interior)
 			setElementDimension(thePlayer, dimension)
 			setCameraInterior(thePlayer, interior)
@@ -1322,7 +1322,7 @@ function sellProperty(thePlayer, commandName)
 		elseif (tonumber(owner)==getElementData(thePlayer, "dbid") or exports.global:isPlayerAdmin(thePlayer)) and (inttype~=2) then -- If a business or house.
 			setElementPosition(thePlayer, x, y, z)
 			setPedRotation(thePlayer, rot)
-			setElementData(thePlayer, "interiormarker", nil)
+			removeElementData(thePlayer, "interiormarker")
 			setElementInterior(thePlayer, interior)
 			setElementDimension(thePlayer, dimension)
 			setCameraInterior(thePlayer, interior)
@@ -1387,7 +1387,7 @@ function deleteInterior(thePlayer, commandName)
 			end
 			setElementPosition(thePlayer, x, y, z)
 			setPedRotation(thePlayer, rot)
-			setElementData(thePlayer, "interiormarker", nil)
+			removeElementData(thePlayer, "interiormarker")
 			setElementInterior(thePlayer, interior)
 			setElementDimension(thePlayer, dimension)
 			setCameraInterior(thePlayer, interior)
@@ -1514,7 +1514,7 @@ function loadAllInteriors()
 		
 	local players = exports.pool:getPoolElementsByType("player")
 	for k, thePlayer in ipairs(players) do
-		setElementData(thePlayer, "interiormarker", nil)
+		removeElementData(thePlayer, "interiormarker")
 	end
 		
 	if (result) then
@@ -1620,26 +1620,26 @@ addEventHandler("onResourceStart", getResourceRootElement(getThisResource()), lo
 
 function setPickupElementData(pickup, id, ix, iy, iz, optAngle, interior, locked, owner, inttype, cost, name, items, items_values, max_items, tennant, rentable, rent, interiorwithin, x, y, z, dimension, money)
 	if(pickup) then
-		setElementData(pickup, "dbid", id)
-		setElementData(pickup, "x", ix)
-		setElementData(pickup, "y", iy)
-		setElementData(pickup, "z", iz)
-		setElementData(pickup, "angle", optAngle)
-		setElementData(pickup, "interior", interior)
-		setElementData(pickup, "locked", locked)
-		setElementData(pickup, "owner", owner)
-		setElementData(pickup, "inttype", inttype)
-		setElementData(pickup, "cost", cost)
-		setElementData(pickup, "name", name)
-		setElementData(pickup, "items", items)
-		setElementData(pickup, "item_values", items_values)
-		setElementData(pickup, "max_items", max_items)
-		setElementData(pickup, "tennant", tennant)
-		setElementData(pickup, "rentable", rentable)
-		setElementData(pickup, "rent", rent)
-		setElementData(pickup, "money", money)
+		setElementData(pickup, "dbid", id, false)
+		setElementData(pickup, "x", ix, false)
+		setElementData(pickup, "y", iy, false)
+		setElementData(pickup, "z", iz, false)
+		setElementData(pickup, "angle", optAngle, false)
+		setElementData(pickup, "interior", interior, false)
+		setElementData(pickup, "locked", locked, false)
+		setElementData(pickup, "owner", owner, false)
+		setElementData(pickup, "inttype", inttype, false)
+		setElementData(pickup, "cost", cost, false)
+		setElementData(pickup, "name", name, false)
+		setElementData(pickup, "items", items, false)
+		setElementData(pickup, "item_values", items_values, false)
+		setElementData(pickup, "max_items", max_items, false)
+		setElementData(pickup, "tennant", tennant, false)
+		setElementData(pickup, "rentable", rentable, false)
+		setElementData(pickup, "rent", rent, false)
+		setElementData(pickup, "money", money, false)
 		setElementDimension(pickup, dimension)
-		setElementData(pickup, "type", "interior")
+		setElementData(pickup, "type", "interior", false)
 		setElementInterior(pickup, interiorwithin, x, y, z)
 		
 		local shape = getElementColShape(pickup)
@@ -1651,18 +1651,18 @@ end
 function setIntPickupElementData(intpickup, id, x, y, z, rot, locked, owner, inttype, interiorwithin, dimension, interior, ix, iy, iz)
 	if(intpickup) then
 		-- For Interior Pickup
-		setElementData(intpickup, "dbid", id)
-		setElementData(intpickup, "x", x)
-		setElementData(intpickup, "y", y)
-		setElementData(intpickup, "z", z)
-		setElementData(intpickup, "angle", rot)
-		setElementData(intpickup, "locked", locked)
-		setElementData(intpickup, "owner", owner)
-		setElementData(intpickup, "inttype", inttype)
-		setElementData(intpickup, "interior", interiorwithin)
-		setElementData(intpickup, "dimension", dimension)
+		setElementData(intpickup, "dbid", id, false)
+		setElementData(intpickup, "x", x, false)
+		setElementData(intpickup, "y", y, false)
+		setElementData(intpickup, "z", z, false)
+		setElementData(intpickup, "angle", rot, false)
+		setElementData(intpickup, "locked", locked, false)
+		setElementData(intpickup, "owner", owner, false)
+		setElementData(intpickup, "inttype", inttype, false)
+		setElementData(intpickup, "interior", interiorwithin, false)
+		setElementData(intpickup, "dimension", dimension, false)
 		setElementInterior(intpickup, interior, ix, iy, iz)
-		setElementDimension(intpickup, id)
+		setElementDimension(intpickup, id, false)
 		setElementData(intpickup, "type", "interiorexit") -- To identify it later
 		
 		local shape = getElementColShape(intpickup)
@@ -1720,7 +1720,7 @@ function hitInteriorPickup(thePlayer)
 				triggerClientEvent(thePlayer, "displayInteriorName", thePlayer, name, ownerName, inttype, cost)
 			end
 			
-			setElementData(thePlayer, "interiormarker", source)
+			setElementData(thePlayer, "interiormarker", source, false)
 			setTimer(resetInteriorMarker, 3000, 1, thePlayer)
 		end
 		cancelEvent() -- Stop it despawning
@@ -1730,7 +1730,7 @@ addEventHandler("onPickupHit", getRootElement(), hitInteriorPickup)
 
 function resetInteriorMarker(thePlayer)
 	if(getPlayerName(thePlayer)) then
-		setElementData(thePlayer, "interiormarker", nil)
+		removeElementData(thePlayer, "interiormarker")
 	end
 end
 
@@ -2009,7 +2009,7 @@ function changeInteriorName( thePlayer, commandName, ...)
 			if (pickupType=="interior") then
 				local pickupID = getElementData(thePickup, "dbid")
 				if (pickupID==id) then
-					setElementData(thePickup, "name", tostring(name))
+					setElementData(thePickup, "name", tostring(name), false)
 					break
 				end
 			end

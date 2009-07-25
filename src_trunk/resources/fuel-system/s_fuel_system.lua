@@ -55,14 +55,14 @@ function fuelDepleting()
 							distance = getDistanceBetweenPoints2D(x, y, oldx, oldy)
 							newFuel = fuel - (distance/200)
 							setElementData(veh, "fuel", newFuel)
-							setElementData(veh, "oldx", x)
-							setElementData(veh, "oldy", y)
-							setElementData(veh, "oldz", z)
+							setElementData(veh, "oldx", x, false)
+							setElementData(veh, "oldy", y, false)
+							setElementData(veh, "oldz", z, false)
 
 							if (newFuel<1) then
 								triggerClientEvent(v, "setClientFuel", v, newFuel)
 								setVehicleEngineState(veh, false)
-								setElementData(veh, "engine", 0)
+								setElementData(veh, "engine", 0, false)
 							else
 								triggerClientEvent(v, "setClientFuel", v, newFuel)
 							end
@@ -97,8 +97,8 @@ function createFuelPoint(thePlayer, commandName)
 			exports.pool:allocateElement(theSphere)
 			setElementDimension(theSphere, dimension)
 			setElementInterior(theSphere, interior)
-			setElementData(theSphere, "type", "fuel")
-			setElementData(theSphere, "dbid", id)
+			--setElementData(theSphere, "type", "fuel", false)
+			--setElementData(theSphere, "dbid", id, false)
 			
 			outputChatBox("Fuel point added with ID #" .. id .. ".", thePlayer)
 			exports.irc:sendMessage("[ADMIN] " .. getPlayerName( thePlayer ) .. " spawned fuel point " .. id)
@@ -161,8 +161,8 @@ function loadFuelPoints(res)
 				exports.pool:allocateElement(theSphere)
 				setElementDimension(theSphere, dimension)
 				setElementInterior(theSphere, interior)
-				setElementData(theSphere, "type", "fuel")
-				setElementData(theSphere, "dbid", id)
+				--setElementData(theSphere, "type", "fuel", false)
+				--setElementData(theSphere, "dbid", id, false)
 				counter = counter + 1
 			end
 			mysql_free_result(result)
@@ -332,7 +332,7 @@ function fuelTheVehicle(thePlayer, theVehicle, theShape, theLitres, free)
 		
 			local oldFuel = getElementData(theVehicle, "fuel")
 			local newFuel = oldFuel+theLitres
-			setElementData(theVehicle, "fuel", newFuel)
+			--setElementData(theVehicle, "fuel", newFuel)
 			triggerClientEvent(thePlayer, "setClientFuel", thePlayer, newFuel)
 			
 			outputChatBox("Gas Station Receipt:", thePlayer)

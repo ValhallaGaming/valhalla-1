@@ -73,9 +73,9 @@ function callSomeone(thePlayer, commandName, phoneNumber)
 						if (targetCalling) then
 							outputChatBox("You get a busy tone.", thePlayer)
 						else
-							setElementData(thePlayer, "calling", foundElement)
-							setElementData(thePlayer, "called", true)
-							setElementData(foundElement, "calling", thePlayer)
+							setElementData(thePlayer, "calling", foundElement, false)
+							setElementData(thePlayer, "called", true, false)
+							setElementData(foundElement, "calling", thePlayer, false)
 							
 							-- local player
 							
@@ -113,8 +113,8 @@ function cancelCall(thePlayer)
 	local phoneState = getElementData(thePlayer, "phonestate")
 	
 	if (phoneState==0) then
-		setElementData(thePlayer, "calling", nil)
-		setElementData(thePlayer, "called", nil)
+		setElementData(thePlayer, "calling", nil, false)
+		setElementData(thePlayer, "called", nil, false)
 	end
 end
 
@@ -132,8 +132,8 @@ function answerPhone(thePlayer, commandName)
 					outputChatBox("You picked up the phone.", thePlayer)
 					outputChatBox("They picked up the phone.", target)
 					exports.global:sendLocalMeAction(thePlayer, "takes out a cell phone.")
-					setElementData(thePlayer, "phonestate", 1) -- Your in an actual call
-					setElementData(calling, "phonestate", 1) -- Your in an actual call
+					setElementData(thePlayer, "phonestate", 1, false) -- Your in an actual call
+					setElementData(calling, "phonestate", 1, false) -- Your in an actual call
 					exports.global:sendLocalMeAction(thePlayer, "answers their cellphone.")
 					
 					exports.global:applyAnimation(calling, "ped", "phone_in", 1.0, 1.0, 0.0, false, true, true)
@@ -171,12 +171,12 @@ function hangupPhone(thePlayer, commandName)
 				end
 			
 				outputChatBox("They hung up.", target)
-				setElementData(thePlayer, "calling", nil)
-				setElementData(calling, "calling", nil)
-				setElementData(thePlayer, "caller", nil)
-				setElementData(calling, "caller", nil)
-				setElementData(thePlayer, "phonestate", 0)
-				setElementData(calling, "phonestate", 0)
+				removeElementData(thePlayer, "calling")
+				removeElementData(calling, "calling")
+				removeElementData(thePlayer, "caller")
+				removeElementData(calling, "caller")
+				setElementData(thePlayer, "phonestate", 0, false)
+				setElementData(calling, "phonestate", 0, false)
 				exports.global:sendLocalMeAction(thePlayer, "hangs up their cellphone.")
 				
 				exports.global:applyAnimation(thePlayer, "ped", "phone_out", 1.0, 1.0, 0.0, false, true, true)
@@ -210,11 +210,11 @@ function loudSpeaker(thePlayer, commandName)
 			if (phoneState==1) then
 				exports.global:sendLocalMeAction(thePlayer, "turns on loudspeaker on the cellphone.")
 				outputChatBox("You flick your phone onto loudspeaker.", thePlayer)
-				setElementData(thePlayer, "phonestate", 2)
+				setElementData(thePlayer, "phonestate", 2, false)
 			elseif (phoneState==1) then
 				exports.global:sendLocalMeAction(thePlayer, "turns off loudspeaker on the cellphone.")
 				outputChatBox("You flick your phone off of loudspeaker.", thePlayer)
-				setElementData(thePlayer, "phonestate", 1)
+				setElementData(thePlayer, "phonestate", 1, false)
 			else
 				outputChatBox("You are not in a call.", thePlayer, 255, 0 ,0)
 			end

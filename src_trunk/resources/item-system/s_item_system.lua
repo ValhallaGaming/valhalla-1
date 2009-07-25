@@ -92,25 +92,25 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 				local locked = getElementData(found, "locked")
 				
 				if (locked==1) then
-					setElementData(found, "locked", 0)
+					setElementData(found, "locked", 0, false)
 					mysql_query(handler, "UPDATE interiors SET locked='0' WHERE id='" .. id .. "' LIMIT 1")
 					exports.global:sendLocalMeAction(source, "puts the key in the door to unlock it.")
 					
 					for key, value in ipairs(exports.pool:getPoolElementsByType("pickup")) do
 						local dbid = getElementData(value, "dbid")
 						if (dbid==id) and (value~=found) then
-							setElementData(value, "locked", 0)
+							setElementData(value, "locked", 0, false)
 						end
 					end
 				else
-					setElementData(found, "locked", 1)
+					setElementData(found, "locked", 1, false)
 					mysql_query(handler, "UPDATE interiors SET locked='1' WHERE id='" .. id .. "' LIMIT 1")
 					exports.global:sendLocalMeAction(source, "puts the key in the door to lock it.")
 					
 					for key, value in ipairs(exports.pool:getPoolElementsByType("pickup")) do
 						local dbid = getElementData(value, "dbid")
 						if (dbid==id) and (value~=found) then
-							setElementData(value, "locked", 1)
+							setElementData(value, "locked", 1, false)
 						end
 					end
 				end
@@ -200,7 +200,7 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 			
 		elseif (itemID==16) then -- clothes
 			setPedSkin(source, tonumber(itemValue))
-			setElementData(source, "casualskin", tonumber(itemValue))
+			setElementData(source, "casualskin", tonumber(itemValue), false)
 		elseif (itemID==17) then -- watch
 			local realtime = getRealTime()
 			local hour = realtime.hour
@@ -250,7 +250,7 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 				local fixedName = "(" .. tostring(pid) .. ") Unknown Person"
 				setPlayerNametagText(source, tostring(fixedName))
 
-				setElementData(source, "gasmask", 1)
+				setElementData(source, "gasmask", 1, false)
 			elseif (gasmask==1) then
 				exports.global:sendLocalMeAction(source, "slips a black gas mask off their face.")
 				
@@ -260,7 +260,7 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 				local fixedName = "(" .. tostring(pid) .. ") " .. name
 				setPlayerNametagText(source, tostring(fixedName))
 
-				setElementData(source, "gasmask", 0)
+				setElementData(source, "gasmask", 0, false)
 			end
 		elseif (itemID==27) then -- FLASHBANG
 			exports.global:takePlayerItem(source, itemID, itemValue)
@@ -309,14 +309,14 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 				local locked = getElementData(found, "locked")
 				
 				if (locked==1) then
-					setElementData(found, "locked", 0)
+					setElementData(found, "locked", 0, false)
 					mysql_query(handler, "UPDATE interiors SET locked='0' WHERE id='" .. id .. "' LIMIT 1")
 					exports.global:sendLocalMeAction(source, "swings the ram into the door, opening it.")
 					
 					for key, value in ipairs(exports.pool:getPoolElementsByType("pickup")) do
 						local dbid = getElementData(value, "dbid")
 						if (dbid==id) and (value~=found) then
-							setElementData(value, "locked", 0)
+							setElementData(value, "locked", 0, false)
 						end
 					end
 				else
@@ -379,7 +379,7 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 				local fixedName = "(" .. tostring(pid) .. ") Unknown Person"
 				setPlayerNametagText(source, tostring(fixedName))
 
-				setElementData(source, "mask", 1)
+				setElementData(source, "mask", 1, false)
 			elseif (mask==1) then
 				exports.global:sendLocalMeAction(source, "slips a mask off their face.")
 				
@@ -389,7 +389,7 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 				local fixedName = "(" .. tostring(pid) .. ") " .. name
 				setPlayerNametagText(source, tostring(fixedName))
 
-				setElementData(source, "mask", 0)
+				setElementData(source, "mask", 0, false)
 			end
 		elseif (itemID==57) then -- FUEL CAN
 			if not (isPedInVehicle(source)) then
@@ -540,7 +540,7 @@ function dropItem(itemID, itemValue, itemName, x, y, z, gz, isWeapon, items, ite
 		
 		local insert = mysql_query(handler, "INSERT INTO worlditems SET itemid='" .. itemID .. "', itemvalue='" .. itemValue .. "', itemname='" .. itemName .. "', yearday='" .. yearday .. "', x='" .. x .. "', y='" .. y .. "', z='" .. gz+0.3 .. "', dimension='" .. dimension .. "', interior='" .. interior .. "', items='" .. stringitems .. "', itemvalues='" .. stringvalues .. "'")
 		local id = mysql_insert_id(handler)
-		setElementData(obj, "id", id)
+		setElementData(obj, "id", id, false)
 		setElementData(obj, "itemID", itemID)
 		setElementData(obj, "itemValue", itemValue)
 		setElementData(obj, "itemName", itemName)
@@ -588,7 +588,7 @@ function dropItem(itemID, itemValue, itemName, x, y, z, gz, isWeapon, items, ite
 		
 		mysql_query(handler, "INSERT INTO worlditems SET itemid='" .. itemID .. "', itemvalue='" .. itemValue .. "', itemname='" .. itemName .. "', yearday='" .. yearday .. "', x='" .. x .. "', y='" .. y .. "', z='" .. gz+0.1 .. "', dimension='" .. dimension .. "', interior='" .. interior .. "'")
 		local id = mysql_insert_id(handler)
-		setElementData(obj, "id", id)
+		setElementData(obj, "id", id, false)
 		setElementData(obj, "itemID", itemID)
 		setElementData(obj, "itemValue", itemValue)
 		setElementData(obj, "itemName", itemName)
@@ -634,7 +634,7 @@ function loadWorldItems(res)
 					exports.pool:allocateElement(obj)
 					setElementDimension(obj, dimension)
 					setElementInterior(obj, interior)
-					setElementData(obj, "id", tonumber(row[1]))
+					setElementData(obj, "id", tonumber(row[1]), false)
 					setElementData(obj, "itemID", tonumber(row[2]))
 					setElementData(obj, "itemValue", tonumber(row[3]))
 					setElementData(obj, "itemName", tostring(row[4]))
@@ -651,7 +651,7 @@ function loadWorldItems(res)
 					exports.pool:allocateElement(obj)
 					setElementDimension(obj, dimension)
 					setElementInterior(obj, interior)
-					setElementData(obj, "id", tonumber(row[1]))
+					setElementData(obj, "id", tonumber(row[1]), false)
 					setElementData(obj, "itemID", tonumber(row[2]))
 					setElementData(obj, "itemValue", tonumber(row[3]))
 					setElementData(obj, "itemName", tostring(row[4]))
@@ -684,7 +684,7 @@ function loadWorldItems(res)
 					exports.pool:allocateElement(obj)
 					setElementDimension(obj, dimension)
 					setElementInterior(obj, interior)
-					setElementData(obj, "id", tonumber(row[1]))
+					setElementData(obj, "id", tonumber(row[1]), false)
 					setElementData(obj, "itemID", tonumber(row[2]))
 					setElementData(obj, "itemValue", tonumber(row[3]))
 					setElementData(obj, "itemName", tostring(row[4]))
@@ -711,7 +711,7 @@ function loadWorldItems(res)
 						setElementData(obj, "itemvalues", itemvalues)
 					end
 				end
-			--end
+			end
 		end
 		exports.irc:sendMessage("[SCRIPT] Loaded " .. tonumber(mysql_num_rows(result)) .. " world items.")
 		mysql_free_result(result)
@@ -729,7 +729,7 @@ function resetAnim(thePlayer)
 	exports.global:removeAnimation(thePlayer)
 end
 
-function pickupItem(object, id, itemID, itemValue, itemName)
+function pickupItem(object, itemID, itemValue, itemName)
 	local x, y, z = getElementPosition(source)
 	local ox, oy, oz = getElementPosition(object)
 
@@ -743,6 +743,7 @@ function pickupItem(object, id, itemID, itemValue, itemName)
 		exports.global:sendLocalMeAction(source, "bends over and picks up a " .. itemName .. ".")
 		local items = getElementData(object, "items")
 		local itemvalues = getElementData(object, "itemvalues")
+		local id = getElementData(object, "id")
 		destroyElement(object)
 
 		if (tostring(itemName)~=getWeaponNameFromID(tonumber(itemID)) and tostring(itemName)~="Body Armor") then

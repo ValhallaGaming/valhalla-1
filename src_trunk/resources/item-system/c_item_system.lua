@@ -45,7 +45,6 @@ end
 addEventHandler("onClientClick", getRootElement(), clickItem, true)
 
 function showItemMenu()
-	local id = getElementData(item, "id")
 	local itemID = getElementData(item, "itemID")
 	local itemValue = getElementData(item, "itemValue")
 	local itemName = getElementData(item, "itemName")
@@ -91,14 +90,13 @@ function pickupItem(button, state)
 		if (restrain) and (restrain==1) then
 			outputChatBox("You are cuffed.", 255, 0, 0)
 		else
-			local id = getElementData(item, "id")
 			local itemID = getElementData(item, "itemID")
 			local itemValue = getElementData(item, "itemValue")
 			local itemName = getElementData(item, "itemName")
 			setElementData(item, "pickedup", true)
 			showCursor(false)
 			triggerEvent("cursorHide", getLocalPlayer())
-			triggerServerEvent("pickupItem", getLocalPlayer(), item, id, itemID, itemValue, itemName)
+			triggerServerEvent("pickupItem", getLocalPlayer(), item, itemID, itemValue, itemName)
 			hideItemMenu()
 		end
 	end

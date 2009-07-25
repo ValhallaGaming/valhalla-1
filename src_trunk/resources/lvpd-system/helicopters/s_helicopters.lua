@@ -24,7 +24,7 @@ function unsitInHelicopter(vehicle)
 					end
 					
 					if (removed) then
-						setElementData(value, "players", players)
+						setElementData(value, "players", players, false)
 					end
 				end
 			end
@@ -40,7 +40,7 @@ function unsitInHelicopter(vehicle)
 					table.remove(players, key)
 				end
 			end
-			setElementData(vehicle, "players", players)
+			setElementData(vehicle, "players", players, false)
 			removeElementData(source, "seat")
 			detachElements(source, vehicle)
 			exports.global:removeAnimation(source)
@@ -104,9 +104,9 @@ function sitInHelicopter(vehicle)
 		end
 		
 		table.insert(players, source)
-		setElementData(source, "seat", seat)
+		setElementData(source, "seat", seat, false)
 		
-		setElementData(vehicle, "players", players)
+		setElementData(vehicle, "players", players, false)
 	else
 		outputChatBox("This helicopter is full.", source, 255, 0, 0)
 	end

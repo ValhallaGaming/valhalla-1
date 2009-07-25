@@ -44,8 +44,8 @@ function createSpray(thePlayer, commandName)
 			exports.pool:allocateElement(shape)
 			setElementInterior(shape, interior)
 			setElementDimension(shape, dimension)
-			setElementData(shape, "dbid", id)
-			setElementData(shape, "type", "paynspray")
+			setElementData(shape, "dbid", id, false)
+			setElementData(shape, "type", "paynspray", false)
 			
 			local sprayblip = createBlip(x, y, z, 63)
 			exports.pool:allocateElement(sprayblip)
@@ -81,8 +81,8 @@ function loadAllSprays(res)
 				exports.pool:allocateElement(shape)
 				setElementInterior(shape, interior)
 				setElementDimension(shape, dimension)
-				setElementData(shape, "dbid", id)
-				setElementData(shape, "type", "paynspray")
+				setElementData(shape, "dbid", id, false)
+				setElementData(shape, "type", "paynspray", false)
 					
 				count = count + 1
 			end

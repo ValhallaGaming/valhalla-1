@@ -97,12 +97,12 @@ function dropOffCar()
 				
 				if (dbid>0) then
 					respawnVehicle (vehicle)
-					setElementData(vehicle, "locked", 0)
+					setElementData(vehicle, "locked", 0, false)
 					setVehicleLocked(vehicle, false)
 				else
 					destroyElement(vehicle)
 				end
-				setElementData(thePlayer, "missionModel", nil)
+				removeElementData(thePlayer, "missionModel")
 				triggerClientEvent(thePlayer, "jackerCleanup", thePlayer)
 			end
 		end

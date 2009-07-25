@@ -115,16 +115,16 @@ function arrestPlayer(thePlayer, commandName, targetPlayerNick, fine, jailtime, 
 								outputChatBox("The player cannot afford such a fine.", thePlayer, 255, 0, 0)
 							else
 								local theTimer = setTimer(timerPDUnjailPlayer, 60000, jailtime, targetPlayer)
-								setElementData(targetPlayer, "pd.jailserved", 0)
-								setElementData(targetPlayer, "pd.jailtime", jailtime)
-								setElementData(targetPlayer, "pd.jailtimer", theTimer)
+								setElementData(targetPlayer, "pd.jailserved", 0, false)
+								setElementData(targetPlayer, "pd.jailtime", jailtime, false)
+								setElementData(targetPlayer, "pd.jailtimer", theTimer, false)
 								local station = 1
 								
 								if (isSouthDivision) then
 									station = 2
 								end
 								
-								setElementData(targetPlayer, "pd.jailstation", station)
+								setElementData(targetPlayer, "pd.jailstation", station, false)
 								
 								mysql_query(handler, "UPDATE characters SET pdjail='1', pdjail_time='" .. jailtime .. "', pdjail_station='" .. station .. "' WHERE charactername='" .. targetPlayerNick .. "'")
 								outputChatBox("You jailed " .. targetPlayerNick .. " for " .. jailtime .. " Minutes.", thePlayer, 255, 0, 0)
@@ -187,14 +187,14 @@ function timerPDUnjailPlayer(jailedPlayer)
 		local timeServed = getElementData(jailedPlayer, "pd.jailserved")
 		local timeLeft = getElementData(jailedPlayer, "pd.jailtime")
 		local username = getPlayerName(jailedPlayer)
-		setElementData(jailedPlayer, "pd.jailserved", timeServed+1)
+		setElementData(jailedPlayer, "pd.jailserved", timeServed+1, false)
 		local timeLeft = timeLeft - 1
-		setElementData(jailedPlayer, "pd.jailtime", timeLeft)
+		setElementData(jailedPlayer, "pd.jailtime", timeLeft, false)
 
 		if (timeLeft<=0) then
 			fadeCamera(jailedPlayer, false)
 			mysql_query(handler, "UPDATE characters SET pdjail_time='0', pdjail='0', pdjail_station='0' WHERE charactername='" .. username .. "'")
-			setElementData(jailedPlayer, "jailtimer", nil)
+			removeElementData(jailedPlayer, "jailtimer")
 			setElementDimension(jailedPlayer, 1)
 			setElementInterior(jailedPlayer, 3)
 			setCameraInterior(jailedPlayer, 3)
@@ -211,8 +211,8 @@ function timerPDUnjailPlayer(jailedPlayer)
 				setPedRotation(jailedPlayer, 211.10571289063)
 			end
 				
-			setElementData(jailedPlayer, "pd.jailserved", 0)
-			setElementData(jailedPlayer, "pd.jailtime", 0)
+			setElementData(jailedPlayer, "pd.jailserved", 0, false)
+			setElementData(jailedPlayer, "pd.jailtime", 0, false)
 			removeElementData(jailedPlayer, "pd.jailtimer")
 			removeElementData(jailedPlayer, "pd.jailstation")
 			fadeCamera(jailedPlayer, true)
@@ -259,7 +259,7 @@ function jailRelease(thePlayer, commandName, targetPlayerNick)
 					local targetPlayerNick  = getPlayerName(targetPlayer)
 						
 					if (jailTimer) then
-						setElementData(targetPlayer, "pd.jailtime", 1)
+						setElementData(targetPlayer, "pd.jailtime", 1, false)
 						timerPDUnjailPlayer(targetPlayer)
 					else
 						outputChatBox("This player is not serving a jail sentance.", thePlayer, 255, 0, 0)

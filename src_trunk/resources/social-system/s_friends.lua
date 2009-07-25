@@ -30,7 +30,7 @@ addEventHandler("onResourceStop", getResourceRootElement(getThisResource()), clo
 function bindKeys()
 	local players = exports.pool:getPoolElementsByType("player")
 	for k, arrayPlayer in ipairs(players) do
-		setElementData(arrayPlayer, "friends.visible", 0)
+		setElementData(arrayPlayer, "friends.visible", 0, false)
 		if not(isKeyBound(arrayPlayer, "o", "down", toggleFriends)) then
 			bindKey(arrayPlayer, "o", "down", toggleFriends)
 		end
@@ -40,7 +40,7 @@ end
 function bindKeysOnJoin()
 	bindKey(source, "o", "down", toggleFriends)
 	
-	setElementData(source, "friends.visible", 0)
+	setElementData(source, "friends.visible", 0, false)
 end
 addEventHandler("onResourceStart", getRootElement(), bindKeys)
 addEventHandler("onPlayerJoin", getRootElement(), bindKeysOnJoin)
@@ -140,7 +140,7 @@ function updateFriendsMessage(message)
 	
 	local query = mysql_query(handler, "UPDATE accounts SET friendsmessage='" .. safemessage .. "' WHERE id='" .. accid .. "'")
 	if (query) then
-		setElementData(source, "friends.visible", 0)
+		setElementData(source, "friends.visible", 0, false)
 		setElementData(source, "friends.message", tostring(safemessage))
 		mysql_free_result(query)
 		toggleFriends(source)
@@ -175,7 +175,7 @@ function removeFriend(id, username, dontShowFriends)
 		mysql_free_result(result)
 		outputChatBox("You removed '" .. username .. "' from your friends list.", source, 255, 194, 14)
 		
-		setElementData(source, "friends.visible", 0)
+		setElementData(source, "friends.visible", 0, false)
 		if (dontShowFriends==false) then
 			toggleFriends(source)
 		end

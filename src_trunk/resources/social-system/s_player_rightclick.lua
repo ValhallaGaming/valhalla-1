@@ -112,8 +112,8 @@ function restrainPlayer(player, restrainedObj)
 	toggleControl(player, "brake_reverse", false)
 	toggleControl(player, "aim_weapon", false)
 	setElementData(player, "restrain", 1)
-	setElementData(player, "restrainedObj", restrainedObj)
-	setElementData(player, "restrainedBy", dbid)
+	setElementData(player, "restrainedObj", restrainedObj, false)
+	setElementData(player, "restrainedBy", dbid, false)
 
 	exports.global:takePlayerItem(source, restrainedObj, -1)
 

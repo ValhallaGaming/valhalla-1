@@ -81,14 +81,14 @@ addEventHandler("onResourceStart", getResourceRootElement(getThisResource()), re
 function onJoin()
 	-- Set the user as not logged in, so they can't see chat or use commands
 	setElementData(source, "loggedin", 0)
-	setElementData(source, "gameaccountloggedin", 0)
+	setElementData(source, "gameaccountloggedin", 0, false)
 	setElementData(source, "gameaccountusername", "")
 	setElementData(source, "gameaccountid", "")
 	setElementData(source, "adminlevel", 0)
-	setElementData(source, "hiddenadmin", 0)
-	setElementData(source, "globalooc", 1)
+	setElementData(source, "hiddenadmin", 0, false)
+	setElementData(source, "globalooc", 1, false)
 	setElementData(source, "muted", 0)
-	setElementData(source, "loginattempts", 0)
+	setElementData(source, "loginattempts", 0, false)
 	setElementData(source, "timeinserver", 0)
 	
 	setElementDimension(source, 0)
@@ -155,7 +155,6 @@ addEventHandler("attemptRegister", getRootElement(), registerPlayer)
 
 function spawnCharacter(charname)
 	takeAllWeapons(source)
-	setElementData(source, "safeweaponstring", "")
 	local id = getElementData(source, "gameaccountid")
 	charname = string.gsub(tostring(charname), " ", "_")
 	
@@ -228,25 +227,25 @@ function spawnCharacter(charname)
 		local playerWithNick = getPlayerFromNick(tostring(charname))
 		if (playerWithNick) and (playerWithNick~=source) then
 			local newname = "Temp_" .. tostring(math.random(10000, 99999))
-			setElementData(playerWithNick, "legitnamechange", 1)
+			setElementData(playerWithNick, "legitnamechange", 1, false)
 			setPlayerName(playerWithNick, tostring(newname))
-			setElementData(playerWithNick, "legitnamechange", 0)
+			setElementData(playerWithNick, "legitnamechange", 0, false)
 		end
 		
 		-- casual skin
-		setElementData(source, "casualskin", casualskin)
+		setElementData(source, "casualskin", casualskin, false)
 		
 		-- bleeding
-		setElementData(source, "bleeding", 0)
+		setElementData(source, "bleeding", 0, false)
 		
 		-- Set their name to the characters
-		setElementData(source, "legitnamechange", 1)
+		setElementData(source, "legitnamechange", 1, false)
 		setPlayerName(source, tostring(charname))
 		local pid = getElementData(source, "playerid")
 		local fixedName = "(" .. tostring(pid) .. ") " .. string.gsub(tostring(charname), "_", " ")
 
 		setPlayerNametagText(source, tostring(fixedName))
-		setElementData(source, "legitnamechange", 0)
+		setElementData(source, "legitnamechange", 0, false)
 		
 		-- If their an admin change their nametag colour
 		local adminlevel = getElementData(source, "adminlevel")
@@ -322,8 +321,8 @@ function spawnCharacter(charname)
 			setPedRotation(source, 267.438446)
 				
 			local theTimer = setTimer(timerUnjailPlayer, 60000, jailed_time, source)
-			setElementData(source, "jailserved", 0)
-			setElementData(source, "jailtime", jailed_time)
+			setElementData(source, "jailserved", 0, false)
+			setElementData(source, "jailtime", jailed_time, false, false)
 			setElementData(source, "jailtimer", theTimer)
 			
 			setElementInterior(source, 6)
@@ -335,10 +334,10 @@ function spawnCharacter(charname)
 			outputChatBox("You still have " .. pdjail_time .. " minute(s) to serve of your state jail sentance.", source, 255, 0, 0)
 				
 			local theTimer = setTimer(timerPDUnjailPlayer, 60000, pdjail_time, source)
-			setElementData(source, "pd.jailserved", 0)
-			setElementData(source, "pd.jailtime", pdjail_time)
-			setElementData(source, "pd.jailtimer", theTimer)
-			setElementData(source, "pd.jailstation", pdjail_station)
+			setElementData(source, "pd.jailserved", 0, false)
+			setElementData(source, "pd.jailtime", pdjail_time, false)
+			setElementData(source, "pd.jailtimer", theTimer, false)
+			setElementData(source, "pd.jailstation", pdjail_station, false)
 		end
 			
 		-- FACTIONS
@@ -432,10 +431,10 @@ function spawnCharacter(charname)
 			
 		setElementData(source, "adminlevel", tonumber(adminlevel))
 		setElementData(source, "loggedin", 1)
-		setElementData(source, "businessprofit", 0)
-		setElementData(source, "dbid", tonumber(id))
-		setElementData(source, "hiddenadmin", tonumber(hiddenAdmin))
-		setElementData(source, "legitnamechange", 0)
+		setElementData(source, "businessprofit", 0, false)
+		setElementData(source, "dbid", tonumber(id), false)
+		setElementData(source, "hiddenadmin", tonumber(hiddenAdmin), false)
+		setElementData(source, "legitnamechange", 0, false)
 		setElementData(source, "muted", tonumber(muted))
 		setElementData(source, "hoursplayed", hoursplayed)
 		exports.global:setPlayerSafeMoney(source, money)
@@ -444,33 +443,29 @@ function spawnCharacter(charname)
 		setElementData(source, "faction", factionID)
 		setElementData(source, "factionMenu", 0)
 		setElementData(source, "restrain", cuffed)
-		setElementData(source, "tazed", 0)
-		setElementData(source, "cellnumber", cellnumber)
-		setElementData(source, "calling", nil)
-		setElementData(source, "calltimer", nil)
-		setElementData(source, "phonestate", 0)
-		setElementData(source, "backpack", 0)
-		setElementData(source, "radiochannel", radiochannel)
-		setElementData(source, "masked", masked)
-		setElementData(source, "bullettype", 0)
-		setElementData(source, "armortype", 0)
-		setElementData(source, "realinvehicle", 0)
-		setElementData(source, "duty", duty)
+		setElementData(source, "tazed", 0, false)
+		setElementData(source, "cellnumber", cellnumber, false)
+		setElementData(source, "calling", nil, false)
+		setElementData(source, "calltimer", nil, false)
+		setElementData(source, "phonestate", 0, false)
+		setElementData(source, "radiochannel", radiochannel, false)
+		setElementData(source, "realinvehicle", 0, false)
+		setElementData(source, "duty", duty, false)
 		setElementData(source, "job", job)
 		setElementData(source, "deaglemode", 0)
 		setElementData(source, "license.car", carlicense)
 		setElementData(source, "license.gun", gunlicense)
 		setElementData(source, "bankmoney", bankmoney)
-		setElementData(source, "fingerprint", fingerprint)
+		setElementData(source, "fingerprint", fingerprint, false)
 		setElementData(source, "tag", tag)
-		setElementData(source, "dutyskin", dutyskin)
+		setElementData(source, "dutyskin", dutyskin, false)
 		
 		if (restrainedobj>0) then
-			setElementData(source, "restrainedObj", restrainedobj)
+			setElementData(source, "restrainedObj", restrainedobj, false)
 		end
 		
 		if (restrainedby>0) then
-			setElementData(source, "restrainedBy", restrainedby)
+			setElementData(source, "restrainedBy", restrainedby, false)
 		end
 		
 		-- Let's give them their weapons
@@ -488,6 +483,7 @@ function spawnCharacter(charname)
 		end
 		
 		-- Let's stick some blips on the properties they own
+		--[[ This should be clientside
 		for key, value in ipairs(exports.pool:getPoolElementsByType("pickup")) do
 			if (value) then
 				local ptype = getElementData(value, "type")
@@ -513,6 +509,7 @@ function spawnCharacter(charname)
 				end
 			end
 		end
+		]]--
 		
 		-- Fight style
 		setPedFightingStyle(source, tonumber(fightstyle))
@@ -555,7 +552,7 @@ function timerUnjailPlayer(jailedPlayer)
 		
 			if (timeLeft==0) then
 				mysql_query(handler, "UPDATE accounts SET adminjail_time='0', adminjail='0' WHERE id='" .. accountID .. "'")
-				setElementData(jailedPlayer, "jailtimer", nil)
+				removeElementData(jailedPlayer, "jailtimer")
 				setElementPosition(jailedPlayer, 1694.5098876953, 1449.6469726563, 10.763301849365)
 				setPedRotation(jailedPlayer, 274.48666381836)
 				setElementDimension(jailedPlayer, 0)
@@ -665,19 +662,19 @@ function loginPlayer(username, password, operatingsystem)
 				outputChatBox("You can appeal against this ban on our forums at http://www.valhallagaming.net/forums")
 				setTimer(kickPlayer, 15000, 1, source, getRootElement(), "Account is banned")
 			else
-				setElementData(source, "gameaccountloggedin", 1)
+				setElementData(source, "gameaccountloggedin", 1, false)
 				setElementData(source, "gameaccountusername", username)
 				setElementData(source, "gameaccountid", tonumber(id))
-				setElementData(source, "adminduty", tonumber(adminduty))
-				setElementData(source, "adminjail", tonumber(adminjail))
-				setElementData(source, "adminjail_time", tonumber(adminjail_time))
-				setElementData(source, "adminjail_by", tostring(adminjail_by))
-				setElementData(source, "adminjail_reason", tostring(adminjail_reason))
-				setElementData(source, "globalooc", tonumber(globalooc))
+				setElementData(source, "adminduty", tonumber(adminduty), false)
+				setElementData(source, "adminjail", tonumber(adminjail), false)
+				setElementData(source, "adminjail_time", tonumber(adminjail_time), false)
+				setElementData(source, "adminjail_by", tostring(adminjail_by), false)
+				setElementData(source, "adminjail_reason", tostring(adminjail_reason), false)
+				setElementData(source, "globalooc", tonumber(globalooc), false)
 				setElementData(source, "muted", tonumber(muted))
-				setElementData(source, "adminreports", adminreports)
-				setElementData(source, "pmblocked", pmblocked)
-				setElementData(source, "warns", warns)
+				setElementData(source, "adminreports", adminreports, false)
+				setElementData(source, "pmblocked", pmblocked, false)
+				setElementData(source, "warns", warns, false)
 				
 				sendAccounts(source, id)
 				
@@ -707,7 +704,7 @@ function loginPlayer(username, password, operatingsystem)
 		showChat(source, true)
 		local attempts = tonumber(getElementData(source, "loginattempts"))
 		attempts = attempts + 1
-		setElementData(source, "loginattempts", attempts)
+		setElementData(source, "loginattempts", attempts, false)
 		
 		if (attempts>=3) then
 			kickPlayer(source, true, false, false, getRootElement(), "Too many login attempts")
@@ -896,8 +893,8 @@ function sendAccounts(thePlayer, id, isChangeChar)
 		end
 		mysql_free_result(aresult)
 	end
-	setElementData(thePlayer, "achievements.points", points)
-	setElementData(thePlayer, "achievements.count", amount)
+	setElementData(thePlayer, "achievements.points", points, false)
+	setElementData(thePlayer, "achievements.count", amount, false)
 	
 	triggerClientEvent(thePlayer, "showCharacterSelection", thePlayer, accounts, achievementCount, achievementPointsCount, achievements)
 end
@@ -1010,9 +1007,9 @@ addEvent("doesCharacterExist", true)
 addEventHandler("doesCharacterExist", getRootElement(), doesCharacterExist)
 
 function resetNick(oldNick, newNick)
-	setElementData(source, "legitnamechange", 1)
+	setElementData(source, "legitnamechange", 1, false)
 	setPlayerName(source, oldNick)
-	setElementData(source, "legitnamechange", 0)
+	setElementData(source, "legitnamechange", 0, false)
 	exports.global:sendMessageToAdmins("AdmWrn: " .. tostring(oldNick) .. " tried to change name to " .. tostring(newNick) .. ".")
 end
 
@@ -1318,17 +1315,17 @@ addEventHandler("cguiSavePassword", getRootElement(), cguiSetNewPassword)
 
 function timerPDUnjailPlayer(jailedPlayer)
 	if(isElement(jailedPlayer)) then
-		local timeServed = getElementData(jailedPlayer, "pd.jailserved")
-		local timeLeft = getElementData(jailedPlayer, "pd.jailtime")
+		local timeServed = getElementData(jailedPlayer, "pd.jailserved", false)
+		local timeLeft = getElementData(jailedPlayer, "pd.jailtime", false)
 		local username = getPlayerName(jailedPlayer)
-		setElementData(jailedPlayer, "pd.jailserved", timeServed+1)
+		setElementData(jailedPlayer, "pd.jailserved", timeServed+1, false)
 		local timeLeft = timeLeft - 1
-		setElementData(jailedPlayer, "pd.jailtime", timeLeft)
+		setElementData(jailedPlayer, "pd.jailtime", timeLeft, false)
 
 		if (timeLeft<=0) then
 			fadeCamera(jailedPlayer, false)
 			mysql_query(handler, "UPDATE characters SET pdjail_time='0', pdjail='0', pdjail_station='0' WHERE charactername='" .. username .. "'")
-			setElementData(jailedPlayer, "jailtimer", nil)
+			removeElementData(jailedPlayer, "jailtimer")
 			setElementDimension(jailedPlayer, 1)
 			setElementInterior(jailedPlayer, 3)
 			setCameraInterior(jailedPlayer, 3)
@@ -1345,8 +1342,8 @@ function timerPDUnjailPlayer(jailedPlayer)
 				setPedRotation(jailedPlayer, 211.10571289063)
 			end
 				
-			setElementData(jailedPlayer, "pd.jailserved", 0)
-			setElementData(jailedPlayer, "pd.jailtime", 0)
+			setElementData(jailedPlayer, "pd.jailserved", 0, false)
+			setElementData(jailedPlayer, "pd.jailtime", 0, false)
 			removeElementData(jailedPlayer, "pd.jailtimer")
 			removeElementData(jailedPlayer, "pd.jailstation")
 			fadeCamera(jailedPlayer, true)

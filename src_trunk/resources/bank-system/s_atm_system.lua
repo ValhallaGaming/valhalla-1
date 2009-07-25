@@ -33,11 +33,11 @@ function createATM(thePlayer, commandName)
 			setElementDimension(pickup, dimension)
 			setElementInterior(pickup, interior)
 			
-			setElementData(object, "dbid", id)
-			setElementData(object, "type", "atm")
+			setElementData(object, "dbid", id, false)
+			setElementData(object, "type", "atm", false)
 			
-			setElementData(pickup, "dbid", id)
-			setElementData(pickup, "type", "atm")
+			setElementData(pickup, "dbid", id, false)
+			setElementData(pickup, "type", "atm", false)
 			addEventHandler("onPickupHit", pickup, showATMInterface)
 			
 			x = x + ((math.cos(math.rad(rotation)))*5)
@@ -85,12 +85,12 @@ function loadAllATMs(res)
 				setElementDimension(pickup, dimension)
 				setElementInterior(pickup, interior)
 				
-				setElementData(object, "dbid", id)
-				setElementData(object, "pickup", pickup)
-				setElementData(object, "type", "atm")
+				setElementData(object, "dbid", id, false)
+				setElementData(object, "pickup", pickup, false)
+				setElementData(object, "type", "atm", false)
 				
-				setElementData(pickup, "dbid", id)
-				setElementData(pickup, "type", "atm")
+				setElementData(pickup, "dbid", id, false)
+				setElementData(pickup, "type", "atm", false)
 				addEventHandler("onPickupHit", pickup, showATMInterface)
 				counter = counter + 1
 			end

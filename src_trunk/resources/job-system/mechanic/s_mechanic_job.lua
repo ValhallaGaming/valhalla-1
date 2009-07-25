@@ -28,7 +28,7 @@ function serviceVehicle()
 			outputChatBox("You can't afford the parts to service this vehicle.", source, 255, 0, 0)
 		else
 			fixVehicle(veh)
-			setElementData(veh, "enginebroke", 0)
+			setElementData(veh, "enginebroke", 0, false)
 			exports.global:takePlayerSafeMoney(source, 100)
 			exports.global:sendLocalMeAction(source, "services the vehicle.")
 		end

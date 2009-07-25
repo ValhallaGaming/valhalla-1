@@ -14,7 +14,7 @@ function createWeaponModelOnBack(x, y, z, weapon)
 	
 	local object = createObject(objectID, x, y, z)
 	exports.pool:allocateElement(object)
-	setElementData(source, "weaponback.object", object)
+	setElementData(source, "weaponback.object", object, false)
 	attachElements(object, source, x, y, z, 0, 60, 0)
 end
 addEvent("createWeaponBackModel", true)

@@ -90,7 +90,7 @@ function lvesduty(thePlayer, commandName)
 						outputChatBox("You are now on Medic Duty.", thePlayer)
 						exports.global:sendLocalMeAction(thePlayer, "takes their uniform from their locker.")
 						
-						setElementData(thePlayer, "casualskin", getPedSkin(thePlayer))
+						setElementData(thePlayer, "casualskin", getPedSkin(thePlayer), false)
 						
 						takeAllWeapons(thePlayer)
 						setElementHealth(thePlayer, 100)
@@ -98,13 +98,13 @@ function lvesduty(thePlayer, commandName)
 						giveWeapon(thePlayer, 41, 5000) -- Pepperspray
 						setPedSkin(thePlayer, dutyskin)
 						
-						setElementData(thePlayer, "duty", 4)
+						setElementData(thePlayer, "duty", 4, false)
 					end
 				elseif (duty==4) then -- ES
 					takeAllWeapons(thePlayer)
 					outputChatBox("You are now off Medic Duty.", thePlayer)
 					exports.global:sendLocalMeAction(thePlayer, "puts their uniform into their locker.")
-					setElementData(thePlayer, "duty", 0)
+					setElementData(thePlayer, "duty", 0, false)
 					
 					local casualskin = getElementData(thePlayer, "casualskin")
 					setPedSkin(thePlayer, casualskin)
@@ -112,7 +112,7 @@ function lvesduty(thePlayer, commandName)
 					takeAllWeapons(thePlayer)
 					outputChatBox("You are now off Firefighter Duty.", thePlayer)
 					exports.global:sendLocalMeAction(thePlayer, "puts their firefighter gear into their locker.")
-					setElementData(thePlayer, "duty", 0)
+					setElementData(thePlayer, "duty", 0, false)
 					
 					local casualskin = getElementData(thePlayer, "casualskin")
 					setPedSkin(thePlayer, casualskin)
@@ -144,7 +144,7 @@ function lvfdduty(thePlayer, commandName)
 						outputChatBox("You are now on Firefighter Duty.", thePlayer)
 						exports.global:sendLocalMeAction(thePlayer, "takes their firefighter gear from their locker.")
 						
-						setElementData(thePlayer, "casualskin", getPedSkin(thePlayer))
+						setElementData(thePlayer, "casualskin", getPedSkin(thePlayer), false)
 						
 						takeAllWeapons(thePlayer)
 						setElementHealth(thePlayer, 100)
@@ -153,13 +153,13 @@ function lvfdduty(thePlayer, commandName)
 						giveWeapon(thePlayer, 9, 1) -- Chainsaw
 						setPedSkin(thePlayer, dutyskin)
 						
-						setElementData(thePlayer, "duty", 5)
+						setElementData(thePlayer, "duty", 5, false)
 					end
 				elseif (duty==4) then -- ES
 					takeAllWeapons(thePlayer)
 					outputChatBox("You are now off Medic Duty.", thePlayer)
 					exports.global:sendLocalMeAction(thePlayer, "puts their Sgear into their locker.")
-					setElementData(thePlayer, "duty", 0)
+					setElementData(thePlayer, "duty", 0, false)
 					
 					local casualskin = getElementData(thePlayer, "casualskin")
 					setPedSkin(thePlayer, casualskin)
@@ -167,7 +167,7 @@ function lvfdduty(thePlayer, commandName)
 					takeAllWeapons(thePlayer)
 					outputChatBox("You are now off Firefighter Duty.", thePlayer)
 					exports.global:sendLocalMeAction(thePlayer, "puts their firefighter gear into their locker.")
-					setElementData(thePlayer, "duty", 0)
+					setElementData(thePlayer, "duty", 0, false)
 					
 					local casualskin = getElementData(thePlayer, "casualskin")
 					setPedSkin(thePlayer, casualskin)
@@ -212,7 +212,7 @@ function swatduty(thePlayer, commandName)
 					outputChatBox("You are now on SWAT Duty.", thePlayer)
 					exports.global:sendLocalMeAction(thePlayer, "takes their swat gear from their locker.")
 					
-					setElementData(thePlayer, "casualskin", getPedSkin(thePlayer))
+					setElementData(thePlayer, "casualskin", getPedSkin(thePlayer), false)
 					
 					takeAllWeapons(thePlayer)
 					
@@ -234,13 +234,13 @@ function swatduty(thePlayer, commandName)
 					
 					setPedSkin(thePlayer, 285)
 					
-					setElementData(thePlayer, "duty", 1)
+					setElementData(thePlayer, "duty", 1, false)
 				elseif (duty==1) then -- SWAT
 					takeAllWeapons(thePlayer)
 					outputChatBox("You are now off SWAT duty.", thePlayer)
 					exports.global:sendLocalMeAction(thePlayer, "puts their SWAT gear into their locker.")
 					setPedArmor(thePlayer, 0)
-					setElementData(thePlayer, "duty", 0)
+					setElementData(thePlayer, "duty", 0, false)
 					
 					exports.global:takePlayerItem(thePlayer, 26, 999)
 					exports.global:takePlayerItem(thePlayer, 27, 999)
@@ -255,7 +255,7 @@ function swatduty(thePlayer, commandName)
 					outputChatBox("You are now off duty.", thePlayer)
 					exports.global:sendLocalMeAction(thePlayer, "puts their gear into their locker.")
 					setPedArmor(thePlayer, 0)
-					setElementData(thePlayer, "duty", 0)
+					setElementData(thePlayer, "duty", 0, false)
 					
 					exports.global:takePlayerItem(thePlayer, 45, -1)
 					
@@ -266,7 +266,7 @@ function swatduty(thePlayer, commandName)
 					outputChatBox("You are now off duty.", thePlayer)
 					exports.global:sendLocalMeAction(thePlayer, "puts their cadet gear into their locker.")
 					setPedArmor(thePlayer, 0)
-					setElementData(thePlayer, "duty", 0)
+					setElementData(thePlayer, "duty", 0, false)
 					
 					exports.global:takePlayerItem(thePlayer, 45, -1)
 					
@@ -299,7 +299,7 @@ function policeduty(thePlayer, commandName)
 						outputChatBox("You are now on Police Duty.", thePlayer)
 						exports.global:sendLocalMeAction(thePlayer, "takes their gear from their locker.")
 						
-						setElementData(thePlayer, "casualskin", getPedSkin(thePlayer))
+						setElementData(thePlayer, "casualskin", getPedSkin(thePlayer), false)
 						
 						takeAllWeapons(thePlayer)
 						
@@ -316,14 +316,14 @@ function policeduty(thePlayer, commandName)
 						
 						setPedSkin(thePlayer, dutyskin)
 						
-						setElementData(thePlayer, "duty", 2)
+						setElementData(thePlayer, "duty", 2, false)
 					end
 				elseif (duty==1) then -- SWAT
 					takeAllWeapons(thePlayer)
 					outputChatBox("You are now off SWAT duty.", thePlayer)
 					exports.global:sendLocalMeAction(thePlayer, "puts their SWAT gear into their locker.")
 					setPedArmor(thePlayer, 0)
-					setElementData(thePlayer, "duty", 0)
+					setElementData(thePlayer, "duty", 0, false)
 					
 					exports.global:takePlayerItem(thePlayer, 26, 999)
 					exports.global:takePlayerItem(thePlayer, 27, 999)
@@ -338,7 +338,7 @@ function policeduty(thePlayer, commandName)
 					outputChatBox("You are now off duty.", thePlayer)
 					exports.global:sendLocalMeAction(thePlayer, "puts their gear into their locker.")
 					setPedArmor(thePlayer, 0)
-					setElementData(thePlayer, "duty", 0)
+					setElementData(thePlayer, "duty", 0, false)
 					
 					exports.global:takePlayerItem(thePlayer, 45, -1)
 					
@@ -349,7 +349,7 @@ function policeduty(thePlayer, commandName)
 					outputChatBox("You are now off duty.", thePlayer)
 					exports.global:sendLocalMeAction(thePlayer, "puts their cadet gear into their locker.")
 					setPedArmor(thePlayer, 0)
-					setElementData(thePlayer, "duty", 0)
+					setElementData(thePlayer, "duty", 0, false)
 					
 					exports.global:takePlayerItem(thePlayer, 45, -1)
 					
@@ -382,7 +382,7 @@ function cadetduty(thePlayer, commandName)
 						outputChatBox("You are now on Cadet Duty.", thePlayer)
 						exports.global:sendLocalMeAction(thePlayer, "takes their cadet gear from their locker.")
 						
-						setElementData(thePlayer, "casualskin", getPedSkin(thePlayer))
+						setElementData(thePlayer, "casualskin", getPedSkin(thePlayer), false)
 						
 						takeAllWeapons(thePlayer)
 						
@@ -397,14 +397,14 @@ function cadetduty(thePlayer, commandName)
 						
 						setPedSkin(thePlayer, dutyskin)
 						
-						setElementData(thePlayer, "duty", 3)
+						setElementData(thePlayer, "duty", 3, false)
 					end
 				elseif (duty==1) then -- SWAT
 					takeAllWeapons(thePlayer)
 					outputChatBox("You are now off SWAT duty.", thePlayer)
 					exports.global:sendLocalMeAction(thePlayer, "puts their SWAT gear into their locker.")
 					setPedArmor(thePlayer, 0)
-					setElementData(thePlayer, "duty", 0)
+					setElementData(thePlayer, "duty", 0, false)
 					
 					exports.global:takePlayerItem(thePlayer, 26, 999)
 					exports.global:takePlayerItem(thePlayer, 27, 999)
@@ -419,7 +419,7 @@ function cadetduty(thePlayer, commandName)
 					outputChatBox("You are now off duty.", thePlayer)
 					exports.global:sendLocalMeAction(thePlayer, "puts their gear into their locker.")
 					setPedArmor(thePlayer, 0)
-					setElementData(thePlayer, "duty", 0)
+					setElementData(thePlayer, "duty", 0, false)
 					
 					exports.global:takePlayerItem(thePlayer, 45, -1)
 					
@@ -430,7 +430,7 @@ function cadetduty(thePlayer, commandName)
 					outputChatBox("You are now off duty.", thePlayer)
 					exports.global:sendLocalMeAction(thePlayer, "puts their cadet gear into their locker.")
 					setPedArmor(thePlayer, 0)
-					setElementData(thePlayer, "duty", 0)
+					setElementData(thePlayer, "duty", 0, false)
 					
 					exports.global:takePlayerItem(thePlayer, 45, -1)
 					
@@ -463,7 +463,7 @@ function fbiduty(thePlayer, commandName)
 						outputChatBox("You are now on FBI Duty.", thePlayer)
 						exports.global:sendLocalMeAction(thePlayer, "takes their FBI gear from their locker.")
 						
-						setElementData(thePlayer, "casualskin", getPedSkin(thePlayer))
+						setElementData(thePlayer, "casualskin", getPedSkin(thePlayer), false)
 						
 						takeAllWeapons(thePlayer)
 						
@@ -475,14 +475,14 @@ function fbiduty(thePlayer, commandName)
 						
 						setPedSkin(thePlayer, dutyskin)
 						
-						setElementData(thePlayer, "duty", 6)
+						setElementData(thePlayer, "duty", 6, false)
 					end
 				elseif (duty==6) then -- FBI
 					takeAllWeapons(thePlayer)
 					outputChatBox("You are now off FBI duty.", thePlayer)
 					exports.global:sendLocalMeAction(thePlayer, "puts their FBI gear into their locker.")
 					setPedArmor(thePlayer, 0)
-					setElementData(thePlayer, "duty", 0)
+					setElementData(thePlayer, "duty", 0, false)
 					
 					exports.global:takePlayerItem(thePlayer, 45, 999)
 					
@@ -491,7 +491,7 @@ function fbiduty(thePlayer, commandName)
 				else
 					local casualskin = getElementData(thePlayer, "casualskin")
 					setPedSkin(thePlayer, casualskin)
-					setElementData(thePlayer, "duty", 0)
+					setElementData(thePlayer, "duty", 0, false)
 				end
 			end
 		end

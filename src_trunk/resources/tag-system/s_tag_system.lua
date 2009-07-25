@@ -39,7 +39,7 @@ function makeTagObject(cx, cy, cz, rot, interior, dimension)
 		exports.global:sendLocalMeAction(source, "tags the wall.")
 		
 		local id = mysql_insert_id(handler)
-		setElementData(obj, "dbid", id)
+		setElementData(obj, "dbid", id, false)
 		setElementData(obj, "type", "tag")
 		outputChatBox("You have tagged the wall!", source, 255, 194, 14)
 	else
@@ -128,7 +128,7 @@ function loadAllTags(res)
 				exports.pool:allocateElement(object)
 				setElementInterior(object, interior)
 				setElementDimension(object, dimension)
-				setElementData(object, "dbid", id)
+				setElementData(object, "dbid", id, false)
 				setElementData(object, "type", "tag")
 					
 				count = count + 1

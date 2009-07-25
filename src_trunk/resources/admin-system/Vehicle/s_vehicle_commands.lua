@@ -80,15 +80,15 @@ function createTempVehicle(thePlayer, commandName, id, col1, col2)
 				totalTempVehicles = totalTempVehicles + 1
 				local dbid = (-totalTempVehicles)
 				
-				setElementData(veh, "dbid", dbid)
+				setElementData(veh, "dbid", dbid, false)
 				setElementData(veh, "fuel", 100)
-				setElementData(veh, "engine", 0)
-				setElementData(veh, "oldx", x)
-				setElementData(veh, "oldy", y)
-				setElementData(veh, "oldz", z)
-				setElementData(veh, "faction", -1)
-				setElementData(veh, "owner", -1)
-				setElementData(veh, "job", 0)
+				setElementData(veh, "engine", 0, false)
+				setElementData(veh, "oldx", x, false)
+				setElementData(veh, "oldy", y, false)
+				setElementData(veh, "oldz", z, false)
+				setElementData(veh, "faction", -1, false)
+				setElementData(veh, "owner", -1, false)
+				setElementData(veh, "job", 0, false)
 				outputChatBox(getVehicleName(veh) .. " spawned with TEMP ID " .. dbid .. ".", thePlayer, 255, 194, 14)
 			end
 		end
@@ -262,7 +262,7 @@ function respawnCmdVehicle(thePlayer, commandName, id)
 					if (dbid<0) then -- TEMP vehicle
 						fixVehicle(theVehicle) -- Can't really respawn this, so just repair it
 						setVehicleWheelStates(theVehicle, 0, 0, 0, 0)
-						setElementData(theVehicle, "enginebroke", 0)
+						setElementData(theVehicle, "enginebroke", 0, false)
 					else
 						local dbid = getElementData(theVehicle, "dbid")
 						local x, y, z = getElementPosition(theVehicle)
@@ -273,9 +273,9 @@ function respawnCmdVehicle(thePlayer, commandName, id)
 						
 						if (owner==-2) then
 							setVehicleLocked(theVehicle, false)
-							setElementData(theVehicle, "locked", 0)
+							setElementData(theVehicle, "locked", 0, false)
 						else
-							setElementData(theVehicle, "locked", 1)
+							setElementData(theVehicle, "locked", 1, false)
 						end
 					end
 					counter = counter + 1
@@ -430,7 +430,7 @@ function fixPlayerVehicle(thePlayer, commandName, target)
 					local veh = getPedOccupiedVehicle(targetPlayer)
 					if (veh) then
 						fixVehicle(veh)
-						setElementData(veh, "enginebroke", 0)
+						setElementData(veh, "enginebroke", 0, false)
 						outputChatBox("You repaired " .. targetPlayerName .. "'s vehicle.", thePlayer)
 						outputChatBox("Your vehicle was repaired by admin " .. username .. ".", targetPlayer)
 					else

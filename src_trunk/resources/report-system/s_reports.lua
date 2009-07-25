@@ -1,14 +1,9 @@
 reports = { }
 
-function playerJoin()
-	setElementData(source, "report", nil)
-end
-addEventHandler("onPlayerJoin", getRootElement(), playerJoin)
-
 function resourceStart(res)
 	if (res==getThisResource()) then
 		for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
-			setElementData(value, "report", nil)
+			removeElementData(value, "report"
 		end
 	end
 end
@@ -213,7 +208,7 @@ function pendingReportTimeout(id)
 		
 		reports[id] = nil -- Destroy any reports made by the player
 		
-		setElementData(reportingPlayer, "report", nil)
+		removeElementData(reportingPlayer, "report")
 		
 		local time = getRealTime()
 		local hours = time.hour
@@ -280,7 +275,7 @@ function falseReport(thePlayer, commandName, id)
 					
 					local timestring = hours .. ":" .. minutes
 					
-					setElementData(reportingPlayer, "report", nil)
+					removeElementData(reportingPlayer, "report")
 					outputChatBox("[" .. timestring .. "] Your report (#" .. id .. ") was marked as false by " .. getPlayerName(thePlayer) .. ".", reportingPlayer, 255, 194, 14)
 					
 					local admins = exports.global:getAdmins()
@@ -337,7 +332,7 @@ function acceptReport(thePlayer, commandName, id)
 					end
 					
 					local adminreports = getElementData(thePlayer, "adminreports")
-					setElementData(thePlayer, "adminreports", adminreports+1)
+					setElementData(thePlayer, "adminreports", adminreports+1, false)
 					
 					local timestring = hours .. ":" .. minutes
 					local playerID = getElementData(reportingPlayer, "playerid")
@@ -374,7 +369,7 @@ function closeReport(thePlayer, commandName, id)
 				reports[id] = nil
 				
 				if (isElement(reporter)) then
-					setElementData(thePlayer, "report", nil)
+					removeElementData(thePlayer, "report")
 					outputChatBox(getPlayerName(thePlayer) .. " has closed your report. Please re-submit your report if you weren't happy that it was resolved.", reporter, 0, 255, 255)
 				end
 				
@@ -416,7 +411,7 @@ function endReport(thePlayer, commandName)
 		local reportHandler = reports[report][5]
 		
 		reports[report] = nil
-		setElementData(thePlayer, "report", nil)
+		removeElementData(thePlayer, "report")
 		
 		outputChatBox("[" .. timestring .. "] You have closed your report (#" .. report .. ").", thePlayer, 255, 194, 14)
 		

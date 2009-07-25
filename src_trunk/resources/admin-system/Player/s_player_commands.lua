@@ -73,7 +73,7 @@ function gluePlayer(thePlayer, commandName)
 				
 				local slot = getPedWeaponSlot(thePlayer)
 				attachElements(thePlayer, contactElement, x, y, z, rotX, rotY, rotZ)
-				setElementData(thePlayer, "glue", true)
+				setElementData(thePlayer, "glue", true, false)
 				setPedWeaponSlot(thePlayer, slot)
 				outputChatBox("You are now glued to the " .. getVehicleName(contactElement) .. ".", thePlayer, 255, 194, 14)
 			end
@@ -81,7 +81,7 @@ function gluePlayer(thePlayer, commandName)
 	else
 		detachElements(thePlayer)
 		outputChatBox("You are now unglued!", thePlayer, 255, 194, 14)
-		setElementData(thePlayer, "glue", false)
+		removeElementData(thePlayer, "glue")
 	end
 end
 addCommandHandler("glue", gluePlayer, false, false)
@@ -309,7 +309,7 @@ function ckPlayer(thePlayer, commandName, targetPlayer)
 					local id = getElementData(targetPlayer, "gameaccountid")
 					showCursor(targetPlayer, false)
 					triggerEvent("sendAccounts", targetPlayer, targetPlayer, id, true)
-					setElementData(targetPlayer, "loggedin", 0, true)
+					setElementData(targetPlayer, "loggedin", 0, false)
 					outputChatBox("Your character was CK'ed by " .. getPlayerName(thePlayer) .. ".", targetPlayer, 255, 194, 14)
 					showChat(targetPlayer, true)
 					outputChatBox("You have CK'ed ".. getPlayerName(targetPlayer) ..".", thePlayer, 255, 194, 14)
@@ -565,7 +565,7 @@ function asetPlayerName(thePlayer, commandName, targetPlayer, newName)
 				if (mysql_num_rows(result)>0) then
 					outputChatBox("This name is already in use.", thePlayer, 255, 0, 0)
 				else
-					setElementData(targetPlayer, "legitnamechange", 1)
+					setElementData(targetPlayer, "legitnamechange", 1, false)
 					local name = setPlayerName(targetPlayer, tostring(newName))
 					
 					if (name) then
@@ -577,11 +577,11 @@ function asetPlayerName(thePlayer, commandName, targetPlayer, newName)
 							exports.global:sendMessageToAdmins("AdmCmd: " .. tostring(adminTitle) .. " " .. getPlayerName(thePlayer) .. " changed " .. targetPlayerName .. "'s Name to " .. newName .. ".")
 						end
 						outputChatBox("You changed " .. targetPlayerName .. "'s Name to " .. tostring(newName) .. ".", thePlayer, 0, 255, 0)
-						setElementData(targetPlayer, "legitnamechange", 0)
+						setElementData(targetPlayer, "legitnamechange", 0, false)
 					else
 						outputChatBox("Failed to change name.", thePlayer, 255, 0, 0)
 					end
-					setElementData(targetPlayer, "legitnamechange", 0)
+					setElementData(targetPlayer, "legitnamechange", 0, false)
 				end
 				mysql_free_result(result)
 			end
@@ -596,11 +596,11 @@ function hideAdmin(thePlayer, commandName)
 		local hiddenAdmin = getElementData(thePlayer, "hiddenadmin")
 		
 		if (hiddenAdmin==0) then
-			setElementData(thePlayer, "hiddenadmin", 1)
+			setElementData(thePlayer, "hiddenadmin", 1, false)
 			outputChatBox("You are now a hidden admin.", thePlayer, 255, 194, 14)
 			setPlayerNametagColor(targetPlayer, 255, 255, 255)
 		elseif (hiddenAdmin==1) then
-			setElementData(thePlayer, "hiddenadmin", 0)
+			setElementData(thePlayer, "hiddenadmin", 0, false)
 			outputChatBox("You are no longer a hidden admin.", thePlayer, 255, 194, 14)
 			setPlayerNametagColor(targetPlayer, 255, 194, 14)
 		end
@@ -633,7 +633,7 @@ function slapPlayer(thePlayer, commandName, targetPlayer)
 					local x, y, z = getElementPosition(targetPlayer)
 					
 					if (isPedInVehicle(targetPlayer)) then
-						setElementData(targetPlayer, "realinvehicle", 0)
+						setElementData(targetPlayer, "realinvehicle", 0, false)
 						removePedFromVehicle(targetPlayer)
 					end
 					
@@ -676,7 +676,7 @@ function hugeSlapPlayer(thePlayer, commandName, targetPlayer)
 					local x, y, z = getElementPosition(targetPlayer)
 					
 					if (isPedInVehicle(targetPlayer)) then
-						setElementData(targetPlayer, "realinvehicle", 0)
+						setElementData(targetPlayer, "realinvehicle", 0, false)
 						removePedFromVehicle(targetPlayer)
 					end
 					
@@ -769,9 +769,9 @@ function reconPlayer(thePlayer, commandName, targetPlayer)
 				setCameraInterior(thePlayer, reconinterior)
 				
 				setElementData(thePlayer, "reconx", nil)
-				setElementData(thePlayer, "recony", nil)
-				setElementData(thePlayer, "reconz", nil)
-				setElementData(thePlayer, "reconrot", nil)
+				setElementData(thePlayer, "recony", nil, false)
+				setElementData(thePlayer, "reconz", nil, false)
+				setElementData(thePlayer, "reconrot", nil, false)
 				setCameraTarget(thePlayer, thePlayer)
 				setElementAlpha(thePlayer, 255)
 				outputChatBox("Recon turned off.", thePlayer, 255, 194, 14)
@@ -795,11 +795,11 @@ function reconPlayer(thePlayer, commandName, targetPlayer)
 					local dimension = getElementDimension(thePlayer)
 					local interior = getElementInterior(thePlayer)
 					setElementData(thePlayer, "reconx", x)
-					setElementData(thePlayer, "recony", y)
-					setElementData(thePlayer, "reconz", z)
-					setElementData(thePlayer, "reconrot", rot)
-					setElementData(thePlayer, "recondimension", dimension)
-					setElementData(thePlayer, "reconinterior", interior)
+					setElementData(thePlayer, "recony", y, false)
+					setElementData(thePlayer, "reconz", z, false)
+					setElementData(thePlayer, "reconrot", rot, false)
+					setElementData(thePlayer, "recondimension", dimension, false)
+					setElementData(thePlayer, "reconinterior", interior, false)
 					setPedWeaponSlot(thePlayer, 0)
 					
 					local playerdimension = getElementDimension(targetPlayer)
@@ -1119,7 +1119,7 @@ function makePlayerAdmin(thePlayer, commandName, who, rank)
 				rank = tonumber(rank)
 				
 				if (rank<1337) then
-					setElementData(targetPlayer, "hiddenadmin", 0)
+					setElementData(targetPlayer, "hiddenadmin", 0, false)
 				end
 				
 				mysql_query(handler, "UPDATE accounts SET admin='" .. tonumber(rank) .. "', hiddenadmin='0' WHERE id='" .. accountID .. "'")
@@ -1131,12 +1131,10 @@ function makePlayerAdmin(thePlayer, commandName, who, rank)
 				-- Fix for scoreboard & nametags
 				local targetAdminTitle = exports.global:getPlayerAdminTitle(targetPlayer)
 				if (rank>0) or (rank==-999999999) then
-					setElementData(targetPlayer, "adminduty", 1)
-					setElementData(targetPlayer, "Rank", tostring(targetAdminTitle))
+					setElementData(targetPlayer, "adminduty", 1, false)
 					setPlayerNametagColor(targetPlayer, 255, 194, 14)
 				else
-					setElementData(targetPlayer, "Rank", tostring(targetAdminTitle))
-					setElementData(targetPlayer, "adminduty", 0)
+					setElementData(targetPlayer, "adminduty", 0, false)
 					setPlayerNametagColor(targetPlayer, 255, 255, 255)
 				end
 				
@@ -1182,15 +1180,15 @@ function jailPlayer(thePlayer, commandName, who, minutes, ...)
 				
 				if (minutes<999) then
 					local theTimer = setTimer(timerUnjailPlayer, 60000, minutes, targetPlayer)
-					setElementData(targetPlayer, "jailserved", 0)
-					setElementData(targetPlayer, "jailtime", minutes)
-					setElementData(targetPlayer, "jailtimer", theTimer)
+					setElementData(targetPlayer, "jailserved", 0, false)
+					setElementData(targetPlayer, "jailtime", minutes, false)
+					setElementData(targetPlayer, "jailtimer", theTimer, false)
 				end
 				
 				if (minutes>=999) then
 					mysql_query(handler, "UPDATE accounts SET adminjail='1', adminjail_time='" .. minutes .. "', adminjail_permanent='1', adminjail_by='" .. playerName .. "', adminjail_reason='" .. reason .. "' WHERE id='" .. accountID .. "'")
 					minutes = "Unlimited"
-					setElementData(targetPlayer, "jailtimer", true)
+					setElementData(targetPlayer, "jailtimer", true, false)
 				else
 					mysql_query(handler, "UPDATE accounts SET adminjail='1', adminjail_time='" .. minutes .. "', adminjail_permanent='0', adminjail_by='" .. playerName .. "', adminjail_reason='" .. reason .. "' WHERE id='" .. tonumber(accountID) .. "'")
 				end
@@ -1235,13 +1233,13 @@ function timerUnjailPlayer(jailedPlayer)
 		local timeLeft = getElementData(jailedPlayer, "jailtime")
 		local accountID = getElementData(jailedPlayer, "gameaccountid")
 		if (timeServed) then
-			setElementData(jailedPlayer, "jailserved", timeServed+1)
+			setElementData(jailedPlayer, "jailserved", timeServed+1, false)
 			local timeLeft = timeLeft - 1
-			setElementData(jailedPlayer, "jailtime", timeLeft)
+			setElementData(jailedPlayer, "jailtime", timeLeft, false)
 		
 			if (timeLeft==0) then
 				mysql_query(handler, "UPDATE accounts SET adminjail_time='0', adminjail='0' WHERE id='" .. accountID .. "'")
-				setElementData(jailedPlayer, "jailtimer", nil)
+				removeElementData(jailedPlayer, "jailtimer", nil)
 				setElementPosition(jailedPlayer, 1694.5098876953, 1449.6469726563, 10.763301849365)
 				setPedRotation(jailedPlayer, 274.48666381836)
 				setElementDimension(jailedPlayer, 0)
@@ -1278,7 +1276,7 @@ function unjailPlayer(thePlayer, commandName, who)
 				else
 					mysql_query(handler, "UPDATE accounts SET adminjail_time='0', adminjail='0' WHERE id='" .. accountID .. "'")
 					killTimer(jailed)
-					setElementData(targetPlayer, "jailtimer", nil)
+					removeElementData(targetPlayer, "jailtimer", nil)
 					setElementPosition(targetPlayer, 1694.5098876953, 1449.6469726563, 10.763301849365)
 					setPedRotation(targetPlayer, 274.48666381836)
 					setElementDimension(targetPlayer, 0)
@@ -1463,7 +1461,7 @@ function freezePlayer(thePlayer, commandName, target)
 			else	
 				toggleAllControls(targetPlayer, false, true, false)
 				setPedWeaponSlot(targetPlayer, 0)
-				setElementData(targetPlayer, "freeze", 1)
+				setElementData(targetPlayer, "freeze", 1, false)
 				outputChatBox(" You have been frozen by an admin. Take care when following instructions.", targetPlayer)
 				outputChatBox(" You have frozen " ..targetPlayerName.. ".", thePlayer)
 			end
@@ -1505,7 +1503,7 @@ function unfreezePlayer(thePlayer, commandName, target)
 				-- Disable weapon scrolling
 				toggleControl(targetPlayer, "next_weapon", false)
 				toggleControl(targetPlayer, "previous_weapon", false)
-				setElementData(targetPlayer, "freeze", 1)
+				setElementData(targetPlayer, "freeze", 1, false)
 				outputChatBox(" You have been unfrozen by an admin. Thanks for your co-operation.", targetPlayer)
 				outputChatBox(" You have unfrozen " ..targetPlayerName.. ".", thePlayer)
 			end
@@ -1528,11 +1526,11 @@ function markPosition(thePlayer, command)
 			local interior = getElementInterior(thePlayer)
 			local dimension= getElementDimension(thePlayer)
 			
-			setElementData(thePlayer, "tempMark.x", x)
-			setElementData(thePlayer, "tempMark.y", y)
-			setElementData(thePlayer, "tempMark.z", z)
-			setElementData(thePlayer, "tempMark.interior", interior)
-			setElementData(thePlayer, "tempMark.dimension", dimension)
+			setElementData(thePlayer, "tempMark.x", x, false)
+			setElementData(thePlayer, "tempMark.y", y, false)
+			setElementData(thePlayer, "tempMark.z", z, false)
+			setElementData(thePlayer, "tempMark.interior", interior, false)
+			setElementData(thePlayer, "tempMark.dimension", dimension, false)
 						
 			outputChatBox("Mark set sucessfull.", thePlayer, 0, 255, 0, true)
 		
@@ -1679,14 +1677,14 @@ function adminDuty(thePlayer, commandName)
 		local username = getPlayerName(thePlayer)
 		
 		if (adminduty==0) then
-			setElementData(thePlayer, "adminduty", 1)
+			setElementData(thePlayer, "adminduty", 1, false)
 			local adminTitle = exports.global:getPlayerAdminTitle(thePlayer)
 			
 			setPlayerNametagColor(thePlayer, 255, 194, 14)
 			outputChatBox("You went on admin duty.", thePlayer, 0, 255, 0)
 			exports.global:sendMessageToAdmins("AdmDuty: " .. username .. " came on duty.")
 		elseif (adminduty==1) then
-			setElementData(thePlayer, "adminduty", 0)
+			setElementData(thePlayer, "adminduty", 0, false)
 			
 			setPlayerNametagColor(thePlayer, 255, 255, 255)
 			outputChatBox("You went off admin duty.", thePlayer, 255, 0, 0)
@@ -1795,7 +1793,7 @@ function warnPlayer(thePlayer, commandName, targetPlayer)
 				outputChatBox("You have given " .. targetPlayerName .. " a warning. (" .. warns .. "/3).", thePlayer, 255, 0, 0)
 				outputChatBox("You have been given a warning by " .. getPlayerName(thePlayer) .. ".", targetPlayer, 255, 0, 0)
 				
-				setElementData(targetPlayer, "warns", warns)
+				setElementData(targetPlayer, "warns", warns, false)
 				
 				if (hiddenAdmin==0) then
 					local adminTitle = exports.global:getPlayerAdminTitle(thePlayer)

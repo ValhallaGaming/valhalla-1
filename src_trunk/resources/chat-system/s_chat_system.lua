@@ -314,10 +314,10 @@ function playerToggleOOC(thePlayer, commandName)
 		
 		if (playerOOCEnabled==1) then
 			outputChatBox("You have now hidden Global OOC Chat.", thePlayer, 255, 194, 14)
-			setElementData(thePlayer, "globalooc", 0)
+			setElementData(thePlayer, "globalooc", 0, false)
 		else
 			outputChatBox("You have now enabled Global OOC Chat.", thePlayer, 255, 194, 14)
-			setElementData(thePlayer, "globalooc", 1)
+			setElementData(thePlayer, "globalooc", 1, false)
 		end
 	end
 end
@@ -340,7 +340,7 @@ function pmPlayer(thePlayer, commandName, who, ...)
 
 				if not (pmblocked) then
 					pmblocked = 0
-					setElementData(targetPlayer, "pmblocked", 0)
+					setElementData(targetPlayer, "pmblocked", 0, false)
 				end
 				
 				if (logged==1) and (pmblocked==0 or exports.global:isPlayerAdmin(thePlayer)) then
@@ -596,7 +596,7 @@ function setRadioChannel(thePlayer, commandName, channel)
 	else
 		if (exports.global:doesPlayerHaveItem(thePlayer, 6)) then
 			local channel = tonumber(channel)
-			setElementData(thePlayer, "radiochannel", tonumber(channel))
+			setElementData(thePlayer, "radiochannel", tonumber(channel), false)
 			outputChatBox("You retuned your radio to channel #" .. channel .. ".", thePlayer)
 			exports.global:sendLocalMeAction(thePlayer, "retunes their radio.")
 		end
@@ -780,10 +780,10 @@ function togglePM(thePlayer, commandName)
 		local pmenabled = getElementData(thePlayer, "pmblocked")
 		
 		if (pmenabled==1) then
-			setElementData(thePlayer, "pmblocked", 0)
+			setElementData(thePlayer, "pmblocked", 0, false)
 			outputChatBox("PM's are now enabled.", thePlayer, 0, 255, 0)
 		else
-			setElementData(thePlayer, "pmblocked", 1)
+			setElementData(thePlayer, "pmblocked", 1, false)
 			outputChatBox("PM's are now disabled.", thePlayer, 255, 0, 0)
 		end
 	end
@@ -894,7 +894,7 @@ function calltaxi(thePlayer, commandName, ...)
 					end
 				end
 				
-				setElementData(thePlayer, "TaxiAbuse", 1)
+				setElementData(thePlayer, "TaxiAbuse", 1, false)
 				outputChatBox("Your message has been sent to all available drivers. Please wait for a response.", thePlayer, 255, 194, 14)
 				setTimer(TaxiAbuseReset, 20000, 1, thePlayer)
 			end
@@ -910,7 +910,7 @@ function TaxiAbuseReset(thePlayer)
 	
 	if (logged==1) then
 		if (abusedT==1) then
-			setElementData(thePlayer, "TaxiAbuse", 0)
+			setElementData(thePlayer, "TaxiAbuse", 0, false)
 			outputChatBox("Taxi timer reset", thePlayer, 255, 194, 14)
 		end
 	end
@@ -1104,7 +1104,7 @@ function newsMessage(thePlayer, commandName, ...)
 								
 				local factionFunds = getElementData(theTeam, "money")
 				local newFunds = factionFunds + 200
-				setElementData(theTeam, "money", tonumber(newFunds))
+				setElementData(theTeam, "money", tonumber(newFunds), false)
 				local id = getElementData(theTeam, "id")
 				local result = mysql_query(handler, "UPDATE factions SET bankbalance='" .. newFunds .. "' WHERE id='" .. id .. "' LIMIT 1")
 				mysql_free_result(result)
@@ -1124,10 +1124,10 @@ function togNews(thePlayer, commandName)
 		
 		if (newsTog~=1) then
 			outputChatBox("/news disabled.", thePlayer, 255, 194, 14)
-			setElementData(thePlayer, "tognews", 1)
+			setElementData(thePlayer, "tognews", 1, false)
 		else
 			outputChatBox("/news enabled.", thePlayer, 255, 194, 14)
-			setElementData(thePlayer, "tognews", 0)
+			setElementData(thePlayer, "tognews", 0, false)
 		end
 	end
 end
@@ -1153,7 +1153,7 @@ function StartInterview(thePlayer, commandName, targetPartialPlayer)
 						if(getElementData(targetPlayer,"interview"))then
 							outputChatBox("This player is already being interviewed.", thePlayer, 255, 0, 0)
 						else
-							setElementData(targetPlayer, "interview", true)
+							setElementData(targetPlayer, "interview", true, false)
 							local playerName = string.gsub(getPlayerName(thePlayer), "_", " ")
 							local targetPlayerName = string.gsub(getPlayerName(targetPlayer), "_", " ")
 							outputChatBox(playerName .." has offered you for an interview.", targetPlayer, 0, 255, 0)

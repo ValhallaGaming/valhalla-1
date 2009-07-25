@@ -51,7 +51,7 @@ function loadAllFactions(res)
 				exports.pool:allocateElement(theTeam)
 				setElementData(theTeam, "type", factionType)
 				setElementData(theTeam, "money", money)
-				setElementData(theTeam, "id", id)
+				setElementData(theTeam, "id", id, false)
 				counter = counter + 1
 			end
 			mysql_free_result(result)
@@ -70,7 +70,7 @@ function loadAllFactions(res)
 					local factionID = tonumber(mysql_result(result, 1, 1))
 
 					setElementData(thePlayer, "factionMenu", 0)
-					setElementData(thePlayer, "faction", factionID)
+					setElementData(thePlayer, "faction", factionID, false)
 					
 					mysql_free_result(result)
 					if (factionID) then
@@ -271,7 +271,7 @@ function callbackRespawnVehicles()
 		
 		outputChatBox("Unoccupied faction vehicles respawned successfully.", source, 0, 255, 0)
 		setTimer(resetFactionCooldown, 900000, 1, theTeam)
-		setElementData(theTeam, "cooldown", true)
+		setElementData(theTeam, "cooldown", true, false)
 	else
 		outputChatBox("You currently cannot respawn your factions vehicles, Please wait a while.", source, 255, 0, 0)
 	end
@@ -280,7 +280,7 @@ addEvent("cguiRespawnVehicles", true )
 addEventHandler("cguiRespawnVehicles", getRootElement(), callbackRespawnVehicles)
 
 function resetFactionCooldown(theTeam)
-	setElementData(theTeam, "cooldown", nil)
+	removeElementData(theTeam, "cooldown")
 end
 
 function callbackUpdateMOTD(motd)
@@ -479,7 +479,7 @@ function callbackQuitFaction()
 		
 		local newTeam = getTeamFromName("Citizen")
 		setPlayerTeam(source, newTeam)
-		setElementData(source, "faction", -1)
+		setElementData(source, "faction", -1, false)
 
 		-- Send message to everyone in the faction
 		local teamPlayers = getPlayersInTeam(theTeam)
@@ -519,7 +519,7 @@ function callbackInvitePlayer(invitedPlayer)
 			if	(invitedPlayer) then
 				triggerEvent("onPlayerJoinFaction", invitedPlayer, theTeam)
 				setElementData(invitedPlayer, "factionrank", 1)
-				setElementData(invitedPlayer, "dutyskin", -1)
+				setElementData(invitedPlayer, "dutyskin", -1, false)
 				outputChatBox("You were set to Faction '" .. tostring(theTeamName) .. ".", invitedPlayer, 255, 194, 14)
 			end
 		end
@@ -552,8 +552,8 @@ function createFaction(thePlayer, commandName, factionType, ...)
 					outputChatBox("Faction " .. factionName .. " created with ID #" .. id .. ".", thePlayer, 0, 255, 0)
 					
 					setElementData(theTeam, "type", tonumber(factionType))
-					setElementData(theTeam, "id", id)
-					setElementData(theTeam, "money", 0.00)
+					setElementData(theTeam, "id", id, false)
+					setElementData(theTeam, "money", 0.00, false)
 				else
 					outputChatBox("Error creating faction.", thePlayer, 255, 0, 0)
 				end
@@ -622,9 +622,9 @@ function adminSetPlayerFaction(thePlayer, commandName, partialNick, factionID)
 						mysql_free_result(query)
 						local theTeam = getTeamFromName(tostring(factionName))
 						setPlayerTeam(targetPlayer, theTeam)
-						setElementData(targetPlayer, "faction", tonumber(factionID))
+						setElementData(targetPlayer, "faction", tonumber(factionID), false)
 						setElementData(targetPlayer, "factionrank", 1)
-						setElementData(targetPlayer, "dutyskin", -1)
+						setElementData(targetPlayer, "dutyskin", -1, false)
 						
 						outputChatBox("Player " .. targetPlayerNick .. " is now a member of faction '" .. tostring(factionName) .. "' (#" .. factionID .. ").", thePlayer, 0, 255, 0)
 						
@@ -638,7 +638,7 @@ function adminSetPlayerFaction(thePlayer, commandName, partialNick, factionID)
 				elseif (query) and (factionID==-1) then
 					local theTeam = getTeamFromName("Citizen")
 					setPlayerTeam(targetPlayer, theTeam)
-					setElementData(targetPlayer, "faction", -1)
+					setElementData(targetPlayer, "faction", -1, false)
 					
 					outputChatBox("Player " .. targetPlayerNick .. " was set to no faction.", thePlayer, 0, 255, 0)
 					outputChatBox("You were removed from your faction.", targetPlayer, 255, 0, 0)
@@ -673,8 +673,8 @@ function adminSetFactionLeader(thePlayer, commandName, partialNick, factionID)
 						mysql_free_result(query)
 						local theTeam = getTeamFromName(tostring(factionName))
 						setPlayerTeam(targetPlayer, theTeam)
-						setElementData(targetPlayer, "faction", tonumber(factionID))
-						setElementData(targetPlayer, "dutyskin", -1)
+						setElementData(targetPlayer, "faction", tonumber(factionID), false)
+						setElementData(targetPlayer, "dutyskin", -1, false)
 						
 						outputChatBox("Player " .. targetPlayerNick .. " is now a leader of faction '" .. tostring(factionName) .. "' (#" .. factionID .. ").", thePlayer, 0, 255, 0)
 						
@@ -763,7 +763,7 @@ function setFactionMoney(thePlayer, commandName, factionID, amount)
 			end
 			
 			if (theTeam) then
-				setElementData(theTeam, "money", amount)
+				setElementData(theTeam, "money", amount, false)
 				local result = mysql_query(handler, "UPDATE factions SET bankbalance='" .. amount .. "' WHERE id='" .. tonumber(factionID) .. "'")
 				mysql_free_result(result)
 				outputChatBox("Set faction '" .. getTeamName(theTeam) .. "'s money to " .. amount .. " $.", thePlayer, 255, 194, 14)
@@ -846,7 +846,7 @@ function payAllWages()
 						local interest = math.ceil(interestrate * bankmoney)
 						
 						local factionAmount = factionMoney - rankWage
-						setElementData(theTeam, "money", tonumber(factionAmount))
+						setElementData(theTeam, "money", tonumber(factionAmount), false)
 						local update = mysql_query(handler, "UPDATE factions SET bankbalance='" .. factionAmount .. "' WHERE id='" .. playerFaction .. "'")
 						mysql_free_result(update)
 						
@@ -980,7 +980,7 @@ function payAllWages()
 			end
 			triggerClientEvent(value, "cPayDay", value)
 			local hoursplayed = getElementData(value, "hoursplayed")
-			setElementData(value, "hoursplayed", hoursplayed+1)
+			setElementData(value, "hoursplayed", hoursplayed+1, false)
 			
 			setElementData(value, "timeinserver", timeinserver-60)
 			triggerClientEvent(value, "syncTimeInServer", value, timeinserver-60)

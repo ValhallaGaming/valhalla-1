@@ -176,20 +176,20 @@ function createPermVehicle(thePlayer, commandName, id, col1, col2, userName, fac
 							exports.global:givePlayerItem(targetPlayer, 3, tonumber(insertid))
 						end
 						
-						setElementData(veh, "dbid", tonumber(insertid))
+						setElementData(veh, "dbid", tonumber(insertid), false)
 						setElementData(veh, "fuel", 100)
-						setElementData(veh, "engine", 0)
-						setElementData(veh, "oldx", x)
-						setElementData(veh, "oldy", y)
-						setElementData(veh, "oldz", z)
-						setElementData(veh, "faction", factionVehicle)
-						setElementData(veh, "owner", dbid)
-						setElementData(veh, "job", 0)
+						setElementData(veh, "engine", 0, false)
+						setElementData(veh, "oldx", x, false)
+						setElementData(veh, "oldy", y, false)
+						setElementData(veh, "oldz", z, false)
+						setElementData(veh, "faction", factionVehicle, false)
+						setElementData(veh, "owner", dbid, false)
+						setElementData(veh, "job", 0, false)
 						
-						setElementData(veh, "dimension", dimension)
-						setElementData(veh, "interior", interior)
-						setElementData(veh, "currdimension", dimension)
-						setElementData(veh, "currinterior", dimension)
+						setElementData(veh, "dimension", dimension, false)
+						setElementData(veh, "interior", interior, false)
+						setElementData(veh, "currdimension", dimension, false)
+						setElementData(veh, "currinterior", dimension, false)
 						
 						setElementDimension(veh, dimension)
 						setElementInterior(veh, interior)
@@ -253,11 +253,11 @@ function createCivilianPermVehicle(thePlayer, commandName, id, col1, col2, job)
 				local dimension = getElementDimension(thePlayer)
 				local interior = getElementInterior(thePlayer)
 				
-				setElementData(veh, "dimension", dimension)
-				setElementData(veh, "interior", interior)
-				setElementData(veh, "currdimension", dimension)
-				setElementData(veh, "currinterior", interior)
-				setElementData(veh, "job", job)
+				setElementData(veh, "dimension", dimension, false)
+				setElementData(veh, "interior", interior, false)
+				setElementData(veh, "currdimension", dimension, false)
+				setElementData(veh, "currinterior", interior, false)
+				setElementData(veh, "job", job, false)
 				
 				-- Set the vehicle armored if it is armored
 				if (armoredCars[tonumber(id)]) then
@@ -270,15 +270,15 @@ function createCivilianPermVehicle(thePlayer, commandName, id, col1, col2, job)
 					mysql_free_result(query)
 					local id = mysql_insert_id(handler)
 					
-					setElementData(veh, "dbid", tonumber(id))
+					setElementData(veh, "dbid", tonumber(id), false)
 					setElementData(veh, "fuel", 100)
-					setElementData(veh, "engine", 0)
-					setElementData(veh, "oldx", x)
-					setElementData(veh, "oldy", y)
-					setElementData(veh, "oldz", z)
-					setElementData(veh, "faction", -1)
-					setElementData(veh, "owner", -2)
-					setElementData(veh, "job", 0)
+					setElementData(veh, "engine", 0, false)
+					setElementData(veh, "oldx", x, false)
+					setElementData(veh, "oldy", y, false)
+					setElementData(veh, "oldz", z, false)
+					setElementData(veh, "faction", -1, false)
+					setElementData(veh, "owner", -2, false)
+					setElementData(veh, "job", 0, false)
 					outputChatBox(getVehicleName(veh) .. " (Civilian) spawned with ID #" .. id .. ".", thePlayer, 255, 194, 14)
 					triggerEvent("onVehicleSpawn", veh)
 				end
@@ -294,7 +294,7 @@ function loadAllVehicles(res)
 		-- Reset player in vehicle states
 		local players = exports.pool:getPoolElementsByType("player")
 		for key, value in ipairs(players) do
-			setElementData(value, "realinvehicle", 0)
+			setElementData(value, "realinvehicle", 0, false)
 		end
 		
 		local result = mysql_query(handler, "SELECT currx, curry, currz, currrx, currry, currrz, x, y, z, rotx, roty, rotz, id, model, upgrade0, upgrade1, upgrade2, upgrade3, upgrade4, upgrade5, upgrade6, upgrade7, upgrade8, upgrade9, upgrade10, upgrade11, upgrade12, upgrade13, upgrade14, upgrade15, upgrade16 FROM vehicles")
@@ -480,15 +480,15 @@ function loadAllVehicles(res)
 				setVehicleRespawnPosition(veh, respawnx, respawny, respawnz, respawnrx, respawnry, respawnrz)
 				
 				-- Vehicles element data
-				setElementData(veh, "dbid", id)
+				setElementData(veh, "dbid", id, false)
 				setElementData(veh, "fuel", fuel)
-				setElementData(veh, "engine", engine)
-				setElementData(veh, "oldx", x)
-				setElementData(veh, "oldy", y)
-				setElementData(veh, "oldz", z)
-				setElementData(veh, "faction", faction)
-				setElementData(veh, "owner", owner)
-				setElementData(veh, "job", tonumber(job))
+				setElementData(veh, "engine", engine, false)
+				setElementData(veh, "oldx", x, false)
+				setElementData(veh, "oldy", y, false)
+				setElementData(veh, "oldz", z, false)
+				setElementData(veh, "faction", faction, false)
+				setElementData(veh, "owner", owner, false)
+				setElementData(veh, "job", tonumber(job), false)
 				setElementData(veh, "items", items)
 				setElementData(veh, "itemvalues", itemvalues)
 
@@ -496,10 +496,10 @@ function loadAllVehicles(res)
 				setElementDimension(veh, currdimension)
 				setElementInterior(veh, currinterior)
 				
-				setElementData(veh, "dimension", dimension)
-				setElementData(veh, "interior", interior)
-				setElementData(veh, "currdimension", dimension)
-				setElementData(veh, "currinterior", interior)
+				setElementData(veh, "dimension", dimension, false)
+				setElementData(veh, "interior", interior, false)
+				setElementData(veh, "currdimension", dimension, false)
+				setElementData(veh, "currinterior", interior, false)
 				
 				-- Set the lights
 				if (lights==0 or lights==1) then
@@ -530,7 +530,7 @@ function loadAllVehicles(res)
 					setElementHealth(veh, 300)
 					setVehicleDamageProof(veh, true)
 					setVehicleEngineState(veh, false)
-					setElementData(veh, "enginebroke", 1)
+					setElementData(veh, "enginebroke", 1, false)
 				end
 			end
 		end
@@ -561,19 +561,19 @@ function vehicleRespawn(exploded)
 	setVehicleEngineState(source, false)
 	setVehicleLandingGearDown(source, true)
 
-	setElementData(source, "enginebroke", 0)
+	setElementData(source, "enginebroke", 0, false)
 	
-	setElementData(source, "dbid", id)
+	setElementData(source, "dbid", id, false)
 	setElementData(source, "fuel", 100)
-	setElementData(source, "engine", 0)
+	setElementData(source, "engine", 0, false)
 	
 	local x, y, z = getElementPosition(source)
-	setElementData(source, "oldx", x)
-	setElementData(source, "oldy", y)
-	setElementData(source, "oldz", z)
+	setElementData(source, "oldx", x, false)
+	setElementData(source, "oldy", y, false)
+	setElementData(source, "oldz", z, false)
 	
-	setElementData(source, "faction", faction)
-	setElementData(source, "owner", owner)
+	setElementData(source, "faction", faction, false)
+	setElementData(source, "owner", owner, false)
 	
 	setVehicleOverrideLights(source, 1)
 	setVehicleFrozen(source, false)
@@ -616,7 +616,7 @@ function setEngineStatusOnEnter(thePlayer, seat, jacked)
 			toggleControl(thePlayer, "vehicle_fire", true)
 					
 			setVehicleEngineState(source, true)
-			setElementData(source, "engine", 1)
+			setElementData(source, "engine", 1, false)
 		end
 	end
 end
@@ -629,7 +629,7 @@ function vehicleExit(thePlayer, seat)
 	
 	-- For oldcar
 	local vehid = getElementData(source, "dbid")
-	setElementData(thePlayer, "lastvehid", vehid)
+	setElementData(thePlayer, "lastvehid", vehid, false)
 end
 addEventHandler("onVehicleExit", getRootElement(), vehicleExit)
 
@@ -666,7 +666,7 @@ function damageTyres()
 	
 	if (tyretimer~=1) then
 		if (tyre1==1) or (tyre2==1) or (tyre3==1) or (tyre4==1) then
-			setElementData(source, "tyretimer", 1)
+			setElementData(source, "tyretimer", 1, false)
 			local randTime = math.random(5, 15)
 			randTime = randTime * 1000
 			setTimer(destroyTyre, randTime, 1, source)
@@ -728,7 +728,7 @@ function toggleEngine(source, key, keystate)
 					toggleControl(source, "vehicle_fire", true)
 					
 					setVehicleEngineState(veh, true)
-					setElementData(veh, "engine", 1)
+					setElementData(veh, "engine", 1, false)
 				elseif (engine==0) and (fuel<1) then
 					-- Bike fix
 					toggleControl(source, "accelerate", false)
@@ -744,7 +744,7 @@ function toggleEngine(source, key, keystate)
 					toggleControl(source, "vehicle_fire", false)
 					
 					setVehicleEngineState(veh, false)
-					setElementData(veh, "engine", 0)
+					setElementData(veh, "engine", 0, false)
 				end
 			end
 		end
@@ -802,10 +802,10 @@ function toggleLights(source, key, keystate)
 			if (seat==0) then
 				if (lights~=2) then
 					setVehicleOverrideLights(veh, 2)
-					setElementData(veh, "lights", 1)
+					setElementData(veh, "lights", 1, false)
 				elseif (lights~=1) then
 					setVehicleOverrideLights(veh, 1)
-					setElementData(veh, "lights", 0)
+					setElementData(veh, "lights", 0, false)
 				end
 			end
 		end
@@ -826,7 +826,7 @@ end
 addEventHandler("onVehicleStartEnter", getRootElement(), checkBikeLock)
 
 function setRealInVehicle(thePlayer)
-	setElementData(thePlayer, "realinvehicle", 1)
+	setElementData(thePlayer, "realinvehicle", 1, false)
 	
 	-- 0000464: Car owner message. 
 	local owner = getElementData(source, "owner")
@@ -851,7 +851,7 @@ function setRealNotInVehicle(thePlayer)
 	local locked = isVehicleLocked(source)
 	
 	if not (locked) then
-		setElementData(thePlayer, "realinvehicle", 0)
+		setElementData(thePlayer, "realinvehicle", 0, false)
 	end
 end
 addEventHandler("onVehicleStartExit", getRootElement(), setRealNotInVehicle)
@@ -909,7 +909,7 @@ function doBreakdown()
 		setElementHealth(source, 300)
 		setVehicleDamageProof(source, true)
 		setVehicleEngineState(source, false)
-		setElementData(source, "enginebroke", 1)
+		setElementData(source, "enginebroke", 1, false)
 	end
 end
 addEventHandler("onVehicleDamage", getRootElement(), doBreakdown)

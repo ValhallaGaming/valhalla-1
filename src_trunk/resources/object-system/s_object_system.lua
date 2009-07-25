@@ -48,7 +48,7 @@ function createNewObject(thePlayer, commandName, modelid)
 				if (object) then
 					setElementInterior(object, interior)
 					setElementDimension(object, dimension)
-					setElementData(object, "dbid", id)
+					setElementData(object, "dbid", id, false)
 					
 					outputChatBox("Object " .. modelid .. " spawned with ID #" .. id .. ".", thePlayer, 0, 255, 0)
 				else
@@ -88,7 +88,7 @@ function loadAllObjects(res)
 					exports.pool:allocateElement(object)
 					setElementInterior(object, interior)
 					setElementDimension(object, dimension)
-					setElementData(object, "dbid", id)
+					setElementData(object, "dbid", id, false)
 						
 					count = count + 1
 				end

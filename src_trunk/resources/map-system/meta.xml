@@ -1,20 +1,20 @@
 <meta>
-	<map src="2nd Precinct.map"/>
-	<map src="Bank Int.map"/>
-	<map src="Bassline_Studios.map"/>
-	<map src="Blackfield Chapel Int.map"/>
-	<map src="china.map" />
-	<map src="Creek Ghetto.map"/>
-	<map src="Dragon Lady Strip Club.map"/>
-	<map src="TatumStreetHoodification.map"/>
-	<map src="FBI Field Office.map"/>
-	<map src="fishMarket.map"/>
-	<map src="glenbrook_apartments_doors.map"/>
-	<map src="LV Hospital.map"/>
-	<map src="LVMPD.map"/>
-	<map src="Las_Venturas_Transport.map"/>
-	<map src="san.map"/>
-	<map src="steak_floor.map"/>
-	<map src="Vice_Back_Room.map"/>
-	<map src="Yakuza HQ.map"/>
+	<script src="2nd Precinct.lua" type="client"/>
+	<script src="Bank Int.lua" type="client"/>
+	<script src="Bassline_Studios.lua" type="client"/>
+	<script src="Blackfield Chapel Int.lua" type="client"/>
+	<script src="china.lua" type="client"/>
+	<script src="Creek Ghetto.lua" type="client"/>
+	<script src="Dragon Lady Strip Club.lua" type="client"/>
+	<script src="TatumStreetHoodification.lua" type="client"/>
+	<script src="FBI Field Office.lua" type="client"/>
+	<script src="fishMarket.lua" type="client"/>
+	<script src="glenbrook_apartments_doors.lua" type="client"/>
+	<script src="LV Hospital.lua" type="client"/>
+	<script src="LVMPD.lua" type="client"/>
+	<script src="Las_Venturas_Transport.lua" type="client"/>
+	<script src="san.lua" type="client"/>
+	<script src="steak_floor.lua" type="client"/>
+	<script src="Vice_Back_Room.lua" type="client"/>
+	<script src="Yakuza HQ.lua" type="client"/>
 </meta>

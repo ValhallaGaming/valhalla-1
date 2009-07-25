@@ -78,7 +78,7 @@ end
 function stevieIntro (thePlayer) -- When player enters the colSphere create GUI with intro output to all local players as local chat.
 		
 	-- Give the player the "Find Stevie" achievement.
-	if(getElementData(stevie, "activeConvo"))then
+	if(getElementData(stevie, "activeConvo")==1)then
 		
 		local pedX, pedY, pedZ = getElementPosition( source )
 		local chatSphere = createColSphere( pedX, pedY, pedZ, 5 )
@@ -91,7 +91,7 @@ function stevieIntro (thePlayer) -- When player enters the colSphere create GUI 
 		
 	else
 		
-		setElementData (stevie, "activeConvo", true) -- set the NPCs conversation state to active so no one else can begin to talk to him.
+		setElementData (stevie, "activeConvo", 1) -- set the NPCs conversation state to active so no one else can begin to talk to him.
 		outputDebugString("Stevie is talking.")
 		
 		local pedX, pedY, pedZ = getElementPosition( stevie )
@@ -319,7 +319,6 @@ function stevieSuccess_S()
 	exports.global:givePlayerItem(source, 55, 1) -- change the ID.
 	
 	-- set the players "stevie" stat to "1" meaning they have met him and successfully made it through the conversation.
-	setElementData(source, "stevie", 1)
 	mysql_query(handler, "UPDATE characters SET stevie='1' WHERE charactername='" .. mysql_escape_string(handler, getPlayerName(source)) .. "' LIMIT 1") -- NOT WORKING
 end
 addEvent( "stevieSuccessServerEvent", true )
@@ -349,8 +348,7 @@ addEvent( "CloseButtonClickServerEvent", true )
 addEventHandler( "CloseButtonClickServerEvent", getRootElement(), CloseButtonClick_S )
 
 function resetStevieConvoState()
-	removeElementData(stevie,"activeConvo")
-	outputDebugString("Stevie is no longer talking.")
+	setElementData(stevie,"activeConvo", 0)
 end
 
 ------------------------------------------------------------------------------------
@@ -462,7 +460,7 @@ function acceptDeal_S( dealNumber )
 		cost = 1000
 	end
 	
-	local money = getElementData(source, "money") -- NOT WORKING
+	local money = getElementData(source, "money")
 	if (money<cost) then -- can the player afford the deal?
 		outputChatBox("((Steven Pullman)) #081016 [Cellphone]: Call me when you've got some money.", source)
 		outputChatBox("You can't afford to pay Stevie for the deal.", source, 255, 0, 0)
@@ -590,10 +588,9 @@ deal3[9] = { true, 31, 400 }	-- M4
 deal3[10] = { true, 17, 6 }		-- teargas
 
 deal4={}
-deal4[1] = { false, 30, 1 }		-- Sativa
-deal4[2] = { false, 32, 1 }		-- Lysergic acid
-deal4[3] = { false, 33, 1 }		-- PCP
-deal4[4] = { false, 31, 1 }		-- Cocaine Alcaloid
+deal4[1] = { false, 32, 1 }		-- Lysergic acid
+deal4[2] = { false, 33, 1 }		-- PCP
+deal4[3] = { false, 31, 1 }		-- Cocaine Alcaloid
 
 
 function giveGoods(thePlayer, dealNumber)
@@ -703,7 +700,7 @@ function givePlayerStevieItems(thePlayer, veh, deal)
 					exports.global:giveVehicleItem(veh, itemID, value)
 				end
 			elseif(deal==4)then
-				local rand = math.random(1,4) -- select a random item to give the player.
+				local rand = math.random(1,3) -- select a random item to give the player.
 				
 				local isWeapon = deal4[rand][1]
 				local itemID = deal4[rand][2]

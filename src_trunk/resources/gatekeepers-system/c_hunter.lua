@@ -1,11 +1,5 @@
 wHunter, optionOne, optionTwo, hunterText = nil
 
-function resetHunterCoolDown()
-	--removeElementData(source,"hunterCooldown")
-	setElementData(source, "hunterCoolDown", true, nil)
-end
-
-
 function createhunterGUI() 
 	
 	-- Window variables

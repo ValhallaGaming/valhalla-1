@@ -8,29 +8,45 @@ exports.pool:allocateElement(hunter)
 setPedRotation (hunter, 300.6221)
 setElementInterior (hunter, 2)
 setElementDimension (hunter, 1000)
+
 setPedAnimation(hunter, "CAR_CHAT", "car_talkm_loop", -1, true, false, true) -- Set the Peds Animation.
 setElementData (hunter, "activeConvo",  0) -- Set the convo state to 0 so people can start talking to him.
 setElementData(hunter, "name", "Hunter")
 setElementData(hunter, "talk", true)
-setPedAnimation(hunter, "CAR_CHAT", "car_talkm_loop", -1, true, false, true)
+
 
 function hunterIntro () -- When player enters the colSphere create GUI with intro output to all local players as local chat.	
 	-- Give the player the "Find Hunter" achievement.
-	local thePlayer = source
-	local state = getElementData( thePlayer, "hunterCoolDown")
-	
-	if(getElementData( hunter, "activeConvo"))then
-		outputChatBox("Hunter doesn't want to talk to you.", thePlayer, 255, 0, 0)
+		
+	if(getElementData( hunter, "activeConvo")==1)then
+		outputChatBox("Hunter doesn't want to talk to you.", source, 255, 0, 0)
 	else
-		local pedX, pedY, pedZ = getElementPosition( hunter )
-		local chatSphere = createColSphere( pedX, pedY, pedZ, 10 )
-		exports.pool:allocateElement(chatSphere) -- Create the colSphere for chat output to local players
-		local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
-		for i, player in ipairs( targetPlayers ) do
-			outputChatBox("* A muscular man works under the car’s hood.", player, 255, 51, 102)
+		local query = mysql_query(handler, "SELECT hunter FROM characters WHERE charactername='" .. mysql_escape_string(handler, getPlayerName(source)) .."'")
+		local huntersFriend = tonumber(mysql_result(query, 1, 1))
+		mysql_free_result(query)
+		if(huntersFriend==1)then -- If they are already a friend.
+			local pedX, pedY, pedZ = getElementPosition( hunter )
+			local chatSphere = createColSphere( pedX, pedY, pedZ, 10 )
+			exports.pool:allocateElement(chatSphere) -- Create the colSphere for chat output to local players
+			local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
+			for i, player in ipairs( targetPlayers ) do
+				outputChatBox("Hunter says: Hey, man.  I'll call you when I got some work for you.", player, 255, 255, 255)
+			end
+			destroyElement(chatSphere)	
+		else -- If they are not a friend.
+		
+			triggerClientEvent ( source, "hunterIntroEvent", getRootElement()) -- Trigger Client side function to create GUI.
+			
+			local pedX, pedY, pedZ = getElementPosition( hunter )
+			local chatSphere = createColSphere( pedX, pedY, pedZ, 10 )
+			exports.pool:allocateElement(chatSphere) -- Create the colSphere for chat output to local players
+			local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
+			for i, player in ipairs( targetPlayers ) do
+				outputChatBox("* A muscular man works under the car’s hood.", player, 255, 51, 102)
+			end
+			destroyElement(chatSphere)
+			setElementData (hunter, "activeConvo", 1) -- set the NPCs conversation state to active so no one else can begin to talk to him.
 		end
-		destroyElement(chatSphere)
-		setElementData (hunter, "activeConvo", 1) -- set the NPCs conversation state to active so no one else can begin to talk to him.
 	end
 end
 addEvent( "startHunterConvo", true )
@@ -101,7 +117,7 @@ function statement5_S()
 		outputChatBox("Hunter says: It’s not about how it looks, man. This car will rip your insides out and throw ‘em at you, rookie.", player, 255, 255, 255) -- Hunter's next question
 	end
 	destroyElement (chatSphere)
-	setElementData (hunter, "activeConvo", 0)
+	setTimer(resetHunterConvoState, 360000, 1)
 end
 addEvent( "hunterStatement5ServerEvent", true )
 addEventHandler( "hunterStatement5ServerEvent", getRootElement(), statement5_S )
@@ -119,7 +135,7 @@ function statement6_S()
 		outputChatBox("Hunter says: Just goes to show you aren’t a real gear head. Come back when you have a clue.", player, 255, 255, 255) -- Hunter's next question
 	end
 	destroyElement (chatSphere)
-	setElementData (hunter, "activeConvo", 0)
+	setTimer(resetHunterConvoState, 360000, 1)
 end
 addEvent( "hunterStatement6ServerEvent", true )
 addEventHandler( "hunterStatement6ServerEvent", getRootElement(), statement6_S )
@@ -171,7 +187,7 @@ function statement9_S()
 		outputChatBox("Hunter says: Yeah so I got work to do. Nice talkin’ to ya.", player, 255, 255, 255) -- Hunter's next question
 	end
 	destroyElement (chatSphere)
-	setElementData (hunter, "activeConvo", 0)
+	setTimer(resetHunterConvoState, 360000, 1)
 end
 addEvent( "hunterStatement9ServerEvent", true )
 addEventHandler( "hunterStatement9ServerEvent", getRootElement(), statement9_S )
@@ -209,7 +225,7 @@ function statement11_S()
 		exports.global:sendLocalMeAction( source,"jots down their number on a scrap of paper and hands it to Hunter.")
 	end
 	destroyElement (chatSphere)
-	setElementData (hunter, "activeConvo", 0)
+	setTimer(resetHunterConvoState, 360000, 1)
 	mysql_query(handler, "UPDATE characters SET hunter='1' WHERE charactername='" .. mysql_escape_string(handler, getPlayerName(source)) .. "' LIMIT 1")
 
 end
@@ -229,7 +245,11 @@ function statement12_S()
 		outputChatBox("Hunter says: Whatever. I got work to do.", player, 255, 255, 255) -- Hunter's next question
 	end
 	destroyElement (chatSphere)
-	setElementData (hunter, "activeConvo", 0)
+	setTimer(resetHunterConvoState, 360000, 1)
 end
 addEvent( "hunterStatement12ServerEvent", true )
 addEventHandler( "hunterStatement12ServerEvent", getRootElement(), statement12_S )
+
+function resetHunterConvoState()
+	setElementData(hunter, "activeConvo", 0)
+end

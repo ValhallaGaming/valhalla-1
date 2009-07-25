@@ -770,6 +770,9 @@ function pickupItem(object, itemID, itemValue, itemName)
 			mysql_query(handler, "DELETE FROM worlditems WHERE id='" .. tonumber(id) .. "'")
 			setPedArmor(source, tonumber(itemValue))
 		end
+	else
+		outputDebugString("Distance between Player and Pickup too large")
+		setElementData(object, "pickedup", false)
 	end
 end
 addEvent("pickupItem", true)

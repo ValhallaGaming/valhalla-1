@@ -24,7 +24,7 @@ function clickItem(button, state, absX, absY, wx, wy, wz, element)
 		
 		local x, y, z = getElementPosition(getLocalPlayer())
 		
-		if (getDistanceBetweenPoints3D(x, y, z, wx, wy, wz)<10) then
+		if (getDistanceBetweenPoints3D(x, y, z, wx, wy, wz)<3) then
 			if (objtype) and not (pickedup) then
 				if (objtype=="worlditem") then
 					if (wRightClick) then

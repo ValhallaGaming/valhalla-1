@@ -4,25 +4,18 @@ SQL
 -- Achievement
 INSERT INTO achievementslist SET id='37', name='The Good Samaritan', description='Donate $1000 or more to charity', points='100';
 
+-- Character table columns
+"rook" and "ty" for two new gatekeerps.
+
 ---------------------
 Chamberlains changes.
 ---------------------
 Scripts in "unfinished code" need to be completed, checked and added to the correct resources by someone who knows what they are doing.
 
-chat-system
-	- s_chat_system
-
-job-system
-	- c_fishing_job
-	- S_carjacker_job
-	- c_photographer_job
-	- s_photographer
-	- c_mechanic_job
-	- s_mechanic_job
-	- c_locksmith_job
-	- s_locksmith_job
+gatekeepers-system
 	- meta
-
-map-system
-	- FBI Office.map
-	- meta
+	- c_ped_rightclick
+	- c_rook
+	- s_rook
+	- c_ty
+	- s_ty

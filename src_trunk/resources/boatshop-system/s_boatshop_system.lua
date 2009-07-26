@@ -39,6 +39,7 @@ addEventHandler("onPickupHit", carshopPickup, pickupUse)
 function buyCar(car, cost, id, col1, col2)
 	outputChatBox("You bought a " .. car .. " for " .. cost .. "$. Enjoy!", source, 255, 194, 14)
 	outputChatBox("You can set this boats spawn position by parking it and typing /vehpos", source, 255, 194, 14)
+	outputChatBox("Boats parked near the marina will be deleted without notice.", source, 255, 0, 0)
 	outputChatBox("Press I and use your car key to unlock this boat.", source, 255, 194, 14)
 	makeCar(source, car, cost, id, col1, col2)
 end
@@ -143,5 +144,21 @@ function makeCar(thePlayer, car, cost, id, col1, col2)
 		setElementData(veh, "locked", locked, false)
 		triggerEvent("onVehicleSpawn", veh)
 		exports.global:givePlayerAchievement(thePlayer, 27) -- boat trip
+		
+		setElementData(veh, "requires.vehpos", 1, false)
+		setTimer(checkVehpos, 3600000, 1, veh)
+	end
+end
+
+function checkVehpos(veh)
+	local requires = getElementData(veh, "requires.vehpos")
+	
+	if (requires) then
+		if (requires==1) then
+			local id = tonumber(getElementData(veh, "dbid"))
+			exports.irc:sendMessage("Removing vehicle #" .. id .. " (Did not get Vehpossed).")
+			destroyElement(veh)
+			mysql_query(handler, "DELETE FROM vehicles WHERE id='" .. id .. "' LIMIT 1")
+		end
 	end
 end

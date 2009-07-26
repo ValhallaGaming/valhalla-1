@@ -140,5 +140,21 @@ function makeCar(thePlayer, car, cost, id, col1, col2)
 		setElementData(veh, "locked", locked, false)
 		triggerEvent("onVehicleSpawn", veh, false)
 		exports.global:givePlayerAchievement(thePlayer, 17) -- my ride
+		
+		setElementData(veh, "requires.vehpos", 1, false)
+		setTimer(checkVehpos, 3600000, 1, veh)
+	end
+end
+
+function checkVehpos(veh)
+	local requires = getElementData(veh, "requires.vehpos")
+	
+	if (requires) then
+		if (requires==1) then
+			local id = tonumber(getElementData(veh, "dbid"))
+			exports.irc:sendMessage("Removing vehicle #" .. id .. " (Did not get Vehpossed).")
+			destroyElement(veh)
+			mysql_query(handler, "DELETE FROM vehicles WHERE id='" .. id .. "' LIMIT 1")
+		end
 	end
 end

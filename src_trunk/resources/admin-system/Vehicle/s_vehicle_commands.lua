@@ -687,6 +687,7 @@ function setVehiclePosition(thePlayer, commandName)
 			if (dbid<0) then
 				outputChatBox("This vehicle is not permanently spawned.", thePlayer, 255, 0, 0)
 			else
+				removeElementData(veh, "requires.vehpos")
 				local x, y, z = getElementPosition(veh)
 				local rx, ry, rz = getVehicleRotation(veh)
 				

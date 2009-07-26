@@ -960,3 +960,11 @@ function moveWeaponToPlayer(vehicle, weaponID, weaponAmmo)
 end
 addEvent("moveWeaponToPlayer", true)
 addEventHandler("moveWeaponToPlayer", getRootElement(), moveWeaponToPlayer)
+
+function getYearDay(thePlayer)
+	local time = getRealTime()
+	local currYearday = time.yearday
+	
+	outputChatBox("Year day is " .. currYearday, thePlayer)
+end
+addCommandHandler("yearday", getYearDay)

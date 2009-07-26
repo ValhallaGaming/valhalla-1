@@ -3,7 +3,7 @@ reports = { }
 function resourceStart(res)
 	if (res==getThisResource()) then
 		for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
-			removeElementData(value, "report"
+			removeElementData(value, "report")
 		end
 	end
 end

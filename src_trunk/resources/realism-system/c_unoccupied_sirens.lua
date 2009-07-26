@@ -21,7 +21,7 @@ function createSiren(thePlayer, seat)
 		end
 	end
 end
-addEventHandler("onClientVehicleExit", getRootElement(), createSiren)
+--addEventHandler("onClientVehicleExit", getRootElement(), createSiren)
 
 function destroySiren(thePlayer, seat)
 	if (seat==0) then
@@ -44,4 +44,4 @@ function destroySiren(thePlayer, seat)
 		end
 	end
 end
-addEventHandler("onClientVehicleEnter", getRootElement(), destroySiren)
+--addEventHandler("onClientVehicleEnter", getRootElement(), destroySiren)

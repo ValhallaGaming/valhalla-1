@@ -29,8 +29,12 @@ function showEmploymentWindow()
 	guiGridListSetItemText(jobList, row, column, "Bus Driver", false, false)
 	
 	-- CITY MAINTENACE
-	local rowmaintenance = guiGridListAddRow(jobList)
-	guiGridListSetItemText(jobList, rowmaintenance, column, "City Maintenance", false, false)
+	local team = getPlayerTeam(getLocalPlayer())
+	local ftype = getElementData(team, "type")
+	if ftype ~= 2 then
+		local rowmaintenance = guiGridListAddRow(jobList)
+		guiGridListSetItemText(jobList, rowmaintenance, column, "City Maintenance", false, false)
+	end
 	
 	-- MECHANIC
 	local row = guiGridListAddRow(jobList)

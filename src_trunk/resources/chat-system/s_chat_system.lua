@@ -174,10 +174,14 @@ function chatMain(message, messageType)
 						mysql_free_result(result)
 								
 						local titleresult = mysql_query(handler, "SELECT rank_" .. factionRank .. " FROM factions WHERE id='" .. factionID .. "' LIMIT 1")
-						local factionRankTitle = tostring(mysql_result(titleresult, 1, 1))
+						if not mysql_result(titleresult, 1, 1) then
+							factionRankTitle = ""
+						else
+							factionRankTitle = tostring(mysql_result(titleresult, 1, 1)) .. " - "
+						end
 						mysql_free_result(titleresult)
 						
-						outputChatBox("[RADIO #" .. theChannel .. "] " .. factionRankTitle .. " - " .. username .. " says: " .. message, value, 0, 102, 255)
+						outputChatBox("[RADIO #" .. theChannel .. "] " .. factionRankTitle .. username .. " says: " .. message, value, 0, 102, 255)
 						
 						-- Show it to people near who can hear his radio
 						local x, y, z = getElementPosition(value)

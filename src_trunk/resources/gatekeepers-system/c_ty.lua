@@ -42,11 +42,11 @@ function tyStatement2( rooksFriend, tysFriend )
 	optionTwo = nil
 	
 	-- Create new Stevies text box
-	guiSetText ( tyText, "Ty shouts: Yo’, who is it?." )
+	guiSetText ( tyText, "Ty shouts: Yo', who is it?." )
 	
 	if(tonumber(tysFriend) == 0) then
 		-- Create the new options
-		optionOne = guiCreateButton( 0.05, 0.35, 0.9, 0.2, "Yo’, c'mon open the fuckin' door, homie.", true, wTy )
+		optionOne = guiCreateButton( 0.05, 0.35, 0.9, 0.2, "Yo', c'mon open the fuckin' door, homie.", true, wTy )
 		addEventHandler( "onClientGUIClick", optionOne, tyStatement4, false )
 		
 		if (tonumber(rooksFriend) == 1) then
@@ -116,13 +116,13 @@ function tyStatement6( )
 	optionTwo = nil
 	
 	-- Create new Stevies text box
-	guiSetText ( tyText, "Yeah that's right. So you down? Here’s how it'll work. I got some people's I can call up on when I need that produce. I'll act as middle man and sell to you at wholesale. You then can do whatever you want with it." )
+	guiSetText ( tyText, "Yeah that's right. So you down? Here's how it'll work. I got some people's I can call up on when I need that produce. I'll act as middle man and sell to you at wholesale. You then can do whatever you want with it." )
 	
 	-- Create the new options
 	optionOne = guiCreateButton( 0.05, 0.35, 0.9, 0.2, "Wholesale? I thought we were partners.", true, wTy )
 	addEventHandler( "onClientGUIClick", optionOne, tyStatement9, false )
 	
-	optionTwo = guiCreateButton( 0.05, 0.55, 0.9, 0.2, "Sounds a’ight.", true, wTy )
+	optionTwo = guiCreateButton( 0.05, 0.55, 0.9, 0.2, "Sounds a'ight.", true, wTy )
 	addEventHandler( "onClientGUIClick", optionTwo, tyStatement8, false )
 	
 end

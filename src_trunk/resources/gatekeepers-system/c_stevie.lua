@@ -120,7 +120,7 @@ function statement4()
 	optionTwo = nil
 	
 	-- Create Stevies text box
-	guiSetText (stevieText, "Steven Pullman says: Get the Manhattan Strip. You won’t regret it. Where's my manners... The name's Stevie." )
+	guiSetText (stevieText, "Steven Pullman says: Get the Manhattan Strip. You won't regret it. Where's my manners... The name's Stevie." )
 	
 	-- Create the new options
 	optionOne = guiCreateButton( 0.05, 0.35, 0.9, 0.2, "Shake Stevie's hand.", true, wStevie )
@@ -184,7 +184,7 @@ function statement8()
 	optionTwo = nil
 
 	-- Create Stevies text box
-	guiSetText ( stevieText, "Steven Pullman says: Yeah, maybe it ain't to everyone’s taste. So what do you do?" )
+	guiSetText ( stevieText, "Steven Pullman says: Yeah, maybe it ain't to everyone's taste. So what do you do?" )
 	
 	-- Create the new options
 	optionOne = guiCreateButton( 0.05, 0.35, 0.9, 0.2, "I'd rather not get into that if you don't mind.", true, wStevie )

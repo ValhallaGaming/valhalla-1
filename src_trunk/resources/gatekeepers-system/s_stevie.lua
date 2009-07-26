@@ -171,8 +171,8 @@ function statement3_S()
 	local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
 	local name = string.gsub(getPlayerName(source), "_", " ")
 	for i, player in ipairs( targetPlayers ) do
-		outputChatBox(name .. " says: I’m a vegetarian. The thought of those poor animals suffering for you to stuff your face makes me sick.", player, 255, 255, 255)
-		outputChatBox("Steven Pullman says: Hey f*** you, pal. You don’t like it, go save a whale or some shit.", player, 255, 255, 255)
+		outputChatBox(name .. " says: I'm a vegetarian. The thought of those poor animals suffering for you to stuff your face makes me sick.", player, 255, 255, 255)
+		outputChatBox("Steven Pullman says: Hey f*** you, pal. You don't like it, go save a whale or some shit.", player, 255, 255, 255)
 	end
 	destroyElement (chatSphere)
 end	
@@ -189,10 +189,10 @@ function statement4_S()
 	local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
 	local name = string.gsub(getPlayerName(source), "_", " ")
 	for i, player in ipairs( targetPlayers ) do
-		outputChatBox(name .. " says: Yeah I heard it’s good. I was just about to order something.", player, 255, 255, 255)
-		outputChatBox("Steven Pullman says: Get the Angus rib-eye. You won’t regret it. Where’s my manners...", player, 255, 255, 255)
+		outputChatBox(name .. " says: Yeah I heard it's good. I was just about to order something.", player, 255, 255, 255)
+		outputChatBox("Steven Pullman says: Get the Angus rib-eye. You won't regret it. Where's my manners...", player, 255, 255, 255)
 		outputChatBox("* Steven Pullman wipes his hands on a napkin and offers "..name.." a hand shake.", player, 255, 51, 102)
-		outputChatBox("Steven Pullman says: The name’s Stevie.", player, 255, 255, 255)
+		outputChatBox("Steven Pullman says: The name's Stevie.", player, 255, 255, 255)
 	end
 	destroyElement (chatSphere)
 end
@@ -233,7 +233,7 @@ function statement6_S()
 	for i, player in ipairs( targetPlayers ) do
 		outputChatBox("* "..name.." shakes Stevie's hand.", player, 255, 51, 102)
 		outputChatBox("Steven Pullman says: Me and the boys from the freight depot come down here every week.", player, 255, 255, 255)
-		outputChatBox("Steven Pullman says: Football and steaks make a damn good combination don’t you think?", player, 255, 255, 255)
+		outputChatBox("Steven Pullman says: Football and steaks make a damn good combination don't you think?", player, 255, 255, 255)
 	end
 	destroyElement (chatSphere)
 end
@@ -255,9 +255,9 @@ function statement7_S()
 	local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
 	local name = string.gsub(getPlayerName(source), "_", " ")
 	for i, player in ipairs( targetPlayers ) do
-		outputChatBox(name.." says: Are you kidding me? I’ve been a Beavers fan my whole life!", player, 255, 255, 255)
+		outputChatBox(name.." says: Are you kidding me? I've been a Beavers fan my whole life!", player, 255, 255, 255)
 		outputChatBox("Steven Pullman says: What?! The Beavers?", player, 255, 255, 255)
-		outputChatBox("Steven Pullman says: You’re lucky I don’t punch your lights out right here and now you piece-a beaver scum.", player, 255, 255, 255)
+		outputChatBox("Steven Pullman says: You're lucky I don't punch your lights out right here and now you piece-a beaver scum.", player, 255, 255, 255)
 		outputChatBox("Steven Pullman says: Look... now you made me lose my appetite.", player, 255, 255, 255)
 	end
 	destroyElement (chatSphere)
@@ -276,7 +276,7 @@ function statement8_S()
 	local name = string.gsub(getPlayerName(source), "_", " ")
 	for i, player in ipairs( targetPlayers ) do
 		outputChatBox( name.." says: I never really liked football.", player, 255, 255, 255)
-		outputChatBox("Steven Pullman says: Yeah, maybe it isn’t to everyone’s taste. So what do you do?", player, 255, 255, 255)
+		outputChatBox("Steven Pullman says: Yeah, maybe it isn't to everyone's taste. So what do you do?", player, 255, 255, 255)
 	end
 	destroyElement (chatSphere)
 end
@@ -297,9 +297,9 @@ function statement9_S()
 	local name = string.gsub(getPlayerName(source), "_", " ")
 	for i, player in ipairs( targetPlayers ) do
 		outputChatBox( name.." says: Over worked and underappreciated. You know how it is.", player, 255, 255, 255)
-		outputChatBox("Steven Pullman says: Tell me about it! They got me bustin’ my ass at the freight yard for change.", player, 255, 255, 255)
-		outputChatBox("Steven Pullman says: See it’s people like you and me that need to help each other out.", player, 255, 255, 255)
-		outputChatBox("Steven Pullman says: Tell you what, here’s my card. You ever need anything I can help you out with, just give me a call.", player, 255, 255, 255)
+		outputChatBox("Steven Pullman says: Tell me about it! They got me bustin' my ass at the freight yard for change.", player, 255, 255, 255)
+		outputChatBox("Steven Pullman says: See it's people like you and me that need to help each other out.", player, 255, 255, 255)
+		outputChatBox("Steven Pullman says: Tell you what, here's my card. You ever need anything I can help you out with, just give me a call.", player, 255, 255, 255)
 	end
 	destroyElement (chatSphere)
 	

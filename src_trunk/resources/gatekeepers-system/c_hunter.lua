@@ -14,7 +14,7 @@ function createhunterGUI()
 		wHunter = guiCreateWindow(X, Y, Width, Height, "Conversation with a stranger.", false )
 		
 		-- Create Stevies text box
-		hunterText = guiCreateLabel ( 0.05, 0.1, 0.9, 0.3,  "*A muscular man works under the car’s hood.", true, wHunter )
+		hunterText = guiCreateLabel ( 0.05, 0.1, 0.9, 0.3,  "*A muscular man works under the car's hood.", true, wHunter )
 		guiLabelSetHorizontalAlign ( hunterText, "left", true )
 		
 		-- Create close, previous and Next Button
@@ -102,7 +102,7 @@ function hunterStatement4()
 	optionTwo = nil
 	
 	-- Create Stevies text box
-	guiSetText (hunterText, "Hunter says: Sport air intake, NOS, fogger system and a T4 turbo. But you wouldn’t know much about that, would you?" )
+	guiSetText (hunterText, "Hunter says: Sport air intake, NOS, fogger system and a T4 turbo. But you wouldn't know much about that, would you?" )
 	
 	-- Create the new options
 	optionOne = guiCreateButton( 0.05, 0.35, 0.9, 0.2, "Looks like all show and no go to me.", true, wHunter )
@@ -144,10 +144,10 @@ function hunterStatement7()
 	optionTwo = nil
 
 	-- Create Stevies text box
-	guiSetText (hunterText, "Hunter says: You almost sound like you know what you’re talking about." )
+	guiSetText (hunterText, "Hunter says: You almost sound like you know what you're talking about." )
 	
 	-- Create the new options
-	optionOne = guiCreateButton( 0.05, 0.35, 0.9, 0.2, "There’s nothing better than living a quarter mile at a time.", true, wHunter )
+	optionOne = guiCreateButton( 0.05, 0.35, 0.9, 0.2, "There's nothing better than living a quarter mile at a time.", true, wHunter )
 	addEventHandler( "onClientGUIClick", optionOne, hunterStatement8, false )
 	
 end
@@ -164,13 +164,13 @@ function hunterStatement8()
 	optionOne = nil
 	
 	-- Create Stevies text box
-	guiSetText ( hunterText, "Hunter says: Oh, you’re a racer? They call me Hunter. I got a real name but unless you’re the government you don’t need to know it." )
+	guiSetText ( hunterText, "Hunter says: Oh, you're a racer? They call me Hunter. I got a real name but unless you're the government you don't need to know it." )
 	
 	-- Create the new options
 	optionOne = guiCreateButton( 0.05, 0.35, 0.9, 0.2, "You work here alone?", true, wHunter )
 	addEventHandler( "onClientGUIClick", optionOne, hunterStatement9, false )
 
-	optionTwo = guiCreateButton( 0.05, 0.55, 0.9, 0.2, "My mother taught me never to trust a man that won’t even tell you his name.", true, wHunter )
+	optionTwo = guiCreateButton( 0.05, 0.55, 0.9, 0.2, "My mother taught me never to trust a man that won't even tell you his name.", true, wHunter )
 	addEventHandler( "onClientGUIClick", optionTwo, hunterStatement10, false )
 	
 end
@@ -196,13 +196,13 @@ function hunterStatement10()
 	optionTwo = nil
 
 	-- Create Stevies text box
-	guiSetText ( hunterText, "Hunter says: Well here’s the thing. One of my usual guys got busted a couple days ago. If you’re looking to make some money I could use a new go to guy. See running a car like this isn’t cheap so we ...borrow from other cars if you know what I’m saying." )
+	guiSetText ( hunterText, "Hunter says: Well here's the thing. One of my usual guys got busted a couple days ago. If you're looking to make some money I could use a new go to guy. See running a car like this isn't cheap so we ...borrow from other cars if you know what I'm saying." )
 	
 	-- Create the new options
 	optionOne = guiCreateButton( 0.05, 0.45, 0.9, 0.2, "Sounds like easy money. Give me a call.", true, wHunter )
 	addEventHandler( "onClientGUIClick", optionOne, hunterStatement11, false )
 
-	optionTwo = guiCreateButton( 0.05, 0.65, 0.9, 0.2, "I’d rather not get involved in all that.", true, wHunter )
+	optionTwo = guiCreateButton( 0.05, 0.65, 0.9, 0.2, "I'd rather not get involved in all that.", true, wHunter )
 	addEventHandler( "onClientGUIClick", optionTwo, hunterStatement12, false )
 	
 end

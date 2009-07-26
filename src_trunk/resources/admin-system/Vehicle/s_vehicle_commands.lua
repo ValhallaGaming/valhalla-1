@@ -271,11 +271,8 @@ function respawnCmdVehicle(thePlayer, commandName, id)
 						
 						respawnVehicle(theVehicle)
 						
-						if (owner==-2) then
+						if owner == -2 then
 							setVehicleLocked(theVehicle, false)
-							setElementData(theVehicle, "locked", 0, false)
-						else
-							setElementData(theVehicle, "locked", 1, false)
 						end
 					end
 					counter = counter + 1
@@ -321,6 +318,11 @@ function respawnAllVehicles(thePlayer, commandName)
 					occupiedcounter = occupiedcounter + 1
 				else
 					respawnVehicle(theVehicle)
+					-- unlock Civ vehicles
+					local owner = getElementData(theVehicle, "owner")
+					if owner == -2 then
+						setVehicleLocked(theVehicle, false)
+					end
 					counter = counter + 1
 				end
 			end

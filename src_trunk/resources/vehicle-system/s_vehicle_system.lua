@@ -388,7 +388,7 @@ function loadAllVehicles(res)
 				local items = mysql_result(resultext, rowc, 35)
 				local itemvalues = mysql_result(resultext, rowc, 36)
 				
-				if (faction~=-1) then
+				if faction~=-1 or owner == -2 then
 					locked = 0
 				end
 				
@@ -590,8 +590,10 @@ function vehicleRespawn(exploded)
 	setElementDimension(source, dimension)
 	setElementInterior(source, interior)
 	
-	if (faction==-1) then
+	if faction == -1 and owner ~= -2 then
 		setVehicleLocked(source, true)
+	else
+		setVehicleLocked(source, false)
 	end
 end
 addEventHandler("onVehicleRespawn", getRootElement(), vehicleRespawn)

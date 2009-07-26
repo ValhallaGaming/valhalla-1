@@ -58,13 +58,15 @@ function setPlayerSafeMoney(thePlayer, amount)
 end
 
 function checkMoneyHacks(thePlayer)
+	if not getElementData(thePlayer, "money") then return end
+	
 	local safemoney = tonumber(getElementData(thePlayer, "money"))
 	local hackmoney = getPlayerMoney(thePlayer)
 
 	if (safemoney~=hackmoney) then
 		--banPlayer(thePlayer, getRootElement(), "Money Hacks: " .. hackmoney .. "$.")
-        setPlayerMoney(thePlayer, safemoney)
-        sendMessageToAdmins("Possible money hack detected: "..getPlayerName(thePlayer))
+		setPlayerMoney(thePlayer, safemoney)
+		sendMessageToAdmins("Possible money hack detected: "..getPlayerName(thePlayer))
 		return true
 	else
 		return false

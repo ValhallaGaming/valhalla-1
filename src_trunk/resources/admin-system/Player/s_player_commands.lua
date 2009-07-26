@@ -1459,7 +1459,7 @@ function freezePlayer(thePlayer, commandName, target)
 			else	
 				toggleAllControls(targetPlayer, false, true, false)
 				setPedWeaponSlot(targetPlayer, 0)
-				setElementData(targetPlayer, "freeze", 1, false)
+				setElementData(targetPlayer, "freeze", 1)
 				outputChatBox(" You have been frozen by an admin. Take care when following instructions.", targetPlayer)
 				outputChatBox(" You have frozen " ..targetPlayerName.. ".", thePlayer)
 			end
@@ -1503,7 +1503,7 @@ function unfreezePlayer(thePlayer, commandName, target)
 					toggleControl(targetPlayer, "next_weapon", false)
 					toggleControl(targetPlayer, "previous_weapon", false)
 				end
-				setElementData(targetPlayer, "freeze", 0, false)
+				removeElementData(targetPlayer, "freeze")
 				outputChatBox(" You have been unfrozen by an admin. Thanks for your co-operation.", targetPlayer)
 				outputChatBox(" You have unfrozen " ..targetPlayerName.. ".", thePlayer)
 			end

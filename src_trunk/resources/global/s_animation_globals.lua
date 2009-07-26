@@ -25,7 +25,7 @@ end
 addEventHandler("onPlayerSpawn", getRootElement(), onSpawn)
 
 function removeAnimation(thePlayer)
-	if isElement(thePlayer) and getElementType(thePlayer)=="player" then
+	if isElement(thePlayer) and getElementType(thePlayer)=="player" and getElementData(thePlayer, "freeze") ~= 1 then
 		local setanim = setPedAnimation(thePlayer)
 		setElementData(thePlayer, "forcedanimation", false)
 		setElementData(thePlayer, "animation", false, false)

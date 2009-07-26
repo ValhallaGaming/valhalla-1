@@ -4,7 +4,7 @@ function applyAnimation(thePlayer, block, name, animtime, loop, updatePosition, 
 	if updatePosition==nil then updatePosition=true end
 	if forced==nil then forced=true end
 	
-	if isElement(thePlayer) and getElementType(thePlayer)=="player" and not getPedOccupiedVehicle(thePlayer) then
+	if isElement(thePlayer) and getElementType(thePlayer)=="player" and not getPedOccupiedVehicle(thePlayer) and getElementData(thePlayer, "freeze") ~= 1 then
 		toggleAllControls(false, true, false)
 		setElementData(thePlayer, "forcedanimation", true, forced)
 		setElementData(thePlayer, "animation", true, true)
@@ -16,7 +16,7 @@ function applyAnimation(thePlayer, block, name, animtime, loop, updatePosition, 
 end
 
 function removeAnimation(thePlayer)
-	if isElement(thePlayer) and getElementType(thePlayer)=="player" then
+	if isElement(thePlayer) and getElementType(thePlayer)=="player" and getElementData(thePlayer, "freeze") ~= 1 then
 		local setanim = setPedAnimation(thePlayer)
 		setElementData(thePlayer, "forcedanimation", true, false)
 		setElementData(thePlayer, "animation", true, false)

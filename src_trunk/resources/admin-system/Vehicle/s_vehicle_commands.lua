@@ -80,7 +80,7 @@ function createTempVehicle(thePlayer, commandName, id, col1, col2)
 				totalTempVehicles = totalTempVehicles + 1
 				local dbid = (-totalTempVehicles)
 				
-				setElementData(veh, "dbid", dbid, false)
+				setElementData(veh, "dbid", dbid)
 				setElementData(veh, "fuel", 100)
 				setElementData(veh, "engine", 0, false)
 				setElementData(veh, "oldx", x, false)

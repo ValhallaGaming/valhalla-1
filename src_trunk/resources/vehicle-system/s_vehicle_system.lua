@@ -176,7 +176,7 @@ function createPermVehicle(thePlayer, commandName, id, col1, col2, userName, fac
 							exports.global:givePlayerItem(targetPlayer, 3, tonumber(insertid))
 						end
 						
-						setElementData(veh, "dbid", tonumber(insertid), false)
+						setElementData(veh, "dbid", tonumber(insertid))
 						setElementData(veh, "fuel", 100)
 						setElementData(veh, "engine", 0, false)
 						setElementData(veh, "oldx", x, false)
@@ -270,7 +270,7 @@ function createCivilianPermVehicle(thePlayer, commandName, id, col1, col2, job)
 					mysql_free_result(query)
 					local id = mysql_insert_id(handler)
 					
-					setElementData(veh, "dbid", tonumber(id), false)
+					setElementData(veh, "dbid", tonumber(id))
 					setElementData(veh, "fuel", 100)
 					setElementData(veh, "engine", 0, false)
 					setElementData(veh, "oldx", x, false)
@@ -480,7 +480,7 @@ function loadAllVehicles(res)
 				setVehicleRespawnPosition(veh, respawnx, respawny, respawnz, respawnrx, respawnry, respawnrz)
 				
 				-- Vehicles element data
-				setElementData(veh, "dbid", id, false)
+				setElementData(veh, "dbid", id)
 				setElementData(veh, "fuel", fuel)
 				setElementData(veh, "engine", engine, false)
 				setElementData(veh, "oldx", x, false)
@@ -563,7 +563,7 @@ function vehicleRespawn(exploded)
 
 	setElementData(source, "enginebroke", 0, false)
 	
-	setElementData(source, "dbid", id, false)
+	setElementData(source, "dbid", id)
 	setElementData(source, "fuel", 100)
 	setElementData(source, "engine", 0, false)
 	

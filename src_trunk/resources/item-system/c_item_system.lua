@@ -511,7 +511,7 @@ function showInventory()
 		colWSlot = guiGridListAddColumn(gWeapons, "Slot", 0.1)
 		colWName = guiGridListAddColumn(gWeapons, "Name", 0.625)
 		colWValue = guiGridListAddColumn(gWeapons, "Ammo", 0.225)
-		for i = 1, 12 do
+		for i = 0, 12 do
 			if (getWeaponNameFromID(getPedWeapon(getLocalPlayer(), i))~="Melee") and (getPedTotalAmmo(getLocalPlayer(),i)>0) then
 				local row = guiGridListAddRow(gWeapons)
 				local weapon = getWeaponNameFromID(getPedWeapon(getLocalPlayer(), i))

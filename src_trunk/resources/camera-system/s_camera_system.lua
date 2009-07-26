@@ -10,9 +10,9 @@ function resourceStart(res)
 		-- STRIP CAMERA 1
 		stripCamera1 = createObject(1293, 2057.3688964844, 1600.7856445313, 9.929556846619, 0, 0, 183.23063659668)
 		exports.pool:allocateElement(stripCamera1)
-		stripCamera1Col = createColSphere(2057.3688964844, 1600.7856445313, 9.929556846619, 80)
+		stripCamera1Col = createColTube(2057.3688964844, 1600.7856445313, 5, 80, 9)
 		exports.pool:allocateElement(stripCamera1Col)
-		stripCamera1ColWarn = createColSphere(2057.3688964844, 1600.7856445313, 10.929556846619, 150)
+		stripCamera1ColWarn = createColTube(2057.3688964844, 1600.7856445313, 5, 150, 10)
 		exports.pool:allocateElement(stripCamera1ColWarn)
 		stripCamera1Speed = 65
 		addEventHandler("onColShapeHit", stripCamera1ColWarn, sendWarning)
@@ -46,11 +46,12 @@ function checkSpeed(vehicle, player, colshape)
 		if (colshape==stripCamera1Col) then -- strip camera 1
 			if (speed>stripCamera1Speed) then
 				local x, y, z = getElementPosition(player)
-				if (z<14) then
-					local timer = getElementData(player, "cameratimer")
+				local timer = getElementData(player, "cameratimer")
+				if timer then
 					killTimer(timer)
-					setTimer(sendWarningToCops, 1000, 1, vehicle, player, colshape, x, y, z, speed)
+					removeElementData(player, "cameratimer")
 				end
+				setTimer(sendWarningToCops, 1000, 1, vehicle, player, colshape, x, y, z, speed)
 			end
 		end
 	end

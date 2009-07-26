@@ -1496,12 +1496,14 @@ function unfreezePlayer(thePlayer, commandName, target)
 				end
 			else	
 				toggleAllControls(targetPlayer, true, true, true)
-				setPedWeaponSlot(targetPlayer, 0)
-
-				-- Disable weapon scrolling
-				toggleControl(targetPlayer, "next_weapon", false)
-				toggleControl(targetPlayer, "previous_weapon", false)
-				setElementData(targetPlayer, "freeze", 1, false)
+				
+				-- Disable weapon scrolling if restrained
+				if getElementData(targetPlayer, "restrain") == 1 then
+					setPedWeaponSlot(targetPlayer, 0)
+					toggleControl(targetPlayer, "next_weapon", false)
+					toggleControl(targetPlayer, "previous_weapon", false)
+				end
+				setElementData(targetPlayer, "freeze", 0, false)
 				outputChatBox(" You have been unfrozen by an admin. Thanks for your co-operation.", targetPlayer)
 				outputChatBox(" You have unfrozen " ..targetPlayerName.. ".", thePlayer)
 			end

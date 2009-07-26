@@ -110,8 +110,8 @@ end
 addCommandHandler("totalvalue", showValue, false, false)
 
 -- /sellpics to sell your collection of pictures to the news company.
-function sellPhotos(thePlayer, commandName)
-	local theTeam = getPlayerTeam(thePlayer)
+function sellPhotos()
+	local theTeam = getPlayerTeam(source)
 	local factionType = getElementData(theTeam, "type")
 			
 	if (factionType==6) then
@@ -125,11 +125,11 @@ function sellPhotos(thePlayer, commandName)
 			
 			outputChatBox("#FF9933You can sell your photographs at the #3399FFSan Andreas Network Tower #FF9933((/sellpics at the front desk)).", 255, 255, 255, true)
 		else
-			if (isElementWithinColShape(thePlayer, photoSubmitDeskColSphere))then
+			if (isElementWithinColShape(source, photoSubmitDeskColSphere))then
 				if(collectionValue==0)then
 					outputChatBox("None of the pictures you have are worth anything.", 255, 0, 0, true)
 				else
-					triggerServerEvent("submitCollection", thePlayer, collectionValue)
+					triggerServerEvent("submitCollection", source, collectionValue)
 					collectionValue = 0
 				end
 			else

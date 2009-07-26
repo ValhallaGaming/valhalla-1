@@ -47,7 +47,7 @@ function createSpray(thePlayer, commandName)
 			setElementData(shape, "dbid", id, false)
 			setElementData(shape, "type", "paynspray", false)
 			
-			local sprayblip = createBlip(x, y, z, 63)
+			local sprayblip = createBlip(x, y, z, 63, 2, 255, 0, 0, 255, 0, 300)
 			exports.pool:allocateElement(sprayblip)
 			
 			outputChatBox("Pay n Spray spawned with ID #" .. id .. ".", thePlayer, 0, 255, 0)
@@ -74,7 +74,7 @@ function loadAllSprays(res)
 				local interior = tonumber(row[5])
 				local dimension = tonumber(row[6])
 				
-				local sprayblip = createBlip(x, y, z, 63)
+				local sprayblip = createBlip(x, y, z, 63, 2, 255, 0, 0, 255, 0, 300)
 				exports.pool:allocateElement(sprayblip)
 				
 				local shape = createColSphere(x, y, z, 5)

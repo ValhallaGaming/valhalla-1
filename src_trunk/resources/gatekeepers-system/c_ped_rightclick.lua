@@ -4,6 +4,11 @@ ax, ay = nil
 closing = nil
 sent=false
 
+function pedDamage()
+	cancelEvent()
+end
+addEventHandler("onClientPedDamage", getRootElement(), pedDamage)
+
 function clickPed(button, state, absX, absY, wx, wy, wz, element)
 	if (element) and (getElementType(element)=="ped") and (button=="right") and (state=="down") and (sent==false) and (element~=getLocalPlayer()) then
 		local gatekeeper = getElementData(element, "talk")

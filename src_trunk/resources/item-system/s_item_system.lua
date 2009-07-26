@@ -613,7 +613,7 @@ function loadWorldItems(res)
 			local yearday = time.yearday
 			
 			
-			if (yearday>(wyearday+60)) then
+			if (yearday>(wyearday+10)) then
 				mysql_query(handler, "DELETE FROM worlditems WHERE id='" .. tonumber(row[1]) .. "' LIMIT 1")
 			elseif (wyearday>yearday) then -- a new year
 				mysql_query(handler, "UPDATE worlditems SET yearday='" .. yearday .. "' WHERE id='" .. tonumber(row[1]) .. "' LIMIT 1")

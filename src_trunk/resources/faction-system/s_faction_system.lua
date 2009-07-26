@@ -785,25 +785,25 @@ function payWage(player, pay, faction, tax)
 	local donatormoney = 0 
 	if (donator==1) then
 		donatormoney = donatormoney + 25
-		interestrate = interestrate + 0.0001
+		interestrate = interestrate + 0.001
 	elseif (donator==2) then
 		donatormoney = donatormoney + 25
-		interestrate = interestrate + 0.0002
+		interestrate = interestrate + 0.002
 	elseif (donator==3) then
 		donatormoney = donatormoney + 75
-		interestrate = interestrate + 0.0004
+		interestrate = interestrate + 0.004
 	elseif (donator==4) then
 		donatormoney = donatormoney + 100
-		interestrate = interestrate + 0.0004
+		interestrate = interestrate + 0.004
 	elseif (donator==5) then
 		donatormoney = donatormoney + 125
-		interestrate = interestrate + 0.0005
+		interestrate = interestrate + 0.005
 	elseif (donator==6) then
 		donatormoney = donatormoney + 150
-		interestrate = interestrate + 0.0006
+		interestrate = interestrate + 0.006
 	elseif (donator==7) then
 		donatormoney = donatormoney + 250
-		interestrate = interestrate + 0.0006
+		interestrate = interestrate + 0.006
 	end
 	
 	local interest = math.ceil(interestrate * bankmoney)

@@ -4,7 +4,7 @@ exports.pool:allocateElement(objChinaGate)
 local objChinaGate2 = createObject(986, 2566.45, 1826, 11, 0, 0, 180)
 exports.pool:allocateElement(objChinaGate2)
 
-local objChinaFence = createObject( 987, 2544.3037109375, 1840.0390625, 10, 0, 0, 0)
+local objChinaFence = createObject( 987, 2544.3037109375, 1845.4, 9.5, 0, 0, 270)
 exports.pool:allocateElement(objChinaFence)
 
 open = false

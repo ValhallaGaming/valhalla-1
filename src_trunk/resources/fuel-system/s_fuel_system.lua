@@ -97,8 +97,8 @@ function createFuelPoint(thePlayer, commandName)
 			exports.pool:allocateElement(theSphere)
 			setElementDimension(theSphere, dimension)
 			setElementInterior(theSphere, interior)
-			--setElementData(theSphere, "type", "fuel", false)
-			--setElementData(theSphere, "dbid", id, false)
+			setElementData(theSphere, "type", "fuel", false)
+			setElementData(theSphere, "dbid", id, false)
 			
 			outputChatBox("Fuel point added with ID #" .. id .. ".", thePlayer)
 			exports.irc:sendMessage("[ADMIN] " .. getPlayerName( thePlayer ) .. " spawned fuel point " .. id)
@@ -161,8 +161,8 @@ function loadFuelPoints(res)
 				exports.pool:allocateElement(theSphere)
 				setElementDimension(theSphere, dimension)
 				setElementInterior(theSphere, interior)
-				--setElementData(theSphere, "type", "fuel", false)
-				--setElementData(theSphere, "dbid", id, false)
+				setElementData(theSphere, "type", "fuel", false)
+				setElementData(theSphere, "dbid", id, false)
 				counter = counter + 1
 			end
 			mysql_free_result(result)
@@ -333,7 +333,7 @@ function fuelTheVehicle(thePlayer, theVehicle, theShape, theLitres, free)
 		
 			local oldFuel = getElementData(theVehicle, "fuel")
 			local newFuel = oldFuel+theLitres
-			--setElementData(theVehicle, "fuel", newFuel)
+			setElementData(theVehicle, "fuel", newFuel)
 			triggerClientEvent(thePlayer, "setClientFuel", thePlayer, newFuel)
 			
 			outputChatBox("Gas Station Receipt:", thePlayer)

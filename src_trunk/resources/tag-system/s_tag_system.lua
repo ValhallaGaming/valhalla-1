@@ -35,7 +35,10 @@ function makeTagObject(cx, cy, cz, rot, interior, dimension)
 		setElementDimension(obj, dimension)
 		setElementInterior(obj, interior)
 		
-		local query = mysql_query(handler, "INSERT INTO tags SET x='" .. cx .. "', y='" .. cy .. "', z='" .. cz .. "', interior='" .. interior .. "', dimension='" .. dimension .. "', rx='0', ry='0', rz='" .. rot+90 .. "', modelid='" .. tags[tag] .. "'")
+		local time = getRealTime()
+		local yearday = time.yearday
+		
+		local query = mysql_query(handler, "INSERT INTO tags SET x='" .. cx .. "', y='" .. cy .. "', z='" .. cz .. "', interior='" .. interior .. "', dimension='" .. dimension .. "', rx='0', ry='0', rz='" .. rot+90 .. "', modelid='" .. tags[tag] .. "', yearday='" .. yearday .. "'")
 		exports.global:sendLocalMeAction(source, "tags the wall.")
 		
 		local id = mysql_insert_id(handler)
@@ -105,11 +108,15 @@ addCommandHandler("clearnearbytag", clearNearbyTag, false, false)
 
 function loadAllTags(res)
 	if (res==getThisResource()) then
-		local result = mysql_query(handler, "SELECT id, x, y, z, interior, dimension, rx, ry, rz, modelid FROM tags")
+		local result = mysql_query(handler, "SELECT id, x, y, z, interior, dimension, rx, ry, rz, modelid,yearday FROM tags")
 		local count = 0
+		
+		local time = getRealTime()
+		local yearday = time.yearday
 		
 		if (result) then
 			for result, row in mysql_rows(result) do
+				local wyearday = tonumber(row[11])
 				local id = tonumber(row[1])
 					
 				local x = tonumber(row[2])
@@ -123,15 +130,28 @@ function loadAllTags(res)
 				local ry = tonumber(row[8])
 				local rz = tonumber(row[9])
 				local modelid = tonumber(row[10])
-					
-				local object = createObject(modelid, x, y, z, rx, ry, rz)
-				exports.pool:allocateElement(object)
-				setElementInterior(object, interior)
-				setElementDimension(object, dimension)
-				setElementData(object, "dbid", id, false)
-				setElementData(object, "type", "tag")
-					
-				count = count + 1
+
+				if (yearday>(wyearday+2)) then -- EXPIRED
+					mysql_query(handler, "DELETE FROM tags WHERE id='" .. id .. "'")
+				elseif (wyearday>yearday) then -- NEW YEAR
+					mysql_query(handler, "UPDATE tags SET yearday='" .. yearday .. "' WHERE id='" .. id .. "'")
+				
+					local object = createObject(modelid, x, y, z, rx, ry, rz)
+					exports.pool:allocateElement(object)
+					setElementInterior(object, interior)
+					setElementDimension(object, dimension)
+					setElementData(object, "dbid", id, false)
+					setElementData(object, "type", "tag")
+					count = count + 1
+				else
+					local object = createObject(modelid, x, y, z, rx, ry, rz)
+					exports.pool:allocateElement(object)
+					setElementInterior(object, interior)
+					setElementDimension(object, dimension)
+					setElementData(object, "dbid", id, false)
+					setElementData(object, "type", "tag")
+					count = count + 1
+				end
 			end
 		mysql_free_result(result)
 		end

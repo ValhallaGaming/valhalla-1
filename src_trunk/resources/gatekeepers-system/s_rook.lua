@@ -43,7 +43,7 @@ function rookIntro () -- When player enters the colSphere create GUI with intro 
 				exports.pool:allocateElement(chatSphere) -- Create the colSphere for chat output to local players
 				local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
 				for i, player in ipairs( targetPlayers ) do
-					outputChatBox("Rook says: What up, Homie? You lookin’ to make some real green?", player, 255, 255, 255)
+					outputChatBox("Rook says: What up, Homie? You lookin' to make some real green?", player, 255, 255, 255)
 				end
 				destroyElement(chatSphere)
 				setElementData (rook, "activeConvo", 1) -- set the NPCs conversation state to active so no one else can begin to talk to him.
@@ -66,9 +66,9 @@ function rookStatement2_S()
 	local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
 	local name = string.gsub(getPlayerName(source), "_", " ")
 	for i, player in ipairs( targetPlayers ) do
-		outputChatBox(name .. " says: Hell yeah, I’m always lookin’ for that paper.", player, 255, 255, 255)
-		outputChatBox("Rook whispers: Economies all fucked up, right?  There’s only one market that isn’t goin’ down like a high school cheerleader.", player, 255, 255, 255)
-		outputChatBox("Rook whispers: I’m talkin’ about that dope money.", player, 255, 255, 255)
+		outputChatBox(name .. " says: Hell yeah, I'm always lookin' for that paper.", player, 255, 255, 255)
+		outputChatBox("Rook whispers: Economies all fucked up, right?  There's only one market that isn't goin' down like a high school cheerleader.", player, 255, 255, 255)
+		outputChatBox("Rook whispers: I'm talkin' about that dope money.", player, 255, 255, 255)
 	end
 	destroyElement (chatSphere)
 end
@@ -101,7 +101,7 @@ function rookStatement4_S()
 	local name = string.gsub(getPlayerName(source), "_", " ")
 	for i, player in ipairs( targetPlayers ) do
 		outputChatBox(name .. " whispers: What do you know about it?", player, 255, 255, 255)
-		outputChatBox("Rook whispers: I know a guy that’s looking to reach out. He got connects but no soldiers to push his product.", player, 255, 255, 255)
+		outputChatBox("Rook whispers: I know a guy that's looking to reach out. He got connects but no soldiers to push his product.", player, 255, 255, 255)
 	end
 	destroyElement (chatSphere)
 end
@@ -117,7 +117,7 @@ function rookStatement5_S()
 	local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
 	local name = string.gsub(getPlayerName(source), "_", " ")
 	for i, player in ipairs( targetPlayers ) do
-		outputChatBox(name .. " whispers: Where’s he at?", player, 255, 255, 255)
+		outputChatBox(name .. " whispers: Where's he at?", player, 255, 255, 255)
 		outputChatBox("Rook whispers: His names Tyrese and lives over in Fullview Apartments on Virdine Street, apartment 6. Tell him Rook sent you.", player, 255, 255, 255)
 	end
 	destroyElement (chatSphere)
@@ -134,8 +134,8 @@ function rookStatement6_S()
 	local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
 	local name = string.gsub(getPlayerName(source), "_", " ")
 	for i, player in ipairs( targetPlayers ) do
-		outputChatBox(name .. " whispers: And you’re just telling me this because you’re feelin’ charitable.", player, 255, 255, 255)
-		outputChatBox("Rook whispers: If a brother doesn’t look out for his own who will? The white man?", player, 255, 255, 255)
+		outputChatBox(name .. " whispers: And you're just telling me this because you're feelin' charitable.", player, 255, 255, 255)
+		outputChatBox("Rook whispers: If a brother doesn't look out for his own who will? The white man?", player, 255, 255, 255)
 	end
 	destroyElement (chatSphere)
 end

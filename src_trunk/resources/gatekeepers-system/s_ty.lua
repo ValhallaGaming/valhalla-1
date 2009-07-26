@@ -78,7 +78,7 @@ function tyStatement4_S()
 	local name = string.gsub(getPlayerName(source), "_", " ")
 	for i, player in ipairs( targetPlayers ) do
 		outputChatBox(name .. " shouts: Yo', c'mon open the fuckin' door, homie.", player, 255, 255, 255)
-		outputChatBox("Ty shouts: I don’t know you. Get the fuck up outta here!", player, 255, 255, 255)
+		outputChatBox("Ty shouts: I don't know you. Get the fuck up outta here!", player, 255, 255, 255)
 	end
 	destroyElement (chatSphere)
 	
@@ -125,7 +125,7 @@ function tyStatement6_S()
 	local name = string.gsub(getPlayerName(source), "_", " ")
 	for i, player in ipairs( targetPlayers ) do
 		outputChatBox(name .. " says: He said you had connects but needed someone to put it all to use.", player, 255, 255, 255)
-		outputChatBox("Ty says: Yeah that's right. So you down? Here’s how it'll work.", player, 255, 255, 255)
+		outputChatBox("Ty says: Yeah that's right. So you down? Here's how it'll work.", player, 255, 255, 255)
 		outputChatBox("Ty says: I got some people's I can call up on when I need that produce.", player, 255, 255, 255)
 		outputChatBox("Ty says: I'll act as middle man and sell to you at wholesale. You then can do whatever you want with it.", player, 255, 255, 255)
 	end
@@ -144,7 +144,7 @@ function tyStatement7_S()
 	local name = string.gsub(getPlayerName(source), "_", " ")
 	for i, player in ipairs( targetPlayers ) do
 		outputChatBox(name .. " says: He said you had connects but didn't know what to do with them.", player, 255, 255, 255)
-		outputChatBox("Ty says: Fuck you! I ain’t no amateur. Get the fuck up out of here. ", player, 255, 255, 255)
+		outputChatBox("Ty says: Fuck you! I ain't no amateur. Get the fuck up out of here. ", player, 255, 255, 255)
 	end
 	destroyElement (chatSphere)
 	
@@ -255,7 +255,7 @@ function tyFriendStatement2_S()
 	local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
 	local name = string.gsub(getPlayerName(source), "_", " ")
 	for i, player in ipairs( targetPlayers ) do
-		outputChatBox(name .. " shouts: Yo it’s me. Open the door.", player, 255, 255, 255)
+		outputChatBox(name .. " shouts: Yo it's me. Open the door.", player, 255, 255, 255)
 		outputChatBox("Ty shouts: A'ight hold up..", player, 255, 255, 255)
 		outputChatBox("* The door unlocks", player, 255, 51, 102)
 	end

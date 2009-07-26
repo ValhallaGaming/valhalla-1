@@ -1,21 +1,8 @@
 ---
 SQL
 ---
--- Achievement
-INSERT INTO achievementslist SET id='37', name='The Good Samaritan', description='Donate $1000 or more to charity', points='100';
-
--- Character table columns
-"rook" and "ty" for two new gatekeerps.
 
 ---------------------
 Chamberlains changes.
 ---------------------
 Scripts in "unfinished code" need to be completed, checked and added to the correct resources by someone who knows what they are doing.
-
-gatekeepers-system
-	- meta
-	- c_ped_rightclick
-	- c_rook
-	- s_rook
-	- c_ty
-	- s_ty

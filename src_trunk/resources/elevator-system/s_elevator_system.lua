@@ -238,19 +238,13 @@ function enterElevator(playa, shape)
 			local interior = getElementData(shape, "interior")
 			local dimension = getElementData(shape, "dimension")
 			
-			local rand
 			if (interior==3) then
-				rand = math.random(1, 10)
-				triggerClientEvent(playa, "usedElevator", playa, x, y, z)
+				triggerClientEvent(playa, "usedElevator", playa)
 				setPedFrozen(playa, true)
 				setPedGravity(playa, 0)
 			end
 			
-			if (rand) then
-				setElementPosition(playa, x+rand, y, z)
-			else
-				setElementPosition(playa, x, y, z)
-			end
+			setElementPosition(playa, x, y, z)
 			
 			setElementInterior(playa, interior)
 			setCameraInterior(playa, interior)
@@ -266,8 +260,7 @@ function enterElevator(playa, shape)
 	end
 end
 
-function resetGravity(x, y, z)
-	setElementPosition(source, x, y, z)
+function resetGravity()
 	setPedFrozen(source, false)
 	setPedGravity(source, 0.008)
 end

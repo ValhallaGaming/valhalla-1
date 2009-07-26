@@ -561,6 +561,7 @@ function dropItem(itemID, itemValue, itemName, x, y, z, gz, isWeapon, items, ite
 			setPedArmor(source, 0)
 		end
 		
+		triggerClientEvent(source, "saveGuns", source)
 		takeWeapon(source, tonumber(itemID))
 		
 		local modelid = 2969

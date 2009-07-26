@@ -23,3 +23,5 @@ function saveGuns()
 		setElementData(getLocalPlayer(), "ammo", ammostring)
 	end
 end
+addEvent("saveGuns", true)
+addEventHandler("saveGuns", getRootElement(), saveGuns)

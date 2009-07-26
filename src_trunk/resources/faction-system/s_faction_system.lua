@@ -816,16 +816,18 @@ function payWage(player, pay, faction, tax)
 	outputChatBox("~-~-~-~-~-~-~-~~-~-~-~-~ PAY SLIP ~-~-~-~-~-~-~-~~-~-~-~-~", player, 255, 194, 14)
 
 	if not faction then
-		if pay > 0 then
+		if pay >= 0 then
 			outputChatBox("    State Benefits: " .. pay .. "$", player, 255, 194, 14)
 		else
 			outputChatBox("    The government could not afford to pay you your state benefits.", player, 255, 0, 0)
+			pay = 0
 		end
 	else
-		if pay > 0 then
+		if pay >= 0 then
 			outputChatBox("    Wage Paid: " .. pay .. "$", player, 255, 194, 14)			
 		else
 			outputChatBox("    Your employer could not afford to pay your wages.", player, 255, 0, 0)
+			pay = 0
 		end
 	end
 	
@@ -875,12 +877,14 @@ function payAllWages()
 					
 					local factionMoney = getElementData(theTeam, "money")
 					
-					if rankWage >= factionMoney then
-						rankWage = 0
+					local taxes = 0
+					if rankWage > factionMoney then
+						rankWage = -1
+					else
+						local incomeTax = exports.global:getIncomeTaxAmount()
+						taxes = math.ceil( incomeTax * rankWage )
 					end
 					
-					local incomeTax = exports.global:getIncomeTaxAmount()
-					local taxes = math.ceil( incomeTax * rankWage )
 					govAmount = govAmount + taxes
 					
 					payWage( value, rankWage, true, taxes )
@@ -895,7 +899,7 @@ function payAllWages()
 				else
 					local unemployedPay = 150
 					if unemployedPay >= govAmount then
-						unemployedPay = 0
+						unemployedPay = -1
 					end
 					
 					payWage( value, unemployedPay, false, 0 )
@@ -904,7 +908,7 @@ function payAllWages()
 			else
 				local unemployedPay = 150
 				if unemployedPay >= govAmount then
-					unemployedPay = 0
+					unemployedPay = -1
 				end
 				
 				payWage( value, unemployedPay, false, 0 )

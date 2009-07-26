@@ -9,7 +9,7 @@ setElementInterior(huntersCar, 2)
 local hunter = createPed (250, 616.162109, -75.3720, 997.99)
 exports.pool:allocateElement(hunter)
 setPedRotation (hunter, 300.6221)
-setPedFrozen(huntersCar, true)
+setPedFrozen(hunter, true)
 setElementInterior (hunter, 2)
 setElementDimension (hunter, 1000)
 

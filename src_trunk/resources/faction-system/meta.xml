@@ -4,6 +4,7 @@
 	<script src="s_faction_system.lua" type="server" />
 	<script src="c_faction_system.lua" type="client" />
 	
+	<script src="c_duty_commands.lua" type="client" />
 	<script src="s_duty_commands.lua" type="server" />
 	
 	<script src="s_duty_skin.lua" type="server" />

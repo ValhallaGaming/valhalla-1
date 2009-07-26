@@ -204,7 +204,7 @@ function sprayEffect(vehicle, thePlayer, shape, free)
 		local faction = getPlayerTeam(thePlayer)
 		local ftype = getElementData(faction, "type")
 			
-		if ((ftype~=2) and (not free)) then
+		if ((ftype~=2 and ftype~=3 and ftype~=4) and (not free)) then
 			exports.global:takePlayerSafeMoney(thePlayer, 250)
 		end
 		

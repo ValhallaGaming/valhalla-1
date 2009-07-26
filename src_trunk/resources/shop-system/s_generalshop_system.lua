@@ -26,6 +26,13 @@ addEventHandler("onResourceStop", getResourceRootElement(getThisResource()), clo
 -- //			MYSQL END			 //
 -- ////////////////////////////////////
 
+function isGun(weaponID)
+	if weaponID <= 15 or weaponID >= 41 then
+		return false
+	end
+	return true
+end
+
 function createGeneralshop(thePlayer, commandName, shoptype)
 	if (exports.global:isPlayerAdmin(thePlayer)) then
 		if(tonumber(shoptype)) then
@@ -292,7 +299,7 @@ function givePlayerBoughtItem(itemID, itemValue, theCost, isWeapon, name, supply
 					return
 				end
 				
-				if (isWeapon) then
+				if isWeapon and isGun(tonumber(itemID)) then
 					-- licensing check
 					local gunlicense = getElementData(source, "license.gun")
 					if (gunlicense==1) then

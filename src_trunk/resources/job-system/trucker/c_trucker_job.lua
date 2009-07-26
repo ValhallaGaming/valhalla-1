@@ -55,7 +55,7 @@ function displayTruckerJob()
 		outputChatBox("#FF9933Type /startjob once you are in the van.", 255, 194, 15, true)
 	end
 end
-addCommandHandler("job", displayTruckerJob)
+--addCommandHandler("job", displayTruckerJob)
 
 function startTruckerJob()
 	if (jobstate==1) then
@@ -106,7 +106,7 @@ function dumpTruckLoad()
 					outputChatBox("#FF9933or continue onto the next #FF66CCdrop off point#FF9933 and increase your wage.", 0, 0, 0, true)
 					
 					-- next drop off
-					local rand = math.random(11, 11)
+					local rand = math.random(1, 10)
 					route = routes[rand]
 					local x, y, z = routes[rand][1], routes[rand][2], routes[rand][3]
 					blip = createBlip(x, y, z, 0, 4, 255, 127, 255)

@@ -1,6 +1,7 @@
 local blip
 local jobstate = 0
 local route = 0
+local oldroute = -1
 local marker
 local colshape
 local routescompleted = 0
@@ -71,14 +72,15 @@ function startTruckerJob()
 				outputChatBox("#FF9933Drive to the #FF66CCblip#FF9933 on the radar and use /dumpload.", 255, 194, 15, true)
 				destroyElement(blip)
 				
-				local rand = math.random(1, 10)
+				local rand = math.random(1, #routes)
 				route = routes[rand]
-				local x, y, z = routes[rand][1], routes[rand][2], routes[rand][3]
+				local x, y, z = route[1], route[2], route[3]
 				blip = createBlip(x, y, z, 0, 4, 255, 127, 255)
 				marker = createMarker(x, y, z, "cylinder", 4, 255, 127, 255, 150)
 				colshape = createColCircle(x, y, z, 4)
 								
 				jobstate = 2
+				oldroute = rand
 			else
 				outputChatBox("You are not in a van.", 255, 0, 0)
 			end
@@ -106,9 +108,12 @@ function dumpTruckLoad()
 					outputChatBox("#FF9933or continue onto the next #FF66CCdrop off point#FF9933 and increase your wage.", 0, 0, 0, true)
 					
 					-- next drop off
-					local rand = math.random(1, 10)
+					local rand = -1
+					repeat
+						rand = math.random(1, #routes)
+					until oldroute ~= rand
 					route = routes[rand]
-					local x, y, z = routes[rand][1], routes[rand][2], routes[rand][3]
+					local x, y, z = route[1], route[2], route[3]
 					blip = createBlip(x, y, z, 0, 4, 255, 127, 255)
 					marker = createMarker(x, y, z, "cylinder", 4, 255, 127, 255, 150)
 					colshape = createColCircle(x, y, z, 4)
@@ -121,6 +126,7 @@ function dumpTruckLoad()
 						addEventHandler("onClientColShapeHit", endcolshape, endTruckJob, false)
 					end				
 					jobstate = 3
+					oldroute = rand
 				else
 					outputChatBox("#FF0066You are not at your #FF66CCdrop off point#FF0066.", 255, 0, 0, true)
 				end
@@ -158,6 +164,7 @@ function endTruckJob(theElement)
 				routescompleted = 0
 				
 				jobstate = 0
+				oldroute = -1
 				displayTruckerJob()
 			else
 				outputChatBox("You are not in the van.", 255, 0, 0)

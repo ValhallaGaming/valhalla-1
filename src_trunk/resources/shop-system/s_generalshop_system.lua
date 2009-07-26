@@ -292,7 +292,7 @@ function givePlayerBoughtItem(itemID, itemValue, theCost, isWeapon, name, supply
 					return
 				end
 				
-				if (itemID==28) or (itemID==30) or (itemID==32) then
+				if (isWeapon) then
 					-- licensing check
 					local gunlicense = getElementData(source, "license.gun")
 					if (gunlicense==1) then

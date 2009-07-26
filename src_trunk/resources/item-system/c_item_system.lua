@@ -656,6 +656,7 @@ function showDescription(button, state)
 end
 
 function useItem(button)
+	if getElementHealth(getLocalPlayer()) == 0 then return end
 	if (button=="left") then
 		local x, y, z = getElementPosition(getLocalPlayer())
 		local groundz = getGroundPosition(x, y, z)
@@ -731,6 +732,7 @@ function useItem(button)
 end
 
 function destroyItem(button)
+	if getElementHealth(getLocalPlayer()) == 0 then return end
 	if (button=="left") then
 		if (guiGetSelectedTab(tabPanel)==tabItems) then -- ITEMS
 			local row, col = guiGridListGetSelectedItem(gItems)
@@ -795,6 +797,7 @@ function destroyItem(button)
 end
 
 function dropItem(button)
+	if getElementHealth(getLocalPlayer()) == 0 then return end
 	if (button=="left") then
 		local restrain = getElementData(getLocalPlayer(), "restrain")
 		
@@ -878,6 +881,7 @@ function dropItem(button)
 end
 
 function showItem(button)
+	if getElementHealth(getLocalPlayer()) == 0 then return end
 	if (button=="left") then
 		if (guiGetSelectedTab(tabPanel)==tabItems) then -- ITEMS
 			local row, col = guiGridListGetSelectedItem(gItems)

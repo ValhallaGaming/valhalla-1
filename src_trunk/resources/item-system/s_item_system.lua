@@ -127,7 +127,7 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 			exports.global:applyAnimation(source, "food", "eat_burger", -1, false, true, true)
 			toggleAllControls(source, true, true, true)
 			setTimer(removeAnimation, 4000, 1, source)
-			exports.global:sendLocalMeAction(source, " eats a sandwich.")
+			exports.global:sendLocalMeAction(source, "eats a sandwich.")
 			exports.global:takePlayerItem(source, itemID, itemValue)
 		elseif (itemID==9) then -- sprunk
 			
@@ -136,7 +136,7 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 			exports.global:applyAnimation(source, "VENDING", "VEND_Drink_P", -1, false, true, true)
 			toggleAllControls(source, true, true, true)
 			setTimer(removeAnimation, 4000, 1, source)
-			exports.global:sendLocalMeAction(source, " drinks a sprunk.")
+			exports.global:sendLocalMeAction(source, "drinks a sprunk.")
 			exports.global:takePlayerItem(source, itemID, itemValue)
 			
 		elseif (itemID==10) then -- red dice
@@ -161,7 +161,7 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 			setElementHealth(source, health+10)
 			exports.global:applyAnimation(source, "FOOD", "EAT_Burger", -1, false, true, true)
 			setTimer(removeAnimation, 4000, 1, source)
-			exports.global:sendLocalMeAction(source, " eats a taco.")
+			exports.global:sendLocalMeAction(source, "eats a taco.")
 			exports.global:takePlayerItem(source, itemID, itemValue)
 			
 		elseif (itemID==12) then -- cheeseburger
@@ -170,7 +170,7 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 			setElementHealth(source, health+10)
 			exports.global:applyAnimation(source, "FOOD", "EAT_Burger", -1, false, true, true)
 			setTimer(removeAnimation, 4000, 1, source)
-			exports.global:sendLocalMeAction(source, " eats a cheeseburger.")
+			exports.global:sendLocalMeAction(source, "eats a cheeseburger.")
 			exports.global:takePlayerItem(source, itemID, itemValue)
 			
 		elseif (itemID==13) then -- donut
@@ -178,7 +178,7 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 			setElementHealth(source, 100)
 			exports.global:applyAnimation(source, "FOOD", "EAT_Burger", -1, false, true, true)
 			setTimer(removeAnimation, 4000, 1, source)
-			exports.global:sendLocalMeAction(source, " eats a donut.")
+			exports.global:sendLocalMeAction(source, "eats a donut.")
 			exports.global:takePlayerItem(source, itemID, itemValue)
 			
 		elseif (itemID==14) then -- cookie
@@ -187,7 +187,7 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 			setElementHealth(source, health+80)
 			exports.global:applyAnimation(source, "FOOD", "EAT_Burger", -1, false, true, true)
 			setTimer(removeAnimation, 4000, 1, source)
-			exports.global:sendLocalMeAction(source, " eats a cookie.")
+			exports.global:sendLocalMeAction(source, "eats a cookie.")
 			exports.global:takePlayerItem(source, itemID, itemValue)
 			
 		elseif (itemID==15) then -- water
@@ -196,7 +196,7 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 			setElementHealth(source, health+90)
 			exports.global:applyAnimation(source, "VENDING", "VEND_Drink_P", -1, false, true, true)
 			setTimer(removeAnimation, 4000, 1, source)
-			exports.global:sendLocalMeAction(source, " drinks a bottle of water.")
+			exports.global:sendLocalMeAction(source, "drinks a bottle of water.")
 			exports.global:takePlayerItem(source, itemID, itemValue)
 			
 		elseif (itemID==16) then -- clothes
@@ -214,7 +214,7 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 				hour = hour - 24
 			end
 			
-			exports.global:sendLocalMeAction(source, " looks at their watch.")
+			exports.global:sendLocalMeAction(source, "looks at their watch.")
 			outputChatBox("The time is " .. hour .. ":" .. mins .. ".", source, 255, 194, 14)
 			exports.global:applyAnimation(source, "COP_AMBIENT", "Coplook_watch", -1, false, true, true)
 			setTimer(removeAnimation, 4000, 1, source)

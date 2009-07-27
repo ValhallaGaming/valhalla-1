@@ -100,6 +100,8 @@ function setTag(commandName, newTag)
 			
 			if (teamName~="Tatum Creek Crips") and (newTag==3) then
 				outputChatBox("You are not a member of Tatum Creek Crips", 255, 0, 0)
+			elseif (teamName~="Hampton OGs") and (newTag==5) then
+				outputChatBox("You are not a member of Hampton OGs", 255, 0, 0)
 			else
 				setElementData(getLocalPlayer(), "tag", true, newTag)
 				outputChatBox("Tag changed to #" .. newTag .. ".", 0, 255, 0)

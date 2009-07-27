@@ -280,7 +280,7 @@ function fillCan(thePlayer, commandName)
 					if (litresAffordable==0) then
 						outputChatBox("You cannot afford any fuel.", thePlayer, 255, 0, 0)
 					else
-						local fuelCost = math.ceil(litresAffordable*cost)
+						local fuelCost = math.floor(litresAffordable*cost)
 						outputChatBox("Gas Station Receipt:", thePlayer)
 						outputChatBox("    " .. math.ceil(litresAffordable) .. " Litres of petrol    -    " .. fuelCost .. "$", thePlayer)
 						exports.global:takePlayerSafeMoney(thePlayer, fuelCost)
@@ -323,7 +323,7 @@ function fuelTheVehicle(thePlayer, theVehicle, theShape, theLitres, free)
 	if (colShape) then
 		if (colShape==theShape) then
 			local tax = exports.global:getTaxAmount()
-			local fuelCost = math.ceil(theLitres*(FUEL_PRICE + (tax*FUEL_PRICE)))
+			local fuelCost = math.floor(theLitres*(FUEL_PRICE + (tax*FUEL_PRICE)))
 		
 			if (free) then
 				fuelCost = 0

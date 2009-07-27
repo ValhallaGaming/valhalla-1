@@ -36,6 +36,10 @@ function advertMessage(thePlayer, commandName, showNumber, ...)
 		else
 			if (exports.global:doesPlayerHaveItem(thePlayer, 2)) then
 				message = table.concat({...}, " ")
+				if showNumber ~= "0" and showNumber ~= "1" then
+					message = showNumber .. " " .. message
+					showNumber = 0
+				end
 				
 				local cost = math.ceil(string.len(message)/6)
 				local money = getElementData(thePlayer, "money")

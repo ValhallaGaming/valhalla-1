@@ -49,7 +49,7 @@ function adminhelp (sourcePlayer, commandName)
 					{ "/gethere", "/gethere [player]", "teleports the player to you" },
 					{ "/freeze", "/freeze [player]", "freezes the player" },
 					{ "/unfreeze", "/unfreeze [player]", "unfreezes the player" },
-					{ "/mark", "/mark", "saves your current position" }
+					{ "/mark", "/mark", "saves your current position" },
 					{ "/gotomark", "/gotomark", "teleports to the position where you did /mark" },
 					{ "/makedonator", "/makedonator [player] [level]", "changes the player's donator level" },
 					{ "/adminduty", "/adminduty", "(un)marks you as admin on duty" },
@@ -59,7 +59,7 @@ function adminhelp (sourcePlayer, commandName)
 					-- vehicle/*
 					{ "/unflip", "/unflip", "unflips the car" },
 					{ "/unlockcivcars", "/unlockcivcars", "unlocks all civilian vehicles" },
-					{ "/veh", "/veh [model] [color 1] [color 2]", "spawns a temporary vehicle" }
+					{ "/veh", "/veh [model] [color 1] [color 2]", "spawns a temporary vehicle" },
 					{ "/oldcar", "/oldcar", "retrieves the id of the last car you drove" },
 					{ "/thiscar", "/thiscar", "retrieves the id of your current car" },
 					{ "/gotocar", "/gotocar [id]", "teleports you to the car with that id" },
@@ -100,8 +100,8 @@ function adminhelp (sourcePlayer, commandName)
 					{ "/unck", "/unck [player]", "reverts a character kill" },
 					{ "/givegun", "/givegun [player] [weapon id] [ammo]", "gives the player the specified weapon" },
 					{ "/setmoney", "/setmoney [player] [money]", "sets the players money to that value" },
-					{ "/givemoney", "/givemoney [player] [money]", "gives the player money in addition to his current cash" }
-					{ "/delveh", "/delveh [id]", "removes the vehicle with that id" },
+					{ "/givemoney", "/givemoney [player] [money]", "gives the player money in addition to his current cash" },
+					{ "/delveh", "/delveh [id]", "removes the vehicle with that id" }
 				},
 				-- level 5: Head Admins
 				{
@@ -109,11 +109,11 @@ function adminhelp (sourcePlayer, commandName)
 					{ "/hideadmin", "/hideadmin", "toggles hidden/visible the admin status" },
 					{ "/ho", "/ho [text]", "send global ooc as hidden admin" },
 					{ "/hw", "/hw [player] [text]", "send a pm as hidden admin" },
-					{ "/makeadmin", "/makeadmin [player] [rank]", "gives the player an admin rank" }
+					{ "/makeadmin", "/makeadmin [player] [rank]", "gives the player an admin rank" },
 					
 					-- resource/*
-					{ "/startres", "/startres [resource name]", "starts the resource" }
-					{ "/stopres", "/stopres [resource name]", "stops the resource" }
+					{ "/startres", "/startres [resource name]", "starts the resource" },
+					{ "/stopres", "/stopres [resource name]", "stops the resource" },
 					{ "/restartres", "/restartres [resource name]", "restarts the resource" }
 				},
 				-- level 6: Owner

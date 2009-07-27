@@ -1,6 +1,9 @@
+local messages = { "F*** off, Punk!", "You're not welcome.", "I'm not selling you anything.", "Find someone else to harrass.", "Get Lost." }
+
 function pedDamage()
 	if getElementData(source,"shopkeeper") then
 		setElementData(source,"ignores",false,true)
+		setTimer(setElementData,300000,1,source,"ignores",false,nil)
 		cancelEvent()
 	end
 end
@@ -14,7 +17,7 @@ function clickPed(button, state, absX, absY, wx, wy, wz, element)
 			if not getElementData(element,"ignores") then
 				triggerServerEvent("onClickStoreKeeper", getLocalPlayer(), element)
 			else
-				-- not sure yet
+				outputChatBox('Storekeeper says: ' .. messages[math.random(1, #messages)])
 			end
 		end
 	end

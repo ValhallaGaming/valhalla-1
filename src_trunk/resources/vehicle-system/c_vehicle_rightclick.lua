@@ -14,7 +14,7 @@ function cVehicleInventory(button, state)
 		local theVehicle = getPedOccupiedVehicle(localPlayer)
 		
 		if (locked) and (vehicle~=theVehicle) then
-			triggerEvent("startCarAlarm", vehicle)
+			triggerServerEvent("onVehicleRemoteAlarm", vehicle)
 			outputChatBox("This vehicle is locked.", 255, 0, 0)
 		else
 			local dbid = getElementData(vehicle, "dbid")

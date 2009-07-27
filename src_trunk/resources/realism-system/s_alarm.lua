@@ -11,3 +11,5 @@ function onVehicleDamage()
 	end
 end
 addEventHandler("onVehicleDamage", getRootElement(), onVehicleDamage)
+addEvent("onVehicleRemoteAlarm", true)
+addEventHandler("onVehicleRemoteAlarm", getRootElement(), onVehicleDamage)

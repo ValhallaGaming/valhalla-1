@@ -118,13 +118,20 @@ function arrestPlayer(thePlayer, commandName, targetPlayerNick, fine, jailtime, 
 								setElementData(targetPlayer, "pd.jailserved", 0, false)
 								setElementData(targetPlayer, "pd.jailtime", jailtime, false)
 								setElementData(targetPlayer, "pd.jailtimer", theTimer, false)
+								
+								toggleControl(targetPlayer,'next_weapon',false)
+								toggleControl(targetPlayer,'previous_weapon',false)
+								toggleControl(targetPlayer,'fire',false)
+								toggleControl(targetPlayer,'aim_weapon',false)
+								setPedWeaponSlot(targetPlayer,0)
+								
 								local station = 1
 								
 								if (isSouthDivision) then
 									station = 2
 								end
 								
-								setElementData(targetPlayer, "pd.jailstation", station, false)
+								setElementData(targetPlayer, "pd.jailstation", station)
 								
 								mysql_query(handler, "UPDATE characters SET pdjail='1', pdjail_time='" .. jailtime .. "', pdjail_station='" .. station .. "' WHERE charactername='" .. targetPlayerNick .. "'")
 								outputChatBox("You jailed " .. targetPlayerNick .. " for " .. jailtime .. " Minutes.", thePlayer, 255, 0, 0)
@@ -215,6 +222,12 @@ function timerPDUnjailPlayer(jailedPlayer)
 			setElementData(jailedPlayer, "pd.jailtime", 0, false)
 			removeElementData(jailedPlayer, "pd.jailtimer")
 			removeElementData(jailedPlayer, "pd.jailstation")
+			
+			toggleControl(jailedPlayer,'next_weapon',true)
+			toggleControl(jailedPlayer,'previous_weapon',true)
+			toggleControl(jailedPlayer,'fire',true)
+			toggleControl(jailedPlayer,'aim_weapon',true)
+			
 			fadeCamera(jailedPlayer, true)
 			outputChatBox("Your time has been served.", jailedPlayer, 0, 255, 0)
 		else

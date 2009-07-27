@@ -375,10 +375,12 @@ function toggleCategory()
 end
 
 function toggleInventory()
-	if (wItems) then
+	if wItems then
 		hideInventory()
-	else
+	elseif not getElementData(getLocalPlayer(), "adminjailed") and not getElementData(getLocalPlayer(), "pd.jailstation") then
 		showInventory()
+	else
+		outputChatBox("You can't access your inventory in jail", 255, 0, 0)
 	end
 end
 bindKey("i", "down", toggleInventory)

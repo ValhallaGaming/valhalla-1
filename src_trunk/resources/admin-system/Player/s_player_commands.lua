@@ -1176,20 +1176,18 @@ function jailPlayer(thePlayer, commandName, who, minutes, ...)
 					removePedFromVehicle(targetPlayer)
 				end
 				
-				if (minutes<999) then
-					local theTimer = setTimer(timerUnjailPlayer, 60000, minutes, targetPlayer)
-					setElementData(targetPlayer, "jailserved", 0, false)
-					setElementData(targetPlayer, "jailtime", minutes, false)
-					setElementData(targetPlayer, "jailtimer", theTimer, false)
-				end
-				
 				if (minutes>=999) then
 					mysql_query(handler, "UPDATE accounts SET adminjail='1', adminjail_time='" .. minutes .. "', adminjail_permanent='1', adminjail_by='" .. playerName .. "', adminjail_reason='" .. reason .. "' WHERE id='" .. accountID .. "'")
 					minutes = "Unlimited"
 					setElementData(targetPlayer, "jailtimer", true, false)
 				else
 					mysql_query(handler, "UPDATE accounts SET adminjail='1', adminjail_time='" .. minutes .. "', adminjail_permanent='0', adminjail_by='" .. playerName .. "', adminjail_reason='" .. reason .. "' WHERE id='" .. tonumber(accountID) .. "'")
+					local theTimer = setTimer(timerUnjailPlayer, 60000, minutes, targetPlayer)
+					setElementData(targetPlayer, "jailserved", 0, false)
+					setElementData(targetPlayer, "jailtime", minutes, false)
+					setElementData(targetPlayer, "jailtimer", theTimer, false)
 				end
+				setElementData(targetPlayer, "adminjailed", true)
 				
 				outputChatBox("You jailed " .. targetPlayerNick .. " for " .. minutes .. " Minutes.", thePlayer, 255, 0, 0)
 				
@@ -1217,6 +1215,12 @@ function jailPlayer(thePlayer, commandName, who, minutes, ...)
 				setCameraInterior(targetPlayer, 6)
 				setElementPosition(targetPlayer, 263.821807, 77.848365, 1001.0390625)
 				setPedRotation(targetPlayer, 267.438446)
+				
+				toggleControl(targetPlayer,'next_weapon',false)
+				toggleControl(targetPlayer,'previous_weapon',false)
+				toggleControl(targetPlayer,'fire',false)
+				toggleControl(targetPlayer,'aim_weapon',false)
+				setPedWeaponSlot(targetPlayer,0)
 			else
 				outputChatBox("Player not found or multiple were found.", thePlayer, 255, 0, 0)
 			end
@@ -1238,11 +1242,16 @@ function timerUnjailPlayer(jailedPlayer)
 			if (timeLeft==0) then
 				mysql_query(handler, "UPDATE accounts SET adminjail_time='0', adminjail='0' WHERE id='" .. accountID .. "'")
 				removeElementData(jailedPlayer, "jailtimer", nil)
+				removeElementData(jailedPlayer, "adminjailed", true)
 				setElementPosition(jailedPlayer, 1694.5098876953, 1449.6469726563, 10.763301849365)
 				setPedRotation(jailedPlayer, 274.48666381836)
 				setElementDimension(jailedPlayer, 0)
 				setElementInterior(jailedPlayer, 0)
 				setCameraInterior(jailedPlayer, 0)
+				toggleControl(jailedPlayer,'next_weapon',true)
+				toggleControl(jailedPlayer,'previous_weapon',true)
+				toggleControl(jailedPlayer,'fire',true)
+				toggleControl(jailedPlayer,'aim_weapon',true)
 				outputChatBox("Your time has been served, Behave next time!", jailedPlayer, 0, 255, 0)
 				exports.global:sendMessageToAdmins("AdmJail: " .. getPlayerName(jailedPlayer) .. " has served his jail time.")
 				exports.irc:sendMessage("[ADMIN] " .. getPlayerName(jailedPlayer) .. " was unjailed by script (Time Served)")
@@ -1250,9 +1259,6 @@ function timerUnjailPlayer(jailedPlayer)
 				mysql_query(handler, "UPDATE accounts SET adminjail_time='" .. timeLeft .. "' WHERE id='" .. accountID .. "'")
 			end
 		end
-	else
-		local theTimer = getElementData(jailedPlayer, "jailtimer")
-		killTimer(theTimer)
 	end
 end
 
@@ -1275,11 +1281,16 @@ function unjailPlayer(thePlayer, commandName, who)
 					mysql_query(handler, "UPDATE accounts SET adminjail_time='0', adminjail='0' WHERE id='" .. accountID .. "'")
 					killTimer(jailed)
 					removeElementData(targetPlayer, "jailtimer", nil)
+					removeElementData(targetPlayer, "adminjailed", true)
 					setElementPosition(targetPlayer, 1694.5098876953, 1449.6469726563, 10.763301849365)
 					setPedRotation(targetPlayer, 274.48666381836)
 					setElementDimension(targetPlayer, 0)
 					setCameraInterior(targetPlayer, 0)
 					setElementInterior(targetPlayer, 0)
+					toggleControl(targetPlayer,'next_weapon',true)
+					toggleControl(targetPlayer,'previous_weapon',true)
+					toggleControl(targetPlayer,'fire',true)
+					toggleControl(targetPlayer,'aim_weapon',true)
 					outputChatBox("You were unjailed by " .. username .. ", Behave next time!", targetPlayer, 0, 255, 0)
 					exports.global:sendMessageToAdmins("AdmJail: " .. targetPlayerNick .. " was unjailed by " .. username .. ".")
 					exports.irc:sendMessage("[ADMIN] " .. targetPlayerNick .. " was unjailed by " .. username .. ".")

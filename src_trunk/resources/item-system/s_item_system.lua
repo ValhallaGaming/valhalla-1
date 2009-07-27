@@ -557,48 +557,52 @@ function dropItem(itemID, itemValue, itemName, x, y, z, gz, isWeapon, items, ite
 			setPedSkin(source, 0)
 		end
 	else
-		outputChatBox("You dropped a " .. itemName .. ".", source, 255, 194, 14)
-		
-		if (itemID==nil) then
-			itemID = 100
-			gz = gz + 0.5
-			setPedArmor(source, 0)
-		end
-		
-		triggerClientEvent(source, "saveGuns", source)
-		takeWeapon(source, tonumber(itemID))
-		
-		local modelid = 2969
-		-- MODEL ID
-		if (itemID==100) then
-			modelid = 1242
-		elseif (itemID==42) then
-			modelid = 2690
+		if tonumber(getElementData(source, "duty")) > 0 then
+			outputChatBox("You can't drop your weapons while being on duty.", source, 255, 0, 0)
 		else
-			modelid = 2969
+			outputChatBox("You dropped a " .. itemName .. ".", source, 255, 194, 14)
+			
+			if (itemID==nil) then
+				itemID = 100
+				gz = gz + 0.5
+				setPedArmor(source, 0)
+			end
+			
+			triggerClientEvent(source, "saveGuns", source)
+			takeWeapon(source, tonumber(itemID))
+			
+			local modelid = 2969
+			-- MODEL ID
+			if (itemID==100) then
+				modelid = 1242
+			elseif (itemID==42) then
+				modelid = 2690
+			else
+				modelid = 2969
+			end
+			
+			local obj = createObject(modelid, x, y, z, 0, 0, 0)
+			exports.pool:allocateElement(obj)
+			
+			local interior = getElementInterior(source)
+			local dimension = getElementDimension(source)
+			setElementInterior(obj, interior)
+			setElementDimension(obj, dimension)
+			
+			moveObject(obj, 200, x, y, gz+0.1)
+			
+			local time = getRealTime()
+			local yearday = time.yearday
+			
+			
+			mysql_query(handler, "INSERT INTO worlditems SET itemid='" .. itemID .. "', itemvalue='" .. itemValue .. "', itemname='" .. itemName .. "', yearday='" .. yearday .. "', x='" .. x .. "', y='" .. y .. "', z='" .. gz+0.1 .. "', dimension='" .. dimension .. "', interior='" .. interior .. "'")
+			local id = mysql_insert_id(handler)
+			setElementData(obj, "id", id, false)
+			setElementData(obj, "itemID", itemID)
+			setElementData(obj, "itemValue", itemValue)
+			setElementData(obj, "itemName", itemName)
+			setElementData(obj, "type", "worlditem")
 		end
-		
-		local obj = createObject(modelid, x, y, z, 0, 0, 0)
-		exports.pool:allocateElement(obj)
-		
-		local interior = getElementInterior(source)
-		local dimension = getElementDimension(source)
-		setElementInterior(obj, interior)
-		setElementDimension(obj, dimension)
-		
-		moveObject(obj, 200, x, y, gz+0.1)
-		
-		local time = getRealTime()
-		local yearday = time.yearday
-		
-		
-		mysql_query(handler, "INSERT INTO worlditems SET itemid='" .. itemID .. "', itemvalue='" .. itemValue .. "', itemname='" .. itemName .. "', yearday='" .. yearday .. "', x='" .. x .. "', y='" .. y .. "', z='" .. gz+0.1 .. "', dimension='" .. dimension .. "', interior='" .. interior .. "'")
-		local id = mysql_insert_id(handler)
-		setElementData(obj, "id", id, false)
-		setElementData(obj, "itemID", itemID)
-		setElementData(obj, "itemValue", itemValue)
-		setElementData(obj, "itemName", itemName)
-		setElementData(obj, "type", "worlditem")
 	end
 end
 addEvent("dropItem", true)

@@ -26,6 +26,41 @@ addEventHandler("onResourceStop", getResourceRootElement(getThisResource()), clo
 -- //			MYSQL END			 //
 -- ////////////////////////////////////
 
+local skins = { { 211, 217 }, { 179 }, false, { 178 }, { 82 }, { 80, 81 }, { 28, 29 }, { 169 }, { 171, 172 } }
+
+function createShopKeeper(x,y,z,interior,dimension,id,shoptype,rotation)
+	local skin = 0
+	
+	if shoptype == 3 then
+		-- needs differences for burgershot etc
+		if interior == 5 then
+			skin = 155
+		elseif interior == 9 then
+			skin = 167
+		elseif interior == 10 then
+			skin = 205
+		end
+		-- interior 17 = donut shop
+	else
+		-- clothes, interior 5 = victim
+		-- clothes, interior 15 = binco
+		-- clothes, interior 18 = zip
+		skin = skins[shoptype][math.random( 1, #skins[shoptype] )]
+	end
+	
+	local ped = createPed(skin, x, y, z)
+	setPedRotation(ped, rotation)
+	setElementDimension(ped, dimension)
+	setElementInterior(ped, interior)
+	exports.pool:allocateElement(ped)
+	setElementData(ped, "shopkeeper", true)
+	setPedFrozen(ped, true)
+	
+	setElementData(ped, "dbid", id, false)
+	setElementData(ped, "type", "shop", false)
+	setElementData(ped, "shoptype", shoptype, false)				
+end
+
 function isGun(weaponID)
 	if weaponID <= 15 or weaponID >= 41 then
 		return false
@@ -41,22 +76,16 @@ function createGeneralshop(thePlayer, commandName, shoptype)
 				local x, y, z = getElementPosition(thePlayer)
 				local dimension = getElementDimension(thePlayer)
 				local interior = getElementInterior(thePlayer)
+				local rotation = math.ceil(getPedRotation(thePlayer) / 30)*30
 				
-				local query = mysql_query(handler, "INSERT INTO shops SET x='" .. x .. "', y='" .. y .. "', z='" .. z .. "', dimension='" .. dimension .. "', interior='" .. interior .. "', shoptype='" .. shoptype .. "'")
+				local query = mysql_query(handler, "INSERT INTO shops SET x='" .. x .. "', y='" .. y .. "', z='" .. z .. "', dimension='" .. dimension .. "', interior='" .. interior .. "', shoptype='" .. shoptype .. "', rotation='" .. rotation .. "'")
 				
 				if (query) then
 					local id = mysql_insert_id(handler)
 					mysql_free_result(query)
 					
-					local colCircle = createColSphere(x, y, z, 3)
-					setElementDimension(colCircle, dimension)
-					setElementInterior(colCircle, interior)
-					
-					setElementData(colCircle, "dbid", id, false)
-					setElementData(colCircle, "type", "shop", false)
-					setElementData(colCircle, "shoptype", tonumber(shoptype), false)
-					
-					exports.pool:allocateElement(colCircle)
+					createShopKeeper(x,y,z,interior,dimension,id,tonumber(shoptype),rotation)
+
 					exports.irc:sendMessage("[ADMIN] " .. getPlayerName(thePlayer) .. " created shop #" .. id .. " - type "..shoptype..".")
 					outputChatBox("General shop created with ID #" .. id .. " and type "..shoptype..".", thePlayer, 0, 255, 0)
 				else
@@ -89,16 +118,16 @@ function getNearbyGeneralshops(thePlayer, commandName)
 		
 		local dimension = getElementDimension(thePlayer)
 		
-		for k, theColshape in ipairs(exports.pool:getPoolElementsByType("colshape")) do
-			local colshapeType = getElementData(theColshape, "type")
-			if (colshapeType) then
-				if (colshapeType=="shop") then
-					local x, y = getElementPosition(theColshape)
+		for k, thePed in ipairs(exports.pool:getPoolElementsByType("ped")) do
+			local pedType = getElementData(thePed, "type")
+			if (pedType) then
+				if (pedType=="shop") then
+					local x, y = getElementPosition(thePed)
 					local distance = getDistanceBetweenPoints2D(posX, posY, x, y)
-					local cdimension = getElementDimension(theColshape)
+					local cdimension = getElementDimension(thePed)
 					if (distance<=10) and (dimension==cdimension) then
-						local dbid = getElementData(theColshape, "dbid")
-						local shoptype = getElementData(theColshape, "shoptype")
+						local dbid = getElementData(thePed, "dbid")
+						local shoptype = getElementData(thePed, "shoptype")
 						outputChatBox("   Shop with ID " .. dbid .. " and type "..shoptype..".", thePlayer, 255, 126, 0)
 						count = count + 1
 					end
@@ -120,13 +149,13 @@ function deleteGeneralShop(thePlayer, commandName, id)
 		else
 			local counter = 0
 			
-			for k, theColshape in ipairs(exports.pool:getPoolElementsByType("colshape")) do
-				local colshapeType = getElementData(theColshape, "type")
-				if (colshapeType) then
-					if (colshapeType=="shop") then
-						local dbid = getElementData(theColshape, "dbid")
+			for k, thePed in ipairs(exports.pool:getPoolElementsByType("ped")) do
+				local pedType = getElementData(thePed, "type")
+				if (pedType) then
+					if (pedType=="shop") then
+						local dbid = getElementData(thePed, "dbid")
 						if (tonumber(id)==dbid) then
-							destroyElement(theColshape)
+							destroyElement(thePed)
 							mysql_query(handler, "DELETE FROM shops WHERE id='" .. dbid .. "' LIMIT 1")
 							
 							exports.irc:sendMessage("[ADMIN] " .. getPlayerName(thePlayer) ..  " deleted shop with ID #" .. id .. ".")
@@ -147,7 +176,7 @@ addCommandHandler("delshop", deleteGeneralShop, false, false)
 
 function loadAllGeneralshops(res)
 	if (res==getThisResource()) then
-		local result = mysql_query(handler, "SELECT id, x, y, z, dimension, interior, shoptype FROM shops")
+		local result = mysql_query(handler, "SELECT id, x, y, z, dimension, interior, shoptype, rotation FROM shops")
 		
 		local counter = 0
 		if (result) then
@@ -161,15 +190,9 @@ function loadAllGeneralshops(res)
 				local interior = tonumber(row[6])
 				local shoptype = tonumber(row[7])
 				
-				local colCircle = createColSphere(x, y, z, 3)
-				setElementDimension(colCircle, dimension)
-				setElementInterior(colCircle, interior)
+				local rotation = tonumber(row[8])
 				
-				exports.pool:allocateElement(colCircle)
-				
-				setElementData(colCircle, "dbid", id, false)
-				setElementData(colCircle, "type", "shop", false)
-				setElementData(colCircle, "shoptype", tonumber(shoptype), false)
+				createShopKeeper(x,y,z,interior,dimension,id,shoptype,rotation)
 				counter = counter + 1
 			end
 			mysql_free_result(result)
@@ -179,31 +202,22 @@ function loadAllGeneralshops(res)
 end
 addEventHandler("onResourceStart", getRootElement(), loadAllGeneralshops)
 
-function hitCollisionShape(hitElement, matchingDimension)
-	if (matchingDimension) then -- Same dimension
-		if (isElement(hitElement)) then
-			local elementType = getElementType(hitElement)
-			if (elementType=="player") then
-				local colshapeType = getElementData(source, "type")
-				if (colshapeType=="shop") then
-					local shoptype = getElementData(source, "shoptype")
-					
-					local race = 1
-					
-					if(shoptype == 5) then -- if its a clothes shop, we also need the players race
-						local username = getPlayerName(hitElement)
-						local result = mysql_query(handler, "SELECT skincolor FROM characters WHERE charactername='" .. username .. "' LIMIT 1")
-						local race = tonumber(mysql_result(result, 1, 1))
-						
-						mysql_free_result(result)
-					end
-					triggerClientEvent(hitElement, "showGeneralshopUI", hitElement, shoptype, race)
-				end
-			end
-		end
+function clickStoreKeeper(ped)
+	local shoptype = getElementData(ped, "shoptype")
+
+	local race = 1
+
+	if(shoptype == 5) then -- if its a clothes shop, we also need the players race
+		local username = getPlayerName(source)
+		local result = mysql_query(handler, "SELECT skincolor FROM characters WHERE charactername='" .. username .. "' LIMIT 1")
+		local race = tonumber(mysql_result(result, 1, 1))
+		
+		mysql_free_result(result)
 	end
+	triggerClientEvent(source, "showGeneralshopUI", source, shoptype, race)
 end
-addEventHandler("onColShapeHit", getRootElement(), hitCollisionShape)
+addEvent("onClickStoreKeeper", true)
+addEventHandler("onClickStoreKeeper", getRootElement(), clickStoreKeeper)
 
 
 

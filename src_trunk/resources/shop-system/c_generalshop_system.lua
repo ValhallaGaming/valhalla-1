@@ -132,6 +132,7 @@ addEventHandler("showGeneralshopUI", getRootElement(), showGeneralshopUI)
 function hideGeneralshopUI()
 	if (source==bClose) then
 		guiSetInputEnabled(false)
+		showCursor(false)
 		guiSetVisible(wGeneralshop, false)
 		destroyElement(wGeneralshop)
 		removeEventHandler ("onClientGUIDoubleClick",  getRootElement(), getShopSelectedItem )

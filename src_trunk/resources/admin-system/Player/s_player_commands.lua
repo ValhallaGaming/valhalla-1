@@ -1821,9 +1821,9 @@ function interiorChanged(thePickup)
 			if (cameraTarget==source) then
 				local interior = getElementInterior(source)
 				local dimension = getElementDimension(source)
-				setCameraInterior(source, interior)
-				setElementInterior(source, interior)
-				setElementDimension(source, dimension)
+				setCameraInterior(value, interior)
+				setElementInterior(value, interior)
+				setElementDimension(value, dimension)
 			end
 		end
 	end

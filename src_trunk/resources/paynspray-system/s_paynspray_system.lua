@@ -174,12 +174,11 @@ function shapeHit(element, matchingDimension)
     				local faction = getPlayerTeam(thePlayer)
     				local ftype = getElementData(faction, "type")
                     local free = false
-                    
-                    if (ftype~=2  and ftype~=3 and ftype~=4) then
+                    if (ftype==2 or ftype==3 or ftype==4) then
                         free = true
                     end
     				
-    				if ((money<250) and (not free)) then
+    				if (money<250 and not free) then
     					outputChatBox("You cannot afford to have your car worked on.", thePlayer, 255, 0, 0)
     				else
     					outputChatBox("Welcome to Pay 'n' Spray. Please wait while we work on your " .. getVehicleName(element) .. ".", thePlayer, 255, 194, 14)
@@ -203,18 +202,19 @@ function sprayEffect(vehicle, thePlayer, shape, free)
 	if (isElementWithinColShape(thePlayer, shape)) then
 		local faction = getPlayerTeam(thePlayer)
 		local ftype = getElementData(faction, "type")
-			
+		outputChatBox(" ", thePlayer)
+		outputChatBox("Thank you for visting Pay 'n' Spray garage. Have a safe journey.", thePlayer, 255, 194, 14)
+		
 		if ((ftype~=2 and ftype~=3 and ftype~=4) and (not free)) then
 			exports.global:takePlayerSafeMoney(thePlayer, 250)
+			outputChatBox("BILL: Car Repair - 250$", thePlayer, 255, 194, 14)
+		else
+			outputChatBox("BILL: Car Repair - 0$", thePlayer, 255, 194, 14)
 		end
 		
 		local id = getElementModel(vehicle)
 		
 		fixVehicle(vehicle)
-		
-		outputChatBox(" ", thePlayer)
-		outputChatBox("Thank you for visting Pay 'n' Spray garage. Have a safe journey.", thePlayer, 255, 194, 14)
-		outputChatBox("BILL: Car Repair - 250$", thePlayer, 255, 194, 14)
 	else
 		outputChatBox("You forgot to wait for your repair!", thePlayer, 255, 0, 0)
 	end

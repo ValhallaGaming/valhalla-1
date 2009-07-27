@@ -237,8 +237,8 @@ function enterElevator(playa, shape)
 			end
 			local interior = getElementData(shape, "interior")
 			local dimension = getElementData(shape, "dimension")
-			
-			if (interior==3) then
+
+			if (interior==3 or interior==4) then
 				triggerClientEvent(playa, "usedElevator", playa)
 				setPedFrozen(playa, true)
 				setPedGravity(playa, 0)

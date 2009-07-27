@@ -1,4 +1,11 @@
 ---
+Hospital falling fix
+---
+modify id 10 in the elevators table to
+tpx = 1565.000000
+tpy = 1800.000000
+tpz = 2083.5
+---
 SAFES SQL changes
 ---
 add the following to items 

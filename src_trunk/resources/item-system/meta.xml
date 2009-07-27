@@ -11,6 +11,10 @@
 
 	<script src="c_books.lua" type="client" />
 	
+	<script src="c_safes_system.lua" type="client" />
+	<script src="s_safes_system.lua" type="server" />
+	<export function="updateSafeItems" type="server" />
+
 	<file src="books/PDmanual.xml" />
 	<file src="books/LVHighwayCode.xml" />
 	<file src="books/Chemistry101.xml" />

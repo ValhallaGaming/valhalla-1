@@ -426,6 +426,19 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 			exports.global:sendLocalMeAction(source, "eats a mudkip.")
 			exports.global:takePlayerItem(source, itemID, itemValue)
 			killPed(source)
+		elseif (itemID==60) then 
+				local x,y,z = getElementPosition(source)
+				local rz = getPedRotation(source)
+				local dimension = getElementDimension(source)
+				local retval = call(getResourceFromName("interior-system"), "addSafeAtPosition", source, x,y,z, rz) --0 no error, 1 safe already exists, 2 player does not own interior
+				if (retval == 0) then
+					exports.global:sendLocalMeAction(source, "Places a safe.")
+					exports.global:takePlayerItem(source, itemID, itemValue)
+				elseif (retval == 2 and dimension == 0) then
+					outputChatBox("You are not inside an interior.", 255, 0, 0)
+				elseif (retval == 2) then
+					outputChatBox("You need to own the interior you are placing the safe in!", 255, 0, 0)
+				end
 		else
 			outputChatBox("Error 800001 - Report on http://bugs.valhallagaming.net", source, 255, 0, 0)
 		end

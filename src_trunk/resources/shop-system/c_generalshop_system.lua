@@ -304,6 +304,7 @@ function getItemsForSale(shop_type, race)
 		item[6] = {"Watch", "Telling the time was never so sexy!", "25", 17, 1, 1,false,10}
 		item[7] = {"MP3 Player", "A white, sleek looking MP3 Player. The brand reads EyePod.", "120", 19, 1,1,false,7}
 		item[8] = {"Chemistry Set", "A small chemistry set.", "2000", 44, 1,1,false,15}
+		item[9] = {"Safe", "A Safe to store your items in.", "300", 60, 1,1,false,0}
 
 		
 	-- alcohol shop

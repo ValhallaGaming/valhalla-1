@@ -44,7 +44,7 @@ function addNewSuspectToDatabase(details)
 	
 		local suspect
 		
-		suspect = getPlayerFromNick ( details[1]	)
+		suspect = getPlayerFromName ( details[1]	)
 		
 		if not (suspect == false) then
 			local skin= getPedSkin(suspect)
@@ -90,7 +90,7 @@ function addUpdateSuspectToDatabase(details)
 	if (updatePhoto ) then
 	
 		local suspect
-		suspect = getPlayerFromNick ( details[1]	)
+		suspect = getPlayerFromName ( details[1]	)
 		
 		if not (suspect == false) then
 			local skin= getElementModel(suspect)

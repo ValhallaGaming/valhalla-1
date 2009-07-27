@@ -6,7 +6,7 @@ function onVehicleDamage()
 	local passenger2 = getVehicleOccupant(source, 2)
 	local passenger3 = getVehicleOccupant(source, 3)
 
-	if (isVehicleLocked(source)) and not (alarmless[getVehicleModel(source)])  and (not driver and not passenger1 and not passenger2 and not passenger3) then
+	if (isVehicleLocked(source)) and not (alarmless[getElementModel(source)])  and (not driver and not passenger1 and not passenger2 and not passenger3) then
 		triggerClientEvent("startCarAlarm", source)
 	end
 end

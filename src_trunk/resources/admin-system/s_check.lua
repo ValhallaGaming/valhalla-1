@@ -56,7 +56,7 @@ addCommandHandler("check", PrepareCheck)
 
 function Check( watcher,noob )
 	local name = noob
-	noob = getPlayerFromNick ( noob )
+	noob = getPlayerFromName ( noob )
 	if(noob) then
 		local x,y,z = getElementPosition(noob)
 		x = ("%.2f"):format( x )

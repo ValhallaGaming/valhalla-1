@@ -162,6 +162,7 @@ function getItemDescription(itemID)
 	elseif (itemID==57) then return "A small metal fuel canister."
 	elseif (itemID==58) then return "The finest beer, imported from Holland."
 	elseif (itemID==59) then return "So i herd u liek mudkips? Mabako's Favorite."
+	elseif (itemID==60) then return "A safe to store your items in."
 	else return false 
 	end
 end
@@ -293,6 +294,8 @@ function getItemType(itemID)
 		return 1
 	elseif (itemID==59) then -- MUDKIP
 		return 1
+	elseif (itemID==60) then -- SAFE
+		return 4
 	else
 		return false
 	end
@@ -812,7 +815,10 @@ function dropItem(button)
 				local itemName = items[itemSlot][1]
 				local itemID = items[itemSlot][3]
 				local itemValue = items[itemSlot][4]
-				
+				if (tonumber(itemID) == 60) then
+					outputChatBox("This item cannot be dropped.", 255, 0, 0)
+					return
+				end
 				local backpackitems = nil
 				local backpackvalues = nil
 				if (itemID==48) then -- BACKPACK, destroy the items inside it too

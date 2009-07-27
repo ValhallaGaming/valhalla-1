@@ -1,6 +1,6 @@
 addEvent("onPlayerInteriorEnter", true)
 addEvent("onPlayerInteriorExit", true)
-
+local safeTable = {}
 -- Get an array of all interiors
 local interiors={} 
                	-- INTERIOR 1 Business_StripClub1
@@ -1261,7 +1261,7 @@ function sellProperty(thePlayer, commandName)
 	else
 		local dbid = getElementDimension(thePlayer)
 		local x, y, z, rot = nil
-			
+		local safe = nil
 		local cost = 0
 		local owner = nil
 		local inttype = nil
@@ -1310,9 +1310,16 @@ function sellProperty(thePlayer, commandName)
 			setElementInterior(thePlayer, interior)
 			setElementDimension(thePlayer, dimension)
 			setCameraInterior(thePlayer, interior)
-			local query = mysql_query(handler, "UPDATE interiors SET owner=-1, locked=1 WHERE id='" .. dbid .. "'")
+			local query = mysql_query(handler, "UPDATE interiors SET owner=-1, locked=1, safepositionX=NULL, safepositionY=NULL, safepositionZ=NULL, safepositionRZ=NULL WHERE id='" .. dbid .. "'")
 				
 			if (query) then
+				if (safeTable[dbid] ~= nil) then
+					local safe = safeTable[tonumber(dbid)]
+					setElementData(safe, "items", "")
+					setElementData(safe, "itemvalues", "")
+					call(getResourceFromName("item-system"), "updateSafeItems", safe)
+					destroyElement(safe)
+				end
 				mysql_free_result(query)
 				outputChatBox("You are no longer renting this property.", thePlayer, 0, 255, 0)
 				reloadOneInterior(tonumber(dbid))
@@ -1326,7 +1333,7 @@ function sellProperty(thePlayer, commandName)
 			setElementInterior(thePlayer, interior)
 			setElementDimension(thePlayer, dimension)
 			setCameraInterior(thePlayer, interior)
-			local query = mysql_query(handler, "UPDATE interiors SET owner=-1, locked=1 WHERE id='" .. dbid .. "'")
+			local query = mysql_query(handler, "UPDATE interiors SET owner=-1, locked=1, safepositionX=NULL, safepositionY=NULL, safepositionZ=NULL, safepositionRZ=NULL WHERE id='" .. dbid .. "'")
 				
 			if (query) then
 				mysql_free_result(query)
@@ -1335,6 +1342,13 @@ function sellProperty(thePlayer, commandName)
 					local money = math.ceil((cost/3)*2)
 					exports.global:givePlayerSafeMoney(thePlayer, money)
 					outputChatBox("You sold your property for " .. money .. "$.", thePlayer, 0, 255, 0)
+					if (safeTable[dbid] ~= nil) then
+						local safe = safeTable[tonumber(dbid)]
+						setElementData(safe, "items", "")
+						setElementData(safe, "itemvalues", "")
+						call(getResourceFromName("item-system"), "updateSafeItems", safe)
+						destroyElement(safe)
+					end
 				else
 					outputChatBox("You set this property to unowned.", thePlayer, 0, 255, 0)
 				end
@@ -1381,6 +1395,13 @@ function deleteInterior(thePlayer, commandName)
 					if (pickupID==dbid) then
 						interior = getElementInterior(thePickup)
 						dimension = getElementDimension(thePickup)
+						local safe = safeTable[dbid]
+						if (safe) then
+							setElementData(safe, "items", "")
+							setElementData(safe, "itemvalues", "")
+							call(getResourceFromName("items-system"), "updateSafeItems", safe)
+							destroyElement(safe)
+						end
 						destroyElement(thePickup)
 					end
 				end
@@ -1407,7 +1428,6 @@ addCommandHandler("delinterior", deleteInterior, false, false)
 
 function reloadOneInterior(id)
 	local result = mysql_query(handler, "SELECT id, x, y, z , interiorx, interiory, interiorz, type, owner, locked, cost, name, interior, dimensionwithin, interiorwithin, angle, angleexit, items, items_values, max_items, rentable, tennant, rent, money FROM interiors WHERE id='" .. id .. "'")
-		
 	if (result) then
 		for result, row in mysql_rows(result) do
 			local id = tonumber(row[1])
@@ -1509,7 +1529,7 @@ end
 
 
 function loadAllInteriors()
-	local result = mysql_query(handler, "SELECT id, x, y, z , interiorx, interiory, interiorz, type, owner, locked, cost, name, interior, dimensionwithin, interiorwithin, angle, angleexit, items, items_values, max_items, rentable, tennant, rent, money FROM interiors")
+	local result = mysql_query(handler, "SELECT id, x, y, z , interiorx, interiory, interiorz, type, owner, locked, cost, name, interior, dimensionwithin, interiorwithin, angle, angleexit, items, items_values, max_items, rentable, tennant, rent, money, safepositionX, safepositionY, safepositionZ, safepositionRZ FROM interiors")
 	local counter = 0
 		
 	local players = exports.pool:getPoolElementsByType("player")
@@ -1549,10 +1569,10 @@ function loadAllInteriors()
 			local rent = tonumber(row[23])
 			
 			local money = tonumber(row[24])
-				
+			local safepos = { [1] = tonumber(row[25]), [2] = tonumber(row[26]), [3] = tonumber(row[27]), [4] = tonumber(row[28]) }
+			local pickup
 			-- If the is a house
 			if (inttype==0) then -- House
-					local pickup
 					
 					if (owner<1) then
 						pickup = createPickup(x, y, z, 3, 1273)
@@ -1569,7 +1589,6 @@ function loadAllInteriors()
 					setIntPickupElementData(intpickup, id, x, y, z, rot, locked, owner, inttype, interiorwithin, dimension, interior, ix, iy, iz)
 			-- if it is a business
 			elseif (inttype==1) then -- Business
-					local pickup
 					
 					if (owner<1) then
 						pickup = createPickup(x, y, z, 3, 1272)
@@ -1586,16 +1605,15 @@ function loadAllInteriors()
 					setIntPickupElementData(intpickup, id, x, y, z, rot, locked, owner, inttype, interiorwithin, dimension, interior, ix, iy, iz)
 			-- if it is a gov building
 			elseif (inttype==2) then -- Interior Owned
-				local pickup = createPickup(x, y, z, 3, 1318)
+				pickup = createPickup(x, y, z, 3, 1318)
 				local intpickup = createPickup(ix, iy, iz, 3, 1318)
 				exports.pool:allocateElement(pickup)
 				exports.pool:allocateElement(intpickup)
 					
-				setPickupElementData(pickup, id, ix, iy, iz, optAngle, interior, locked, owner, inttype, cost, name, items, items_values, max_items, tennant, rentable, rent, interiorwithin, x, y, z, dimension, money)
+				setPickupElementData(pickup, id, ix, iy, iz, optAngle, interior, locked, owner, inttype, cost, name, items, items_values, max_items, tennant, rentable, rent, interiorwithin, x, y, z, dimension, money, safepos[1], safepos[2], safepos[3], safepos[4])
 				setIntPickupElementData(intpickup, id, x, y, z, rot, locked, owner, inttype, interiorwithin, dimension, interior, ix, iy, iz)
 			-- if its a rentable interior.
 			elseif (inttype==3) then -- Rentable
-					local pickup
 					
 					if (owner<1) then
 						pickup = createPickup(x, y, z, 3, 1273)
@@ -1610,6 +1628,15 @@ function loadAllInteriors()
 					
 					setPickupElementData(pickup, id, ix, iy, iz, optAngle, interior, locked, owner, inttype, cost, name, items, items_values, max_items, tennant, rentable, rent, interiorwithin, x, y, z, dimension, money)
 					setIntPickupElementData(intpickup, id, x, y, z, rot, locked, owner, inttype, interiorwithin, dimension, interior, ix, iy, iz)
+			end
+			if (safepos[1]) then
+				local tempobject = createObject(2332, tonumber(safepos[1]), tonumber(safepos[2]), tonumber(safepos[3]), 0, 0, tonumber(safepos[4]))
+				setElementInterior(tempobject, interior)
+				setElementDimension(tempobject, id)
+				setElementData(tempobject, "dbid", id)
+				setElementData(tempobject, "items", items)
+				setElementData(tempobject, "itemvalues", items_values)
+				safeTable[id] = tempobject
 			end
 			counter = counter + 1
 		end
@@ -1997,7 +2024,7 @@ function changeInteriorName( thePlayer, commandName, ...)
 		if not (...) then -- is the command complete?
 			outputChatBox("SYNTAX: /" .. commandName .." [New Name]", thePlayer, 255, 194, 14) -- if command is not complete show the syntax.
 		elseif (dimension==0) then
-			outputChatBox("You are not inside an interior.", 255, 0, 0)
+			outputChatBox("You are not inside an interior.", thePlayer, 255, 0, 0)
 		else
 			name = table.concat({...}, " ")
 		
@@ -2020,3 +2047,44 @@ function changeInteriorName( thePlayer, commandName, ...)
 	end
 end
 addCommandHandler("setinteriorname", changeInteriorName, false, false) -- the command "/setInteriorName".
+
+
+function addSafeAtPosition( thePlayer, x, y, z, rotz )
+	local dbid = getElementDimension( thePlayer )
+	local interior = getElementInterior( thePlayer )
+	if (safeTable[dbid]) then
+		outputChatBox("There is already a safe in this property. Type movesafe to move it.", thePlayer, 255, 0, 0)
+		return 1
+	end
+	if ((exports.global:doesPlayerHaveItem( thePlayer, 5, dbid ) or exports.global:doesPlayerHaveItem( thePlayer, 4, dbid))) then
+		z = z - 0.5
+		rotz = rotz + 180
+		mysql_query(handler, "UPDATE interiors SET safepositionX='" .. x .. "', safepositionY='" .. y .. "', safepositionZ='" .. z .. "', safepositionRZ='" .. rotz .. "' WHERE id='" .. dbid .. "'") -- Update the name in the sql.
+		local tempobject = createObject(2332, x, y, z, 0, 0, rotz)
+		setElementInterior(tempobject, interior)
+		setElementDimension(tempobject, dbid)
+		safeTable[dbid] = tempobject
+		return 0
+	end
+	return 2
+end
+function moveSafe ( thePlayer, commandName )
+	local x,y,z = getElementPosition( thePlayer )
+	local rotz = getPedRotation( thePlayer )
+	local dbid = getElementDimension( thePlayer )
+	local interior = getElementInterior( thePlayer )
+	if ((exports.global:doesPlayerHaveItem( thePlayer, 5, dbid ) or exports.global:doesPlayerHaveItem( thePlayer, 4, dbid))) then
+		if (safeTable[dbid]) then
+			local oldsafe = safeTable[dbid]
+			z = z - 0.5
+			rotz = rotz + 180
+			mysql_query(handler, "UPDATE interiors SET safepositionX='" .. x .. "', safepositionY='" .. y .. "', safepositionZ='" .. z .. "', safepositionRZ='" .. rotz .. "' WHERE id='" .. dbid .. "'") -- Update the name in the sql.
+			setElementPosition(safeTable[dbid], x, y, z)
+			setObjectRotation(safeTable[dbid], 0, 0, rotz)
+		else
+			outputChatBox("You need a safe to move!", thePlayer, 255, 0, 0)
+		end
+	end
+end
+
+addCommandHandler("movesafe", moveSafe)

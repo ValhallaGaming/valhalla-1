@@ -18,7 +18,7 @@ function carAlarm()
 	local passenger2 = getVehicleOccupant(source, 2)
 	local passenger3 = getVehicleOccupant(source, 3)
 	
-	if (isVehicleLocked(source)) and (not alarm) and not (alarmless[getVehicleModel(source)]) and (not driver and not passenger1 and not passenger2 and not passenger3) then
+	if (isVehicleLocked(source)) and (not alarm) and not (alarmless[getElementModel(source)]) and (not driver and not passenger1 and not passenger2 and not passenger3) then
 		setTimer(doCarAlarm, 1000, 20, source)
 		setElementData(source, "alarm", 1)
 		setTimer(resetAlarm, 11000, 1, source)

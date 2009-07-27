@@ -24,6 +24,7 @@ function findPlayerByPartialNick(partialNick)
 	local partialNick = string.lower(partialNick)
 
 	local players = exports.pool:getPoolElementsByType("player")
+	local count = 0
 	
 	-- IDS
 	if ((tostring(type(tonumber(partialNick)))) == "number") then
@@ -58,7 +59,7 @@ function findPlayerByPartialNick(partialNick)
 	if matchNick == nil then
 		return false
 	else
-		local matchPlayer = getPlayerFromNick(matchNick)
+		local matchPlayer = getPlayerFromName(matchNick)
 		local dbid = getElementData(matchPlayer, "dbid")
 		return matchPlayer, dbid
 	end

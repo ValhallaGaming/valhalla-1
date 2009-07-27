@@ -1,4 +1,25 @@
 ---
+SAFES SQL changes
+---
+add the following to items 
+id: 60
+item_name: Safe
+item_description: A safe to store your items in.
+modelid: 2332
+
+add the following columns to interiors
+safepositionX
+safepositionY
+safepositionZ
+safepositionRZ
+all with default of null
+
+modify the following columns in interiors type to TEXT
+items
+items_values
+
+
+---
 SQL
 ---
 

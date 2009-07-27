@@ -45,13 +45,20 @@
 	<export function="doesVehicleHaveItem" type="server"/>
 	<export function="giveVehicleItem" type="server"/>
 	<export function="takeVehicleItem" type="server"/>
-	
+	<export function="doesSafeHaveSpaceForItem" type="server"/>
+	<export function="doesSafeHaveItem" type="server"/>
+	<export function="giveSafeItem" type="server"/>
+	<export function="takeSafeItem" type="server"/>
+
 	<script src="c_item_globals.lua" type="client"/>
 	<export function="cdoesPlayerHaveItem" type="client"/>
 	<export function="cdoesPlayerHaveSpaceForItem" type="client"/>
 	<export function="cdoesVehicleHaveItem" type="client"/>
 	<export function="cdoesVehicleHaveSpaceForItem" type="client"/>
+	<export function="cdoesSafeHaveItem" type="client" />
+	<export function="cdoesSafeHaveSpaceForItem" type="client" />
 	<export function="cgetItemName" type="client"/>
+	
 	
 	<script src="s_version_globals.lua" type="server"/>
 	<export function="getScriptVersion" type="server"/>

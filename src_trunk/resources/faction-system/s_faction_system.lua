@@ -184,7 +184,7 @@ function showFactionMenu(source)
 						end
 						memberLastLogin[i] = login
 						
-						local targetPlayer = getPlayerFromNick(tostring(playerName))
+						local targetPlayer = getPlayerFromName(tostring(playerName))
 						if (targetPlayer) then
 							memberOnline[i] = true
 							local zone = getElementZoneName(targetPlayer, false)
@@ -318,7 +318,7 @@ function callbackRemovePlayer(removedPlayerName)
 		
 		exports.irc:sendMessage("[SCRIPT] " .. username .. " removed " .. removedPlayerName .. " from faction '" .. tostring(theTeamName) .. "'.")
 		
-		local removedPlayer = getPlayerFromNick(removedPlayerName)
+		local removedPlayer = getPlayerFromName(removedPlayerName)
 		if (removedPlayer) then -- Player is online
 			if (getElementData(source, "factionMenu")==1) then
 				triggerClientEvent(removedPlayer, "hideFactionMenu", getRootElement())
@@ -353,7 +353,7 @@ function callbackToggleLeader(playerName, isLeader)
 			mysql_free_result(query)
 			exports.irc:sendMessage("[SCRIPT] " .. username .. " promoted " .. tostring(playerName) .. " to leader.")
 			
-			local thePlayer = getPlayerFromNick(playerName)
+			local thePlayer = getPlayerFromName(playerName)
 			if(thePlayer) then -- Player is online, tell them
 				outputChatBox(username .. " promoted you to a leader of your faction.", thePlayer)
 			end
@@ -379,7 +379,7 @@ function callbackToggleLeader(playerName, isLeader)
 			mysql_free_result(query)
 			exports.irc:sendMessage("[SCRIPT] " .. username .. " demoted " .. tostring(playerName) .. " to member.")
 			
-			local thePlayer = getPlayerFromNick(playerName)
+			local thePlayer = getPlayerFromName(playerName)
 			if(thePlayer) then -- Player is online, tell them
 				if (getElementData(source, "factionMenu")==1) then
 					triggerClientEvent(thePlayer, "hideFactionMenu", getRootElement())
@@ -411,7 +411,7 @@ function callbackPromotePlayer(playerName, rankNum, oldRank, newRank)
 	
 	if (query) then
 		mysql_free_result(query)
-		local thePlayer = getPlayerFromNick(playerName)
+		local thePlayer = getPlayerFromName(playerName)
 		if(thePlayer) then -- Player is online, tell them
 			setElementData(thePlayer, "factionrank", rankNum)
 			outputChatBox(username .. " promoted you from '" .. oldRank .. "' to '" .. newRank .. "'.", thePlayer)
@@ -442,7 +442,7 @@ function callbackDemotePlayer(playerName, rankNum, oldRank, newRank)
 	
 	if (query) then
 		mysql_free_result(query)
-		local thePlayer = getPlayerFromNick(playerName)
+		local thePlayer = getPlayerFromName(playerName)
 		if(thePlayer) then -- Player is online, tell them
 			setElementData(thePlayer, "factionrank", rankNum)
 			outputChatBox(username .. " demoted you from '" .. oldRank .. "' to '" .. newRank .. "'.", thePlayer)

@@ -705,7 +705,7 @@ function hiddenOOC(thePlayer, commandName, ...)
 			local players = exports.pool:getPoolElementsByType("player")
 			local message = table.concat({...}, " ")
 			
-			exports.irc:sendMessage("[OOC: Global Cha] Hidden Admin: " .. message)
+			exports.irc:sendMessage("[OOC: Global Chat] Hidden Admin: " .. message)
 			for index, arrayPlayer in ipairs(players) do
 				local logged = getElementData(arrayPlayer, "loggedin")
 			

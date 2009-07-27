@@ -652,7 +652,7 @@ function deleteVehicle(thePlayer, commandName, id)
 					if (dbid<0) then -- TEMP vehicle
 						destroyElement(theVehicle)
 					else
-						if (exports.global:isPlayerAdmin(thePlayer)) then
+						if (exports.global:isPlayerLeadAdmin(thePlayer)) then
 							mysql_query(handler, "DELETE FROM vehicles WHERE id='" .. dbid .. "'")
 							destroyElement(theVehicle)
 							exports.irc:sendMessage("[ADMIN] " .. getPlayerName(thePlayer) .. " deleted vehicle #" .. dbid .. ".")

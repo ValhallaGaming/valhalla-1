@@ -1840,7 +1840,7 @@ function enterInterior(source)
 	local thePickup = getElementData(source, "interiormarker")
 
 	-- if the player is entering a pickup
-	if (thePickup) then
+	if thePickup and not getPedOccupiedVehicle(source) then
 		
 		local pickupType = getElementData(thePickup, "type")
 		
@@ -1893,17 +1893,18 @@ function enterInterior(source)
                     
 					-- fade camera to black
 					fadeCamera ( source, false, 1,0,0,0 )
+					setPedFrozen( source, true )
                     
 					-- teleport the player during the black fade
-					setTimer(function()
+					setTimer(function(source)
 						setElementInterior(source, interior, x, y, z)
 						setCameraInterior(source, interior)
 						setElementDimension(source, dimension)
 					
 						-- fade camera in
-						setTimer(fadeCamera, 1000, 1 , source , true, 1)
-							
-					end, 1000, 1)
+						setTimer(fadeCamera, 1000, 1 , source , true, 2)
+						setTimer(setPedFrozen, 2000, 1, source, false)
+					end, 1000, 1, source)
 					
 					playSoundFrontEnd(source, 40)
 				
@@ -1933,9 +1934,10 @@ function setPlayerInsideInterior(thePickup, thePlayer)
     
 	-- fade camera to black
 	fadeCamera ( thePlayer, false, 1,0,0,0 )
+	setPedFrozen( thePlayer, true )
 					
 	-- teleport the player during the black fade
-	setTimer(function()
+	setTimer(function(thePlayer)
 					
 		setElementInterior(thePlayer, interior, x, y, z)
 		setElementDimension(thePlayer, dimension)
@@ -1943,9 +1945,9 @@ function setPlayerInsideInterior(thePickup, thePlayer)
 		setPedRotation(thePlayer, rot)
 					
 		-- fade camera in
-		setTimer(fadeCamera, 1000, 1 , thePlayer , true, 1)
-						
-	end, 1000, 1)
+		setTimer(fadeCamera, 1000, 1 , thePlayer , true, 2)
+		setTimer(setPedFrozen, 2000, 1, thePlayer, false )
+	end, 1000, 1, thePlayer)
 	
 	local ownerName = "None"
 	local result = mysql_query(handler, "SELECT charactername FROM characters WHERE id='" .. owner .. "' LIMIT 1")

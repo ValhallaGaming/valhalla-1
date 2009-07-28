@@ -941,3 +941,19 @@ function delItem(thePlayer, commandName, targetID)
 	end
 end
 addCommandHandler("delitem", delItem, false, false)
+
+function showInventoryRemote(thePlayer, commandName, targetPlayer)
+	if exports.global:isPlayerAdmin(thePlayer) then
+		if not (targetPlayer) then
+			outputChatBox("SYNTAX: /" .. commandName .. " [Player Partial Nick / ID]", thePlayer, 255, 194, 14)
+		else
+			local targetPlayer = exports.global:findPlayerByPartialNick(targetPlayer)
+			if targetPlayer then
+				triggerClientEvent(thePlayer,"showInventory",thePlayer,targetPlayer)
+			else
+				outputChatBox("Player not found or multiple were found.", thePlayer, 255, 0, 0)
+			end
+		end
+	end
+end
+addCommandHandler("showinv", showInventoryRemote, false, false)

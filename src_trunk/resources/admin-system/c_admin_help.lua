@@ -55,6 +55,7 @@ function adminhelp (sourcePlayer, commandName)
 					{ "/adminduty", "/adminduty", "(un)marks you as admin on duty" },
 					{ "/motd", "/motd [message]", "updates the message of the day" },
 					{ "/warn", "/warn [player]", "issues a warning, player is banned when having 3 warnings" },
+					{ "/showinv", "/showinv [player]", "views the inventory of the player" },
 					
 					-- vehicle/*
 					{ "/unflip", "/unflip", "unflips the car" },

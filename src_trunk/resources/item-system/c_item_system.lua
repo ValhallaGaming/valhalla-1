@@ -381,30 +381,37 @@ function toggleInventory()
 	if wItems then
 		hideInventory()
 	elseif not getElementData(getLocalPlayer(), "adminjailed") and not getElementData(getLocalPlayer(), "pd.jailstation") then
-		showInventory()
+		showInventory(getLocalPlayer())
 	else
 		outputChatBox("You can't access your inventory in jail", 255, 0, 0)
 	end
 end
 bindKey("i", "down", toggleInventory)
 
-function showInventory()
+function showInventory(player)
 	if not (wChemistrySet) then
+		if wItems then
+			hideInventory()
+		end
 		local width, height = 600, 500
 		local scrWidth, scrHeight = guiGetScreenSize()
 		local x = scrWidth/2 - (width/2)
 		local y = scrHeight/2 - (height/2)
 		
-		wItems = guiCreateWindow(x, y, width, height, "Inventory", false)
+		local title = "Inventory"
+		if player ~= getLocalPlayer() then
+			title = title .. " of " .. getPlayerName(player)
+		end
+		wItems = guiCreateWindow(x, y, width, height, title, false)
 		guiWindowSetSizable(wItems, false)
 		
-		local itemstring = getElementData(getLocalPlayer(), "items")
-		local itemvalues = getElementData(getLocalPlayer(), "itemvalues")
+		local itemstring = getElementData(player, "items")
+		local itemvalues = getElementData(player, "itemvalues")
 				
 		items = { }
 		
 		local slots = 10
-		if (exports.global:cdoesPlayerHaveItem(getLocalPlayer(), 48, -1)) then
+		if (exports.global:cdoesPlayerHaveItem(player, 48, -1)) then
 			slots = 20
 		end
 		
@@ -435,7 +442,7 @@ function showInventory()
 		colName = guiGridListAddColumn(gItems, "Name", 0.625)
 		colValue = guiGridListAddColumn(gItems, "Value", 0.225)
 		
-		local itemvalues = getElementData(getLocalPlayer(), "itemvalues")
+		local itemvalues = getElementData(player, "itemvalues")
 		
 		-- type checkboxes
 		toggleLabel = guiCreateLabel(0.025, 0.77, 0.95, 0.9, "Toggle Item Types:", true, wItems)
@@ -517,10 +524,10 @@ function showInventory()
 		colWName = guiGridListAddColumn(gWeapons, "Name", 0.625)
 		colWValue = guiGridListAddColumn(gWeapons, "Ammo", 0.225)
 		for i = 0, 12 do
-			if (getWeaponNameFromID(getPedWeapon(getLocalPlayer(), i))~="Melee") and (getPedTotalAmmo(getLocalPlayer(),i)>0) then
+			if (getWeaponNameFromID(getPedWeapon(player, i))~="Melee") and (getPedTotalAmmo(player,i)>0) then
 				local row = guiGridListAddRow(gWeapons)
-				local weapon = getWeaponNameFromID(getPedWeapon(getLocalPlayer(), i))
-				local ammo = getPedTotalAmmo(getLocalPlayer(), i)
+				local weapon = getWeaponNameFromID(getPedWeapon(player, i))
+				local ammo = getPedTotalAmmo(player, i)
 				guiGridListSetItemText(gWeapons, row, colWSlot, tostring(i), false, true)
 				guiGridListSetItemText(gWeapons, row, colWName, tostring(weapon), false, false)
 				guiGridListSetItemText(gWeapons, row, colWValue, tostring(ammo), false, false)
@@ -531,11 +538,11 @@ function showInventory()
 		addEventHandler("onClientGUIDoubleClick", gWeapons, useItem, false)
 		
 		-- ARMOR
-		if (getPedArmor(getLocalPlayer())>0) then
+		if getPedArmor(player) > 0 then
 			local row = guiGridListAddRow(gWeapons)
 			guiGridListSetItemText(gWeapons, row, colWSlot, tostring(13), false, true)
 			guiGridListSetItemText(gWeapons, row, colWName, "Body Armor", false, false)
-			guiGridListSetItemText(gWeapons, row, colWValue, tostring(getPedArmor(getLocalPlayer())), false, false)
+			guiGridListSetItemText(gWeapons, row, colWValue, tostring(getPedArmor(player)), false, false)
 		end
 		
 		-- GENERAL
@@ -544,22 +551,25 @@ function showInventory()
 		guiSetFont(lDescription, "default-bold-small")
 		
 		-- buttons
-		bUseItem = guiCreateButton(0.05, 0.91, 0.2, 0.15, "Use Item", true, wItems)
-		addEventHandler("onClientGUIClick", bUseItem, useItem, false)
-		guiSetEnabled(bUseItem, false)
-		
-		bDropItem = guiCreateButton(0.30, 0.91, 0.2, 0.15, "Drop Item", true, wItems)
-		addEventHandler("onClientGUIClick", bDropItem, dropItem, false)
-		guiSetEnabled(bDropItem, false)
-		
-		bShowItem = guiCreateButton(0.55, 0.91, 0.2, 0.15, "Show Item", true, wItems)
-		addEventHandler("onClientGUIClick", bShowItem, showItem, false)
-		guiSetEnabled(bShowItem, false)
-		
-		bDestroyItem = guiCreateButton(0.8, 0.91, 0.2, 0.15, "Destroy Item", true, wItems)
-		addEventHandler("onClientGUIClick", bDestroyItem, destroyItem, false)
-		guiSetEnabled(bDestroyItem, false)
-
+		if player == getLocalPlayer() then
+			bUseItem = guiCreateButton(0.05, 0.91, 0.2, 0.15, "Use Item", true, wItems)
+			guiSetEnabled(bUseItem, false)
+			
+			bDropItem = guiCreateButton(0.30, 0.91, 0.2, 0.15, "Drop Item", true, wItems)
+			addEventHandler("onClientGUIClick", bDropItem, dropItem, false)
+			guiSetEnabled(bDropItem, false)
+			
+			bShowItem = guiCreateButton(0.55, 0.91, 0.2, 0.15, "Show Item", true, wItems)
+			addEventHandler("onClientGUIClick", bShowItem, showItem, false)
+			guiSetEnabled(bShowItem, false)
+			
+			bDestroyItem = guiCreateButton(0.8, 0.91, 0.2, 0.15, "Destroy Item", true, wItems)
+			addEventHandler("onClientGUIClick", bDestroyItem, destroyItem, false)
+			guiSetEnabled(bDestroyItem, false)
+		else
+			bClose = guiCreateButton(0.375, 0.91, 0.2, 0.15, "Close Inventory", true, wItems)
+			addEventHandler("onClientGUIClick", bClose, hideInventory)
+		end
 		showCursor(true)
 	end
 end

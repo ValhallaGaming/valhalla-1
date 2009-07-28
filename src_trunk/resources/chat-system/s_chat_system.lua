@@ -726,16 +726,18 @@ function showAdmins(thePlayer, commandName)
 			local hiddenAdmin = getElementData(arrayPlayer, "hiddenadmin")
 			local logged = getElementData(arrayPlayer, "loggedin")
 			
-			if(exports.global:isPlayerAdmin(arrayPlayer)) and (hiddenAdmin==0) and (logged==1) then
-				local username = string.gsub(getPlayerName(arrayPlayer), "_", " ")
-				local adminTitle = exports.global:getPlayerAdminTitle(arrayPlayer)
-				local duty = getElementData(arrayPlayer, "adminduty")
-				if(duty==1)then
-					outputChatBox("    " .. tostring(adminTitle) .. " " .. username.." - On Duty", thePlayer, 255, 194, 14)
-				else
-					outputChatBox("    " .. tostring(adminTitle) .. " " .. username, thePlayer)
-				end
-				counter = counter + 1
+			if(exports.global:isPlayerAdmin(arrayPlayer)) and (logged==1) then
+                if (hiddenAdmin==0) or (exports.global:isPlayerAdmin(thePlayer)) then
+    				local username = string.gsub(getPlayerName(arrayPlayer), "_", " ")
+    				local adminTitle = exports.global:getPlayerAdminTitle(arrayPlayer)
+    				local duty = getElementData(arrayPlayer, "adminduty")
+    				if(duty==1)then
+    					outputChatBox("    " .. tostring(adminTitle) .. " " .. username.." - On Duty", thePlayer, 255, 194, 14)
+    				else
+    					outputChatBox("    " .. tostring(adminTitle) .. " " .. username, thePlayer)
+    				end
+    				counter = counter + 1
+                end
 			end
 		end
 		

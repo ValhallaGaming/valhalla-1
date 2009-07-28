@@ -233,7 +233,7 @@ function takePlayerItem(button, state, x, y)
 			local itemValue = tonumber(gettok(itemvalues, row+1, string.byte(',')))
 			local itemName = exports.global:cgetItemName(itemID)
 			
-			if (itemID==48) then -- BACKPACK
+			if item == 3 or item == 4 or item == 5 or itemID==48 then -- KEYS or BACKPACK
 				outputChatBox("You cannot take this item from the player.", 255, 0, 0)
 				return
 			end

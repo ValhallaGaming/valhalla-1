@@ -120,3 +120,13 @@ function showLicenses(thePlayer, commandName, targetPlayer)
 	end
 end
 addCommandHandler("showlicenses", showLicenses, false, false)
+
+
+function checkDMVCars(player)
+	-- aka civilian previons
+	if getElementData(source, "owner") == -2 and getElementData(source, "faction") == -1 and getElementModel(source) == 436 and getElementData(player,"license.car") ~= 3 then
+		outputChatBox("This DMV Car is for the Driving Test only.", player, 255, 0, 0)
+		cancelEvent()
+	end
+end
+addEventHandler( "onVehicleStartEnter", getRootElement(), checkDMVCars)

@@ -55,7 +55,11 @@ addEvent("payBusDriver",true)
 addEventHandler("payBusDriver", getRootElement(), payBusDriver)
 
 function takeBusFare(thePlayer)
-	exports.global:takePlayerSafeMoney(thePlayer, 2)
+	exports.global:takePlayerSafeMoney(thePlayer, 5)
+	local driver = getVehicleController(getPedOccupiedVehicle(thePlayer))
+	if driver then
+		exports.global:givePlayerSafeMoney(driver, 5)
+	end
 end
 addEvent("payBusFare", true)
 addEventHandler("payBusFare", getRootElement(), takeBusFare)

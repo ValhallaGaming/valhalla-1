@@ -676,6 +676,30 @@ function deleteVehicle(thePlayer, commandName, id)
 end
 addCommandHandler("delveh", deleteVehicle, false, false)
 
+-- DELTHISVEH
+
+function deleteThisVehicle(thePlayer, commandName)
+	local veh = getPedOccupiedVehicle(thePlayer)
+	local dbid = getElementData(veh, "dbid")
+	if (exports.global:isPlayerAdmin(thePlayer)) then
+		if (exports.global:isPlayerLeadAdmin(thePlayer)) then
+			if not (isPedInVehicle(thePlayer)) then
+				outputChatBox("You are not in a vehicle.", thePlayer, 255, 0, 0)
+			else
+				mysql_query(handler, "DELETE FROM vehicles WHERE id='" .. dbid .. "'")
+				destroyElement(veh)
+				exports.irc:sendMessage("[ADMIN] " .. getPlayerName(thePlayer) .. " deleted vehicle #" .. dbid .. ".")
+			end
+		else
+			outputChatBox("You do not have the permission to delete permanent vehicles.", thePlayer, 255, 0, 0)
+			return
+		end
+	end						
+end
+addCommandHandler("delthisveh", deleteThisVehicle, false, false)
+
+-- VEHPOS
+
 function setVehiclePosition(thePlayer, commandName)
 	local veh = getPedOccupiedVehicle(thePlayer)
 	local playerid = getElementData(thePlayer, "dbid")

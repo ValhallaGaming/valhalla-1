@@ -13,11 +13,12 @@ function showReports(thePlayer)
 	if (exports.global:isPlayerAdmin(thePlayer)) then
 		outputChatBox("~~~~~~~~~ Reports ~~~~~~~~~", thePlayer, 255, 194, 15)
 		
-		for i = 1, #reports do
-			local reporter = reports[i][1]
-			local reported = reports[i][2]
-			local timestring = reports[i][4]
-			local admin = reports[i][5]
+		local count = 0
+		for i, report in pairs(reports) do
+			local reporter = report[1]
+			local reported = report[2]
+			local timestring = report[4]
+			local admin = report[5]
 			
 			local handler = ""
 			if (isElement(admin)) then
@@ -27,9 +28,10 @@ function showReports(thePlayer)
 			end
 			
 			outputChatBox("Report #" .. i .. ": '" .. getPlayerName(reporter) .. "' reporting '" .. getPlayerName(reported) .. "' at " .. timestring .. ". Handler: " .. handler .. ".", thePlayer, 255, 195, 15)
+			count = count + 1
 		end
 		
-		if (#reports==0) then
+		if count == 0 then
 			outputChatBox("None.", thePlayer, 255, 194, 15)
 		else
 			outputChatBox("Type /reportinfo [id] to obtain more information about the report.", thePlayer, 255, 194, 15)

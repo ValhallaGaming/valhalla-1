@@ -98,7 +98,7 @@ function savePlayer(reason, player)
 		
 		timeinserver = getElementData(source, "timeinserver")
 		
-		local bankmoney = getElementData(source, "bankmoney")
+		local bankmoney = getElementData(source, "bankmoney") + getElementData(source, "businessprofit")
 		
 		local gameAccountUsername = getElementData(source, "gameaccountusername")
 		local safegameAccountUsername = mysql_escape_string(handler, gameAccountUsername)

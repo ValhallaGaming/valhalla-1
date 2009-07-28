@@ -370,7 +370,7 @@ function givePlayerBoughtItem(itemID, itemValue, theCost, isWeapon, name, supply
 					setPedFightingStyle(source, tonumber(itemID))
 					exports.global:givePlayerAchievement(source, 20)
 				else
-					if (itemID==28) or (itemID==30) or (itemID==32) then
+					if isWeapon and isGun(tonumber(itemID)) then
 						-- licensing check
 						local gunlicense = getElementData(source, "license.gun")
 						if (gunlicense==1) then
@@ -401,7 +401,7 @@ function givePlayerBoughtItem(itemID, itemValue, theCost, isWeapon, name, supply
 					end
 				end
 				
-				mysql_query(handler, "UPDATE characters SET money=money + " .. tonumber(theCost) .. " WHERE id='" .. owner .. "' LIMIT 1")
+				mysql_query(handler, "UPDATE characters SET bankmoney=bankmoney + " .. tonumber(theCost) .. " WHERE id='" .. owner .. "' LIMIT 1")
 				if (theOwner) then
 					--exports.global:givePlayerSafeMoney(theOwner, theCost)
 					local profits = getElementData(theOwner, "businessprofit")

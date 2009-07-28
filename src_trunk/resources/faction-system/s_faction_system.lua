@@ -811,6 +811,7 @@ function payWage(player, pay, faction, tax)
 	
 	-- business money
 	local profit = getElementData(player, "businessprofit")
+	setElementData(player, "businessprofit", 0, false)
 	setElementData(player, "bankmoney", bankmoney+pay+interest+profit+donatormoney)
 	
 	outputChatBox("~-~-~-~-~-~-~-~~-~-~-~-~ PAY SLIP ~-~-~-~-~-~-~-~~-~-~-~-~", player, 255, 194, 14)

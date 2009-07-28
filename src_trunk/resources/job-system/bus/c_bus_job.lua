@@ -70,10 +70,7 @@ function startBusJob(thePlayer)
 			outputChatBox("#FF9933You have already started a bus route.", 255, 194, 14, true)
 		else		
 			local vehicle = getPedOccupiedVehicle(getLocalPlayer())
-			local id = getElementModel(vehicle)
-			if not (bus[id]) then
-				outputChatBox("#FF9933You must be in a bus or coach to start the bus route.", 255, 194, 14, true)
-			else
+			if vehicle and getVehicleController(vehicle) == getLocalPlayer() and bus[getElementModel(vehicle)] then
 				local x, y, z = busRoute[1][1], busRoute[1][2], busRoute[1][3]
 				busBlip = createBlip(x, y, z, 0, 2, 255, 200, 0, 255)
 				busMarker = createMarker(x, y, z, "checkpoint", 4, 255, 200, 0, 150) -- start marker.
@@ -83,7 +80,9 @@ function startBusJob(thePlayer)
 				setElementData(getLocalPlayer(), "busRoute.totalmarkers", 39)
 				
 				outputChatBox("#FF9933Drive around the bus #FFCC00route #FF9933stopping at the #A00101stops #FF9933along the way.", 255, 194, 14, true)
-				outputChatBox("#FF9933You will be paid for each stop you make.", 255, 194, 14, true)
+				outputChatBox("#FF9933You will be paid for each stop you make and for people you pick up.", 255, 194, 14, true)
+			else
+				outputChatBox("#FF9933You must be in a bus or coach to start the bus route.", 255, 194, 14, true)
 			end
 		end
 	else
@@ -93,7 +92,7 @@ end
 addCommandHandler("startbus", startBusJob, false, false)
 
 function updateBusCheckpoint(thePlayer)
-	if(thePlayer==getLocalPlayer()) or (source==getLocalPlayer)then
+	if not thePlayer or thePlayer == getLocalPlayer() then
 		local vehicle = getPedOccupiedVehicle(getLocalPlayer())
 		local id = getElementModel(vehicle)
 		if not (bus[id]) then
@@ -130,6 +129,7 @@ function updateBusCheckpoint(thePlayer)
 				busBlip = createBlip( x, y, z, 0, 2, 255, 0, 0, 255) -- Red blip
 				
 				addEventHandler("onClientMarkerHit", busMarker, waitAtStop)
+				addEventHandler("onClientMarkerLeave", busMarker, checkWaitAtStop)
 				
 			else -- it is just a route.
 				
@@ -149,19 +149,35 @@ end
 
 
 function waitAtStop(thePlayer)
-	if(thePlayer==getLocalPlayer())then
-		-- Remove the old marker.
-		destroyElement(busBlip)
-		destroyElement(busMarker)
-		busBlip = nil
-		busMarker = nil
-		busStopTimer = setTimer(updateBusCheckpoint, 5000, 1, thePlayer)
+	local vehicle = getPedOccupiedVehicle(getLocalPlayer())
+	if thePlayer == getLocalPlayer() and vehicle and bus[getElementModel(vehicle)] then
+		busStopTimer = setTimer(updateBusCheckpointAfterStop, 5000, 1)
 		outputChatBox("#FF9933Wait at the bus stop for a moment.", 255, 0, 0, true )
-		
-		local m_number = getElementData(getLocalPlayer(), "busRoute.marker")
-		local stopNumber = busRoute[m_number][5]
-		triggerServerEvent("payBusDriver", getLocalPlayer(), stopNumber)
 	end
+end
+
+function checkWaitAtStop(thePlayer)
+	if thePlayer == getLocalPlayer() then
+		outputChatBox("You didn't wait at the bus stop.", 255, 0, 0)
+		if busStopTimer then
+			killTimer(busStopTimer)
+			busStopTimer = nil
+		end
+	end
+end
+
+function updateBusCheckpointAfterStop()
+	-- Remove the old marker.
+	destroyElement(busBlip)
+	destroyElement(busMarker)
+	busBlip = nil
+	busMarker = nil
+	
+	local m_number = getElementData(getLocalPlayer(), "busRoute.marker")
+	local stopNumber = busRoute[m_number][5]
+	triggerServerEvent("payBusDriver", getLocalPlayer(), stopNumber)
+	
+	updateBusCheckpoint()
 end
 
 function endOfTheLine()
@@ -179,12 +195,12 @@ function enterBus ( thePlayer, seat, jacked )
 		if(bus[vehID])then
 			if(seat~=0)then
 				local money = getElementData(getLocalPlayer(),"money")
-				if(money<2)then
+				if(money<5)then
 					triggerServerEvent("removePlayerFromBus", getLocalPlayer(), thePlayer)
-					outputChatBox("You can't afford the $2 bus fare.", 255, 0, 0)
+					outputChatBox("You can't afford the $5 bus fare.", 255, 0, 0)
 				else
 					triggerServerEvent("payBusFare", getLocalPlayer(), thePlayer)
-					outputChatBox("You have paid $2 to ride the bus", 0, 255, 0)
+					outputChatBox("You have paid $5 to ride the bus", 0, 255, 0)
 				end
 			end
 		end

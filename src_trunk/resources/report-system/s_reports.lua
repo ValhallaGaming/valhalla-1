@@ -56,7 +56,13 @@ function reportInfo(thePlayer, commandName, id)
 				
 				
 				outputChatBox(" [-ADMIN REPORT-] (" .. playerID .. ") " .. tostring(getPlayerName(reporter)) .. " reported " .. tostring(getPlayerName(reported)) .. " at " .. timestring .. ".", thePlayer, 0, 255, 255)
-				outputChatBox(" [-ADMIN REPORT-] " .. "Reason: " .. tostring(reason), thePlayer, 0, 255, 255)
+				
+				local reason1 = reason:sub( 0, 70 )
+				local reason2 = reason:sub( 70 )
+				outputChatBox(" [-ADMIN REPORT-] Reason: " .. reason1, thePlayer, 0, 255, 255)
+				if reason2 then
+					outputChatBox(" [-ADMIN REPORT-] " .. reason2, thePlayer, 0, 255, 255)
+				end
 				
 				local handler = ""
 				if (isElement(admin)) then
@@ -156,7 +162,12 @@ function handleReport(reportedPlayer, reportedReason)
 		local adminduty = getElementData(value, "adminduty")
 		if (adminduty==1) then
 			outputChatBox(" [-ADMIN REPORT-] (" .. playerID .. ") " .. tostring(getPlayerName(source)) .. " reported (" .. reportedID .. ") " .. tostring(getPlayerName(reportedPlayer)) .. " at " .. timestring .. ".", value, 0, 255, 255)
-			outputChatBox(" [-ADMIN REPORT-] " .. "Reason: " .. tostring(reportedReason), value, 0, 255, 255)
+			local reason1 = reportedReason:sub( 0, 70 )
+			local reason2 = reportedReason:sub( 70 )
+			outputChatBox(" [-ADMIN REPORT-] Reason: " .. reason1, value, 0, 255, 255)
+			if reason2 then
+				outputChatBox(" [-ADMIN REPORT-] " .. reason2, value, 0, 255, 255)
+			end
 			outputChatBox(" [-ADMIN REPORT-] Type /ar " .. slot .. " to accept this report.", value, 0, 255, 255)
 		end
 	end

@@ -1,0 +1,11 @@
+<meta>
+	<info author="Franky D"/>
+	
+	<script src="s_hotwire.lua" type="server"/>
+	<script src="c_hotwire.lua" type="client"/>
+	<script src="s_lockpicking.lua" type="server"/>
+	<script src="c_lockpicking.lua" type="client"/>
+
+	<file src="images/wires.png" />
+	<file src="images/lock.png" />
+</meta>

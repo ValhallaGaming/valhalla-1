@@ -158,7 +158,7 @@ function moveItemToSafe(button, state)
 				outputChatBox("This item cannot be stored in a safe.", 255, 0, 0)
 				return
 			end
-			if (((itemID == 4 or itemID == 5) and itemValue == getElementDimension(getLocalPlayer())) then
+			if (itemID == 4 or itemID == 5) and itemValue == getElementDimension(getLocalPlayer()) then
 				outputChatBox("This item cannot be stored in a safe.", 255, 0, 0)
 				return
 			end

@@ -891,7 +891,7 @@ function payAllWages()
 					
 					if rankWage > 0 then
 						local factionAmount = factionMoney - rankWage
-						setElementData(theTeam, "money", tonumber(factionAmount), false)
+						setElementData(theTeam, "money", tonumber(factionAmount))
 						local update = mysql_query(handler, "UPDATE factions SET bankbalance='" .. factionAmount .. "' WHERE id='" .. playerFaction .. "'")
 						mysql_free_result(update)
 					end

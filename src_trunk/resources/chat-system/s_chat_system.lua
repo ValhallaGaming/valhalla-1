@@ -351,7 +351,7 @@ function pmPlayer(thePlayer, commandName, who, ...)
 					setElementData(targetPlayer, "pmblocked", 0, false)
 				end
 				
-				if (logged==1) and (pmblocked==0 or exports.global:isPlayerAdmin(thePlayer)) then
+				if (logged==1) and (pmblocked==0 or exports.global:isPlayerAdmin(thePlayer) or getElementData(thePlayer, "reportadmin") == targetPlayer) then
 					local playerName = string.gsub(getPlayerName(thePlayer), "_", " ")
 					local targetPlayerName = string.gsub(getPlayerName(targetPlayer), "_", " ")
 				

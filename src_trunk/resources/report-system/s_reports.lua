@@ -4,6 +4,7 @@ function resourceStart(res)
 	if (res==getThisResource()) then
 		for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
 			removeElementData(value, "report")
+			removeElementData(value, "reportadmin")
 		end
 	end
 end
@@ -157,6 +158,7 @@ function handleReport(reportedPlayer, reportedReason)
 	local reportedID = getElementData(reportedPlayer, "playerid")
 	
 	setElementData(source, "report", slot)
+	removeElementData(source, "reportadmin")
 	
 	local admins = exports.global:getAdmins()
 	-- Show to admins
@@ -222,6 +224,7 @@ function pendingReportTimeout(id)
 		reports[id] = nil -- Destroy any reports made by the player
 		
 		removeElementData(reportingPlayer, "report")
+		removeElementData(reportingPlayer, "reportadmin")
 		
 		local time = getRealTime()
 		local hours = time.hour
@@ -289,6 +292,7 @@ function falseReport(thePlayer, commandName, id)
 					local timestring = hours .. ":" .. minutes
 					
 					removeElementData(reportingPlayer, "report")
+					removeElementData(reportingPlayer, "reportadmin")
 					outputChatBox("[" .. timestring .. "] Your report (#" .. id .. ") was marked as false by " .. getPlayerName(thePlayer) .. ".", reportingPlayer, 255, 194, 14)
 					
 					local admins = exports.global:getAdmins()
@@ -346,6 +350,7 @@ function acceptReport(thePlayer, commandName, id)
 					
 					local adminreports = getElementData(thePlayer, "adminreports")
 					setElementData(thePlayer, "adminreports", adminreports+1, false)
+					setElementData(reportingPlayer, "reportadmin", thePlayer, false)
 					
 					local timestring = hours .. ":" .. minutes
 					local playerID = getElementData(reportingPlayer, "playerid")
@@ -383,6 +388,7 @@ function closeReport(thePlayer, commandName, id)
 				
 				if (isElement(reporter)) then
 					removeElementData(thePlayer, "report")
+					removeElementData(thePlayer, "reportadmin")
 					outputChatBox(getPlayerName(thePlayer) .. " has closed your report. Please re-submit your report if you weren't happy that it was resolved.", reporter, 0, 255, 255)
 				end
 				
@@ -425,6 +431,7 @@ function endReport(thePlayer, commandName)
 		
 		reports[report] = nil
 		removeElementData(thePlayer, "report")
+		removeElementData(thePlayer, "reportadmin")
 		
 		outputChatBox("[" .. timestring .. "] You have closed your report (#" .. report .. ").", thePlayer, 255, 194, 14)
 		

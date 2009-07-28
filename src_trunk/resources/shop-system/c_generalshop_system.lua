@@ -298,7 +298,7 @@ function getItemsForSale(shop_type, race, gender)
 	-- electronics
 	elseif(shop_type == 8) then
 		item[1] = {"Ghettoblaster","A black ghettoblaster.", "250", 54, 1, 1, false,10}
-		item[2] = {"Katana", "Your favourite Japanese sword.", "200", 8, 1, 1,true,100}
+		item[2] = {"Katana", "Your favourite Japanese sword.", "2000", 8, 1, 1,true,100}
 		item[3] = {"Camera", "A small black analogue camera.", "75", 43, 25,1,true, 30}
 		item[4] = {"Cellphone", "A stylish, slim cell phone.", "75", 2, 1,1,false,50}
 		item[5] = {"Radio", "A black radio.", "50", 6, 1,1,false,30}

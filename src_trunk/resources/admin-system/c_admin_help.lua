@@ -45,6 +45,7 @@ function adminhelp (sourcePlayer, commandName)
 					{ "/gotoplace", "/gotoplace [ls/sf/lv]", "teleports you to one of those 3 cities" },
 					{ "/jail", "/jail [player] [minutes] [reason]", "jails the player, if minutes >= 999 it's permanent" },
 					{ "/unjail", "/unjail [player]", "unjails the player" },
+					{ "/jailed", "/jailed", "shows a list of players that are in adminjail, including time left and reason" },
 					{ "/goto", "/goto [player]", "teleport to another player" },
 					{ "/gethere", "/gethere [player]", "teleports the player to you" },
 					{ "/freeze", "/freeze [player]", "freezes the player" },

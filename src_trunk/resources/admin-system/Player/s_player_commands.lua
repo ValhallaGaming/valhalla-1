@@ -1160,7 +1160,7 @@ function jailPlayer(thePlayer, commandName, who, minutes, ...)
 			outputChatBox("SYNTAX: /" .. commandName .. " [Player Partial Name/ID] [Minutes(>=1) 999=Perm] [Reason]", thePlayer, 255, 194, 14)
 		else
 			local targetPlayer = exports.global:findPlayerByPartialNick(who)
-			local reason = mysql_escape_string(handler, table.concat({...}, " "))
+			local reason = table.concat({...}, " ")
 			
 			if (targetPlayer) then
 				local targetPlayerNick = getPlayerName(targetPlayer)
@@ -1177,17 +1177,19 @@ function jailPlayer(thePlayer, commandName, who, minutes, ...)
 				end
 				
 				if (minutes>=999) then
-					mysql_query(handler, "UPDATE accounts SET adminjail='1', adminjail_time='" .. minutes .. "', adminjail_permanent='1', adminjail_by='" .. playerName .. "', adminjail_reason='" .. reason .. "' WHERE id='" .. accountID .. "'")
+					mysql_query(handler, "UPDATE accounts SET adminjail='1', adminjail_time='" .. minutes .. "', adminjail_permanent='1', adminjail_by='" .. playerName .. "', adminjail_reason='" .. mysql_escape_string(handler, reason) .. "' WHERE id='" .. accountID .. "'")
 					minutes = "Unlimited"
 					setElementData(targetPlayer, "jailtimer", true, false)
 				else
-					mysql_query(handler, "UPDATE accounts SET adminjail='1', adminjail_time='" .. minutes .. "', adminjail_permanent='0', adminjail_by='" .. playerName .. "', adminjail_reason='" .. reason .. "' WHERE id='" .. tonumber(accountID) .. "'")
+					mysql_query(handler, "UPDATE accounts SET adminjail='1', adminjail_time='" .. minutes .. "', adminjail_permanent='0', adminjail_by='" .. playerName .. "', adminjail_reason='" .. mysql_escape_string(handler, reason) .. "' WHERE id='" .. tonumber(accountID) .. "'")
 					local theTimer = setTimer(timerUnjailPlayer, 60000, minutes, targetPlayer)
 					setElementData(targetPlayer, "jailserved", 0, false)
-					setElementData(targetPlayer, "jailtime", minutes, false)
 					setElementData(targetPlayer, "jailtimer", theTimer, false)
 				end
 				setElementData(targetPlayer, "adminjailed", true)
+				setElementData(targetPlayer, "jailreason", reason, false)
+				setElementData(targetPlayer, "jailtime", minutes, false)
+				setElementData(targetPlayer, "jailadmin", getPlayerName(thePlayer), false)
 				
 				outputChatBox("You jailed " .. targetPlayerNick .. " for " .. minutes .. " Minutes.", thePlayer, 255, 0, 0)
 				
@@ -1241,8 +1243,11 @@ function timerUnjailPlayer(jailedPlayer)
 		
 			if (timeLeft==0) then
 				mysql_query(handler, "UPDATE accounts SET adminjail_time='0', adminjail='0' WHERE id='" .. accountID .. "'")
-				removeElementData(jailedPlayer, "jailtimer", nil)
-				removeElementData(jailedPlayer, "adminjailed", true)
+				removeElementData(jailedPlayer, "jailtimer")
+				removeElementData(jailedPlayer, "adminjailed")
+				removeElementData(targetPlayer, "jailreason")
+				removeElementData(targetPlayer, "jailtime")
+				removeElementData(targetPlayer, "jailadmin")
 				setElementPosition(jailedPlayer, 1694.5098876953, 1449.6469726563, 10.763301849365)
 				setPedRotation(jailedPlayer, 274.48666381836)
 				setElementDimension(jailedPlayer, 0)
@@ -1280,8 +1285,11 @@ function unjailPlayer(thePlayer, commandName, who)
 				else
 					mysql_query(handler, "UPDATE accounts SET adminjail_time='0', adminjail='0' WHERE id='" .. accountID .. "'")
 					killTimer(jailed)
-					removeElementData(targetPlayer, "jailtimer", nil)
-					removeElementData(targetPlayer, "adminjailed", true)
+					removeElementData(targetPlayer, "jailtimer")
+					removeElementData(targetPlayer, "adminjailed")
+					removeElementData(targetPlayer, "jailreason")
+					removeElementData(targetPlayer, "jailtime")
+					removeElementData(targetPlayer, "jailadmin")
 					setElementPosition(targetPlayer, 1694.5098876953, 1449.6469726563, 10.763301849365)
 					setPedRotation(targetPlayer, 274.48666381836)
 					setElementDimension(targetPlayer, 0)
@@ -1302,6 +1310,28 @@ function unjailPlayer(thePlayer, commandName, who)
 	end
 end
 addCommandHandler("unjail", unjailPlayer, false, false)
+
+function jailedPlayers(thePlayer, commandName)
+	if (exports.global:isPlayerAdmin(thePlayer)) then
+		outputChatBox("~~~~~~~~~ Jailed ~~~~~~~~~", thePlayer, 255, 194, 15)
+		
+		local players = exports.pool:getPoolElementsByType("player")
+		local count = 0
+		for key, value in ipairs(players) do
+			if getElementData(value, "adminjailed") then
+				outputChatBox("[JAIL] " .. getPlayerName(value) .. ", jailed by " .. getElementData(value, "jailadmin") .. ", served " .. getElementData(value, "jailserved") .. " minutes, " .. getElementData(value,"jailtime") .. " minutes left", thePlayer, 255, 194, 15)
+				outputChatBox("[JAIL] Reason: " .. getElementData(value, "jailreason"), thePlayer, 255, 194, 15)
+				count = count + 1
+			end
+		end
+		
+		if count == 0 then
+			outputChatBox("There is noone jailed.", thePlayer, 255, 194, 15)
+		end
+	end
+end
+
+addCommandHandler("jailed", jailedPlayers, false, false)
 
 ----------------------------[GO TO PLAYER]---------------------------------------
 function gotoPlayer(thePlayer, commandName, target)

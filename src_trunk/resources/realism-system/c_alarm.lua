@@ -1,6 +1,6 @@
 alarmless = { [592]=true, [553]=true, [577]=true, [488]=true, [511]=true, [497]=true, [548]=true, [563]=true, [512]=true, [476]=true, [593]=true, [447]=true, [425]=true, [519]=true, [20]=true, [460]=true, [417]=true, [469]=true, [487]=true, [513]=true, [581]=true, [510]=true, [509]=true, [522]=true, [481]=true, [461]=true, [462]=true, [448]=true, [521]=true, [468]=true, [463]=true, [586]=true, [472]=true, [473]=true, [493]=true, [595]=true, [484]=true, [430]=true, [453]=true, [452]=true, [446]=true, [454]=true, [537]=true, [538]=true, [569]=true, [590]=true, [441]=true, [464]=true, [501]=true, [465]=true, [564]=true, [571]=true, [471]=true, [539]=true, [594]=true }
 local localPlayer = getLocalPlayer()
-
+local alarmtable = { [1] = {}, [2] = {} }
 function resStart(res)
 	if (res==getThisResource()) then
 		for key, value in ipairs(getElementsByType("vehicle")) do
@@ -19,9 +19,9 @@ function carAlarm()
 	local passenger3 = getVehicleOccupant(source, 3)
 	
 	if (isVehicleLocked(source)) and (not alarm) and not (alarmless[getElementModel(source)]) and (not driver and not passenger1 and not passenger2 and not passenger3) then
-		setTimer(doCarAlarm, 1000, 20, source)
+		alarmtable[1][source] = setTimer(doCarAlarm, 1000, 20, source)
 		setElementData(source, "alarm", 1)
-		setTimer(resetAlarm, 11000, 1, source)
+		alarmtable[2][source] = setTimer(resetAlarm, 11000, 1, source)
 	end
 end
 addEventHandler("onClientVehicleStartEnter", getRootElement(), carAlarm)
@@ -33,6 +33,14 @@ function resetAlarm(vehicle)
 end
 
 function doCarAlarm(vehicle)
+	if (isVehicleLocked(vehicle) == false) then
+		setElementData(vehicle, "alarm", nil)
+		killTimer(alarmtable[1][vehicle])
+		killTimer(alarmtable[2][vehicle])
+		alarmtable[2][vehicle] = nil
+		alarmtable[1][vehicle] = nil
+		return
+	end
 	local x, y, z = getElementPosition(vehicle)
 	local px, py, pz = getElementPosition(localPlayer)
 	

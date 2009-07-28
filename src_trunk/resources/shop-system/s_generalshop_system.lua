@@ -207,14 +207,14 @@ function clickStoreKeeper(ped)
 
 	local race = 1
 
+	local race, gender = -1, -1
 	if(shoptype == 5) then -- if its a clothes shop, we also need the players race
-		local username = getPlayerName(source)
-		local result = mysql_query(handler, "SELECT skincolor FROM characters WHERE charactername='" .. username .. "' LIMIT 1")
-		local race = tonumber(mysql_result(result, 1, 1))
-		
+		local result = mysql_query(handler, "SELECT gender,skincolor FROM characters WHERE charactername='" .. getPlayerName(source) .. "' LIMIT 1")
+		gender = tonumber(mysql_result(result,1,1))
+		race = tonumber(mysql_result(result,1,2))
 		mysql_free_result(result)
 	end
-	triggerClientEvent(source, "showGeneralshopUI", source, shoptype, race)
+	triggerClientEvent(source, "showGeneralshopUI", source, shoptype, race, gender)
 end
 addEvent("onClickStoreKeeper", true)
 addEventHandler("onClickStoreKeeper", getRootElement(), clickStoreKeeper)

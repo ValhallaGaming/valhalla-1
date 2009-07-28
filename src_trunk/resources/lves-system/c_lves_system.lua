@@ -90,16 +90,19 @@ function checkWeapons()
 	local removedWeapons
 	local count = 1
 	
-	local gunlicense = getElementData(getLocalPlayer(), "license.gun")
+	local gunlicense = tonumber(getElementData(getLocalPlayer(), "license.gun"))
+	local team = getPlayerTeam(getLocalPlayer())
+	local factiontype = getElementData(team, "type")
 	
 	for i = 0, 12 do
 		local weapon = getPedWeapon(getLocalPlayer(), i)
 		local ammo = getPedTotalAmmo(getLocalPlayer(), i)
-		local team = getPlayerTeam(getLocalPlayer())
-		local factiontype = getElementData(team, "type")
 		
 		if (weapon) and (ammo~=0) then
-			if (weapon>=30) and (weapon<=39) and not (gunlicense==1) and not (factiontype==2) then -- unlicensed weapon
+			-- takes away weapons if you do not have a gun license and aren't in a PD/fbi
+			-- takes away mp5/sniper/m4/ak if you aren't in PD/fbi
+			-- always takes away rocket launchers, flamethrowers and miniguns
+			if (((weapon >= 16 and weapon <= 40 and gunlicense == 0) or weapon == 29 or weapon == 30 or weapon ==31 or weapon == 34) and factiontype ~= 2) or (weapon >= 35 and weapon <= 38) then
 				if (removedWeapons==nil) then
 					removedWeapons = getWeaponNameFromID(weapon)
 				else
@@ -119,10 +122,6 @@ function checkWeapons()
 		end
 	end
 	
-	if (removedWeapons~=nil) then
-		triggerServerEvent("onDeathRemovePlayerWeapons", getLocalPlayer(), weapons, removedWeapons)
-	else
-		triggerServerEvent("onDeathRemovePlayerWeapons", getLocalPlayer(), weapons)
-	end
+	triggerServerEvent("onDeathRemovePlayerWeapons", getLocalPlayer(), weapons, removedWeapons)
 end
 addEventHandler("onClientPlayerWasted", getLocalPlayer(), checkWeapons)

@@ -57,7 +57,7 @@ function cVehicleInventory(button, state)
 				end
 				
 				-- WEAPONS
-				for i = 1, 12 do
+				for i = 0, 12 do
 					if (getPedWeapon(localPlayer, i)>0) then
 						local itemName = getWeaponNameFromID(getPedWeapon(localPlayer, i))
 						local row = guiGridListAddRow(gUserItems)

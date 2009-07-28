@@ -9,6 +9,7 @@ function respawnTruck(vehicle)
 	respawnVehicle(vehicle)
 	setElementData(vehicle, "locked", 0, false)
 	setVehicleLocked(vehicle, false)
+	setElementVelocity(vehicle,0,0,0)
 end
 addEvent("respawnTruck", true)
 addEventHandler("respawnTruck", getRootElement(), respawnTruck)

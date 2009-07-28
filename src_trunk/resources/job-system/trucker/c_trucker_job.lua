@@ -172,3 +172,6 @@ function endTruckJob(theElement)
 		end
 	end
 end
+
+addEvent("restoreTruckerJob", true)
+addEventHandler("restoreTruckerJob", getRootElement(),displayTruckerJob)

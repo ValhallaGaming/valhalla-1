@@ -473,6 +473,11 @@ function spawnCharacter(charname)
 			setElementData(source, "restrainedBy", restrainedby, false)
 		end
 		
+		if job == 1 then
+			-- trucker job fix
+			triggerClientEvent(source,"restoreTruckerJob",source)
+		end
+		
 		-- Let's give them their weapons
 		if (tostring(weapons)~=tostring(mysql_null())) and (tostring(ammo)~=tostring(mysql_null())) then -- if player has weapons saved
 			for i=0, 12 do

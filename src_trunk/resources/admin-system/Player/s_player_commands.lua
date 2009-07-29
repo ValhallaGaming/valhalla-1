@@ -1884,3 +1884,16 @@ function removeReconning()
 	end
 end
 addEventHandler("onPlayerQuit", getRootElement(), removeReconning)
+
+-- FREECAM
+function toggleFreecam(thePlayer)
+    local enabled = exports.freecam:isPlayerFreecamEnabled (thePlayer)
+    local x, y, z = getCameraMatrix (thePlayer)
+    
+    if (enabled) then
+        exports.freecam:setPlayerFreecamDisabled (thePlayer, false)
+    else
+        exports.freecam:setPlayerFreecamEnabled (thePlayer, x, y, z, false)
+    end
+end
+addCommandHandler("freecam", toggleFreecam)

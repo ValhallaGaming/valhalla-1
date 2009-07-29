@@ -98,10 +98,12 @@ function setTag(commandName, newTag)
 			local theTeam = getPlayerTeam(getLocalPlayer())
 			local teamName = getTeamName(theTeam)
 			
-			if (teamName~="Tatum Creek Crips") and (newTag==3) then
+			if (teamName~="Tatum Creek Crips") and (newTag==3) then -- Tatum Creek Crips
 				outputChatBox("You are not a member of Tatum Creek Crips", 255, 0, 0)
-			elseif (teamName~="Hampton OGs") and (newTag==5) then
+			elseif (teamName~="Hampton OGs") and (newTag==5) then -- Hampton OGs
 				outputChatBox("You are not a member of Hampton OGs", 255, 0, 0)
+			elseif (teamName~="Pomerelle St Vice Lords") and (newTag==6) then -- Pomerelle St Vice Lords
+				outputChatBox("You are not a member of Pomerelle St Vice Lords", 255, 0, 0)
 			else
 				setElementData(getLocalPlayer(), "tag", true, newTag)
 				outputChatBox("Tag changed to #" .. newTag .. ".", 0, 255, 0)

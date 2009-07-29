@@ -26,7 +26,7 @@
 	<file src="search.png" />
 	
 	<script src="teleport.lua" type="server" />
-	<map src="lounge.map" />
+	<script src="lounge.lua" type="client" />
 	
 	<script src="c_admin_help.lua" type="client" />
 	

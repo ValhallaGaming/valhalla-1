@@ -530,6 +530,19 @@ function spawnCharacter(charname)
 			triggerClientEvent(source, "showCityGuide", source)
 		end
 		
+		-- Weapon stats
+		setPedStat(source, 69, 999)
+		setPedStat(source, 70, 999)
+		setPedStat(source, 71, 999)
+		setPedStat(source, 72, 999)
+		setPedStat(source, 73, 999)
+		setPedStat(source, 74, 999)
+		setPedStat(source, 75, 999)
+		setPedStat(source, 76, 999)
+		setPedStat(source, 77, 999)
+		setPedStat(source, 78, 999)
+		setPedStat(source, 79, 999)
+		
 		-- MTA BETA ONLY
 		--setTimer(giveBetaAchievement, 10000, 1, source)
 		
@@ -1088,16 +1101,6 @@ function spawnClothes(name)
 	
 		setPedStat(source, 23, muscle)
 		setPedStat(source, 21, fat)
-		
-		-- weapon skill fixes
-		setPedStat(source, 77, 700)
-		setPedStat(source, 78, 700)
-		setPedStat(source, 79, 700)
-		setPedStat(source, 71, 700)
-		setPedStat(source, 70, 700)
-		setPedStat(source, 72, 700)
-		setPedStat(source, 74, 700)
-		setPedStat(source, 76, 700)
 		
 		-- No more infinite stamina =]
 		if (fat>500) then -- Fat people = 70% less stamina

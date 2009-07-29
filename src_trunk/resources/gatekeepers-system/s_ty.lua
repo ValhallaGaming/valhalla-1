@@ -173,7 +173,13 @@ function tyStatement8_S()
 	end
 	destroyElement (chatSphere)
 	
+	setElementPosition(source, 1409, 2004, 9.8)
+	setElementDimension(source, 0)
+	setElementInterior(source, 0)
+	
 	resetTyConvoStateDelayed()
+	
+	mysql_query(handler, "UPDATE characters SET tyrese='1' WHERE charactername='" .. mysql_escape_string(handler, getPlayerName(source)) .. "' LIMIT 1")
 	
 end
 addEvent( "tyStatement8ServerEvent", true )

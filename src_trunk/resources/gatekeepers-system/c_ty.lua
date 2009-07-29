@@ -138,8 +138,6 @@ end
 -- Statement 8
 function tyStatement8( )
 	
-	triggerServerEvent( "tyStatement8ServerEvent", getLocalPlayer() )
-	
 	-- Destroy the old options
 	destroyElement ( optionOne )
 	destroyElement ( optionTwo )
@@ -151,7 +149,13 @@ function tyStatement8( )
 	
 	-- Create the new options
 	optionOne = guiCreateButton( 0.05, 0.35, 0.9, 0.2, "We gonna make that paper now.", true, wTy )
-	addEventHandler( "onClientGUIClick", optionOne, tyStatement10, false )
+	addEventHandler( "onClientGUIClick", optionOne, function(button, state)
+		if(button == "left" and state == "up") then
+			
+			triggerServerEvent( "tyStatement8ServerEvent", getLocalPlayer())
+			
+		end
+	end, false)
 	
 end
 

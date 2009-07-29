@@ -5,6 +5,7 @@ local tyColSphere = createColSphere( 1409, 2004, 10.8, 1)
 exports.pool:allocateElement(tyColSphere)
 
 setPedRotation(tyrese, 120)
+setPedFrozen(tyrese, true)
 setElementInterior( tyrese, 10 )
 setElementDimension( tyrese, 363 )
 setElementData (tyrese, "activeConvo",  0) -- Set the convo state to 0 so people can start talking to him.

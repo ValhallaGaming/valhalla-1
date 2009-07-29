@@ -61,7 +61,7 @@ function reportInfo(thePlayer, commandName, id)
 				outputChatBox(" [-ADMIN REPORT-] (" .. playerID .. ") " .. tostring(getPlayerName(reporter)) .. " reported " .. tostring(getPlayerName(reported)) .. " at " .. timestring .. ".", thePlayer, 0, 255, 255)
 				
 				local reason1 = reason:sub( 0, 70 )
-				local reason2 = reason:sub( 70 )
+				local reason2 = reason:sub( 71 )
 				outputChatBox(" [-ADMIN REPORT-] Reason: " .. reason1, thePlayer, 0, 255, 255)
 				if reason2 then
 					outputChatBox(" [-ADMIN REPORT-] " .. reason2, thePlayer, 0, 255, 255)
@@ -167,7 +167,7 @@ function handleReport(reportedPlayer, reportedReason)
 		if (adminduty==1) then
 			outputChatBox(" [-ADMIN REPORT-] (" .. playerID .. ") " .. tostring(getPlayerName(source)) .. " reported (" .. reportedID .. ") " .. tostring(getPlayerName(reportedPlayer)) .. " at " .. timestring .. ".", value, 0, 255, 255)
 			local reason1 = reportedReason:sub( 0, 70 )
-			local reason2 = reportedReason:sub( 70 )
+			local reason2 = reportedReason:sub( 71 )
 			outputChatBox(" [-ADMIN REPORT-] Reason: " .. reason1, value, 0, 255, 255)
 			if reason2 then
 				outputChatBox(" [-ADMIN REPORT-] " .. reason2, value, 0, 255, 255)

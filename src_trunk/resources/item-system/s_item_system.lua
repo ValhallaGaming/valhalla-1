@@ -454,9 +454,9 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 					exports.global:sendLocalMeAction(source, "Places a safe.")
 					exports.global:takePlayerItem(source, itemID, itemValue)
 				elseif (retval == 2 and dimension == 0) then
-					outputChatBox("You are not inside an interior.", 255, 0, 0)
+					outputChatBox("You are not inside an interior.", source, 255, 0, 0)
 				elseif (retval == 2) then
-					outputChatBox("You need to own the interior you are placing the safe in!", 255, 0, 0)
+					outputChatBox("You need to own the interior you are placing the safe in!", source, 255, 0, 0)
 				end
 		else
 			outputChatBox("Error 800001 - Report on http://bugs.valhallagaming.net", source, 255, 0, 0)

@@ -51,12 +51,23 @@ function resetBusJob()
 	if (isElement(blip)) then
 		destroyElement(blip)
 		removeEventHandler("onClientVehicleEnter", getRootElement(), startBusJob)
+		blip = nil
+	end
+	
+	if isElement(busMarker) then
+		destroyElement(busMarker)
+		busMarker = nil
+	end
+	
+	if isElement(busBlip) then
+		destroyElement(busBlip)
+		busBlip = nil
 	end
 end
 
 function displayBusJob()
 	blip = createBlip(1902.5610351563, 2319.673828125, 11.024569511414, 0, 4, 255, 127, 255)
-	outputChatBox("#FF9933Approach the #FF66CCblip#FF9933 on your radar and enter the bus/coach. Use /startbus to start a bus route.", 255, 194, 15, true)
+	outputChatBox("#FF9933Approach the #FF66CCblip#FF9933 on your radar and enter the bus/coach.", 255, 194, 15, true)
 end
 
 function startBusJob(thePlayer)
@@ -202,8 +213,10 @@ function enterBus ( thePlayer, seat, jacked )
 					triggerServerEvent("payBusFare", getLocalPlayer(), thePlayer)
 					outputChatBox("You have paid $5 to ride the bus", 0, 255, 0)
 				end
+			elseif not busMarker then
+				outputChatBox("#FF9933Use /startbus to begin the bus route.", 255, 0, 0, true)
 			end
 		end
 	end
 end
-addEventHandler("onClientVehicleStartEnter", getRootElement(), enterBus)
+addEventHandler("onClientVehicleEnter", getRootElement(), enterBus)

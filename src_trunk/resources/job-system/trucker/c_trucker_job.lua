@@ -60,7 +60,6 @@ function displayTruckerJob(notext)
 	if (jobstate==0) then
 		jobstate = 1
 		blip = createBlip(2821.806640625, 954.4755859375, 10.75, 51, 2, 255, 127, 255)
-		setElementData(getLocalPlayer(),"job",1)
 		
 		if not notext then		
 			outputChatBox("#FF9933Approach the #CCCCCCblip#FF9933 on your radar and enter the van to start your job.", 255, 194, 15, true)

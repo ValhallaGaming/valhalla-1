@@ -590,9 +590,8 @@ function vehicleRespawn(exploded)
 	setElementDimension(source, dimension)
 	setElementInterior(source, interior)
 	
-	if faction == -1 and owner ~= -2 then
-		setVehicleLocked(source, true)
-	else
+	-- unlock civ & faction vehicles
+	if faction ~= -1 or owner == -2 then
 		setVehicleLocked(source, false)
 	end
 end

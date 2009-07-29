@@ -150,19 +150,21 @@ function nextDeliveryCheckpoint()
 	end
 end
 
-function endDelivery()
-	local vehicle = getPedOccupiedVehicle(getLocalPlayer())
-	local id = getElementModel(vehicle) or 0
-	if not vehicle or not (truck[id]) then
-		outputChatBox("#FF9933You must be in a van to complete deliverys.", 255, 0, 0, true ) -- Wrong car type.
-	else
-		local wage = 50 * routescompleted
-		outputChatBox("You earned $" .. wage .. " on your trucking runs.", 255, 194, 15)
-		triggerServerEvent("giveTruckingMoney", getLocalPlayer(), wage)
-		
-		triggerServerEvent("respawnTruck", getLocalPlayer(), vehicle)
-		resetTruckerJob()
-		displayTruckerJob(true)
+function endDelivery(thePlayer)
+	if thePlayer == getLocalPlayer() then
+		local vehicle = getPedOccupiedVehicle(getLocalPlayer())
+		local id = getElementModel(vehicle) or 0
+		if not vehicle or not (truck[id]) then
+			outputChatBox("#FF9933You must be in a van to complete deliverys.", 255, 0, 0, true ) -- Wrong car type.
+		else
+			local wage = 50 * routescompleted
+			outputChatBox("You earned $" .. wage .. " on your trucking runs.", 255, 194, 15)
+			triggerServerEvent("giveTruckingMoney", getLocalPlayer(), wage)
+			
+			triggerServerEvent("respawnTruck", getLocalPlayer(), vehicle)
+			resetTruckerJob()
+			displayTruckerJob(true)
+		end
 	end
 end
 

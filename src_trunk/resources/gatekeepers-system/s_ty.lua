@@ -314,7 +314,7 @@ function giveTyItems( itemNumber )
 	else
 		exports.global:givePlayerItem(source, itemID, 1)
 		exports.global:takePlayerSafeMoney(source, cost)
-		outputChatBox("You have bought a drug item from Ty for $"..cost..".", thePlayer)
+		outputChatBox("You have bought a drug item from Ty for $"..cost..".", source)
 	end
 end
 addEvent("tyGiveItem", true)

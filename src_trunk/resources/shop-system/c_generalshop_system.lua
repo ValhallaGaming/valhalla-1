@@ -1,4 +1,4 @@
-wGeneralShop, iClothesPreview  = nil
+wGeneralshop, iClothesPreview  = nil
 
 items = nil
 
@@ -30,7 +30,7 @@ addEventHandler("onClientResourceStart", getResourceRootElement(getThisResource(
 
 
 function showGeneralshopUI(shop_type, race, gender)
-	if not (wGeneralShop) then
+	if (wGeneralshop==nil) then
 		local screenwidth, screenheight = guiGetScreenSize ()
 		
 		local Width = 500

@@ -63,7 +63,7 @@ function reportInfo(thePlayer, commandName, id)
 				local reason1 = reason:sub( 0, 70 )
 				local reason2 = reason:sub( 71 )
 				outputChatBox(" [-ADMIN REPORT-] Reason: " .. reason1, thePlayer, 0, 255, 255)
-				if reason2 then
+				if reason2 and #reason2 > 0 then
 					outputChatBox(" [-ADMIN REPORT-] " .. reason2, thePlayer, 0, 255, 255)
 				end
 				
@@ -169,7 +169,7 @@ function handleReport(reportedPlayer, reportedReason)
 			local reason1 = reportedReason:sub( 0, 70 )
 			local reason2 = reportedReason:sub( 71 )
 			outputChatBox(" [-ADMIN REPORT-] Reason: " .. reason1, value, 0, 255, 255)
-			if reason2 then
+			if reason2 and #reason2 > 0 then
 				outputChatBox(" [-ADMIN REPORT-] " .. reason2, value, 0, 255, 255)
 			end
 			outputChatBox(" [-ADMIN REPORT-] Type /ar " .. slot .. " to accept this report.", value, 0, 255, 255)

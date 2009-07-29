@@ -1327,11 +1327,12 @@ end
 addCommandHandler("roadmap", showRoadmap)
 addCommandHandler("progress", showRoadmap)
 
-function displayRoadmap(thePlayer, version1, percent1, changes1, version2, percent2, changes2, mtaversion, mtapercent, mtachanges)
+function displayRoadmap(thePlayer, version1, percent1, changes1, version2, percent2, changes2, version3, percent3, changes3, mtaversion, mtapercent, mtachanges)
 	if (thePlayer~="ERROR") then
 		outputChatBox("~~~~~~~~~~~~~~~~~~ Progress ~~~~~~~~~~~~~~~~~~", thePlayer, 255, 194, 15)
 		outputChatBox("vG " .. version1 .. ": " .. percent1 .. ". Changes: " .. changes1 .. ".", thePlayer, 255, 194, 15)
 		outputChatBox("vG " .. version2 .. ": " .. percent2 .. ". Changes: " .. changes2 .. ".", thePlayer, 255, 194, 15)
+		outputChatBox("vG " .. version3 .. ": " .. percent3 .. ". Changes: " .. changes3 .. ".", thePlayer, 255, 194, 15)
 		outputChatBox("MultiTheftAuto " .. mtaversion .. ": " .. mtapercent .. ". Changes: " .. mtachanges .. ".", thePlayer, 255, 194, 15)
 	end
 end

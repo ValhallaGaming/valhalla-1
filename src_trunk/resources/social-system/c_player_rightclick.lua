@@ -172,6 +172,9 @@ function cfriskPlayer(button, state, x, y)
 			if (restrained~=1) then
 				outputChatBox("This player is not restrained.", 255, 0, 0)
 				hidePlayerMenu()
+			elseif getElementHealth(getLocalPlayer()) < 50 then
+				outputChatBox("You need at least half health to frisk someone.", 255, 0, 0)
+				hidePlayerMenu()
 			else
 				addEventHandler("onClientPlayerQuit", player, hidePlayerMenu)
 				local playerName = string.gsub(getPlayerName(player), "_", " ")
@@ -223,7 +226,10 @@ function takePlayerItem(button, state, x, y)
 	if (button=="left") then
 		local row, col = guiGridListGetSelectedItem(gFriskItems)
 		
-		if (row<0) then
+		if getElementHealth(getLocalPlayer()) < 50 then
+			outputChatBox("You need at least half health to frisk someone.", 255, 0, 0)
+			hidePlayerMenu()
+		elseif (row<0) then
 			outputChatBox("Please select an item first.", 255, 0, 0)
 		else
 			local items = getElementData(player, "items")
@@ -312,3 +318,11 @@ function hidePlayerMenu()
 	
 	showCursor(false)
 end
+
+function checkMenuWasted()
+	if source == getLocalPlayer() or source == player then
+		hidePlayerMenu()
+	end
+end
+
+addEventHandler("onClientPlayerWasted", getRootElement(), checkMenuWasted)

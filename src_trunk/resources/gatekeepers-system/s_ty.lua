@@ -307,7 +307,7 @@ function giveTyItems( itemNumber )
 		setElementDimension(source, 0)
 		setElementInterior(source, 0)
 		
-		triggerClientEvent(source, "closeTyWinodw", getRootElement())
+		triggerClientEvent(source, "closeTyWindow", getRootElement())
 		
 		resetTyConvoStateDelayed()
 	

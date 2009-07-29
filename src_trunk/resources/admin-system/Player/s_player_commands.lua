@@ -1871,3 +1871,16 @@ function interiorChanged(thePickup)
 end
 addEventHandler("onPlayerInteriorEnter", getRootElement(), interiorChanged)
 addEventHandler("onPlayerInteriorExit", getRootElement(), interiorChanged)
+
+-- stop recon on quit of the player
+function removeReconning()
+	for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
+		local cameraTarget = getCameraTarget(value)
+		if (cameraTarget) then
+			if (cameraTarget==source) then
+				executeCommandHandler("recon", source)
+			end
+		end
+	end
+end
+addEventHandler("onPlayerQuit", getRootElement(), removeReconning)

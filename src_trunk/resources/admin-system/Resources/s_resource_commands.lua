@@ -53,3 +53,16 @@ function startSingleResource(thePlayer, commandName, resourceName)
 	end
 end
 addCommandHandler("startres", startSingleResource)
+
+function restartGateKeepers(thePlayer, commandName)
+	if exports.global:isPlayerAdmin(thePlayer) then
+		local theResource = getResourceFromName("gatekeepers-system")
+		if theResource then
+			stopResource(theResource)
+			startResource(theResource)
+			outputChatBox("Gatekeepers were restarted.", thePlayer, 0, 255, 0)
+			exports.global:sendMessageToAdmins("AdmScript: " .. getPlayerName(thePlayer) .. " restarted the gatekeepers.")
+		end
+	end
+end
+addCommandHandler("restartgatekeepers", restartGateKeepers)

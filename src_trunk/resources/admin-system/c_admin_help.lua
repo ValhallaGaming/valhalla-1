@@ -86,7 +86,9 @@ function adminhelp (sourcePlayer, commandName)
 					{ "/getpos", "/getpos", "outputs your current position, interior and dimension" },
 					{ "/x", "/x [value]", "increases your x-coordinate by the given value" },
 					{ "/y", "/z [value]", "increases your y-coordinate by the given value" },
-					{ "/z", "/y [value]", "increases your z-coordinate by the given value" }
+					{ "/z", "/y [value]", "increases your z-coordinate by the given value" },
+					
+					{ "/restartgatekeepers", "/restartgatekeepers", "restarts the gatekeepers resource" }
 				},
 				-- level 2: Admin
 				{

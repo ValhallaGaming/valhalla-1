@@ -80,8 +80,8 @@ function respawnPlayer(thePlayer)
 			local ESMoney = math.ceil((1-tax)*cost)
 			local GOVMoney = math.ceil(tax*cost)
 			
-			local theTeamES = getTeamFromName("Las Venturas Emergency Services")
-			local theTeamGov = getTeamFromName("Government of Las Venturas")
+			local theTeamES = getTeamFromName("Los Santos Emergency Services")
+			local theTeamGov = getTeamFromName("Government of Los Santos")
 			
 			setElementData(theTeamES, "money", (currentESBalance+ESMoney))
 			setElementData(theTeamGov, "money", (currentGOVBalance+GOVMoney+money))
@@ -105,7 +105,7 @@ function respawnPlayer(thePlayer)
 			
 			setCameraInterior(thePlayer, 0)
 			
-			outputChatBox("You have recieved treatment from the Las Venturas Emergency Services. Cost: " .. cost .. "$", thePlayer, 255, 255, 0)
+			outputChatBox("You have recieved treatment from the Los Santos Emergency Services. Cost: " .. cost .. "$", thePlayer, 255, 255, 0)
 			
 			local theSkin = getPedSkin(thePlayer)
 			
@@ -117,7 +117,7 @@ function respawnPlayer(thePlayer)
 			setPedStat(thePlayer, 21, fat)
 			setPedStat(thePlayer, 23, muscle)
 
-			spawnPlayer(thePlayer, 1607.3410644531, 1821.9310302734, 10.8203125, 358.86193847656, theSkin, 0, 0, theTeam)
+			spawnPlayer(thePlayer, 1183.291015625, -1323.033203125, 13.577140808105, 267.4580078125, theSkin, 0, 0, theTeam)
 			
 			fadeCamera(thePlayer, true, 2)
 		end
@@ -134,9 +134,9 @@ addEventHandler("onDeathRemovePlayerWeapons", getRootElement(), deathRemoveWeapo
 function giveGunsBack(thePlayer, weapons, removedWeapons)
 	if (removedWeapons~=nil) then
 		if tonumber(getElementData(thePlayer, "license.gun")) == 0 and getElementData(getPlayerTeam(thePlayer),"type") ~= 2 then
-		outputChatBox("LVES Employee: We have taken away weapons which you did not have a license for. (" .. removedWeapons .. ").", thePlayer, 255, 194, 14)
+		outputChatBox("LSES Employee: We have taken away weapons which you did not have a license for. (" .. removedWeapons .. ").", thePlayer, 255, 194, 14)
 		else
-			outputChatBox("LVES Employee: We have taken away weapons which you are not allowed to carry. (" .. removedWeapons .. ").", thePlayer, 255, 194, 14)
+			outputChatBox("LSES Employee: We have taken away weapons which you are not allowed to carry. (" .. removedWeapons .. ").", thePlayer, 255, 194, 14)
 		end
 	end
 

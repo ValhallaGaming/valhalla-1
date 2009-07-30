@@ -1339,7 +1339,8 @@ function sellProperty(thePlayer, commandName)
 				mysql_free_result(query)
 				
 				if (tonumber(owner)==getElementData(thePlayer, "dbid")) then
-					local money = math.ceil((cost/3)*2)
+					--local money = math.ceil((cost/3)*2)
+					local money = math.ceil(cost)
 					exports.global:givePlayerSafeMoney(thePlayer, money)
 					outputChatBox("You sold your property for " .. money .. "$.", thePlayer, 0, 255, 0)
 					if (safeTable[dbid] ~= nil) then

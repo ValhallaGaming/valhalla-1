@@ -3,11 +3,13 @@ exports.pool:allocateElement(tyrese)
 
 local tyColSphere = createColSphere( 1409, 2004, 10.8, 1)
 exports.pool:allocateElement(tyColSphere)
+setElementInterior( tyrese, 15 )
+setElementDimension( tyrese, 1160 )
 
 setPedRotation(tyrese, 120)
 setPedFrozen(tyrese, true)
 setElementInterior( tyrese, 10 )
-setElementDimension( tyrese, 363 )
+setElementDimension( tyrese, 1165 )
 setElementData (tyrese, "activeConvo",  0) -- Set the convo state to 0 so people can start talking to him.
 setElementData(tyrese, "name", "Ty")
 setElementData(tyrese, "talk", true)
@@ -108,7 +110,7 @@ function tyStatement5_S()
 	destroyElement (chatSphere)
 	
 	setElementPosition(source, 2260, -1136, 1049.6)
-	setElementDimension(source, 363)
+	setElementDimension(source, 1165)
 	setElementInterior(source, 10)
 	
 	-- Output the text from the last option to all player in radius
@@ -150,9 +152,9 @@ function tyStatement7_S()
 	end
 	destroyElement (chatSphere)
 	
-	setElementPosition(source, 1409, 2004, 9.8)
-	setElementDimension(source, 0)
-	setElementInterior(source, 0)
+	setElementPosition(source, 2242.52, -1170.7, 1028.79)
+	setElementDimension(source, 1160)
+	setElementInterior(source, 15)
 	
 	resetTyConvoStateDelayed()
 	
@@ -174,9 +176,9 @@ function tyStatement8_S()
 	end
 	destroyElement (chatSphere)
 	
-	setElementPosition(source, 1409, 2004, 9.8)
-	setElementDimension(source, 0)
-	setElementInterior(source, 0)
+	setElementPosition(source, 2242.52, -1170.7, 1028.79)
+	setElementDimension(source, 1160)
+	setElementInterior(source, 15)
 	
 	resetTyConvoStateDelayed()
 	
@@ -218,9 +220,9 @@ function tyStatement10_S()
 	end
 	destroyElement (chatSphere)
 	
-	setElementPosition(source, 1409, 2004, 9.8)
-	setElementDimension(source, 0)
-	setElementInterior(source, 0)
+	setElementPosition(source, 2242.52, -1170.7, 1028.79)
+	setElementDimension(source, 1160)
+	setElementInterior(source, 15)
 	
 	resetTyConvoStateDelayed()
 	
@@ -244,9 +246,9 @@ function tyStatement11_S()
 	end
 	destroyElement (chatSphere)
 	
-	setElementPosition(source, 1409, 2004, 9.8)
-	setElementDimension(source, 0)
-	setElementInterior(source, 0)
+	setElementPosition(source, 2242.52, -1170.7, 1028.79)
+	setElementDimension(source, 1160)
+	setElementInterior(source, 15)
 	
 	resetTyConvoStateDelayed()
 	
@@ -270,7 +272,7 @@ function tyFriendStatement2_S()
 	destroyElement (chatSphere)
 	
 	setElementPosition(source, 2260, -1136, 1049.6)
-	setElementDimension(source, 363)
+	setElementDimension(source, 1165)
 	setElementInterior(source, 10)
 	
 	outputChatBox("Ty says: So what you looking for this time?", source, 255, 255, 255)
@@ -310,9 +312,9 @@ function giveTyItems( itemNumber )
 		
 		destroyElement (chatSphere)
 		
-		setElementPosition(source, 1409, 2004, 9.8)
-		setElementDimension(source, 0)
-		setElementInterior(source, 0)
+		setElementPosition(source, 2242.52, -1170.7, 1028.79)
+		setElementDimension(source, 1160)
+		setElementInterior(source, 15)
 		
 		triggerClientEvent(source, "closeTyWindow", getRootElement())
 		
@@ -340,9 +342,9 @@ function tyClose_S()
 		outputChatBox("Ty says: Peace, homie.", player, 255, 255, 255)
 	end
 	
-	setElementPosition(source, 1409, 2004, 9.8)
-	setElementDimension(source, 0)
-	setElementInterior(source, 0)
+	setElementPosition(source, 2242.52, -1170.7, 1028.79)
+	setElementDimension(source, 1160)
+	setElementInterior(source, 15)
 	
 	resetTyConvoStateDelayed()
 end

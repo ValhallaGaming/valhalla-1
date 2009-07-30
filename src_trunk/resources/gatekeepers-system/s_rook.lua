@@ -1,7 +1,7 @@
-rook = createPed (21, 2478.834960937, 1273.044921875, 10.8125)
+rook = createPed (21, 1976.51, -1155.109, 19.9)
 exports.pool:allocateElement(rook)
 
-setPedRotation(rook, 275)
+setPedRotation(rook, 180)
 setPedFrozen(rook, true)
 setElementData (rook, "activeConvo",  0) -- Set the convo state to 0 so people can start talking to him.
 setElementData(rook, "name", "Rook")

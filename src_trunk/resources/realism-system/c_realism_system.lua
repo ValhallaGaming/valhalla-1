@@ -10,11 +10,11 @@ function realisticWeaponSounds(weapon)
 end
 addEventHandler("onClientPlayerWeaponFire", getRootElement(), realisticWeaponSounds)
 
-------/////////////////////// Vice strippers ///////////////////////------
+------/////////////////////// Pig Pen Strippers ///////////////////////------
 -- Stripper Isla View
 local islaView = createPed (152, 1216.30, -6.45, 1000.32)
 setElementInterior (islaView, 2)
-setElementDimension (islaView, 294)
+setElementDimension (islaView, 1197)
 setPedAnimation ( islaView, "STRIP", "STR_C1", -1, true, false, false)
 local islaDanceNumber = 1
 
@@ -37,7 +37,7 @@ islaTimer = setTimer ( islaDance, 15000, 0)
 local angelRain = createPed (257, 1208.12, -6.05, 1000.32)
 setPedAnimation ( angelRain, "STRIP", "STR_C2", -1, true, false, false)
 setElementInterior (angelRain, 2)
-setElementDimension (angelRain, 294)
+setElementDimension (angelRain, 1197)
 local angelDanceNumber = 1
 
 -- Angel Dance Cycle

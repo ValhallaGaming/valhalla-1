@@ -3,7 +3,7 @@ exports.pool:allocateElement(huntersCar)
 setVehicleLocked(huntersCar, true)
 setVehicleFrozen(huntersCar, true)
 setVehicleDamageProof(huntersCar, true)
-setElementDimension(huntersCar, 1000)
+setElementDimension(huntersCar, 1001)
 setElementInterior(huntersCar, 2)
 
 hunter = createPed (250, 616.162109, -75.3720, 997.99)
@@ -12,7 +12,7 @@ setPedRotation (hunter, 300)
 setElementData(hunter, "rotation", getPedRotation(hunter), false)
 setPedFrozen(hunter, true)
 setElementInterior (hunter, 2)
-setElementDimension (hunter, 1000)
+setElementDimension (hunter, 1001)
 
 setPedAnimation(hunter, "CAR_CHAT", "car_talkm_loop", -1, true, false, true) -- Set the Peds Animation.
 setElementData (hunter, "activeConvo",  0) -- Set the convo state to 0 so people can start talking to him.
@@ -21,7 +21,7 @@ setElementData(hunter, "talk", true)
 
 local hunterBlockGarage = createObject ( 8171, 608.9248, -75.0812, 1000.9953, 0, 270 )
 exports.pool:allocateElement(hunterBlockGarage)
-setElementDimension(hunterBlockGarage, 1000)
+setElementDimension(hunterBlockGarage, 1001)
 setElementInterior(hunterBlockGarage, 2)
 
 function hunterIntro () -- When player enters the colSphere create GUI with intro output to all local players as local chat.	

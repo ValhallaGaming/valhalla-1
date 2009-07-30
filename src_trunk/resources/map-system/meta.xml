@@ -1,19 +1,13 @@
 <meta>
-	<script src="2nd Precinct.lua" type="client"/>
 	<script src="Bank Int.lua" type="client"/>
 	<script src="Bassline_Studios.lua" type="client"/>
 	<script src="Blackfield Chapel Int.lua" type="client"/>
-	<script src="china.lua" type="client"/>
-	<script src="Creek Ghetto.lua" type="client"/>
 	<script src="Dragon Lady Strip Club.lua" type="client"/>
-	<script src="TatumStreetHoodification.lua" type="client"/>
 	<script src="FBI Field Office.lua" type="client"/>
-	<script src="fishMarket.lua" type="client"/>
 	<script src="glenbrook_apartments_doors.lua" type="client"/>
 	<script src="LV Hospital.lua" type="client"/>
 	<script src="LVMPD.lua" type="client"/>
-	<script src="Las_Venturas_Transport.lua" type="client"/>
-	<script src="san.lua" type="client"/>
+	<script src="Phils Bistro Map.lua" type="client"/>
 	<script src="steak_floor.lua" type="client"/>
 	<script src="Vice_Back_Room.lua" type="client"/>
 	<script src="Yakuza HQ.lua" type="client"/>

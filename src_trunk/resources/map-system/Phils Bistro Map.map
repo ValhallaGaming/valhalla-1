@@ -1,13 +1,4 @@
 <map edf:definitions="editor_main">
 	-- Exit wall
-    <object id="object (des_ufoinn) (1)" dimension="727" interior="1" model="16146" posX="-800.06011962891" posY="494.3454284668" posZ="1366.2658691406" rotX="180" rotY="0" rotZ="0" />
-
-	-- Phil's Bistro WC door
-	<object id="object (Gen_doorEXT15) (2)" dimension="729" interior="10" model="1536" posX="364.1397" posY="-63.7950" posZ="1000.5078125" rotX="0" rotY="0" rotZ="180" />
-	
-	-- Phil's Bistro Office
-	<object id="object (ADAM_V_DOOR) (1)" dimension="728" interior="5" model="1569" posX="1225.7962646484" posY="-814.03784179688" posZ="1083.0078125" rotX="0" rotY="0" rotZ="0.63421630859375" />
-    <object id="object (wilshire7dr1_law) (1)" dimension="728" interior="5" model="16775" posX="1227.7248535156" posY="-814.08435058594" posZ="1086.3458251953" rotX="0" rotY="0" rotZ="0" />
-    <object id="object (wilshire7dr1_law) (2)" dimension="728" interior="5" model="16775" posX="1240.4530029297" posY="-813.33312988281" posZ="1087.0034179688" rotX="0" rotY="0" rotZ="90" />
-    <object id="object (mrk_seating1) (1)" dimension="728" interior="5" model="1723" posX="1236.4475097656" posY="-813.42932128906" posZ="1083.0078125" rotX="0" rotY="0" rotZ="180" />
+    <object id="object (des_ufoinn) (1)" dimension="1245" interior="1" model="16146" posX="-800.06011962891" posY="494.3454284668" posZ="1366.2658691406" rotX="180" rotY="0" rotZ="0" />
 </map>

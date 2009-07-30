@@ -53,7 +53,7 @@ function createStevie()
 	setPedRotation (stevie, 180)
 	setElementData(stevie, "rotation", getPedRotation(stevie), false)
 	setElementInterior (stevie, 1)
-	setElementDimension (stevie, 406)
+	setElementDimension (stevie, 1140)
 	setPedFrozen(stevie, true)
 	setPedAnimation(stevie, "FOOD", "FF_Sit_Loop",  -1, true, false, true) -- Set the Peds Animation.
 	setElementData(stevie, "name", "Steven Pullman")

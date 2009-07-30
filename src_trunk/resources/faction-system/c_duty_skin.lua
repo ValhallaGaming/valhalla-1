@@ -25,15 +25,15 @@ function changeDutySkin()
 		
 		skins[3] = { }
 		skins[3][1] = 281
-		skins[3][2] = 7
+		skins[3][2] = 10
 		
 		skins[4] = { }
 		skins[4][1] = 282
-		skins[4][2] = 2
+		skins[4][2] = 12
 		
 		skins[5] = { }
 		skins[5][1] = 283
-		skins[5][2] = 14
+		skins[5][2] = 15
 		
 		skins[6] = { }
 		skins[6][1] = 284
@@ -41,7 +41,7 @@ function changeDutySkin()
 		
 		skins[7] = { }
 		skins[7][1] = 288
-		skins[7][2] = 14
+		skins[7][2] = 13
 		skincount = 7
 	elseif (factionid==2) then
 		team = 2

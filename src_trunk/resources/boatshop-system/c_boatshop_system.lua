@@ -39,7 +39,7 @@ function showCarshopUI()
 	addEventHandler("onClientGUIClick", bClose, hideCarshopUI, false)
 	addEventHandler("onClientGUIClick", bBuy, buyCar, false)
 	
-	car = createVehicle(473, -2412.396484375, 2235.3625488281, -0.55000001192093, 0, 0, 270)
+	car = createVehicle(473, 721.080078125, -1700.4033203125, -0.55000001192093, 0, 0, 180)
 	setVehicleColor(car, 0, 0, 0, 0)
 	setVehicleEngineState(car, true)
 	
@@ -66,7 +66,7 @@ function showCarshopUI()
 	addEventHandler("onClientGUIScroll", sCol1, updateColors)
 	addEventHandler("onClientGUIScroll", sCol2, updateColors)
 	
-	setCameraMatrix(-2412.396484375, 2260.0166015625, 8.55000001192093, -2412.396484375, 2235.3625488281, -0.55000001192093)
+	setCameraMatrix(714.5234375, -1700.37890625, 20.4296875, 721.080078125, -1700.4033203125, -0.55000001192093)
 	
 	guiSetInputEnabled(true)
 	

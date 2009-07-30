@@ -26,9 +26,9 @@ addEventHandler("onResourceStop", getResourceRootElement(getThisResource()), clo
 -- //			MYSQL END			 //
 -- ////////////////////////////////////
 
-carshopPickup = createPickup(-2433.3547363281, 2313.8015136719, 4.984375, 3, 1239)
+carshopPickup = createPickup(715.35546875, -1705.5791015625, 2.4296875, 3, 1239)
 exports.pool.allocatePickup(carshopPickup)
-blip = createBlip(-2433.3547363281, 2313.8015136719, 4.984375, 9)
+blip = createBlip(715.35546875, -1705.5791015625, 2.4296875, 9)
 exports.pool:allocateElement(blip)
 
 function pickupUse(thePlayer)
@@ -93,12 +93,12 @@ end
 function makeCar(thePlayer, car, cost, id, col1, col2)
 	local rx = 0
 	local ry = 0
-	local rz = 270
-	local x, y, z = -2414.4711914063, 2304.0166015625, -0.55000001192093
+	local rz = 180
+	local x, y, z = 721.080078125, -1700.4033203125, -0.55000001192093
 
 	
-	setElementPosition(thePlayer, -2416.708984375, 2310.5837402344, 1.5305557250977)
-	setPedRotation(thePlayer, 188)
+	setElementPosition(thePlayer, 715.27734375, -1702.7392578125, 2.4296875)
+	setPedRotation(thePlayer, 270.99563598633)
 	
 	local username = getPlayerName(thePlayer)
 	local dbid = getElementData(thePlayer, "dbid")

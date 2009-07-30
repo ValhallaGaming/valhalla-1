@@ -4,14 +4,14 @@ vehicleIDs = { }
 vehicleCosts = { }
 vehicles = {"Pizza Boy", "Sanchez", "Quad", "Wayfarer", "Faggio", "BF-400", "FCR-900", "PCJ-600", "Manana", "Perenniel", "Moonbeam", "Clover", "Tampa", "NRG-500", "Greenwood", "Walton", "Glendale", "Primo", "Club", "Blista Compact", "Freeway", "Voodoo", "Stallion", "Bravura", "Intruder", "Previon", "Solair", "Oceanic", "Willard", "Picador", "Rancher", "Savanna", "Sabre", "Flash", "Pony", "Rumpo", "Majestic", "Bobcat", "Euros", "Hustler", "Regina", "Burrito", "Sadler", "Admiral", "Merit", "Stratum", "Nebula", "Sunrise", "Esperanto", "Yosemite", "Mesa", "Tahoma", "Cadrona", "Premier", "Hermes", "Uranus", "Buffalo", "Emperor", "Fortune", "Blade", "Sentinel", "Jester", "Virgo", "Tornado", "Buccaneer", "Remington", "Elegy", "Vincent", "Landstalker", "Alpha", "Elegant", "Stretch", "Washington", "Broadway", "Slamvan", "Patriot", "Sultan", "Phoenix", "Windsor", "Huntley", "Comet", "ZR-350", "Feltzer", "Banshee", "Super GT", "Turismo", "Bullet", "Cheetah", "Infernus", "Stafford" }
 
---vehicleIDs["Mountain Bike"] = 510
---vehicleCosts["Mountain Bike"] = 300
+vehicleIDs["Mountain Bike"] = 510
+vehicleCosts["Mountain Bike"] = 3000
 
---vehicleIDs["Bike"] = 509
---vehicleCosts["Bike"] = 300
+vehicleIDs["Bike"] = 509
+vehicleCosts["Bike"] = 3000
 
---vehicleIDs["BMX"] = 481
---vehicleCosts["BMX"] = 500
+vehicleIDs["BMX"] = 481
+vehicleCosts["BMX"] = 5000
 
 vehicleIDs["Pizza Boy"] = 448
 vehicleCosts["Pizza Boy"] = 2700
@@ -292,7 +292,7 @@ function showCarshopUI()
 	local x = scrWidth - width
 	local y = scrHeight/10
 	
-	wCars = guiCreateWindow(x, y, width, height, "Daker Autos: Purchase a Vehicle", false)
+	wCars = guiCreateWindow(x, y, width, height, "Grotti: Purchase a Vehicle", false)
 	guiWindowSetSizable(wCars, false)
 	
 	bClose = guiCreateButton(0.6, 0.85, 0.2, 0.1, "Close", true, wCars)
@@ -333,7 +333,7 @@ function showCarshopUI()
 	
 	guiSetInputEnabled(true)
 	
-	outputChatBox("Welcome to Daker Auto's.")
+	outputChatBox("Welcome to Grotti.")
 end
 addEvent("showCarshopUI", true)
 addEventHandler("showCarshopUI", getRootElement(), showCarshopUI)

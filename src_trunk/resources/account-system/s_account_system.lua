@@ -573,8 +573,8 @@ function timerUnjailPlayer(jailedPlayer)
 			if (timeLeft==0) then
 				mysql_query(handler, "UPDATE accounts SET adminjail_time='0', adminjail='0' WHERE id='" .. accountID .. "'")
 				removeElementData(jailedPlayer, "jailtimer")
-				setElementPosition(jailedPlayer, 1694.5098876953, 1449.6469726563, 10.763301849365)
-				setPedRotation(jailedPlayer, 274.48666381836)
+				setElementPosition(jailedPlayer, 1519.7177734375, -1697.8154296875, 13.546875)
+				setPedRotation(jailedPlayer, 269.92446899414)
 				setElementDimension(jailedPlayer, 0)
 				setElementInterior(jailedPlayer, 0)
 				setCameraInterior(jailedPlayer, 0)
@@ -1345,15 +1345,8 @@ function timerPDUnjailPlayer(jailedPlayer)
 			
 			local station = getElementData(jailedPlayer, "pd.jailstation")
 			
-			if (station==2) then
-				setElementPosition(jailedPlayer, 2320.96484375, 620.83203125, 10.825594902039)
-				setPedRotation(jailedPlayer, 2.2666625976563)
-				setElementDimension(jailedPlayer, 0)
-				setElementInterior(jailedPlayer, 0)
-			else
-				setElementPosition(jailedPlayer, 233.42037963867, 157.07211303711, 1003.0234375)
-				setPedRotation(jailedPlayer, 211.10571289063)
-			end
+			setElementPosition(jailedPlayer, 248.5458984375, 69.7431640625, 1003.640625)
+			setPedRotation(jailedPlayer, 159.63104248047)
 				
 			setElementData(jailedPlayer, "pd.jailserved", 0, false)
 			setElementData(jailedPlayer, "pd.jailtime", 0, false)

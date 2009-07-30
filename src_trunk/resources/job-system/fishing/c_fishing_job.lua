@@ -20,7 +20,7 @@ function castLine()
 				outputChatBox("You must be on a boat to fish.", 255, 0, 0)
 			else
 				local x, y, z = getElementPosition(getLocalPlayer())	
-				if (x < 3000) and ( y < 3000) then -- Are they out at sea.
+				if x > -3000 and x < 3000 and y > -3000 and y < 3000 then -- Are they out at sea.
 					outputChatBox("You must be out at sea to fish.", 255, 0, 0)
 				else
 					if (catchTimer) then -- Are they already fishing?
@@ -54,7 +54,7 @@ function fishOnLine()
 	killTimer(catchTimer)
 	catchTimer=nil
 	local x, y, z = getElementPosition(getLocalPlayer())
-	if ( x < 3000) and ( y < 3000) then
+	if x > -3000 and x < 3000 and y > -3000 and y < 3000 then
 		outputChatBox("You should have stayed out at sea if you wanted to fish.", 255, 0, 0)
 	else
 		triggerServerEvent("fishOnLine", getLocalPlayer()) -- outputs /me

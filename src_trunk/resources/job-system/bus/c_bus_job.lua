@@ -133,6 +133,7 @@ function updateBusCheckpoint(thePlayer)
 				busBlip = createBlip( x, y, z, 0, 2, 255, 200, 0, 255) -- Red blip
 					
 				addEventHandler("onClientMarkerHit", busMarker, endOfTheLine)
+				setMarkerIcon(busMarker, "finish")
 					
 			elseif(busRoute[newnumber][4]==true)then -- If it is a stop.
 			

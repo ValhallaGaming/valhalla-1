@@ -86,7 +86,7 @@ end
 addEventHandler("onClientPlayerWeaponFire", getLocalPlayer(), clientTagWall)
 
 function resetCooldown(killTheTimer)
-	if killTheTimer then
+	if killTheTimer and cooldown then
 		killTimer(cooldown)
 	end
 	cooldown = nil

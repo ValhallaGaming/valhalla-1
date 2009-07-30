@@ -94,14 +94,14 @@ end
 
 function waitAtDelivery(thePlayer)
 	local vehicle = getPedOccupiedVehicle(getLocalPlayer())
-	if thePlayer == getLocalPlayer() and vehicle and truck[getElementModel(vehicle)] then
+	if thePlayer == getLocalPlayer() and vehicle and getVehicleController(vehicle) == getLocalPlayer() and truck[getElementModel(vehicle)] then
 		deliveryStopTimer = setTimer(nextDeliveryCheckpoint, 5000, 1)
 		outputChatBox("#FF9933Wait a moment while your truck is processed.", 255, 0, 0, true )
 	end
 end
 
 function checkWaitAtDelivery(thePlayer)
-	if thePlayer == getLocalPlayer() then
+	if thePlayer == getLocalPlayer() and getVehicleController(getPedOccupiedVehicle(getLocalPlayer())) == getLocalPlayer()  then
 		outputChatBox("You didn't wait at the dropoff point.", 255, 0, 0)
 		if deliveryStopTimer then
 			killTimer(deliveryStopTimer)
@@ -154,7 +154,7 @@ function endDelivery(thePlayer)
 	if thePlayer == getLocalPlayer() then
 		local vehicle = getPedOccupiedVehicle(getLocalPlayer())
 		local id = getElementModel(vehicle) or 0
-		if not vehicle or not (truck[id]) then
+		if not vehicle or getVehicleController(vehicle) ~= getLocalPlayer() or not (truck[id]) then
 			outputChatBox("#FF9933You must be in a van to complete deliverys.", 255, 0, 0, true ) -- Wrong car type.
 		else
 			local wage = 50 * routescompleted

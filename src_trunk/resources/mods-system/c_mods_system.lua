@@ -3,8 +3,8 @@ function applyMods(res)
 		------------------------------------
 		-- Fish market sign (fishing job) --
 		------------------------------------
-		fishMarket = engineLoadTXD("lv/melrose03_lawn.txd")
-		engineImportTXD(fishMarket, 5782)
+		--fishMarket = engineLoadTXD("lv/melrose03_lawn.txd")
+		--engineImportTXD(fishMarket, 5782)
 		
 		----------------------
 		-- Pig Pen Interior --
@@ -28,15 +28,15 @@ function applyMods(res)
 		--------------
 		-- SID sign --
 		--------------
-		newPD = engineLoadTXD("lv/gen_pol_vegas.txd")
-		local import = engineImportTXD(newPD, 14887)
+		--newPD = engineLoadTXD("lv/gen_pol_vegas.txd")
+		--local import = engineImportTXD(newPD, 14887)
 		
 		------------------------
 		-- Blackfield Stadium --
 		------------------------
-		BFStadium = engineLoadTXD("lv/vgs_stadium.txd")
-		engineImportTXD(BFStadium, 8201)
-		engineImportTXD(BFStadium, 8333)
+		--BFStadium = engineLoadTXD("lv/vgs_stadium.txd")
+		--engineImportTXD(BFStadium, 8201)
+		--engineImportTXD(BFStadium, 8333)
 		
 		------------------------
 		--		 Cop Cars     --

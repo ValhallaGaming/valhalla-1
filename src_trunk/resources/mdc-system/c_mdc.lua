@@ -1326,7 +1326,7 @@ function useMDC(thePlayer, Command)
 		end
 		
 	else
-			outputChatBox("You need to be near one of the LVMPD computers or inside a law enforcement vehicle to use the MDC.", 255, 0,0, true)
+			outputChatBox("You need to be near one of the LSMPD computers or inside a law enforcement vehicle to use the MDC.", 255, 0,0, true)
 	end
 end
 addCommandHandler("mdc", useMDC)
@@ -1435,7 +1435,7 @@ function getMemoText()
 		\
 		If you know that the suspect has comitted crimes before, check to make sure you typed the name out correctly.\
 		\
-		~~ Thank you for using the LVMPD Mobile Data Computer ~~")
+		~~ Thank you for using the LSMPD Mobile Data Computer ~~")
 		
 	else
 			
@@ -1576,7 +1576,7 @@ function getDefaultMemoText()
 	local intro
 	local warrants = ""
 	
-	intro = ( "------ Welcome to the LVMPD Mobile Data Computer v1.0 ------\
+	intro = ( "------ Welcome to the LSMPD Mobile Data Computer v1.0 ------\
 	\
 	You are logged in under the user name: "..user[1].."\
 	\
@@ -1590,7 +1590,7 @@ function getDefaultMemoText()
 	\
 	When you are finished, click 'log off'.\
 	\
-	~~ Thank you for using the LVMPD Mobile Data Computer ~~\
+	~~ Thank you for using the LSMPD Mobile Data Computer ~~\
 	\
 	------------- CURRENT WARRANTS ISSUED ------------\
 	Warrants have been issued for the arrest of the following people:\
@@ -1745,7 +1745,7 @@ end
  addEventHandler( "onClientResourceStop", getResourceRootElement( getThisResource( ) ), onResourceStop )
  
  
- -- function creates all of the col cirlcles on resource start to use as markers for the computers in LVMPD
+ -- function creates all of the col cirlcles on resource start to use as markers for the computers in LSMPD
 function createColCircles()
 
 	local radius = 3

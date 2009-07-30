@@ -20,8 +20,8 @@ function castLine()
 				outputChatBox("You must be on a boat to fish.", 255, 0, 0)
 			else
 				local x, y, z = getElementPosition(getLocalPlayer())	
-				if x > -3000 and x < 3000 and y > -3000 and y < 3000 then -- Are they out at sea.
-					outputChatBox("You must be out at sea to fish.", 255, 0, 0)
+				if ((y < 3000) and ( y > -3000)) and ((x > -3000) and (x < 3000)) then -- Are they out at sea.
+					outputChatBox("You must be out on the sea to fish.", 255, 0, 0)
 				else
 					if (catchTimer) then -- Are they already fishing?
 						outputChatBox("You have already cast your line. Wait for a fish to bite.", 255, 0, 0)
@@ -33,9 +33,9 @@ function castLine()
 							catchTimer = setTimer( fishOnLine, biteTimer, 1 ) -- A fish will bite within 1 and 5 minutes.
 							triggerServerEvent("castOutput", getLocalPlayer())	
 							if not (fishingBlip) then -- If the /sellfish marker isnt already being shown...
-								fishingBlip = createBlip( 2243.7339, 578.905, 6.78, 0, 2, 255, 0, 255, 255 )
-								fishingMarker = createMarker( 2243.7339, 578.905, 6.78, "cylinder", 2, 255, 0, 255, 150 )
-								fishingCol = createColSphere (2243.7339, 578.905, 6.78, 3)
+								fishingBlip = createBlip(375.96875, -2054.8271484375, 7, 0, 2, 255, 0, 255, 255 )
+								fishingMarker = createMarker(375.96875, -2054.8271484375, 7, "cylinder", 2, 255, 0, 255, 150 )
+								fishingCol = createColSphere (375.96875, -2054.8271484375, 7, 3)
 								outputChatBox("#FF9933When you are done fishing you can sell your catch at the #FF66CCfish market#FF9933.", 255, 104, 91, true)
 								outputChatBox("#FF9933((/totalcatch to see how much you have caught. To sell your catch enter /sellfish in the #FF66CCmarker#FF9933.))", 255, 104, 91, true)
 							end
@@ -54,8 +54,8 @@ function fishOnLine()
 	killTimer(catchTimer)
 	catchTimer=nil
 	local x, y, z = getElementPosition(getLocalPlayer())
-	if x > -3000 and x < 3000 and y > -3000 and y < 3000 then
-		outputChatBox("You should have stayed out at sea if you wanted to fish.", 255, 0, 0)
+	if ((y < 3000) and ( y > -3000)) and ((x > -3000) and (x < 3000)) then
+		outputChatBox("You should have stayed out on the sea if you wanted to fish.", 255, 0, 0)
 	else
 		triggerServerEvent("fishOnLine", getLocalPlayer()) -- outputs /me
 		
@@ -75,19 +75,17 @@ function fishOnLine()
 		resetTimer = setTimer(resetProgress, 2750, 0)
 		gotAwayTimer = setTimer(gotAway, 60000, 1)
 		
-		if(x>=3950) and (x<=4450) and (y>= 1220) and (y<=1750) or (x>=4250) and (x<=5000) and (y>= -103) and (y<=500) then
+		if ((x >= 3950) and (x <= 4450)) and ((y >= -2050) and (y <= -1550)) or (x >= -250) and (x <= 250) and (y >= -4103) and (y <= -3603) then
 			fishSize = math.random(100, 200)
 		else
-			if ( y > 4500) then
-				fishSize = math.random(75, 111)
-			elseif (x > 5500) then
-				fishSize = math.random(75, 103)
-			elseif (x > 4500) then
-				fishSize = math.random(54, 83)
-			elseif (x > 3500) then
-				fishSize = math.random(22,76)
+			if (x > 5500) or (x < -5500) or (y > 5500) or (y < -5500) then
+				fishSize = math.random(80, 105)
+			elseif (x > 4500) or (x < -4500) or (y > 4500) or (y < -4500) then
+				fishSize = math.random(50, 90)
+			elseif (x > 3500) or (x < -3500) or (y > 3500) or (y < -3500) then
+				fishSize = math.random(30,70)
 			else
-				fishSize = math.random(1, 56)
+				fishSize = math.random(1, 50)
 			end
 		end
 		

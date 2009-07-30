@@ -1226,7 +1226,7 @@ function createCharacter(name, gender, skincolour, weight, height, fatness, musc
 			x, y, z = 1742.1884765625, -1861.3564453125, 13.577615737915
 			r = 0.98605346679688
 			lastarea = "Unity Bus Station"
-		else then
+		else
 			x, y, z = 1685.583984375, -2329.4443359375, 13.546875
 			r = 0.79379272460938
 			lastarea = "Los Santos International"

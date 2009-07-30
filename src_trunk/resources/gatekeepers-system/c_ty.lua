@@ -301,5 +301,5 @@ function tyClose()
 	showCursor(false)
 	
 end
-addEvent("closeTyWinodw", true)
-addEventHandler("closeTyWinodw", getRootElement(), tyClose)
+addEvent("closeTyWindow", true)
+addEventHandler("closeTyWindow", getRootElement(), tyClose)

@@ -1,17 +1,16 @@
 stopNumber={}
-stopNumber[1]={ "Lost Hill Drive, Redsands East" } -- Car dealership
-stopNumber[2]={ "Earl Watts Projects, 112th Street, Redsands West" } -- Earl Watts Projects
-stopNumber[3]={ "Las Venturas General Hospital, Tularosa Lane, Redsands West" } -- Hospital
-stopNumber[4]={ "Las Venturas International Airport" } -- Airport
-stopNumber[5]={ "Blackfield Stadium, Trinity Peak Street, Blackfield" } -- Prison
-stopNumber[6]={ "Yellow Bell Station, Shermcrest Street, Pricke Pine" } -- Yellow Bell Station
-stopNumber[7]={ "San Andreas Network Tower, Old Castle Drive, Roca Escalante" } -- PD / Bank / SAN
-stopNumber[8]={ "Tatum Street, Creek" } -- Tatum
-stopNumber[9]={ "City Hall, Fairpoint Drive, Hampton" } -- City Hall 
-stopNumber[10]={ "Harbour, Sea Cliff Way, Rockshore West" } -- PD / harbour 
-stopNumber[11]={ "Caligulas, The Strip" } -- Caligulas 
-stopNumber[12]={ "Gray Dawn Drive, Roca Escalante" } -- Gray Dawn Drive
-stopNumber[13]={ "LV Transport Depot, Lost Hill Drive, Redsands East [END OF SERVICE]" } -- Depot End Point
+stopNumber[1]={ "Unity Station, Idlewood" }
+stopNumber[2]={ "Idlewood Gas, Idlewood" }
+stopNumber[3]={ "Ten Green Bottles & Grove St, Ganton" }
+stopNumber[4]={ "Basketball Courts, North Ganton" }
+stopNumber[5]={ "Pig Pen, Little Moscow" }
+stopNumber[6]={ "Jefferson Motel, Jefferson" 
+stopNumber[7]={ "Glen Park, Commerce" 
+stopNumber[8]={ "City Hall, Pershing Sq." }
+stopNumber[9]={ "Main Street, Central LS" }
+stopNumber[10]={ "Hospital, Central LS" }
+stopNumber[11]={ "Bank, Vinewood" }
+stopNumber[12]={ "LS Transport Depot, Unity Station, Idlewood  [END OF SERVICE]" }
 
 function payBusDriver(stop)
 
@@ -44,7 +43,7 @@ function payBusDriver(stop)
 			local logged = getElementData(nearbyPlayer, "loggedin")
 			if not(isPedDead(nearbyPlayer)) and (logged==1) then
 				outputChatBox(" -- This stop: [".. thisStop .. "] --", nearbyPlayer, 255, 51, 102)
-				if(stop<13)then
+				if(stop<12)then
 					outputChatBox(" -- Next stop: [".. nextStop .. "] --", nearbyPlayer, 255, 51, 102)
 				end
 			end

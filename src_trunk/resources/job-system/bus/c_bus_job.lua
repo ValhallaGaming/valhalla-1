@@ -30,10 +30,9 @@ busRoute[27]={ 917.763671875, -969.4033203125, 37, false, 0}
 busRoute[28]={  568.6435546875, -1225.041015625, 16, true, 11} -- Bank
 busRoute[29]={ 678.1484375, -1761.373046875, 12, false, 0}
 busRoute[30]={ 1212.0234375, -1854.94921875, 12, false, 0}
-busRoute[31]={ 1508.068359375, -1874.57421875, 12, true, 10} -- PD / harbour 
-busRoute[32]={ 1654.560546875, -1875.05859375, 12, false, 0}
-busRoute[33]={ 1759.783203125, -1826.096679687, 12, false, 0}
-busRoute[34]={ 1736.9365234375, -1851.8310546875, 12, true, 11} -- Depot
+busRoute[31]={ 1654.560546875, -1875.05859375, 12, false, 0}
+busRoute[32]={ 1759.783203125, -1826.096679687, 12, false, 0}
+busRoute[33]={ 1736.9365234375, -1851.8310546875, 12, true, 12} -- Depot
 
 local busMarker = nil
 local busBlip = nil
@@ -83,7 +82,7 @@ function startBusJob(thePlayer)
 				addEventHandler("onClientMarkerHit", busMarker, updateBusCheckpoint)
 				
 				setElementData(getLocalPlayer(), "busRoute.marker", 1)
-				setElementData(getLocalPlayer(), "busRoute.totalmarkers", 34)
+				setElementData(getLocalPlayer(), "busRoute.totalmarkers", 33)
 				
 				outputChatBox("#FF9933Drive around the bus #FFCC00route #FF9933stopping at the #A00101stops #FF9933along the way.", 255, 194, 14, true)
 				outputChatBox("#FF9933You will be paid for each stop you make and for people you pick up.", 255, 194, 14, true)

@@ -207,110 +207,107 @@ function getItemsForSale(shop_type, race, gender)
 
 	-- general store
 	if(shop_type == 1) then
-		
+		item = {
 		-- General Items
-		item[1] = {"Flowers", "A bouquet of lovely flowers.", "5", 14, 1,1, true,2}
-		item[2] = {"Phonebook", "A large phonebook of everyones phone numbers.", "30", 7, 1,1,false,20}
-		item[3] = {"Dice", "A black dice with white dots, perfect for gambling.", "2", 10, 1,1,false,1}
-		item[4] = {"Golf Club", "Perfect golf club for hitting that hole-in-one.", "60", 2, 1,1,true,30}
-		item[5] = {"Knife", "You're only going to use this in the kitchen, right?", "50", 4,  1,1,true,40}
-		item[6] = {"Baseball Bat", "Hit a home run with this.", "60", 5, 1,1,true,40}
-		item[7] = {"Shovel", "Perfect tool to dig a hole.", "40", 6, 1,1,true,20}
-		item[8] = {"Pool Cue", "For that game of pub pool.", "35", 7, 1,1,true,15}
-		item[9] = {"Cane", "A stick has never been so classy.", "65", 15, 1,1,true,35}
-		item[10] = {"Fire Extinguisher", "There is never one of these around when there is a fire", "50", 42, 500, 1,true,25}
-		item[11] = {"Spray Can", "Hey, you better not tag with this punk!", "50", 41, 500, 1,true,35}
-		item[12] = {"City Guide", "A small city guide booklet.", "15", 18, 1,1,false,7}
-		item[13] = {"Rope", "A long rope.", "15", 46, 1,1,false,2}
-		item[14] = {"Backpack", "A reasonably sized backpack.", "30", 48, 1,1,false,2}
-		item[15] = {"Fishing Rod", "A 7 foot carbon steel fishing rod.", "300", 49, 1,1,false, 175}
-		item[16] = {"Mask", "A comical mask.", "20", 56, 1, 1, false, 5}
-		item[17] = {"Fuel Can", "A small metal fuel canister.", "35", 57, 1, 1, false, 5}
+			{"Flowers", "A bouquet of lovely flowers.", "5", 14, 1,1, true,2},
+			{"Phonebook", "A large phonebook of everyones phone numbers.", "30", 7, 1,1,false,20},
+			{"Dice", "A black dice with white dots, perfect for gambling.", "2", 10, 1,1,false,1},
+			{"Golf Club", "Perfect golf club for hitting that hole-in-one.", "60", 2, 1,1,true,30},
+			{"Knife", "You're only going to use this in the kitchen, right?", "50", 4,  1,1,true,40},
+			{"Baseball Bat", "Hit a home run with this.", "60", 5, 1,1,true,40},
+			{"Shovel", "Perfect tool to dig a hole.", "40", 6, 1,1,true,20},
+			{"Pool Cue", "For that game of pub pool.", "35", 7, 1,1,true,15},
+			{"Cane", "A stick has never been so classy.", "65", 15, 1,1,true,35},
+			{"Fire Extinguisher", "There is never one of these around when there is a fire", "50", 42, 500, 1,true,25},
+			{"Spray Can", "Hey, you better not tag with this punk!", "50", 41, 500, 1,true,35},
+			{"City Guide", "A small city guide booklet.", "15", 18, 1,1,false,7},
+			{"Rope", "A long rope.", "15", 46, 1,1,false,2},
+			{"Backpack", "A reasonably sized backpack.", "30", 48, 1,1,false,2},
+			{"Fishing Rod", "A 7 foot carbon steel fishing rod.", "300", 49, 1,1,false, 175},
+			{"Mask", "A comical mask.", "20", 56, 1, 1, false, 5},
+			{"Fuel Can", "A small metal fuel canister.", "35", 57, 1, 1, false, 5},
 
-		
-
-
-		-- Consumable
-		item[17] = {"Sandwich", "A yummy sandwich with cheese.", "8", 8, 1,2,false,4}
-		item[18] = {"Softdrink", "A can of coca cola.", "7", 9, 1,2,false,3}
-		
+			-- Consumable
+			{"Sandwich", "A yummy sandwich with cheese.", "8", 8, 1,2,false,4},
+			{"Softdrink", "A can of coca cola.", "7", 9, 1,2,false,3}
+		}
 	-- gun shop
 	elseif(shop_type == 2) then
-	
-		-- guns --
-		item[1] = {"Brass Knuckles","A pair of brass knuckles, ouch.", "100", 1, 1, 1,true,50}
-		item[2] = {"9mm Pistol", "A silver, 9mm handgun, comes with 100 ammo.", "250",  22, 100, 1,true,200}
-		item[3] = {"Shotgun", "A silver shotgun - comes with 30 ammo.", "450", 25, 30, 1,true,400}
-		--item[5] = {"Uzi", "A small micro-uzi - comes with 250 ammo.", "450", 28, 250, 1,true,190}
-		--item[6] = {"Tec-9", "A Tec-9 micro-uzi - comes with 250 ammo", "500", 32, 250, 1,true,300}
-		item[4] = {"Country Rifle", "A country rifle - comes with 30 ammo", "750", 33, 30, 1,true,600}
-		item[5] = {"Body Armor", "Kevlar Body armor", "500", 999, 0, 1,true,600}
-		item[6] = {"Handcuffs", "A metal pair of handcuffs.", "90", 45, 1,1,false,2}
-	
+		item = {
+			-- guns --
+			{"Brass Knuckles","A pair of brass knuckles, ouch.", "100", 1, 1, 1,true,50},
+			{"9mm Pistol", "A silver, 9mm handgun, comes with 100 ammo.", "250",  22, 100, 1,true,200},
+			{"Shotgun", "A silver shotgun - comes with 30 ammo.", "450", 25, 30, 1,true,400},
+			--{"Uzi", "A small micro-uzi - comes with 250 ammo.", "450", 28, 250, 1,true,190},
+			--{"Tec-9", "A Tec-9 micro-uzi - comes with 250 ammo", "500", 32, 250, 1,true,300},
+			{"Country Rifle", "A country rifle - comes with 30 ammo", "750", 33, 30, 1,true,600},
+			{"Body Armor", "Kevlar Body armor", "500", 999, 0, 1,true,600},
+			{"Handcuffs", "A metal pair of handcuffs.", "90", 45, 1,1,false,2}
+		}
 	-- food + drink
 	elseif(shop_type == 3) then
-	
-		item[1] = {"Sandwich", "A yummy sandwich with cheese", "5", 8, 1, 1, false,4}
-		item[2] = {"Taco", "A greasy mexican taco", "7", 11, 1, 1, false,3}
-		item[3] = {"Burger", "A double cheeseburger with bacon", "6", 12, 1, 1, false,2}
-		item[4] = {"Donut", "Hot sticky sugar covered donut", "3", 13, 1, 1, false,1}
-		item[5] = {"Cookie", "A luxuty chocolate chip cookie", "3", 14, 1, 1, false,1}
-		item[6] = {"Haggis", "Freshly imported from Scotland", "5", 1, 1, 1, false,1}
-		
-		
-		-- drinks
-		item[7] = {"Softdrink", "A cold can of coca cola.", "2", 9, 1, 2, false,3}
-		item[8] = {"Water", "A bottle of mineral water.", "1", 15, 1, 2, false,1}
-	
+		item = {
+			{"Sandwich", "A yummy sandwich with cheese", "5", 8, 1, 1, false,4},
+			{"Taco", "A greasy mexican taco", "7", 11, 1, 1, false,3},
+			{"Burger", "A double cheeseburger with bacon", "6", 12, 1, 1, false,2},
+			{"Donut", "Hot sticky sugar covered donut", "3", 13, 1, 1, false,1},
+			{"Cookie", "A luxuty chocolate chip cookie", "3", 14, 1, 1, false,1},
+			{"Haggis", "Freshly imported from Scotland", "5", 1, 1, 1, false,1},
+			
+			-- drinks
+			{"Softdrink", "A cold can of coca cola.", "2", 9, 1, 2, false,3},
+			{"Water", "A bottle of mineral water.", "1", 15, 1, 2, false,1}
+		}
 	-- sex shop
 	elseif(shop_type == 4) then
-	
-		-- sexy
-		item[1] = {"Long Purple Dildo","A very large purple dildo", "20", 10, 1, 1, true,10}
-		item[2] = {"Short Tan Dildo","A small tan dildo.", "15", 11, 1, 1, true,7}
-		item[3] = {"Vibrator","A vibrator, what more needs to be said?", "25", 12, 1, 1, true,12}
-		item[4] = {"Flowers","A bouquet of lovely flowers.", "5", 14, 1, 1, true,2}
-	
+		item = {
+			-- sexy
+			{"Long Purple Dildo","A very large purple dildo", "20", 10, 1, 1, true,10},
+			{"Short Tan Dildo","A small tan dildo.", "15", 11, 1, 1, true,7},
+			{"Vibrator","A vibrator, what more needs to be said?", "25", 12, 1, 1, true,12},
+			{"Flowers","A bouquet of lovely flowers.", "5", 14, 1, 1, true,2}
+		}
 	elseif(shop_type == 5) then
 		availableskins = fittingskins[gender][race]
 		for i = 1, #availableskins do
 			item[i] = {"Skin "..availableskins[i] , "MTA Skin id "..availableskins[i]..".", "50", 92, availableskins[i], 1}
 		end
-	
 	-- gym
 	elseif(shop_type == 6) then
-	
-		item[1] = {"Standard Combat","Standard everyday fighting.", "10", 4, -1, 1, true}
-		item[2] = {"Boxing","Mike Tyson, on drugs.", "50", 5, -1, 1, true}
-		item[3] = {"Kung Fu","I know kung-fu, so can you.", "50", 6, -1, 1, true}
-		item[4] = {"Knee Head","Ever had a knee to the head? Pretty sore.", "50", 7, -1, 1, true}
-		item[5] = {"Grab & Kick","Kick his 'ead in!", "50", 15, -1, 1, true}
-		item[6] = {"Elbows","You may look retarded, but you will kick his ass!", "50", 16, -1, 1, true}
-		
+		item = {
+			{"Standard Combat","Standard everyday fighting.", "10", 4, -1, 1, true},
+			{"Boxing","Mike Tyson, on drugs.", "50", 5, -1, 1, true},
+			{"Kung Fu","I know kung-fu, so can you.", "50", 6, -1, 1, true},
+			{"Knee Head","Ever had a knee to the head? Pretty sore.", "50", 7, -1, 1, true},
+			{"Grab & Kick","Kick his 'ead in!", "50", 15, -1, 1, true},
+			{"Elbows","You may look retarded, but you will kick his ass!", "50", 16, -1, 1, true}
+		}
 	-- drugs/chemicals
 	elseif(shop_type == 7) then
-	
-		item[1] = {"Cannabis Sativa","A chemical used to make drugs.", "0", 30, 1, 1, false,0}
-		item[2] = {"Cocaine Alkaloid","A chemical used to make drugs.", "0", 31, 1, 1, false,0}
-		item[3] = {"Lysergic Acid","A chemical used to make drugs.", "0", 32, 1, 1, false,0}
-		item[4] = {"Unprocessed PCP","A chemical used to make drugs.", "0", 33, 1, 1, false,0}
-		
+		item = {
+			{"Cannabis Sativa","A chemical used to make drugs.", "0", 30, 1, 1, false,0},
+			{"Cocaine Alkaloid","A chemical used to make drugs.", "0", 31, 1, 1, false,0},
+			{"Lysergic Acid","A chemical used to make drugs.", "0", 32, 1, 1, false,0},
+			{"Unprocessed PCP","A chemical used to make drugs.", "0", 33, 1, 1, false,0}
+		}
 	-- electronics
 	elseif(shop_type == 8) then
-		item[1] = {"Ghettoblaster","A black ghettoblaster.", "250", 54, 1, 1, false,10}
-		item[2] = {"Katana", "Your favourite Japanese sword.", "2000", 8, 1, 1,true,100}
-		item[3] = {"Camera", "A small black analogue camera.", "75", 43, 25,1,true, 30}
-		item[4] = {"Cellphone", "A stylish, slim cell phone.", "75", 2, 1,1,false,50}
-		item[5] = {"Radio", "A black radio.", "50", 6, 1,1,false,30}
-		item[6] = {"Watch", "Telling the time was never so sexy!", "25", 17, 1, 1,false,10}
-		item[7] = {"MP3 Player", "A white, sleek looking MP3 Player. The brand reads EyePod.", "120", 19, 1,1,false,7}
-		item[8] = {"Chemistry Set", "A small chemistry set.", "2000", 44, 1,1,false,15}
-		item[9] = {"Safe", "A Safe to store your items in.", "300", 60, 1,1,false,0}
-
-		
+		item = {
+			{"Ghettoblaster","A black ghettoblaster.", "250", 54, 1, 1, false,10},
+			{"Katana", "Your favourite Japanese sword.", "2000", 8, 1, 1,true,100},
+			{"Camera", "A small black analogue camera.", "75", 43, 25,1,true, 30},
+			{"Cellphone", "A stylish, slim cell phone.", "75", 2, 1,1,false,50},
+			{"Radio", "A black radio.", "50", 6, 1,1,false,30},
+			{"Watch", "Telling the time was never so sexy!", "25", 17, 1, 1,false,10},
+			{"MP3 Player", "A white, sleek looking MP3 Player. The brand reads EyePod.", "120", 19, 1,1,false,7},
+			{"Chemistry Set", "A small chemistry set.", "2000", 44, 1,1,false,15},
+			{"Safe", "A Safe to store your items in.", "300", 60, 1,1,false,0}
+		}
 	-- alcohol shop
 	elseif(shop_type == 9) then
-		item[1] = {"Ziebrand Beer","The finest beer, imported from Holland.", "10", 58, 1, 1, false, 2}
+		item = {
+			{"Ziebrand Beer","The finest beer, imported from Holland.", "10", 58, 1, 1, false, 2}
+		}
 	end
 		
 	return item

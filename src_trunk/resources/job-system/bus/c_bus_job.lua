@@ -1,44 +1,39 @@
 -- { x, y, z, isStop, stop number}
 busRoute = {}
-busRoute[1]={ 1899, 2274, 9.9, false, 0} -- Depot start point
-busRoute[2]={ 1924, 2123, 9.8, true, 1} -- Car dealership
-busRoute[3]={ 1761, 2055, 9.9, false, 0}
-busRoute[4]={ 1703, 1968, 9.7, true, 2} -- Earl Watts Projects
-busRoute[5]={ 1643, 1816, 9.7, true, 3} -- Hospital
-busRoute[6]={ 1718, 1382, 9.5, true, 4} -- Airport
-busRoute[7]={ 1644, 1221, 9.7, false, 0}
-busRoute[8]={ 1483, 1135, 9.7, false, 0}
-busRoute[9]={ 1011, 1408, 9.7, true, 5} -- Prison
-busRoute[10]={ 1009, 1895, 9.7, false, 0}
-busRoute[11]={ 1215, 2051, 13, false, 0}
-busRoute[12]={ 1530, 2120, 9.7, false, 0}
-busRoute[13]={ 1570, 2236, 9.8, false, 0}
-busRoute[14]={ 1480, 2465, 13.9, false, 0}
-busRoute[15]={ 1360, 2592, 10.7, false, 0}
-busRoute[16]={ 1448, 2670, 9.7, true, 6} -- Yellow Bell Station
-busRoute[17]={ 1511, 2710, 9.7, false, 0}
-busRoute[18]={ 1604, 2731, 9.7, false, 0} 
-busRoute[19]={ 1904, 2673, 9.7, false, 0} 
-busRoute[20]={ 2090, 2744, 9.8, false, 0} 
-busRoute[21]={ 2385, 2643, 13.4, false, 0} 
-busRoute[22]={ 2424, 2291, 9.7, true, 7} -- PD / Bank / SAN
-busRoute[23]={ 2843, 2153, 9.7, true, 8} -- Tatum
-busRoute[24]={ 2580, 1956, 9.7, false, 0}
-busRoute[25]={ 2454, 1716, 9.7, false, 0} 
-busRoute[26]={ 2325, 1566, 9.7, false, 0} 
-busRoute[27]={ 2425, 1499, 9.7, false, 0} 
-busRoute[28]={ 2425, 1113, 9.7, true, 9} -- City Hall 
-busRoute[29]={ 2425, 995, 9.7, false, 0}
-busRoute[30]={ 2460, 775, 9.7, false, 0}
-busRoute[31]={ 2249, 636, 9.7, true, 10} -- PD / harbour 
-busRoute[32]={ 2150, 761, 9.8, false, 0}
-busRoute[33]={ 2070, 1035, 9.6, false, 0}
-busRoute[34]={ 2096, 1644, 9.7, false, 0}
-busRoute[35]={ 2159, 1683, 9.7, true, 11} -- Caligulas 
-busRoute[36]={ 2127, 1820, 9.7, false, 0}
-busRoute[37]={ 2149, 2187, 9.7, false, 0}
-busRoute[38]={ 2090, 2457, 9.7, true, 12} -- Gray Dawn Drive
-busRoute[39]={ 1921, 2341, 9.8, true, 13} -- Depot End Point
+busRoute[1]={ 1718, -1855, 12, false, 0} -- Depot start point
+busRoute[2]={ 1740, -1857, 12, true, 1} -- Unity
+busRoute[3]={ 1890, -1755, 12, false, 0}
+busRoute[4]={ 2036, -1755, 12, true, 2} -- Idlewood gas
+busRoute[5]={ 2314, -1661, 13, true, 3} -- TGB
+busRoute[6]={ 2344, -1541, 23, true, 4} -- Basketball courts
+busRoute[7]={ 2344, -1399, 23, false, 0}
+busRoute[8]={ 2306, -1320, 23, false, 0}
+busRoute[9]={ 2421, -1259, 23, true, 5} -- Pig Pen
+busRoute[10]={ 2388.171875, -1170.88671875, 27, false, 0}
+busRoute[11]={  2248.2109375, -1139.3955078125, 25, true, 6} -- Jefferson Motel
+busRoute[12]={ 2050.04296875, -1077.345703125, 24, false, 0}
+busRoute[13]={ 1863.666015625, -1139.748046875, 23, true, 6} -- Glen Park
+busRoute[14]={ 1844.55078125, -1380.4072265625, 12, true, 7} -- Skate Park
+busRoute[15]={ 1824.796875, -1561.2734375, 12, false, 0}
+busRoute[16]={ 1704.4501953125, -1590.40820312, 12, false, 0}
+busRoute[17]={ 1550.5732421875, -1589.23046875, 12, false, 0}
+busRoute[18]={ 1526.478515625, -1677.846679687, 12, false, 0} 
+busRoute[19]={ 1476.1435546875, -1729.3798828125, 12, true, 8} -- City Hall 
+busRoute[20]={  1337.837890625, -1729.9736328125, 12, false, 0} 
+busRoute[21]={1327.7568359375, -1518.5810546875, 12, false, 0} 
+busRoute[22]={ 1360.515625, -1300.849609375, 12, true, 9} -- Main Street
+busRoute[23]={1180.7734375, -1278.5087890625, 12, true, 10} -- Hospital
+busRoute[24]={ 1061.4228515625, -1239.0751953125, 15, false, 0}
+busRoute[25]={ 1085.6611328125, -1105.21289062, 23, false, 0} 
+busRoute[26]={ 1089.0087890625, -972.9365234375, 40, false, 0} 
+busRoute[27]={ 917.763671875, -969.4033203125, 37, false, 0} 
+busRoute[28]={  568.6435546875, -1225.041015625, 16, true, 11} -- Bank
+busRoute[29]={ 678.1484375, -1761.373046875, 12, false, 0}
+busRoute[30]={ 1212.0234375, -1854.94921875, 12, false, 0}
+busRoute[31]={ 1508.068359375, -1874.57421875, 12, true, 10} -- PD / harbour 
+busRoute[32]={ 1654.560546875, -1875.05859375, 12, false, 0}
+busRoute[33]={ 1759.783203125, -1826.096679687, 12, false, 0}
+busRoute[34]={ 1736.9365234375, -1851.8310546875, 12, true, 11} -- Depot
 
 local busMarker = nil
 local busBlip = nil
@@ -66,7 +61,7 @@ function resetBusJob()
 end
 
 function displayBusJob()
-	blip = createBlip(1902.5610351563, 2319.673828125, 11.024569511414, 0, 4, 255, 127, 255)
+	blip = createBlip(1711.29296875, -1881.2841796875, 13.110404968262, 0, 4, 255, 127, 255)
 	outputChatBox("#FF9933Approach the #FF66CCblip#FF9933 on your radar and enter the bus/coach.", 255, 194, 15, true)
 end
 
@@ -88,7 +83,7 @@ function startBusJob(thePlayer)
 				addEventHandler("onClientMarkerHit", busMarker, updateBusCheckpoint)
 				
 				setElementData(getLocalPlayer(), "busRoute.marker", 1)
-				setElementData(getLocalPlayer(), "busRoute.totalmarkers", 39)
+				setElementData(getLocalPlayer(), "busRoute.totalmarkers", 34)
 				
 				outputChatBox("#FF9933Drive around the bus #FFCC00route #FF9933stopping at the #A00101stops #FF9933along the way.", 255, 194, 14, true)
 				outputChatBox("#FF9933You will be paid for each stop you make and for people you pick up.", 255, 194, 14, true)

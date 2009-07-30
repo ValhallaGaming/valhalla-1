@@ -531,13 +531,10 @@ function spawnCharacter(charname)
 		end
 		
 		-- Weapon stats
-		setPedStat(source, 69, 999)
 		setPedStat(source, 70, 999)
 		setPedStat(source, 71, 999)
 		setPedStat(source, 72, 999)
-		setPedStat(source, 73, 999)
 		setPedStat(source, 74, 999)
-		setPedStat(source, 75, 999)
 		setPedStat(source, 76, 999)
 		setPedStat(source, 77, 999)
 		setPedStat(source, 78, 999)

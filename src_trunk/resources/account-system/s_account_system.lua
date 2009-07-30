@@ -64,7 +64,7 @@ end
 
 function resourceStart()
 	setGameType("Roleplay")
-	setMapName("Valhalla Gaming: Las Venturas")
+	setMapName("Valhalla Gaming: Los Santos")
 	
 	setRuleValue("Script Version", tostring(scriptVer))
 	setRuleValue("Author", "Daniels")
@@ -526,7 +526,7 @@ function spawnCharacter(charname)
 		
 		-- Achievement
 		if not (exports.global:doesPlayerHaveAchievement(source, 1)) then
-			exports.global:givePlayerAchievement(source, 1) -- Welcome to Las Venturas
+			exports.global:givePlayerAchievement(source, 38) -- Welcome to Los Santos
 			triggerClientEvent(source, "showCityGuide", source)
 		end
 		

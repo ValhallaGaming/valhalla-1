@@ -128,10 +128,10 @@ local tutorialText = {}
 					"No deathmatching, advertising other servers and cheating or hacking (obviously...)",
 					"No spamming the chat or commands please, and don't use full capitals, thanks!"}
 
-	tutorialText[9] =		 {"So you've just arrived in Las Venturas, what do you do? There are plenty",
+	tutorialText[9] =		 {"So you've just arrived in Los Santos, what do you do? There are plenty",
 					"of factions for you to become members of - just roleplay with other players",
 					"and you'll soon find yourself rising up the faction ranks. Some factions, like ",
-					"the LVMPD require you to fill out applications on the forums before you can join."}
+					"the LSPD require you to fill out applications on the forums before you can join."}
 	
 	tutorialText[10] = 	{"Our admins are here to help you should you need it. If you need help, have a quick question",
 					"or wish to report someone for breaking the rules, don't be afraid to use /report  and someone ",
@@ -299,7 +299,7 @@ questions[1] = {"What does the term RP stand for?", "Real Playing", "Role Playin
 questions[2] = {"When are you allowed to advertise other servers?", "Using /ad", "In out of character chat", "Via PM's (/w)", "Never", 4}
 questions[3] = {"What should you do if you see someone hacking?", "Tell an admin using /report", "Ignore it", "/w the hacker and tell them to stop", "Report the hacker in OOC", 1}
 questions[4] = {"What is the address of the website and forums?", "www.valhalla.com", "www.valhallagaming.co.uk", "www.valhallagaming.net", "www.vg.com", 3} 
-questions[5] = {"I want to get to the other side of Las Venturas, how should I do it?", "Ask an admin to teleport you.", "Find a roleplay way to get there, like a taxi.", "Start bunnyhopping to get there faster", "Jump in a random players car and demand them to take you.", 2}
+questions[5] = {"I want to get to the other side of Los Santos, how should I do it?", "Ask an admin to teleport you.", "Find a roleplay way to get there, like a taxi.", "Start bunnyhopping to get there faster", "Jump in a random players car and demand them to take you.", 2}
 questions[6] = {"What is the correct format for your in game name?", "Firstname", "firstname_lastname", "Firstname_Lastname", "There is no format", 3}
 questions[7] = {"Which one of the following names would be acceptable", "David_Beckham", "Niko_Harrison", "Roleplayer_150", "They are all acceptable", 2}
 questions[8] = {"When must you roleplay in this server?", "At all times", "Never", "When you feel like it", "Only when other people are", 1}
@@ -916,7 +916,7 @@ function createMainUI(res, isChangeAccount)
 		local tutFile = xmlLoadFile("vgrptut.xml")
 		local regFile = xmlLoadFile("vgrpreg.xml")
 		
-		if (tutFilea) or (regFilea) then
+		if (tutFile) or (regFile) then
 			-- Set the camera to a nice view
 			local cameraRand = math.random(1, 1)
 			
@@ -3203,7 +3203,7 @@ function characterCreationStep6(button, state)
 			--/////////////
 			-- TRANSPORT
 			--/////////////
-			lTransport = guiCreateLabel(0.1, 0.145, 0.8, 0.15, "Transport - How did you arrive in Las Venturas?", true, tabCreationSix)
+			lTransport = guiCreateLabel(0.1, 0.145, 0.8, 0.15, "Transport - How did you arrive in Los Santos?", true, tabCreationSix)
 			guiSetFont(lTransport, "default-bold-small")
 			
 			rAeroplane = guiCreateRadioButton(0.15, 0.2, 0.6, 0.05, "Aeroplane", true, tabCreationSix)

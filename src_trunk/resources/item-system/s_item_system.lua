@@ -238,7 +238,7 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 			exports.global:applyAnimation(source, "COP_AMBIENT", "Coplook_watch", -1, false, true, true)
 			setTimer(removeAnimation, 4000, 1, source)
 		elseif (itemID==18) then -- city guide
-			triggerClientEvent(source, "showCityGuide", source)
+			--triggerClientEvent(source, "showCityGuide", source)
 		elseif (itemID==19) then -- MP3 PLayer
 			outputChatBox("Use the - and = keys to use the MP3 Player.", source, 255, 194, 14)
 		elseif (itemID==20) then -- STANDARD FIGHTING

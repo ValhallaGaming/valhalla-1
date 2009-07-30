@@ -1,4 +1,4 @@
-cooldown = 0
+cooldown = nil
 count = 0
 
 function clientTagWall(weapon, ammo, ammoInClip, hitX, hitY, hitZ, hitElement)
@@ -10,13 +10,15 @@ function clientTagWall(weapon, ammo, ammoInClip, hitX, hitY, hitZ, hitElement)
 		if (ftype~=2) then
 			if not (hitElement) or (getElementType(hitElement)~="player") then -- Didn't attack someone
 				
-				if (cooldown==0) then
+				if not cooldown then
 					if (ammoInClip>10) and (weapon==41) then
 						-- Check the player is near a wall
 						local localPlayer = getLocalPlayer()
 						local x, y, z = getElementPosition(localPlayer)
 						local rot = getPedRotation(localPlayer)
-
+						-- round the rotation to 10° to fix them being stuck halfway in a wall
+						rot = math.floor( (rot+5)/10 ) * 10
+						
 						local matrix = getElementMatrix (localPlayer)
 						
 						-- DIRECTLY INFRONT OF PLAYER
@@ -59,15 +61,13 @@ function clientTagWall(weapon, ammo, ammoInClip, hitX, hitY, hitZ, hitElement)
 						if not (facingWall) or not (facingWallleft) or not (facingWallright) or not (facingWalltop) then
 							outputChatBox("You are not near a wall.", 255, 0, 0)
 							count = 0
-							cooldown = 1
-							setTimer(resetCooldown, 5000, 1)
+							cooldown = setTimer(resetCooldown, 5000, 1, false)
 						else
 							count = count + 1
 							
 							if (count==20) then
 								count = 0
-								cooldown = 1
-								setTimer(resetCooldown, 30000, 1)
+								cooldown = setTimer(resetCooldown, 30000, 1, false)
 								local interior = getElementInterior(localPlayer)
 								local dimension = getElementDimension(localPlayer)
 								
@@ -85,9 +85,13 @@ function clientTagWall(weapon, ammo, ammoInClip, hitX, hitY, hitZ, hitElement)
 end
 addEventHandler("onClientPlayerWeaponFire", getLocalPlayer(), clientTagWall)
 
-function resetCooldown()
-	cooldown = 0
+function resetCooldown(killTheTimer)
+	if killTheTimer then
+		killTimer(cooldown)
+	end
+	cooldown = nil
 end
+bindKey('fire', 'up', function() resetCooldown(true) end) 
 
 function setTag(commandName, newTag)
 	if not (newTag) then

@@ -46,16 +46,21 @@ function makeTagObject(cx, cy, cz, rot, interior, dimension)
 		setElementData(obj, "type", "tag")
 		outputChatBox("You have tagged the wall!", source, 255, 194, 14)
 	else
-		local colshape = createColSphere(cx, cy, cz, 10)
+		local distance = 2
+		local colshape = createColSphere(cx, cy, cz, distance)
 		exports.pool:allocateElement(colshape)
 		local objects = getElementsWithinColShape(colshape, "object")
 		
 		local object = nil
 		for key, value in ipairs(objects) do
 			local objtype = getElementData(value, "type")
-			if (objtype=="tag") then
-				object = value
-				break
+			if objtype=="tag" then
+				local tx, ty, tz = getElementPosition(value)
+				local tdistance = getDistanceBetweenPoints3D(cx,cy,cz,tx,ty,tz)
+				if tdistance < distance then
+					object = value
+					distance = tdistance
+				end
 			end
 		end
 		

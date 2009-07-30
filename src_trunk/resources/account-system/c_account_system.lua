@@ -785,6 +785,7 @@ function loadScenarioOne()
 		id = 0
 	end
 	
+	--[[
 	setElementDimension(getLocalPlayer(), 65400+id)
 	setElementAlpha(getLocalPlayer(), 255)
 	setElementPosition(getLocalPlayer(), 1944.0075683594, -1750.8298339844, 14.382812)
@@ -840,19 +841,21 @@ function loadScenarioOne()
 	setPedRotation(scen1Officer1, 274.4475)
 	setElementDimension(scen1Officer1, 65400+id)
 
+	]]--
 	-- CAMERA
-	setCameraMatrix(2064.0795898438, 987.72485351563, 19.671875, 2064.5834960938, 1010.3972167969, 10.67187)
+	setCameraInterior(0)
+	setCameraMatrix(183.5517578125, -2022.1845703125, 44.808246612549, 365.8310546875, -2031.2275390625, 30.186800003052)
 end
 
 function updateScenario1()
-	local x1, y1, z1 = getElementPosition(scen1Car4)
-	setElementPosition(scen1Car4, x1, y1+2.5, z1)
+	--local x1, y1, z1 = getElementPosition(scen1Car4)
+	--setElementPosition(scen1Car4, x1, y1+2.5, z1)
 	
-	local x2, y2, z2 = getElementPosition(scen1Car5)
-	setElementPosition(scen1Car5, x2, y2+2.5, z2)
+	--local x2, y2, z2 = getElementPosition(scen1Car5)
+	--setElementPosition(scen1Car5, x2, y2+2.5, z2)
 	
-	local x3, y3, z3 = getElementPosition(scen1Car6)
-	setElementPosition(scen1Car6, x3, y3+2.5, z3)
+	--local x3, y3, z3 = getElementPosition(scen1Car6)
+	--setElementPosition(scen1Car6, x3, y3+2.5, z3)
 end
 
 function resetScenario1()

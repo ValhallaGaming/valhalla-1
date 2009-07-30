@@ -1,12 +1,7 @@
-pdColShape = createColSphere(285.95932006836, 204.37188720703, 1007.201171875, 10)
-exports.pool:allocateElement(pdColShape)
-setElementDimension(pdColShape, 1)
-setElementInterior(pdColShape, 3)
-
-pdColShape2 = createColSphere(255.3798828125, 77.3798828125, 1003.640625, 5)
-exports.pool:allocateElement(pdColShape2)
-setElementDimension(pdColShape2, 681)
-setElementInterior(pdColShape2, 6)
+pdColShape1 = createColSphere(255.3798828125, 77.3798828125, 1003.640625, 5)
+exports.pool:allocateElement(pdColShape1)
+setElementDimension(pdColShape1, 1)
+setElementInterior(pdColShape1, 6)
 
 esColShape = createColSphere(1581.2067871094, 1790.4083251953, 2083.3837890625, 5)
 exports.pool:allocateElement(esColShape)
@@ -200,7 +195,7 @@ function pdarmor(thePlayer, commandName)
 	local logged = getElementData(thePlayer, "loggedin")
 
 	if (logged==1) then
-		if (isElementWithinColShape(thePlayer, pdColShape) or isElementWithinColShape(thePlayer, pdColShape2)) then
+		if (isElementWithinColShape(thePlayer, pdColShape)) then
 		
 			local duty = tonumber(getElementData(thePlayer, "duty"))
 			local theTeam = getPlayerTeam(thePlayer)
@@ -219,7 +214,7 @@ function swatduty(thePlayer, commandName)
 	local logged = getElementData(thePlayer, "loggedin")
 
 	if (logged==1) then
-		if (isElementWithinColShape(thePlayer, pdColShape) or isElementWithinColShape(thePlayer, pdColShape2)) then
+		if (isElementWithinColShape(thePlayer, pdColShape)) then
 		
 			local duty = tonumber(getElementData(thePlayer, "duty"))
 			local theTeam = getPlayerTeam(thePlayer)
@@ -301,7 +296,7 @@ function policeduty(thePlayer, commandName)
 	local logged = getElementData(thePlayer, "loggedin")
 
 	if (logged==1) then
-		if (isElementWithinColShape(thePlayer, pdColShape) or isElementWithinColShape(thePlayer, pdColShape2)) then
+		if (isElementWithinColShape(thePlayer, pdColShape)) then
 		
 			local duty = tonumber(getElementData(thePlayer, "duty"))
 			local theTeam = getPlayerTeam(thePlayer)
@@ -384,7 +379,7 @@ function cadetduty(thePlayer, commandName)
 	local logged = getElementData(thePlayer, "loggedin")
 	
 	if (logged==1) then
-		if (isElementWithinColShape(thePlayer, pdColShape) or isElementWithinColShape(thePlayer, pdColShape2)) then
+		if (isElementWithinColShape(thePlayer, pdColShape)) then
 		
 			local duty = tonumber(getElementData(thePlayer, "duty"))
 			local theTeam = getPlayerTeam(thePlayer)

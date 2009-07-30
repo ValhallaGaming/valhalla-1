@@ -1223,13 +1223,13 @@ function createCharacter(name, gender, skincolour, weight, height, fatness, musc
 		local x, y, z, r, lastarea = 0, 0, 0, 0, "Unknown"
 		
 		if (transport==1) then
-			x, y, z = 2079.3344726563, 2030.2542724609, 10.8203125
-			r = 182.91093444824
-			lastarea = "The Strip"
-		else
-			x, y, z = 1704.1889648438, 1411.068359375, 10.640625
-			r = 306.16784667969
-			lastarea = "Las Venturas Airport"
+			x, y, z = 1742.1884765625, -1861.3564453125, 13.577615737915
+			r = 0.98605346679688
+			lastarea = "Unity Bus Station"
+		else then
+			x, y, z = 1685.583984375, -2329.4443359375, 13.546875
+			r = 0.79379272460938
+			lastarea = "Los Santos International"
 		end
 		
 		local salt = "fingerprintscotland"

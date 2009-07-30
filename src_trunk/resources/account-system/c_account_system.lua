@@ -3235,12 +3235,12 @@ function busEffect(button, state)
 		
 		setElementInterior(getLocalPlayer(), 0)
 		setCameraInterior(0)
-		setElementPosition(getLocalPlayer(), 2079.3344726563, 2030.2542724609, 10.8203125)
-		setPedRotation(getLocalPlayer(), 182.91093444824)
+		setElementPosition(getLocalPlayer(), 1742.1884765625, -1861.3564453125, 13.577615737915)
+		setPedRotation(getLocalPlayer(), 0.98605346679688)
 		setElementAlpha(getLocalPlayer(), 255)
 
 		removeEventHandler("onClientRender", getRootElement(), moveCameraToCreation)
-		setCameraMatrix(2070.3344726563, 2030.2542724609, 10.8203125, 2079.3344726563, 2030.2542724609, 10.8203125)
+		setCameraMatrix(1742.623046875, -1847.7109375, 16.579560279846, 1742.1884765625, -1861.3564453125, 13.577615737915)
 		
 		fadeCamera(true)
 	end
@@ -3256,12 +3256,12 @@ function aeroplaneEffect(button, state)
 		setCameraInterior(0)
 		
 		setElementInterior(getLocalPlayer(), 0)
-		setElementPosition(getLocalPlayer(), 1704.1889648438, 1411.068359375, 10.640625)
-		setPedRotation(getLocalPlayer(), 306.16784667969)
+		setElementPosition(getLocalPlayer(), 1685.583984375, -2329.4443359375, 13.546875)
+		setPedRotation(getLocalPlayer(), 0.79379272460938)
 		setElementAlpha(getLocalPlayer(), 255)
 
 		removeEventHandler("onClientRender", getRootElement(), moveCameraToCreation)
-		setCameraMatrix(1718.6136474609, 1423.9624023438, 15.64062, 1704.1889648438, 1411.068359375, 10.640625)
+		setCameraMatrix(1685.3681640625, -2309.9150390625, 16.546875, 1685.583984375, -2329.4443359375, 13.546875)
 		fadeCamera(true, 1)
 	end
 end

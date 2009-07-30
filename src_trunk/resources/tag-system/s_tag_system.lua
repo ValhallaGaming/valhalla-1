@@ -115,6 +115,7 @@ function loadAllTags(res)
 		local yearday = time.yearday
 		
 		if (result) then
+			local highest = 0
 			for result, row in mysql_rows(result) do
 				local wyearday = tonumber(row[11])
 				local id = tonumber(row[1])
@@ -143,6 +144,9 @@ function loadAllTags(res)
 					setElementData(object, "dbid", id, false)
 					setElementData(object, "type", "tag")
 					count = count + 1
+					if id > highest then
+						highest = id
+					end
 				else
 					local object = createObject(modelid, x, y, z, rx, ry, rz)
 					exports.pool:allocateElement(object)
@@ -151,9 +155,15 @@ function loadAllTags(res)
 					setElementData(object, "dbid", id, false)
 					setElementData(object, "type", "tag")
 					count = count + 1
+					if id > highest then
+						highest = id
+					end
 				end
 			end
-		mysql_free_result(result)
+			-- update the auto increment with highest used tag id + 1
+			mysql_query(handler, "ALTER TABLE `tags` AUTO_INCREMENT = " .. (highest + 1))
+			
+			mysql_free_result(result)
 		end
 		exports.irc:sendMessage("[SCRIPT] Loaded " .. count .. " Tags.")
 	end

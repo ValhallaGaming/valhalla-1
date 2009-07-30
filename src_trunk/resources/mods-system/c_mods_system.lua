@@ -119,7 +119,7 @@ function applyMods(res)
 		tag5 = engineLoadTXD ( "tags/tags_laseville.txd" ) -- Hampton OGs
 		engineImportTXD ( tag5, 1528 )
 
-		tag6 = engineLoadTXD ( "tags/tags_temple.txd" ) -- Pomerelle St. Vice Lords
+		tag6 = engineLoadTXD ( "tags/tags_latemple.txd" ) -- Pomerelle St. Vice Lords
 		engineImportTXD ( tag6, 1529 )
 
 		-- tag7 = engineLoadTXD ( "tags/tags_laazteca.txd" )

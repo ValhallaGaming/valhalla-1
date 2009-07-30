@@ -168,6 +168,8 @@ function adminUncuff(thePlayer, commandName, targetPlayer)
 						toggleControl(targetPlayer, "brake_reverse", true)
 						toggleControl(targetPlayer, "aim_weapon", true)
 						setElementData(targetPlayer, "restrain", 0)
+						removeElementData(targetPlayer, "restrainedBy")
+						removeElementData(targetPlayer, "restrainedObj")
 						exports.global:removeAnimation(targetPlayer)
 					end
 				end

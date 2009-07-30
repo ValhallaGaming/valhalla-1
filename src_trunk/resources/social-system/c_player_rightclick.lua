@@ -140,7 +140,6 @@ function cunrestrainPlayer(button, state, x, y)
 			outputChatBox("This player is not restrained.", 255, 0, 0)
 			hidePlayerMenu()
 		else
-			local restrainedBy = getElementData(player, "restrainedBy")
 			local restrainedObj = getElementData(player, "restrainedObj")
 			local dbid = getElementData(getLocalPlayer(), "dbid")
 			

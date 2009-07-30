@@ -112,7 +112,7 @@ function restrainPlayer(player, restrainedObj)
 	toggleControl(player, "brake_reverse", false)
 	toggleControl(player, "aim_weapon", false)
 	setElementData(player, "restrain", 1)
-	setElementData(player, "restrainedObj", restrainedObj, false)
+	setElementData(player, "restrainedObj", restrainedObj)
 	setElementData(player, "restrainedBy", dbid, false)
 
 	exports.global:takePlayerItem(source, restrainedObj, -1)
@@ -143,12 +143,11 @@ function unrestrainPlayer(player, restrainedObj)
 	removeElementData(player, "restrainedBy")
 	removeElementData(player, "restrainedObj")
 	
-	exports.global:givePlayerItem(source, restrainedObj, 1)
-	
 	if (restrainedObj==45) then -- If handcuffs.. take the key
 		local dbid = getElementData(source, "dbid")
 		exports.global:takePlayerItem(source, 47, dbid)
 	end
+	exports.global:givePlayerItem(source, restrainedObj, 1)
 	
 	exports.global:removeAnimation(player)
 end

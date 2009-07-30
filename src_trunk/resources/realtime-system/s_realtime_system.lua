@@ -1,15 +1,23 @@
-function ssendRealTime()
+function updateTime()
+	local offset = tonumber(get("offset"))
 	local realtime = getRealTime()
-	local hour = realtime.hour
-
-	hour = hour + 8
-	if (hour==24) then
-		hour = 0
-	elseif (hour>24) then
+	hour = realtime.hour + offset
+	if hour >= 24 then
 		hour = hour - 24
+	elseif hour < 0 then
+		hour = hour + 24
 	end
-	
-	triggerClientEvent(source, "syncRealTime", source, hour, realtime.minute, realtime.second)
+
+	minute = realtime.minute
+
+	setTime(hour, minute)
+
+	nextupdate = (60-realtime.second) * 1000
+	setMinuteDuration( nextupdate )
+	setTimer( setMinuteDuration, nextupdate + 5, 1, 60000 )
 end
-addEvent("requestRealTime", true)
-addEventHandler("requestRealTime", getRootElement(), ssendRealTime)
+
+addEventHandler("onResourceStart", getResourceRootElement(), updateTime )
+
+-- update the time every 30 minutes (correction)
+setTimer( updateTime, 1800000, 0 )

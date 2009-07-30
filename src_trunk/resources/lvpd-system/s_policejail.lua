@@ -1,57 +1,17 @@
--- objects to make the floor solid...
-obj1 = createObject(3867, 195.93978881836, 175.52951049805, 999.8234375)
-exports.pool:allocateElement(obj1)
-setElementDimension(obj1, 1)
-setElementInterior(obj1, 3)
-setObjectRotation(obj1, 270, 0, 180)
-
-obj2 = createObject(3867, 195.93978881836, 157.52951049805, 999.8234375)
-exports.pool:allocateElement(obj2)
-setElementDimension(obj2, 1)
-setElementInterior(obj2, 3)
-setObjectRotation(obj2, 270, 0, 180)
-
 -- cells
 cells = {}
 
 -- cell 1
 cells[1] = {}
-cells[1][1] = 198.70074462891
-cells[1][2] = 162.2671661377
-cells[1][3] = 1003.0299682617
-cells[1][4] = 198.70074462891
+cells[1][1] = 264.162109375
+cells[1][2] = 77.3525390625
+cells[1][3] = 1001.0390625
+cells[1][4] = 273.49508666992
 
--- cell 2
-cells[2] = {}
-cells[2][1] = 197.43392944336
-cells[2][2] = 174.46385192871
-cells[2][3] = 1003.0234375
-cells[2][4] = 3.4074401855469
-
--- cell 3
-cells[3] = {}
-cells[3][1] = 193.31275939941
-cells[3][2] = 174.46385192871
-cells[3][3] = 1003.0234375
-cells[3][4] = 3.4074401855469
-
--- cell 4 (South division)
-cells[4] = {}
-cells[4][1] = 263.9150390625
-cells[4][2] = 77.50390625
-cells[4][3] = 1001.0390625
-cells[4][4] = 278.92224121094
-
-arrestColShape = createColSphere(200.70149230957, 168.81527709961, 1003.0234375, 4)
+arrestColShape = createColSphere(268.51953125, 77.5595703125, 1001.0390625, 4)
 exports.pool:allocateElement(arrestColShape)
-setElementInterior(arrestColShape, 3)
+setElementInterior(arrestColShape, 6)
 setElementDimension(arrestColShape, 1)
-
--- SOUTH DIVISION
-arrestColShape2 = createColSphere(268.236328125, 77.5625, 1001.0390625, 4)
-exports.pool:allocateElement(arrestColShape2)
-setElementInterior(arrestColShape2, 6)
-setElementDimension(arrestColShape2, 681)
 
 -- EVENTS
 addEvent("onPlayerArrest", false)
@@ -68,7 +28,7 @@ function arrestPlayer(thePlayer, commandName, targetPlayerNick, fine, jailtime, 
 			jailtime = tonumber(jailtime)
 		end
 		
-		if (factionType==2) and (isElementWithinColShape(thePlayer, arrestColShape) or  isElementWithinColShape(thePlayer, arrestColShape2)) then
+		if (factionType==2) and (isElementWithinColShape(thePlayer, arrestColShape)) then
 			if not (targetPlayerNick) or not (fine) or not (jailtime) or not (...) or (jailtime<1) or (jailtime>180) then
 				outputChatBox("SYNTAX: /arrest [Player Partial Nick / ID] [Fine] [Jail Time (Minutes 1->180)] [Crimes Committed]", thePlayer, 255, 194, 14)
 			else
@@ -127,22 +87,12 @@ function arrestPlayer(thePlayer, commandName, targetPlayerNick, fine, jailtime, 
 								
 								local station = 1
 								
-								if (isSouthDivision) then
-									station = 2
-								end
-								
 								setElementData(targetPlayer, "pd.jailstation", station)
 								
 								mysql_query(handler, "UPDATE characters SET pdjail='1', pdjail_time='" .. jailtime .. "', pdjail_station='" .. station .. "' WHERE charactername='" .. targetPlayerNick .. "'")
 								outputChatBox("You jailed " .. targetPlayerNick .. " for " .. jailtime .. " Minutes.", thePlayer, 255, 0, 0)
 								
-								local cell
-								
-								if (isSouthDivision) then
-									cell = 4
-								else
-									cell = math.random(1, 3)
-								end
+								local cell = 1
 								
 								setElementPosition(targetPlayer, cells[cell][1], cells[cell][2], cells[cell][3])
 								setPedRotation(targetPlayer, cells[cell][4])
@@ -205,18 +155,9 @@ function timerPDUnjailPlayer(jailedPlayer)
 			setElementDimension(jailedPlayer, 1)
 			setElementInterior(jailedPlayer, 3)
 			setCameraInterior(jailedPlayer, 3)
-			
-			local station = getElementData(jailedPlayer, "pd.jailstation")
 
-			if (station==2) then
-				setElementPosition(jailedPlayer, 2320.96484375, 620.83203125, 10.825594902039)
-				setPedRotation(jailedPlayer, 2.2666625976563)
-				setElementDimension(jailedPlayer, 0)
-				setElementInterior(jailedPlayer, 0)
-			else
-				setElementPosition(jailedPlayer, 233.42037963867, 157.07211303711, 1003.0234375)
-				setPedRotation(jailedPlayer, 211.10571289063)
-			end
+			setElementPosition(jailedPlayer, 248.5458984375, 69.7431640625, 1003.640625)
+			setPedRotation(jailedPlayer, 159.63104248047)
 				
 			setElementData(jailedPlayer, "pd.jailserved", 0, false)
 			setElementData(jailedPlayer, "pd.jailtime", 0, false)

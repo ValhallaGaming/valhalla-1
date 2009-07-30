@@ -221,8 +221,8 @@ function ticketPlayer(thePlayer, commandName, targetPlayerNick, amount, ...)
 								local PDMoney = math.ceil((1-tax)*amount)
 								local GOVMoney = math.ceil(tax*amount)
 								
-								local theTeamPD = getTeamFromName("Las Venturas Metropolitan Police Department")
-								local theTeamGov = getTeamFromName("Government of Las Venturas")
+								local theTeamPD = getTeamFromName("Los Santos Police Department")
+								local theTeamGov = getTeamFromName("Government of Los Santos")
 								
 								setElementData(theTeamPD, "money", (currentPDBalance+PDMoney))
 								setElementData(theTeamGov, "money", (currentGOVBalance+GOVMoney))

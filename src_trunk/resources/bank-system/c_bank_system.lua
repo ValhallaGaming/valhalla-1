@@ -75,7 +75,7 @@ function showBankUI(isInFaction, isFactionLeader, factionBalance)
 		
 		guiSetInputEnabled(true)
 		
-		outputChatBox("Welcome to The Bank of Las Venturas")
+		outputChatBox("Welcome to The Bank of Los Santos")
 	end
 end
 addEvent("showBankUI", true)

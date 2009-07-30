@@ -4,15 +4,10 @@ local marker2 = createMarker(2240.46484375, 2456.6247558594, 3.2734375, "cylinde
 exports.pool:allocateElement(marker2)
 
 -- Nice little guard ped
-guard = createPed(282, 2238.9091796875, 2449.3188476563, 11.037217140198)
+guard = createPed(280, 1544.1591796875, -1632, 13.3828125)
 exports.pool:allocateElement(guard)
 setPedRotation(guard, 90)
-
--- Nice little guard ped for SE division
-guard2 = createPed(282, 2302.216796875, 622.40234375, 10.825594902039)
-exports.pool:allocateElement(guard2)
-setPedRotation(guard2, 4)
-setTimer(giveWeapon, 50, 1, guard2, 29, 15000, true)
+setTimer(giveWeapon, 50, 1, guard, 29, 15000, true)
 
 function killMeByPed(element)
 	killPed(source, element, 29, 9)

@@ -334,7 +334,7 @@ function playerhelp( sourcePlayer, commandName )
 					guiGridListSetItemText ( factcommandslist, ncreaterow, factusecommand, "News Faction", false, false )
 				    guiGridListSetItemText ( factcommandslist, ncreaterow, factcommanduse, "/n <IC text>", false, false )
 				    guiGridListSetItemText ( factcommandslist, ncreaterow, factcommandexplanation, "Used to globally broadcast the news.", false, false )
-				    guiGridListSetItemText ( factcommandslist, ncreaterow, factcommandexample, "/n The weather is sunny and you are tuned in to LV News!", false, false )
+				    guiGridListSetItemText ( factcommandslist, ncreaterow, factcommandexample, "/n The weather is sunny and you are tuned in to LS News!", false, false )
 					
 					interviewcreaterow = guiGridListAddRow ( factcommandslist )
 				    guiGridListSetItemText ( factcommandslist, interviewcreaterow, factcommand, "/interview", false, false )

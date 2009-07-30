@@ -99,7 +99,7 @@ function sendWarning(element, matchingDimension)
 		
 		if (isElement(thePlayer) and (thePlayer~=getRootElement())) then
 			outputChatBox("You are entering a speed control area. The speed limit is 60Kph (40Mph). Watch your speed.", thePlayer)
-			outputChatBox("Courtesy of the Los Santosn Police Department.", thePlayer)
+			outputChatBox("Courtesy of the Los Santos Police Department.", thePlayer)
 		end
 	end
 end

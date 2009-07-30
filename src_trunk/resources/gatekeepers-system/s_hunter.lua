@@ -6,9 +6,10 @@ setVehicleDamageProof(huntersCar, true)
 setElementDimension(huntersCar, 1000)
 setElementInterior(huntersCar, 2)
 
-local hunter = createPed (250, 616.162109, -75.3720, 997.99)
+hunter = createPed (250, 616.162109, -75.3720, 997.99)
 exports.pool:allocateElement(hunter)
-setPedRotation (hunter, 300.6221)
+setPedRotation (hunter, 300)
+setElementData(hunter, "rotation", getPedRotation(hunter), false)
 setPedFrozen(hunter, true)
 setElementInterior (hunter, 2)
 setElementDimension (hunter, 1000)
@@ -26,7 +27,7 @@ setElementInterior(hunterBlockGarage, 2)
 function hunterIntro () -- When player enters the colSphere create GUI with intro output to all local players as local chat.	
 	-- Give the player the "Find Hunter" achievement.
 		
-	if(getElementData( hunter, "activeConvo")==1)then
+	if(getElementData(hunter, "activeConvo")==1)then
 		outputChatBox("Hunter doesn't want to talk to you.", source, 255, 0, 0)
 	else
 		local query = mysql_query(handler, "SELECT hunter FROM characters WHERE charactername='" .. mysql_escape_string(handler, getPlayerName(source)) .."'")

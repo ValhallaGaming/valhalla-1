@@ -1,4 +1,4 @@
-local tyrese = createPed (28, 2264.65234375, -1134.3662109375, 1050.6328125)
+tyrese = createPed (28, 2264.65234375, -1134.3662109375, 1050.6328125)
 exports.pool:allocateElement(tyrese)
 
 local tyColSphere = createColSphere( 1409, 2004, 10.8, 1)
@@ -11,6 +11,7 @@ setElementDimension( tyrese, 363 )
 setElementData (tyrese, "activeConvo",  0) -- Set the convo state to 0 so people can start talking to him.
 setElementData(tyrese, "name", "Ty")
 setElementData(tyrese, "talk", true)
+setElementData(tyrese, "rotation", getPedRotation(tyrese), false)
 
 function startTy(thePlayer, hitDimension )
 	triggerClientEvent( thePlayer, "startTy_c", getRootElement())
@@ -32,7 +33,7 @@ function tyIntro () -- When player enters the colSphere create GUI with intro ou
 		end
 		destroyElement(chatSphere)
 		
-		triggerClientEvent(source, "closeTyWinodw", getRootElement())
+		triggerClientEvent(source, "closeTyWindow", getRootElement())
 	
 	else
 		-- Friend of Ty's?

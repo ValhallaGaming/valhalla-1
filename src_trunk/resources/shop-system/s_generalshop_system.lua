@@ -26,26 +26,50 @@ addEventHandler("onResourceStop", getResourceRootElement(getThisResource()), clo
 -- //			MYSQL END			 //
 -- ////////////////////////////////////
 
+-- respawn dead npcs after two minute
+addEventHandler("onPedWasted", getResourceRootElement(),
+	function()
+		setTimer(
+			function( source )
+				local x,y,z = getElementPosition(source)
+				local rotation = getElementData(source, "rotation")
+				local interior = getElementInterior(source)
+				local dimension = getElementDimension(source)
+				local dbid = getElementData(source, "dbid")
+				local shoptype = getElementData(source, "shoptype")
+				local skin = getElementModel(source)
+				
+				outputChatBox(rotation)
+				destroyElement(source)
+				createShopKeeper(x,y,z,interior,dimension,dbid,shoptype,rotation,skin)
+			end,
+			120000, 1, source
+		)
+	end
+)
+
 local skins = { { 211, 217 }, { 179 }, false, { 178 }, { 82 }, { 80, 81 }, { 28, 29 }, { 169 }, { 171, 172 } }
 
-function createShopKeeper(x,y,z,interior,dimension,id,shoptype,rotation)
-	local skin = 0
-	
-	if shoptype == 3 then
-		-- needs differences for burgershot etc
-		if interior == 5 then
-			skin = 155
-		elseif interior == 9 then
-			skin = 167
-		elseif interior == 10 then
-			skin = 205
+function createShopKeeper(x,y,z,interior,dimension,id,shoptype,rotation, skin)
+	if not skin then
+		skin = 0
+		
+		if shoptype == 3 then
+			-- needs differences for burgershot etc
+			if interior == 5 then
+				skin = 155
+			elseif interior == 9 then
+				skin = 167
+			elseif interior == 10 then
+				skin = 205
+			end
+			-- interior 17 = donut shop
+		else
+			-- clothes, interior 5 = victim
+			-- clothes, interior 15 = binco
+			-- clothes, interior 18 = zip
+			skin = skins[shoptype][math.random( 1, #skins[shoptype] )]
 		end
-		-- interior 17 = donut shop
-	else
-		-- clothes, interior 5 = victim
-		-- clothes, interior 15 = binco
-		-- clothes, interior 18 = zip
-		skin = skins[shoptype][math.random( 1, #skins[shoptype] )]
 	end
 	
 	local ped = createPed(skin, x, y, z)
@@ -58,7 +82,8 @@ function createShopKeeper(x,y,z,interior,dimension,id,shoptype,rotation)
 	
 	setElementData(ped, "dbid", id, false)
 	setElementData(ped, "type", "shop", false)
-	setElementData(ped, "shoptype", shoptype, false)				
+	setElementData(ped, "shoptype", shoptype, false)
+	setElementData(ped, "rotation", rotation, false)
 end
 
 function isGun(weaponID)

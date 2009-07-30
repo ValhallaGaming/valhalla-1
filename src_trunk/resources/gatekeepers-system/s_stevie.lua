@@ -50,10 +50,11 @@ function createStevie()
 
 	stevie = createPed (258, 675.89807128906, -455.46102905273, -24.4140625)
 	exports.pool:allocateElement(stevie)
-	setPedRotation (stevie, 180.01502990723)
+	setPedRotation (stevie, 180)
+	setElementData(stevie, "rotation", getPedRotation(stevie), false)
 	setElementInterior (stevie, 1)
 	setElementDimension (stevie, 406)
-	setPedFrozen(tyrese, true)
+	setPedFrozen(stevie, true)
 	setPedAnimation(stevie, "FOOD", "FF_Sit_Loop",  -1, true, false, true) -- Set the Peds Animation.
 	setElementData(stevie, "name", "Steven Pullman")
 	setElementData(stevie, "deals", 0) -- reset how many deals he has made today. Stevie will do 5 deals over the phone each day. He can't be called while he is in the game world (19:00-22:00).

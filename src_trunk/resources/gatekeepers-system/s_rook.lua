@@ -1,4 +1,4 @@
-local rook = createPed (21, 2478.834960937, 1273.044921875, 10.8125)
+rook = createPed (21, 2478.834960937, 1273.044921875, 10.8125)
 exports.pool:allocateElement(rook)
 
 setPedRotation(rook, 275)
@@ -6,6 +6,7 @@ setPedFrozen(rook, true)
 setElementData (rook, "activeConvo",  0) -- Set the convo state to 0 so people can start talking to him.
 setElementData(rook, "name", "Rook")
 setElementData(rook, "talk", true)
+setElementData(rook, "rotation", getPedRotation(rook), false)
 
 function rookIntro () -- When player enters the colSphere create GUI with intro output to all local players as local chat.	
 	-- Give the player the "Find Hunter" achievement.

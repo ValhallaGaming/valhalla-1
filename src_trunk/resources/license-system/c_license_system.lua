@@ -12,7 +12,7 @@ function showLicenseWindow()
 	local x = scrWidth/2 - (width/2)
 	local y = scrHeight/2 - (height/2)
 	
-	wLicense= guiCreateWindow(x, y, width, height, "Las Venturas Licensing Department", false)
+	wLicense= guiCreateWindow(x, y, width, height, "Los Santos Licensing Department", false)
 	
 	licenseList = guiCreateGridList(0.05, 0.05, 0.9, 0.8, true, wLicense)
     local column = guiGridListAddColumn(licenseList, "License", 0.7)

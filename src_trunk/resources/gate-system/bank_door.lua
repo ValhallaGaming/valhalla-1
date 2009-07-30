@@ -37,7 +37,7 @@ function playerTarget(target)
 		local factiontype = getElementData(faction, "type")
 		
 		if (factiontype~=2) then
-			local policeFaction = getTeamFromName("Las Venturas Metropolitan Police Department")
+			local policeFaction = getTeamFromName("Los Santos Metropolitan Police Department")
 			local police = getPlayersInTeam(policeFaction)
 		
 			if not (cooldown) then -- and (#police>2) then
@@ -64,7 +64,7 @@ function playerTarget(target)
 				
 				for key, value in ipairs(police) do
 					outputChatBox("[RADIO] This is dispatch, We've got an incident, Over.", value, 0, 183, 239)
-					outputChatBox("[RADIO] The Bank of Las Venturas is being robbed! ((" .. getPlayerName(source) .. "))", value, 0, 183, 239)
+					outputChatBox("[RADIO] The Bank of LLos Santos is being robbed! ((" .. getPlayerName(source) .. "))", value, 0, 183, 239)
 				end
 				
 				for index, nearbyPlayer in ipairs(nearbyPlayers) do

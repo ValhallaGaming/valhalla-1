@@ -9,7 +9,7 @@ function showBankUI(isInFaction, isFactionLeader, factionBalance)
 		local x = scrWidth/2 - (width/2)
 		local y = scrHeight/2 - (height/2)
 		
-		wBank = guiCreateWindow(x, y, width, height, "Bank of Las Venturas", false)
+		wBank = guiCreateWindow(x, y, width, height, "Bank of Los Santos", false)
 		guiWindowSetSizable(wCars, false)
 		
 		tabPanel = guiCreateTabPanel(0.05, 0.05, 0.9, 0.85, true, wBank)

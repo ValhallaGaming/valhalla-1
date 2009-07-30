@@ -566,7 +566,7 @@ function playerhelp( sourcePlayer, commandName )
 				guiGridListSetItemText ( misccommandslist, taxicreaterow, misccommand, "/taxi", false, false )
 				guiGridListSetItemText ( misccommandslist, taxicreaterow, misccommanduse, "/taxi <IC message>", false, false )
 				guiGridListSetItemText ( misccommandslist, taxicreaterow, misccommandexplanation, "This command will allow you to call for a taxi.", false, false )
-				guiGridListSetItemText ( misccommandslist, taxicreaterow, misccommandexample, "/taxi I need a taxi from the Las Venturas General Hospital.", false, false )
+				guiGridListSetItemText ( misccommandslist, taxicreaterow, misccommandexample, "/taxi I need a taxi from the Los Santos General Hospital.", false, false )
 		
 				ordersuppliescreaterow = guiGridListAddRow ( misccommandslist )
 				guiGridListSetItemText ( misccommandslist, ordersuppliescreaterow, misccommand, "/ordersupplies", false, false )

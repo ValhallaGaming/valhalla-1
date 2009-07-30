@@ -152,7 +152,7 @@ function getItemDescription(itemID)
 	elseif (itemID==47) then return "A small pair of handcuff keys."
 	elseif (itemID==48) then return "A reasonably sized backpack."
 	elseif (itemID==49) then return "A 7 foot carbon steel fishing rod."
-	elseif (itemID==50) then return "The Las Venturas Highway Code."
+	elseif (itemID==50) then return "The Los Santos Highway Code."
 	elseif (itemID==51) then return "Chemistry 101."
 	elseif (itemID==52) then return "The Police Officer's Manual."
 	elseif (itemID==53) then return "A small black breathalizer."

@@ -153,7 +153,7 @@ function arrestPlayer(thePlayer, commandName, targetPlayerNick, fine, jailtime, 
 								triggerEvent("onPlayerArrest", thePlayer, targetPlayer, fine, jailtime, reason)
 								
 								-- Show the message to the faction
-								local theTeam = getTeamFromName("Las Venturas Metropolitan Police Department")
+								local theTeam = getTeamFromName("Los Santos Police Department")
 								local teamPlayers = getPlayersInTeam(theTeam)
 								
 								local result = mysql_query(handler, "SELECT faction_id, faction_rank FROM characters WHERE charactername='" .. username .. "' LIMIT 1")

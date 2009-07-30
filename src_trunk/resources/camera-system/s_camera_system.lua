@@ -80,7 +80,7 @@ function sendWarningToCops(vehicle, player, colshape, x, y, z, speed)
 		exports.global:givePlayerAchievement(player, 13)
 		triggerClientEvent(player, "cameraEffect", player)
 		
-		local theTeam = getTeamFromName("Las Venturas Metropolitan Police Department")
+		local theTeam = getTeamFromName("Los Santos Police Department")
 		local teamPlayers = getPlayersInTeam(theTeam)
 		for key, value in ipairs(teamPlayers) do
 			local duty = tonumber(getElementData(value, "duty"))
@@ -99,7 +99,7 @@ function sendWarning(element, matchingDimension)
 		
 		if (isElement(thePlayer) and (thePlayer~=getRootElement())) then
 			outputChatBox("You are entering a speed control area. The speed limit is 60Kph (40Mph). Watch your speed.", thePlayer)
-			outputChatBox("Courtesy of the Las Venturas Metropolitan Police Department.", thePlayer)
+			outputChatBox("Courtesy of the Los Santosn Police Department.", thePlayer)
 		end
 	end
 end

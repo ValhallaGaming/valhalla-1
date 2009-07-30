@@ -13,7 +13,7 @@ function createCityGuide( key, keyState )
 		click_count = 0
 
 		-- Create the window
-		wGuidebook = guiCreateWindow(X, Y, Width, Height, "Las Venturas City Guidebook", false)
+		wGuidebook = guiCreateWindow(X, Y, Width, Height, "Los Santos City Guidebook", false)
 
 		-- Create close, previous and Next Button
 		buttonPrev = guiCreateButton( 0.85, 0.25, 0.14, 0.05, "Prev", true, wGuidebook)

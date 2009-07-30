@@ -247,8 +247,8 @@ function departmentradio(thePlayer, commandName, ...)
 			if (...) then
 				local message = table.concat({...}, " ")
 				
-				local PDFaction = getPlayersInTeam(getTeamFromName("Las Venturas Metropolitan Police Department"))
-				local ESFaction = getPlayersInTeam(getTeamFromName("Las Venturas Emergency Services"))
+				local PDFaction = getPlayersInTeam(getTeamFromName("Los Santos Police Department"))
+				local ESFaction = getPlayersInTeam(getTeamFromName("Los Santos Emergency Services"))
 				local FBIFaction = getPlayersInTeam(getTeamFromName("Federal Bureau of Investigation"))
 				local playerName = string.gsub(getPlayerName(thePlayer), "_", " ")
 				
@@ -809,8 +809,8 @@ function call911(thePlayer, commandName, ...)
 			outputChatBox("SYNTAX: /" .. commandName .. " [Description of Situation]", thePlayer, 255, 194, 14)
 		else
 			local message = table.concat({...}, " ")
-			local theTeam = getTeamFromName("Las Venturas Metropolitan Police Department")
-			local theTeamES = getTeamFromName("Las Venturas Emergency Services")
+			local theTeam = getTeamFromName("Los Santos Police Department")
+			local theTeamES = getTeamFromName("Los Santos Emergency Services")
 			local teamMembers = getPlayersInTeam(theTeam)
 			local teamMembersES = getPlayersInTeam(theTeamES)
 			
@@ -824,7 +824,7 @@ function call911(thePlayer, commandName, ...)
 				outputChatBox("[RADIO] '" .. message .. "', Over. ((" .. getPlayerName(thePlayer) .. "))", value, 0, 183, 239)
 			end
 			
-			outputChatBox("Thank you for calling the Las Venturas Emergency Dispatch Board. A unit has been dispatched to your location.", thePlayer, 255, 194, 14)
+			outputChatBox("Thank you for calling the Los Santos Emergency Dispatch Board. A unit has been dispatched to your location.", thePlayer, 255, 194, 14)
 			
 			local x, y, z = getElementPosition(thePlayer)
 			local chatSphere = createColSphere(x, y, z, 20)

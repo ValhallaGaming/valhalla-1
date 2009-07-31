@@ -126,7 +126,7 @@ function rookStatement5()
 	optionTwo = nil
 	
 	-- Create new Stevies text box
-	guiSetText ( rookText, "Rook says: His name's Ty and lives over in Fullview Apartments on Virdine Street, apartment 6. Tell him Rook sent you.")
+	guiSetText ( rookText, "Rook says: His name's Ty and lives over in Kennedy Apartments on Panoptican Avenue, apartment 3. Tell him Rook sent you.")
 	
 	-- Create the new options
 	optionOne = guiCreateButton( 0.05, 0.35, 0.9, 0.2, "Nah, this shits a setup. Probably got your crack head homies ready to jump me for my shoes.", true, wRook )

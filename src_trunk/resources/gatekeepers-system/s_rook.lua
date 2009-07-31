@@ -120,7 +120,7 @@ function rookStatement5_S()
 	local name = string.gsub(getPlayerName(source), "_", " ")
 	for i, player in ipairs( targetPlayers ) do
 		outputChatBox(name .. " whispers: Where's he at?", player, 255, 255, 255)
-		outputChatBox("Rook whispers: His names Tyrese and lives over in Fullview Apartments on Virdine Street, apartment 6. Tell him Rook sent you.", player, 255, 255, 255)
+		outputChatBox("Rook whispers: His names Tyrese and lives over in Kennedy Apartments on Panoptican Avenue, apartment 3. Tell him Rook sent you.", player, 255, 255, 255)
 	end
 	destroyElement (chatSphere)
 end

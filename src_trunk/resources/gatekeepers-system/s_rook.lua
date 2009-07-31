@@ -1,4 +1,4 @@
-rook = createPed (21, 1976.51, -1155.109, 19.9)
+rook = createPed (21, 1976.51, -1155.109, 20.9)
 exports.pool:allocateElement(rook)
 
 setPedRotation(rook, 180)

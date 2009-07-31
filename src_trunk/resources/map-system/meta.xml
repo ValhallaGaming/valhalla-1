@@ -5,6 +5,7 @@
 	<script src="Dragon Lady Strip Club.lua" type="client"/>
 	<script src="FBI Field Office.lua" type="client"/>
 	<script src="glenbrook_apartments_doors.lua" type="client"/>
+	<script src="LS Harbor.lua" type="client"/>
 	<script src="LV Hospital.lua" type="client"/>
 	<script src="LVMPD.lua" type="client"/>
 	<script src="Phils Bistro Map.lua" type="client"/>

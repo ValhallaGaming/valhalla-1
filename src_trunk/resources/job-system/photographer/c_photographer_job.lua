@@ -10,7 +10,7 @@ local collectionValue = 0
 -- Ped at submission desk just for the aesthetics.
 local victoria = createPed(141, 359.7, 173.57419128418, 1008.3893432617)
 setPedRotation(victoria, 270)
-setElementDimension(victoria, 787)
+setElementDimension(victoria, 1289)
 setElementInterior(victoria, 3)
 setPedAnimation ( victoria, "INT_OFFICE", "OFF_Sit_Idle_Loop", -1, true, false, false )
 
@@ -120,8 +120,8 @@ function sellPhotos()
 			photoSubmitDeskColSphere = createColSphere( 362, 173, 1007, 2 )
 			setElementInterior(photoSubmitDeskMarker,3)
 			setElementInterior(photoSubmitDeskColSphere,3)			
-			setElementDimension(photoSubmitDeskMarker, 787)
-			setElementDimension(photoSubmitDeskColSphere, 787)
+			setElementDimension(photoSubmitDeskMarker, 1289)
+			setElementDimension(photoSubmitDeskColSphere, 1289)
 			
 			outputChatBox("#FF9933You can sell your photographs at the #3399FFSan Andreas Network Tower #FF9933((/sellpics at the front desk)).", 255, 255, 255, true)
 		else

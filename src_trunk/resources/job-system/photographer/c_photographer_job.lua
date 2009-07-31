@@ -6,6 +6,7 @@ emergencyVehicles = { [416]=true, [427]=true, [490]=true, [528]=true, [407]=true
 
 local pictureValue = 0
 local collectionValue = 0
+local localPlayer = getLocalPlayer()
 
 -- Ped at submission desk just for the aesthetics.
 local victoria = createPed(141, 359.7, 173.57419128418, 1008.3893432617)
@@ -15,88 +16,91 @@ setElementInterior(victoria, 3)
 setPedAnimation ( victoria, "INT_OFFICE", "OFF_Sit_Idle_Loop", -1, true, false, false )
 
 function snapPicture(weapon, ammo, ammoInClip, hitX, hitY, hitZ, hitElement )
-	local logged = getElementData(source, "loggedin")
+	local logged = getElementData(localPlayer, "loggedin")
 	
 	if (logged==1) then
-		local theTeam = getPlayerTeam(source)
-		local factionType = getElementData(theTeam, "type")
+		local theTeam = getPlayerTeam(localPlayer)
 		
-		if (factionType==6) then
-			if (weapon == 43) then
-				pictureValue = 0
-				local onScreenPlayers = {}
-				local players = getElementsByType( "player" )
-				for theKey, thePlayer in ipairs(players) do			-- thePlayer ~= source
-					if (isElementOnScreen(thePlayer) == true ) then
-						table.insert(onScreenPlayers, thePlayer)	-- Identify everyone who is on the screen as the picture is taken.
+		if (theTeam) then
+			local factionType = getElementData(theTeam, "type")
+			
+			if (factionType==6) then
+				if (weapon == 43) then
+					pictureValue = 0
+					local onScreenPlayers = {}
+					local players = getElementsByType( "player" )
+					for theKey, thePlayer in ipairs(players) do			-- thePlayer ~= localPlayer
+						if (isElementOnScreen(thePlayer) == true ) then
+							table.insert(onScreenPlayers, thePlayer)	-- Identify everyone who is on the screen as the picture is taken.
+						end
 					end
-				end
-				for theKey,thePlayer in ipairs(onScreenPlayers) do
-					local Tx,Ty,Tz = getElementPosition(thePlayer)
-					local Px,Py,Pz = getElementPosition(getLocalPlayer())
-					local isclear = isLineOfSightClear (Px, Py, Pz +1, Tx, Ty, Tz, true, true, false, true, true, false)
-					if (isclear) then
-						-------------------
-						-- Player Checks --
-						-------------------
-						local skin = getElementModel(thePlayer)
-						if(beautifulPeople[skin]) then
-							pictureValue=pictureValue+50
-						end
-						if(getPedWeapon(thePlayer)~=0)and(getPedTotalAmmo(thePlayer)~=0) then
-							pictureValue=pictureValue+25
-							if (cop[skin])then
-								pictureValue=pictureValue+5
+					for theKey,thePlayer in ipairs(onScreenPlayers) do
+						local Tx,Ty,Tz = getElementPosition(thePlayer)
+						local Px,Py,Pz = getElementPosition(getLocalPlayer())
+						local isclear = isLineOfSightClear (Px, Py, Pz +1, Tx, Ty, Tz, true, true, false, true, true, false)
+						if (isclear) then
+							-------------------
+							-- Player Checks --
+							-------------------
+							local skin = getElementModel(thePlayer)
+							if(beautifulPeople[skin]) then
+								pictureValue=pictureValue+50
 							end
-						end
-						if(swat[skin])then
-							pictureValue=pictureValue+50
-						end
-						if(getPedControlState(thePlayer, "fire"))then
-							pictureValue=pictureValue+50
-						end
-						if(isPedChoking(thePlayer))then
-							pictureValue=pictureValue+50
-						end
-						if(isPedDoingGangDriveby(thePlayer))then
-							pictureValue=pictureValue+100
-						end
-						if(isPedHeadless(thePlayer))then
-							pictureValue=pictureValue+200
-						end
-						if(isPedOnFire(thePlayer))then
-							pictureValue=pictureValue+250
-						end
-						if(isPlayerDead(thePlayer))then
-							pictureValue=pictureValue+150
-						end
-						if (#onScreenPlayers>3)then
-							pictureValue=pictureValue+10
-						end
-						--------------------
-						-- Vehicle checks --
-						--------------------
-						local vehicle = getPedOccupiedVehicle(thePlayer)
-						if(vehicle)then
-							if(flashCar[vehicle])then
-								pictureValue=pictureValue+200
+							if(getPedWeapon(thePlayer)~=0)and(getPedTotalAmmo(thePlayer)~=0) then
+								pictureValue=pictureValue+25
+								if (cop[skin])then
+									pictureValue=pictureValue+5
+								end
 							end
-							if(emergencyVehicle[vehicle])and(getVehicleSirensOn(vehicle)) then
+							if(swat[skin])then
+								pictureValue=pictureValue+50
+							end
+							if(getPedControlState(thePlayer, "fire"))then
+								pictureValue=pictureValue+50
+							end
+							if(isPedChoking(thePlayer))then
+								pictureValue=pictureValue+50
+							end
+							if(isPedDoingGangDriveby(thePlayer))then
 								pictureValue=pictureValue+100
 							end
-							if not (isVehicleOnGround(vehicle))then
+							if(isPedHeadless(thePlayer))then
 								pictureValue=pictureValue+200
+							end
+							if(isPedOnFire(thePlayer))then
+								pictureValue=pictureValue+250
+							end
+							if(isPlayerDead(thePlayer))then
+								pictureValue=pictureValue+150
+							end
+							if (#onScreenPlayers>3)then
+								pictureValue=pictureValue+10
+							end
+							--------------------
+							-- Vehicle checks --
+							--------------------
+							local vehicle = getPedOccupiedVehicle(thePlayer)
+							if(vehicle)then
+								if(flashCar[vehicle])then
+									pictureValue=pictureValue+200
+								end
+								if(emergencyVehicle[vehicle])and(getVehicleSirensOn(vehicle)) then
+									pictureValue=pictureValue+100
+								end
+								if not (isVehicleOnGround(vehicle))then
+									pictureValue=pictureValue+200
+								end
 							end
 						end
 					end
+					if(pictureValue==0)then
+						outputChatBox("No one is going to pay for that picture...", 255, 0, 0)
+					else
+						collectionValue = collectionValue + pictureValue
+						outputChatBox("#FF9933That's a keeper! Picture value: $"..pictureValue, 255, 104, 91, true)
+					end
+					outputChatBox("#FF9933Collection value: $"..collectionValue, 255, 104, 91, true)
 				end
-				if(pictureValue==0)then
-					outputChatBox("No one is going to pay for that picture...", 255, 0, 0)
-				else
-					collectionValue = collectionValue + pictureValue
-					outputChatBox("#FF9933That's a keeper! Picture value: $"..pictureValue, 255, 104, 91, true)
-				end
-				outputChatBox("#FF9933Collection value: $"..collectionValue, 255, 104, 91, true)
 			end
 		end
 	end
@@ -111,7 +115,7 @@ addCommandHandler("totalvalue", showValue, false, false)
 
 -- /sellpics to sell your collection of pictures to the news company.
 function sellPhotos()
-	local theTeam = getPlayerTeam(source)
+	local theTeam = getPlayerTeam(localPlayer)
 	local factionType = getElementData(theTeam, "type")
 			
 	if (factionType==6) then
@@ -125,11 +129,11 @@ function sellPhotos()
 			
 			outputChatBox("#FF9933You can sell your photographs at the #3399FFSan Andreas Network Tower #FF9933((/sellpics at the front desk)).", 255, 255, 255, true)
 		else
-			if (isElementWithinColShape(source, photoSubmitDeskColSphere))then
+			if (isElementWithinColShape(localPlayer, photoSubmitDeskColSphere))then
 				if(collectionValue==0)then
 					outputChatBox("None of the pictures you have are worth anything.", 255, 0, 0, true)
 				else
-					triggerServerEvent("submitCollection", source, collectionValue)
+					triggerServerEvent("submitCollection", localPlayer, collectionValue)
 					collectionValue = 0
 				end
 			else

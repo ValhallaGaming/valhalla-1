@@ -276,7 +276,7 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 				
 				-- can't see their name
 				local pid = getElementData(source, "playerid")
-				local name = getPlayerName(source)
+				local name = string.gsub(getPlayerName(source), "_", " ")
 				local fixedName = "(" .. tostring(pid) .. ") " .. name
 				setPlayerNametagText(source, tostring(fixedName))
 
@@ -405,7 +405,7 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 				
 				-- can't see their name
 				local pid = getElementData(source, "playerid")
-				local name = getPlayerName(source)
+				local name = string.gsub(getPlayerName(source), "_", " ")
 				local fixedName = "(" .. tostring(pid) .. ") " .. name
 				setPlayerNametagText(source, tostring(fixedName))
 

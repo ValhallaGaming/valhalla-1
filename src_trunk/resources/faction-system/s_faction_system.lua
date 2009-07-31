@@ -257,7 +257,7 @@ function callbackRespawnVehicles()
 		
 		for key, value in ipairs(exports.pool:getPoolElementsByType("vehicle")) do
 			local faction = getElementData(value, "faction")
-			if ((tonumber(faction)==factionID) and not getVehicleOccupant(value, 0) and not getVehicleOccupant(value, 1) and not getVehicleOccupant(value, 2) and not getVehicleOccupant(value, 3)) then
+			if ((tonumber(faction)==factionID) and not getVehicleOccupant(value, 0) and not getVehicleOccupant(value, 1) and not getVehicleOccupant(value, 2) and not getVehicleOccupant(value, 3) and not getVehicleTowingVehicle(value)) then
 				respawnVehicle(value)
 			end
 		end
@@ -763,7 +763,7 @@ function setFactionMoney(thePlayer, commandName, factionID, amount)
 			end
 			
 			if (theTeam) then
-				setElementData(theTeam, "money", amount, false)
+				setElementData(theTeam, "money", amount)
 				local result = mysql_query(handler, "UPDATE factions SET bankbalance='" .. amount .. "' WHERE id='" .. tonumber(factionID) .. "'")
 				mysql_free_result(result)
 				outputChatBox("Set faction '" .. getTeamName(theTeam) .. "'s money to " .. amount .. " $.", thePlayer, 255, 194, 14)
@@ -960,3 +960,26 @@ function timeSaved(thePlayer)
 	end
 end
 addCommandHandler("timesaved", timeSaved)
+
+
+function addToFactionMoney(factionID, amount)
+	theTeam = nil
+	for key, value in ipairs(exports.pool:getPoolElementsByType("team")) do
+		local id = tonumber(getElementData(value, "id"))
+	
+		if (id==tonumber(factionID)) then
+			theTeam = value
+		end
+	end
+	
+	if (theTeam) then
+		local gresult = mysql_query(handler, "SELECT bankbalance FROM factions WHERE id='" .. factionID .."'")
+		local amount = tonumber(mysql_result(gresult, 1, 1)) + amount
+		mysql_free_result(gresult)
+		setElementData(theTeam, "money", amount)
+		local result = mysql_query(handler, "UPDATE factions SET bankbalance='" .. amount .. "' WHERE id='" .. tonumber(factionID) .. "'")
+		mysql_free_result(result)
+		return true
+	end
+	return false
+end

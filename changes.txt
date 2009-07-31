@@ -1,4 +1,17 @@
 ---
+Tow Trucks
+---
+add row
+38, 1087.500000, -923.285156, 43.390625, 221.458984, 118.036133, 1010.218750, 0, 0, 9001, 10
+to elevators
+
+Add a column to vehicles "Impounded"
+Type: Int
+Default: 0
+--Make sure the default is 0 or all vehicles will be un-usable
+
+
+---
 Hospital falling fix
 ---
 modify id 10 in the elevators table to

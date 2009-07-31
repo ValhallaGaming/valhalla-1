@@ -297,7 +297,7 @@ function loadAllVehicles(res)
 			setElementData(value, "realinvehicle", 0, false)
 		end
 		
-		local result = mysql_query(handler, "SELECT currx, curry, currz, currrx, currry, currrz, x, y, z, rotx, roty, rotz, id, model, upgrade0, upgrade1, upgrade2, upgrade3, upgrade4, upgrade5, upgrade6, upgrade7, upgrade8, upgrade9, upgrade10, upgrade11, upgrade12, upgrade13, upgrade14, upgrade15, upgrade16 FROM vehicles")
+		local result = mysql_query(handler, "SELECT currx, curry, currz, currrx, currry, currrz, x, y, z, rotx, roty, rotz, id, model, upgrade0, upgrade1, upgrade2, upgrade3, upgrade4, upgrade5, upgrade6, upgrade7, upgrade8, upgrade9, upgrade10, upgrade11, upgrade12, upgrade13, upgrade14, upgrade15, upgrade16, Impounded FROM vehicles")
 		local resultext = mysql_query(handler, "SELECT fuel, engine, locked, lights, sirens, paintjob, wheel1, wheel2, wheel3, wheel4, panel0, panel1, panel2, panel3, panel4, panel5, panel6, door1, door2, door3, door4, door5, door6, hp, color1, color2, plate, faction, owner, job, dimension, interior, currdimension, currinterior, items, itemvalues FROM vehicles")
 		
 		local counter = 0
@@ -342,6 +342,7 @@ function loadAllVehicles(res)
 				local upgrade14 = row[29]
 				local upgrade15 = row[30]
 				local upgrade16 = row[31]
+				local Impounded = row[32]
 				
 				local fuel = tonumber(mysql_result(resultext, rowc, 1))
 				local engine = tonumber(mysql_result(resultext, rowc, 2))
@@ -491,6 +492,12 @@ function loadAllVehicles(res)
 				setElementData(veh, "job", tonumber(job), false)
 				setElementData(veh, "items", items)
 				setElementData(veh, "itemvalues", itemvalues)
+				-- Impounded
+				if (tonumber(Impounded) == 0) then
+					setElementData(veh, "Impounded", false)
+				else
+					setElementData(veh, "Impounded", true)
+				end
 
 				-- Interiors
 				setElementDimension(veh, currdimension)
@@ -861,7 +868,7 @@ addEventHandler("onVehicleStartExit", getRootElement(), setRealNotInVehicle)
 function removeFromFactionVehicle(thePlayer)
 	local faction = getElementData(thePlayer, "faction")
 	local vfaction = tonumber(getElementData(source, "faction"))
-	
+	local CanTowDriverEnter = (call(getResourceFromName("tow"), "CanTowTruckDriverVehPos", thePlayer) == 2)
 	if (vfaction~=-1) then
 		local seat = getPedOccupiedVehicleSeat(thePlayer)
 		if (faction~=vfaction) and (seat==0) then
@@ -873,13 +880,27 @@ function removeFromFactionVehicle(thePlayer)
 					break
 				end
 			end
+			if (CanTowDriverEnter) then
+				outputChatBox("(( This Vehicle belongs to '" .. factionName .. "'. ))", thePlayer, 255, 194, 14)
+				setElementData(source, "enginebroke", 1, false)
+				setVehicleDamageProof(source, true)
+				setVehicleEngineState(source, false)
+				return
+			end
 			outputChatBox("You are not a member of '" .. factionName .. "'.", thePlayer, 255, 194, 14)
 			removePedFromVehicle(thePlayer)
 			local x, y, z = getElementPosition(thePlayer)
 			setElementPosition(thePlayer, x, y, z)
 		end
 	end
-	
+	if (CanTowDriverEnter) then
+		if (getElementData(source,"Impounded") == true) then
+			setElementData(source, "enginebroke", 1, false)
+			setVehicleDamageProof(source, true)
+			setVehicleEngineState(source, false)
+		end
+		return
+	end
 	local vjob = tonumber(getElementData(source, "job"))
 	local job = getElementData(thePlayer, "job")
 	local seat = getPedOccupiedVehicleSeat(thePlayer)

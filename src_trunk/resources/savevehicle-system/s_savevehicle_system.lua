@@ -103,6 +103,12 @@ function saveVehicleOnExit(thePlayer, seat, vehicle)
 			local upgrade14 = getVehicleUpgradeOnSlot(source, 14)
 			local upgrade15 = getVehicleUpgradeOnSlot(source, 15)
 			local upgrade16 = getVehicleUpgradeOnSlot(source, 16)
+			local Impounded
+			if (getElementData(source, "Impounded")) then
+				Impounded = 1
+			else
+				Impounded = 0
+			end
 			
 			local health = getElementHealth(source)
 			
@@ -112,7 +118,7 @@ function saveVehicleOnExit(thePlayer, seat, vehicle)
 			local interior = getElementInterior(source)
 			
 			local update = mysql_query(handler, "UPDATE vehicles SET panel0='" .. panel0 .. "', panel1='" .. panel1 .. "', panel2='" .. panel2 .. "', panel3='" .. panel3 .. "', panel4='" .. panel4 .. "', panel5='" .. panel5 .. "', panel6='" .. panel6 .. "', door1='" .. door1 .. "', door2='" .. door2 .. "', door3='" .. door3 .. "', door4='" .. door4 .. "', door5='" .. door5 .. "', door6='" .. door6 .. "', hp='" .. health .. "', sirens='" .. sirens .. "', paintjob='" .. paintjob .. "', currdimension='" .. dimension .. "', currinterior='" .. interior .. "' WHERE id='" .. dbid .. "'")
-			local update2 = mysql_query(handler, "UPDATE vehicles SET upgrade0='" .. upgrade0 .. "', upgrade1='" .. upgrade1 .. "', upgrade2='" .. upgrade2 .. "', upgrade3='" .. upgrade3 .. "', upgrade4='" .. upgrade4 .. "', upgrade5='" .. upgrade5 .. "', upgrade6='" .. upgrade6 .. "', upgrade7='" .. upgrade7 .. "', upgrade8='" .. upgrade8 .. "', upgrade9='" .. upgrade9 .. "', upgrade10='" .. upgrade10 .. "', upgrade11='" .. upgrade11 .. "', upgrade12='" .. upgrade12 .. "', upgrade13='" .. upgrade13 .. "', upgrade14='" .. upgrade14 .. "', upgrade15='" .. upgrade15 .. "', upgrade16='" .. upgrade16 .. "' WHERE id='" .. dbid .. "'")
+			local update2 = mysql_query(handler, "UPDATE vehicles SET upgrade0='" .. upgrade0 .. "', upgrade1='" .. upgrade1 .. "', upgrade2='" .. upgrade2 .. "', upgrade3='" .. upgrade3 .. "', upgrade4='" .. upgrade4 .. "', upgrade5='" .. upgrade5 .. "', upgrade6='" .. upgrade6 .. "', upgrade7='" .. upgrade7 .. "', upgrade8='" .. upgrade8 .. "', upgrade9='" .. upgrade9 .. "', upgrade10='" .. upgrade10 .. "', upgrade11='" .. upgrade11 .. "', upgrade12='" .. upgrade12 .. "', upgrade13='" .. upgrade13 .. "', upgrade14='" .. upgrade14 .. "', upgrade15='" .. upgrade15 .. "', upgrade16='" .. upgrade16 .. "', Impounded='" .. tonumber(Impounded) .. "' WHERE id='" .. dbid .. "'")
 			
 			if (update) then
 				mysql_free_result(update)

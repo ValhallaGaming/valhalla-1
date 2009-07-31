@@ -271,7 +271,7 @@ function respawnCmdVehicle(thePlayer, commandName, id)
 						
 						respawnVehicle(theVehicle)
 						
-						if owner == -2 then
+						if owner == -2 and not getElementData(theVehicle,"Impounded") then
 							setVehicleLocked(theVehicle, false)
 						end
 					end
@@ -314,13 +314,13 @@ function respawnAllVehicles(thePlayer, commandName)
 				local pass2 = getVehicleOccupant(theVehicle, 2)
 				local pass3 = getVehicleOccupant(theVehicle, 3)
 
-				if (pass1) or (pass2) or (pass3) or (driver) then
+				if (pass1) or (pass2) or (pass3) or (driver) or (getVehicleTowingVehicle(theVehicle)) then
 					occupiedcounter = occupiedcounter + 1
 				else
 					respawnVehicle(theVehicle)
 					-- unlock Civ vehicles
 					local owner = getElementData(theVehicle, "owner")
-					if owner == -2 then
+					if owner == -2 and not getElementData(theVehicle,"Impounded") then
 						setVehicleLocked(theVehicle, false)
 					end
 					counter = counter + 1
@@ -432,7 +432,9 @@ function fixPlayerVehicle(thePlayer, commandName, target)
 					local veh = getPedOccupiedVehicle(targetPlayer)
 					if (veh) then
 						fixVehicle(veh)
-						setElementData(veh, "enginebroke", 0, false)
+						if (not getElementData(veh, "Impounded")) then
+							setElementData(veh, "enginebroke", 0, false)
+						end
 						outputChatBox("You repaired " .. targetPlayerName .. "'s vehicle.", thePlayer)
 						outputChatBox("Your vehicle was repaired by admin " .. username .. ".", targetPlayer)
 					else
@@ -551,7 +553,9 @@ function fixAllVehicles(thePlayer, commandName)
 		local username = getPlayerName(thePlayer)
 		for key, value in ipairs(exports.pool:getPoolElementsByType("vehicle")) do
 			fixVehicle(value)
-			setElementData(value, "enginebroke", 0, false)
+			if (not getElementData(veh, "Impounded")) then
+				setElementData(veh, "enginebroke", 0, false)
+			end
 		end
 		outputChatBox("All vehicles repaired by Admin " .. username .. ".")
 	end
@@ -707,8 +711,8 @@ function setVehiclePosition(thePlayer, commandName)
 	local playerid = getElementData(thePlayer, "dbid")
 	local owner = getElementData(veh, "owner")
 	local dbid = getElementData(veh, "dbid")
-	
-	if (exports.global:isPlayerAdmin(thePlayer)) or (owner==playerid) or (exports.global:doesPlayerHaveItem(thePlayer, 3, dbid)) then
+	local TowingReturn = call(getResourceFromName("tow"), "CanTowTruckDriverVehPos", thePlayer) -- 2 == in towing and in col shape, 1 == colshape only, 0 == not in col shape
+	if (exports.global:isPlayerAdmin(thePlayer)) or (owner==playerid and TowingReturn == 0) or (exports.global:doesPlayerHaveItem(thePlayer, 3, dbid)) or (TowingReturn == 2) then
 		
 		if not (veh) then
 			outputChatBox("You are not in a vehicle.", thePlayer, 255, 0, 0)
@@ -716,6 +720,10 @@ function setVehiclePosition(thePlayer, commandName)
 			if (dbid<0) then
 				outputChatBox("This vehicle is not permanently spawned.", thePlayer, 255, 0, 0)
 			else
+				if (call(getResourceFromName("tow", "CanTowTruckDriverGetPaid", thePlayer)) then
+					call(getResourceFromName("faction-system", "addToFactionMoney", 24, 75)
+					call(getResourceFromName("faction-system", "addToFactionMoney", 1, 75)
+				end
 				removeElementData(veh, "requires.vehpos")
 				local x, y, z = getElementPosition(veh)
 				local rx, ry, rz = getVehicleRotation(veh)

@@ -525,7 +525,7 @@ function spawnCharacter(charname)
 		setPedFightingStyle(source, tonumber(fightstyle))
 		
 		-- Achievement
-		if not (exports.global:doesPlayerHaveAchievement(source, 1)) then
+		if not (exports.global:doesPlayerHaveAchievement(source, 38)) then
 			exports.global:givePlayerAchievement(source, 38) -- Welcome to Los Santos
 			triggerClientEvent(source, "showCityGuide", source)
 		end

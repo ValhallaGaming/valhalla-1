@@ -278,7 +278,7 @@ function createCivilianPermVehicle(thePlayer, commandName, id, col1, col2, job)
 					setElementData(veh, "oldz", z, false)
 					setElementData(veh, "faction", -1, false)
 					setElementData(veh, "owner", -2, false)
-					setElementData(veh, "job", 0, false)
+					setElementData(veh, "job", job, false)
 					outputChatBox(getVehicleName(veh) .. " (Civilian) spawned with ID #" .. id .. ".", thePlayer, 255, 194, 14)
 					triggerEvent("onVehicleSpawn", veh)
 				end

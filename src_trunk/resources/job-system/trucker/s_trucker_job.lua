@@ -16,8 +16,12 @@ addEventHandler("respawnTruck", getRootElement(), respawnTruck)
 
 local truck = { [414] = true }
 function checkTruckingEnterVehicle(thePlayer, seat)
+	outputDebugString(tostring(getElementData(source, "owner")))
+	outputDebugString(tostring(getElementData(source, "faction")))
+	outputDebugString(tostring(getElementData(source,"job")))
+	outputDebugString(tostring(getElementData(thePlayer,"job")))
 	if getElementData(source, "owner") == -2 and getElementData(source, "faction") == -1 and seat == 0 and truck[getElementModel(source)] and getElementData(source,"job") == 1 and getElementData(thePlayer,"job") == 1 then
-		triggerClientEvent("startTruckJob", thePlayer)
+		triggerClientEvent(thePlayer, "startTruckJob", thePlayer)
 	end
 end
 addEventHandler("onVehicleEnter", getRootElement(), checkTruckingEnterVehicle)

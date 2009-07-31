@@ -527,7 +527,7 @@ function spawnCharacter(charname)
 		-- Achievement
 		if not (exports.global:doesPlayerHaveAchievement(source, 38)) then
 			exports.global:givePlayerAchievement(source, 38) -- Welcome to Los Santos
-			triggerClientEvent(source, "showCityGuide", source)
+			--triggerClientEvent(source, "showCityGuide", source)
 		end
 		
 		-- Weapon stats

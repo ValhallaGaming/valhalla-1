@@ -3,6 +3,7 @@ local driver = false
 local shooting = false
 local helpText,helpAnimation
 lastSlot = 0
+enteredSlot = 0
 settings = {}
 
 
@@ -15,6 +16,7 @@ local function setupDriveby( player, seat )
 		driver = false
 	end
 	--By default, we set the player's equiped weapon to nothing.
+	enteredSlot = getPedWeaponSlot(localPlayer)
 	setPedWeaponSlot( localPlayer, 0 )
 	if settings.autoEquip and (seat>0) then
 		toggleDriveby()
@@ -134,6 +136,7 @@ end
 addCommandHandler ( "Toggle Driveby", toggleDriveby )
 
 function removeKeyToggles(vehicle)
+	setPedWeaponSlot(localPlayer, enteredSlot)
 	toggleControl ( "vehicle_look_left",true )
 	toggleControl ( "vehicle_look_right",true )
 	toggleControl ( "vehicle_secondary_fire",true )

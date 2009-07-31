@@ -49,4 +49,4 @@ function loadAllCorpses(res)
 		end
 	end
 end
-addEventHandler("onResourceStart", getRootElement(), loadAllCorpses)
+--addEventHandler("onResourceStart", getRootElement(), loadAllCorpses)

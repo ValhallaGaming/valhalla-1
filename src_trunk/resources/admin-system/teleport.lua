@@ -12,7 +12,7 @@ addCommandHandler("adminlounge", AdminLoungeTeleport)
 function setX(sourcePlayer, commandName, newX)
 	if (exports.global:isPlayerAdmin(sourcePlayer)) then
 		if not (newX) then
-			outputChatBox("SYNTAX: /" .. commandName .. " [x coordinate]", thePlayer, 255, 194, 14)
+			outputChatBox("SYNTAX: /" .. commandName .. " [x coordinate]", sourcePlayer, 255, 194, 14)
 		else
 			x, y, z = getElementPosition(sourcePlayer)
 			setElementPosition(sourcePlayer, newX, y, z)
@@ -26,7 +26,7 @@ addCommandHandler("setx", setX)
 function setY(sourcePlayer, commandName, newY)
 	if (exports.global:isPlayerAdmin(sourcePlayer)) then
 		if not (newY) then
-			outputChatBox("SYNTAX: /" .. commandName .. " [y coordinate]", thePlayer, 255, 194, 14)
+			outputChatBox("SYNTAX: /" .. commandName .. " [y coordinate]", sourcePlayer, 255, 194, 14)
 		else
 			x, y, z = getElementPosition(sourcePlayer)
 			setElementPosition(sourcePlayer, x, newY, z)
@@ -40,7 +40,7 @@ addCommandHandler("sety", setY)
 function setZ(sourcePlayer, commandName, newZ)
 	if (exports.global:isPlayerAdmin(sourcePlayer)) then
 		if not (newZ) then
-			outputChatBox("SYNTAX: /" .. commandName .. " [z coordinate]", thePlayer, 255, 194, 14)
+			outputChatBox("SYNTAX: /" .. commandName .. " [z coordinate]", sourcePlayer, 255, 194, 14)
 		else
 			x, y, z = getElementPosition(sourcePlayer)
 			setElementPosition(sourcePlayer, x, y, newZ)
@@ -56,7 +56,7 @@ function setXYZ(sourcePlayer, commandName, newX, newY, newZ)
 		if (newX) and (newY) and (newZ) then
 			setElementPosition(sourcePlayer, newX, newY, newZ)
 		else
-			outputChatBox("SYNTAX: /" .. commandName .. " [x coordnate] [y coordinate] [z coordinate]", thePlayer, 255, 194, 14)
+			outputChatBox("SYNTAX: /" .. commandName .. " [x coordnate] [y coordinate] [z coordinate]", sourcePlayer, 255, 194, 14)
 		end
 	end
 end
@@ -68,7 +68,7 @@ function setXY(sourcePlayer, commandName, newX, newY)
 		if (newX) and (newY) then
 			setElementPosition(sourcePlayer, newX, newY)
 		else
-			outputChatBox("SYNTAX: /" .. commandName .. " [x coordnate] [y coordinate]", thePlayer, 255, 194, 14)
+			outputChatBox("SYNTAX: /" .. commandName .. " [x coordnate] [y coordinate]", sourcePlayer, 255, 194, 14)
 		end
 	end
 end
@@ -80,7 +80,7 @@ function setXZ(sourcePlayer, commandName, newX, newZ)
 		if (newX) and (newZ) then
 			setElementPosition(sourcePlayer, newX, newZ)
 		else
-			outputChatBox("SYNTAX: /" .. commandName .. " [x coordnate] [z coordinate]", thePlayer, 255, 194, 14)
+			outputChatBox("SYNTAX: /" .. commandName .. " [x coordnate] [z coordinate]", sourcePlayer, 255, 194, 14)
 		end
 	end
 end
@@ -92,7 +92,7 @@ function setYZ(sourcePlayer, commandName, newY, newZ)
 		if (newY) and (newZ) then
 			setElementPosition(sourcePlayer, newY, newZ)
 		else
-			outputChatBox("SYNTAX: /" .. commandName .. " [y coordinate] [z coordinate]", thePlayer, 255, 194, 14)
+			outputChatBox("SYNTAX: /" .. commandName .. " [y coordinate] [z coordinate]", sourcePlayer, 255, 194, 14)
 		end
 	end
 end

@@ -915,15 +915,16 @@ function payAllWages()
 				payWage( value, unemployedPay, false, 0 )
 				govAmount = govAmount - unemployedPay
 			end
-			triggerClientEvent(value, "cPayDay", value)
-			local hoursplayed = getElementData(value, "hoursplayed")
-			setElementData(value, "hoursplayed", hoursplayed+1, false)
 			
-			setElementData(value, "timeinserver", timeinserver-60)
-			triggerClientEvent(value, "syncTimeInServer", value, timeinserver-60)
+			setElementData(value, "timeinserver", 0)
+			triggerClientEvent(value, "syncTimeInServer", value, 0)
 		elseif (timeinserver<60) then
 			outputChatBox("You have not played long enough to recieve a payday. (You require another " .. 60-timeinserver .. " Minutes of play.)", value, 255, 0, 0)
 		end
+		
+		triggerClientEvent(value, "cPayDay", value)
+		local hoursplayed = getElementData(value, "hoursplayed")
+		setElementData(value, "hoursplayed", hoursplayed+1, false)
 	end
 	setTimer(payAllWages, 3600000, 1)
 	

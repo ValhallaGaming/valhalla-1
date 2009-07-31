@@ -646,6 +646,7 @@ end
 function cPayDay()
 	local sound = playSound("mission_accomplished.mp3")
 	setSoundVolume(sound, 0.5)
+	triggerEvent("updateWaves", getLocalPlayer())
 end
 addEvent("cPayDay", true)
 addEventHandler("cPayDay", getRootElement(), cPayDay)

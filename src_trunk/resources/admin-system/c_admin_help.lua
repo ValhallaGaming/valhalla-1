@@ -87,6 +87,7 @@ function adminhelp (sourcePlayer, commandName)
 					{ "/x", "/x [value]", "increases your x-coordinate by the given value" },
 					{ "/y", "/z [value]", "increases your y-coordinate by the given value" },
 					{ "/z", "/y [value]", "increases your z-coordinate by the given value" },
+					{ "/set*", "/set[any combination of xyz] [coordinates]", "sets your coordinates - available combinations: x, y, z, xyz, xy, xz, yz" },
 					
 					{ "/restartgatekeepers", "/restartgatekeepers", "restarts the gatekeepers resource" }
 				},

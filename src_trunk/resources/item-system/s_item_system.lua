@@ -888,10 +888,10 @@ function getNearbyItems(thePlayer, commandName)
 				local x, y, z = getElementPosition(theObject)
 				local distance = getDistanceBetweenPoints3D(posX, posY, posZ, x, y, z)
 
-				if (distance<=10) then
+				if distance <= 10 and getElementDimension(theObject) == getElementDimension(thePlayer) and getElementInterior(theObject) == getElementInterior(thePlayer) then
 					local objtype = getElementData(theObject, "type")
 					if (objtype=="worlditem") then
-						outputChatBox("   Item with ID " .. dbid .. ".", thePlayer, 255, 126, 0)
+						outputChatBox("   Item with ID " .. dbid .. ": " .. tostring( getElementData(theObject, "itemName") .. "(" .. getElementData(theObject, "itemID") .. ")" or getElementData(theObject, "itemID") or "?" ) .. " with Value " .. tostring( getElementData(theObject, "itemValue") ), thePlayer, 255, 126, 0)
 						count = count + 1
 					end
 				end

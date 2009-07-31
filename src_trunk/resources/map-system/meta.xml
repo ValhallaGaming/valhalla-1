@@ -12,4 +12,5 @@
 	<script src="steak_floor.lua" type="client"/>
 	<script src="Vice_Back_Room.lua" type="client"/>
 	<script src="Yakuza HQ.lua" type="client"/>
+	<script src="smokes_house_wall.lua" type="client"/>
 </meta>

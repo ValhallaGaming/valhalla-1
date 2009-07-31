@@ -17,7 +17,7 @@ function usePDSideGarageGate(thePlayer)
 		local x, y, z = getElementPosition(thePlayer)
 		local distance = getDistanceBetweenPoints3D(1544.6875, -1630.785546875, 13.1828125, x, y, z)
 		
-		if (distance<=50) and (open==false) then
+		if (distance<=10) and (open==false) then
 			open = true
 			outputChatBox("LSPD Barrier is now Open!", thePlayer, 0, 255, 0)
 			moveObject(objGateh, 1000, 1544.6875, -1630.785546875, 13.1828125, 0, -90, 0)

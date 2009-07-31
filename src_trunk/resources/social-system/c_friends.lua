@@ -26,6 +26,7 @@ function showFriendsUI(friends)
 	guiSetFont(lName, "default-bold-small")
 	
 	local country = tostring(getElementData(getLocalPlayer(), "country"))
+	if (country==nil) then country = "ru" end
 	imgFlag = guiCreateStaticImage(0.0875, 0.0875, 0.025806*3, 0.021154, "images/flags/" .. string.lower(country) .. ".png", true, wFriends)
 	
 	local fmess = getElementData(getLocalPlayer(), "friends.message")
@@ -63,7 +64,8 @@ function showFriendsUI(friends)
 		paneFriend[key] = {}
 		paneFriend[key][7] = guiCreateScrollPane(0.05, dy, 1.0, 0.35, true, paneFriends)
 		paneFriend[key][1] = guiCreateStaticImage(0.0, 0.1, 0.9, 0.5, ":account-system/img/charbg0.png", true, paneFriend[key][7])
-		
+			
+			
 		if (name~=nil) then
 			paneFriend[key][2] = guiCreateLabel(0.12, 0.1, 0.8, 0.2, username .. " as " .. name, true, paneFriend[key][7])
 		else
@@ -71,6 +73,8 @@ function showFriendsUI(friends)
 		end
 		guiSetFont(paneFriend[key][2], "default-bold-small")
 
+		if (country==nil) then country = "ru" end
+		
 		paneFriend[key][3] = guiCreateStaticImage(0.0175, 0.125, 0.09, 0.08, "images/flags/" .. string.lower(country) .. ".png", true, paneFriend[key][7])
 		
 		paneFriend[key][4] = guiCreateLabel(0.12, 0.2, 0.8, 0.2, tostring(status), true, paneFriend[key][7])

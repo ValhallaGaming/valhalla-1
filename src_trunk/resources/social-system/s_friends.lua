@@ -79,44 +79,49 @@ function toggleFriends(source)
 						local aresult = mysql_query(handler, "SELECT id FROM achievements WHERE account='" .. fid .. "'")
 						local numachievements = mysql_num_rows(aresult)
 						mysql_free_result(aresult)
+						--outputDebugString(mysql_result(fresult, 1, 1))
+						if (mysql_result(fresult, 1, 1)~=nil) then -- we should make it auto delete in future...
+							friends[count] = { }
+							friends[count][1] = tonumber(fid) -- USER ID
+							friends[count][2] = mysql_result(fresult, 1, 1) -- USERNAME
+							friends[count][3] = mysql_result(fresult, 1, 2) -- MESSAGE
+							friends[count][4] = mysql_result(fresult, 1, 5) -- COUNTRY
+							friends[count][7] = tostring(mysql_result(fresult, 1, 6)) -- OPERATING SYSTEM
+							friends[count][8] = tostring(numachievements) -- NUM ACHIEVEMENTS
 						
-						friends[i] = { }
-						friends[i][1] = tonumber(fid) -- USER ID
-						friends[i][2] = mysql_result(fresult, 1, 1) -- USERNAME
-						friends[i][3] = mysql_result(fresult, 1, 2) -- MESSAGE
-						friends[i][4] = mysql_result(fresult, 1, 5) -- COUNTRY
-						friends[i][7] = tostring(mysql_result(fresult, 1, 6)) -- OPERATING SYSTEM
-						friends[i][8] = tostring(numachievements) -- NUM ACHIEVEMENTS
 						
-						-- Last online
-						local time = getRealTime()
-						local days = time.monthday
-						local months = (time.month+1)
-						local years = (1900+time.year)
-						
-						local yearday = time.yearday
-						local fyearday = tonumber(mysql_result(fresult, 1, 3)) -- YEAR DAY
-						local fyear = tonumber(mysql_result(fresult, 1, 4)) -- YEAR
-						
-						local found, player = false
-						for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
-							if (tonumber(getElementData(value, "gameaccountid"))==friends[i][1]) then
-								found = true
-								player = value
+							-- Last online
+							local time = getRealTime()
+							local days = time.monthday
+							local months = (time.month+1)
+							local years = (1900+time.year)
+							
+							local yearday = time.yearday
+							local fyearday = tonumber(mysql_result(fresult, 1, 3)) -- YEAR DAY
+							local fyear = tonumber(mysql_result(fresult, 1, 4)) -- YEAR
+							
+							local found, player = false
+							for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
+								if (tonumber(getElementData(value, "gameaccountid"))==friends[count][1]) then
+									found = true
+									player = value
+								end
 							end
+							
+							if (found) then
+								friends[count][5] = "Online"
+								friends[count][6] = getPlayerName(player)
+							elseif (years~=fyear) then
+								friends[count][5] = "Last Seen: Last Year"
+							elseif (yearday==fyearday) then
+								friends[count][5] = "Last Seen: Today"
+							else
+								local diff = yearday - fyearday
+								friends[count][5] = "Last Seen: " .. tostring(diff) .. " days ago."
+							end
+							count = count + 1
 						end
-						
-						if (found) then
-							friends[i][5] = "Online"
-							friends[i][6] = getPlayerName(player)
-						elseif (years~=fyear) then
-							friends[i][5] = "Last Seen: Last Year"
-						elseif (yearday==fyearday) then
-							friends[i][5] = "Last Seen: Today"
-						else
-							local diff = yearday - fyearday
-							friends[i][5] = "Last Seen: " .. tostring(diff) .. " days ago."
-						end
+							
 						mysql_free_result(fresult)
 					else
 						break

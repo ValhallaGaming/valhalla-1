@@ -1340,8 +1340,8 @@ function timerPDUnjailPlayer(jailedPlayer)
 			mysql_query(handler, "UPDATE characters SET pdjail_time='0', pdjail='0', pdjail_station='0' WHERE charactername='" .. username .. "'")
 			removeElementData(jailedPlayer, "jailtimer")
 			setElementDimension(jailedPlayer, 1)
-			setElementInterior(jailedPlayer, 3)
-			setCameraInterior(jailedPlayer, 3)
+			setElementInterior(jailedPlayer, 6)
+			setCameraInterior(jailedPlayer, 6)
 			
 			local station = getElementData(jailedPlayer, "pd.jailstation")
 			

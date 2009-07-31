@@ -868,7 +868,7 @@ addEventHandler("onVehicleStartExit", getRootElement(), setRealNotInVehicle)
 function removeFromFactionVehicle(thePlayer)
 	local faction = getElementData(thePlayer, "faction")
 	local vfaction = tonumber(getElementData(source, "faction"))
-	local CanTowDriverEnter = (call(getResourceFromName("tow"), "CanTowTruckDriverVehPos", thePlayer) == 2)
+	local CanTowDriverEnter = (call(getResourceFromName("tow-system"), "CanTowTruckDriverVehPos", thePlayer) == 2)
 	if (vfaction~=-1) then
 		local seat = getPedOccupiedVehicleSeat(thePlayer)
 		if (faction~=vfaction) and (seat==0) then

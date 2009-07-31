@@ -711,7 +711,7 @@ function setVehiclePosition(thePlayer, commandName)
 	local playerid = getElementData(thePlayer, "dbid")
 	local owner = getElementData(veh, "owner")
 	local dbid = getElementData(veh, "dbid")
-	local TowingReturn = call(getResourceFromName("tow"), "CanTowTruckDriverVehPos", thePlayer) -- 2 == in towing and in col shape, 1 == colshape only, 0 == not in col shape
+	local TowingReturn = call(getResourceFromName("tow-system"), "CanTowTruckDriverVehPos", thePlayer) -- 2 == in towing and in col shape, 1 == colshape only, 0 == not in col shape
 	if (exports.global:isPlayerAdmin(thePlayer)) or (owner==playerid and TowingReturn == 0) or (exports.global:doesPlayerHaveItem(thePlayer, 3, dbid)) or (TowingReturn == 2) then
 		
 		if not (veh) then
@@ -720,9 +720,9 @@ function setVehiclePosition(thePlayer, commandName)
 			if (dbid<0) then
 				outputChatBox("This vehicle is not permanently spawned.", thePlayer, 255, 0, 0)
 			else
-				if (call(getResourceFromName("tow", "CanTowTruckDriverGetPaid", thePlayer)) then
-					call(getResourceFromName("faction-system", "addToFactionMoney", 24, 75)
-					call(getResourceFromName("faction-system", "addToFactionMoney", 1, 75)
+				if (call(getResourceFromName("tow-system"), "CanTowTruckDriverGetPaid", thePlayer)) then
+					call(getResourceFromName("faction-system"), "addToFactionMoney", 24, 75)
+					call(getResourceFromName("faction-system"), "addToFactionMoney", 1, 75)
 				end
 				removeElementData(veh, "requires.vehpos")
 				local x, y, z = getElementPosition(veh)

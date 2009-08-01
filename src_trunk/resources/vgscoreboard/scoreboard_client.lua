@@ -101,14 +101,24 @@ function refreshScoreboardTeams()
 	
 	local players = getElementsByType("player")
 	local orderedplayers = { }
+	local largest = 0
 	for key, value in ipairs(players) do
-		local id = getElementData(value, "id")
-		table.insert(orderedplayers, key, value)
+		local id = getElementData(value, "playerid")
+		
+		if (id>largest) then
+			largest = id
+		end
+
+		table.insert(orderedplayers, tonumber(id), value)
 	end
 	
-	for i, player in ipairs(orderedplayers) do
-		addToScoreboard(player)
+	
+	for i = 1, largest do
+		if (orderedplayers[i]~=nil) then
+			addToScoreboard(orderedplayers[i])
+		end
 	end
+	
 	
 	--[[for i,team in ipairs(getElementsByType("team")) do
 		addToScoreboard(team)
@@ -128,7 +138,7 @@ function updateScoreboard()
 	guiSetText(playerCount, "Players: " .. guiGridListGetRowCount(scoreboardGrid))
 	
 	if scoreboardColumns[1] then
-		guiGridListSetSelectedItem(scoreboardGrid, scoreboardRows[localPlayer], scoreboardColumns[1].id)
+		--guiGridListSetSelectedItem(scoreboardGrid, scoreboardRows[localPlayer], scoreboardColumns[1].id)
 	end
 end
 

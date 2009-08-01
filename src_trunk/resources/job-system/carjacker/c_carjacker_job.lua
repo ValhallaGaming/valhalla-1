@@ -34,7 +34,7 @@ function createHunterMarkers()
 	outputChatBox("#FF9933((Steal a ".. vehicleName .." and deliver the car to Hunter's #FF66CCgarage#FF9933.))", 255, 104, 91, true )
 	
 	--blip = createBlip(1108.7441, 1903.98535, 9.52469, 0, 4, 255, 127, 255) -- No blip. The player should know where the garage is from when they met Hunter to get the job.
-	marker = createMarker(1108.7441, 1903.98535, 9.52469, "cylinder", 4, 255, 127, 255, 150)
+	marker = createMarker(1653.44, -1840.57, 12.24, "cylinder", 4, 255, 127, 255, 150)
 	addEventHandler("onClientMarkerHit", marker, dropOffCar, false)
 end
 addEvent("createHunterMarkers", true)

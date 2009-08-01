@@ -106,7 +106,7 @@ function setTag(commandName, newTag)
 				outputChatBox("You are not a member of Tatum Creek Crips.", 255, 0, 0)
 			elseif (teamName~="Grove Street OGs") and (newTag==5) then -- Grove Street OGs
 				outputChatBox("You are not a member of the Grove Street OGs.", 255, 0, 0)
-			elseif (teamName~="Blood State Villans") and (newTag==6) then -- Blood State Villains
+			elseif (teamName~="Blood State Villains") and (newTag==6) then -- Blood State Villains
 				outputChatBox("You are not a member of the Blood State Villains.", 255, 0, 0)
 			else
 				setElementData(getLocalPlayer(), "tag", true, newTag)

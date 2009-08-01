@@ -946,6 +946,65 @@ function checkWaterVehicles()
 end
 setTimer(checkWaterVehicles, 600000, 0)
 
+
+------------------------------------------------
+-- SELLS A VEHICLE
+------------------------------------------------
+function sellVehicle(thePlayer, commandName, targetPlayerName)
+	-- can only sell vehicles outdoor, in a dimension is property
+	if getElementDimension(thePlayer) == 0 then
+		if not targetPlayerName then
+			outputChatBox("SYNTAX: /" .. commandName .. " [partial player name / id]", thePlayer, 255, 194, 14)
+			outputChatBox("Sells the Vehicle you're in to that Player.", thePlayer, 255, 194, 14)
+			outputChatBox("Ask the buyer to use /pay to recieve the money for the vehicle.", thePlayer, 255, 194, 14)
+		else
+			local targetPlayer = exports.global:findPlayerByPartialNick(targetPlayerName)
+			if targetPlayer and getElementData(targetPlayer, "dbid") then
+				targetPlayerName = getPlayerName(targetPlayer):gsub("_", " ")
+				local px, py, pz = getElementPosition(thePlayer)
+				local tx, ty, tz = getElementPosition(targetPlayer)
+				if getDistanceBetweenPoints3D(px, py, pz, tx, ty, tz) < 20 then
+					local theVehicle = getPedOccupiedVehicle(thePlayer)
+					if theVehicle then
+						local vehicleID = getElementData(theVehicle, "dbid")
+						if getElementData(theVehicle, "owner") == getElementData(thePlayer, "dbid") or exports.global:isPlayerAdmin(thePlayer) then
+							if getElementData(targetPlayer, "dbid") ~= getElementData(theVehicle, "owner") then
+								if exports.global:doesPlayerHaveSpaceForItem(targetPlayer) then
+									if mysql_query(handler, "UPDATE vehicles SET owner = '" .. getElementData(targetPlayer, "dbid") .. "' WHERE id='" .. vehicleID .. "'") then
+										setElementData(theVehicle, "owner", getElementData(targetPlayer, "dbid"))
+										
+										-- FIXME: remove all keys for that vehicle from all people
+										exports.global:takePlayerItem(thePlayer, 3, vehicleID)
+										exports.global:givePlayerItem(targetPlayer, 3, vehicleID)
+										
+										outputChatBox("You've successfully sold your " .. getVehicleName(theVehicle) .. " to " .. targetPlayerName .. ".", thePlayer, 0, 255, 0)
+										outputChatBox((getPlayerName(thePlayer):gsub("_", " ")) .. " sold you a " .. getVehicleName(theVehicle) .. ".", targetPlayer, 0, 255, 0)
+									else
+										outputChatBox("Error 09001 - Report on Forums.", thePlayer, 255, 0, 0)
+									end
+								else
+									outputChatBox(targetPlayerName .. " has no space for the vehicle keys.", thePlayer, 255, 0, 0)
+								end
+							else
+								outputChatBox("You can't sell your own vehicle to yourself.", thePlayer, 255, 0, 0)
+							end
+						else
+							outputChatBox("This vehicle is not yours.", thePlayer, 255, 0, 0)
+						end
+					else
+						outputChatBox("You must be in a Vehicle.", thePlayer, 255, 0, 0)
+					end
+				else
+					outputChatBox("You are too far away from " .. targetPlayerName .. ".", thePlayer, 255, 0, 0)
+				end
+			else
+				outputChatBox("No such player online.", thePlayer, 255, 0, 0)
+			end
+		end
+	end
+end
+addCommandHandler("sell", sellVehicle)
+
 ------------------------------------------------
 -- CLIENT CALLS FROM VEHICLE RIGHT CLICK
 ------------------------------------------------

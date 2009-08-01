@@ -37,7 +37,7 @@
 	<export function="getPlayerCountry" type="server"/>
 	
 	<script src="item_globals.lua" type="server"/>
-	<export function="doesPlayerHaveSpaceForItem" type="client"/>
+	<export function="doesPlayerHaveSpaceForItem" type="server"/>
 	<export function="doesPlayerHaveItem" type="server"/>
 	<export function="givePlayerItem" type="server"/>
 	<export function="takePlayerItem" type="server"/>

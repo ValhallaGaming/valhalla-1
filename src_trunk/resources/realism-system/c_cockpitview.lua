@@ -8,23 +8,23 @@ local rotX, rotY = 0,0
 local mouseFrameDelay = 0
 
 function toggleCockpitView ()
-    if (not isEnabled) then -- isn't already toggled?
-        if (isPlayerInVehicle(localPlayer)) then
+    if (not isEnabled) then
+        if (isPedInVehicle(localPlayer)) then
             isEnabled = true
-            addEventHandler ("onClientRender", root, updateCamera)
+            addEventHandler ("onClientWorld", root, updateCamera)
             addEventHandler ("onClientCursorMove",root, freecamMouse)
             setElementAlpha (localPlayer, 0)
         end
     else --reset view
         isEnabled = false
         setCameraTarget (localPlayer, localPlayer)
-        removeEventHandler ("onClientRender", root, updateCamera)
+        removeEventHandler ("onClientWorld", root, updateCamera)
         removeEventHandler ("onClientCursorMove", root, freecamMouse)
         setElementAlpha (localPlayer, 255)
     end        
 end
 
---addCommandHandler("cview", toggleCockpitView)
+addCommandHandler("cview", toggleCockpitView)
 
 function vehicleExit()
     if (source == localPlayer) then
@@ -86,7 +86,7 @@ function updateCamera ()
         camTargetZ = camPosZ + freeModeAngleZ * 100
 
         -- Set the new camera position and target
-        setCameraMatrix ( camPosX, camPosY, camPosZ, camTargetX, camTargetY, camTargetZ )
+        setCameraMatrix ( camPosX, camPosY, camPosZ, camTargetX, camTargetY, camTargetZ, 0, 60 )
     end
 end
 
@@ -112,6 +112,7 @@ function freecamMouse (cX,cY,aX,aY)
 	
 	local PI = math.pi
     local pRotX, pRotY, pRotZ = getElementRotation (localPlayer)
+    pRotZ = math.rad(pRotZ)
     
 	if rotX > PI then
 		rotX = rotX - 2 * PI
@@ -127,15 +128,9 @@ function freecamMouse (cX,cY,aX,aY)
     -- limit the camera to stop it going too far up or down - PI/2 is the limit, but we can't let it quite reach that or it will lock up
 	-- and strafeing will break entirely as the camera loses any concept of what is 'up'
     
-    if rotX < -PI/1.1 then
-       rotX = -PI/1.1
-    elseif rotX > PI / 2 then
-        rotX = PI / 2
-    end
-    
-    if rotY < -PI / 10 then
-       rotY = -PI / 10
-    elseif rotY > PI / 10 then
-        rotY = PI / 10
+    if rotY < -PI / 2 then
+       rotY = -PI / 2
+    elseif rotY > PI / 2 then
+        rotY = PI / 2
     end
 end

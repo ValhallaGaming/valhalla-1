@@ -46,8 +46,6 @@ function showImpoundUI(vehElementsret)
 	
 	outputChatBox("Welcome to The Impound lot.")
 end
-addEvent("showBoatshopUI", true)
-addEventHandler("showBoatshopUI", getRootElement(), showImpoundUI)
 
 function updateCar()
 	local row, col = guiGridListGetSelectedItem(gCars)
@@ -93,7 +91,5 @@ function releaseCar(button)
 		triggerServerEvent("releaseCar", getLocalPlayer(), vehElements[row+1])
 	end
 end
---showImpoundUI()
---addEventHandler("onClientColShapeHit", releaseColShape, showImpoundUI)
 addEvent("ShowImpound", true)
 addEventHandler("ShowImpound", getRootElement(), showImpoundUI)

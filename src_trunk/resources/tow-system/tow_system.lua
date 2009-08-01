@@ -92,7 +92,7 @@ end
 addEventHandler("onColShapeHit", towSphere, UnlockVehicle)
 addEventHandler("onColShapeHit", towSphere2, UnlockVehicle)
 function payRelease(vehID)
-	if (getElementData(source, "money") > 75) then
+	if getElementData(source, "money") >= 75 then
 		exports.global:takePlayerSafeMoney(source, 75)
 		local towCompany = getTeamFromName("McJones Towing")
 		local dbid = getElementData(towCompany, "id")

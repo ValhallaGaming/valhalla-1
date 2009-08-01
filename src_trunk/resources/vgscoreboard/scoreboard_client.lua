@@ -98,7 +98,15 @@ end
 function refreshScoreboardTeams()
 	guiGridListClear(scoreboardGrid)
 	scoreboardRows = {}
-	for i, player in ipairs(getElementsByType("player")) do
+	
+	local players = getElementsByType("player")
+	local orderedplayers = { }
+	for key, value in ipairs(players) do
+		local id = getElementData(value, "id")
+		table.insert(orderedplayers, key, value)
+	end
+	
+	for i, player in ipairs(orderedplayers) do
 		addToScoreboard(player)
 	end
 	

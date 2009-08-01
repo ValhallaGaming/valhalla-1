@@ -11,6 +11,11 @@ local rootElement = getRootElement()
 addEvent("onClientScoreboardLoaded", true)
 addEvent("onClientVisibilityChange", true)
 
+local function addCustomColumns()
+	addScoreboardColumn("ID #", getRootElement(), 1, 0.05)
+end
+addEventHandler("onClientScoreboardLoaded",rootElement,addCustomColumns)
+
 local function sendVisibleColumns(aClient)
 	client = aClient or client
 	local clientColumnData = {}

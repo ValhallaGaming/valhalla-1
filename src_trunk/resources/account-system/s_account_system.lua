@@ -69,8 +69,8 @@ function resourceStart()
 	setRuleValue("Script Version", tostring(scriptVer))
 	setRuleValue("Author", "Daniels")
 
-	exports.vgscoreboard:resetScoreboardColumns()
-	exports.vgscoreboard:addScoreboardColumn("ID #", getRootElement(), 1, 0.05)
+	--exports.vgscoreboard:resetScoreboardColumns()
+	--exports.vgscoreboard:addScoreboardColumn("ID #", getRootElement(), 1, 0.05)
 
 	for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
 		triggerEvent("playerJoinResourceStart", value)

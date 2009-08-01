@@ -437,7 +437,7 @@ function spawnCharacter(charname)
 		setElementData(source, "adminlevel", tonumber(adminlevel))
 		setElementData(source, "loggedin", 1)
 		setElementData(source, "businessprofit", 0, false)
-		setElementData(source, "dbid", tonumber(id), false)
+		setElementData(source, "dbid", tonumber(id))
 		setElementData(source, "hiddenadmin", tonumber(hiddenAdmin), false)
 		setElementData(source, "legitnamechange", 0, false)
 		setElementData(source, "muted", tonumber(muted))
@@ -493,33 +493,31 @@ function spawnCharacter(charname)
 		end
 		
 		-- Let's stick some blips on the properties they own
-		--[[ This should be clientside
+		local interiors = { }
+		local count = 1
 		for key, value in ipairs(exports.pool:getPoolElementsByType("pickup")) do
 			if (value) then
 				local ptype = getElementData(value, "type")
 				if (ptype=="interior") then
 					local inttype = getElementData(value, "inttype")
-					local owner = getElementData(value, "inttype")
-					if (owner==id) and (inttype<2) then -- house/business and owned by this player
+					local owner = tonumber(getElementData(value, "owner"))
+
+					if (owner==tonumber(id)) and (inttype<2) then -- house/business and owned by this player
+						
 						local x, y, z = getElementPosition(value)
-						if (inttype==0) then -- house
-							local blip = createBlip(x, y, z, 31, 2, 255, 0, 0, 255, 0)
-							exports.pool:allocateElement(blip)
-							setElementVisibleTo(blip, getRootElement(), false)
-							setElementVisibleTo(blip, source, true)
-							setElementData(blip, "type", "accountblip")
-							setElementData(blip, "owner", tonumber(getElementData(source, "gameaccountid")))
-						elseif (inttype==2) then -- business
-							local blip = createBlip(x, y, z, 32, 2, 255, 0, 0, 255, 0, source)
-							exports.pool:allocateElement(blip)
-							setElementVisibleTo(blip, getRootElement(), false)
-							setElementVisibleTo(blip, source, true)
+						if (inttype<2) then -- house or business
+							interiors[count] = { }
+							interiors[count][1] = inttype
+							interiors[count][2] = x
+							interiors[count][3] = y
+							count = count + 1
 						end
 					end
 				end
 			end
 		end
-		]]--
+		
+		triggerClientEvent(source, "createBlipsFromTable", source, interiors)
 		
 		-- Fight style
 		setPedFightingStyle(source, tonumber(fightstyle))

@@ -165,12 +165,7 @@ function sellProperty(thePlayer, commandName)
 			end
 		end
 		
-		for key, value in ipairs(exports.pool:getPoolElementsByType("blip")) do
-			local bx, by, bz = getElementPosition(value)
-			if (bx==x and by==y and bz==z) then
-				destroyElement(value)
-			end
-		end
+		triggerClientEvent(thePlayer, "removeBlipAtXY", thePlayer, inttype, x, y)
 		
 		exports.global:takePlayerItem(thePlayer, 4, dbid)
 		exports.global:takePlayerItem(thePlayer, 5, dbid)
@@ -626,6 +621,8 @@ function buyInterior(player, pickup, cost, isHouse)
 
 		setPickupElementData(pickup, id, ix, iy, iz, optAngle, interior, locked, owner, inttype, cost, name, items, items_values, max_items, tennant, rentable, rent, interiorwithin, x, y, z, dimension, money)
 		setIntPickupElementData(intpickup, id, x, y, z, rot, locked, owner, inttype, interiorwithin, dimension, interior, ix, iy, iz)
+			
+		triggerClientEvent(player, "createBlipAtXY", player, inttype, ix, iy)
 			
 		playSoundFrontEnd(player, 20)
 	else

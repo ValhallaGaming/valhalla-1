@@ -77,6 +77,9 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 					exports.global:sendLocalMeAction(source, "presses on the key to unlock the vehicle. ((" .. getVehicleName(found) .. "))")
 				else
 					setVehicleLocked(found, true)
+                    for i = 0, 5 do
+                        setVehicleDoorState(found, i, 0)
+                    end
 					mysql_query(handler, "UPDATE vehicles SET locked='1' WHERE id='" .. id .. "' LIMIT 1")
 					exports.global:sendLocalMeAction(source, "presses on the key to lock the vehicle. ((" .. getVehicleName(found) .. "))")
 				end

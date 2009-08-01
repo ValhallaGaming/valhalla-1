@@ -112,8 +112,9 @@ function renderNametags()
 								local offset = 65 / distance
 								local scale = 0.6 / distance
 								local font = "bankgothic"
+								local r, g, b = getPlayerNametagColor(player)
 								dxDrawText(getPlayerNametagText(player), sx-offset+2, sy+2, (sx-offset)+130 / distance, sy+20 / distance, tocolor(0, 0, 0, 220), scale, font, "center", "middle", false, false, false)
-								dxDrawText(getPlayerNametagText(player), sx-offset, sy, (sx-offset)+130 / distance, sy+20 / distance, tocolor(255, 255, 255, 220), scale, font, "center", "middle", false, false, false)
+								dxDrawText(getPlayerNametagText(player), sx-offset, sy, (sx-offset)+130 / distance, sy+20 / distance, tocolor(r, g, b, 220), scale, font, "center", "middle", false, false, false)
 								
 							end
 						end

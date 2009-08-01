@@ -1,16 +1,16 @@
 stopNumber={}
-stopNumber[1]={ "Unity Station, Idlewood" }
+stopNumber[1]={ "Unity Station, Washington Road, Idlewood (START OF SERVICE)" }
 stopNumber[2]={ "Idlewood Gas, Idlewood" }
 stopNumber[3]={ "Ten Green Bottles & Grove St, Ganton" }
-stopNumber[4]={ "Basketball Courts, North Ganton" }
-stopNumber[5]={ "Pig Pen, Little Moscow" }
-stopNumber[6]={ "Jefferson Motel, Jefferson" }
-stopNumber[7]={ "Glen Park, Commerce"  }
+stopNumber[4]={ "Atlantic Avenue, Jefferson" }
+stopNumber[5]={ "Pig Pen, Caesar Road, East Los Santos" }
+stopNumber[6]={ "Jefferson Motel, E. Vinewood, Jefferson" }
+stopNumber[7]={ "Glen Park"  }
 stopNumber[8]={ "City Hall, Pershing Sq." }
 stopNumber[9]={ "Main Street, Central LS" }
-stopNumber[10]={ "Hospital, Central LS" }
-stopNumber[11]={ "Bank, Vinewood" }
-stopNumber[12]={ "LS Transport Depot, Unity Station, Idlewood  [END OF SERVICE]" }
+stopNumber[10]={ "All Saints General Hospital, Pawn Street, Market." }
+stopNumber[11]={ "W. Broadway, Rodeo" }
+stopNumber[12]={ "Unity Station, Washington Road, Idlewood (END OF SERVICE)" }
 
 function payBusDriver(stop)
 

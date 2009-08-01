@@ -90,13 +90,15 @@ function cVehicleInventory(button, state)
 						break
 					end
 				end
-				
-				bGiveItem = guiCreateButton(0.05, 0.81, 0.45, 0.075, "Move ---->", true, wInventory)
-				addEventHandler("onClientGUIClick", bGiveItem, moveItemToVehicle, false)
-				
-				bTakeItem = guiCreateButton(0.5, 0.81, 0.45, 0.075, "<---- Move ", true, wInventory)
-				addEventHandler("onClientGUIClick", bTakeItem, takeItemFromVehicle, false)
-				
+				--Its not impounded or they are the owner.
+				if (not getElementData(vehicle, "Impounded") or exports.global:cdoesPlayerHaveItem(getLocalPlayer(), 3, getElementData(vehicle, "dbid"))) then
+					bGiveItem = guiCreateButton(0.05, 0.81, 0.45, 0.075, "Move ---->", true, wInventory)
+					addEventHandler("onClientGUIClick", bGiveItem, moveItemToVehicle, false)
+					bTakeItem = guiCreateButton(0.5, 0.81, 0.45, 0.075, "<---- Move ", true, wInventory)
+					addEventHandler("onClientGUIClick", bTakeItem, takeItemFromVehicle, false)
+				else
+					outputChatBox("Moving things from the inventory of this vehicle is disabled as it is impounded.", 255, 194, 14)
+				end
 				bCloseInventory = guiCreateButton(0.05, 0.9, 0.9, 0.075, "Close Inventory", true, wInventory)
 				addEventHandler("onClientGUIClick", bCloseInventory, hideVehicleMenu, false)
 			end
@@ -216,11 +218,14 @@ function showVehicleMenu()
 	
 	lPlate = guiCreateLabel(0.05, 0.13, 0.87, 0.1, "Plate: " .. getVehiclePlateText(vehicle), true, wRightClick)
 	guiSetFont(lPlate, "default-bold-small")
-	
-	bInventory = guiCreateButton(0.05, 0.23, 0.87, 0.1, "Inventory", true, wRightClick)
+
+	lPlate = guiCreateLabel(0.05, 0.23, 0.87, 0.1, "Impounded: " .. (getElementData(vehicle, "Impounded") and "Yes" or "No"), true, wRightClick)
+	guiSetFont(lPlate, "default-bold-small")
+
+	bInventory = guiCreateButton(0.05, 0.33, 0.87, 0.1, "Inventory", true, wRightClick)
 	addEventHandler("onClientGUIClick", bInventory, cVehicleInventory, false)
 	
-	local y = 0.37
+	local y = 0.47
 	if (getElementModel(vehicle)==497) then -- HELICOPTER
 		local players = getElementData(vehicle, "players")
 		local found = false
@@ -234,10 +239,10 @@ function showVehicleMenu()
 		end
 		
 		if not (found) then
-			bSit = guiCreateButton(0.05, 0.37, 0.87, 0.1, "Sit", true, wRightClick)
+			bSit = guiCreateButton(0.05, 0.47, 0.87, 0.1, "Sit", true, wRightClick)
 			addEventHandler("onClientGUIClick", bSit, sitInHelicopter, false)
 		else
-			bSit = guiCreateButton(0.05, 0.37, 0.87, 0.1, "Stand up", true, wRightClick)
+			bSit = guiCreateButton(0.05, 0.47, 0.87, 0.1, "Stand up", true, wRightClick)
 			addEventHandler("onClientGUIClick", bSit, unsitInHelicopter, false)
 		end
 		y = y + 0.14

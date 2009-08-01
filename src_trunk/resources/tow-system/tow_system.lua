@@ -65,25 +65,37 @@ function UnlockVehicle(element, matchingdimension)
 		local temp = element
 		while (getVehicleTowedByVehicle(temp)) do
 			temp = getVehicleTowedByVehicle(temp)
-			if (source == towSphere2) then
-				--PD make sure its not marked as impounded so it cannot be recovered and unlock/undp it
-				setVehicleLocked(temp, false)
-				setElementData(temp, "locked", false)
-				setElementData(temp, "Impounded", false)		
-				setVehicleLocked(temp, false)
-				setElementData(temp, "locked", false)
-				setElementData(temp, "enginebroke", 0, false)
-				setVehicleDamageProof(temp, false)
-				setVehicleEngineState(temp, false)
-				outputChatBox("Please remember to vehpos your vehicle in our car park.", getVehicleOccupant(element), 255, 194, 14)
-			else
-				if (getElementData(temp, "faction") ~= 24) then
-					--unlock it and impound it
-					setVehicleLocked(temp, false)
-					setElementData(temp, "locked", false)
-					setElementData(temp, "Impounded", true)
-					outputChatBox("Please remember to vehpos your vehicle in our car park.", getVehicleOccupant(element), 255, 194, 14)
+			local owner = getElementData(temp, "owner")
+			local faction = getElementData(temp, "faction")
+			if (owner > 0) then
+				if (faction > 3 or faction < 0) then
+					if (source == towSphere2) then
+						--PD make sure its not marked as impounded so it cannot be recovered and unlock/undp it
+						setVehicleLocked(temp, false)
+						setElementData(temp, "locked", false)
+						setElementData(temp, "Impounded", false)		
+						setVehicleLocked(temp, false)
+						setElementData(temp, "locked", false)
+						setElementData(temp, "enginebroke", 0, false)
+						setVehicleDamageProof(temp, false)
+						setVehicleEngineState(temp, false)
+						outputChatBox("Please remember to vehpos your vehicle in our car park.", getVehicleOccupant(element), 255, 194, 14)
+					else
+						if (getElementData(temp, "faction") ~= 24) then
+							--unlock it and impound it
+							setVehicleLocked(temp, false)
+							setElementData(temp, "locked", false)
+							setElementData(temp, "Impounded", true)
+							setElementData(temp, "enginebroke", 1, false)
+							setVehicleEngineState(temp, false)
+							outputChatBox("Please remember to vehpos your vehicle in our car park.", getVehicleOccupant(element), 255, 194, 14)
+						end
+					end
+				else
+					outputChatBox("This Faction's vehicle cannot be impounded.", getVehicleOccupant(element), 255, 194, 14)
 				end
+			else
+				outputChatBox("Civilian vehicles cannot be impounded.", getVehicleOccupant(element), 255, 194, 14)
 			end
 		end
 	end
@@ -159,3 +171,34 @@ function updateVehPos(veh)
 				
 	setVehicleRespawnPosition(veh, x, y, z, rx, ry, rz)
 end
+
+function updateTowingVehicle(theTruck)
+	local thePlayer = getVehicleOccupant(theTruck)
+	if (getTeamName(getPlayerTeam(thePlayer)) == "McJones Towing") then
+		local owner = getElementData(source, "owner")
+		local faction = getElementData(source, "faction")
+		local carName = getVehicleName(source)
+		
+		if (owner<0) then
+			outputChatBox("(( This " .. carName .. " is a civilian vehicle. ))", thePlayer, 255, 195, 14)
+		elseif (faction==-1) and (owner>0) then
+			local query = mysql_query(handler, "SELECT charactername FROM characters WHERE id='" .. owner .. "' LIMIT 1")
+		
+			if (mysql_num_rows(query)>0) then
+				local ownerName = mysql_result(query, 1, 1)
+				outputChatBox("(( This " .. carName .. " belongs to " .. ownerName .. ". ))", thePlayer, 255, 195, 14)
+			end
+			mysql_free_result(query)
+		else
+			local query = mysql_query(handler, "SELECT name FROM factions WHERE id='" .. faction .. "' LIMIT 1")
+		
+			if (mysql_num_rows(query)>0) then
+				local ownerName = mysql_result(query, 1, 1)
+				outputChatBox("(( This " .. carName .. " belongs to the " .. ownerName .. " faction. ))", thePlayer, 255, 195, 14)
+			end
+			mysql_free_result(query)
+		end
+	end
+end
+
+addEventHandler("onTrailerAttach", getRootElement(), updateTowingVehicle)

@@ -105,6 +105,8 @@ function refreshScoreboardTeams()
 	for key, value in ipairs(players) do
 		local id = getElementData(value, "playerid")
 		
+		if not id then id = -1 end
+		
 		if (id>largest) then
 			largest = id
 		end

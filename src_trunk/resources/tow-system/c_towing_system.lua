@@ -89,7 +89,6 @@ end
 function releaseCar(button)
 	if (button=="left") then
 		local row = guiGridListGetSelectedItem(gCars)
-		outputChatBox(row+1)
 		hideImpoundUI()
 		triggerServerEvent("releaseCar", getLocalPlayer(), vehElements[row+1])
 	end

@@ -553,8 +553,8 @@ function fixAllVehicles(thePlayer, commandName)
 		local username = getPlayerName(thePlayer)
 		for key, value in ipairs(exports.pool:getPoolElementsByType("vehicle")) do
 			fixVehicle(value)
-			if (not getElementData(veh, "Impounded")) then
-				setElementData(veh, "enginebroke", 0, false)
+			if (not getElementData(value, "Impounded")) then
+				setElementData(value, "enginebroke", 0, false)
 			end
 		end
 		outputChatBox("All vehicles repaired by Admin " .. username .. ".")

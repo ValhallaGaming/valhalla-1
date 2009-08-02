@@ -125,115 +125,146 @@ function updateInteriorExit(thePlayer, commandName)
 end
 addCommandHandler("setinteriorexit", updateInteriorExit, false, false)
 
-function sellProperty(thePlayer, commandName)
-	local interior = getElementInterior(thePlayer)
-	
-	if (interior==0) then
-		outputChatBox("You are not in a property.", thePlayer, 255, 0, 0)
-	else
-		local dbid = getElementDimension(thePlayer)
-		local x, y, z, rot = nil
-		local safe = nil
-		local cost = 0
-		local owner = nil
-		local inttype = nil
-		local pickups = exports.pool:getPoolElementsByType("pickup")
-		local dimension = nil
-		local interior = nil
-		for k, thePickup in ipairs(pickups) do
-			local pickupType = getElementData(thePickup, "type")
-			
-			if (pickupType=="interiorexit") then
-				local pickupID = getElementData(thePickup, "dbid")
-				if (pickupID==dbid) then
-					x = getElementData(thePickup, "x")
-					y = getElementData(thePickup, "y")
-					z = getElementData(thePickup, "z")
-					rot = getPedRotation(thePlayer)
-					destroyElement(thePickup)
+function findProperty(thePlayer)
+	local dbid = getElementDimension( thePlayer )
+	if dbid > 0 then
+		-- find the entrance and exit
+		local entrance, exit = nil, nil
+		for key, value in pairs(exports.pool:getPoolElementsByType( "pickup" )) do
+			local pickupType = getElementData(value, "type")
+			if pickupType == "interior" then
+				if getElementData(value, "dbid") == dbid then
+					entrance = value
+					if entrance and exit then
+						break
+					end
 				end
-			elseif (pickupType=="interior") then
-				local pickupID = getElementData(thePickup, "dbid")
-				if (pickupID==dbid) then
-					owner = getElementData(thePickup, "owner")
-					cost = getElementData(thePickup, "cost")
-					inttype = getElementData(thePickup, "inttype")
-					dimension = getElementDimension(thePickup)
-					interior = getElementInterior(thePickup)
-					destroyElement(thePickup)
+			elseif pickupType == "interiorexit" then
+				if getElementData(value, "dbid") == dbid then
+					exit = value
+					if entrance and exit then
+						break
+					end
 				end
 			end
 		end
-		
-		triggerClientEvent(thePlayer, "removeBlipAtXY", thePlayer, inttype, x, y)
-		
-		exports.global:takePlayerItem(thePlayer, 4, dbid)
-		exports.global:takePlayerItem(thePlayer, 5, dbid)
-		
-		if (tonumber(owner)==getElementData(thePlayer, "dbid") or exports.global:isPlayerAdmin(thePlayer)) and (inttype==3) then -- If a rentable interior.
-			setElementPosition(thePlayer, x, y, z)
-			setPedRotation(thePlayer, rot)
-			removeElementData(thePlayer, "interiormarker")
-			setElementInterior(thePlayer, interior)
-			setElementDimension(thePlayer, dimension)
-			setCameraInterior(thePlayer, interior)
-			local query = mysql_query(handler, "UPDATE interiors SET owner=-1, locked=1, safepositionX=NULL, safepositionY=NULL, safepositionZ=NULL, safepositionRZ=NULL WHERE id='" .. dbid .. "'")
-				
-			if (query) then
-				if (safeTable[dbid] ~= nil) then
-					local safe = safeTable[tonumber(dbid)]
-					setElementData(safe, "items", "")
-					setElementData(safe, "itemvalues", "")
-					call(getResourceFromName("item-system"), "updateSafeItems", safe)
-					destroyElement(safe)
-				end
-				mysql_free_result(query)
-				outputChatBox("You are no longer renting this property.", thePlayer, 0, 255, 0)
-				reloadOneInterior(tonumber(dbid))
-			else
-				outputChatBox("Error 504914 - Report on forums.", thePlayer, 255, 0, 0)
-			end
-		elseif (tonumber(owner)==getElementData(thePlayer, "dbid") or exports.global:isPlayerAdmin(thePlayer)) and (inttype~=2) then -- If a business or house.
-			setElementPosition(thePlayer, x, y, z)
-			setPedRotation(thePlayer, rot)
-			removeElementData(thePlayer, "interiormarker")
-			setElementInterior(thePlayer, interior)
-			setElementDimension(thePlayer, dimension)
-			setCameraInterior(thePlayer, interior)
-			local query = mysql_query(handler, "UPDATE interiors SET owner=-1, locked=1, safepositionX=NULL, safepositionY=NULL, safepositionZ=NULL, safepositionRZ=NULL WHERE id='" .. dbid .. "'")
-				
-			if (query) then
-				mysql_free_result(query)
-				
-				if (tonumber(owner)==getElementData(thePlayer, "dbid")) then
-					--local money = math.ceil((cost/3)*2)
-					local money = math.ceil(cost)
-					exports.global:givePlayerSafeMoney(thePlayer, money)
-					outputChatBox("You sold your property for " .. money .. "$.", thePlayer, 0, 255, 0)
-					if (safeTable[dbid] ~= nil) then
-						local safe = safeTable[tonumber(dbid)]
+		return dbid, entrance, exit, getElementData(entrance,"inttype")
+	end
+	return 0
+end
+
+function sellProperty(thePlayer, commandName)
+	local dbid, entrance, exit, interiorType = findProperty( thePlayer )
+	if dbid > 0 then
+		if interiorType == 2 then
+			outputChatBox("You cannot sell a government property.", thePlayer, 255, 0, 0)
+		else
+			if exports.global:isPlayerAdmin(thePlayer) or getElementData(entrance, "owner") == getElementData(thePlayer, "dbid") then
+				local query = mysql_query(handler, "UPDATE interiors SET owner=-1, locked=1, safepositionX=NULL, safepositionY=NULL, safepositionZ=NULL, safepositionRZ=NULL WHERE id='" .. dbid .. "'")
+				if query then
+					mysql_free_result(query)
+					
+					setElementPosition(thePlayer, getElementPosition(entrance))
+					removeElementData(thePlayer, "interiormarker")
+					
+					setElementInterior(thePlayer, getElementInterior(entrance))
+					setElementDimension(thePlayer, getElementDimension(entrance))
+					setCameraInterior(thePlayer, getElementInterior(entrance))
+
+					if safeTable[dbid] then
+						local safe = safeTable[dbid]
 						setElementData(safe, "items", "")
 						setElementData(safe, "itemvalues", "")
 						call(getResourceFromName("item-system"), "updateSafeItems", safe)
 						destroyElement(safe)
 					end
+					
+					if interiorType == 1 or interiorType == 2 then
+						if getElementData(entrance, "owner") == getElementData(thePlayer, "dbid") then
+							--local money = math.ceil(getElementData(entrance, "cost") * 2/3)
+							local money = getElementData(entrance, "cost")
+							exports.global:givePlayerSafeMoney(thePlayer, money)
+							outputChatBox("You sold your property for " .. money .. "$.", thePlayer, 0, 255, 0)
+						else
+							outputChatBox("You set this property to unowned.", thePlayer, 0, 255, 0)
+						end
+					else
+						outputChatBox("You are no longer renting this property.", thePlayer, 0, 255, 0)
+					end
+
+					destroyElement(entrance)
+					destroyElement(exit)
+					
+					reloadOneInterior(dbid)
 				else
-					outputChatBox("You set this property to unowned.", thePlayer, 0, 255, 0)
+					outputChatBox("Error 504914 - Report on forums.", thePlayer, 255, 0, 0)
 				end
-				reloadOneInterior(tonumber(dbid))
 			else
-				outputChatBox("Error 504914 - Report on forums.", thePlayer, 255, 0, 0)
+				outputChatBox("You do not own this property.", thePlayer, 255, 0, 0)
 			end
-		elseif (inttype==2) then -- If an unownable property
-			outputChatBox("You cannot sell a government property.", thePlayer, 255, 0, 0)
-			reloadOneInterior(tonumber(dbid))
-		else
-			outputChatBox("You do not own this property.", thePlayer, 255, 0, 0)
-			reloadOneInterior(tonumber(dbid))
 		end
+	else 
+		outputChatBox("You are not in a property.", thePlayer, 255, 0, 0)
 	end
 end
 addCommandHandler("sellproperty", sellProperty, false, false)
+
+function sellTo(thePlayer, commandName, targetPlayerName)
+	-- only works in dimensions
+	local dbid, entrance, exit, interiorType = findProperty( thePlayer )
+	if dbid > 0 then
+		if interiorType == 2 then
+			outputChatBox("You cannot sell a government property.", thePlayer, 255, 0, 0)
+		elseif not targetPlayerName then
+			outputChatBox("SYNTAX: /" .. commandName .. " [partial player name / id]", thePlayer, 255, 194, 14)
+			outputChatBox("Sells the Property you're in to that Player.", thePlayer, 255, 194, 14)
+			outputChatBox("Ask the buyer to use /pay to recieve the money for the Property.", thePlayer, 255, 194, 14)
+		else
+			local targetPlayer = exports.global:findPlayerByPartialNick(targetPlayerName)
+			if targetPlayer and getElementData(targetPlayer, "dbid") then
+				targetPlayerName = getPlayerName(targetPlayer):gsub("_", " ")
+				local px, py, pz = getElementPosition(thePlayer)
+				local tx, ty, tz = getElementPosition(targetPlayer)
+				if getDistanceBetweenPoints3D(px, py, pz, tx, ty, tz) < 20 and getElementDimension(targetPlayer) == getElementDimension(thePlayer) then
+					if getElementData(entrance, "owner") == getElementData(thePlayer, "dbid") or exports.global:isPlayerAdmin(thePlayer) then
+						if getElementData(targetPlayer, "dbid") ~= getElementData(entrance, "owner") then
+							if exports.global:doesPlayerHaveSpaceForItem(targetPlayer) then
+								if mysql_query(handler, "UPDATE interiors SET owner = '" .. getElementData(targetPlayer, "dbid") .. "' WHERE id='" .. dbid .. "'") then
+									setElementData(entrance, "owner", getElementData(targetPlayer, "dbid"))
+									setElementData(exit, "owner", getElementData(targetPlayer, "dbid"))
+									
+									-- FIXME: remove all keys for that Property from all people
+									local keytype = 4
+									if interiorType == 1 then
+										keytype = 5
+									end
+									exports.global:takePlayerItem(thePlayer, keytype, dbid)
+									exports.global:givePlayerItem(targetPlayer, keytype, dbid)
+									
+									outputChatBox("You've successfully sold your property to " .. targetPlayerName .. ".", thePlayer, 0, 255, 0)
+									outputChatBox((getPlayerName(thePlayer):gsub("_", " ")) .. " sold you this property.", targetPlayer, 0, 255, 0)
+								else
+									outputChatBox("Error 09002 - Report on Forums.", thePlayer, 255, 0, 0)
+								end
+							else
+								outputChatBox(targetPlayerName .. " has no space for the property keys.", thePlayer, 255, 0, 0)
+							end
+						else
+							outputChatBox("You can't sell your own property to yourself.", thePlayer, 255, 0, 0)
+						end
+					else
+						outputChatBox("This property is not yours.", thePlayer, 255, 0, 0)
+					end
+				else
+					outputChatBox("You are too far away from " .. targetPlayerName .. ".", thePlayer, 255, 0, 0)
+				end
+			else
+				outputChatBox("No such player online.", thePlayer, 255, 0, 0)
+			end
+		end
+	end
+end
+addCommandHandler("sell", sellTo)
 
 function deleteInterior(thePlayer, commandName)
 	if (exports.global:isPlayerLeadAdmin(thePlayer)) then

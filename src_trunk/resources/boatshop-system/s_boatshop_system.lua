@@ -78,8 +78,6 @@ function makeCar(thePlayer, car, cost, id, col1, col2)
 	setVehicleEngineState(veh, false)
 	setVehicleFuelTankExplodable(veh, false)
 	
-	local insertid = SmallestVehicleID()
-	
 	local query = mysql_query(handler, "INSERT INTO vehicles SET model='" .. id .. "', x='" .. x .. "', y='" .. y .. "', z='" .. z .. "', rotx='" .. rx .. "', roty='" .. ry .. "', rotz='" .. rz .. "', color1='" .. col1 .. "', color2='" .. col2 .. "', faction='-1', owner='" .. dbid .. "', plate='" .. plate .. "', currx='" .. x .. "', curry='" .. y .. "', currz='" .. z .. "', currrx='0', currry='0', currrz='" .. rz .. "', locked='" .. locked .. "'")
 	local insertid = mysql_insert_id ( handler )
 	if (query) then

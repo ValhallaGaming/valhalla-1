@@ -34,50 +34,6 @@ armoredCars = { [427]=true, [528]=true, [432]=true, [601]=true, [428]=true, [597
 -- Events
 addEvent("onVehicleSpawn", false)
 
-function SmallestVehicleID( ) --  Loop which finds the smallest ID in the SQL instead of the biggest one.
-	UsedID = {}		
-	local id = 0
-	local answer = 2 -- 0 = ID = 1 . 1 =Suitable ID found. 2= Still searching for ID.
-	local highest = 0
-	local result = mysql_query(handler, "SELECT id FROM vehicles")
-	if(result) then
-		for result, row in mysql_rows(result) do
-						
-				UsedID[tonumber(row[1])] = 1
-				if (tonumber(row[1]) > highest) then
-					highest = tonumber(row[1])
-				end
-
-		end
-		
-	end
-
-	if(highest > 0) then
-		for i = 1, highest do
-			if(UsedID[i] ~= 1) then
-				answer = 1
-				id = i
-				break
-			end
-		end
-	else
-		answer = 0
-		id = 1
-
-	end
-	
-	if(answer == 2) then
-		answer = 1
-		id = highest + 1
-
-	end
-	if(answer ~= 2) then
-		return id
-	else
-		return false
-	end
-end
-
 -- /makeveh
 function createPermVehicle(thePlayer, commandName, id, col1, col2, userName, factionVehicle, cost)
 	if (exports.global:isPlayerLeadAdmin(thePlayer)) then
@@ -165,11 +121,10 @@ function createPermVehicle(thePlayer, commandName, id, col1, col2, userName, fac
 						
 					local dimension = getElementDimension(thePlayer)
 					local interior = getElementInterior(thePlayer)
-					local insertid = SmallestVehicleID()
-					
-					local query = mysql_query(handler, "INSERT INTO vehicles SET id='" .. insertid .. "', model='" .. id .. "', x='" .. x .. "', y='" .. y .. "', z='" .. z .. "', rotx='" .. rx .. "', roty='" .. ry .. "', rotz='" .. rz .. "', color1='" .. col1 .. "', color2='" .. col2 .. "', faction='" .. factionVehicle .. "', owner='" .. dbid .. "', plate='" .. plate .. "', currx='" .. x .. "', curry='" .. y .. "', currz='" .. z .. "', currrx='0', currry='0', currrz='" .. r .. "', locked='" .. locked .. "', interior='" .. interior .. "', currinterior='" .. interior .. "', dimension='" .. dimension .. "', currdimension='" .. dimension .. "'")
+					local query = mysql_query(handler, "INSERT INTO vehicles SET model='" .. id .. "', x='" .. x .. "', y='" .. y .. "', z='" .. z .. "', rotx='" .. rx .. "', roty='" .. ry .. "', rotz='" .. rz .. "', color1='" .. col1 .. "', color2='" .. col2 .. "', faction='" .. factionVehicle .. "', owner='" .. dbid .. "', plate='" .. plate .. "', currx='" .. x .. "', curry='" .. y .. "', currz='" .. z .. "', currrx='0', currry='0', currrz='" .. r .. "', locked='" .. locked .. "', interior='" .. interior .. "', currinterior='" .. interior .. "', dimension='" .. dimension .. "', currdimension='" .. dimension .. "'")
 
 					if (query) then
+						local insertid = mysql_insert_id( handler )
 						mysql_free_result(query)
 							
 						if (factionVehicle==-1) then

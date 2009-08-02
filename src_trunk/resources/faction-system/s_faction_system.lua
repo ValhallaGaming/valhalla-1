@@ -865,7 +865,7 @@ function payAllWages()
 				local theTeam = getPlayerTeam(value)
 				local factionType = getElementData(theTeam, "type")
 				
-				if (factionType==2) or (factionType==3) or (factionType==4) or (factionType==6) then -- Factions with wages
+				if (factionType==2) or (factionType==3) or (factionType==4) or (factionType==5) or (factionType==6) then -- Factions with wages
 					local username = getPlayerName(value)
 					
 					local factionRankresult = mysql_query(handler, "SELECT faction_rank FROM characters WHERE charactername='" .. mysql_escape_string(handler, username) .. "' LIMIT 1")

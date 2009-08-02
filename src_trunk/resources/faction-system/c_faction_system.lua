@@ -36,7 +36,7 @@ function showFactionMenu(motd, memberUsernames, memberRanks, memberLeaders, memb
 		
 		local factionType = tonumber(getElementData(theTeam, "type"))
 		
-		if (factionType==2) or (factionType==3) or (factionType==4) or (factionType==6) then
+		if (factionType==2) or (factionType==3) or (factionType==4) or (factionType==5) or (factionType==6) then
 			colLocation = guiGridListAddColumn(gMemberGrid, "Location", 0.25)
 			colWage = guiGridListAddColumn(gMemberGrid, "Wage ($)", 0.1)
 		else
@@ -58,7 +58,7 @@ function showFactionMenu(motd, memberUsernames, memberRanks, memberLeaders, memb
 			guiGridListSetItemText(gMemberGrid, row, colLastLogin, memberLastLogin[k], false, false)
 			guiGridListSetItemText(gMemberGrid, row, colLocation, memberLocation[k], false, false)
 
-			if (factionType==2) or (factionType==3) or (factionType==4) or (factionType==6)then
+			if (factionType==2) or (factionType==3) or (factionType==4) or (factionType==5) or (factionType==6)then
 				local rankWage = factionWages[theRank]
 				guiGridListSetItemText(gMemberGrid, row, colWage, tostring(rankWage), false, true)
 			end
@@ -96,7 +96,7 @@ function showFactionMenu(motd, memberUsernames, memberRanks, memberLeaders, memb
 			gButtonPromote = guiCreateButton(0.825, 0.2292, 0.16, 0.06, "Promote Player", true, gFactionWindow)
 			gButtonDemote = guiCreateButton(0.825, 0.3058, 0.16, 0.06, "Demote Player", true, gFactionWindow)
 			
-			if (factionType==2) or (factionType==3) or (factionType==4) or (factionType==6) then
+			if (factionType==2) or (factionType==3) or (factionType==4) or (factionType==5) or (factionType==6) then
 				gButtonEditRanks = guiCreateButton(0.825, 0.3824, 0.16, 0.06, "Edit Ranks & Wages", true, gFactionWindow)
 			else
 				gButtonEditRanks = guiCreateButton(0.825, 0.3824, 0.16, 0.06, "Edit Ranks", true, gFactionWindow)
@@ -156,7 +156,7 @@ function btEditRanks(button, state)
 		
 		guiSetInputEnabled(true)
 		
-		if (factionType==2) or (factionType==3) or (factionType==4) or (factionType==6) then -- factions w/ wages
+		if (factionType==2) or (factionType==3) or (factionType==4) or (factionType==5) or (factionType==6) then -- factions w/ wages
 			local width, height = 400, 500
 			local scrWidth, scrHeight = guiGetScreenSize()
 			local x = scrWidth/2 - (width/2)
@@ -208,7 +208,7 @@ function saveRanks(button, state)
 		end
 		
 		local factionType = tonumber(getElementData(theTeam, "type"))
-		if (factionType==2) or (factionType==3) or (factionType==4) or (factionType==6) then
+		if (factionType==2) or (factionType==3) or (factionType==4) or (factionType==5) or (factionType==6) then
 			for key, value in ipairs(tRankWages) do
 				if not (tostring(type(tonumber(guiGetText(tRankWages[key])))) == "number") then
 					isNumber = false
@@ -228,14 +228,14 @@ function saveRanks(button, state)
 				sendRanks[key] = guiGetText(tRanks[key])
 			end
 			
-			if (factionType==2) or (factionType==3) or (factionType==4) or (factionType==6) then
+			if (factionType==2) or (factionType==3) or (factionType==4) or (factionType==5) or (factionType==6) then
 				for key, value in ipairs(tRankWages) do
 					sendWages[key] = guiGetText(tRankWages[key])
 				end
 			end
 			
 			hideFactionMenu()
-			if (factionType==2) or (factionType==3) or (factionType==4) or (factionType==6) then
+			if (factionType==2) or (factionType==3) or (factionType==4) or (factionType==5) or (factionType==6) then
 				triggerServerEvent("cguiUpdateRanks", getLocalPlayer(), sendRanks, sendWages)
 			else
 				triggerServerEvent("cguiUpdateRanks", getLocalPlayer(), sendRanks)

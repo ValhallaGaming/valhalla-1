@@ -10,48 +10,68 @@ function resStart(res)
 end
 addEventHandler("onClientResourceStart", getRootElement(), resStart)
 
+local oldTask = ""
+local theVehicle = nil
+function checkAlarm()
+	task = getPedSimplestTask(getLocalPlayer())
+	if task ~= oldTask then
+		if theVehicle then
+			if task == "TASK_SIMPLE_CAR_OPEN_LOCKED_DOOR_FROM_OUTSIDE" then
+				triggerServerEvent("onVehicleRemoteAlarm", theVehicle, getLocalPlayer())
+				theVehicle = nil
+			elseif task == "TASK_SIMPLE_PLAYER_ON_FOOT" or task == "TASK_SIMPLE_CAR_GET_IN" then
+				theVehicle = nil
+			end
+		end
+		oldTask = task
+	end
+end
+addEventHandler("onClientRender", getRootElement(), checkAlarm)
+
 function carAlarm()
 	local alarm = getElementData(source, "alarm")
-	
-	local driver = getVehicleOccupant(source, 0)
-	local passenger1 = getVehicleOccupant(source, 1)
-	local passenger2 = getVehicleOccupant(source, 2)
-	local passenger3 = getVehicleOccupant(source, 3)
-	
-	if (isVehicleLocked(source)) and (not alarm) and not (alarmless[getElementModel(source)]) and (not driver and not passenger1 and not passenger2 and not passenger3) then
+	if not alarm then
 		alarmtable[1][source] = setTimer(doCarAlarm, 1000, 20, source)
 		setElementData(source, "alarm", 1)
 		alarmtable[2][source] = setTimer(resetAlarm, 11000, 1, source)
 	end
 end
-addEventHandler("onClientVehicleStartEnter", getRootElement(), carAlarm)
 addEvent("startCarAlarm", true)
 addEventHandler("startCarAlarm", getRootElement(), carAlarm)
+
+function updateCar(thePlayer)
+	if thePlayer == getLocalPlayer() then
+		theVehicle = source
+	end
+end
+addEventHandler("onClientVehicleStartEnter", getRootElement(), updateCar)
 
 function resetAlarm(vehicle)
 	setElementData(vehicle, "alarm", nil)
 end
 
 function doCarAlarm(vehicle)
-	if (isVehicleLocked(vehicle) == false) then
-		setElementData(vehicle, "alarm", nil)
-		killTimer(alarmtable[1][vehicle])
-		killTimer(alarmtable[2][vehicle])
-		alarmtable[2][vehicle] = nil
-		alarmtable[1][vehicle] = nil
-		return
-	end
-	local x, y, z = getElementPosition(vehicle)
-	local px, py, pz = getElementPosition(localPlayer)
-	
-	if (getDistanceBetweenPoints3D(x, y, z, px, py, pz)<30) then
-		playSound3D("horn.wav", x, y, z)
+	if isElement(vehicle) then
+		if (isVehicleLocked(vehicle) == false) then
+			setElementData(vehicle, "alarm", nil)
+			killTimer(alarmtable[1][vehicle])
+			killTimer(alarmtable[2][vehicle])
+			alarmtable[2][vehicle] = nil
+			alarmtable[1][vehicle] = nil
+			return
+		end
+		local x, y, z = getElementPosition(vehicle)
+		local px, py, pz = getElementPosition(localPlayer)
 		
-		if ( getVehicleOverrideLights ( vehicle ) ~= 2 ) then  -- if the current state isn't 'force on'
-			setVehicleOverrideLights ( vehicle, 2 )            -- force the lights on
+		if (getDistanceBetweenPoints3D(x, y, z, px, py, pz)<30) then
+			playSound3D("horn.wav", x, y, z)
 			
-		else
-			setVehicleOverrideLights ( vehicle, 1 )            -- otherwise, force the lights off
+			if ( getVehicleOverrideLights ( vehicle ) ~= 2 ) then	-- if the current state isn't 'force on'
+				setVehicleOverrideLights ( vehicle, 2 )				-- force the lights on
+				
+			else
+				setVehicleOverrideLights ( vehicle, 1 )				-- otherwise, force the lights off
+			end
 		end
 	end
 end

@@ -1,0 +1,15 @@
+<meta>
+	<info author="vG MTA Scripting Team" type="script" description="Faction System"/>
+	
+	<script src="s_faction_system.lua" type="server" />
+	<export function="addToFactionMoney" type="server" />
+	<script src="c_faction_system.lua" type="client" />
+	
+	<script src="c_duty_commands.lua" type="client" />
+	<script src="s_duty_commands.lua" type="server" />
+	
+	<script src="s_duty_skin.lua" type="server" />
+	<script src="c_duty_skin.lua" type="client" />
+	
+	<file src="mission_accomplished.mp3"/>
+</meta>

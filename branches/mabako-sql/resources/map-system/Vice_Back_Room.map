@@ -1,0 +1,8 @@
+<map edf:definitions="editor_main">
+	 -- Vice
+	<object id="object (nightclub01_lvs) (1)" dimension="724" interior="1" model="8399" posX="-2176.3635253906" posY="649.4248046875" posZ="1051.8255615234" rotX="0" rotY="0" rotZ="90" />
+    <object id="object (Gen_doorEXT15) (1)" dimension="724" interior="1" model="1536" posX="-2171.029296875" posY="639.7841796875" posZ="1051.328125" rotX="0" rotY="0" rotZ="0" />
+	
+	-- Vice WC door
+	<object id="object (Gen_doorEXT15) (2)" dimension="413" interior="10" model="1536" posX="364.1397" posY="-63.7950" posZ="1000.5078125" rotX="0" rotY="0" rotZ="180" />
+</map>

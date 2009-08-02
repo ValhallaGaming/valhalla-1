@@ -1,0 +1,28 @@
+<meta>
+	<info author="vG MTA Scripting Team" type="script" description="Item System"/>
+
+	<script src="s_item_system.lua" type="server" />
+	<script src="c_item_system.lua" type="client" />
+	
+	<script src="c_drug_system.lua" type="client" />
+	<script src="s_drug_system.lua" type="server" />
+	
+	<script src="c_world_text.lua" type="client" />
+
+	<script src="c_books.lua" type="client" />
+	
+	<script src="c_safes_system.lua" type="client" />
+	<script src="s_safes_system.lua" type="server" />
+	<export function="updateSafeItems" type="server" />
+
+	<file src="books/PDmanual.xml" />
+	<file src="books/LVHighwayCode.xml" />
+	<file src="books/Chemistry101.xml" />
+	
+	<file src="books/PDmanual.png" />
+	<file src="books/LVHighwayCode.png" />
+	<file src="books/Chemistry101.png" />
+	
+	<script src="ghettoblaster/c_ghettoblaster.lua" type="client"/>
+	<file src="ghettoblaster/loop.mp3" />
+</meta>

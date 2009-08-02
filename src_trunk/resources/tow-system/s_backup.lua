@@ -22,7 +22,7 @@ function towtruck(thePlayer, commandName)
 	local thePlayerTeam = getPlayerTeam(thePlayer)
 	local factionType = getElementData(thePlayerTeam, "type")
 	
-	if (factionType==3 or getTeamName(thePlayerTeam) == "McJones Towing") then
+	--if (factionType==3 or getTeamName(thePlayerTeam) == "McJones Towing") then--Leaving this in in case of abuse.
 		if (backupBlip) and (backupPlayer~=thePlayer) then -- in use
 			outputChatBox("There is already a TowTruck request beacon in use.", thePlayer, 255, 194, 14)
 		elseif not (backupBlip) then -- make backup blip
@@ -38,7 +38,7 @@ function towtruck(thePlayer, commandName)
 			setElementVisibleTo(backupBlip, getRootElement(), false)
 			
 			for key, value in ipairs(getPlayersInTeam(theTeam)) do
-				outputChatBox("An Officer requires a Tow Truck. Please respond ASAP!", value, 255, 194, 14)
+				outputChatBox("A player requires a Tow Truck. Please respond ASAP!", value, 255, 194, 14)
 				setElementVisibleTo(backupBlip, value, true)
 			end
 			
@@ -51,7 +51,7 @@ function towtruck(thePlayer, commandName)
 			end
 		elseif (backupBlip) and (backupPlayer==thePlayer) then -- in use by this player
 			for key, value in ipairs(getPlayersInTeam(theTeam)) do
-				outputChatBox("The Officer no longer requires a Tow Truck. Resume normal patrol", value, 255, 194, 14)
+				outputChatBox("The player no longer requires a Tow Truck. Resume normal patrol", value, 255, 194, 14)
 			end
 			
 			destroyElement(backupBlip)
@@ -60,7 +60,7 @@ function towtruck(thePlayer, commandName)
 			backupPlayer = nil
 			backupBlip = nil
 		end
-	end
+	--end
 end
 addCommandHandler("towtruck", towtruck, false, false)
 addEvent("savePlayer", false)

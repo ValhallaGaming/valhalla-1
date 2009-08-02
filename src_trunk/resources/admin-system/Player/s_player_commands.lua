@@ -1889,13 +1889,18 @@ addEventHandler("onPlayerQuit", getRootElement(), removeReconning)
 
 -- FREECAM
 function toggleFreecam(thePlayer)
-    local enabled = exports.freecam:isPlayerFreecamEnabled (thePlayer)
-    local x, y, z = getCameraMatrix (thePlayer)
-    
-    if (enabled) then
-        exports.freecam:setPlayerFreecamDisabled (thePlayer, false)
-    else
-        exports.freecam:setPlayerFreecamEnabled (thePlayer, x, y, z, false)
+    if exports.global:isPlayerAdmin(thePlayer) then
+        local enabled = exports.freecam:isPlayerFreecamEnabled (thePlayer)
+        
+        if (enabled) then
+            setElementAlpha(thePlayer, 255)
+            setPedFrozen(thePlayer, false)
+            exports.freecam:setPlayerFreecamDisabled (thePlayer)
+        else
+            setElementAlpha(thePlayer, 0)
+            setPedFrozen(thePlayer, true)
+            exports.freecam:setPlayerFreecamEnabled (thePlayer)
+        end
     end
 end
 addCommandHandler("freecam", toggleFreecam)

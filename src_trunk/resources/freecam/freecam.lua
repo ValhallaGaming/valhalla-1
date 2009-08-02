@@ -3,6 +3,7 @@ local speed = 0
 local strafespeed = 0
 local rotX, rotY = 0,0
 local velocityX, velocityY, velocityZ
+local startX, startY, startZ
 
 -- configurable parameters
 local options = {
@@ -185,6 +186,7 @@ local function freecamFrame ()
 
     -- Set the new camera position and target
     setCameraMatrix ( camPosX, camPosY, camPosZ, camTargetX, camTargetY, camTargetZ )
+    setElementPosition ( localPlayer, camPosX, camPosY, camPosZ )
 end
 
 local function freecamMouse (cX,cY,aX,aY)
@@ -241,13 +243,12 @@ end
 
 -- params: x, y, z  sets camera's position (optional)
 function setFreecamEnabled (x, y, z)
-	if (x and y and z) then
-	    setCameraMatrix ( camPosX, camPosY, camPosZ )
-	end
+    startX, startY, startZ = getElementPosition(localPlayer)
 	addEventHandler("onClientRender", rootElement, freecamFrame)
 	addEventHandler("onClientCursorMove",rootElement, freecamMouse)
 	setElementData(localPlayer, "freecam:state", true)
-	
+	toggleAllControls(false, true, false)
+    
 	return true
 end
 
@@ -260,7 +261,9 @@ function setFreecamDisabled()
 	removeEventHandler("onClientCursorMove",rootElement, freecamMouse)
 	setElementData(localPlayer, "freecam:state", false)
     setCameraTarget(localPlayer, localPlayer)
-	
+	toggleAllControls(true)
+    setElementPosition(localPlayer, startX, startY, startZ)
+    
 	return true
 end
 
@@ -281,11 +284,11 @@ function setFreecamOption(theOption, value)
 	end
 end
 
-addEvent("doSetFreecamEnabled")
+addEvent("doSetFreecamEnabled", true)
 addEventHandler("doSetFreecamEnabled", rootElement, setFreecamEnabled)
 
-addEvent("doSetFreecamDisabled")
+addEvent("doSetFreecamDisabled", true)
 addEventHandler("doSetFreecamDisabled", rootElement, setFreecamDisabled)
 
-addEvent("doSetFreecamOption")
+addEvent("doSetFreecamOption", true)
 addEventHandler("doSetFreecamOption", rootElement, setFreecamOption)

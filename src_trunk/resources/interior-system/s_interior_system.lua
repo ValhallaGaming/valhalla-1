@@ -179,12 +179,20 @@ function sellProperty(thePlayer, commandName)
 						destroyElement(safe)
 					end
 					
-					if interiorType == 1 or interiorType == 2 then
+					if interiorType == 0 or interiorType == 1 then
 						if getElementData(entrance, "owner") == getElementData(thePlayer, "dbid") then
 							--local money = math.ceil(getElementData(entrance, "cost") * 2/3)
 							local money = getElementData(entrance, "cost")
 							exports.global:givePlayerSafeMoney(thePlayer, money)
 							outputChatBox("You sold your property for " .. money .. "$.", thePlayer, 0, 255, 0)
+							
+							local keytype = 4
+							if interiorType == 1 then
+								keytype = 5
+							end
+							exports.global:takePlayerItem(thePlayer, keytype, dbid)
+							
+							triggerClientEvent(thePlayer, "removeBlipAtXY", thePlayer, interiorType, getElementPosition(entrance))
 						else
 							outputChatBox("You set this property to unowned.", thePlayer, 0, 255, 0)
 						end
@@ -240,6 +248,9 @@ function sellTo(thePlayer, commandName, targetPlayerName)
 									end
 									exports.global:takePlayerItem(thePlayer, keytype, dbid)
 									exports.global:givePlayerItem(targetPlayer, keytype, dbid)
+									
+									triggerClientEvent(thePlayer, "removeBlipAtXY", thePlayer, interiorType, getElementPosition(entrance))
+									triggerClientEvent(targetPlayer, "createBlipAtXY", targetPlayer, interiorType, getElementPosition(entrance))
 									
 									outputChatBox("You've successfully sold your property to " .. targetPlayerName .. ".", thePlayer, 0, 255, 0)
 									outputChatBox((getPlayerName(thePlayer):gsub("_", " ")) .. " sold you this property.", targetPlayer, 0, 255, 0)

@@ -82,7 +82,7 @@ function UnlockVehicle(element, matchingdimension)
 						setVehicleEngineState(temp, false)
 						outputChatBox("Please remember to vehpos your vehicle in our car park.", getVehicleOccupant(element), 255, 194, 14)
 					else
-						if (getElementData(temp, "faction") ~= 24) then
+						--if (getElementData(temp, "faction") ~= 24) then
 							--unlock it and impound it
 							setVehicleLocked(temp, false)
 							setElementData(temp, "locked", false)
@@ -90,7 +90,7 @@ function UnlockVehicle(element, matchingdimension)
 							setElementData(temp, "enginebroke", 1, false)
 							setVehicleEngineState(temp, false)
 							outputChatBox("Please remember to vehpos your vehicle in our car park.", getVehicleOccupant(element), 255, 194, 14)
-						end
+						--end
 					end
 				else
 					outputChatBox("This Faction's vehicle cannot be impounded.", getVehicleOccupant(element), 255, 194, 14)
@@ -149,7 +149,7 @@ function triggerShowImpound(element)
 	local count = 1
 	for key, value in ipairs(getElementsByType("vehicle")) do
 		local dbid = getElementData(value, "dbid")
-		if (getElementData(value, "Impounded") and ((dbid > 0 and exports.global:doesPlayerHaveItem(element, 3, dbid)) or (getElementData(value, "faction") == getElementData(element, "faction") and getElementData(value, "owner") == getElementData(element, "dbid")))) then
+		if (getElementData(value, "Impounded") and ((dbid > 0 and exports.global:doesPlayerHaveItem(element, 3, dbid) or (getElementData(value, "faction") == getElementData(element, "faction") and getElementData(value, "owner") == getElementData(element, "dbid"))))) then
 			vehElements[count] = value
 			count = count + 1
 		end
@@ -207,7 +207,7 @@ function updateCivilianVehicles(theTruck)
 		local owner = getElementData(source, "owner")
 		local faction = getElementData(source, "faction")
 		local dbid = getElementData(source, "dbid")
-		if (dbid >= 0) then
+		if (dbid >= 0 and faction == -1 and owner == -1) then
 			call(getResourceFromName("faction-system"), "addToFactionMoney", 24, 75)
 			outputChatBox("The state has un-impounded the vehicle you where towing.", getVehicleOccupant(theTruck), 255, 194, 14)
 			respawnVehicle(source)

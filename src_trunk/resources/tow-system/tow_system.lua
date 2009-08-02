@@ -67,6 +67,7 @@ function UnlockVehicle(element, matchingdimension)
 			temp = getVehicleTowedByVehicle(temp)
 			local owner = getElementData(temp, "owner")
 			local faction = getElementData(temp, "faction")
+			local dbid = getElementData(temp, "dbid")
 			if (owner > 0) then
 				if (faction > 3 or faction < 0) then
 					if (source == towSphere2) then
@@ -94,8 +95,6 @@ function UnlockVehicle(element, matchingdimension)
 				else
 					outputChatBox("This Faction's vehicle cannot be impounded.", getVehicleOccupant(element), 255, 194, 14)
 				end
-			else
-				outputChatBox("Civilian vehicles cannot be impounded.", getVehicleOccupant(element), 255, 194, 14)
 			end
 		end
 	end
@@ -202,3 +201,18 @@ function updateTowingVehicle(theTruck)
 end
 
 addEventHandler("onTrailerAttach", getRootElement(), updateTowingVehicle)
+
+function updateCivilianVehicles(theTruck)
+	if (isElementWithinColShape(theTruck, towSphere)) then
+		local owner = getElementData(source, "owner")
+		local faction = getElementData(source, "faction")
+		local dbid = getElementData(source, "dbid")
+		if (dbid >= 0) then
+			call(getResourceFromName("faction-system"), "addToFactionMoney", 24, 75)
+			outputChatBox("The state has un-impounded the vehicle you where towing.", getVehicleOccupant(theTruck), 255, 194, 14)
+			respawnVehicle(source)
+		end
+	end
+end
+
+addEventHandler("onTrailerDetach", getRootElement(), updateCivilianVehicles)

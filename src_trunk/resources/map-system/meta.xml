@@ -1,4 +1,5 @@
 <meta>
+	<script src="createObject.lua" type="client"/>
 	<script src="Bank Int.lua" type="client"/>
 	<script src="Bassline_Studios.lua" type="client"/>
 	<script src="Blackfield Chapel Int.lua" type="client"/>

@@ -1,6 +1,23 @@
 <meta>
 	<info author="vG MTA Scripting Team" type="script" description="Item System"/>
 
+	<script src="g_items.lua" type="client" />
+	<script src="g_items.lua" type="server" />
+
+	<script src="s_player_items.lua" type="server" />
+	<export function="doesPlayerHaveSpaceForItem" type="server"/>
+	<export function="doesPlayerHaveItem" type="server"/>
+	<export function="givePlayerItem" type="server"/>
+	<export function="takePlayerItem" type="server"/>
+	<export function="getPlayerItems" type="server"/>
+	<export function="loadPlayerItems" type="server"/>
+
+	<script src="c_player_items.lua" type="client" />
+	<export function="doesPlayerHaveSpaceForItem" type="client"/>
+	<export function="doesPlayerHaveItem" type="client"/>
+	<export function="getPlayerItems" type="client"/>
+	<export function="getPlayerInventorySlots" type="client"/>
+
 	<script src="s_item_system.lua" type="server" />
 	<script src="c_item_system.lua" type="client" />
 	

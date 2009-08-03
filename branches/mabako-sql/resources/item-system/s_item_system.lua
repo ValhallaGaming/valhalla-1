@@ -500,269 +500,172 @@ function destroyGlowStick(marker)
 	destroyElement(marker)
 end
 
-function destroyItem(itemID, itemValue, itemName, isWeapon, items, values)
+function destroyItem(slot, weapon)
 	if isPedDead(source) then return end
-	if (itemID==48) then -- backpack
-		for i = 1, 10 do
-			if (items[i]~=nil) then
-				local id = items[i]
-				local value = values[i]
-				exports.global:takePlayerItem(source, id, value)
-			end
-		end
-	end
-
-	outputChatBox("You destroyed a " .. itemName .. ".", source, 255, 194, 14)
-	exports.global:sendLocalMeAction(source, "destroyed a " .. itemName .. ".")
-	if not (isWeapon) then
-		exports.global:takePlayerItem(source, tonumber(itemID), tonumber(itemValue))
+	
+	local itemname = ""
+	if not weapon then
+		local items = getPlayerItems(source)
+		local item = items[slot]
+		takePlayerItemFromSlot(source, slot)
 		
-		if (tonumber(itemID)==16) then
+		-- Check if he destroys his current clothes
+		if item[1] == 16 and item[2] == getPedSkin(source) and not exports.global:doesPlayerHaveItem(source, 16, item[2]) then
 			setPedSkin(source, 0)
 		end
+		
+		itemname = getItemName(item[1])
 	else
-		if (itemID==nil) then
+		if weapon == -1 then
 			setPedArmor(source, 0)
+			itemname = "Armor"
 		else
-			takeWeapon(source, tonumber(itemID))
+			takeWeapon(source, weapon)
+			itemname = getWeaponNameFromID(weapon)
 		end
 	end
+	outputChatBox("You destroyed a " .. itemname .. ".", source, 255, 194, 14)
+	exports.global:sendLocalMeAction(source, "destroyed a " .. itemname .. ".")
 end
 addEvent("destroyItem", true)
 addEventHandler("destroyItem", getRootElement(), destroyItem)
 
 weaponmodels = { [1]=331, [2]=333, [3]=326, [4]=335, [5]=336, [6]=337, [7]=338, [8]=339, [9]=341, [15]=326, [22]=346, [23]=347, [24]=348, [25]=349, [26]=350, [27]=351, [28]=352, [29]=353, [32]=372, [30]=355, [31]=356, [33]=357, [34]=358, [35]=359, [36]=360, [37]=361, [38]=362, [16]=342, [17]=343, [18]=344, [39]=363, [41]=365, [42]=366, [43]=367, [10]=321, [11]=322, [12]=323, [14]=325, [44]=368, [45]=369, [46]=371, [40]=364, [100]=373 }
 
-function dropItem(itemID, itemValue, itemName, x, y, z, gz, isWeapon, items, itemvalues, forced)
+--function dropItem(itemID, itemValue, itemName, x, y, z, gz, isWeapon, items, itemvalues, forced)
+function dropItem(slot, ammo, forced, x, y, z)
 	if isPedDead(source) then return end
-	if not (isWeapon) then
-		local removed = exports.global:takePlayerItem(source, tonumber(itemID), tonumber(itemValue))
+	if not ammo then
+		local items = getPlayerItems(source)
+		local item = items[slot]
 		
-		if (not forced) then
-			outputChatBox("You dropped a " .. itemName .. ".", source, 255, 194, 14)
+		createWorldItem(source, x, y, z, item[1], item[2], false)
+		takePlayerItemFromSlot(source, slot)
+		
+		if not forced then
+			outputChatBox("You dropped a " .. getItemName(item[1]) .. ".", source, 255, 194, 14)
 			
 			-- Animation
 			exports.global:applyAnimation(source, "CARRY", "putdwn", -1, false, false, true)
 			setTimer(removeAnimation, 500, 1, source)
 		end
-	
-		local objectresult = mysql_query(handler, "SELECT modelid FROM items WHERE id='" .. tonumber(itemID) .. "' LIMIT 1")
-		local modelid = tonumber(mysql_result(objectresult, 1, 1))
-		mysql_free_result(objectresult)
-		
-		local obj = createObject(modelid, x, y, z)
-		exports.pool:allocateElement(obj)
-		
-		local interior = getElementInterior(source)
-		local dimension = getElementDimension(source)
-		setElementInterior(obj, interior)
-		setElementDimension(obj, dimension)
-		
-		moveObject(obj, 200, x, y, gz+0.3)
-		
-		local time = getRealTime()
-		local yearday = time.yearday
-		
-		local stringitems = ""
-		local stringvalues = ""
-		if (tonumber(itemID)==48) then -- BACKPACK, lets drop the items inside the bag
-			for i = 1, 10 do
-				if (items[i]~=nil) then
-					if (exports.global:doesPlayerHaveItem(source, tonumber(items[i]), tonumber(itemvalues[i]))) then
-						exports.global:takePlayerItem(source, tonumber(items[i]), tonumber(itemvalues[i]))
-						stringitems = stringitems .. items[i] .. ","
-						stringvalues = stringvalues .. itemvalues[i] .. ","
-					end
-				end
-			end
-		end
-		
-		local insert = mysql_query(handler, "INSERT INTO worlditems SET itemid='" .. itemID .. "', itemvalue='" .. itemValue .. "', itemname='" .. itemName .. "', yearday='" .. yearday .. "', x='" .. x .. "', y='" .. y .. "', z='" .. gz+0.3 .. "', dimension='" .. dimension .. "', interior='" .. interior .. "', items='" .. stringitems .. "', itemvalues='" .. stringvalues .. "'")
-		local id = mysql_insert_id(handler)
-		setElementData(obj, "id", id, false)
-		setElementData(obj, "itemID", itemID)
-		setElementData(obj, "itemValue", itemValue)
-		setElementData(obj, "itemName", itemName)
-		setElementData(obj, "type", "worlditem")
-		setElementData(obj, "items", stringitems)
-		setElementData(obj, "itemvalues", stringvalues)
 		
 		-- Check if he drops his current clothes
-		if tonumber(itemID) == 16 and tonumber(itemValue) == getPedSkin(source) and not exports.global:doesPlayerHaveItem(source, 16, tonumber(itemValue)) then
+		if item[1] == 16 and item[2] == getPedSkin(source) and not exports.global:doesPlayerHaveItem(source, 16, item[2]) then
 			setPedSkin(source, 0)
 		end
 	else
 		if tonumber(getElementData(source, "duty")) > 0 then
 			outputChatBox("You can't drop your weapons while being on duty.", source, 255, 0, 0)
 		else
-			outputChatBox("You dropped a " .. itemName .. ".", source, 255, 194, 14)
+			createWorldItem(source, x, y, z, slot, ammo, true)
+
+			if not forced then
+				outputChatBox("You dropped a " .. (getWeaponNameFromID(slot) or "Body Armor") .. ".", source, 255, 194, 14)
+			end
 			
-			if (itemID==nil) then
-				itemID = 100
-				gz = gz + 0.5
+			if slot == 100 then
+				z = z + 0.5
 				setPedArmor(source, 0)
 			end
 			
+			takeWeapon(source, slot)
 			triggerClientEvent(source, "saveGuns", source)
-			takeWeapon(source, tonumber(itemID))
-			
-			local modelid = 2969
-			-- MODEL ID
-			if (itemID==100) then
-				modelid = 1242
-			elseif (itemID==42) then
-				modelid = 2690
-			else
-				modelid = 2969
-			end
-			
-			local obj = createObject(modelid, x, y, z, 0, 0, 0)
-			exports.pool:allocateElement(obj)
-			
-			local interior = getElementInterior(source)
-			local dimension = getElementDimension(source)
-			setElementInterior(obj, interior)
-			setElementDimension(obj, dimension)
-			
-			moveObject(obj, 200, x, y, gz+0.1)
-			
-			local time = getRealTime()
-			local yearday = time.yearday
-			
-			
-			mysql_query(handler, "INSERT INTO worlditems SET itemid='" .. itemID .. "', itemvalue='" .. itemValue .. "', itemname='" .. itemName .. "', yearday='" .. yearday .. "', x='" .. x .. "', y='" .. y .. "', z='" .. gz+0.1 .. "', dimension='" .. dimension .. "', interior='" .. interior .. "'")
-			local id = mysql_insert_id(handler)
-			setElementData(obj, "id", id, false)
-			setElementData(obj, "itemID", itemID)
-			setElementData(obj, "itemValue", itemValue)
-			setElementData(obj, "itemName", itemName)
-			setElementData(obj, "type", "worlditem")
 		end
 	end
 end
 addEvent("dropItem", true)
 addEventHandler("dropItem", getRootElement(), dropItem)
 
-function loadWorldItems(res)
-	if (res==getThisResource()) then
-		local result = mysql_query(handler, "SELECT id, itemid, itemvalue, itemname, yearday, x, y, z, dimension, interior, items, itemvalues FROM worlditems")
-		for result, row in mysql_rows(result) do
-			local wyearday = tonumber(row[5])
-			local time = getRealTime()
-			local yearday = time.yearday
-			
-			
-			if (yearday>(wyearday+7)) then
-				mysql_query(handler, "DELETE FROM worlditems WHERE id='" .. tonumber(row[1]) .. "' LIMIT 1")
-			elseif (wyearday>yearday) then -- a new year
-				mysql_query(handler, "UPDATE worlditems SET yearday='" .. yearday .. "' WHERE id='" .. tonumber(row[1]) .. "' LIMIT 1")
+function createWorldItem(source, x, y, z, id, value, weapon)
+	local obj
+	if weapon then
+		modelid = 2969
+		if id == 100 then
+			modelid = 1242
+		elseif id == 42 then
+			modelid = 2690
+		end
+		id = -id
+		obj = createObject(modelid, x, y, z + 0.1, 0, 0, 0)
+	else
+		modelid = getItemModel(id)
+		obj = createObject(modelid, x, y, z + 0.3, 270, 0, 0)
+	end
+	exports.pool:allocateElement(obj)
+	
+	local interior = getElementInterior(source)
+	local dimension = getElementDimension(source)
+	setElementInterior(obj, interior)
+	setElementDimension(obj, dimension)
+		
+	local time = getRealTime()
+	local yearday = time.yearday
+	
+	local insert = mysql_query(handler, "INSERT INTO worlditems (itemid, itemvalue, yearday, x, y, z, dimension, interior) VALUES (" .. id .. ", '" .. mysql_escape_string(handler, value) .. "'," .. yearday .. "," .. x .. "," .. y .. "," .. z+0.3 .. "," .. dimension .. "," .. interior .. ")")
+	local insert_id = mysql_insert_id(handler)
+	setElementData(obj, "id", insert_id, false)
+	setElementData(obj, "itemID", id)
+	setElementData(obj, "itemValue", value)
+	setElementData(obj, "type", "worlditem")
+	
+	if id == 48 then -- backpack
+		local items = getPlayerItems(source)
+		local storeditems = {}
+		for i = 11, 20 do
+			if items[i] then
+				storeditems[#storeditems+1] = items[i]
 				
-				local x = tonumber(row[6])
-				local y = tonumber(row[7])
-				local z = tonumber(row[8])
-				
-				local interior = tonumber(row[9])
-				local dimension = tonumber(row[10])
-				
-				if (tostring(row[4])==getWeaponNameFromID(tonumber(row[2])) or tostring(row[4])=="Body Armor") then
-					local modelid = 2969
-					-- MODEL ID
-					if (tonumber(row[2])==100) then
-						modelid = 1242
-					elseif (tonumber(row[2])==42) then
-						modelid = 2690
-					else
-						modelid = 2969
-					end
-				
-					local obj = createObject(modelid, x, y, z)
-					exports.pool:allocateElement(obj)
-					setElementDimension(obj, dimension)
-					setElementInterior(obj, interior)
-					setElementData(obj, "id", tonumber(row[1]), false)
-					setElementData(obj, "itemID", tonumber(row[2]))
-					setElementData(obj, "itemValue", tonumber(row[3]))
-					setElementData(obj, "itemName", tostring(row[4]))
-					setElementData(obj, "type", "worlditem")
-				else
-					local objectresult = mysql_query(handler, "SELECT modelid FROM items WHERE id='" .. tonumber(row[2]) .. "' LIMIT 1")
-					local modelid = tonumber(mysql_result(objectresult, 1, 1))
-					local items = tostring(row[11])
-					local itemvalues = tostring(row[12])
-					outputDebugString(tostring(items))
-					mysql_free_result(objectresult)
-					
-					local obj = createObject(modelid, x, y, z)
-					exports.pool:allocateElement(obj)
-					setElementDimension(obj, dimension)
-					setElementInterior(obj, interior)
-					setElementData(obj, "id", tonumber(row[1]), false)
-					setElementData(obj, "itemID", tonumber(row[2]))
-					setElementData(obj, "itemValue", tonumber(row[3]))
-					setElementData(obj, "itemName", tostring(row[4]))
-					setElementData(obj, "type", "worlditem")
-					
-					if (tonumber(row[2])==48) then -- BACKPACK
-						setElementData(obj, "items", items)
-						setElementData(obj, "itemvalues", itemvalues)
-					end
-				end
-			else
-				local interior = tonumber(row[10])
-				local dimension = tonumber(row[9])
-				local x = tonumber(row[6])
-				local y = tonumber(row[7])
-				local z = tonumber(row[8])
-				
-				if (tostring(row[4])==getWeaponNameFromID(tonumber(row[2]))  or tostring(row[4])=="Body Armor") then
-					local modelid = 2969
-					-- MODEL ID
-					if (tonumber(row[2])==100) then
-						modelid = 1242
-					elseif (tonumber(row[2])==42) then
-						modelid = 2690
-					else
-						modelid = 2969
-					end
-				
-					local obj = createObject(modelid, x, y, z, 0, 0, 0)
-					exports.pool:allocateElement(obj)
-					setElementDimension(obj, dimension)
-					setElementInterior(obj, interior)
-					setElementData(obj, "id", tonumber(row[1]), false)
-					setElementData(obj, "itemID", tonumber(row[2]))
-					setElementData(obj, "itemValue", tonumber(row[3]))
-					setElementData(obj, "itemName", tostring(row[4]))
-					setElementData(obj, "type", "worlditem")
-				else
-					local objectresult = mysql_query(handler, "SELECT modelid FROM items WHERE id='" .. tonumber(row[2]) .. "' LIMIT 1")
-					local modelid = tonumber(mysql_result(objectresult, 1, 1))
-					local items = tostring(row[11])
-					local itemvalues = tostring(row[12])
-					mysql_free_result(objectresult)
-					
-					local obj = createObject(modelid, x, y, z, 270, 0, 0)
-					exports.pool:allocateElement(obj)
-					setElementDimension(obj, dimension)
-					setElementInterior(obj, interior)
-					setElementData(obj, "id", tonumber(row[1]))
-					setElementData(obj, "itemID", tonumber(row[2]))
-					setElementData(obj, "itemValue", tonumber(row[3]))
-					setElementData(obj, "itemName", tostring(row[4]))
-					setElementData(obj, "type", "worlditem")
-					
-					if (tonumber(row[2])==48) then -- BACKPACK
-						setElementData(obj, "items", items)
-						setElementData(obj, "itemvalues", itemvalues)
-					end
-				end
+				-- store in backpack
+				mysql_free_result( mysql_query( handler, "INSERT INTO items (type, id, itemid, itemvalue) VALUES (1," .. insert_id .. "," .. items[i][1] .. ",'" .. mysql_escape_string(handler, items[i][2]) .. "')" ) )
 			end
 		end
-		exports.irc:sendMessage("[SCRIPT] Loaded " .. tonumber(mysql_num_rows(result)) .. " world items.")
-		mysql_free_result(result)
 	end
 end
-addEventHandler("onResourceStart", getRootElement(), loadWorldItems)
+
+function loadWorldItems()
+	local time = getRealTime()
+	local yearday = time.yearday
+	
+	-- delete too old items
+	mysql_free_result(mysql_query(handler, "DELETE FROM worlditems WHERE yearday < " .. yearday-7 ))
+	-- new year stuff
+	mysql_free_result(mysql_query(handler, "UPDATE worlditems SET yearday=" .. yearday .. " WHERE yearday > " .. yearday)) 
+	
+	local result = mysql_query(handler, "SELECT * FROM worlditems")
+	while true do
+		local row = mysql_fetch_assoc(result)
+		if not row then break end
+		
+		for k, v in pairs(row) do
+			row[k] = tonumber(v)
+		end
+		
+		local obj = nil
+		if row.itemid < 0 then
+			local modelid = 2969
+			if row.itemid == -100 then
+				modelid = 1242
+			elseif row.itemid == -42 then
+				modelid = 2690
+			end
+			
+			obj = createObject(modelid, row.x, row.y, row.z, 0, 0, 0)
+		else
+			obj = createObject(getItemModel(row.itemid), row.x, row.y, row.z, 270, 0, 0)
+		end
+		exports.pool:allocateElement(obj)
+		setElementDimension(obj, row.dimension)
+		setElementInterior(obj, row.interior)
+		setElementData(obj, "id", row.id, false)
+		setElementData(obj, "itemID", row.itemid)
+		setElementData(obj, "itemValue", row.itemvalue)
+		setElementData(obj, "type", "worlditem")
+	end
+	exports.irc:sendMessage("[SCRIPT] Loaded " .. tonumber(mysql_num_rows(result)) .. " world items.")
+	mysql_free_result(result)
+end
+addEventHandler("onResourceStart", getResourceRootElement(), loadWorldItems)
 
 function showItem(itemName)
 	if isPedDead(source) then return end
@@ -775,47 +678,41 @@ function resetAnim(thePlayer)
 	exports.global:removeAnimation(thePlayer)
 end
 
-function pickupItem(object, itemID, itemValue, itemName)
+function pickupItem(object)
 	local x, y, z = getElementPosition(source)
 	local ox, oy, oz = getElementPosition(object)
 
-	if (getDistanceBetweenPoints3D(x, y, z, ox, oy, oz)<3) then	
+	if getDistanceBetweenPoints3D(x, y, z, ox, oy, oz)<3 then
+		local id = getElementData(object, "id")
+		local itemID = getElementData(object, "itemID")
+		local itemValue = getElementData(object, "itemValue")
+		destroyElement(object)
+		
+		itemName = ""
+		if itemID >= 0 then
+			itemName = getItemName(itemID)
+			
+			givePlayerItem(source, itemID, itemValue)
+			if itemID == 48 then -- BACKPACK
+				exports.global:givePlayerItem(source, itemID, itemValue)
+				mysql_query("UPDATE items SET id=" .. getElementData(source, "dbid") .. ", type=0 WHERE id=" .. id .. " AND type=1")
+				loadPlayerItems(source)
+			end
+		elseif itemID == -100 then
+			itemName = "Body Armor"
+			setPedArmor(source, getPedArmor(source)+itemValue)
+		else
+			itemName = getWeaponNameFromID(-itemID)
+			giveWeapon(source, -itemID, itemValue)
+		end
 		outputChatBox("You picked up a " .. itemName .. ".", source, 255, 194, 14)
+		exports.global:sendLocalMeAction(source, "bends over and picks up a " .. itemName .. ".")
 		
 		-- Animation
 		exports.global:applyAnimation(source, "CARRY", "liftup", -1, false, true, true)
 		setTimer(resetAnim, 1600, 1, source)
 		
-		exports.global:sendLocalMeAction(source, "bends over and picks up a " .. itemName .. ".")
-		local items = getElementData(object, "items")
-		local itemvalues = getElementData(object, "itemvalues")
-		local id = getElementData(object, "id")
-		destroyElement(object)
-
-		if (tostring(itemName)~=getWeaponNameFromID(tonumber(itemID)) and tostring(itemName)~="Body Armor") then
-			mysql_query(handler, "DELETE FROM worlditems WHERE id='" .. tonumber(id) .. "'")
-			exports.global:givePlayerItem(source, tonumber(itemID), tonumber(itemValue))
-			
-			if (tonumber(itemID)==48) then -- BACKPACK, give the items inside it
-				for i=1, 20 do
-					if not (items) or not (itemvalues) then -- no items
-						return false
-					else
-						local token = tonumber(gettok(items, i, string.byte(',')))
-						if (token) then
-							local itemValue = tonumber(gettok(itemvalues, i, string.byte(',')))
-							exports.global:givePlayerItem(source, token, itemValue)
-						end
-					end
-				end
-			end
-		elseif (tostring(itemName)==getWeaponNameFromID(tonumber(itemID))) then
-			mysql_query(handler, "DELETE FROM worlditems WHERE id='" .. tonumber(id) .. "'")
-			giveWeapon(source, tonumber(itemID), tonumber(itemValue), true)
-		elseif (tostring(itemName)=="Body Armor") then
-			mysql_query(handler, "DELETE FROM worlditems WHERE id='" .. tonumber(id) .. "'")
-			setPedArmor(source, tonumber(itemValue))
-		end
+		mysql_query(handler, "DELETE FROM worlditems WHERE id=" .. id)
 	else
 		outputDebugString("Distance between Player and Pickup too large")
 		setElementData(object, "pickedup", false)
@@ -823,31 +720,6 @@ function pickupItem(object, itemID, itemValue, itemName)
 end
 addEvent("pickupItem", true)
 addEventHandler("pickupItem", getRootElement(), pickupItem)
-
-function adminItemList(thePlayer)
-	if (exports.global:isPlayerAdmin(thePlayer)) then
-		local result = mysql_query(handler, "SELECT id, item_name, item_description FROM items")
-				
-		if (result) then
-			local items = { }
-			local key = 1
-			
-			for result, row in mysql_rows(result) do
-				items[key] = { }
-				items[key][1] = row[1]
-				items[key][2] = row[2]
-				items[key][3] = row[3]
-				key = key + 1
-			end
-			
-			mysql_free_result(result)
-			triggerClientEvent(thePlayer, "showItemList", getRootElement(), items)
-		else
-			outputChatBox("Error 300001 - Report on forums.", thePlayer, 255, 0, 0)
-		end
-	end
-end
-addCommandHandler("itemlist", adminItemList, false, false)
 
 function breathTest(thePlayer, commandName, targetPlayer)
 	if (exports.global:doesPlayerHaveItem(thePlayer, 53, -1)) then
@@ -952,6 +824,7 @@ function showInventoryRemote(thePlayer, commandName, targetPlayer)
 		else
 			local targetPlayer = exports.global:findPlayerByPartialNick(targetPlayer)
 			if targetPlayer then
+				sendPlayerItems(thePlayer,targetPlayer)
 				triggerClientEvent(thePlayer,"showInventory",thePlayer,targetPlayer)
 			else
 				outputChatBox("Player not found or multiple were found.", thePlayer, 255, 0, 0)

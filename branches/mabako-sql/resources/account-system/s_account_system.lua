@@ -160,66 +160,59 @@ function spawnCharacter(charname)
 	
 	local safecharname = mysql_escape_string(handler, charname)
 	
-	local result = mysql_query(handler, "SELECT id, x, y, z, rotation, interior_id, dimension_id, health, armor, skin, money, faction_id, cuffed, radiochannel, masked, duty, cellnumber, fightstyle, pdjail, pdjail_time, job, casualskin, weapons, ammo, items, itemvalues, car_license, gun_license, bankmoney, fingerprint, tag, hoursplayed, pdjail_station, timeinserver, restrainedobj, restrainedby, faction_rank, dutyskin FROM characters WHERE charactername='" .. charname .. "' AND account='" .. id .. "'")
+	local result = mysql_query(handler, "SELECT * FROM characters WHERE charactername='" .. charname .. "' AND account='" .. id .. "'")
 	
 	if (result) then
-		local id = mysql_result(result, 1, 1)
-		local x = mysql_result(result, 1, 2)
-		local y = mysql_result(result, 1, 3)
-		local z = mysql_result(result, 1, 4)
+		local row = mysql_fetch_assoc(result)
+		local id = tonumber(row.id)
+		local x = tonumber(row.x)
+		local y = tonumber(row.y)
+		local z = tonumber(row.z)
 		
-		local rot = tonumber(mysql_result(result, 1, 5))
-		local interior = tonumber(mysql_result(result, 1, 6))
-		local dimension = tonumber(mysql_result(result, 1, 7))
-		local health = tonumber(mysql_result(result, 1, 8))
-		local armor = tonumber(mysql_result(result, 1, 9))
-		local skin = tonumber(mysql_result(result, 1, 10))
-		local money = tonumber(mysql_result(result, 1, 11))
-		local factionID = tonumber(mysql_result(result, 1, 12))
-		local cuffed = tonumber(mysql_result(result, 1, 13))
-		local radiochannel = tonumber(mysql_result(result, 1, 14))
-		local masked = tonumber(mysql_result(result, 1, 15))
-		local duty = mysql_result(result, 1, 16)
-		local cellnumber = tonumber(mysql_result(result, 1, 17))
-		local fightstyle = tonumber(mysql_result(result, 1, 18))
-		local pdjail = tonumber(mysql_result(result, 1, 19))
-		local pdjail_time = tonumber(mysql_result(result, 1, 20))
+		local rot = tonumber(row.rotation)
+		local interior = tonumber(row.interior_id)
+		local dimension = tonumber(row.dimension_id)
+		local health = tonumber(row.health)
+		local armor = tonumber(row.armor)
+		local skin = tonumber(row.skin)
+		local money = tonumber(row.money)
+		local factionID = tonumber(row.faction_id)
+		local cuffed = tonumber(row.cuffed)
+		local radiochannel = tonumber(row.radiochannel)
+		local masked = tonumber(row.masked)
+		local duty = tonumber(row.duty)
+		local cellnumber = tonumber(row.cellnumber)
+		local fightstyle = tonumber(row.fightstyle)
+		local pdjail = tonumber(row.pdjail)
+		local pdjail_time = tonumber(row.pdjail_time)
 		
-		local job = tonumber(mysql_result(result, 1, 21))
-		local casualskin = tonumber(mysql_result(result, 1, 22))
+		local job = tonumber(row.job)
+		local casualskin = tonumber(row.casualskin)
 		
-		local weapons = tostring(mysql_result(result, 1, 23))
-		local ammo = tostring(mysql_result(result, 1, 24))
+		local weapons = tostring(row.weapons)
+		local ammo = tostring(row.ammo)
 		
-		local items = tostring(mysql_result(result, 1, 25))
-		local itemvalues = tostring(mysql_result(result, 1, 26))
+		local carlicense = tonumber(row.car_license)
+		local gunlicense = tonumber(row.gun_license)
 		
-		local carlicense = tonumber(mysql_result(result, 1, 27))
-		local gunlicense = tonumber(mysql_result(result, 1, 28))
+		local bankmoney = tonumber(row.bankmoney)
 		
-		local bankmoney = tonumber(mysql_result(result, 1, 29))
+		local fingerprint = row.fingerprint
 		
-		local fingerprint = tostring(mysql_result(result, 1, 30))
+		local tag = tonumber(row.tag)
 		
-		local tag = tonumber(mysql_result(result, 1, 31))
+		local hoursplayed = tonumber(row.hoursplayed)
 		
-		local hoursplayed = tonumber(mysql_result(result, 1, 32))
+		local pdjail_station = tonumber(row.pdjail_station)
 		
-		local pdjail_station = tonumber(mysql_result(result, 1, 33))
-		
-		local timeinserver = tonumber(mysql_result(result, 1, 34))
-		local restrainedobj = tonumber(mysql_result(result, 1, 35))
-		local restrainedby = tonumber(mysql_result(result, 1, 36))
-		local factionrank = tonumber(mysql_result(result, 1, 37))
-		local dutyskin = tonumber(mysql_result(result, 1, 38))
+		local timeinserver = tonumber(row.timeinserver)
+		local restrainedobj = tonumber(row.restrainedobj)
+		local restrainedby = tonumber(row.restrainedby)
+		local factionrank = tonumber(row.faction_rank)
+		local dutyskin = tonumber(row.dutyskin)
 		
 		setElementData(source, "timeinserver", timeinserver)
 		triggerClientEvent(source, "syncTimeInServer", source, timeinserver)
-		
-		if (items~=tostring(mysql_null())) and (itemvalues~=tostring(mysql_null())) then
-			setElementData(source, "items", items)
-			setElementData(source, "itemvalues", itemvalues)
-		end
 		
 		setElementData(source, "loggedin", 1)
 		
@@ -537,6 +530,9 @@ function spawnCharacter(charname)
 		setPedStat(source, 77, 999)
 		setPedStat(source, 78, 999)
 		setPedStat(source, 79, 999)
+		
+		-- load items
+		call(getResourceFromName("item-system"), "loadPlayerItems", source)
 		
 		-- MTA BETA ONLY
 		--setTimer(giveBetaAchievement, 10000, 1, source)
@@ -1233,7 +1229,7 @@ function createCharacter(name, gender, skincolour, weight, height, fatness, musc
 		local salt = "fingerprintscotland"
 		local fingerprint = md5(salt .. safecharname)
 		
-		local query = mysql_query(handler, "INSERT INTO characters SET charactername='" .. safecharname .. "', x='" .. x .. "', y='" .. y .. "', z='" .. z .. "', rotation='" .. r .. "', faction_id='-1', transport='" .. transport .. "', gender='" .. gender .. "', skincolor='" .. skincolour .. "', weight='" .. weight .. "', height='" .. height .. "', muscles='" .. muscles .. "', fat='" .. fatness .. "', description='" .. description .. "', account='" .. accountID .. "', skin='" .. skin .. "', lastarea='" .. lastarea .. "', age='" .. age .. "', fingerprint='" .. fingerprint .. "', items='16,17,18,', itemvalues='" .. skin .. ",1,1,'")
+		local query = mysql_query(handler, "INSERT INTO characters SET charactername='" .. safecharname .. "', x='" .. x .. "', y='" .. y .. "', z='" .. z .. "', rotation='" .. r .. "', faction_id='-1', transport='" .. transport .. "', gender='" .. gender .. "', skincolor='" .. skincolour .. "', weight='" .. weight .. "', height='" .. height .. "', muscles='" .. muscles .. "', fat='" .. fatness .. "', description='" .. description .. "', account='" .. accountID .. "', skin='" .. skin .. "', lastarea='" .. lastarea .. "', age='" .. age .. "', fingerprint='" .. fingerprint .. "', items='16,17,18,', skin='" .. skin .. ",1,1,'")
 		
 		if (query) then
 			local id = mysql_insert_id(handler)

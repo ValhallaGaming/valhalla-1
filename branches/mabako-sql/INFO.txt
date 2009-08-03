@@ -1,0 +1,26 @@
+--> SQL Item Changes
+
+CREATE TABLE IF NOT EXISTS `worlditems` (
+  `id` int(11) NOT NULL auto_increment,
+  `itemid` int(11) default '0',
+  `itemvalue` int(11) default '0',
+  `yearday` int(11) default '0',
+  `x` float default NULL,
+  `y` float default NULL,
+  `z` float default NULL,
+  `dimension` int(5) default '0',
+  `interior` int(5) default '0',
+  UNIQUE KEY `id` (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
+
+CREATE TABLE IF NOT EXISTS `items` (
+  `index` int(11) unsigned NOT NULL auto_increment,
+  `type` tinyint(3) unsigned NOT NULL default '0',
+  `id` int(11) NOT NULL,
+  `itemid` int(11) NOT NULL,
+  `itemvalue` int(11) NOT NULL,
+  PRIMARY KEY  (`index`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
+
+Remove items/itemvalues from characters
+Remove table items

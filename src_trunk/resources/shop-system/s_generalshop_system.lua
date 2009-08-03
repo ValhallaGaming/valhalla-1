@@ -451,7 +451,7 @@ function updateGlobalSupplies(value)
 	globalSupplies = globalSupplies + value
 	mysql_query(handler, "UPDATE settings SET value='" .. globalSupplies .. "' WHERE name='globalsupplies'")
 end
-addEvent("updateGlobalSupplies", false)
+addEvent("updateGlobalSupplies", true)
 addEventHandler("updateGlobalSupplies", getRootElement(), updateGlobalSupplies)
 
 function checkSupplies(thePlayer)

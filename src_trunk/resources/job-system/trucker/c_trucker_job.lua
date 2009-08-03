@@ -144,6 +144,9 @@ function nextDeliveryCheckpoint()
 				addEventHandler("onClientMarkerHit", endmarker, endDelivery)
 			end
 			jobstate = 3
+			
+			-- increase global supplies by 3
+			triggerServerEvent("updateGlobalSupplies", getRootElement(), 3)
 		else
 			outputChatBox("#FF9933You must be in a van to complete deliverys.", 255, 0, 0, true ) -- Wrong car type.
 		end

@@ -30,7 +30,7 @@ function doVision()
 	for key, value in ipairs(getElementsByType("player")) do
 		if (isElementOnScreen(value)) and (localPlayer~=value) and getPedOccupiedVehicle(localPlayer) ~= getPedOccupiedVehicle(value) then
 			local x, y, z = getPedBonePosition(value, 6)
-			local skin = getPedSkin(value)
+			local skin = getElementModel(value)
 			
 			if (isLineOfSightClear(px, py, pz, x, y, z, true, false, false, true, false, false, true, true, getPedOccupiedVehicle(localPlayer))) then
 				local text
@@ -58,14 +58,14 @@ function doVision()
 end
 
 function applyVision(thePlayer, seat)
-	if (seat==1 and thePlayer==localPlayer and getVehicleModel(source)==497) then
+	if (seat==1 and thePlayer==localPlayer and getElementModel(source)==497) then
 		addEventHandler("onClientRender", getRootElement(), doVision)
 	end
 end
 addEventHandler("onClientVehicleEnter", getRootElement(), applyVision)
 
 function removeVision(thePlayer, seat)
-	if (seat==1 and thePlayer==localPlayer and getVehicleModel(source)==497) then
+	if (seat==1 and thePlayer==localPlayer and getElementModel(source)==497) then
 		removeEventHandler("onClientRender", getRootElement(), doVision)
 	end
 end

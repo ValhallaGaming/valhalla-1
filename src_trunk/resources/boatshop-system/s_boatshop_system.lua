@@ -83,7 +83,7 @@ function makeCar(thePlayer, car, cost, id, col1, col2)
 	if (query) then
 		mysql_free_result(query)
 							
-		exports.global:givePlayerItem(thePlayer, 3, tonumber(id))
+		exports.global:givePlayerItem(thePlayer, 3, tonumber(insertid))
 		setElementData(veh, "dbid", tonumber(insertid))
 		setElementData(veh, "fuel", 100)
 		setElementData(veh, "engine", 0, false)

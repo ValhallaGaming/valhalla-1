@@ -1904,3 +1904,20 @@ function toggleFreecam(thePlayer)
     end
 end
 addCommandHandler("freecam", toggleFreecam)
+
+-- TOGGLE NAMETAG
+
+function toggleMyNametag(thePlayer)
+	local visible = isPlayerNametagShowing(thePlayer)
+	if exports.global:isPlayerAdmin(thePlayer) then
+		if (visible == true) then
+			setPlayerNametagShowing(thePlayer, false)
+			outputChatBox("Your nametag is no longer visible.", thePlayer, 255, 0, 0)
+		else
+			setPlayerNametagShowing(thePlayer, true)
+			outputChatBox("Your nametag is now visible.", thePlayer, 0, 255, 0)
+		end
+	end
+end
+addCommandHandler("togmytag", toggleMyNametag)
+		

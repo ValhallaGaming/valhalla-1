@@ -57,6 +57,7 @@ function adminhelp (sourcePlayer, commandName)
 					{ "/setmotd", "/setmotd [message]", "updates the message of the day" },
 					{ "/warn", "/warn [player]", "issues a warning, player is banned when having 3 warnings" },
 					{ "/showinv", "/showinv [player]", "views the inventory of the player" },
+					{ "/togmytag", "/togmytag", "toggles your nametag on and off" },
 					
 					-- vehicle/*
 					{ "/unflip", "/unflip", "unflips the car" },

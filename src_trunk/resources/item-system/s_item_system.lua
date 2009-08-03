@@ -59,7 +59,7 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 				
 				if (dbid==itemValue) and (getDistanceBetweenPoints3D(x, y, z, vx, vy, vz)<=50) then -- car found
 					found = value
-					id = key
+					id = tonumber(getElementData(value, "dbid"))
 					break
 				end
 			end
@@ -72,15 +72,18 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 				exports.global:applyAnimation(source, "GHANDS", "gsign3LH", -1, false, false, false)
 				
 				if (isVehicleLocked(found)) then
+					outputChatBox("vehicle ID: " .. tostring(id))
 					setVehicleLocked(found, false)
-					mysql_query(handler, "UPDATE vehicles SET locked='0' WHERE id='" .. id .. "' LIMIT 1")
+					
+					mysql_query(handler, "UPDATE vehicles SET locked='0' WHERE id='" .. tonumber(id) .. "' LIMIT 1")
 					exports.global:sendLocalMeAction(source, "presses on the key to unlock the vehicle. ((" .. getVehicleName(found) .. "))")
 				else
 					setVehicleLocked(found, true)
                     for i = 0, 5 do
                         setVehicleDoorState(found, i, 0)
                     end
-					mysql_query(handler, "UPDATE vehicles SET locked='1' WHERE id='" .. id .. "' LIMIT 1")
+
+					mysql_query(handler, "UPDATE vehicles SET locked='1' WHERE id='" .. tonumber(id) .. "' LIMIT 1")
 					exports.global:sendLocalMeAction(source, "presses on the key to lock the vehicle. ((" .. getVehicleName(found) .. "))")
 				end
 			end

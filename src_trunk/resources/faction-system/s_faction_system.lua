@@ -849,6 +849,8 @@ function payWage(player, pay, faction, tax)
 end
 
 function payAllWages()
+	setTimer(payAllWages, 3600000, 1)
+	
 	local players = exports.pool:getPoolElementsByType("player")
 	
 	local gresult = mysql_query(handler, "SELECT bankbalance FROM factions WHERE id='3'")
@@ -926,7 +928,6 @@ function payAllWages()
 		local hoursplayed = getElementData(value, "hoursplayed")
 		setElementData(value, "hoursplayed", hoursplayed+1, false)
 	end
-	setTimer(payAllWages, 3600000, 1)
 	
 	-- Store the government money
 	local update = mysql_query(handler, "UPDATE factions SET bankbalance='" .. govAmount .. "' WHERE id='3'")

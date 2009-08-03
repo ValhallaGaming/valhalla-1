@@ -314,7 +314,7 @@ function ckPlayer(thePlayer, commandName, targetPlayer)
 					setElementData(targetPlayer, "loggedin", 0, false)
 					outputChatBox("Your character was CK'ed by " .. getPlayerName(thePlayer) .. ".", targetPlayer, 255, 194, 14)
 					showChat(targetPlayer, true)
-					outputChatBox("You have CK'ed ".. getPlayerName(targetPlayer) ..".", thePlayer, 255, 194, 14)
+					outputChatBox("You have CK'ed ".. getPlayerName(targetPlayer) ..".", thePlayer, 255, 194, 1, 14)
 				end
 			end
 		end
@@ -1920,4 +1920,41 @@ function toggleMyNametag(thePlayer)
 	end
 end
 addCommandHandler("togmytag", toggleMyNametag)
+
+-- RESET CHARACTER
+function resetCharacter(thePlayer, commandName, character)
+    if exports.global:isPlayerLeadAdmin(thePlayer) then
+        if not (character) then
+            outputChatBox("SYNTAX: /" .. commandName .. " [exact character name]", thePlayer, 255, 0, 0)
+        else
+            local targetPlayer = getPlayerFromName(character)
+            local query = mysql_query(handler, "SELECT id FROM characters WHERE charactername='" .. character .. "'")
+            local targetid = tonumber(mysql_result(query, 1, 1))
+            local logged = getElementData(thePlayer, "loggedin")
+            if logged == 1 then
+                kickPlayer(thePlayer)
+            end
+            if (targetid == nil) then
+                outputChatBox(character .. " is not a valid character name.", thePlayer, 255, 0, 0)
+            else
+                mysql_query(handler, "UPDATE characters SET money='0', weapons=NULL, ammo=NULL, items='0', itemvalues='0', car_license='0', gun_license='0', bankmoney='0' WHERE id='" .. targetid .. "'")
+                mysql_query(handler, "DELETE FROM vehicles WHERE owner='" .. targetid .. "'")
+                mysql_query(handler, "UPDATE interiors SET owner='-1',locked='1' WHERE owner='" .. targetid .. "'")
+                mysql_free_result(query)
+                restartResource(getResourceFromName(tostring("item-system")))
+                restartResource(getResourceFromName(tostring("interior-system")))
+                outputChatBox("You stripped " .. character .. " off their possession.", thePlayer, 0, 255, 0)
+                if (hiddenAdmin==0) then
+                    local adminTitle = exports.global:getPlayerAdminTitle(thePlayer)
+                    exports.global:sendMessageToAdmins("AdmCmd: " .. tostring(adminTitle) .. " " .. getPlayerName(thePlayer) .. " has reset " .. character .. ".")
+                end
+            end
+        end
+    else
+        outputChatBox("You do not have the required permissions.", thePlayer, 255, 0, 0)
+    end
+end
+addCommandHandler("resetcharacter", resetCharacter)
+
+
 		

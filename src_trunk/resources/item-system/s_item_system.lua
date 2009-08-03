@@ -72,7 +72,6 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 				exports.global:applyAnimation(source, "GHANDS", "gsign3LH", -1, false, false, false)
 				
 				if (isVehicleLocked(found)) then
-					outputChatBox("vehicle ID: " .. tostring(id))
 					setVehicleLocked(found, false)
 					
 					mysql_query(handler, "UPDATE vehicles SET locked='0' WHERE id='" .. tonumber(id) .. "' LIMIT 1")

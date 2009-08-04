@@ -207,7 +207,10 @@ function updateCivilianVehicles(theTruck)
 		local owner = getElementData(source, "owner")
 		local faction = getElementData(source, "faction")
 		local dbid = getElementData(source, "dbid")
-		if (dbid >= 0 and faction == -1 and owner == -1) then
+		outputChatBox(dbid)
+		outputChatBox(faction)
+		outputChatBox(owner)
+		if (dbid >= 0 and faction == -1 and owner < 0) then
 			call(getResourceFromName("faction-system"), "addToFactionMoney", 24, 75)
 			outputChatBox("The state has un-impounded the vehicle you where towing.", getVehicleOccupant(theTruck), 255, 194, 14)
 			respawnVehicle(source)

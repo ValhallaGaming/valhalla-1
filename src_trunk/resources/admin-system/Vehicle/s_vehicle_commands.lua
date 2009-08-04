@@ -368,6 +368,43 @@ function addUpgrade(thePlayer, commandName, target, upgradeID)
 end
 addCommandHandler("addupgrade", addUpgrade, false, false)
 
+function addPaintjob(thePlayer, commandName, target, paintjobID)
+	if (exports.global:isPlayerAdmin(thePlayer)) then
+		if not (target) or not (paintjobID) then
+			outputChatBox("SYNTAX: /" .. commandName .. " [Partial Player Nick] [Paintjob ID]", thePlayer, 255, 194, 14)
+		else
+			local username = getPlayerName(thePlayer)
+			local targetPlayer = exports.global:findPlayerByPartialNick(target)
+			
+			if not (targetPlayer) then
+				outputChatBox("Player not found or multiple were found.", thePlayer, 255, 0, 0)
+			else
+				if not (isPedInVehicle(targetPlayer)) then
+					outputChatBox("That player is not in a vehicle.", thePlayer, 255, 0, 0)
+				else
+					local theVehicle = getPedOccupiedVehicle(targetPlayer)
+					paintjobID = tonumber(paintjobID)
+					if paintjobID == getVehiclePaintjob(theVehicle) then
+						outputChatBox("This Vehicle already has this paintjob.", thePlayer, 255, 0, 0)
+					else
+						local success = setVehiclePaintjob(theVehicle, paintjobID)
+						local targetPlayerName = getPlayerName(targetPlayer)
+						
+						if (success) then
+							outputChatBox("Paintjob #" .. paintjobID .. " added to " .. targetPlayerName .. "'s vehicle.", thePlayer)
+							outputChatBox("Admin " .. username .. " added Paintjob #" .. paintjobID .. " to your vehicle.", targetPlayer)
+						else
+							outputChatBox("Invalid Paintjob ID, or this vehicle doesn't support this paintjob.", thePlayer, 255, 0, 0)
+						end
+					end
+				end
+			end
+		end
+	end
+
+end
+addCommandHandler("paintjob", addPaintjob, false, false)
+
 function resetUpgrades(thePlayer, commandName, target)
 	if (exports.global:isPlayerAdmin(thePlayer)) then
 		if not (target) then
@@ -554,7 +591,7 @@ function fixAllVehicles(thePlayer, commandName)
 		local username = getPlayerName(thePlayer)
 		for key, value in ipairs(exports.pool:getPoolElementsByType("vehicle")) do
 			fixVehicle(value)
-			if (getElementData(value, "Impounded") == 0) then
+			if (not getElementData(value, "Impounded")) then
 				setElementData(value, "enginebroke", 0, false)
 			end
 		end

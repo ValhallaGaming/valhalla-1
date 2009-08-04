@@ -39,7 +39,6 @@ addEventHandler("onPedWasted", getResourceRootElement(),
 				local shoptype = getElementData(source, "shoptype")
 				local skin = getElementModel(source)
 				
-				outputChatBox(rotation)
 				destroyElement(source)
 				createShopKeeper(x,y,z,interior,dimension,dbid,shoptype,rotation,skin)
 			end,

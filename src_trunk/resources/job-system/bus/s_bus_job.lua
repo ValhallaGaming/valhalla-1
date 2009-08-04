@@ -5,12 +5,13 @@ stopNumber[3]={ "Ten Green Bottles & Grove St, Ganton" }
 stopNumber[4]={ "Atlantic Avenue, Jefferson" }
 stopNumber[5]={ "Pig Pen, Caesar Road, East Los Santos" }
 stopNumber[6]={ "Jefferson Motel, E. Vinewood, Jefferson" }
-stopNumber[7]={ "Glen Park"  }
-stopNumber[8]={ "City Hall, Pershing Sq." }
-stopNumber[9]={ "Main Street, Central LS" }
-stopNumber[10]={ "All Saints General Hospital, Pawn Street, Market." }
-stopNumber[11]={ "W. Broadway, Rodeo" }
-stopNumber[12]={ "Unity Station, Washington Road, Idlewood (END OF SERVICE)" }
+stopNumber[7]={ "Glen Park" }
+stopNumber[8]={ "Skate Park" }
+stopNumber[9]={ "City Hall, Pershing Sq." }
+stopNumber[10]={ "Main Street, Central LS" }
+stopNumber[11]={ "All Saints General Hospital, Pawn Street, Market." }
+stopNumber[12]={ "W. Broadway, Rodeo" }
+stopNumber[13]={ "Unity Station, Washington Road, Idlewood (END OF SERVICE)" }
 
 function payBusDriver(stop)
 

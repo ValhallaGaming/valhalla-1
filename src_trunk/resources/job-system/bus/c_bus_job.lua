@@ -12,30 +12,30 @@ busRoute[9]={ 2421, -1259, 23, true, 5} -- Pig Pen
 busRoute[10]={ 2388.171875, -1170.88671875, 27, false, 0}
 busRoute[11]={  2248.2109375, -1139.3955078125, 25, true, 6} -- Jefferson Motel
 busRoute[12]={ 2050.04296875, -1077.345703125, 24, false, 0}
-busRoute[13]={ 1863.666015625, -1139.748046875, 23, true, 6} -- Glen Park
-busRoute[14]={ 1844.55078125, -1380.4072265625, 12, true, 7} -- Skate Park
+busRoute[13]={ 1863.666015625, -1139.748046875, 23, true, 7} -- Glen Park
+busRoute[14]={ 1844.55078125, -1380.4072265625, 12, true, 8} -- Skate Park
 busRoute[15]={ 1824.796875, -1561.2734375, 12, false, 0}
 busRoute[16]={ 1704.4501953125, -1590.40820312, 12, false, 0}
 busRoute[17]={ 1550.5732421875, -1589.23046875, 12, false, 0}
 busRoute[18]={ 1526.478515625, -1677.846679687, 12, false, 0} 
-busRoute[19]={ 1476.1435546875, -1729.3798828125, 12, true, 8} -- City Hall 
+busRoute[19]={ 1476.1435546875, -1729.3798828125, 12, true, 9} -- City Hall 
 busRoute[20]={  1337.837890625, -1729.9736328125, 12, false, 0} 
 busRoute[21]={1327.7568359375, -1518.5810546875, 12, false, 0} 
-busRoute[22]={ 1360.515625, -1300.849609375, 12, true, 9} -- Main Street
-busRoute[23]={1180.7734375, -1278.5087890625, 12, true, 10} -- Hospital
+busRoute[22]={ 1360.515625, -1300.849609375, 12, true, 10} -- Main Street
+busRoute[23]={1180.7734375, -1278.5087890625, 12, true, 11} -- Hospital
 busRoute[24]={ 1061.4228515625, -1239.0751953125, 15, false, 0}
 busRoute[25]={ 1085.6611328125, -1105.21289062, 23, false, 0} 
 busRoute[26]={ 1089.0087890625, -972.9365234375, 40, false, 0} 
 busRoute[27]={ 917.763671875, -969.4033203125, 37, false, 0} 
-busRoute[28]={  568.6435546875, -1225.041015625, 16, true, 11} -- Bank
+busRoute[28]={  568.6435546875, -1225.041015625, 16, true, 12} -- Bank
 busRoute[29]={ 678.1484375, -1761.373046875, 12, false, 0}
 busRoute[30]={ 1212.0234375, -1854.94921875, 12, false, 0}
 busRoute[31]={ 1654.560546875, -1875.05859375, 12, false, 0}
 busRoute[32]={ 1759.783203125, -1826.096679687, 12, false, 0}
-busRoute[33]={ 1736.9365234375, -1851.8310546875, 12, true, 12} -- Depot
+busRoute[33]={ 1736.9365234375, -1851.8310546875, 12, true, 13} -- Depot
 
-local busMarker = nil
-local busBlip = nil
+local busMarker, busNextMarker = nil, nil
+local busBlip, busNextBlip = nil, nil
 
 local bus = { [431]=true, [437]=true }
 
@@ -109,30 +109,46 @@ function updateBusCheckpoint(thePlayer)
 			local max_number = getElementData(getLocalPlayer(), "busRoute.totalmarkers")
 			local newnumber = m_number+1
 			local x, y, z = nil
-			if(busBlip)then
+			if (busBlip) then
 				-- Remove the old marker.
 				destroyElement(busBlip)
 				destroyElement(busMarker)
 				busBlip = nil
 				busMarker = nil
 			end
+			if busNextBlip then
+				destroyElement(busNextBlip)
+				destroyElement(busNextMarker)
+				busNextBlip = nil
+				busNextMarker = nil
+			end
 			
 			x = busRoute[newnumber][1]
 			y = busRoute[newnumber][2]
 			z = busRoute[newnumber][3]
+			nx = busRoute[newnumber + 1][1]
+			ny = busRoute[newnumber + 1][2]
+			nz = busRoute[newnumber + 1][3]
 			
 			if (tonumber(max_number-1) == tonumber(m_number)) then -- if the next checkpoint is the final checkpoint.			
 			
 				busMarker = createMarker( x, y, z, "checkpoint", 4, 255, 200, 0, 150) -- Red marker
 				busBlip = createBlip( x, y, z, 0, 2, 255, 200, 0, 255) -- Red blip
-					
+				
 				addEventHandler("onClientMarkerHit", busMarker, endOfTheLine)
 				setMarkerIcon(busMarker, "finish")
-					
-			elseif(busRoute[newnumber][4]==true)then -- If it is a stop.
+				
+			elseif (busRoute[newnumber][4]==true) then -- If it is a stop.
 			
 				busMarker = createMarker( x, y, z, "checkpoint", 4, 255, 0, 0, 150) -- Red marker
 				busBlip = createBlip( x, y, z, 0, 2, 255, 0, 0, 255) -- Red blip
+				if (busRoute[newnumber + 1][4]==true) then
+					busNextMarker = createMarker( nx, ny, nz, "checkpoint", 2.5, 255, 0, 0, 150) -- small red marker
+					busNextBlip = createBlip( nx, ny, nz, 0, 1.5, 255, 0, 0, 255) -- small red blip
+				else
+					busNextMarker = createMarker( nx, ny, nz, "checkpoint", 2.5, 255, 200, 0, 150) -- small yellow marker
+					busNextBlip = createBlip( nx, ny, nz, 0, 1.5, 255, 200, 0, 255) --small  yellow blip
+				end
 				
 				addEventHandler("onClientMarkerHit", busMarker, waitAtStop)
 				addEventHandler("onClientMarkerLeave", busMarker, checkWaitAtStop)
@@ -141,6 +157,13 @@ function updateBusCheckpoint(thePlayer)
 				
 				busMarker = createMarker( x, y, z, "checkpoint", 4, 255, 200, 0, 150) -- yellow marker
 				busBlip = createBlip( x, y, z, 0, 2, 255, 200, 0, 255) -- yellow blip
+				if (busRoute[newnumber + 1][4]==true) then
+					busNextMarker = createMarker( nx, ny, nz, "checkpoint", 2.5, 255, 0, 0, 150) -- small red marker
+					busNextBlip = createBlip( nx, ny, nz, 0, 1.5, 255, 0, 0, 255) -- small red blip
+				else
+					busNextMarker = createMarker( nx, ny, nz, "checkpoint", 2.5, 255, 200, 0, 150) -- small yellow marker
+					busNextBlip = createBlip( nx, ny, nz, 0, 1.5, 255, 200, 0, 255) -- small yellow blip
+				end
 				
 				setElementData(getLocalPlayer(), "busRoute.marker", newnumber)
 				

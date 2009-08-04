@@ -55,7 +55,6 @@ function createNewObject(thePlayer, commandName, modelid)
 					outputChatBox("Error 400001 - Report on forums.", thePlayer, 255, 0, 0)
 				end
 			else
-				outputChatBox(tostring(mysql_error(handler)))
 				outputChatBox("Error 400000 - Report on forums.", thePlayer, 255, 0, 0)
 			end
 		end

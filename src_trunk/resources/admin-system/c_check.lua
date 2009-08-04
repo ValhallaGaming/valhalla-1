@@ -1,4 +1,5 @@
 function CreateCheckWindow()
+	triggerEvent("cursorShow", getLocalPlayer())
 	Button = {}
 	--Image = {}
 	Window = guiCreateWindow(28,271,454,248,"Player check.",false)
@@ -94,6 +95,7 @@ addEventHandler( "onClientRender", getRootElement(),
 )
 
 function CloseCheck(sourcePlayer, command)
+	triggerEvent("cursorHide", getLocalPlayer())
 	guiSetVisible( Window, false )
 	player = nil
 end

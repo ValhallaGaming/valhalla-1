@@ -31,7 +31,7 @@ function animationList(thePlayer)
 	outputChatBox("/piss /wank /slapass /fixcar /handsup /hailtaxi /scratch /fu /carchat", thePlayer, 255, 194, 14)
 	outputChatBox("/strip 1-2 /lightup /drink /beg /mourn /cheer 1-3 /dance 1-3 /crack 1-2", thePlayer, 255, 194, 14)
 	outputChatBox("/gsign 1-5 /puke /rap 1-3 /sit 1-3 /smoke 1-3 /smokelean /laugh /startrace", thePlayer, 255, 194, 14)
-	outputChatBox("/daps 1-2 /shove /ali /bitchslap /shocked /dive /what /fall /fallfront", thePlayer, 255, 194, 14)
+	outputChatBox("/daps 1-2 /shove /bitchslap /shocked /dive /what /fall /fallfront", thePlayer, 255, 194, 14)
 	outputChatBox("/stopanim or press the space bar to cancel animations.", thePlayer, 255, 194, 14)
 end
 addCommandHandler("animlist", animationList, false, false)

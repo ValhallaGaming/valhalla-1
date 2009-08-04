@@ -1910,13 +1910,15 @@ addCommandHandler("freecam", toggleFreecam)
 -- TOGGLE NAMETAG
 
 function toggleMyNametag(thePlayer)
-	local visible = isPlayerNametagShowing(thePlayer)
+	local visible = getElementData(thePlayer, "reconx")
 	if exports.global:isPlayerAdmin(thePlayer) then
 		if (visible == true) then
 			setPlayerNametagShowing(thePlayer, false)
+			setElementData(thePlayer, "reconx", false)
 			outputChatBox("Your nametag is no longer visible.", thePlayer, 255, 0, 0)
 		else
-			setPlayerNametagShowing(thePlayer, true)
+			setPlayerNametagShowing(thePlayer, false)
+			setElementData(thePlayer, "reconx", true)
 			outputChatBox("Your nametag is now visible.", thePlayer, 0, 255, 0)
 		end
 	end
@@ -1932,9 +1934,9 @@ function resetCharacter(thePlayer, commandName, character)
             local targetPlayer = getPlayerFromName(character)
             local query = mysql_query(handler, "SELECT id FROM characters WHERE charactername='" .. character .. "'")
             local targetid = tonumber(mysql_result(query, 1, 1))
-            local logged = getElementData(thePlayer, "loggedin")
+            local logged = getElementData(targetPlayer, "loggedin")
             if logged == 1 then
-                kickPlayer(thePlayer)
+                kickPlayer(targetPlayer)
             end
             if (targetid == nil) then
                 outputChatBox(character .. " is not a valid character name.", thePlayer, 255, 0, 0)
@@ -1956,7 +1958,5 @@ function resetCharacter(thePlayer, commandName, character)
         outputChatBox("You do not have the required permissions.", thePlayer, 255, 0, 0)
     end
 end
---addCommandHandler("resetcharacter", resetCharacter)
-
-
+addCommandHandler("resetcharacter", resetCharacter)
 		

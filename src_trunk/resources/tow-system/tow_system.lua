@@ -74,7 +74,7 @@ function UnlockVehicle(element, matchingdimension)
 						--PD make sure its not marked as impounded so it cannot be recovered and unlock/undp it
 						setVehicleLocked(temp, false)
 						setElementData(temp, "locked", false)
-						setElementData(temp, "Impounded", false)		
+						setElementData(temp, "Impounded", 0)		
 						setVehicleLocked(temp, false)
 						setElementData(temp, "locked", false)
 						setElementData(temp, "enginebroke", 0, false)
@@ -86,7 +86,7 @@ function UnlockVehicle(element, matchingdimension)
 							--unlock it and impound it
 							setVehicleLocked(temp, false)
 							setElementData(temp, "locked", false)
-							setElementData(temp, "Impounded", true)
+							setElementData(temp, "Impounded", getRealTime().yearday)
 							setElementData(temp, "enginebroke", 1, false)
 							setVehicleEngineState(temp, false)
 							outputChatBox("Please remember to vehpos your vehicle in our car park.", getVehicleOccupant(element), 255, 194, 14)
@@ -108,7 +108,7 @@ function payRelease(vehID)
 		local towCompany = getTeamFromName("McJones Towing")
 		local dbid = getElementData(towCompany, "id")
 		call(getResourceFromName("faction-system"), "addToFactionMoney", dbid, 75)
-		setElementData(vehID, "Impounded", false)
+		setElementData(vehID, "Impounded", 0)
 		setElementPosition(vehID, 1104.6435546875, -932.0029296875, 43.187454223633)
 		local locked
 		if (getElementData(vehID, "faction") == 1) then
@@ -149,7 +149,7 @@ function triggerShowImpound(element)
 	local count = 1
 	for key, value in ipairs(getElementsByType("vehicle")) do
 		local dbid = getElementData(value, "dbid")
-		if (getElementData(value, "Impounded") and ((dbid > 0 and exports.global:doesPlayerHaveItem(element, 3, dbid) or (getElementData(value, "faction") == getElementData(element, "faction") and getElementData(value, "owner") == getElementData(element, "dbid"))))) then
+		if (getElementData(value, "Impounded") > 0 and ((dbid > 0 and exports.global:doesPlayerHaveItem(element, 3, dbid) or (getElementData(value, "faction") == getElementData(element, "faction") and getElementData(value, "owner") == getElementData(element, "dbid"))))) then
 			vehElements[count] = value
 			count = count + 1
 		end

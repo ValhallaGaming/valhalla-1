@@ -447,12 +447,9 @@ function loadAllVehicles(res)
 				setElementData(veh, "job", tonumber(job), false)
 				setElementData(veh, "items", items)
 				setElementData(veh, "itemvalues", itemvalues)
+
 				-- Impounded
-				if (tonumber(Impounded) == 0) then
-					setElementData(veh, "Impounded", false)
-				else
-					setElementData(veh, "Impounded", true)
-				end
+				setElementData(veh, "Impounded", tonumber(Impounded))
 
 				-- Interiors
 				setElementDimension(veh, currdimension)
@@ -804,6 +801,10 @@ function setRealInVehicle(thePlayer)
 		if (mysql_num_rows(query)>0) then
 			local ownerName = mysql_result(query, 1, 1)
 			outputChatBox("(( This " .. carName .. " belongs to " .. ownerName .. ". ))", thePlayer, 255, 195, 14)
+			if (getElementData(source, "Impounded") > 0) then
+				local output = getRealTime().yearday-getElementData(source, "Impounded")
+				outputChatBox("(( This " .. carName .. " has been Impounded for: " .. output .. (output == 1 and " Day." or " Days.") .. " ))", thePlayer, 255, 195, 14)
+			end
 		end
 		mysql_free_result(query)
 	end
@@ -848,12 +849,13 @@ function removeFromFactionVehicle(thePlayer)
 			setElementPosition(thePlayer, x, y, z)
 		end
 	end
-	if (CanTowDriverEnter) then
-		if (getElementData(source,"Impounded") == true) then
-			setElementData(source, "enginebroke", 1, false)
-			setVehicleDamageProof(source, true)
-			setVehicleEngineState(source, false)
-		end
+	local Impounded = getElementData(source,"Impounded")
+	if (Impounded and Impounded > 0) then
+		setElementData(source, "enginebroke", 1, false)
+		setVehicleDamageProof(source, true)
+		setVehicleEngineState(source, false)
+	end
+	if (CanTowDriverEnter) then -- Nabs abusing
 		return
 	end
 	local vjob = tonumber(getElementData(source, "job"))

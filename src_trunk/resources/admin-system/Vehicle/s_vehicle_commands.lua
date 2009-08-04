@@ -271,7 +271,7 @@ function respawnCmdVehicle(thePlayer, commandName, id)
 						
 						respawnVehicle(theVehicle)
 						
-						if owner == -2 and not getElementData(theVehicle,"Impounded") then
+						if owner == -2 and getElementData(theVehicle,"Impounded") == 0  then
 							setVehicleLocked(theVehicle, false)
 						end
 					end
@@ -320,7 +320,7 @@ function respawnAllVehicles(thePlayer, commandName)
 					respawnVehicle(theVehicle)
 					-- unlock Civ vehicles
 					local owner = getElementData(theVehicle, "owner")
-					if owner == -2 and not getElementData(theVehicle,"Impounded") then
+					if owner == -2 and getElementData(theVehicle,"Impounded" == 0) then
 						setVehicleLocked(theVehicle, false)
 					end
 					counter = counter + 1
@@ -432,7 +432,7 @@ function fixPlayerVehicle(thePlayer, commandName, target)
 					local veh = getPedOccupiedVehicle(targetPlayer)
 					if (veh) then
 						fixVehicle(veh)
-						if (not getElementData(veh, "Impounded")) then
+						if (getElementData(veh, "Impounded") == 0) then
 							setElementData(veh, "enginebroke", 0, false)
 						end
 						outputChatBox("You repaired " .. targetPlayerName .. "'s vehicle.", thePlayer)
@@ -553,7 +553,7 @@ function fixAllVehicles(thePlayer, commandName)
 		local username = getPlayerName(thePlayer)
 		for key, value in ipairs(exports.pool:getPoolElementsByType("vehicle")) do
 			fixVehicle(value)
-			if (not getElementData(value, "Impounded")) then
+			if (getElementData(value, "Impounded") == 0) then
 				setElementData(value, "enginebroke", 0, false)
 			end
 		end

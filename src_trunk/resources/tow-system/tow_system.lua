@@ -149,7 +149,7 @@ function triggerShowImpound(element)
 	local count = 1
 	for key, value in ipairs(getElementsByType("vehicle")) do
 		local dbid = getElementData(value, "dbid")
-		if (getElementData(value, "Impounded") > 0 and ((dbid > 0 and exports.global:doesPlayerHaveItem(element, 3, dbid) or (getElementData(value, "faction") == getElementData(element, "faction") and getElementData(value, "owner") == getElementData(element, "dbid"))))) then
+		if (getElementData(value, "Impounded") and getElementData(value, "Impounded") > 0 and ((dbid > 0 and exports.global:doesPlayerHaveItem(element, 3, dbid) or (getElementData(value, "faction") == getElementData(element, "faction") and getElementData(value, "owner") == getElementData(element, "dbid"))))) then
 			vehElements[count] = value
 			count = count + 1
 		end

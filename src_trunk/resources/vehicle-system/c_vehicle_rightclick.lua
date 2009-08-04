@@ -91,7 +91,7 @@ function cVehicleInventory(button, state)
 					end
 				end
 				--Its not impounded or they are the owner.
-				if (not getElementData(vehicle, "Impounded") or exports.global:cdoesPlayerHaveItem(getLocalPlayer(), 3, getElementData(vehicle, "dbid"))) then
+				if ((not getElementData(vehicle, "Impounded") and getElementData(vehicle, "Impounded") > 0) or exports.global:cdoesPlayerHaveItem(getLocalPlayer(), 3, getElementData(vehicle, "dbid"))) then
 					bGiveItem = guiCreateButton(0.05, 0.81, 0.45, 0.075, "Move ---->", true, wInventory)
 					addEventHandler("onClientGUIClick", bGiveItem, moveItemToVehicle, false)
 					bTakeItem = guiCreateButton(0.5, 0.81, 0.45, 0.075, "<---- Move ", true, wInventory)

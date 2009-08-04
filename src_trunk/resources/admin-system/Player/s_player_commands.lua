@@ -1893,10 +1893,12 @@ function toggleFreecam(thePlayer)
         local enabled = exports.freecam:isPlayerFreecamEnabled (thePlayer)
         
         if (enabled) then
+            removeElementData(thePlayer, "reconx")
             setElementAlpha(thePlayer, 255)
             setPedFrozen(thePlayer, false)
             exports.freecam:setPlayerFreecamDisabled (thePlayer)
         else
+            setElementData(thePlayer, "reconx", 0)
             setElementAlpha(thePlayer, 0)
             setPedFrozen(thePlayer, true)
             exports.freecam:setPlayerFreecamEnabled (thePlayer)

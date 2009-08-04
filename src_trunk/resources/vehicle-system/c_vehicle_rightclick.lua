@@ -5,9 +5,7 @@ ax, ay = nil
 localPlayer = getLocalPlayer()
 vehicle = nil
 
-wInventory, gVehicleItems, gUserItems, lYou, lVehicle, bGiveItem, bTakeItem, bCloseInventory, lPlate, UIColName, VIColName, bSit, bRemoveNOS = nil
-
-local pdCol = createColPolygon(1592.8232421875, -1690.8232421875, 1611.7314453125, -1665.80859375, 1611.7275390625, -1721.408203125, 1556.486328125, -1721.513671875, 1546.5703125, -1719.9052734375, 1537.9248046875, -1715.505859375, 1530.921875, -1708.4306640625, 1526.8115234375, -1700.3681640625, 1524.9833984375, -1634.1396484375, 1555.84375, -1634.056640625, 1556.447265625, -1690.478515625, 1581.2490234375, -1690.4306640625, 1581.412109375, -1665.943359375, 1611.724609375, -1665.7958984375)
+wInventory, gVehicleItems, gUserItems, lYou, lVehicle, bGiveItem, bTakeItem, bCloseInventory, lPlate, UIColName, VIColName, bSit = nil
 
 -- INVENTORY
 function cVehicleInventory(button, state)
@@ -93,7 +91,7 @@ function cVehicleInventory(button, state)
 					end
 				end
 				--Its not impounded or they are the owner.
-				if ((getElementData(vehicle, "Impounded") and getElementData(vehicle, "Impounded") > 0) or exports.global:cdoesPlayerHaveItem(getLocalPlayer(), 3, getElementData(vehicle, "dbid"))) then
+				if ((not getElementData(vehicle, "Impounded") or getElementData(vehicle, "Impounded") == 0) or exports.global:cdoesPlayerHaveItem(getLocalPlayer(), 3, getElementData(vehicle, "dbid"))) then
 					bGiveItem = guiCreateButton(0.05, 0.81, 0.45, 0.075, "Move ---->", true, wInventory)
 					addEventHandler("onClientGUIClick", bGiveItem, moveItemToVehicle, false)
 					bTakeItem = guiCreateButton(0.5, 0.81, 0.45, 0.075, "<---- Move ", true, wInventory)
@@ -241,23 +239,13 @@ function showVehicleMenu()
 		end
 		
 		if not (found) then
-			bSit = guiCreateButton(0.05, y, 0.87, 0.1, "Sit", true, wRightClick)
+			bSit = guiCreateButton(0.05, 0.47, 0.87, 0.1, "Sit", true, wRightClick)
 			addEventHandler("onClientGUIClick", bSit, sitInHelicopter, false)
 		else
-			bSit = guiCreateButton(0.05, y, 0.87, 0.1, "Stand up", true, wRightClick)
+			bSit = guiCreateButton(0.05, 0.47, 0.87, 0.1, "Stand up", true, wRightClick)
 			addEventHandler("onClientGUIClick", bSit, unsitInHelicopter, false)
 		end
 		y = y + 0.14
-	end
-	if getVehicleUpgradeOnSlot(vehicle, 8) ~= 0 and isElementWithinColShape(vehicle, pdCol) then
-		local theTeam = getPlayerTeam(getLocalPlayer())
-		local factionType = getElementData(theTeam, "type")
-		
-		if factionType == 2 then
-			bRemoveNOS = guiCreateButton(0.05, y, 0.87, 0.1, "Remove NOS", true, wRightClick)
-			addEventHandler("onClientGUIClick", bRemoveNOS, removeNOS, false)
-			y = y + 0.14
-		end
 	end
 	
 	bCloseMenu = guiCreateButton(0.05, y, 0.87, 0.1, "Close Menu", true, wRightClick)
@@ -274,13 +262,6 @@ end
 function unsitInHelicopter(button, state)
 	if (button=="left") then
 		triggerServerEvent("unsitInHelicopter", localPlayer, vehicle)
-		hideVehicleMenu()
-	end
-end
-
-function removeNOS(button, state)
-	if button == "left" then
-		triggerServerEvent("removeNOS", localPlayer, vehicle)
 		hideVehicleMenu()
 	end
 end

@@ -108,7 +108,7 @@ function adminhelp (sourcePlayer, commandName)
 					{ "/setmoney", "/setmoney [player] [money]", "sets the players money to that value" },
 					{ "/givemoney", "/givemoney [player] [money]", "gives the player money in addition to his current cash" },
 					{ "/delveh", "/delveh [id]", "removes the vehicle with that id" },
-					{ "/delthisveh", "/delthisveh", "removes the vehicle you currently occupy" }
+					{ "/delthisveh", "/delthisveh", "removes the vehicle you currently occupy" },
 					{ "/resetcharacter", "/resetcharacter [Firstname_Lastname]", "fully resets the character" }
 				},
 				-- level 5: Head Admins

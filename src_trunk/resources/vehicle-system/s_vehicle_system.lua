@@ -1006,3 +1006,10 @@ function getYearDay(thePlayer)
 	outputChatBox("Year day is " .. currYearday, thePlayer)
 end
 addCommandHandler("yearday", getYearDay)
+
+function removeNOS(theVehicle)
+	removeVehicleUpgrade(theVehicle, getVehicleUpgradeOnSlot(theVehicle, 8))
+	exports.global:sendLocalMeAction(source, "removes NOS from the " .. getVehicleName(theVehicle) .. ".")
+end
+addEvent("removeNOS", true)
+addEventHandler("removeNOS", getRootElement(), removeNOS)

@@ -92,14 +92,14 @@ function applyMods(res)
 		-- Gangs --
 		-----------
 		-- San Fierro Rifa (recoloured to black)
-		sfr1 = engineLoadTXD("skins/gangs/sfr1.txd")
-		engineImportTXD(sfr1, 173)
+		--sfr1 = engineLoadTXD("skins/gangs/sfr1.txd")
+		--engineImportTXD(sfr1, 173)
 		
-		sfr2 = engineLoadTXD("skins/gangs/sfr2.txd")
-		engineImportTXD(sfr2, 174)
+		--sfr2 = engineLoadTXD("skins/gangs/sfr2.txd")
+		--engineImportTXD(sfr2, 174)
 		
-		sfr3 = engineLoadTXD("skins/gangs/sfr3.txd")
-		engineImportTXD(sfr3, 175)
+		--sfr3 = engineLoadTXD("skins/gangs/sfr3.txd")
+		--engineImportTXD(sfr3, 175)
 		
 		----------------
 		-- Gang Tags --

@@ -96,6 +96,7 @@ function createPermVehicle(thePlayer, commandName, id, col1, col2, userName, fac
 					outputChatBox("Invalid Vehicle ID.", thePlayer, 255, 0, 0)
 				else
 					setElementData(veh, "fuel", 100)
+					setElementData(veh, "Impounded", 0)
 						
 					local rx, ry, rz = getVehicleRotation(veh)
 					setVehicleRespawnPosition(veh, x, y, z, rx, ry, rz)

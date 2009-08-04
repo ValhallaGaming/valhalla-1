@@ -82,6 +82,7 @@ function createTempVehicle(thePlayer, commandName, id, col1, col2)
 				
 				setElementData(veh, "dbid", dbid)
 				setElementData(veh, "fuel", 100)
+				setElementData(veh, "Impounded", 0)
 				setElementData(veh, "engine", 0, false)
 				setElementData(veh, "oldx", x, false)
 				setElementData(veh, "oldy", y, false)

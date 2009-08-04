@@ -66,6 +66,7 @@ function makeCar(thePlayer, car, cost, id, col1, col2)
 	exports.pool:allocateElement(veh)
 					
 	setElementData(veh, "fuel", 100)
+	setElementData(veh, "Impounded", 0)
 	
 	setVehicleRespawnPosition(veh, x, y, z, 0, 0, rz)
 	setVehicleLocked(veh, false)

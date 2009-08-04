@@ -9,4 +9,5 @@
 	<script src="tow_door1.lua" type="server"/>
 	<script src="tow_door2.lua" type="server"/>
 	<script src="tow_door3.lua" type="server"/>
+	<script src="passworded_gate.template.lua" type="server"/>
 </meta>

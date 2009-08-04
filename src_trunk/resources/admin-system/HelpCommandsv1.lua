@@ -5,7 +5,6 @@ function playerhelp( sourcePlayer, commandName )
     local var = getElementData (sourcePlayer, "loggedin")
 	if ( (var - 0) == 1) then
 	    if ( myWindow == nil ) then
-		    guiSetInputEnabled(true)
 			myWindow = guiCreateWindow ( 0.2, 0.3, 0.6, 0.5, "Index of player commands v2.3", true )
 		    local tabPanel = guiCreateTabPanel ( 0, 0.1, 1, 1, true, myWindow )
 		    local tabChatCommands = guiCreateTab ( "Chat", tabPanel )
@@ -20,7 +19,6 @@ function playerhelp( sourcePlayer, commandName )
 	    	        if (state == "up") then
 		    	        guiSetVisible(myWindow, false)
 						showCursor (false )
-						guiSetInputEnabled(false)
 						myWindow = nil
 		            end
 	            end

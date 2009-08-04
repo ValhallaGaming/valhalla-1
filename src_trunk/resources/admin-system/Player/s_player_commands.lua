@@ -377,6 +377,7 @@ addCommandHandler("freconnect", forceReconnect, false, false)
 -- /GIVEGUN
 function givePlayerGun(thePlayer, commandName, targetPlayer, weapon, ammo)
 	if (exports.global:isPlayerLeadAdmin(thePlayer)) then
+		local hiddenAdmin = getElementData(thePlayer, "hiddenadmin")
 		if not (weapon) or not (ammo) or not (targetPlayer) then
 			outputChatBox("SYNTAX: /" .. commandName .. " [Player Partial Nick / ID] [Weapon ID] [Ammo]", thePlayer, 255, 194, 14)
 		else
@@ -401,6 +402,11 @@ function givePlayerGun(thePlayer, commandName, targetPlayer, weapon, ammo)
 						outputChatBox("Invalid Weapon ID.", thePlayer, 255, 0, 0)
 					else
 						outputChatBox("Player " .. targetPlayerName .. " now has a " .. getWeaponNameFromID(weapon) .. " with " .. ammo .. " Ammo.", thePlayer, 0, 255, 0)
+					if (hiddenAdmin==0) then
+						local adminTitle = exports.global:getPlayerAdminTitle(thePlayer)
+						exports.global:sendMessageToAdmins("AdmCmd: " .. tostring(adminTitle) .. " " .. getPlayerName(thePlayer) .. " has given " .. targetPlayerName .. " a " .. getWeaponNameFromID(weapon) .. " with " .. ammo .. " ammo."")
+					end
+				end
 					end
 				end
 			end
@@ -1935,6 +1941,7 @@ function resetCharacter(thePlayer, commandName, character)
             local query = mysql_query(handler, "SELECT id FROM characters WHERE charactername='" .. character .. "'")
             local targetid = tonumber(mysql_result(query, 1, 1))
             local logged = getElementData(targetPlayer, "loggedin")
+			local hiddenAdmin = getElementData(thePlayer, "hiddenadmin")
             if logged == 1 then
                 kickPlayer(targetPlayer)
             end

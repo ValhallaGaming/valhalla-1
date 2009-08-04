@@ -1920,11 +1920,11 @@ function toggleMyNametag(thePlayer)
 		if (visible == true) then
 			setPlayerNametagShowing(thePlayer, false)
 			setElementData(thePlayer, "reconx", false)
-			outputChatBox("Your nametag is no longer visible.", thePlayer, 255, 0, 0)
+			outputChatBox("Your nametag is now visible.", thePlayer, 255, 0, 0)
 		else
 			setPlayerNametagShowing(thePlayer, false)
 			setElementData(thePlayer, "reconx", true)
-			outputChatBox("Your nametag is now visible.", thePlayer, 0, 255, 0)
+			outputChatBox("Your nametag is now hidden.", thePlayer, 0, 255, 0)
 		end
 	end
 end

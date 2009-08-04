@@ -1937,7 +1937,7 @@ function resetCharacter(thePlayer, commandName, character)
             if (targetid == nil) then
                 outputChatBox(character .. " is not a valid character name.", thePlayer, 255, 0, 0)
             else
-                mysql_query(handler, "UPDATE characters SET money='0', weapons=NULL, ammo=NULL, items='0', itemvalues='0', car_license='0', gun_license='0', bankmoney='0' WHERE id='" .. targetid .. "'")
+                mysql_query(handler, "UPDATE characters SET money='0', weapons=NULL, ammo=NULL, items='', itemvalues='', car_license='0', gun_license='0', bankmoney='0' WHERE id='" .. targetid .. "'")
                 mysql_query(handler, "DELETE FROM vehicles WHERE owner='" .. targetid .. "'")
                 mysql_query(handler, "UPDATE interiors SET owner='-1',locked='1' WHERE owner='" .. targetid .. "'")
                 mysql_free_result(query)
@@ -1954,7 +1954,7 @@ function resetCharacter(thePlayer, commandName, character)
         outputChatBox("You do not have the required permissions.", thePlayer, 255, 0, 0)
     end
 end
-addCommandHandler("resetcharacter", resetCharacter)
+--addCommandHandler("resetcharacter", resetCharacter)
 
 
 		

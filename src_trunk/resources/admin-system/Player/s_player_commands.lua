@@ -1958,5 +1958,5 @@ function resetCharacter(thePlayer, commandName, character)
         outputChatBox("You do not have the required permissions.", thePlayer, 255, 0, 0)
     end
 end
-addCommandHandler("resetcharacter", resetCharacter)
+--addCommandHandler("resetcharacter", resetCharacter)
 		

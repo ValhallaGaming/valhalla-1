@@ -1,26 +1,26 @@
-stopNumber={}
-stopNumber[1]={ "Unity Station, Washington Road, Idlewood (START OF SERVICE)" }
-stopNumber[2]={ "Idlewood Gas, Idlewood" }
-stopNumber[3]={ "Ten Green Bottles & Grove St, Ganton" }
-stopNumber[4]={ "Atlantic Avenue, Jefferson" }
-stopNumber[5]={ "Pig Pen, Caesar Road, East Los Santos" }
-stopNumber[6]={ "Jefferson Motel, E. Vinewood, Jefferson" }
-stopNumber[7]={ "Glen Park" }
-stopNumber[8]={ "Skate Park" }
-stopNumber[9]={ "City Hall, Pershing Sq." }
-stopNumber[10]={ "Main Street, Central LS" }
-stopNumber[11]={ "All Saints General Hospital, Pawn Street, Market." }
-stopNumber[12]={ "W. Broadway, Rodeo" }
-stopNumber[13]={ "Unity Station, Washington Road, Idlewood (END OF SERVICE)" }
+stopNumber = {}
+stopNumber[1] = "Unity Station, Washington Road, Idlewood (START OF SERVICE)"
+stopNumber[2] = "Idlewood Gas, Idlewood"
+stopNumber[3] = "Ten Green Bottles & Grove St, Ganton"
+stopNumber[4] = "Atlantic Avenue, Jefferson"
+stopNumber[5] = "Pig Pen, Caesar Road, East Los Santos"
+stopNumber[6] = "Jefferson Motel, E. Vinewood, Jefferson"
+stopNumber[7] = "Glen Park"
+stopNumber[8] = "Skate Park"
+stopNumber[9] = "City Hall, Pershing Sq."
+stopNumber[10] = "Main Street, Central LS"
+stopNumber[11] = "All Saints General Hospital, Pawn Street, Market."
+stopNumber[12] = "W. Broadway, Rodeo"
+stopNumber[13] = "Unity Station, Washington Road, Idlewood (END OF SERVICE)"
 
 function payBusDriver(stop)
 
 	exports.global:givePlayerSafeMoney(source, 18)
 	local nextStopNumber = stop+1
-	local thisStop = tostring(stopNumber[stop][1])
+	local thisStop = tostring(stopNumber[stop])
 	
 	if(stop<13)then
-		nextStop = tostring(stopNumber[nextStopNumber][1])
+		nextStop = tostring(stopNumber[nextStopNumber])
 	end
 	
 	local x, y, z = getElementPosition(source)
@@ -44,7 +44,7 @@ function payBusDriver(stop)
 			local logged = getElementData(nearbyPlayer, "loggedin")
 			if not(isPedDead(nearbyPlayer)) and (logged==1) then
 				outputChatBox(" -- This stop: [".. thisStop .. "] --", nearbyPlayer, 255, 51, 102)
-				if(stop<12)then
+				if(stop<#stopNumber)then
 					outputChatBox(" -- Next stop: [".. nextStop .. "] --", nearbyPlayer, 255, 51, 102)
 				end
 			end
@@ -56,10 +56,7 @@ addEventHandler("payBusDriver", getRootElement(), payBusDriver)
 
 function takeBusFare(thePlayer)
 	exports.global:takePlayerSafeMoney(thePlayer, 5)
-	local driver = getVehicleController(getPedOccupiedVehicle(thePlayer))
-	if driver then
-		exports.global:givePlayerSafeMoney(driver, 5)
-	end
+	exports.global:givePlayerSafeMoney(source, 5)
 end
 addEvent("payBusFare", true)
 addEventHandler("payBusFare", getRootElement(), takeBusFare)

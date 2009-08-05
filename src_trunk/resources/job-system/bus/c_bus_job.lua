@@ -82,7 +82,7 @@ function startBusJob(thePlayer)
 				addEventHandler("onClientMarkerHit", busMarker, updateBusCheckpoint)
 				
 				setElementData(getLocalPlayer(), "busRoute.marker", 1)
-				setElementData(getLocalPlayer(), "busRoute.totalmarkers", 33)
+				setElementData(getLocalPlayer(), "busRoute.totalmarkers", #busRoute)
 				
 				outputChatBox("#FF9933Drive around the bus #FFCC00route #FF9933stopping at the #A00101stops #FF9933along the way.", 255, 194, 14, true)
 				outputChatBox("#FF9933You will be paid for each stop you make and for people you pick up.", 255, 194, 14, true)
@@ -108,6 +108,7 @@ function updateBusCheckpoint(thePlayer)
 			local m_number = getElementData(getLocalPlayer(), "busRoute.marker")
 			local max_number = getElementData(getLocalPlayer(), "busRoute.totalmarkers")
 			local newnumber = m_number+1
+			local nextnumber = m_number+2
 			local x, y, z = nil
 			if (busBlip) then
 				-- Remove the old marker.
@@ -126,14 +127,16 @@ function updateBusCheckpoint(thePlayer)
 			x = busRoute[newnumber][1]
 			y = busRoute[newnumber][2]
 			z = busRoute[newnumber][3]
-			nx = busRoute[newnumber + 1][1]
-			ny = busRoute[newnumber + 1][2]
-			nz = busRoute[newnumber + 1][3]
+			if nextnumber <= tonumber(max_number) then
+				nx = busRoute[nextnumber][1]
+				ny = busRoute[nextnumber][2]
+				nz = busRoute[nextnumber][3]
+			end
 			
-			if (tonumber(max_number-1) == tonumber(m_number)) then -- if the next checkpoint is the final checkpoint.			
+			if (tonumber(max_number-1) == tonumber(m_number)) then -- if the next checkpoint is the final checkpoint.
 			
-				busMarker = createMarker( x, y, z, "checkpoint", 4, 255, 200, 0, 150) -- Red marker
-				busBlip = createBlip( x, y, z, 0, 2, 255, 200, 0, 255) -- Red blip
+				busMarker = createMarker( x, y, z, "checkpoint", 4, 255, 0, 0, 150) -- Red marker
+				busBlip = createBlip( x, y, z, 0, 2, 255, 0, 0, 255) -- Red blip
 				
 				addEventHandler("onClientMarkerHit", busMarker, endOfTheLine)
 				setMarkerIcon(busMarker, "finish")
@@ -142,7 +145,7 @@ function updateBusCheckpoint(thePlayer)
 			
 				busMarker = createMarker( x, y, z, "checkpoint", 4, 255, 0, 0, 150) -- Red marker
 				busBlip = createBlip( x, y, z, 0, 2, 255, 0, 0, 255) -- Red blip
-				if (busRoute[newnumber + 1][4]==true) then
+				if (busRoute[nextnumber][4]==true) then
 					busNextMarker = createMarker( nx, ny, nz, "checkpoint", 2.5, 255, 0, 0, 150) -- small red marker
 					busNextBlip = createBlip( nx, ny, nz, 0, 1.5, 255, 0, 0, 255) -- small red blip
 				else
@@ -157,7 +160,7 @@ function updateBusCheckpoint(thePlayer)
 				
 				busMarker = createMarker( x, y, z, "checkpoint", 4, 255, 200, 0, 150) -- yellow marker
 				busBlip = createBlip( x, y, z, 0, 2, 255, 200, 0, 255) -- yellow blip
-				if (busRoute[newnumber + 1][4]==true) then
+				if (busRoute[nextnumber][4]==true) then
 					busNextMarker = createMarker( nx, ny, nz, "checkpoint", 2.5, 255, 0, 0, 150) -- small red marker
 					busNextBlip = createBlip( nx, ny, nz, 0, 1.5, 255, 0, 0, 255) -- small red blip
 				else
@@ -169,7 +172,10 @@ function updateBusCheckpoint(thePlayer)
 				
 				addEventHandler("onClientMarkerHit", busMarker, updateBusCheckpoint)
 			end
-				
+			if busNextMarker and nextnumber == tonumber(max_number) then
+				setMarkerIcon(busNextMarker, "finish")
+			end
+			
 			setElementData(getLocalPlayer(), "busRoute.marker", newnumber)
 				
 		end

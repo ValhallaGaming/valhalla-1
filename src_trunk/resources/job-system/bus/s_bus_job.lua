@@ -10,16 +10,18 @@ stopNumber[8] = "Skate Park"
 stopNumber[9] = "City Hall, Pershing Sq."
 stopNumber[10] = "Main Street, Central LS"
 stopNumber[11] = "All Saints General Hospital, Pawn Street, Market."
-stopNumber[12] = "W. Broadway, Rodeo"
-stopNumber[13] = "Unity Station, Washington Road, Idlewood (END OF SERVICE)"
+stopNumber[12] = "Impound Lot, Burger Shot"
+stopNumber[13] = "W. Broadway, Rodeo"
+stopNumber[14] = "Santa Maria Beach"
+stopNumber[15] = "The Rusted Anchor"
+stopNumber[16] = "Unity Station, Washington Road, Idlewood (END OF SERVICE)"
 
 function payBusDriver(stop)
-
 	exports.global:givePlayerSafeMoney(source, 18)
 	local nextStopNumber = stop+1
 	local thisStop = tostring(stopNumber[stop])
 	
-	if(stop<13)then
+	if(stop<#stopNumber)then
 		nextStop = tostring(stopNumber[nextStopNumber])
 	end
 	

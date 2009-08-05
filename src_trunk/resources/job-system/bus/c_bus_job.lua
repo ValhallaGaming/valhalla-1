@@ -1,38 +1,44 @@
 -- { x, y, z, isStop, stop number}
-busRoute = {}
-busRoute[1]={ 1718, -1855, 12, false, 0} -- Depot start point
-busRoute[2]={ 1740, -1857, 12, true, 1} -- Unity
-busRoute[3]={ 1890, -1755, 12, false, 0}
-busRoute[4]={ 2036, -1755, 12, true, 2} -- Idlewood gas
-busRoute[5]={ 2314, -1661, 13, true, 3} -- TGB
-busRoute[6]={ 2344, -1541, 23, true, 4} -- Basketball courts
-busRoute[7]={ 2344, -1399, 23, false, 0}
-busRoute[8]={ 2306, -1320, 23, false, 0}
-busRoute[9]={ 2421, -1259, 23, true, 5} -- Pig Pen
-busRoute[10]={ 2388.171875, -1170.88671875, 27, false, 0}
-busRoute[11]={  2248.2109375, -1139.3955078125, 25, true, 6} -- Jefferson Motel
-busRoute[12]={ 2050.04296875, -1077.345703125, 24, false, 0}
-busRoute[13]={ 1863.666015625, -1139.748046875, 23, true, 7} -- Glen Park
-busRoute[14]={ 1844.55078125, -1380.4072265625, 12, true, 8} -- Skate Park
-busRoute[15]={ 1824.796875, -1561.2734375, 12, false, 0}
-busRoute[16]={ 1704.4501953125, -1590.40820312, 12, false, 0}
-busRoute[17]={ 1550.5732421875, -1589.23046875, 12, false, 0}
-busRoute[18]={ 1526.478515625, -1677.846679687, 12, false, 0} 
-busRoute[19]={ 1476.1435546875, -1729.3798828125, 12, true, 9} -- City Hall 
-busRoute[20]={  1337.837890625, -1729.9736328125, 12, false, 0} 
-busRoute[21]={1327.7568359375, -1518.5810546875, 12, false, 0} 
-busRoute[22]={ 1360.515625, -1300.849609375, 12, true, 10} -- Main Street
-busRoute[23]={1180.7734375, -1278.5087890625, 12, true, 11} -- Hospital
-busRoute[24]={ 1061.4228515625, -1239.0751953125, 15, false, 0}
-busRoute[25]={ 1085.6611328125, -1105.21289062, 23, false, 0} 
-busRoute[26]={ 1089.0087890625, -972.9365234375, 40, false, 0} 
-busRoute[27]={ 917.763671875, -969.4033203125, 37, false, 0} 
-busRoute[28]={  568.6435546875, -1225.041015625, 16, true, 12} -- Bank
-busRoute[29]={ 678.1484375, -1761.373046875, 12, false, 0}
-busRoute[30]={ 1212.0234375, -1854.94921875, 12, false, 0}
-busRoute[31]={ 1654.560546875, -1875.05859375, 12, false, 0}
-busRoute[32]={ 1759.783203125, -1826.096679687, 12, false, 0}
-busRoute[33]={ 1736.9365234375, -1851.8310546875, 12, true, 13} -- Depot
+busRoute = {
+	{ 1718, -1855, 12, false, 0}, -- Depot start point
+	{ 1740, -1857, 12, true, 1}, -- Unity
+	{ 1890, -1755, 12, false, 0},
+	{ 2036, -1755, 12, true, 2}, -- Idlewood gas
+	{ 2190.9443359375, -1681.8193359375, 14, false, 0},
+	{ 2314, -1661, 13, true, 3}, -- TGB
+	{ 2344, -1541, 23, true, 4}, -- Basketball courts
+	{ 2344, -1399, 23, false, 0},
+	{ 2306, -1320, 23, false, 0},
+	{ 2421, -1259, 23, true, 5}, -- Pig Pen
+	{ 2388.171875, -1170.88671875, 27, false, 0},
+	{ 2248.2109375, -1139.3955078125, 25, true, 6}, -- Jefferson Motel
+	{ 2050.04296875, -1077.345703125, 24, false, 0},
+	{ 1863.666015625, -1139.748046875, 23, true, 7}, -- Glen Park
+	{ 1844.55078125, -1380.4072265625, 12, true, 8}, -- Skate Park
+	{ 1824.796875, -1561.2734375, 12, false, 0},
+	{ 1704.4501953125, -1590.40820312, 12, false, 0},
+	{ 1550.5732421875, -1589.23046875, 12, false, 0},
+	{ 1526.478515625, -1677.846679687, 12, false, 0},
+	{ 1476.1435546875, -1729.3798828125, 12, true, 9}, -- City Hall 
+	{ 1337.837890625, -1729.9736328125, 12, false, 0},
+	{ 1327.7568359375, -1518.5810546875, 12, false, 0},
+	{ 1360.515625, -1300.849609375, 12, true, 10}, -- Main Street
+	{ 1234.5322265625, -1277.625, 13, true, 11}, -- Hospital
+	{ 1218.44140625, -1200.3681640625, 20, false, 0},
+	{ 1165.2587890625, -1041.2666015625, 31, false, 0},
+	{ 1123.9111328125, -942.4951171875, 42, true, 12}, -- Impound
+	{ 917.763671875, -969.4033203125, 37, false, 0},
+	{ 730.96875, -1066.8232421875, 22, false, 0},
+	{ 568.6435546875, -1225.041015625, 16, true, 13}, -- Bank
+	{ 273.05859375, -1410.1787109375, 13, false, 0},
+	{ 111.1884765625, -1662.326171875, 10, false, 0},
+	{ 404.9365234375, -1775.779296875, 5, true, 14}, -- Beach
+	{ 678.1484375, -1761.373046875, 12, true, 15}, -- Anchor
+	{ 1212.0234375, -1854.94921875, 12, false, 0},
+	{ 1654.560546875, -1875.05859375, 12, false, 0},
+	{ 1759.783203125, -1826.096679687, 12, false, 0},
+	{ 1736.9365234375, -1851.8310546875, 12, true, 16}, -- Depot
+}
 
 local busMarker, busNextMarker = nil, nil
 local busBlip, busNextBlip = nil, nil
@@ -57,6 +63,16 @@ function resetBusJob()
 		destroyElement(busBlip)
 		busBlip = nil
 	end
+	
+	if isElement(busNextMarker) then
+		destroyElement(busNextMarker)
+		busNextMarker = nil
+	end
+	
+	if isElement(busNextBlip) then
+		destroyElement(busNextBlip)
+		busNextBlip = nil
+	end
 end
 
 function displayBusJob()
@@ -64,7 +80,7 @@ function displayBusJob()
 	outputChatBox("#FF9933Approach the #FF66CCblip#FF9933 on your radar and enter the bus/coach.", 255, 194, 15, true)
 end
 
-function startBusJob(thePlayer)
+function startBusJob()
 	local job = getElementData(getLocalPlayer(), "job")
 	if (job == 3)then
 		if (blip) then
@@ -117,6 +133,7 @@ function updateBusCheckpoint(thePlayer)
 				busBlip = nil
 				busMarker = nil
 			end
+			
 			if busNextBlip then
 				destroyElement(busNextBlip)
 				destroyElement(busNextMarker)
@@ -127,6 +144,7 @@ function updateBusCheckpoint(thePlayer)
 			x = busRoute[newnumber][1]
 			y = busRoute[newnumber][2]
 			z = busRoute[newnumber][3]
+			
 			if nextnumber <= tonumber(max_number) then
 				nx = busRoute[nextnumber][1]
 				ny = busRoute[nextnumber][2]
@@ -134,7 +152,7 @@ function updateBusCheckpoint(thePlayer)
 			end
 			
 			if (tonumber(max_number-1) == tonumber(m_number)) then -- if the next checkpoint is the final checkpoint.
-			
+				
 				busMarker = createMarker( x, y, z, "checkpoint", 4, 255, 0, 0, 150) -- Red marker
 				busBlip = createBlip( x, y, z, 0, 2, 255, 0, 0, 255) -- Red blip
 				
@@ -142,7 +160,7 @@ function updateBusCheckpoint(thePlayer)
 				setMarkerIcon(busMarker, "finish")
 				
 			elseif (busRoute[newnumber][4]==true) then -- If it is a stop.
-			
+				
 				busMarker = createMarker( x, y, z, "checkpoint", 4, 255, 0, 0, 150) -- Red marker
 				busBlip = createBlip( x, y, z, 0, 2, 255, 0, 0, 255) -- Red blip
 				if (busRoute[nextnumber][4]==true) then
@@ -172,16 +190,16 @@ function updateBusCheckpoint(thePlayer)
 				
 				addEventHandler("onClientMarkerHit", busMarker, updateBusCheckpoint)
 			end
+			
 			if busNextMarker and nextnumber == tonumber(max_number) then
 				setMarkerIcon(busNextMarker, "finish")
 			end
 			
 			setElementData(getLocalPlayer(), "busRoute.marker", newnumber)
-				
+			
 		end
 	end
 end
-
 
 function waitAtStop(thePlayer)
 	local vehicle = getPedOccupiedVehicle(getLocalPlayer())

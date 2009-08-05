@@ -311,42 +311,46 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 			exports.global:sendLocalMeAction(source, "drops a glowstick.")
 			setTimer(destroyElement, 600000, 1, marker)
 		elseif (itemID==29) then -- RAM
-			local found, id = nil
-			local distance = 99999
-			for key, value in ipairs(exports.pool:getPoolElementsByType("pickup")) do
-				local dbid = getElementData(value, "dbid")
-				local vx, vy, vz = getElementPosition(value)
-				local x, y, z = getElementPosition(source)
-				
-				local dist = getDistanceBetweenPoints3D(x, y, z, vx, vy, vz)
-				if (dist<=5) then -- house found
-					if (dist<distance) then
-						found = value
-						id = dbid
-						distance = dist
-					end
-				end
-			end
-			
-			if not (found) then
-				outputChatBox("You are not need a door.", source, 255, 194, 14)
-			else
-				local locked = getElementData(found, "locked")
-				
-				if (locked==1) then
-					setElementData(found, "locked", 0, false)
-					mysql_query(handler, "UPDATE interiors SET locked='0' WHERE id='" .. id .. "' LIMIT 1")
-					exports.global:sendLocalMeAction(source, "swings the ram into the door, opening it.")
+			if getElementData(source, "duty") == 1 then
+				local found, id = nil
+				local distance = 99999
+				for key, value in ipairs(exports.pool:getPoolElementsByType("pickup")) do
+					local dbid = getElementData(value, "dbid")
+					local vx, vy, vz = getElementPosition(value)
+					local x, y, z = getElementPosition(source)
 					
-					for key, value in ipairs(exports.pool:getPoolElementsByType("pickup")) do
-						local dbid = getElementData(value, "dbid")
-						if (dbid==id) and (value~=found) then
-							setElementData(value, "locked", 0, false)
+					local dist = getDistanceBetweenPoints3D(x, y, z, vx, vy, vz)
+					if (dist<=5) then -- house found
+						if (dist<distance) then
+							found = value
+							id = dbid
+							distance = dist
 						end
 					end
-				else
-					outputChatBox("That door is not locked.", source, 255, 0, 0)
 				end
+				
+				if not (found) then
+					outputChatBox("You are not need a door.", source, 255, 194, 14)
+				else
+					local locked = getElementData(found, "locked")
+					
+					if (locked==1) then
+						setElementData(found, "locked", 0, false)
+						mysql_query(handler, "UPDATE interiors SET locked='0' WHERE id='" .. id .. "' LIMIT 1")
+						exports.global:sendLocalMeAction(source, "swings the ram into the door, opening it.")
+						
+						for key, value in ipairs(exports.pool:getPoolElementsByType("pickup")) do
+							local dbid = getElementData(value, "dbid")
+							if (dbid==id) and (value~=found) then
+								setElementData(value, "locked", 0, false)
+							end
+						end
+					else
+						outputChatBox("That door is not locked.", source, 255, 0, 0)
+					end
+				end
+			else
+				outputChatBox("You are not on SWAT duty.", source, 255, 0, 0)
 			end
 		elseif (itemID==30) then
 			outputChatBox("Use the chemistry set purchasable from 24/7 to use this item.", source, 255, 0, 0)

@@ -21,7 +21,7 @@ function toggleCockpitView ()
         removeEventHandler ("onClientWorld", root, updateCamera)
         removeEventHandler ("onClientCursorMove", root, freecamMouse)
         setElementAlpha (localPlayer, 255)
-    end        
+    end
 end
 
 addCommandHandler("cview", toggleCockpitView)
@@ -42,7 +42,16 @@ addEventHandler ("onClientPlayerVehicleExit", getRootElement(), vehicleExit)
 function updateCamera ()
     if (isEnabled) then
         local camPosX, camPosY, camPosZ = getPedBonePosition (localPlayer, 6)
-        
+		
+		-- note the vehicle rotation
+		local rx,ry,rz = getElementRotation(getPedOccupiedVehicle(localPlayer))
+		local roll = -ry
+		if rx > 90 and rx < 270 then
+			roll = ry - 180
+		end
+		local rotX = rotX - math.rad(rz)
+		local rotY = rotY + math.rad(rx)
+		
         --Taken from the freecam resource made by eAi
         
         -- work out an angle in radians based on the number of pixels the cursor has moved (ever)
@@ -87,7 +96,7 @@ function updateCamera ()
         camTargetZ = camPosZ + freeModeAngleZ * 100
 
         -- Set the new camera position and target
-        setCameraMatrix ( camPosX, camPosY, camPosZ, camTargetX, camTargetY, camTargetZ, 0, 60 )
+        setCameraMatrix ( camPosX, camPosY, camPosZ, camTargetX, camTargetY, camTargetZ, roll)
     end
 end
 

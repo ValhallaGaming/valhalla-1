@@ -86,7 +86,7 @@ function cgetPlayerDonatorTitle(thePlayer)
 		return "Gold Donator"
 	elseif (donatorLevel==4) then
 		return "Platinum Donator"
-	elseif (donatornLevel==5) then
+	elseif (donatorLevel==5) then
 		return "Pearl Donator"
 	elseif (donatorLevel==6) then
 		return "Diamond Donator"

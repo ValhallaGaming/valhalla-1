@@ -425,7 +425,7 @@ end
 addCommandHandler("b", localOOC, false, false)
 addCommandHandler("LocalOOC", localOOC)
 
-function districtOOC(thePlayer, commandName, ...)
+function districtIC(thePlayer, commandName, ...)
 	local logged = getElementData(thePlayer, "loggedin")
 	local dimension = getElementDimension(thePlayer)
 	local interior = getElementInterior(thePlayer)
@@ -446,15 +446,14 @@ function districtOOC(thePlayer, commandName, ...)
 				if (zonename==playerzone) and (dimension==playerdimension) and (interior==playerinterior) then
 					local logged = getElementData(value, "loggedin")
 					if (logged==1) then
-						outputChatBox("(( District OOC - " .. playerzone .. " - " .. playerName .. ":  " .. message .. " ))", value, 255, 255, 255)
+						outputChatBox("District IC: " .. message .. " ((".. playerName .."))", value, 255, 255, 255)
 					end
 				end
 			end
 		end
 	end
 end
-addCommandHandler("dooc", districtOOC, false, false)
-addCommandHandler("district", districtOOC, false, false)
+addCommandHandler("district", districtIC, false, false)
 
 function localDo(thePlayer, commandName, ...)
 	local logged = getElementData(thePlayer, "loggedin")
@@ -912,6 +911,56 @@ function calltaxi(thePlayer, commandName, ...)
 				setElementData(thePlayer, "TaxiAbuse", 1, false)
 				outputChatBox("Your message has been sent to all available drivers. Please wait for a response.", thePlayer, 255, 194, 14)
 				setTimer(TaxiAbuseReset, 20000, 1, thePlayer)
+				
+				-- Local Output
+				local x, y, z = getElementPosition(thePlayer)
+				local chatSphere = createColSphere(x, y, z, 20)
+				exports.pool:allocateElement(chatSphere)
+				local nearbyPlayers = getElementsWithinColShape(chatSphere, "player")
+				local playerName = string.gsub(getPlayerName(thePlayer), "_", " ")
+				local dimension = getElementDimension(thePlayer)
+				local interior = getElementInterior(thePlayer)
+				destroyElement(chatSphere)
+				message = string.gsub(message, "#%x%x%x%x%x%x", "") -- Remove colour codes
+				
+				-- Show chat to console, for admins + log
+				exports.irc:sendMessage("[IC: Local Chat] " .. playerName .. ": " .. message)
+				exports.global:sendLocalMeAction(thePlayer,"dials a number on their cellphone.")
+				for index, nearbyPlayer in ipairs(nearbyPlayers) do
+					local nearbyPlayerDimension = getElementDimension(nearbyPlayer)
+					local nearbyPlayerInterior = getElementInterior(nearbyPlayer)
+					if (nearbyPlayerDimension==dimension) and (nearbyPlayerInterior==interior) then
+						local logged = tonumber(getElementData(nearbyPlayer, "loggedin"))
+						if not (isPedDead(nearbyPlayer)) and (logged==1) then
+							chatSphere = createColSphere(x, y, z, 20*0.2)
+							exports.pool:allocateElement(chatSphere)
+							if isElementWithinColShape(nearbyPlayer, chatSphere) then
+								outputChatBox( "#EEEEEE" .. playerName .. " [Cellphone]: " .. message, nearbyPlayer, 255, 255, 255, true)
+								destroyElement(chatSphere)
+								chatSphere = createColSphere(x, y, z, 20*0.4)
+								exports.pool:allocateElement(chatSphere)
+							elseif isElementWithinColShape(nearbyPlayer, chatSphere) then
+								outputChatBox( "#DDDDDD" .. playerName .. " [Cellphone]: " .. message, nearbyPlayer, 255, 255, 255, true)
+								destroyElement(chatSphere)
+								chatSphere = createColSphere(x, y, z, 20*0.6)
+								exports.pool:allocateElement(chatSphere)
+							elseif isElementWithinColShape(nearbyPlayer, chatSphere) then          
+								outputChatBox( "#CCCCCC" .. playerName .. " [Cellphone]: " .. message, nearbyPlayer, 255, 255, 255, true)
+								destroyElement(chatSphere)
+								chatSphere = createColSphere(x, y, z, 20*0.8)
+								exports.pool:allocateElement(chatSphere)
+							elseif isElementWithinColShape(nearbyPlayer, chatSphere) then
+								outputChatBox( "#BBBBBB" .. playerName .. " [Cellphone]: " .. message, nearbyPlayer, 255, 255, 255, true)
+							else
+								outputChatBox( "#AAAAAA" .. playerName .. " [Cellphone]: " .. message, nearbyPlayer, 255, 255, 255, true)
+							end
+							
+							if (chatSphere) then
+								destroyElement(chatSphere)
+							end
+						end
+					end
+				end
 			end
 		end
 	end
@@ -1128,7 +1177,6 @@ function newsMessage(thePlayer, commandName, ...)
 	end
 end
 addCommandHandler("n", newsMessage, false, false)
-addCommandHandler("news", newsMessage, false, false)
 
 -- /tognews
 function togNews(thePlayer, commandName)
@@ -1246,7 +1294,7 @@ function interviewChat(thePlayer, commandName, ...)
 end
 addCommandHandler("i", interviewChat, false, false)
 
--- news hotline /0800news
+-- news hotline /news
 function newsHotline(thePlayer, commandName, ...)
 	local logged = getElementData(thePlayer, "loggedin")
 	
@@ -1308,19 +1356,20 @@ function newsHotline(thePlayer, commandName, ...)
 			outputChatBox("Thank you for calling the San Andreas Network News Desk. You tip will be forwarded to our staff.", thePlayer, 255, 194, 14)
 			exports.global:sendLocalMeAction(thePlayer,"hangs up their cellphone.")
 			
+			local playerNumber = getElementData(thePlayer, "cellnumber")
 			local theTeam = getTeamFromName("San Andreas Network News")
 			local teamMembers = getPlayersInTeam(theTeam)
-					
+			
 			for key, value in ipairs(teamMembers) do
 				if(exports.global:doesPlayerHaveItem(value,2))then
 					exports.global:sendLocalMeAction(value,"receives a text message.")
-					outputChatBox("SMS From: News Desk: - '".. message.."' (("..getPlayerName(thePlayer) .."))", value)
+					outputChatBox("SMS From: News Desk - '".. message.."' Ph:".. playerNumber .." (("..getPlayerName(thePlayer) .."))", value)
 				end
 			end			
 		end
 	end
 end
-addCommandHandler("0800san", newsHotline, false, false)
+addCommandHandler("news", newsHotline, false, false)
 
 function showRoadmap(thePlayer)
 	local logged = getElementData(thePlayer, "loggedin")

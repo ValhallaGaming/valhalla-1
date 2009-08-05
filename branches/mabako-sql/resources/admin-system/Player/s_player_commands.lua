@@ -429,16 +429,10 @@ function givePlayerItem(thePlayer, commandName, targetPlayer, itemID, itemValue)
 				if (logged==0) then
 					outputChatBox("Player is not logged in.", thePlayer, 255, 0, 0)
 				elseif (logged==1) then
-					local result = mysql_query(handler, "SELECT item_name FROM items WHERE id='" .. itemID .. "' LIMIT 1")
-					
-					if (result) then
-						if (mysql_num_rows(result)>0) then
-							outputChatBox("Player " .. targetPlayerName .. " now has a " .. tostring(mysql_result(result, 1, 1)) .. " with value " .. itemValue .. ".", thePlayer, 0, 255, 0)
-							exports.global:givePlayerItem(targetPlayer, itemID, itemValue)
-						else
-							outputChatBox("Invalid Item ID.", thePlayer, 255, 0, 0)
-						end
-						mysql_free_result(result)
+					local itemName = call(getResourceFromName("item-system"), "getItemName", itemID)
+					if itemName then
+						outputChatBox("Player " .. targetPlayerName .. " now has a " .. itemName .. " with value " .. itemValue .. ".", thePlayer, 0, 255, 0)
+						exports.global:givePlayerItem(targetPlayer, itemID, itemValue)
 					else
 						outputChatBox("Invalid Item ID.", thePlayer, 255, 0, 0)
 					end

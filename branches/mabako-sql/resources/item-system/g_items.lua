@@ -72,18 +72,17 @@ g_items = {
 }
 
 function getItemName(id)
-	return g_items[id][1]
+	return g_items[id][1] or nil
 end
 
 function getItemDescription(id)
-	return g_items[id][2]
+	return g_items[id][2] or nil
 end
 
 function getItemType(id)
-	return g_items[id][3]
+	return g_items[id][3] or nil
 end
 
 function getItemModel(id)
-	outputChatBox(id)
-	return g_items[id][4]
+	return g_items[id][4] or nil
 end

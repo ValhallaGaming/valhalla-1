@@ -17,9 +17,6 @@ function loadPlayerItems(player)
 					playeritems[player][count] = { tonumber(row.itemid), tonumber(row.itemvalue) or row.itemvalue }
 				end
 			until not row
-			outputChatBox("yay")
-		else
-			outputChatBox("fial")
 		end
 		sendPlayerItems(player, player)
 	end

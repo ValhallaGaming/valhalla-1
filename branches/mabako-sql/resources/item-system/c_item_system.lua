@@ -608,4 +608,6 @@ function checkUpdate(items)
 			end
 		end, 50, 1, source)
 end
-addEventHandler( "recieveItems", getLocalPlayer(), checkUpdate )
+addEventHandler( "recieveItems", getRootElement(), checkUpdate )
+
+addEventHandler( "onClientChangeChar", getRootElement(), hideInventory)

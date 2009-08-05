@@ -2,6 +2,7 @@
 	<info author="vG MTA Scripting Team" type="script" description="Item System"/>
 
 	<script src="g_items.lua" type="client" />
+	<export function="getItemName" type="server"/>
 	<script src="g_items.lua" type="server" />
 
 	<script src="s_player_items.lua" type="server" />

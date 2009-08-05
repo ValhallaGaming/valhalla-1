@@ -94,7 +94,7 @@ addEventHandler("displayPlayerMenu", getRootElement(), showPlayerMenu)
 function showPlayerInfo(button, state)
 	if (button=="left") then
 		outputChatBox("~~~~~~~~~~~~ " .. getPlayerName(player) .. " ~~~~~~~~~~~~", 255, 194, 14)
-		outputChatBox("Age: " .. race, 255, 194, 14)
+		outputChatBox("Race: " .. race, 255, 194, 14)
 		outputChatBox("Age: " .. age .. " years old", 255, 194, 14)
 		outputChatBox("Weight: " .. weight .. "cm", 255, 194, 14)
 		outputChatBox("Height: " .. height .. "cm", 255, 194, 14)

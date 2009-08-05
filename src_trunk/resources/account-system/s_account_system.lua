@@ -394,8 +394,9 @@ function spawnCharacter(charname)
 			end
 		end
 		
+		local factiononline = 0
 		if (isElement(theTeam)) then
-			local factiononline = #getPlayersInTeam(theTeam)
+			factiononline = #getPlayersInTeam(theTeam)
 		end
 		
 		

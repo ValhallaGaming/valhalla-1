@@ -275,12 +275,12 @@ function getItemsForSale(shop_type, race, gender)
 	-- gym
 	elseif(shop_type == 6) then
 		item = {
-			{"Standard Combat","Standard everyday fighting.", "10", 4, -1, 1, true},
-			{"Boxing","Mike Tyson, on drugs.", "50", 5, -1, 1, true},
-			{"Kung Fu","I know kung-fu, so can you.", "50", 6, -1, 1, true},
-			{"Knee Head","Ever had a knee to the head? Pretty sore.", "50", 7, -1, 1, true},
-			{"Grab & Kick","Kick his 'ead in!", "50", 15, -1, 1, true},
-			{"Elbows","You may look retarded, but you will kick his ass!", "50", 16, -1, 1, true}
+			{"Standard Combat","Standard everyday fighting.", "10", 4, -1, 1, true, 5},
+			{"Boxing","Mike Tyson, on drugs.", "50", 5, -1, 1, true, 25},
+			{"Kung Fu","I know kung-fu, so can you.", "50", 6, -1, 1, true, 25},
+			{"Knee Head","Ever had a knee to the head? Pretty sore.", "50", 7, -1, 1, true, 25},
+			{"Grab & Kick","Kick his 'ead in!", "50", 15, -1, 1, true, 25},
+			{"Elbows","You may look retarded, but you will kick his ass!", "50", 16, -1, 1, true, 25}
 		}
 	-- drugs/chemicals
 	elseif(shop_type == 7) then

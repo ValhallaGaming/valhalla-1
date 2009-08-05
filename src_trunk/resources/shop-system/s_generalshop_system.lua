@@ -271,7 +271,7 @@ function givePlayerBoughtItem(itemID, itemValue, theCost, isWeapon, name, supply
 		end
 	end
 	
-	if (inttype==1) then
+	if inttype == 1 then
 		local result = mysql_query(handler, "SELECT supplies FROM interiors WHERE id='" .. interior .. "' LIMIT 1")
 		supplies = tonumber(mysql_result(result, 1, 1))
 		mysql_free_result(result)
@@ -280,7 +280,22 @@ function givePlayerBoughtItem(itemID, itemValue, theCost, isWeapon, name, supply
 	if (money<tonumber(theCost)) then
 		outputChatBox("You cannot afford this item.", source, 255, 0, 0)
 	else
-		if (inttype==2) or not (inttype) then
+		if inttype==1 and supplies<supplyCost then
+			outputChatBox("This item is out of stock.", source, 255, 0, 0)
+			local owner = getElementData(thePickup, "owner")
+			local theOwner = nil
+			for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
+				local id = getElementData(value, "dbid")
+				if (id==owner) then
+					theOwner = value
+				end
+			end
+			
+			if (theOwner) then
+				exports.global:givePlayerAchievement(theOwner, 28)
+				outputChatBox("Supplies in your shop are empty!!! Be sure to fill them up, or you risk losing business.", theOwner, 255, 0, 0)
+			end
+		else
 			if (isWeapon==nil) then
 				exports.global:takePlayerSafeMoney(source, tonumber(theCost))
 				exports.global:givePlayerItem(source, 16, tonumber(itemValue))
@@ -356,63 +371,8 @@ function givePlayerBoughtItem(itemID, itemValue, theCost, isWeapon, name, supply
 					exports.global:givePlayerAchievement(source, 22)
 				end
 			end
-		elseif (inttype==1) then
-			if (supplies<supplyCost) then
-				outputChatBox("This item is out of stock.", source, 255, 0, 0)
-				local owner = getElementData(thePickup, "owner")
-				local theOwner = nil
-				for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
-					local id = getElementData(value, "dbid")
-					if (id==owner) then
-						theOwner = value
-					end
-				end
-				
-				if (theOwner) then
-					exports.global:givePlayerAchievement(theOwner, 28)
-					outputChatBox("Supplies in your shop are empty!!! Be sure to fill them up, or you risk losing business.", theOwner, 255, 0, 0)
-				end
-			else
-				if (isWeapon==nil) then
-					exports.global:takePlayerSafeMoney(source, tonumber(theCost))
-					exports.global:givePlayerItem(source, 16, tonumber(itemValue))
-					setPedSkin(source, tonumber(itemValue))
-					setElementData(source, "casualskin", tonumber(itemValue), false)
-					exports.global:givePlayerAchievement(source, 21)
-				elseif (isWeapon==false) then
-					if(exports.global:givePlayerItem(source, itemID, itemValue)) then
-						exports.global:takePlayerSafeMoney(source, tonumber(theCost))
-						outputChatBox("You bought a " .. name .. ".", source, 255, 194, 14)
-						outputChatBox("You have $"..getElementData(source, "money").." left in your wallet.", source, 255, 194, 14)
-					else
-						outputChatBox("You do not have enough space to purchase that item.", source, 255, 0, 0)
-					end
-				elseif (isWeapon) and (itemValue==-1) then -- fighting styles!
-					exports.global:takePlayerSafeMoney(source, tonumber(theCost))
-					outputChatBox("You learnt " .. name .. ".", source, 255, 194, 14)
-					outputChatBox("You have $"..getElementData(source, "money").." left in your wallet.", source, 255, 194, 14)
-					setPedFightingStyle(source, tonumber(itemID))
-					exports.global:givePlayerAchievement(source, 20)
-				else
-					if isWeapon and isGun(tonumber(itemID)) then
-						-- licensing check
-						local gunlicense = getElementData(source, "license.gun")
-						if (gunlicense==1) then
-							exports.global:takePlayerSafeMoney(source, tonumber(theCost))
-							outputChatBox("You bought a " .. name .. ".", source, 255, 194, 14)
-							outputChatBox("You have $".. getElementData(source, "money").." left in your wallet.", source, 255, 194, 14)
-							giveWeapon(source, tonumber(itemID), tonumber(itemValue), true)
-						else
-							outputChatBox("You do not have a gun license - You can buy this license at City Hall.", source, 255, 194, 14)
-						end
-					else
-						exports.global:takePlayerSafeMoney(source, tonumber(theCost))
-						outputChatBox("You bought a " .. name .. ".", source, 255, 194, 14)
-						outputChatBox("You have $"..getElementData(source, "money").." left in your wallet.", source, 255, 194, 14)
-						giveWeapon(source, tonumber(itemID), tonumber(itemValue), true)
-						exports.global:givePlayerAchievement(source, 22)
-					end
-				end
+			
+			if inttype == 1 then
 				mysql_query(handler, "UPDATE interiors SET supplies = supplies-1 WHERE id='" .. interior .. "'")
 				
 				-- give the money to the shop owner

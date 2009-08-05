@@ -5,6 +5,7 @@ local oldroute = -1
 local marker, endmarker
 local routescompleted = 0
 local deliveryStopTimer = nil
+local wage = 0
 
 routes = {
 	{ 1615.5283203125, -1614.431640625, 12.10223865509 },
@@ -34,8 +35,8 @@ function resetTruckerJob()
 		destroyElement(blip)
 		blip = nil
 	end
-    
-    if (isElement(endmarker)) then
+	
+	if (isElement(endmarker)) then
 		destroyElement(endmarker)
 		endmarker = nil
 	end
@@ -54,6 +55,8 @@ function resetTruckerJob()
 		killTimer(deliveryStopTimer)
 		deliveryStopTimer = nil
 	end
+	
+	wage = 0
 end
 
 function displayTruckerJob(notext)
@@ -73,7 +76,9 @@ function startTruckerJob()
 		if vehicle and getVehicleController(vehicle) == getLocalPlayer() and truck[getElementModel(vehicle)] then
 			routescompleted = 0
 		
-			outputChatBox("#FF9933Drive to the #FFC800blip#FF9933 to complete your first delivery.", 255, 194, 15, true)
+			outputChatBox("#FF9933Drive to the #FFFF00blip#FF9933 to complete your first delivery.", 255, 194, 15, true)
+			outputChatBox("#FF9933Remember to #FFFF00follow the street rules#FF9933.", 255, 194, 15, true)
+			outputChatBox("#FF9933If your truck is #FFFF00damaged#FF9933, the customers may pay less or refuse to accept the goods.", 255, 194, 15, true)
 			destroyElement(blip)
 			
 			local rand = math.random(1, #routes)
@@ -95,17 +100,24 @@ end
 function waitAtDelivery(thePlayer)
 	local vehicle = getPedOccupiedVehicle(getLocalPlayer())
 	if thePlayer == getLocalPlayer() and vehicle and getVehicleController(vehicle) == getLocalPlayer() and truck[getElementModel(vehicle)] then
-		deliveryStopTimer = setTimer(nextDeliveryCheckpoint, 5000, 1)
-		outputChatBox("#FF9933Wait a moment while your truck is processed.", 255, 0, 0, true )
+		if getElementHealth(vehicle) < 350 then
+			outputChatBox("You need to get your truck repaired.", 255, 0, 0)
+		else
+			deliveryStopTimer = setTimer(nextDeliveryCheckpoint, 5000, 1)
+			outputChatBox("#FF9933Wait a moment while your truck is processed.", 255, 0, 0, true )
+		end
 	end
 end
 
 function checkWaitAtDelivery(thePlayer)
-	if thePlayer == getLocalPlayer() and getVehicleController(getPedOccupiedVehicle(getLocalPlayer())) == getLocalPlayer()  then
-		outputChatBox("You didn't wait at the dropoff point.", 255, 0, 0)
-		if deliveryStopTimer then
-			killTimer(deliveryStopTimer)
-			deliveryStopTimer = nil
+	local vehicle = getPedOccupiedVehicle(getLocalPlayer())
+	if vehicle and thePlayer == getLocalPlayer() and getVehicleController(vehicle) == getLocalPlayer()  then
+		if getElementHealth(vehicle) >= 350 then
+			outputChatBox("You didn't wait at the dropoff point.", 255, 0, 0)
+			if deliveryStopTimer then
+				killTimer(deliveryStopTimer)
+				deliveryStopTimer = nil
+			end
 		end
 	end
 end
@@ -118,10 +130,25 @@ function nextDeliveryCheckpoint()
 			destroyElement(marker)
 			destroyElement(blip)
 			
+			local health = getElementHealth(vehicle)
+			if health >= 975 then
+				pay = 60 -- bonus: $60
+			elseif health >= 800 then
+				pay = 50
+			elseif health >= 350 then
+				-- 350 (black smoke) to 800, round to $5
+				pay = math.ceil( 10 * ( health - 300 ) / 500 ) * 5
+			else
+				outputDebugString("{TRUCKING} Should not happen")
+				pay = 0
+			end
+			
+			wage = wage + pay
+			
 			routescompleted = routescompleted + 1
-			outputChatBox("You completed your " .. routescompleted .. ". trucking run.", 0, 255, 0)
+			outputChatBox("You completed your " .. routescompleted .. ". trucking run and earned $" .. pay .. ".", 0, 255, 0)
 			outputChatBox("#FF9933You can now either return to the #CC0000warehouse #FF9933and obtain your wage", 0, 0, 0, true)
-			outputChatBox("#FF9933or continue onto the next #FFC800drop off point#FF9933 and increase your wage.", 0, 0, 0, true)
+			outputChatBox("#FF9933or continue onto the next #FFFF00drop off point#FF9933 and increase your wage.", 0, 0, 0, true)
 
 			-- next drop off
 			local rand = -1
@@ -160,7 +187,6 @@ function endDelivery(thePlayer)
 		if not vehicle or getVehicleController(vehicle) ~= getLocalPlayer() or not (truck[id]) then
 			outputChatBox("#FF9933You must be in a van to complete deliverys.", 255, 0, 0, true ) -- Wrong car type.
 		else
-			local wage = 50 * routescompleted
 			outputChatBox("You earned $" .. wage .. " on your trucking runs.", 255, 194, 15)
 			triggerServerEvent("giveTruckingMoney", getLocalPlayer(), wage)
 			

@@ -737,6 +737,46 @@ function toggleLock(source, key, keystate)
         else
             outputChatBox("(( You can't lock civilian vehicles. ))", source, 255, 195, 14)
         end
+	else
+		local x, y, z = getElementPosition(source)
+		local checkSphere = createColSphere(x, y, z, 10)
+		local nearbyVehicles = getElementsWithinColShape(checkSphere, "vehicle")
+		destroyElement(checkSphere)
+		
+		if #nearbyVehicles < 1 then return end
+		
+		local found, nearestVehID = nil
+		local shortest = 20
+		for i, veh in ipairs(nearbyVehicles) do
+			local dbid = tonumber(getElementData(veh, "dbid"))
+			local distanceToVehicle = getDistanceBetweenPoints3D(x, y, z, getElementPosition(veh))
+			if shortest > distanceToVehicle and exports.global:doesPlayerHaveItem(source, 3, dbid) then
+				shortest = distanceToVehicle
+				nearestVehID = dbid
+				found = veh
+			end
+		end
+		
+		if nearestVehID and found then
+			local locked = getElementData(found, "locked")
+			
+			exports.global:applyAnimation(source, "GHANDS", "gsign3LH", -1, false, false, false)
+			
+			if (isVehicleLocked(found)) then
+				setVehicleLocked(found, false)
+				
+				mysql_query(handler, "UPDATE vehicles SET locked='0' WHERE id='" .. tonumber(nearestVehID) .. "' LIMIT 1")
+				exports.global:sendLocalMeAction(source, "presses on the key to unlock the vehicle. ((" .. getVehicleName(found) .. "))")
+			else
+				setVehicleLocked(found, true)
+				for i = 0, 5 do
+					setVehicleDoorState(found, i, 0)
+				end
+				
+				mysql_query(handler, "UPDATE vehicles SET locked='1' WHERE id='" .. tonumber(nearestVehID) .. "' LIMIT 1")
+				exports.global:sendLocalMeAction(source, "presses on the key to lock the vehicle. ((" .. getVehicleName(found) .. "))")
+			end
+		end
 	end
 end
 

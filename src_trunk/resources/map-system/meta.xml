@@ -11,6 +11,7 @@
 	<script src="LS Impound Ext.lua" type="client"/>
 	<script src="LS Prison Ext.lua" type="client"/>
 	<script src="LVMPD.lua" type="client"/>
+	<script src="Main Street.lua" type="client"/>
 	<script src="Marcos Bistro Interior Fix.lua" type="client"/>
 	<script src="Recording Studio.lua" type="client"/>
 	<script src="Smokes House Wall Fix.lua" type="client"/>

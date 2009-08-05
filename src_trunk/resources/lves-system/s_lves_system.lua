@@ -107,6 +107,18 @@ function respawnPlayer(thePlayer)
 			
 			outputChatBox("You have recieved treatment from the Los Santos Emergency Services. Cost: " .. cost .. "$", thePlayer, 255, 255, 0)
 			
+			-- take all drugs
+			local count = 0
+			for i = 30, 43 do
+				while exports.global:doesPlayerHaveItem(thePlayer, i, -1) do
+					exports.global:takePlayerItem(thePlayer, i, -1)
+					count = count + 1
+				end
+			end
+			if count > 0 then
+				outputChatBox("LSES Employee: We handed your drugs over to the LSPD Investigators.", thePlayer, 255, 194, 14)
+			end
+			
 			local theSkin = getPedSkin(thePlayer)
 			
 			local theTeam = getPlayerTeam(thePlayer)

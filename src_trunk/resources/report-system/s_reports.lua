@@ -15,21 +15,24 @@ function showReports(thePlayer)
 		outputChatBox("~~~~~~~~~ Reports ~~~~~~~~~", thePlayer, 255, 194, 15)
 		
 		local count = 0
-		for i, report in pairs(reports) do
-			local reporter = report[1]
-			local reported = report[2]
-			local timestring = report[4]
-			local admin = report[5]
-			
-			local handler = ""
-			if (isElement(admin)) then
-				handler = getPlayerName(admin)
-			else
-				handler = "None."
+		for i = 1, 128 do
+			local report = reports[i]
+			if report then
+				local reporter = report[1]
+				local reported = report[2]
+				local timestring = report[4]
+				local admin = report[5]
+				
+				local handler = ""
+				if (isElement(admin)) then
+					handler = getPlayerName(admin)
+				else
+					handler = "None."
+				end
+				
+				outputChatBox("Report #" .. i .. ": '" .. getPlayerName(reporter) .. "' reporting '" .. getPlayerName(reported) .. "' at " .. timestring .. ". Handler: " .. handler .. ".", thePlayer, 255, 195, 15)
+				count = count + 1
 			end
-			
-			outputChatBox("Report #" .. i .. ": '" .. getPlayerName(reporter) .. "' reporting '" .. getPlayerName(reported) .. "' at " .. timestring .. ". Handler: " .. handler .. ".", thePlayer, 255, 195, 15)
-			count = count + 1
 		end
 		
 		if count == 0 then

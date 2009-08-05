@@ -93,3 +93,22 @@ function getPlayerAdminTitle(thePlayer)
 		return "Player"
 	end
 end
+
+local scripterAccounts = {
+	Daniels = true,
+	Chamberlain = true,
+	Konstantine = true,
+	mabako = true,
+	Cazomino09 = true,
+	Serizzim = true,
+	CCC = true,
+	Flobu = true,
+	['Mr.Hankey'] = true
+}
+function isPlayerScripter(thePlayer)
+	if getElementType(thePlayer) == "console" or isPlayerHeadAdmin(thePlayer) or scripterAccounts[getElementData(thePlayer, "gameaccountusername")] then
+		return true
+	else
+		return false
+	end
+end

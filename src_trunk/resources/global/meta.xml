@@ -17,6 +17,7 @@
 	<export function="isPlayerLeadAdmin" type="server"/>
 	<export function="getPlayerAdminLevel" type="server"/>
 	<export function="getPlayerAdminTitle" type="server"/>
+	<export function="isPlayerScripter" type="server"/>
 	<export function="getAdmins" type="server"/>
 	
 	<script src="optomization_globals.lua" type="server"/>

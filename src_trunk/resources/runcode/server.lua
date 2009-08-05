@@ -52,7 +52,7 @@ end
 -- run command
 addCommandHandler("run",
 	function (player, command, ...)
-		if (exports.global:isPlayerHeadAdmin(player)) then
+		if (exports.global:isPlayerScripter(player)) then
 		local commandstring = table.concat({...}, " ")
 		return runString(commandstring, rootElement, player)
 		end
@@ -62,7 +62,7 @@ addCommandHandler("run",
 -- silent run command
 addCommandHandler("srun",
 	function (player, command, ...)
-		if (exports.global:isPlayerHeadAdmin(player)) then
+		if (exports.global:isPlayerScripter(player)) then
 		local commandstring = table.concat({...}, " ")
 		return runString(commandstring, player, player)
 		end
@@ -72,7 +72,7 @@ addCommandHandler("srun",
 -- clientside run command
 addCommandHandler("crun",
 	function (player, command, ...)
-		if (exports.global:isPlayerHeadAdmin(player)) then
+		if (exports.global:isPlayerScripter(player)) then
 		local commandstring = table.concat({...}, " ")
 		if player then
 			return triggerClientEvent(player, "doCrun", rootElement, commandstring)

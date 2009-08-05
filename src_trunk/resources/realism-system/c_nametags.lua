@@ -27,9 +27,7 @@ function renderNametags()
 				
 				
 				if (player~=localPlayer) and (isElementOnScreen(player)) and ((distance<limitdistance) or reconx) then
-					local rreconx = getElementData(player, "reconx")
-
-					if not (rreconx) then
+					if not getElementData(player, "reconx") and not getElementData(player, "freecam:state") then
 						local lx, ly, lz = getPedBonePosition(localPlayer, 7)
 						local vehicle = getPedOccupiedVehicle(player)
 						local collision = processLineOfSight(lx, ly, lz+1, rx, ry, rz, true, true, false, true, false, false, true, false, vehicle)

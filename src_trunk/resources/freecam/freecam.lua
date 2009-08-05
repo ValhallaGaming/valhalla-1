@@ -292,3 +292,19 @@ addEventHandler("doSetFreecamDisabled", rootElement, setFreecamDisabled)
 
 addEvent("doSetFreecamOption", true)
 addEventHandler("doSetFreecamOption", rootElement, setFreecamOption)
+
+function onStart()
+	for k, v in pairs(getElementsByType("player")) do
+		if getElementData(v, "freecam:state") == true then
+			setElementCollisionsEnabled(v, false)
+		end
+	end
+end
+addEventHandler("onClientResourceStart", getResourceRootElement(), onStart)
+
+function onDataChange(name)
+	if getElementType(source) == "player" and name == "freecam:state" then
+		setElementCollisionsEnabled(source, not getElementData(source, "freecam:state"))
+	end
+end
+addEventHandler("onClientElementDataChange", rootElement, onDataChange)

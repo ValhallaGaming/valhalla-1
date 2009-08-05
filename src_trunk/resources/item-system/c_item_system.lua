@@ -969,3 +969,5 @@ function closeItemsList(button, state)
 		wItemsList = nil
 	end
 end
+
+addEventHandler("onClientChangeChar", getRootElement(), hideInventory)

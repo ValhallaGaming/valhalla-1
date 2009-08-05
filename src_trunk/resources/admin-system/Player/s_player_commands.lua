@@ -454,6 +454,39 @@ function givePlayerItem(thePlayer, commandName, targetPlayer, itemID, itemValue)
 end
 addCommandHandler("giveitem", givePlayerItem, false, false)
 
+-- /TAKEITEM
+function takePlayerItem(thePlayer, commandName, targetPlayer, itemID, itemValue)
+	if (exports.global:isPlayerAdmin(thePlayer)) then
+		if not (itemID) or not (itemValue) or not (targetPlayer) then
+			outputChatBox("SYNTAX: /" .. commandName .. " [Player Partial Nick / ID] [Item ID] [Item Value]", thePlayer, 255, 194, 14)
+		else
+			local targetPlayer = exports.global:findPlayerByPartialNick(targetPlayer)
+			
+			if not (targetPlayer) then
+				outputChatBox("Player not found or multiple were found.", thePlayer, 255, 0, 0)
+			else
+				local targetPlayerName = getPlayerName(targetPlayer)
+				local logged = getElementData(targetPlayer, "loggedin")
+				
+				itemID = tonumber(itemID)
+				itemValue = tonumber(itemValue)
+				
+				if (logged==0) then
+					outputChatBox("Player is not logged in.", thePlayer, 255, 0, 0)
+				elseif (logged==1) then
+					if exports.global:doesPlayerHaveItem(thePlayer, itemID, itemValue) then
+						outputChatBox("You took that Item " .. itemID .. " from " .. targetPlayerName .. ".", thePlayer, 0, 255, 0)
+						exports.global:takePlayerItem(targetPlayer, itemID, itemValue)
+					else
+						outputChatBox("Player doesn't have that item", thePlayer, 255, 0, 0)
+					end
+				end
+			end
+		end
+	end
+end
+addCommandHandler("takeitem", takePlayerItem, false, false)
+
 -- /SETHP
 function setPlayerHealth(thePlayer, commandName, targetPlayer, health)
 	if (exports.global:isPlayerAdmin(thePlayer)) then

@@ -65,6 +65,7 @@ function makeTagObject(cx, cy, cz, rot, interior, dimension)
 		end
 		
 		if (object) then
+			exports.global:applyAnimation(source, "SPRAYCAN", "spraycan_fire", -1, false, false, false)
 			local id = getElementData(object, "dbid")
 			outputChatBox("You removed the tag. You earnt 30$ for doing so.", source, 255, 194, 14)
 			exports.global:givePlayerSafeMoney(source, 30)

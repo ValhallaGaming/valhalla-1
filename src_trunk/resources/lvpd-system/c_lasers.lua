@@ -57,4 +57,4 @@ function toggleLaser()
 	end
 end
 addCommandHandler("toglaser", toggleLaser, false)
-addCommandHandler("togglelaster", toggleLaser, false)
+addCommandHandler("togglelaser", toggleLaser, false)

@@ -91,7 +91,13 @@ function resetCooldown(killTheTimer)
 	end
 	cooldown = nil
 end
-bindKey('fire', 'up', function() resetCooldown(true) end) 
+bindKey('fire', 'up',
+	function()
+		if tonumber(getElementData(getLocalPlayer(), "tag")) == 9 then
+			resetCooldown(true)
+		end
+	end
+) 
 
 function setTag(commandName, newTag)
 	if not (newTag) then

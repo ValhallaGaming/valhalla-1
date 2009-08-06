@@ -157,7 +157,7 @@ function getItemDescription(itemID)
 	elseif (itemID==52) then return "The Police Officer's Manual."
 	elseif (itemID==53) then return "A small black breathalizer."
 	elseif (itemID==54) then return "A black Ghettoblaster."
-	elseif (itemID==55) then return "Steven Pullman - L.V. Freight Depot, Tel: ((/081016))"
+	elseif (itemID==55) then return "Steven Pullman - L.S. Freight Depot, Tel: ((/081016))"
 	elseif (itemID==56) then return "A comical mask."
 	elseif (itemID==57) then return "A small metal fuel canister."
 	elseif (itemID==58) then return "The finest beer, imported from Holland."

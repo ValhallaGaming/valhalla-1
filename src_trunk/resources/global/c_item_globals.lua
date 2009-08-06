@@ -95,7 +95,7 @@ function cgetItemName(itemID)
 	elseif (itemID==47) then return "Handcuff Keys"
 	elseif (itemID==48) then return "Backpack"
 	elseif (itemID==49) then return "Fishing Rod"
-	elseif (itemID==50) then return "Las Ventuas Highway Code"
+	elseif (itemID==50) then return "Los Santos Highway Code"
 	elseif (itemID==51) then return "Chemistry 101"
 	elseif (itemID==52) then return "Police Officer's Manual"
 	elseif (itemID==53) then return "Breathalizer"

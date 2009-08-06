@@ -226,6 +226,8 @@ function getItemsForSale(shop_type, race, gender)
 			{"Fishing Rod", "A 7 foot carbon steel fishing rod.", "300", 49, 1,1,false, 175},
 			{"Mask", "A comical mask.", "20", 56, 1, 1, false, 5},
 			{"Fuel Can", "A small metal fuel canister.", "35", 57, 1, 1, false, 5},
+			{"Los Santos Highway Code", "A paperback book.", "10", 50, 1, 1, false, 5},
+			{"Chemistry 101", "A hardback academic book.", "20", 51, 1, 1, false, 10},
 
 			-- Consumable
 			{"Sandwich", "A yummy sandwich with cheese.", "8", 8, 1,2,false,4},

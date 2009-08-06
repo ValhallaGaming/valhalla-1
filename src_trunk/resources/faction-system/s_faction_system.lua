@@ -722,7 +722,7 @@ addCommandHandler("delfaction", adminDeleteFaction, false, false)
 
 function adminShowFactions(thePlayer)
 	if (exports.global:isPlayerAdmin(thePlayer)) then
-		local result = mysql_query(handler, "SELECT id, name, type FROM factions")
+		local result = mysql_query(handler, "SELECT id, name, type, (SELECT COUNT(*) FROM characters c WHERE c.faction_id = f.id) FROM factions f")
 		
 		
 		
@@ -735,6 +735,13 @@ function adminShowFactions(thePlayer)
 				factions[key][1] = row[1]
 				factions[key][2] = row[2]
 				factions[key][3] = row[3]
+				
+				local team = getTeamFromName(row[2])
+				if team then
+					factions[key][4] = #getPlayersInTeam(team) .. " / " .. row[4]
+				else
+					factions[key][4] = "?? / " .. row[4]
+				end
 				key = key + 1
 			end
 			

@@ -574,14 +574,16 @@ function showFactionList(factions)
 		wFactionList = guiCreateWindow(0.15, 0.15, 0.7, 0.7, "Faction List", true)
 		local gridFactions = guiCreateGridList(0.025, 0.1, 0.95, 0.775, true, wFactionList)
 		
-		local colID = guiGridListAddColumn(gridFactions, "ID", 0.18)
+		local colID = guiGridListAddColumn(gridFactions, "ID", 0.1)
 		local colName = guiGridListAddColumn(gridFactions, "Faction Name", 0.6)
-		local colType = guiGridListAddColumn(gridFactions, "Type", 0.18)
+		local colPlayers = guiGridListAddColumn(gridFactions, "Players", 0.14)
+		local colType = guiGridListAddColumn(gridFactions, "Type", 0.14)
 		
 		for key, value in pairs(factions) do
 			local factionID = factions[key][1]
 			local factionName = tostring(factions[key][2])
 			local factionType = tonumber(factions[key][3])
+			local factionPlayers = factions[key][4]
 			
 			-- Parse the type
 			if (factionType==0) then
@@ -603,6 +605,7 @@ function showFactionList(factions)
 			local row = guiGridListAddRow(gridFactions)
 			guiGridListSetItemText(gridFactions, row, colID, factionID, false, true)
 			guiGridListSetItemText(gridFactions, row, colName, factionName, false, false)
+			guiGridListSetItemText(gridFactions, row, colPlayers, factionPlayers, false, false)
 			guiGridListSetItemText(gridFactions, row, colType, factionType, false, false)
 		end
 

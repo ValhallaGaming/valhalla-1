@@ -59,14 +59,14 @@ setElementDimension(eastBeachDancer2,1301)
 
 ------/////////////////////// Ganton Strippers ///////////////////////------
 local gantonDancer1=createPed(152,1216.30,-6.45,1000.32)
-setElementInterior(gantonDancer1,2)
-setElementDimension(gantonDancer1,1301)
+setElementInterior(gantonDancer1,3)
+setElementDimension(gantonDancer1,1350)
 setPedAnimation(gantonDancer1,"STRIP","STR_C1",-1,true,false,false)
 
 local gantonDancer2=createPed(257,1208.12,-6.05,1000.32)
 setPedAnimation(gantonDancer2,"STRIP","STR_C2",-1,true,false,false)
-setElementInterior(gantonDancer2,2)
-setElementDimension(gantonDancer2,1301)
+setElementInterior(gantonDancer2,3)
+setElementDimension(gantonDancer2,1350)
 
 local DancerOneDanceNumber=1
 local DancerTwoDanceNumber=1

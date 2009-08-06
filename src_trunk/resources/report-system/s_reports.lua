@@ -390,8 +390,8 @@ function closeReport(thePlayer, commandName, id)
 				reports[id] = nil
 				
 				if (isElement(reporter)) then
-					removeElementData(thePlayer, "report")
-					removeElementData(thePlayer, "reportadmin")
+					removeElementData(reporter, "report")
+					removeElementData(reporter, "reportadmin")
 					outputChatBox(getPlayerName(thePlayer) .. " has closed your report. Please re-submit your report if you weren't happy that it was resolved.", reporter, 0, 255, 255)
 				end
 				

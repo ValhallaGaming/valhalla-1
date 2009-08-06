@@ -58,5 +58,5 @@
 	
 	<file src="siren.wav"/>
 	<script src="c_unoccupied_sirens.lua" type="client"/>
-	<script src="c_cockpitview.lua" type="client"/>
+	<script src="c_fpview.lua" type="client"/>
 </meta>

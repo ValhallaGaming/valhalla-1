@@ -49,7 +49,6 @@ function mechanicWindow()
 				addEventHandler( "onClientGUIClick", bMechanicClose, closeMechanicWindow, false )
 				
 				showCursor(true)
-				
 			end
 		end
 	end

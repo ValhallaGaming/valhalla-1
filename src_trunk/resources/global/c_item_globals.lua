@@ -30,12 +30,10 @@ function cdoesPlayerHaveItem(thePlayer, itemID, itemValue)
 			local token = tonumber(gettok(items, i, string.byte(',')))
 			if (token) then
 				if (token==itemID) then
+					local value = tonumber(gettok(itemvalues, i, string.byte(',')))
 					if (itemValue==-1) or not (itemValue) then -- any value is okay
-						return true, i
+						return true, i, value
 					else
-						
-						local value = tonumber(gettok(itemvalues, i, string.byte(',')))
-						local value = tonumber(gettok(itemvalues, i, string.byte(',')))
 						if (value==itemValue) then
 							return true, i, value
 						end
@@ -155,6 +153,7 @@ function cdoesVehicleHaveItem(theVehicle, itemID, itemValue)
 	end
 	return false
 end
+
 function cdoesSafeHaveItem(theSafe, itemID, itemValue)
 	local items = getElementData(theSafe, "items")
 	local itemvalues = getElementData(theSafe, "itemvalues")
@@ -182,6 +181,7 @@ function cdoesSafeHaveItem(theSafe, itemID, itemValue)
 	end
 	return false
 end
+
 function cdoesSafeHaveSpaceForItem(theSafe)
 	local items = getElementData(theSafe, "items")
 	

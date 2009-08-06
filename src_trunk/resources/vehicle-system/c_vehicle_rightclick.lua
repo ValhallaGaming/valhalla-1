@@ -5,7 +5,7 @@ ax, ay = nil
 localPlayer = getLocalPlayer()
 vehicle = nil
 
-wInventory, gVehicleItems, gUserItems, lYou, lVehicle, bGiveItem, bTakeItem, bCloseInventory, lPlate, UIColName, VIColName, bSit = nil
+wInventory, gVehicleItems, gUserItems, lYou, lVehicle, bGiveItem, bTakeItem, bCloseInventory, lPlate, UIColName, VIColName, bSit, bLockUnlock, bFill = nil
 
 -- INVENTORY
 function cVehicleInventory(button, state)
@@ -226,6 +226,24 @@ function showVehicleMenu()
 	addEventHandler("onClientGUIClick", bInventory, cVehicleInventory, false)
 	
 	local y = 0.47
+
+	if exports.global:cdoesPlayerHaveItem(localPlayer, 3, getElementData(vehicle, "dbid")) then
+		bLockUnlock = guiCreateButton(0.05, y, 0.87, 0.1, "Lock/Unlock", true, wRightClick)
+		addEventHandler("onClientGUIClick", bLockUnlock, lockUnlock, false)
+		y = y + 0.14
+	end
+	
+	local vx,vy,vz = getElementVelocity(vehicle)
+	local speed = math.sqrt(vx^2+vy^2+vz^2)
+	if speed == 0 then -- completely stopped
+		if exports.global:cdoesPlayerHaveItem(localPlayer, 57, -1) then -- FUEL CAN
+			outputDebugString("fill vehicle tank")
+			bFill = guiCreateButton(0.05, y, 0.87, 0.1, "Fill tank", true, wRightClick)
+			addEventHandler("onClientGUIClick", bFill, fillFuelTank, false)
+			y = y + 0.14
+		end
+	end
+	
 	if (getElementModel(vehicle)==497) then -- HELICOPTER
 		local players = getElementData(vehicle, "players")
 		local found = false
@@ -239,10 +257,10 @@ function showVehicleMenu()
 		end
 		
 		if not (found) then
-			bSit = guiCreateButton(0.05, 0.47, 0.87, 0.1, "Sit", true, wRightClick)
+			bSit = guiCreateButton(0.05, y, 0.87, 0.1, "Sit", true, wRightClick)
 			addEventHandler("onClientGUIClick", bSit, sitInHelicopter, false)
 		else
-			bSit = guiCreateButton(0.05, 0.47, 0.87, 0.1, "Stand up", true, wRightClick)
+			bSit = guiCreateButton(0.05, y, 0.87, 0.1, "Stand up", true, wRightClick)
 			addEventHandler("onClientGUIClick", bSit, unsitInHelicopter, false)
 		end
 		y = y + 0.14
@@ -250,6 +268,22 @@ function showVehicleMenu()
 	
 	bCloseMenu = guiCreateButton(0.05, y, 0.87, 0.1, "Close Menu", true, wRightClick)
 	addEventHandler("onClientGUIClick", bCloseMenu, hideVehicleMenu, false)
+end
+
+function lockUnlock(button, state)
+	if (button=="left") then
+		triggerServerEvent("lockUnlockVehicle", localPlayer, vehicle)
+		hideVehicleMenu()
+	end
+end
+
+function fillFuelTank(button, state)
+	if (button=="left") then
+		local _,_, value = exports.global:cdoesPlayerHaveItem(localPlayer, 57, -1)
+		outputDebugString("fill vehicle  value = "..tostring(value))
+		triggerServerEvent("fillFuelTankVehicle", localPlayer, vehicle, value)
+		hideVehicleMenu()
+	end
 end
 
 function sitInHelicopter(button, state)

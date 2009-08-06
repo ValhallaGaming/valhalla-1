@@ -57,7 +57,7 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 				local vx, vy, vz = getElementPosition(value)
 				local x, y, z = getElementPosition(source)
 				
-				if (dbid==itemValue) and (getDistanceBetweenPoints3D(x, y, z, vx, vy, vz)<=50) then -- car found
+				if (dbid==itemValue) and (getDistanceBetweenPoints3D(x, y, z, vx, vy, vz)<=30) then -- car found
 					found = value
 					id = tonumber(getElementData(value, "dbid"))
 					break
@@ -67,24 +67,7 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 			if not (found) then
 				outputChatBox("You are too far from the vehicle.", source, 255, 194, 14)
 			else
-				local locked = getElementData(found, "locked")
-				
-				exports.global:applyAnimation(source, "GHANDS", "gsign3LH", -1, false, false, false)
-				
-				if (isVehicleLocked(found)) then
-					setVehicleLocked(found, false)
-					
-					mysql_query(handler, "UPDATE vehicles SET locked='0' WHERE id='" .. tonumber(id) .. "' LIMIT 1")
-					exports.global:sendLocalMeAction(source, "presses on the key to unlock the vehicle. ((" .. getVehicleName(found) .. "))")
-				else
-					setVehicleLocked(found, true)
-                    for i = 0, 5 do
-                        setVehicleDoorState(found, i, 0)
-                    end
-
-					mysql_query(handler, "UPDATE vehicles SET locked='1' WHERE id='" .. tonumber(id) .. "' LIMIT 1")
-					exports.global:sendLocalMeAction(source, "presses on the key to lock the vehicle. ((" .. getVehicleName(found) .. "))")
-				end
+				triggerEvent("lockUnlockVehicle", source, found)
 			end
 		elseif (itemID==4) or (itemID==5) then -- house key or business key
 			local found, id = nil
@@ -415,34 +398,27 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 				setElementData(source, "mask", 0, false)
 			end
 		elseif (itemID==57) then -- FUEL CAN
-			if not (isPedInVehicle(source)) then
-				outputChatBox("You are not in a vehicle.", source, 255, 0, 0)
-			else
-				local fuel = itemValue
-				
-				local veh = getPedOccupiedVehicle(source)
-				local currFuel = getElementData(veh, "fuel")
-				
-				if (math.ceil(currFuel)==100) then
-					outputChatBox("This vehicle is already full.", source)
-				elseif (fuel==0) then
-					outputChatBox("This fuel can is empty.", source, 255, 0, 0)
-				else
-					local fuelAdded = fuel
-					
-					if (fuelAdded+currFuel>100) then
-						fuelAdded = 100 - currFuel
-					end
-					
-					outputChatBox("You added " .. math.ceil(fuelAdded) .. " litres of petrol to your car from your fuel can.", source, 0, 255, 0 )
-					exports.global:sendLocalMeAction(source, "fills up his vehicle from a small petrol canister.")
-					
-					exports.global:takePlayerItem(source, 57, itemValue)
-					exports.global:givePlayerItem(source, 57, math.ceil(itemValue-fuelAdded))
-					
-					setElementData(veh, "fuel", currFuel+fuelAdded)
-					triggerClientEvent(source, "setClientFuel", source, currFuel+fuelAdded)
+			local x, y, z = getElementPosition(source)
+			local checkSphere = createColSphere(x, y, z, 5)
+			local nearbyVehicles = getElementsWithinColShape(checkSphere, "vehicle")
+			destroyElement(checkSphere)
+			
+			if #nearbyVehicles < 1 then return end
+			
+			local found = nil
+			local shortest = 6
+			for i, veh in ipairs(nearbyVehicles) do
+				local distanceToVehicle = getDistanceBetweenPoints3D(x, y, z, getElementPosition(veh))
+				if shortest > distanceToVehicle then
+					shortest = distanceToVehicle
+					found = veh
 				end
+			end
+			
+			if found then
+				triggerEvent("fillFuelTankVehicle", source, found, itemValue)
+			else
+				outputChatBox("You are too far from a vehicle.", source, 255, 194, 14)
 			end
 		elseif (itemID==59) then -- MUDKIP
 			exports.global:sendLocalMeAction(source, "eats a mudkip.")

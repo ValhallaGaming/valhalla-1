@@ -739,43 +739,25 @@ function toggleLock(source, key, keystate)
         end
 	else
 		local x, y, z = getElementPosition(source)
-		local checkSphere = createColSphere(x, y, z, 10)
+		local checkSphere = createColSphere(x, y, z, 30)
 		local nearbyVehicles = getElementsWithinColShape(checkSphere, "vehicle")
 		destroyElement(checkSphere)
 		
 		if #nearbyVehicles < 1 then return end
 		
-		local found, nearestVehID = nil
-		local shortest = 20
+		local found = nil
+		local shortest = 31
 		for i, veh in ipairs(nearbyVehicles) do
 			local dbid = tonumber(getElementData(veh, "dbid"))
 			local distanceToVehicle = getDistanceBetweenPoints3D(x, y, z, getElementPosition(veh))
 			if shortest > distanceToVehicle and exports.global:doesPlayerHaveItem(source, 3, dbid) then
 				shortest = distanceToVehicle
-				nearestVehID = dbid
 				found = veh
 			end
 		end
 		
-		if nearestVehID and found then
-			local locked = getElementData(found, "locked")
-			
-			exports.global:applyAnimation(source, "GHANDS", "gsign3LH", -1, false, false, false)
-			
-			if (isVehicleLocked(found)) then
-				setVehicleLocked(found, false)
-				
-				mysql_query(handler, "UPDATE vehicles SET locked='0' WHERE id='" .. tonumber(nearestVehID) .. "' LIMIT 1")
-				exports.global:sendLocalMeAction(source, "presses on the key to unlock the vehicle. ((" .. getVehicleName(found) .. "))")
-			else
-				setVehicleLocked(found, true)
-				for i = 0, 5 do
-					setVehicleDoorState(found, i, 0)
-				end
-				
-				mysql_query(handler, "UPDATE vehicles SET locked='1' WHERE id='" .. tonumber(nearestVehID) .. "' LIMIT 1")
-				exports.global:sendLocalMeAction(source, "presses on the key to lock the vehicle. ((" .. getVehicleName(found) .. "))")
-			end
+		if found then
+			triggerEvent("lockUnlockVehicle", source, found)
 		end
 	end
 end
@@ -1039,6 +1021,58 @@ function moveWeaponToPlayer(vehicle, weaponID, weaponAmmo)
 end
 addEvent("moveWeaponToPlayer", true)
 addEventHandler("moveWeaponToPlayer", getRootElement(), moveWeaponToPlayer)
+
+function lockUnlock(vehicle)
+	outputDebugString("lock unlock vehicle")
+	local locked = getElementData(vehicle, "locked")
+	local dbid = getElementData(vehicle, "dbid")
+	
+	exports.global:applyAnimation(source, "GHANDS", "gsign3LH", -1, false, false, false)
+	
+	if (isVehicleLocked(vehicle)) then
+		setVehicleLocked(vehicle, false)
+		
+		mysql_query(handler, "UPDATE vehicles SET locked='0' WHERE id='" .. dbid .. "' LIMIT 1")
+		exports.global:sendLocalMeAction(source, "presses on the key to unlock the vehicle. ((" .. getVehicleName(vehicle) .. "))")
+	else
+		setVehicleLocked(vehicle, true)
+		for i = 0, 5 do
+			setVehicleDoorState(vehicle, i, 0)
+		end
+		
+		mysql_query(handler, "UPDATE vehicles SET locked='1' WHERE id='" .. dbid .. "' LIMIT 1")
+		exports.global:sendLocalMeAction(source, "presses on the key to lock the vehicle. ((" .. getVehicleName(vehicle) .. "))")
+	end
+end
+addEvent("lockUnlockVehicle", true)
+addEventHandler("lockUnlockVehicle", getRootElement(), lockUnlock)
+
+function fillFuelTank(veh, fuel)
+	local currFuel = getElementData(veh, "fuel")
+	
+	if (math.ceil(currFuel)==100) then
+		outputChatBox("This vehicle is already full.", source)
+	elseif (fuel==0) then
+		outputChatBox("This fuel can is empty.", source, 255, 0, 0)
+	else
+		local fuelAdded = fuel
+		
+		if (fuelAdded+currFuel>100) then
+			fuelAdded = 100 - currFuel
+		end
+		
+		outputChatBox("You added " .. math.ceil(fuelAdded) .. " litres of petrol to your car from your fuel can.", source, 0, 255, 0 )
+		exports.global:sendLocalMeAction(source, "fills up his vehicle from a small petrol canister.")
+		
+		exports.global:takePlayerItem(source, 57, fuel)
+		exports.global:givePlayerItem(source, 57, math.ceil(fuel-fuelAdded))
+		
+		setElementData(veh, "fuel", currFuel+fuelAdded)
+		triggerClientEvent(source, "setClientFuel", source, currFuel+fuelAdded)
+	end
+end
+addEvent("fillFuelTankVehicle", true)
+addEventHandler("fillFuelTankVehicle", getRootElement(), fillFuelTank)
 
 function getYearDay(thePlayer)
 	local time = getRealTime()

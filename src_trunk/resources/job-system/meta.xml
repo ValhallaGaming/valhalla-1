@@ -4,7 +4,6 @@
 	<script src="s_job_system.lua" type="server"/>
 	<script src="c_job_system.lua" type="client"/>
 	
-	<script src="s_job_framework.lua" type="server"/>
 	<script src="c_job_framework.lua" type="client"/>
 	
 	<script src="trucker/s_trucker_job.lua" type="server"/>

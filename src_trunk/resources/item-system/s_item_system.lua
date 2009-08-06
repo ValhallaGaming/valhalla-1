@@ -348,7 +348,7 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 			triggerEvent( "fish", source )
 		elseif (itemID==50) then -- highway code book
 			local bookTitle = "The Los Santos Highway Code"
-			local bookName = "LVHighwayCode"
+			local bookName = "LSHighwayCode"
 			exports.global:sendLocalMeAction(source, "reads ".. bookTitle ..".")
 			triggerClientEvent( source, "showBook", source, bookName, bookTitle )
 		elseif (itemID==51) then -- chemistry book

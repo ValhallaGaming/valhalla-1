@@ -243,7 +243,7 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 			exports.global:applyAnimation(source, "COP_AMBIENT", "Coplook_watch", -1, false, true, true)
 			setTimer(removeAnimation, 4000, 1, source)
 		elseif (itemID==18) then -- city guide
-			--triggerClientEvent(source, "showCityGuide", source)
+			triggerClientEvent(source, "showCityGuide", source)
 		elseif (itemID==19) then -- MP3 PLayer
 			outputChatBox("Use the - and = keys to use the MP3 Player.", source, 255, 194, 14)
 		elseif (itemID==20) then -- STANDARD FIGHTING
@@ -330,7 +330,7 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 				end
 				
 				if not (found) then
-					outputChatBox("You are not need a door.", source, 255, 194, 14)
+					outputChatBox("You are not near a door.", source, 255, 194, 14)
 				else
 					local locked = getElementData(found, "locked")
 					
@@ -352,13 +352,7 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 			else
 				outputChatBox("You are not on SWAT duty.", source, 255, 0, 0)
 			end
-		elseif (itemID==30) then
-			outputChatBox("Use the chemistry set purchasable from 24/7 to use this item.", source, 255, 0, 0)
-		elseif (itemID==31) then
-			outputChatBox("Use the chemistry set purchasable from 24/7 to use this item.", source, 255, 0, 0)
-		elseif (itemID==32) then
-			outputChatBox("Use the chemistry set purchasable from 24/7 to use this item.", source, 255, 0, 0)
-		elseif (itemID==33) then
+		elseif (itemID==30) or (itemID==31) or (itemID==32) or (itemID==33) then
 			outputChatBox("Use the chemistry set purchasable from 24/7 to use this item.", source, 255, 0, 0)
 		elseif (itemID>=34 and itemID<=44) then -- DRUGS
 			exports.global:takePlayerItem(source, itemID, -1)
@@ -454,19 +448,19 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 			exports.global:sendLocalMeAction(source, "eats a mudkip.")
 			exports.global:takePlayerItem(source, itemID, itemValue)
 			killPed(source)
-		elseif (itemID==60) then 
-				local x,y,z = getElementPosition(source)
-				local rz = getPedRotation(source)
-				local dimension = getElementDimension(source)
-				local retval = call(getResourceFromName("interior-system"), "addSafeAtPosition", source, x,y,z, rz) --0 no error, 1 safe already exists, 2 player does not own interior
-				if (retval == 0) then
-					exports.global:sendLocalMeAction(source, "Places a safe.")
-					exports.global:takePlayerItem(source, itemID, itemValue)
-				elseif (retval == 2 and dimension == 0) then
-					outputChatBox("You are not inside an interior.", source, 255, 0, 0)
-				elseif (retval == 2) then
-					outputChatBox("You need to own the interior you are placing the safe in!", source, 255, 0, 0)
-				end
+		elseif (itemID==60) then
+			local x,y,z = getElementPosition(source)
+			local rz = getPedRotation(source)
+			local dimension = getElementDimension(source)
+			local retval = call(getResourceFromName("interior-system"), "addSafeAtPosition", source, x,y,z, rz) --0 no error, 1 safe already exists, 2 player does not own interior
+			if (retval == 0) then
+				exports.global:sendLocalMeAction(source, "Places a safe.")
+				exports.global:takePlayerItem(source, itemID, itemValue)
+			elseif (retval == 2 and dimension == 0) then
+				outputChatBox("You are not inside an interior.", source, 255, 0, 0)
+			elseif (retval == 2) then
+				outputChatBox("You need to own the interior you are placing the safe in!", source, 255, 0, 0)
+			end
 		else
 			outputChatBox("Error 800001 - Report on http://bugs.valhallagaming.net", source, 255, 0, 0)
 		end

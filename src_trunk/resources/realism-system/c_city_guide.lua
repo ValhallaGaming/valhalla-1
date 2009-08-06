@@ -33,6 +33,8 @@ function createCityGuide( key, keyState )
 		closeButtonClick()
 	end
 end
+addEvent("showCityGuide", true)
+addEventHandler("showCityGuide", getRootElement(), createCityGuide)
 
 --The "prev" button's function
 function prevButtonClick( )
@@ -85,5 +87,3 @@ function closeButtonClick( )
 	wGuidebook = nil
 	showCursor(false)
 end
-addEvent("showCityGuide", true)
-addEventHandler("showCityGuide", getRootElement(), createCityGuide)

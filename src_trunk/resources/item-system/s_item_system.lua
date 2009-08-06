@@ -600,6 +600,8 @@ function dropItem(itemID, itemValue, itemName, x, y, z, gz, isWeapon, items, ite
 	else
 		if tonumber(getElementData(source, "duty")) > 0 then
 			outputChatBox("You can't drop your weapons while being on duty.", source, 255, 0, 0)
+		elseif tonumber(getElementData(source, "job")) == 4 and itemID == 41 then
+			outputChatBox("You can't drop this spray can.", source, 255, 0, 0)
 		else
 			outputChatBox("You dropped a " .. itemName .. ".", source, 255, 194, 14)
 			

@@ -63,17 +63,11 @@ function clientTagWall(weapon, ammo, ammoInClip, hitX, hitY, hitZ, hitElement)
 							count = 0
 							cooldown = setTimer(resetCooldown, 5000, 1, false)
 						else
-							if ammo == 4.4 then -- CITY MAINTENANCE
-								count = 20
-							else
-								count = count + 1
-							end
+							count = count + 1
 							
 							if (count==20) then
 								count = 0
-								if ammo ~= 4.4 then
-									cooldown = setTimer(resetCooldown, 30000, 1, false)
-								end
+								cooldown = setTimer(resetCooldown, 30000, 1, false)
 								local interior = getElementInterior(localPlayer)
 								local dimension = getElementDimension(localPlayer)
 								
@@ -90,13 +84,6 @@ function clientTagWall(weapon, ammo, ammoInClip, hitX, hitY, hitZ, hitElement)
 	end
 end
 addEventHandler("onClientPlayerWeaponFire", getLocalPlayer(), clientTagWall)
-
-function cleanUpWall()
-	if getElementData(getLocalPlayer(), "job") == 4 then -- CITY MAINTENANCE
-		triggerEvent("onClientPlayerWeaponFire", getLocalPlayer(), 41, 4.4, 100)
-	end
-end
-addCommandHandler("cleanup", cleanUpWall)
 
 function resetCooldown(killTheTimer)
 	if killTheTimer and cooldown then

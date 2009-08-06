@@ -55,7 +55,8 @@ function givePlayerJob(jobID)
 	exports.global:givePlayerAchievement(source, 30)
 
 	if (jobID==4) then -- CITY MAINTENANCE
-		outputChatBox("Use /cleanup to remove tags you find.", source, 255, 194, 14)
+		giveWeapon(source, 41, 2500, true)
+		outputChatBox("Use this paint to paint over tags you find.", source, 255, 194, 14)
 		setElementData(source, "tag", 9)
 	end
 end

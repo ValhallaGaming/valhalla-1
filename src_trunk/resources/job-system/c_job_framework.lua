@@ -44,6 +44,7 @@ function quitJob()
 			outputChatBox("You have now quit your job as a city maintenance worker.", 0, 255, 0)
 			setElementData(localPlayer, "tag", true, 1)
 			setElementData(localPlayer, "job", true, 0)
+			triggerServerEvent("cancelCityMaintenance", localPlayer)
 		elseif (job==5) then -- MECHANIC
 			setElementData(localPlayer, "job", true, 0)
 			outputChatBox("You have now quit your job as a mechanic.", 0, 255, 0)

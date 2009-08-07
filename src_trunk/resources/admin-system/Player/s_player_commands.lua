@@ -1945,6 +1945,46 @@ function toggleFreecam(thePlayer)
 end
 addCommandHandler("freecam", toggleFreecam)
 
+-- DROP ME
+
+function dropOffFreecam(thePlayer)
+	if exports.global:isPlayerAdmin(thePlayer) then
+		local enabled = exports.freecam:isPlayerFreecamEnabled (thePlayer)
+		if (enabled) then
+			local x, y, z = getElementPosition(thePlayer)
+			removeElementData(thePlayer, "reconx")
+			setElementAlpha(thePlayer, 255)
+			setPedFrozen(thePlayer, false)
+			exports.freecam:setPlayerFreecamDisabled (thePlayer)
+			setElementPosition(thePlayer, x, y, z)
+		else
+			outputChatBox("This command only works while freecam is on.", thePlayer, 255, 0, 0)
+		end
+	end
+end
+addCommandHandler("dropme", dropOffFreecam)
+
+-- DISAPPEAR
+
+function toggleInvisibility(thePlayer)
+	if exports.global:isPlayerAdmin(thePlayer) then
+		local enabled = getElementData(thePlayer, "invisible")
+		if (enabled == true) then
+			setElementAlpha(thePlayer, 255)
+			setElementData(thePlayer, "reconx", false)
+			outputChatBox("You are now visible.", thePlayer, 255, 0, 0)
+			setElementData(thePlayer, "invisible", false)
+		else
+			setElementAlpha(thePlayer, 0)
+			setElementData(thePlayer, "reconx", true)
+			outputChatBox("You are now invisible.", thePlayer, 0, 255, 0)
+			setElementData(thePlayer, "invisible", true)
+		end
+	end
+end
+addCommandHandler("disappear", toggleInvisibility)
+			
+			
 -- TOGGLE NAMETAG
 
 function toggleMyNametag(thePlayer)

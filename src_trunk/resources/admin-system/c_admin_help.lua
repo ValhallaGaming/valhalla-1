@@ -58,6 +58,8 @@ function adminhelp (sourcePlayer, commandName)
 					{ "/warn", "/warn [player]", "issues a warning, player is banned when having 3 warnings" },
 					{ "/showinv", "/showinv [player]", "views the inventory of the player" },
 					{ "/togmytag", "/togmytag", "toggles your nametag on and off" },
+					{ "/dropme", "/dropme", "drops you off at the current freecam position" },
+					{ "/disappear", "/disappear", "toggles invisibility" },
 					
 					-- vehicle/*
 					{ "/unflip", "/unflip", "unflips the car" },

@@ -15,7 +15,7 @@ function removeBackup(thePlayer, commandName)
 		end
 	end
 end
-addCommandHandler("resettowbackup", removeBackup, false, false)
+--addCommandHandler("resettowbackup", removeBackup, false, false)
 
 function towtruck(thePlayer, commandName)
 	local theTeam = getTeamFromName("McJones Towing")
@@ -62,8 +62,7 @@ function towtruck(thePlayer, commandName)
 		end
 	--end
 end
-addCommandHandler("towtruck", towtruck, false, false)
-addEvent("savePlayer", false)
+--addCommandHandler("towtruck", towtruck, false, false)
 
 function destroyBlip()
 	local theTeam = getPlayerTeam(source)

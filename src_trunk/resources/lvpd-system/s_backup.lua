@@ -15,7 +15,7 @@ function removeBackup(thePlayer, commandName)
 		end
 	end
 end
-addCommandHandler("resetbackup", removeBackup, false, false)
+--addCommandHandler("resetbackup", removeBackup, false, false)
 
 function backup(thePlayer, commandName)
 	local duty = tonumber(getElementData(thePlayer, "duty"))
@@ -72,8 +72,7 @@ function backup(thePlayer, commandName)
 		end
 	end
 end
-addCommandHandler("backup", backup, false, false)
-addEvent("savePlayer", false)
+--addCommandHandler("backup", backup, false, false)
 
 function destroyBlip()
 	local theTeam = getPlayerTeam(source)

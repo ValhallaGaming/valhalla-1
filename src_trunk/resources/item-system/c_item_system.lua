@@ -3,8 +3,7 @@ gWeapons, colWSlot, colWName, colWValue = nil
 toggleLabel, chkFood, chkKeys, chkDrugs, chkOther, chkBooks, chkClothes, chkElectronics, chkEmpty = nil
 
 wRightClick = nil
-bPickup = nil
-bCloseMenu = nil
+bPickup, bToggle, bPreviousTrack, bNextTrack, bCloseMenu = nil
 ax, ay = nil
 item = nil
 
@@ -51,10 +50,32 @@ function showItemMenu()
 	
 	wRightClick = guiCreateWindow(ax, ay, 150, 200, itemName .. " (" .. itemValue .. ")", false)
 	
-	bPickup = guiCreateButton(0.05, 0.13, 0.87, 0.1, "Pick Item Up", true, wRightClick)
+	local y = 0.13
+	bPickup = guiCreateButton(0.05, y, 0.9, 0.1, "Pick Item Up", true, wRightClick)
 	addEventHandler("onClientGUIClick", bPickup, pickupItem, false)
+	y = y + 0.14
 	
-	bCloseMenu = guiCreateButton(0.05, 0.27, 0.87, 0.1, "Close Menu", true, wRightClick)
+	if itemID == 54 then
+		-- Ghettoblaster
+		if getElementData(item, "itemValue") > 0 then
+			bToggle = guiCreateButton(0.05, y, 0.9, 0.1, "Turn Off", true, wRightClick)
+			
+			y = y + 0.14
+			
+			bPreviousTrack = guiCreateButton(0.05, y, 0.42, 0.1, "Previous", true, wRightClick)
+			addEventHandler("onClientGUIClick", bPreviousTrack, function() triggerServerEvent("changeGhettoblasterTrack", getLocalPlayer(), item, -1) end)
+			
+			bNextTrack = guiCreateButton(0.53, y, 0.42, 0.1, "Next", true, wRightClick)
+			addEventHandler("onClientGUIClick", bNextTrack, function() triggerServerEvent("changeGhettoblasterTrack", getLocalPlayer(), item, 1) end)
+		else
+			bToggle = guiCreateButton(0.05, y, 0.9, 0.1, "Turn On", true, wRightClick)
+		end
+		addEventHandler("onClientGUIClick", bToggle, toggleGhettoblaster)
+	
+		y = y + 0.14
+	end
+	
+	bCloseMenu = guiCreateButton(0.05, y, 0.9, 0.1, "Close Menu", true, wRightClick)
 	addEventHandler("onClientGUIClick", bCloseMenu, hideItemMenu, false)
 end
 
@@ -63,6 +84,21 @@ function hideItemMenu()
 		destroyElement(bPickup)
 	end
 	bPickup = nil
+
+	if (isElement(bToggle)) then
+		destroyElement(bToggle)
+	end
+	bToggle = nil
+
+	if (isElement(bPreviousTrack)) then
+		destroyElement(bPreviousTrack)
+	end
+	bPreviousTrack = nil
+
+	if (isElement(bNextTrack)) then
+		destroyElement(bNextTrack)
+	end
+	bNextTrack = nil
 
 	if (isElement(bCloseMenu)) then
 		destroyElement(bCloseMenu)
@@ -81,6 +117,18 @@ function hideItemMenu()
 
 	showCursor(false)
 	triggerEvent("cursorHide", getLocalPlayer())
+end
+
+function updateMenu(dataname)
+	if source == item and dataname == "itemValue" and getElementData(source, "itemID") == 54 then -- update the track while you're in menu
+		guiSetText(wRightClick, "GHETTOBLASTER (" .. getElementData(source, "itemValue") .. ")")
+	end
+end
+addEventHandler("onClientElementDataChange", getRootElement(), updateMenu)
+
+function toggleGhettoblaster(button, state, absX, absY, step)
+	triggerServerEvent("toggleGhettoblaster", getLocalPlayer(), item)
+	hideItemMenu()
 end
 
 function pickupItem(button, state)

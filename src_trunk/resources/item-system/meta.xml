@@ -23,6 +23,9 @@
 	<file src="books/LSHighwayCode.png" />
 	<file src="books/Chemistry101.png" />
 	
+	<script src="ghettoblaster/tracks.lua" type="client"/>
+	<script src="ghettoblaster/tracks.lua" type="server"/>
 	<script src="ghettoblaster/c_ghettoblaster.lua" type="client"/>
+	<script src="ghettoblaster/s_ghettoblaster.lua" type="server"/>
 	<file src="ghettoblaster/loop.mp3" />
 </meta>

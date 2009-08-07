@@ -100,34 +100,25 @@ function chatMain(message, messageType)
 				if (nearbyPlayerDimension==dimension) and (nearbyPlayerInterior==interior) then
 					local logged = tonumber(getElementData(nearbyPlayer, "loggedin"))
 					if not (isPedDead(nearbyPlayer)) and (logged==1) then
-						chatSphere = createColSphere(x, y, z, 20*0.2)
-						exports.pool:allocateElement(chatSphere)
-			        if isElementWithinColShape(nearbyPlayer, chatSphere) then
-			            outputChatBox( "#EEEEEE" .. playerName .. " Says: " .. message, nearbyPlayer, 255, 255, 255, true)
-						destroyElement(chatSphere)
-						chatSphere = createColSphere(x, y, z, 20*0.4)
-						exports.pool:allocateElement(chatSphere)
-			        elseif isElementWithinColShape(nearbyPlayer, chatSphere) then
-			            outputChatBox( "#DDDDDD" .. playerName .. " Says: " .. message, nearbyPlayer, 255, 255, 255, true)
-						destroyElement(chatSphere)
-						chatSphere = createColSphere(x, y, z, 20*0.6)
-						exports.pool:allocateElement(chatSphere)
-			        elseif isElementWithinColShape(nearbyPlayer, chatSphere) then          
-						outputChatBox( "#CCCCCC" .. playerName .. " Says: " .. message, nearbyPlayer, 255, 255, 255, true)
-						destroyElement(chatSphere)
-						chatSphere = createColSphere(x, y, z, 20*0.8)
-						exports.pool:allocateElement(chatSphere)
-			        elseif isElementWithinColShape(nearbyPlayer, chatSphere) then
-			            outputChatBox( "#BBBBBB" .. playerName .. " Says: " .. message, nearbyPlayer, 255, 255, 255, true)
-					else
-						outputChatBox( "#AAAAAA" .. playerName .. " Says: " .. message, nearbyPlayer, 255, 255, 255, true)
-					end
-					
-					if (chatSphere) then
-						destroyElement(chatSphere)
+						local nx, ny, nz = getElementPosition(nearbyPlayer)
+						local distance = getDistanceBetweenPoints3D(x, y, z, nx, ny, nz)
+						if distance < 4 then
+							outputChatBox( "#EEEEEE" .. playerName .. " Says: " .. message, nearbyPlayer, 255, 255, 255, true)
+						elseif distance < 8 then
+							outputChatBox( "#DDDDDD" .. playerName .. " Says: " .. message, nearbyPlayer, 255, 255, 255, true)
+						elseif distance < 12 then
+							outputChatBox( "#CCCCCC" .. playerName .. " Says: " .. message, nearbyPlayer, 255, 255, 255, true)
+						elseif distance < 16 then
+							outputChatBox( "#BBBBBB" .. playerName .. " Says: " .. message, nearbyPlayer, 255, 255, 255, true)
+						else
+							outputChatBox( "#AAAAAA" .. playerName .. " Says: " .. message, nearbyPlayer, 255, 255, 255, true)
+						end
+						
+						if (chatSphere) then
+							destroyElement(chatSphere)
+						end
 					end
 				end
-			end
 			end
 		elseif (messageType==1) then -- Local /me action
 		

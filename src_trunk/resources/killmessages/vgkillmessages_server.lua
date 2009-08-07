@@ -126,9 +126,10 @@ function outputConsoleKillMessage ( text )
 	text = ("[%02d:%02d] %s"):format(time.hour, time.minute, text)
 	for k, v in pairs(exports.pool:getPoolElementsByType("player")) do
 		if exports.global:isPlayerAdmin(v) then
-			return triggerClientEvent(v,"onClientPlayerKillMessageConsole",v,text)
+			triggerClientEvent(v,"onClientPlayerKillMessageConsole",v,text)
 		end
 	end
+	return true
 end
 
 function outputKillMessage ( killed, wr,wg,wb,killer,kr,kg,kb,weapon,width,resource )
@@ -143,9 +144,10 @@ function outputKillMessage ( killed, wr,wg,wb,killer,kr,kg,kb,weapon,width,resou
 	end
 	for k, v in pairs(exports.pool:getPoolElementsByType("player")) do
 		if tonumber(getElementData(v, "adminduty")) == 1 then
-			return triggerClientEvent(v,"onClientPlayerKillMessage",killed,killer,weapon,wr,wg,wb,kr,kg,kb,width,resource )
+			triggerClientEvent(v,"onClientPlayerKillMessage",killed,killer,weapon,wr,wg,wb,kr,kg,kb,width,resource )
 		end
 	end
+	return true
 end
 
 function outputMessage ( message, visibleTo, r, g, b, font )

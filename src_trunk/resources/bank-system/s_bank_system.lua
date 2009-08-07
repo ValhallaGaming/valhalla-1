@@ -28,7 +28,7 @@ addEventHandler("onResourceStop", getResourceRootElement(getThisResource()), clo
 
 bankPickup = createPickup(2356.2719, 2361.5007, 2022.5257, 3, 1274)
 exports.pool:allocateElement(bankPickup)
-local shape = getElementColShape(pickup)
+local shape = getElementColShape(bankPickup)
 setElementInterior(shape, 3)
 setElementInterior(bankPickup, 3)
 
@@ -101,3 +101,45 @@ function depositMoneyBusiness(amount)
 end
 addEvent("depositMoneyBusiness", true)
 addEventHandler("depositMoneyBusiness", getRootElement(), depositMoneyBusiness)
+
+function transferMoneyToPersonal(business, name, amount)
+	local reciever = getPlayerFromName(name)
+	local found, bankmoney
+	if reciever then
+		bankmoney = getElementData(reciever, "bankmoney")
+		found = true
+	else
+		local result = mysql_query(handler, "SELECT bankmoney FROM characters WHERE charactername='" .. string.gsub(name," ","_") .. "' LIMIT 1")
+		if result then
+			if mysql_num_rows(result) > 0 then
+				bankmoney = tonumber(mysql_result(result, 1, 1))
+				mysql_free_result(result)
+				found = true
+			end
+		else
+			outputDebugString("s_bank_system.lua: mysql_query failed: (" .. mysql_errno(handler) .. ") " .. mysql_error(handler), 1, 255, 0, 0)
+		end
+	end
+	
+	if not found then
+		outputChatBox("Player not found. Please enter the full character name.", source, 255, 0, 0)
+	else
+		if business then
+			local theTeam = getPlayerTeam(source)
+			local money = getElementData(theTeam, "money")
+			mysql_query(handler, "UPDATE factions SET bankbalance='" .. money - amount .. "' WHERE name='" .. getTeamName(theTeam) .. "'")
+		else
+			setElementData(source, "bankmoney", getElementData(source, "bankmoney") - amount)
+		end
+		
+		if reciever then
+			setElementData(reciever, "bankmoney", bankmoney + amount)
+		else
+			mysql_query(handler, "UPDATE characters SET bankmoney='" .. bankmoney + amount .. "' WHERE charactername='" .. string.gsub(name," ","_") .. "'")
+		end
+		triggerClientEvent(source, "hideBankUI", source)
+		outputChatBox("You transfered " .. amount .. "$ from your "..(business and "business" or "personal").." account to "..name..(string.sub(name,-1) == "s" and "" or "s").."' account.", source, 255, 194, 14)
+	end
+end
+addEvent("transferMoneyToPersonal", true)
+addEventHandler("transferMoneyToPersonal", getRootElement(), transferMoneyToPersonal)

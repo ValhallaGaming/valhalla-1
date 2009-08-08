@@ -1,4 +1,5 @@
 local noReloadGuns = { [25]=true, [33]=true, [34]=true, [35]=true, [36]=true, [37]=true }
+local clipSize = { [22]=17, [23]=17, [24]=7, [26]=2, [27]=7, [28]=50, [29]=30, [30]=30, [31]=50, [32]=50 }
 
 function reloadWeapon(thePlayer)
 	local weapon = getPlayerWeapon(thePlayer)
@@ -42,10 +43,17 @@ function checkFalling(thePlayer)
 end
 
 function giveReload(thePlayer, weapon, ammo)
+	local clipsize = 0
 	removeElementData(thePlayer, "reloading.timer")
 	exports.global:removeAnimation(thePlayer)
-	takeWeapon(thePlayer, weapon)
-	giveWeapon(thePlayer, weapon, ammo, true)
+	if (ammo < clipSize[weapon]) then
+		clipsize = ammo
+	else
+		clipsize = clipSize[weapon]
+	end
+	setWeaponAmmo(thePlayer, weapon, ammo, clipsize) -- fix for the ammo adding up bug
+	--takeWeapon(thePlayer, weapon)
+	--giveWeapon(thePlayer, weapon, ammo, true)
 	setElementData(thePlayer, "reloading", false, false)
 	toggleControl(thePlayer, "fire", true)
 	toggleControl(thePlayer, "next_weapon", true)

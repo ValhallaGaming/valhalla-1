@@ -720,26 +720,7 @@ function toggleLock(source, key, keystate)
 	local inVehicle = getElementData(source, "realinvehicle")
 	
 	if (veh) and (inVehicle==1) then
-		local model = getElementModel(veh)
-        local owner = getElementData(veh, "owner")
-        
-        if (owner ~= -2) then
-    		if not (locklessVehicle[model] and (getVehicleType(veh)~="Boat")) then
-    			local locked = isVehicleLocked(veh)
-    			local seat = getPedOccupiedVehicleSeat(source)
-    			if (seat==0) then
-    				if (locked) then
-    					setVehicleLocked(veh, false)
-    					exports.global:sendLocalMeAction(source, "unlocks the vehicle doors.")
-    				else
-    					setVehicleLocked(veh, true)
-    					exports.global:sendLocalMeAction(source, "locks the vehicle doors.")
-    				end
-    			end
-    		end
-        else
-            outputChatBox("(( You can't lock civilian vehicles. ))", source, 255, 195, 14)
-        end
+		triggerEvent("lockUnlockInsideVehicle", source, veh)
 	else
 		local x, y, z = getElementPosition(source)
 		local checkSphere = createColSphere(x, y, z, 30)
@@ -760,7 +741,7 @@ function toggleLock(source, key, keystate)
 		end
 		
 		if found then
-			triggerEvent("lockUnlockVehicle", source, found)
+			triggerEvent("lockUnlockOutsideVehicle", source, found)
 		end
 	end
 end
@@ -1025,8 +1006,32 @@ end
 addEvent("moveWeaponToPlayer", true)
 addEventHandler("moveWeaponToPlayer", getRootElement(), moveWeaponToPlayer)
 
-function lockUnlock(vehicle)
-	outputDebugString("lock unlock vehicle")
+function lockUnlockInside(vehicle)
+	local model = getElementModel(vehicle)
+	local owner = getElementData(vehicle, "owner")
+	
+	if (owner ~= -2) then
+		if not (locklessVehicle[model] and (getVehicleType(vehicle)~="Boat")) then
+			local locked = isVehicleLocked(vehicle)
+			local seat = getPedOccupiedVehicleSeat(source)
+			if (seat==0) then
+				if (locked) then
+					setVehicleLocked(vehicle, false)
+					exports.global:sendLocalMeAction(source, "unlocks the vehicle doors.")
+				else
+					setVehicleLocked(vehicle, true)
+					exports.global:sendLocalMeAction(source, "locks the vehicle doors.")
+				end
+			end
+		end
+	else
+		outputChatBox("(( You can't lock civilian vehicles. ))", source, 255, 195, 14)
+	end
+end
+addEvent("lockUnlockInsideVehicle", true)
+addEventHandler("lockUnlockInsideVehicle", getRootElement(), lockUnlockInside)
+
+function lockUnlockOutside(vehicle)
 	local locked = getElementData(vehicle, "locked")
 	local dbid = getElementData(vehicle, "dbid")
 	
@@ -1047,8 +1052,8 @@ function lockUnlock(vehicle)
 		exports.global:sendLocalMeAction(source, "presses on the key to lock the vehicle. ((" .. getVehicleName(vehicle) .. "))")
 	end
 end
-addEvent("lockUnlockVehicle", true)
-addEventHandler("lockUnlockVehicle", getRootElement(), lockUnlock)
+addEvent("lockUnlockOutsideVehicle", true)
+addEventHandler("lockUnlockOutsideVehicle", getRootElement(), lockUnlockOutside)
 
 function fillFuelTank(veh, fuel)
 	local currFuel = getElementData(veh, "fuel")

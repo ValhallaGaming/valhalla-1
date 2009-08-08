@@ -138,7 +138,7 @@ function transferMoneyToPersonal(business, name, amount)
 			mysql_query(handler, "UPDATE characters SET bankmoney='" .. bankmoney + amount .. "' WHERE charactername='" .. string.gsub(name," ","_") .. "'")
 		end
 		triggerClientEvent(source, "hideBankUI", source)
-		outputChatBox("You transfered " .. amount .. "$ from your "..(business and "business" or "personal").." account to "..name..(string.sub(name,-1) == "s" and "" or "s").."' account.", source, 255, 194, 14)
+		outputChatBox("You transfered " .. amount .. "$ from your "..(business and "business" or "personal").." account to "..name..(string.sub(name,-1) == "s" and "'" or "'s").." account.", source, 255, 194, 14)
 	end
 end
 addEvent("transferMoneyToPersonal", true)

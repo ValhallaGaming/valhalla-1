@@ -36,7 +36,7 @@ function callSomeone(thePlayer, commandName, phoneNumber)
 				outputChatBox("SYNTAX: /call [Phone Number]", thePlayer, 255, 194, 14)
 			else
 				local calling = getElementData(thePlayer, "calling")
-			
+				
 				if (calling) then -- Using phone already
 					outputChatBox("You are already using your phone.", thePlayer, 255, 0, 0)
 				else
@@ -65,7 +65,7 @@ function callSomeone(thePlayer, commandName, phoneNumber)
 					
 					if (money<10) then
 						outputChatBox("You cannot afford a call.", thePlayer, 255, 0, 0)
-					elseif not (found) or (foundElement==thePlayer) then -- Player with this phone number isnt online...
+					elseif not (found) then--or (foundElement==thePlayer) then -- Player with this phone number isnt online...
 						outputChatBox("You get a dead tone...", thePlayer, 255, 194, 14)
 					else
 						local targetCalling = getElementData(foundElement, "calling")
@@ -78,10 +78,17 @@ function callSomeone(thePlayer, commandName, phoneNumber)
 							setElementData(foundElement, "calling", thePlayer, false)
 							
 							-- local player
-							
 							exports.global:applyAnimation(thePlayer, "ped", "phone_in", 1.0, 1.0, 0.0, false, true, true)
 							toggleAllControls(thePlayer, true, true, true)
 							setTimer(startPhoneAnim, 1000, 2, thePlayer)
+							
+							--player around target and target start ringing
+							local x, y, z = getElementPosition(foundElement)
+							local phoneSphere = createColSphere(x, y, z, 10)
+							for _,nearbyPlayer in ipairs(getElementsWithinColShape(phoneSphere)) do
+								triggerClientEvent(nearbyPlayer, "startRinging", foundElement, 1)
+							end
+							destroyElement(phoneSphere)
 							
 							-- target player
 							exports.global:sendLocalMeAction(foundElement, "'s Phone start's to ring.")
@@ -135,6 +142,13 @@ function answerPhone(thePlayer, commandName)
 					setElementData(thePlayer, "phonestate", 1, false) -- Your in an actual call
 					setElementData(calling, "phonestate", 1, false) -- Your in an actual call
 					exports.global:sendLocalMeAction(thePlayer, "answers their cellphone.")
+					
+					local x, y, z = getElementPosition(target)
+					local phoneSphere = createColSphere(x, y, z, 10)
+					for _,nearbyPlayer in ipairs(getElementsWithinColShape(phoneSphere)) do
+						triggerClientEvent(nearbyPlayer, "stopRinging", target)
+					end
+					destroyElement(phoneSphere)
 					
 					exports.global:applyAnimation(calling, "ped", "phone_in", 1.0, 1.0, 0.0, false, true, true)
 					toggleAllControls(calling, true, true, true)
@@ -211,7 +225,7 @@ function loudSpeaker(thePlayer, commandName)
 				exports.global:sendLocalMeAction(thePlayer, "turns on loudspeaker on the cellphone.")
 				outputChatBox("You flick your phone onto loudspeaker.", thePlayer)
 				setElementData(thePlayer, "phonestate", 2, false)
-			elseif (phoneState==1) then
+			elseif (phoneState==2) then
 				exports.global:sendLocalMeAction(thePlayer, "turns off loudspeaker on the cellphone.")
 				outputChatBox("You flick your phone off of loudspeaker.", thePlayer)
 				setElementData(thePlayer, "phonestate", 1, false)

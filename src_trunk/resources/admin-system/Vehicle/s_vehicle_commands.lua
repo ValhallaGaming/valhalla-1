@@ -46,9 +46,13 @@ addCommandHandler("unlockcivcars", unlockAllCivilianCars, false, false)
 function createTempVehicle(thePlayer, commandName, id, col1, col2)
 
 	if (exports.global:isPlayerAdmin(thePlayer)) then
-		if not (id) or not (col1) or not (col2) then
-			outputChatBox("SYNTAX: /" .. commandName .. " [id] [color1] [color2]", thePlayer, 255, 194, 14)
+		if not (id) then
+			outputChatBox("SYNTAX: /" .. commandName .. " [id/name] [color1] [color2]", thePlayer, 255, 194, 14)
 		else
+			id = getVehicleModelFromName(id) or tonumber(id) or -1
+			col1 = col1 or -1
+			col2 = col2 or -1
+			
 			local r = getPedRotation(thePlayer)
 			local x, y, z = getElementPosition(thePlayer)
 			x = x + ( ( math.cos ( math.rad ( r ) ) ) * 5 )
@@ -60,15 +64,15 @@ function createTempVehicle(thePlayer, commandName, id, col1, col2)
 			local plate = letter1 .. letter2 .. math.random(0, 9) .. " " .. math.random(1000, 9999)
 			
 			local veh = createVehicle(id, x, y, z, 0, 0, r, plate)
-			exports.pool:allocateElement(veh)
-			
-			if (armoredCars[(tonumber(id))]) then
-				setVehicleDamageProof(veh, true)
-			end
 			
 			if not (veh) then
 				outputChatBox("Invalid Vehicle ID.", thePlayer, 255, 0, 0)
 			else
+				if (armoredCars[(tonumber(id))]) then
+					setVehicleDamageProof(veh, true)
+				end
+
+				exports.pool:allocateElement(veh)
 				setElementData(veh, "fuel", 100)
 				
 				setVehicleColor(veh, col1, col2, col1, col2)

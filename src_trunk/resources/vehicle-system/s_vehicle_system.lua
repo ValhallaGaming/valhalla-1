@@ -38,7 +38,7 @@ addEvent("onVehicleSpawn", false)
 function createPermVehicle(thePlayer, commandName, id, col1, col2, userName, factionVehicle, cost)
 	if (exports.global:isPlayerLeadAdmin(thePlayer)) then
 		if not (id) or not (col1) or not (col2) or not (userName) or not (factionVehicle) or not (cost) then
-			outputChatBox("SYNTAX: /" .. commandName .. " [id] [color1 (-1 for random)] [color2 (-1 for random)] [Owner Partial Username] [Faction Vehicle (1/0)] [Cost] [Tinted Windows] ", thePlayer, 255, 194, 14)
+			outputChatBox("SYNTAX: /" .. commandName .. " [id/name] [color1 (-1 for random)] [color2 (-1 for random)] [Owner Partial Username] [Faction Vehicle (1/0)] [Cost] [Tinted Windows] ", thePlayer, 255, 194, 14)
 			outputChatBox("NOTE: If it is a faction vehicle, Username is the owner of the faction.", thePlayer, 255, 194, 14)
 			outputChatBox("NOTE: If it is a faction vehicle, The cost is taken from the faction fund, rather than the player.", thePlayer, 255, 194, 14)
 		else
@@ -89,12 +89,13 @@ function createPermVehicle(thePlayer, commandName, id, col1, col2, userName, fac
 				local letter2 = exports.global:randChar()
 				local plate = letter1 .. letter2 .. math.random(0, 9) .. " " .. math.random(1000, 9999)
 				
+				id = getVehicleModelFromName(id) or tonumber(id) or -1
+
 				local veh = createVehicle(id, x, y, z, 0, 0, r, plate)
-				exports.pool:allocateElement(veh)
-					
 				if not (veh) then
 					outputChatBox("Invalid Vehicle ID.", thePlayer, 255, 0, 0)
 				else
+					exports.pool:allocateElement(veh)
 					setElementData(veh, "fuel", 100)
 					setElementData(veh, "Impounded", 0)
 						
@@ -164,7 +165,7 @@ addCommandHandler("makeveh", createPermVehicle, false, false)
 function createCivilianPermVehicle(thePlayer, commandName, id, col1, col2, job)
 	if (exports.global:isPlayerLeadAdmin(thePlayer)) then
 		if not (id) or not (col1) or not (col2) then
-			outputChatBox("SYNTAX: /" .. commandName .. " [id] [color1 (-1 for random)] [color2 (-1 for random)] [Job ID -1 for none]", thePlayer, 255, 194, 14)
+			outputChatBox("SYNTAX: /" .. commandName .. " [id/name] [color1 (-1 for random)] [color2 (-1 for random)] [Job ID -1 for none]", thePlayer, 255, 194, 14)
 			outputChatBox("Job 1 = Delivery Driver", thePlayer, 255, 194, 14)
 			outputChatBox("Job 2 = Taxi Driver", thePlayer, 255, 194, 14)
 			outputChatBox("Job 3 = Bus Driver", thePlayer, 255, 194, 14)
@@ -188,12 +189,14 @@ function createCivilianPermVehicle(thePlayer, commandName, id, col1, col2, job)
 			local letter2 = exports.global:randChar()
 			local plate = letter1 .. letter2 .. math.random(0, 9) .. " " .. math.random(1000, 9999)
 			
+			id = getVehicleModelFromName(id) or tonumber(id) or -1
+
 			local veh = createVehicle(id, x, y, z, 0, 0, r, plate)
-			exports.pool:allocateElement(veh)
 				
 			if not (veh) then
 				outputChatBox("Invalid Vehicle ID.", thePlayer, 255, 0, 0)
 			else
+				exports.pool:allocateElement(veh)
 				setElementData(veh, "fuel", 100)
 					
 				local rx, ry, rz = getVehicleRotation(veh)

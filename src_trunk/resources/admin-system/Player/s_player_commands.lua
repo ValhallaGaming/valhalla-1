@@ -378,7 +378,7 @@ addCommandHandler("freconnect", forceReconnect, false, false)
 function givePlayerGun(thePlayer, commandName, targetPlayer, weapon, ammo)
 	if (exports.global:isPlayerLeadAdmin(thePlayer)) then
 		if not (weapon) or not (ammo) or not (targetPlayer) then
-			outputChatBox("SYNTAX: /" .. commandName .. " [Player Partial Nick / ID] [Weapon ID] [Ammo]", thePlayer, 255, 194, 14)
+			outputChatBox("SYNTAX: /" .. commandName .. " [Player Partial Nick / ID] [Weapon ID/Name] [Ammo]", thePlayer, 255, 194, 14)
 		else
 			local targetPlayer = exports.global:findPlayerByPartialNick(targetPlayer)
 			
@@ -389,7 +389,7 @@ function givePlayerGun(thePlayer, commandName, targetPlayer, weapon, ammo)
 				local logged = getElementData(targetPlayer, "loggedin")
 				local hiddenAdmin = getElementData(thePlayer, "hiddenadmin")
 				
-				weapon = tonumber(weapon)
+				weapon = getWeaponIDFromName(weapon) or tonumber(weapon) or -1
 				ammo = tonumber(ammo)
 				
 				if (logged==0) then

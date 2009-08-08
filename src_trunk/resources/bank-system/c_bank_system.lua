@@ -18,6 +18,8 @@ function showBankUI(isInFaction, isFactionLeader, factionBalance)
 		
 		tabPersonal = guiCreateTab("Personal Banking", tabPanel)
 		
+		local hoursplayed = getElementData(localPlayer, "hoursplayed")
+		
 		if (isInFaction) and (isFactionLeader) then
 			tabBusiness = guiCreateTab("Business Banking", tabPanel)
 			
@@ -46,17 +48,19 @@ function showBankUI(isInFaction, isFactionLeader, factionBalance)
 			bDepositB = guiCreateButton(0.44, 0.23, 0.2, 0.075, "Deposit", true, tabBusiness)
 			addEventHandler("onClientGUIClick", bDepositB, depositMoneyBusiness, false)
 			
-			-- TRANSFER BUSINESS
-			lTransferB = guiCreateLabel(0.1, 0.45, 0.2, 0.05, "Transfer:", true, tabBusiness)
-			guiSetFont(lTransferB, "default-bold-small")
-			
-			tTransferB = guiCreateEdit(0.22, 0.43, 0.2, 0.075, "0", true, tabBusiness)
-			guiSetFont(tTransferB, "default-bold-small")
-			
-			bTransferB = guiCreateButton(0.44, 0.43, 0.2, 0.075, "Transfer to", true, tabBusiness)
-			addEventHandler("onClientGUIClick", bTransferB, transferMoneyBusiness, false)
-			
-			eTransferB = guiCreateEdit(0.66, 0.43, 0.3, 0.075, "", true, tabBusiness)
+			if hoursplayed > 12 then
+				-- TRANSFER BUSINESS
+				lTransferB = guiCreateLabel(0.1, 0.45, 0.2, 0.05, "Transfer:", true, tabBusiness)
+				guiSetFont(lTransferB, "default-bold-small")
+				
+				tTransferB = guiCreateEdit(0.22, 0.43, 0.2, 0.075, "0", true, tabBusiness)
+				guiSetFont(tTransferB, "default-bold-small")
+				
+				bTransferB = guiCreateButton(0.44, 0.43, 0.2, 0.075, "Transfer to", true, tabBusiness)
+				addEventHandler("onClientGUIClick", bTransferB, transferMoneyBusiness, false)
+				
+				eTransferB = guiCreateEdit(0.66, 0.43, 0.3, 0.075, "", true, tabBusiness)
+			end
 		end
 		
 		bClose = guiCreateButton(0.75, 0.91, 0.2, 0.1, "Close", true, wBank)
@@ -87,17 +91,19 @@ function showBankUI(isInFaction, isFactionLeader, factionBalance)
 		bDepositP = guiCreateButton(0.44, 0.23, 0.2, 0.075, "Deposit", true, tabPersonal)
 		addEventHandler("onClientGUIClick", bDepositP, depositMoneyPersonal, false)
 		
-		-- TRANSFER PERSONAL
-		lTransferP = guiCreateLabel(0.1, 0.45, 0.2, 0.05, "Transfer:", true, tabPersonal)
-		guiSetFont(lTransferP, "default-bold-small")
-		
-		tTransferP = guiCreateEdit(0.22, 0.43, 0.2, 0.075, "0", true, tabPersonal)
-		guiSetFont(tTransferP, "default-bold-small")
-		
-		bTransferP = guiCreateButton(0.44, 0.43, 0.2, 0.075, "Transfer to", true, tabPersonal)
-		addEventHandler("onClientGUIClick", bTransferP, transferMoneyPersonal, false)
-		
-		eTransferP = guiCreateEdit(0.66, 0.43, 0.3, 0.075, "", true, tabPersonal)
+		if hoursplayed > 12 then
+			-- TRANSFER PERSONAL
+			lTransferP = guiCreateLabel(0.1, 0.45, 0.2, 0.05, "Transfer:", true, tabPersonal)
+			guiSetFont(lTransferP, "default-bold-small")
+			
+			tTransferP = guiCreateEdit(0.22, 0.43, 0.2, 0.075, "0", true, tabPersonal)
+			guiSetFont(tTransferP, "default-bold-small")
+			
+			bTransferP = guiCreateButton(0.44, 0.43, 0.2, 0.075, "Transfer to", true, tabPersonal)
+			addEventHandler("onClientGUIClick", bTransferP, transferMoneyPersonal, false)
+			
+			eTransferP = guiCreateEdit(0.66, 0.43, 0.3, 0.075, "", true, tabPersonal)
+		end
 		
 		guiSetInputEnabled(true)
 		

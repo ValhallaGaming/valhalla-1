@@ -22,8 +22,6 @@ function isPlayerAdmin(thePlayer)
 		return false
 	elseif(adminLevel>=1) then
 		return true
-	elseif(isPlayerScripter(thePlayer)) then
-		return true
 	end
 end
 
@@ -33,8 +31,6 @@ function isPlayerSuperAdmin(thePlayer)
 	if(adminLevel==0) then
 		return false
 	elseif(adminLevel>=1) then
-		return true
-	elseif(isPlayerScripter(thePlayer)) then
 		return true
 	end
 end
@@ -46,8 +42,6 @@ function isPlayerHeadAdmin(thePlayer)
 		return false
 	elseif(adminLevel>=5) then
 		return true
-	elseif(isPlayerScripter(thePlayer)) then
-		return true
 	end
 end
 
@@ -58,8 +52,6 @@ function isPlayerLeadAdmin(thePlayer)
 		return false
 	elseif(adminLevel>=4) then
 		return true
-	elseif(isPlayerScripter(thePlayer)) then
-		return true
 	end
 end
 
@@ -68,72 +60,16 @@ function getPlayerAdminLevel(thePlayer)
 	return adminLevel
 end
 
+local titles = { "Trial Admin", "Admin", "Super Admin", "Lead Admin", "Head Admin", "Owner" }
 function getPlayerAdminTitle(thePlayer)
-	local adminLevel = tonumber(getElementData(thePlayer, "adminlevel"))
+	local adminLevel = tonumber(getElementData(thePlayer, "adminlevel")) or 0
+	local text = titles[adminLevel] or "Player"
 	
-	if (adminLevel==0) then -- Normal player
-		if(isPlayerScripter(thePlayer)) then
-			return "Player - Scripter"
-		else
-			return "Player"
-		end
-	elseif (adminLevel==1) then -- Trial Admin
-		if(isPlayerScripter(thePlayer)) then
-			return "Trial Admin - Scripter"
-		else
-			return "Trial Admin"
-		end
-	elseif (adminLevel==2) then -- Admin
-		if(isPlayerScripter(thePlayer)) then
-			return "Admin - Scripter"
-		else
-			return "Admin"
-		end
-	elseif (adminLevel==3) then --  Super Admin
-		if(isPlayerScripter(thePlayer)) then
-			return "Super Admin - Scripter"
-		else
-			return "Super Admin"
-		end
-	elseif (adminLevel==4) then --  Lead Admin
-		if(isPlayerScripter(thePlayer)) then
-			return "Lead Admin - Scripter"
-		else
-			return "Lead Admin"
-		end
-	elseif (adminLevel==5) then --  Head Admin
-		local hiddenAdmin = getElementData(thePlayer, "hiddenadmin")
-		if(isPlayerScripter(thePlayer)) then
-			if (hiddenAdmin==0) then
-				return "Head Admin - Scripter"
-			elseif (hiddenAdmin==1) then
-				return "Head Admin (Hidden) - Scripter"
-			end
-		else
-			if (hiddenAdmin==0) then
-				return "Head Admin"
-			elseif (hiddenAdmin==1) then
-				return "Head Admin (Hidden)"
-			end
-		end
-	elseif (adminLevel==6) then --  Owner
-		local hiddenAdmin = getElementData(thePlayer, "hiddenadmin")
-		if(isPlayerScripter(thePlayer)) then
-			if (hiddenAdmin==0) then
-				return "Owner - Scripter"
-			elseif (hiddenAdmin==1) then
-				return "Owner (Hidden) - Scripter"
-			end
-		else
-			if (hiddenAdmin==0) then
-				return "Owner"
-			elseif (hiddenAdmin==1) then
-				return "Owner (Hidden)"
-			end
-		end
-	else
-		return "Player"
+	local hiddenAdmin = getElementData(thePlayer, "hiddenadmin") or 0
+	if (hiddenAdmin==1) then
+		text = text .. " (Hidden)"
 	end
+	return text
 end
 
 local scripterAccounts = {

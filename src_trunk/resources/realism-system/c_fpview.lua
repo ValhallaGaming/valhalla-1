@@ -5,19 +5,25 @@ local PI = math.pi
 local isEnabled = false
 local wasInVehicle = isPedInVehicle(localPlayer)
 
-local mouseSensitivity = 0.3
+local mouseSensitivity = 0.1
 local rotX, rotY = 0,0
 local mouseFrameDelay = 0
+local idleTime = 2500
+local fadeBack = false
+local fadeBackFrames = 50
+local executeCounter = 0
+local recentlyMoved = false
+local Xdiff,Ydiff
 
 function toggleCockpitView ()
     if (not isEnabled) then
         isEnabled = true
-        addEventHandler ("onClientWorld", root, updateCamera)
+        addEventHandler ("onClientPreRender", root, updateCamera)
         addEventHandler ("onClientCursorMove",root, freecamMouse)
     else --reset view
         isEnabled = false
         setCameraTarget (localPlayer, localPlayer)
-        removeEventHandler ("onClientWorld", root, updateCamera)
+        removeEventHandler ("onClientPreRender", root, updateCamera)
         removeEventHandler ("onClientCursorMove", root, freecamMouse)
     end
 end
@@ -27,8 +33,52 @@ addCommandHandler("cockpit", toggleCockpitView)
 
 function updateCamera ()
     if (isEnabled) then
-        local camPosX, camPosY, camPosZ = getPedBonePosition (localPlayer, 6)
-		local roll = 0
+	
+	    local nowTick = getTickCount()
+		
+		-- check if the last mouse movement was more than idleTime ms ago
+		if wasInVehicle and recentlyMoved and not fadeBack and startTick and nowTick - startTick > idleTime then
+		    recentlyMoved = false
+		    fadeBack = true
+			if rotX > 0 then
+			    Xdiff = rotX / fadeBackFrames
+			elseif rotX < 0 then
+			    Xdiff = rotX / -fadeBackFrames
+			end
+			if rotY > 0 then
+			    Ydiff = rotY / fadeBackFrames
+			elseif rotY < 0 then
+			    Ydiff = rotY / -fadeBackFrames
+			end
+		end
+		
+		if fadeBack then
+	    
+	        executeCounter = executeCounter + 1
+		
+	        if rotX > 0 then
+		        rotX = rotX - Xdiff
+		    elseif rotX < 0 then
+		        rotX = rotX + Xdiff
+		    end
+		
+		    if rotY > 0 then
+		        rotY = rotY - Ydiff
+		    elseif rotY < 0 then
+		        rotY = rotY + Ydiff
+		    end
+		
+		    if executeCounter >= fadeBackFrames then
+		        fadeBack = false
+				executeCounter = 0
+		    end
+		
+		end
+		
+        local camPosXr, camPosYr, camPosZr = getPedBonePosition (localPlayer, 6)
+        local camPosXl, camPosYl, camPosZl = getPedBonePosition (localPlayer, 7)
+        local camPosX, camPosY, camPosZ = (camPosXr + camPosXl) / 2, (camPosYr + camPosYl) / 2, (camPosZr + camPosZl) / 2
+        local roll = 0
         
         inVehicle = isPedInVehicle(localPlayer)
         
@@ -63,7 +113,7 @@ function updateCamera ()
             end
         else
             local rx, ry, rz = getElementRotation(localPlayer)
-            
+			
             if wasInVehicle then
                 rotX = rotX - math.rad(rz) --prevent camera from rotating when exiting a vehicle
             end
@@ -115,11 +165,23 @@ function updateCamera ()
         camTargetZ = camPosZ + freeModeAngleZ * 100
 
         -- Set the new camera position and target
-        setCameraMatrix ( camPosX, camPosY, camPosZ, camTargetX, camTargetY, camTargetZ, roll)
+        setCameraMatrix (camPosX, camPosY, camPosZ, camTargetX, camTargetY, camTargetZ, roll)
+		--[[
+		dxDrawText("fadeBack = "..tostring(fadeBack),400,200)
+		dxDrawText("recentlyMoved = "..tostring(recentlyMoved),400,220)
+		if executeCounter then dxDrawText("executeCounter = "..tostring(executeCounter),400,240) end
+		dxDrawText("rotX = "..tostring(rotX),400,260)
+		dxDrawText("rotY = "..tostring(rotY),400,280)
+		if Xdiff then dxDrawText("Xdiff = "..tostring(Xdiff),400,300) end
+		if Ydiff then dxDrawText("Ydiff = "..tostring(Ydiff),400,320) end
+		if startTick then dxDrawText("startTick = "..tostring(startTick),400,340) end
+		dxDrawText("nowTick = "..tostring(nowTick),400,360)
+		]]
     end
 end
 
 function freecamMouse (cX,cY,aX,aY)
+	
 	--ignore mouse movement if the cursor or MTA window is on
 	--and do not resume it until at least 5 frames after it is toggled off
 	--(prevents cursor mousemove data from reaching this handler)
@@ -129,6 +191,15 @@ function freecamMouse (cX,cY,aX,aY)
 	elseif mouseFrameDelay > 0 then
 		mouseFrameDelay = mouseFrameDelay - 1
 		return
+	end
+	
+	startTick = getTickCount()
+	recentlyMoved = true
+	
+	-- check if the mouse is moved while fading back, if so abort the fading
+	if fadeBack then
+	    fadeBack = false
+		executeCounter = 0
 	end
 	
 	-- how far have we moved the mouse from the screen center?
@@ -157,8 +228,8 @@ function freecamMouse (cX,cY,aX,aY)
     if isPedInVehicle(localPlayer) then
         if rotY < -PI / 4 then
             rotY = -PI / 4
-        elseif rotY > -PI/15 then
-            rotY = -PI/15
+        elseif rotY > PI/15 then
+            rotY = PI/15
         end
     else
         if rotY < -PI / 4 then
@@ -168,3 +239,21 @@ function freecamMouse (cX,cY,aX,aY)
         end
     end
 end
+
+--[[
+local boneNumbers = {1,2,3,4,5,6,7,8,21,22,23,24,25,26,31,32,33,34,35,36,41,42,43,44,51,52,53,54}
+local boneColors = {}
+for _,i in ipairs(boneNumbers) do
+ boneColors[i] = tocolor(math.random(0,255),math.random(0,255),math.random(0,255),255)
+end
+addEventHandler ("onClientRender", getRootElement(),
+ function ()
+  for _,i in ipairs(boneNumbers) do
+   local x,y = getScreenFromWorldPosition(getPedBonePosition(getLocalPlayer(),i))
+   if x then
+    dxDrawText(tostring(i),x,y,"center","center",boneColors[i])
+   end
+  end
+ end
+)
+]]

@@ -34,12 +34,12 @@ function realisticDamage(attacker, weapon, bodypart, loss)
 			
 		if (weapon==8) then -- katana
 			setPedHeadless(source, true)
-			killPed(source)
+			killPed(source, attacker, weapon, bodypart)
 		end
 			
 		if (bodypart==9) and not (armor>0) then -- Head and no armor.
 			setPedHeadless(source, true)
-			killPed(source)
+			killPed(source, attacker, weapon, bodypart)
 			exports.global:givePlayerAchievement(attacker, 12)
 			exports.global:givePlayerAchievement(source, 15)
 		end

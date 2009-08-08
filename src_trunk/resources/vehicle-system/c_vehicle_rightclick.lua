@@ -236,10 +236,15 @@ function showVehicleMenu()
 	local vx,vy,vz = getElementVelocity(vehicle)
 	local speed = math.sqrt(vx^2+vy^2+vz^2)
 	if speed == 0 then -- completely stopped
-		if exports.global:cdoesPlayerHaveItem(localPlayer, 57, -1) then -- FUEL CAN
-			outputDebugString("fill vehicle tank")
+		if not getPedOccupiedVehicle(localPlayer) and exports.global:cdoesPlayerHaveItem(localPlayer, 57, -1) then -- FUEL CAN
 			bFill = guiCreateButton(0.05, y, 0.87, 0.1, "Fill tank", true, wRightClick)
 			addEventHandler("onClientGUIClick", bFill, fillFuelTank, false)
+			y = y + 0.14
+		end
+		
+		if getPedOccupiedVehicle(localPlayer) == vehicle and getElementData(localPlayer, "job") == 5 then -- Mechanic
+			bFix = guiCreateButton(0.05, y, 0.87, 0.1, "Fix/Upgrade", true, wRightClick)
+			addEventHandler("onClientGUIClick", bFix, openMechanicWindow, false)
 			y = y + 0.14
 		end
 	end
@@ -280,8 +285,14 @@ end
 function fillFuelTank(button, state)
 	if (button=="left") then
 		local _,_, value = exports.global:cdoesPlayerHaveItem(localPlayer, 57, -1)
-		outputDebugString("fill vehicle  value = "..tostring(value))
 		triggerServerEvent("fillFuelTankVehicle", localPlayer, vehicle, value)
+		hideVehicleMenu()
+	end
+end
+
+function openMechanicWindow(button, state)
+	if (button=="left") then
+		triggerEvent("openMechanicFixWindow", localPlayer)
 		hideVehicleMenu()
 	end
 end

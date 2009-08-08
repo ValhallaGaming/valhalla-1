@@ -53,6 +53,8 @@ function mechanicWindow()
 		end
 	end
 end
+addEvent("openMechanicFixWindow")
+addEventHandler("openMechanicFixWindow", getRootElement(), mechanicWindow)
 addCommandHandler("fix", mechanicWindow, false, false)
 
 function tyreWindow()

@@ -234,7 +234,7 @@ function showVehicleMenu()
 	end
 	
 	local vx,vy,vz = getElementVelocity(vehicle)
-	if vx == 0 and vy == 0 and vz == 0 and not getPedOccupiedVehicle(localPlayer) then -- completely stopped
+	if vx == 0 and vy == 0 and vz == 0 and not getPedOccupiedVehicle(localPlayer) and not isVehicleLocked(vehicle) then -- completely stopped
 		if exports.global:cdoesPlayerHaveItem(localPlayer, 57, -1) then -- FUEL CAN
 			bFill = guiCreateButton(0.05, y, 0.87, 0.1, "Fill tank", true, wRightClick)
 			addEventHandler("onClientGUIClick", bFill, fillFuelTank, false)

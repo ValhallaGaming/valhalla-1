@@ -470,7 +470,7 @@ function reloadOneInterior(id, displayircmessage)
 				setIntPickupElementData(intpickup, id, x, y, z, rot, locked, owner, inttype, interiorwithin, dimension, interior, ix, iy, iz)
 			end
 			
-			if not safeTable[id] and if safeX ~= mysql_null() and safeY ~= mysql_null() and safeZ ~= mysql_null() and safeRZ ~= mysql_null() then
+			if not safeTable[id] and safeX ~= mysql_null() and safeY ~= mysql_null() and safeZ ~= mysql_null() and safeRZ ~= mysql_null() then
 				local tempobject = createObject(2332, tonumber(safeX), tonumber(safeY), tonumber(safeZ), 0, 0, tonumber(safeRZ))
 				setElementInterior(tempobject, interior)
 				setElementDimension(tempobject, id)

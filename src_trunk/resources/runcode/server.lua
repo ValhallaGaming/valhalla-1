@@ -50,14 +50,14 @@ function runString (commandstring, outputTo, source)
 end
 
 -- run command
-addCommandHandler("run",
-	function (player, command, ...)
-		if (exports.global:isPlayerScripter(player)) then
-		local commandstring = table.concat({...}, " ")
-		return runString(commandstring, rootElement, player)
-		end
-	end
-)
+--addCommandHandler("run",
+--	function (player, command, ...)
+--		if (exports.global:isPlayerScripter(player)) then
+--		local commandstring = table.concat({...}, " ")
+--		return runString(commandstring, rootElement, player)
+--		end
+--	end
+--)
 
 -- silent run command
 addCommandHandler("srun",

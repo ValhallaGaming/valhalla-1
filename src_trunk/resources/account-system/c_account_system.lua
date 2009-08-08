@@ -3526,19 +3526,13 @@ end
 addCommandHandler("tognametags", toggleNametags)
 addCommandHandler("togglenametags", toggleNametags)
 
-timeinserver = 0
 function updateTimeInServer()
 	local logged = getElementData(getLocalPlayer(), "loggedin")
 	
 	if (logged==1) then
+		local timeinserver = getElementData(getLocalPlayer(), "timeinserver")
 		timeinserver = timeinserver + 1
 		setElementData(getLocalPlayer(), "timeinserver", true, timeinserver)
 	end
 end
 setTimer(updateTimeInServer, 60000, 0)
-
-function syncTimeInServer(tistime)
-	timeinserver = tistime
-end
-addEvent("syncTimeInServer", true)
-addEventHandler("syncTimeInServer", getRootElement(), syncTimeInServer)

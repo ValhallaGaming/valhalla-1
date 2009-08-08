@@ -214,7 +214,6 @@ function spawnCharacter(charname)
 		local dutyskin = tonumber(mysql_result(result, 1, 38))
 		
 		setElementData(source, "timeinserver", timeinserver)
-		triggerClientEvent(source, "syncTimeInServer", source, timeinserver)
 		
 		if (items~=tostring(mysql_null())) and (itemvalues~=tostring(mysql_null())) then
 			setElementData(source, "items", items)

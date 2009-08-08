@@ -824,7 +824,7 @@ function payWage(player, pay, faction, tax)
 	local rent = 0
 	local result = mysql_query( handler, "SELECT SUM(cost) FROM `interiors` WHERE `owner` = " .. getElementData(player, "dbid") .. " AND `type` = 3" )
 	if result then
-		rent = tonumber(mysql_result(result, 1, 1))
+		rent = tonumber(mysql_result(result, 1, 1)) or 0
 		mysql_free_result(result)
 		
 		if rent > 0 then
@@ -957,8 +957,7 @@ function payAllWages()
 				govAmount = govAmount - unemployedPay
 			end
 			
-			setElementData(value, "timeinserver", 0)
-			triggerClientEvent(value, "syncTimeInServer", value, 0)
+			setElementData(value, "timeinserver", timeinserver-60)
 		elseif (timeinserver<60) then
 			outputChatBox("You have not played long enough to recieve a payday. (You require another " .. 60-timeinserver .. " Minutes of play.)", value, 255, 0, 0)
 		end

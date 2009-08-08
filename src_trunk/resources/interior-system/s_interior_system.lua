@@ -351,6 +351,24 @@ function deleteInterior(thePlayer, commandName)
 end
 addCommandHandler("delinterior", deleteInterior, false, false)
 
+function reloadInterior(thePlayer, commandName, interiorID)
+	if exports.global:isPlayerAdmin(thePlayer) then
+		if not interiorID then
+			outputChatBox("SYNTAX: /" .. commandName .. " [Interior ID]", thePlayer, 255, 194, 14)
+		else
+			local dbid, entrance, exit, interiorType = findProperty( thePlayer, tonumber(interiorID) )
+			if dbid ~= 0 then
+				destroyElement(entrance)
+				destroyElement(exit)
+				
+				reloadOneInterior(dbid)
+				outputChatBox("Reloaded Interior #" .. dbid, thePlayer, 0, 255, 0)
+			end
+		end
+	end
+end
+addCommandHandler("reloadinterior", reloadInterior, false, false)
+
 function reloadOneInterior(id, displayircmessage)
 	if displayircmessage == nil then
 		displayircmessage = true

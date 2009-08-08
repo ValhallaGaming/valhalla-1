@@ -125,8 +125,8 @@ function updateInteriorExit(thePlayer, commandName)
 end
 addCommandHandler("setinteriorexit", updateInteriorExit, false, false)
 
-function findProperty(thePlayer)
-	local dbid = getElementDimension( thePlayer )
+function findProperty(thePlayer, dimension)
+	local dbid = dimension or getElementDimension( thePlayer )
 	if dbid > 0 then
 		-- find the entrance and exit
 		local entrance, exit = nil, nil
@@ -160,53 +160,7 @@ function sellProperty(thePlayer, commandName)
 			outputChatBox("You cannot sell a government property.", thePlayer, 255, 0, 0)
 		else
 			if exports.global:isPlayerAdmin(thePlayer) or getElementData(entrance, "owner") == getElementData(thePlayer, "dbid") then
-				local query = mysql_query(handler, "UPDATE interiors SET owner=-1, locked=1, safepositionX=NULL, safepositionY=NULL, safepositionZ=NULL, safepositionRZ=NULL WHERE id='" .. dbid .. "'")
-				if query then
-					mysql_free_result(query)
-					
-					setElementPosition(thePlayer, getElementPosition(entrance))
-					removeElementData(thePlayer, "interiormarker")
-					
-					setElementInterior(thePlayer, getElementInterior(entrance))
-					setElementDimension(thePlayer, getElementDimension(entrance))
-					setCameraInterior(thePlayer, getElementInterior(entrance))
-
-					if safeTable[dbid] then
-						local safe = safeTable[dbid]
-						setElementData(safe, "items", "")
-						setElementData(safe, "itemvalues", "")
-						call(getResourceFromName("item-system"), "updateSafeItems", safe)
-						destroyElement(safe)
-					end
-					
-					if interiorType == 0 or interiorType == 1 then
-						if getElementData(entrance, "owner") == getElementData(thePlayer, "dbid") then
-							--local money = math.ceil(getElementData(entrance, "cost") * 2/3)
-							local money = getElementData(entrance, "cost")
-							exports.global:givePlayerSafeMoney(thePlayer, money)
-							outputChatBox("You sold your property for " .. money .. "$.", thePlayer, 0, 255, 0)
-							
-							local keytype = 4
-							if interiorType == 1 then
-								keytype = 5
-							end
-							exports.global:takePlayerItem(thePlayer, keytype, dbid)
-							
-							triggerClientEvent(thePlayer, "removeBlipAtXY", thePlayer, interiorType, getElementPosition(entrance))
-						else
-							outputChatBox("You set this property to unowned.", thePlayer, 0, 255, 0)
-						end
-					else
-						outputChatBox("You are no longer renting this property.", thePlayer, 0, 255, 0)
-					end
-
-					destroyElement(entrance)
-					destroyElement(exit)
-					
-					reloadOneInterior(dbid)
-				else
-					outputChatBox("Error 504914 - Report on forums.", thePlayer, 255, 0, 0)
-				end
+				publicSellProperty(thePlayer, dbid, true)
 			else
 				outputChatBox("You do not own this property.", thePlayer, 255, 0, 0)
 			end
@@ -216,6 +170,67 @@ function sellProperty(thePlayer, commandName)
 	end
 end
 addCommandHandler("sellproperty", sellProperty, false, false)
+
+function publicSellProperty(thePlayer, dbid, showmessages)
+	local dbid, entrance, exit, interiorType = findProperty( thePlayer, dbid )
+	local query = mysql_query(handler, "UPDATE interiors SET owner=-1, locked=1, safepositionX=NULL, safepositionY=NULL, safepositionZ=NULL, safepositionRZ=NULL WHERE id='" .. dbid .. "'")
+	if query then
+		mysql_free_result(query)
+		
+		if getElementDimension(thePlayer) == dbid then
+			setElementPosition(thePlayer, getElementPosition(entrance))
+			removeElementData(thePlayer, "interiormarker")
+			
+			setElementInterior(thePlayer, getElementInterior(entrance))
+			setElementDimension(thePlayer, getElementDimension(entrance))
+			setCameraInterior(thePlayer, getElementInterior(entrance))
+		end
+
+		if safeTable[dbid] then
+			local safe = safeTable[dbid]
+			setElementData(safe, "items", "")
+			setElementData(safe, "itemvalues", "")
+			call(getResourceFromName("item-system"), "updateSafeItems", safe)
+			destroyElement(safe)
+		end
+		
+		if interiorType == 0 or interiorType == 1 then
+			if getElementData(entrance, "owner") == getElementData(thePlayer, "dbid") then
+				--local money = math.ceil(getElementData(entrance, "cost") * 2/3)
+				local money = getElementData(entrance, "cost")
+				exports.global:givePlayerSafeMoney(thePlayer, money)
+				if showmessages then
+					outputChatBox("You sold your property for " .. money .. "$.", thePlayer, 0, 255, 0)
+				end
+				
+				local keytype = 4
+				if interiorType == 1 then
+					keytype = 5
+				end
+				exports.global:takePlayerItem(thePlayer, keytype, dbid)
+				
+				triggerClientEvent(thePlayer, "removeBlipAtXY", thePlayer, interiorType, getElementPosition(entrance))
+			else
+				if showmessages then
+					outputChatBox("You set this property to unowned.", thePlayer, 0, 255, 0)
+				end
+			end
+		else
+			if showmessages then
+				outputChatBox("You are no longer renting this property.", thePlayer, 0, 255, 0)
+			end
+			exports.global:takePlayerItem(thePlayer, 4, dbid)
+			triggerClientEvent(thePlayer, "removeBlipAtXY", thePlayer, interiorType, getElementPosition(entrance))
+		end
+
+		destroyElement(entrance)
+		destroyElement(exit)
+		
+		reloadOneInterior(dbid)
+	else
+		outputChatBox("Error 504914 - Report on forums.", thePlayer, 255, 0, 0)
+	end
+end
 
 function sellTo(thePlayer, commandName, targetPlayerName)
 	-- only works in dimensions
@@ -579,7 +594,18 @@ function resetInteriorMarker(thePlayer)
 	end
 end
 
-function buyInterior(player, pickup, cost, isHouse)
+function buyInterior(player, pickup, cost, isHouse, isRentable)
+	if isRentable then
+		local result = mysql_query( handler, "SELECT COUNT(*) FROM `interiors` WHERE `owner` = " .. getElementData(player, "dbid") .. " AND `type` = 3" )
+		if result then
+			local count = tonumber(mysql_result( result, 1, 1 ))
+			if count ~= 0 then
+				outputChatBox("You are already renting another house.", player, 255, 0, 0)
+				return
+			end
+			mysql_free_result(result)
+		end
+	end
 	local money = tonumber(getElementData(player, "money"))
 	cost = tonumber(cost)
 	if (money>=cost) then
@@ -641,6 +667,12 @@ function buyInterior(player, pickup, cost, isHouse)
 		if (isHouse) then
 			-- Achievement
 			exports.global:givePlayerAchievement(player, 9)
+			local blip = createBlip(x, y, z, 31, 2, 255, 0, 0, 255, 200)
+			exports.pool:allocateElement(blip)
+			setElementVisibleTo(blip, getRootElement(), false)
+			setElementVisibleTo(blip, player, true)
+			exports.global:givePlayerItem(player, 4, id)
+		elseif isRentable then
 			local blip = createBlip(x, y, z, 31, 2, 255, 0, 0, 255, 200)
 			exports.pool:allocateElement(blip)
 			setElementVisibleTo(blip, getRootElement(), false)
@@ -714,9 +746,11 @@ function enterInterior(source)
 				if (locked == 0) then 
 					setPlayerInsideInterior(thePickup, source)
 				elseif (locked==1) and (inttype==0) and (owner==-1) then -- unowned house
-					buyInterior(source, thePickup, cost, true)
+					buyInterior(source, thePickup, cost, true, false)
 				elseif (locked==1) and (inttype==1) and (owner==-1) then -- unowned business
-					buyInterior(source, thePickup, cost, false)
+					buyInterior(source, thePickup, cost, false, false)
+				elseif (locked==1) and (inttype==3) and (owner==-1) then -- unowned rentable appartment
+					buyInterior(source, thePickup, cost, false, true)
 				else -- interior is locked
 					outputChatBox("You try the door handle, but it seems to be locked.", source, 255, 0,0, true)
 				end

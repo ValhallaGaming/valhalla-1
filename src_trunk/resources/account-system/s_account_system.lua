@@ -506,7 +506,8 @@ function spawnCharacter(charname)
 					if (owner==tonumber(id)) and (inttype<2) then -- house/business and owned by this player
 						
 						local x, y, z = getElementPosition(value)
-						if (inttype<2) then -- house or business
+						if (inttype ~= 2) then -- house, business or rentable
+							if inttype == 3 then inttype = 0 end
 							interiors[count] = { }
 							interiors[count][1] = inttype
 							interiors[count][2] = x

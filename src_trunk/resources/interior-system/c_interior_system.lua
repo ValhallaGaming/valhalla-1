@@ -128,12 +128,14 @@ addEvent("createBlipsFromTable", true)
 addEventHandler("createBlipsFromTable", getRootElement(), createBlipsFromTable)
 
 function createBlipAtXY(inttype, x, y)
+	if inttype == 3 then inttype = 0 end
 	createBlip(x, y, 10, 31+inttype, 2, 255, 0, 0, 255, 0, 300)
 end
 addEvent("createBlipAtXY", true)
 addEventHandler("createBlipAtXY", getRootElement(), createBlipAtXY)
 
 function removeBlipAtXY(inttype, x, y)
+	if inttype == 3 then inttype = 0 end
 	for key, value in ipairs(getElementsByType("blip")) do
 		local bx, by, bz = getElementPosition(value)
 		local icon = getBlipIcon(value)

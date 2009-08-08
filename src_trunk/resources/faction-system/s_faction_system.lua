@@ -815,11 +815,35 @@ function payWage(player, pay, faction, tax)
 	
 	local interest = math.ceil(interestrate * bankmoney)
 	
-	
 	-- business money
 	local profit = getElementData(player, "businessprofit")
 	setElementData(player, "businessprofit", 0, false)
 	setElementData(player, "bankmoney", bankmoney+pay+interest+profit+donatormoney)
+	
+	-- rentable houses
+	local rent = 0
+	local result = mysql_query( handler, "SELECT SUM(cost) FROM `interiors` WHERE `owner` = " .. getElementData(player, "dbid") .. " AND `type` = 3" )
+	if result then
+		rent = tonumber(mysql_result(result, 1, 1))
+		mysql_free_result(result)
+		
+		if rent > 0 then
+			local bankmoney = getElementData(player, "bankmoney")
+			if rent > bankmoney then
+				-- sell houses
+				rent = -1
+				
+				local result = mysql_query( handler, "SELECT id FROM `interiors` WHERE `owner` = " .. getElementData(player, "dbid") .. " AND `type` = 3" )
+				id = tonumber(mysql_result(result, 1, 1))
+				mysql_free_result(result)
+				
+				call( getResourceFromName( "interior-system" ), "publicSellProperty", player, id, false )
+			else
+				setElementData(player, "bankmoney", bankmoney - rent)
+			end
+		end
+	end
+
 	
 	outputChatBox("~-~-~-~-~-~-~-~~-~-~-~-~ PAY SLIP ~-~-~-~-~-~-~-~~-~-~-~-~", player, 255, 194, 14)
 
@@ -851,8 +875,16 @@ function payWage(player, pay, faction, tax)
 	if (donator>0) then
 		outputChatBox("    Donator Money: " .. donatormoney .. "$", player, 255, 194, 14)
 	end
+	
+	if rent > 0 then
+		outputChatBox("    Appartment Rent: " .. rent .. "$", player, 255, 194, 14)
+	elseif rent == -1 then
+		outputChatBox("    You were evicted from your appartment, as you can't pay the rent any longer.", player, 255, 0, 0)
+		rent = 0
+	end
+
 	outputChatBox("----------------------------------------------------------", player, 255, 194, 14)
-	outputChatBox("  Gross Income: " .. pay+profit+interest+donatormoney .. "$ (Wire-Transferred to bank)", player, 255, 194, 14)
+	outputChatBox("  Gross Income: " .. pay+profit+interest+donatormoney-rent .. "$ (Wire-Transferred to bank)", player, 255, 194, 14)
 end
 
 function payAllWages()

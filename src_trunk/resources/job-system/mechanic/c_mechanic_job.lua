@@ -7,16 +7,19 @@ wTyre, bTyreOne, bTyreTwo, bTyreThree, bTyreFour, bTyreClose = nil
 -- Paint window
 wPaint, iColour1, iColour2, iColour3, iColour4, colourChart, bPaintSubmit, bPaintClose = nil
 
+currentVehicle = nil
+
 function displayMechanicJob()
-	outputChatBox("#FF9933When in a vehicle use /fix to view the services you can provide.", 255, 194, 15, true)
+	outputChatBox("#FF9933Use the #FF0000right-click menu#FF9933 to view the services you can provide.", 255, 194, 15, true)
 end
 
-function mechanicWindow()
+function mechanicWindow(vehicle)
 	local job = getElementData(getLocalPlayer(), "job")
 	if (job==5)then
-		if not (getPedOccupiedVehicle(getLocalPlayer())) then
-			outputChatBox("You must be in a vehicle.", 255, 0, 0)
+		if not vehicle then
+			outputChatBox("You must select a vehicle.", 255, 0, 0)
 		else
+			currentVehicle = vehicle
 			-- Window variables
 			local Width = 200
 			local Height = 450
@@ -55,7 +58,7 @@ function mechanicWindow()
 end
 addEvent("openMechanicFixWindow")
 addEventHandler("openMechanicFixWindow", getRootElement(), mechanicWindow)
-addCommandHandler("fix", mechanicWindow, false, false)
+-- addCommandHandler("fix", mechanicWindow, false, false)
 
 function tyreWindow()
 	-- Window variables
@@ -74,7 +77,7 @@ function tyreWindow()
 		addEventHandler( "onClientGUIClick", bTyreOne, function(button, state)
 			if(button == "left" and state == "up") then
 				
-				triggerServerEvent( "tyreChange", getLocalPlayer(), 1)
+				triggerServerEvent( "tyreChange", getLocalPlayer(), currentVehicle, 1)
 				closeMechanicWindow()
 				
 			end
@@ -85,7 +88,7 @@ function tyreWindow()
 		addEventHandler( "onClientGUIClick", bTyreTwo, function(button, state)
 			if(button == "left" and state == "up") then
 				
-				triggerServerEvent( "tyreChange", getLocalPlayer(), 2)
+				triggerServerEvent( "tyreChange", getLocalPlayer(), currentVehicle, 2)
 				closeMechanicWindow()
 				
 			end
@@ -96,7 +99,7 @@ function tyreWindow()
 		addEventHandler( "onClientGUIClick", bTyreThree, function(button, state)
 			if(button == "left" and state == "up") then
 				
-				triggerServerEvent( "tyreChange", getLocalPlayer(), 3)
+				triggerServerEvent( "tyreChange", getLocalPlayer(), currentVehicle, 3)
 				closeMechanicWindow()
 				
 			end
@@ -107,7 +110,7 @@ function tyreWindow()
 		addEventHandler( "onClientGUIClick", bTyreFour, function(button, state)
 			if(button == "left" and state == "up") then
 				
-				triggerServerEvent( "tyreChange", getLocalPlayer(), 4)
+				triggerServerEvent( "tyreChange", getLocalPlayer(), currentVehicle, 4)
 				closeMechanicWindow()
 				
 			end
@@ -182,7 +185,7 @@ function paintWindow()
 						col4 = nil
 					end
 					
-					triggerServerEvent( "repaintVehicle", getLocalPlayer(), col1, col2, col3, col4)
+					triggerServerEvent( "repaintVehicle", getLocalPlayer(), currentVehicle, col1, col2, col3, col4)
 					
 					closeMechanicWindow()
 				end				
@@ -213,12 +216,12 @@ function paintWindow()
 end
 
 function serviceTrigger()
-	triggerServerEvent( "serviceVehicle", getLocalPlayer())
+	triggerServerEvent( "serviceVehicle", currentVehicle, getLocalPlayer())
 	closeMechanicWindow()
 end
 
 function bodyworkTrigger()
-	triggerServerEvent( "repairBody", getLocalPlayer())
+	triggerServerEvent( "repairBody", currentVehicle, getLocalPlayer())
 	closeMechanicWindow()
 end
 
@@ -255,6 +258,8 @@ function closeMechanicWindow()
 	destroyElement(bMechanicClose)
 	destroyElement(wMechanic)
 	wMechanic, bMechanicOne, bMechanicOne, bMechanicClose, bMechanicThree = nil
+	
+	currentVehicle = nil
 	
 	showCursor(false)
 end

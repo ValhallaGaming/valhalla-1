@@ -1,6 +1,5 @@
 -- Bodywork repair
-function bodyworkRepair()
-	local veh = getPedOccupiedVehicle(source)
+function bodyworkRepair(veh)
 	if (veh) then
 		local money = getElementData(source, "money")
 		if(money<50)then
@@ -20,8 +19,7 @@ addEvent("repairBody", true)
 addEventHandler("repairBody", getRootElement(), bodyworkRepair)
 
 -- Full Service
-function serviceVehicle()
-	local veh = getPedOccupiedVehicle(source)
+function serviceVehicle(veh)
 	if (veh) then
 		local money = getElementData(source, "money")
 		if(money<100)then
@@ -41,8 +39,7 @@ end
 addEvent("serviceVehicle", true)
 addEventHandler("serviceVehicle", getRootElement(), serviceVehicle)
 
-function changeTyre( wheelNumber )
-	local veh = getPedOccupiedVehicle(source)
+function changeTyre( veh, wheelNumber )
 	if (veh) then
 		local money = getElementData(source, "money")
 		if(money<10)then
@@ -71,8 +68,7 @@ end
 addEvent("tyreChange", true)
 addEventHandler("tyreChange", getRootElement(), changeTyre)
 
-function changeVehicleColour( col1, col2, col3, col4)
-	local veh = getPedOccupiedVehicle(source)
+function changeVehicleColour(veh, col1, col2, col3, col4)
 	if (veh) then
 		local money = getElementData(source, "money")
 		if(money<100)then

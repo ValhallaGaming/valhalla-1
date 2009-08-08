@@ -373,7 +373,7 @@ function reloadOneInterior(id, displayircmessage)
 	if displayircmessage == nil then
 		displayircmessage = true
 	end
-	local result = mysql_query(handler, "SELECT id, x, y, z , interiorx, interiory, interiorz, type, owner, locked, cost, name, interior, dimensionwithin, interiorwithin, angle, angleexit, items, items_values, max_items, rentable, tennant, rent, money FROM interiors WHERE id='" .. id .. "'")
+	local result = mysql_query(handler, "SELECT id, x, y, z , interiorx, interiory, interiorz, type, owner, locked, cost, name, interior, dimensionwithin, interiorwithin, angle, angleexit, items, items_values, max_items, rentable, tennant, rent, money, safepositionX, safepositionY, safepositionZ, safepositionRZ FROM interiors WHERE id='" .. id .. "'")
 	if (result) then
 		for result, row in mysql_rows(result) do
 			local id = tonumber(row[1])
@@ -407,6 +407,7 @@ function reloadOneInterior(id, displayircmessage)
 			
 			local money = tonumber(row[24])
 				
+			local safeX, safeY, safeZ, safeRZ = row[25], row[26], row[27], row[28]
 			-- If the is a house
 			if (inttype==0) then -- House
 				local pickup
@@ -467,6 +468,13 @@ function reloadOneInterior(id, displayircmessage)
 					
 				setPickupElementData(pickup, id, ix, iy, iz, optAngle, interior, locked, owner, inttype, cost, name, items, items_values, max_items, tennant, rentable, rent, interiorwithin, x, y, z, dimension, money)
 				setIntPickupElementData(intpickup, id, x, y, z, rot, locked, owner, inttype, interiorwithin, dimension, interior, ix, iy, iz)
+			end
+			
+			if not safeTable[id] and if safeX ~= mysql_null() and safeY ~= mysql_null() and safeZ ~= mysql_null() and safeRZ ~= mysql_null() then
+				local tempobject = createObject(2332, tonumber(safeX), tonumber(safeY), tonumber(safeZ), 0, 0, tonumber(safeRZ))
+				setElementInterior(tempobject, interior)
+				setElementDimension(tempobject, id)
+				safeTable[id] = tempobject
 			end
 		end
 		if displayircmessage then

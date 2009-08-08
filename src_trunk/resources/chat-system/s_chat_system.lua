@@ -113,10 +113,6 @@ function chatMain(message, messageType)
 						else
 							outputChatBox( "#AAAAAA" .. playerName .. " Says: " .. message, nearbyPlayer, 255, 255, 255, true)
 						end
-						
-						if (chatSphere) then
-							destroyElement(chatSphere)
-						end
 					end
 				end
 			end

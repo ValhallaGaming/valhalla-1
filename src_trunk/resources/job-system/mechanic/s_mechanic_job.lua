@@ -43,7 +43,7 @@ function changeTyre( veh, wheelNumber )
 	if (veh) then
 		local money = getElementData(source, "money")
 		if(money<10)then
-			outputChatBox("You can't afford the parts to chnge this vehicle's tyres.", source, 255, 0, 0)
+			outputChatBox("You can't afford the parts to change this vehicle's tyres.", source, 255, 0, 0)
 		else
 			local wheel1, wheel2, wheel3, wheel4 = getVehicleWheelStates( veh )
 
@@ -67,6 +67,24 @@ function changeTyre( veh, wheelNumber )
 end
 addEvent("tyreChange", true)
 addEventHandler("tyreChange", getRootElement(), changeTyre)
+
+function changePaintjob( veh, paintjob )
+	if (veh) then
+		local money = getElementData(source, "money")
+		if money < 7500 then
+			outputChatBox("You can't afford to repaint this vehicle.", source, 255, 0, 0)
+		else
+			if setVehiclePaintjob( veh, paintjob ) then
+				exports.global:takePlayerSafeMoney(source, 7500)
+				exports.global:sendLocalMeAction(source, "repaints the vehicle.")
+			else
+				outputChatBox("This car already has this paintjob.", source, 255, 0, 0)
+			end
+		end
+	end
+end
+addEvent("paintjobChange", true)
+addEventHandler("paintjobChange", getRootElement(), changePaintjob)
 
 function changeVehicleColour(veh, col1, col2, col3, col4)
 	if (veh) then

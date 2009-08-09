@@ -104,6 +104,9 @@ addEventHandler("depositMoneyBusiness", getRootElement(), depositMoneyBusiness)
 
 function transferMoneyToPersonal(business, name, amount)
 	local reciever = getPlayerFromName(string.gsub(name," ","_"))
+	if reciever == source then
+		outputChatBox("You can't wiretransfer money to yourself.", source, 255, 0, 0)
+	end
 	local dbid = nil
 	if not reciever then
 		local result = mysql_query(handler, "SELECT id FROM characters WHERE charactername='" .. string.gsub(name," ","_") .. "' LIMIT 1")

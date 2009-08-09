@@ -3,8 +3,8 @@ function onResourceStart()
 	if (node) then
 		local children = xmlNodeGetChildren ( node )
 		for k,v in ipairs(children) do
-			local DFF = tostring(xmlNodeGetAttribute(v, "DFF"))
-			local TXD = tostring(xmlNodeGetAttribute(v, "TXD"))
+			local DFF = xmlNodeGetAttribute(v, "DFF")
+			local TXD = xmlNodeGetAttribute(v, "TXD")
 			local Model = tonumber(xmlNodeGetAttribute(v, "model"))
 			if (DFF and TXD and Model) then
 				engineImportTXD ( engineLoadTXD ( TXD ), Model )

@@ -611,12 +611,8 @@ function showFactionList(factions)
 
 		bFactionListClose = guiCreateButton(0.025, 0.9, 0.95, 0.1, "Close", true, wFactionList)
 		addEventHandler("onClientGUIClick", bFactionListClose, closeFactionList, false)
-		
-		showCursor(true)
 	else
-		guiSetVisible(wFactionList, true)
-		guiBringToFront(wFactionList)
-		showCursor(true)
+		guiSetVisible(wFactionList, not guiGetVisible(wFactionList))
 	end
 end
 addEvent("showFactionList", true)
@@ -624,7 +620,6 @@ addEventHandler("showFactionList", getRootElement(), showFactionList)
 
 function closeFactionList(button, state)
 	if (source==bFactionListClose) and (button=="left") and (state=="up") then
-		showCursor(false)
 		guiSetInputEnabled(false)
 		destroyElement(wFactionList)
 		wFactionList, bFactionListClose = nil, nil

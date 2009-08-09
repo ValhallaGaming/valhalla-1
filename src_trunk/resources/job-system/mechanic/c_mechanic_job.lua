@@ -81,7 +81,7 @@ addEventHandler("openMechanicFixWindow", getRootElement(), mechanicWindow)
 
 function tyreWindow()
 	-- Window variables
-	local Width = 200
+	local Width = getVehicleType(currentVehicle) == "Bike" and 100 or 200
 	local Height = 300
 	local screenwidth, screenheight = guiGetScreenSize()
 	local X = (screenwidth - Width)/2
@@ -91,59 +91,86 @@ function tyreWindow()
 		-- Create the window
 		wTyre = guiCreateWindow(X+100, Y, Width, Height, "Select a tyre to change.", false )
 		
-		-- Front left
-		bTyreOne = guiCreateButton( 0.05, 0.1, 0.45, 0.35, "Front Left", true, wTyre )
-		addEventHandler( "onClientGUIClick", bTyreOne, function(button, state)
-			if(button == "left" and state == "up") then
-				
-				triggerServerEvent( "tyreChange", getLocalPlayer(), currentVehicle, 1)
-				closeMechanicWindow()
-				
-			end
-		end, false)
+		if getVehicleType(currentVehicle) ~= "Bike" then
+			-- Front left
+			bTyreOne = guiCreateButton( 0.05, 0.1, 0.45, 0.35, "Front Left", true, wTyre )
+			addEventHandler( "onClientGUIClick", bTyreOne, function(button, state)
+				if(button == "left" and state == "up") then
+					
+					triggerServerEvent( "tyreChange", getLocalPlayer(), currentVehicle, 1)
+					closeMechanicWindow()
+					
+				end
+			end, false)
+			
+			-- Back left
+			bTyreTwo = guiCreateButton( 0.05, 0.5, 0.45, 0.35, "Back Left", true, wTyre )
+			addEventHandler( "onClientGUIClick", bTyreTwo, function(button, state)
+				if(button == "left" and state == "up") then
+					
+					triggerServerEvent( "tyreChange", getLocalPlayer(), currentVehicle, 2)
+					closeMechanicWindow()
+					
+				end
+			end, false)
+			
+			-- front right
+			bTyreThree = guiCreateButton( 0.5, 0.1, 0.45, 0.35, "Front Right", true, wTyre )
+			addEventHandler( "onClientGUIClick", bTyreThree, function(button, state)
+				if(button == "left" and state == "up") then
+					
+					triggerServerEvent( "tyreChange", getLocalPlayer(), currentVehicle, 3)
+					closeMechanicWindow()
+					
+				end
+			end, false)
+			
+			-- back right
+			bTyreFour = guiCreateButton( 0.5, 0.5, 0.45, 0.35, "Back Right", true, wTyre )
+			addEventHandler( "onClientGUIClick", bTyreFour, function(button, state)
+				if(button == "left" and state == "up") then
+					
+					triggerServerEvent( "tyreChange", getLocalPlayer(), currentVehicle, 4)
+					closeMechanicWindow()
+					
+				end
+			end, false)
+		else
+			-- Front
+			bTyreOne = guiCreateButton( 0.05, 0.1, 0.9, 0.35, "Front", true, wTyre )
+			addEventHandler( "onClientGUIClick", bTyreOne, function(button, state)
+				if(button == "left" and state == "up") then
+					
+					triggerServerEvent( "tyreChange", getLocalPlayer(), currentVehicle, 1)
+					closeMechanicWindow()
+					
+				end
+			end, false)
 		
-		-- Back left
-		bTyreTwo = guiCreateButton( 0.05, 0.5, 0.45, 0.35, "Back Left", true, wTyre )
-		addEventHandler( "onClientGUIClick", bTyreTwo, function(button, state)
-			if(button == "left" and state == "up") then
-				
-				triggerServerEvent( "tyreChange", getLocalPlayer(), currentVehicle, 2)
-				closeMechanicWindow()
-				
-			end
-		end, false)
-		
-		-- front right
-		bTyreThree = guiCreateButton( 0.5, 0.1, 0.45, 0.35, "Front Right", true, wTyre )
-		addEventHandler( "onClientGUIClick", bTyreThree, function(button, state)
-			if(button == "left" and state == "up") then
-				
-				triggerServerEvent( "tyreChange", getLocalPlayer(), currentVehicle, 3)
-				closeMechanicWindow()
-				
-			end
-		end, false)
-		
-		-- back right
-		bTyreFour = guiCreateButton( 0.5, 0.5, 0.45, 0.35, "Back Right", true, wTyre )
-		addEventHandler( "onClientGUIClick", bTyreFour, function(button, state)
-			if(button == "left" and state == "up") then
-				
-				triggerServerEvent( "tyreChange", getLocalPlayer(), currentVehicle, 4)
-				closeMechanicWindow()
-				
-			end
-		end, false)
-		
+			-- back right
+			bTyreThree = guiCreateButton( 0.05, 0.5, 0.9, 0.35, "Back", true, wTyre )
+			addEventHandler( "onClientGUIClick", bTyreThree, function(button, state)
+				if(button == "left" and state == "up") then
+					
+					triggerServerEvent( "tyreChange", getLocalPlayer(), currentVehicle, 2)
+					closeMechanicWindow()
+					
+				end
+			end, false)
+		end
 		-- Close
 		bTyreClose = guiCreateButton( 0.05, 0.9, 0.9, 0.1, "Close", true, wTyre )
 		addEventHandler( "onClientGUIClick", bTyreClose,  function(button, state)
 			if(button == "left" and state == "up") then
 				
 				destroyElement(bTyreOne)
-				destroyElement(bTyreTwo)
+				if bTyreTwo then
+					destroyElement(bTyreTwo)
+				end
 				destroyElement(bTyreThree)
-				destroyElement(bTyreFour)
+				if bTyreFour then
+					destroyElement(bTyreFour)
+				end
 				destroyElement(bTyreClose)
 				destroyElement(wTyre)
 				wTyre, bTyreOne, bTyreTwo, bTyreThree, bTyreFour, bTyreClose = nil
@@ -246,7 +273,7 @@ function paintjobWindow()
 		-- Create the window
 		wPaintjob = guiCreateWindow(X+100, Y, Width, Height, "Select a new Paintjob.", false )
 		
-		-- Front left
+		-- Paintjob 1
 		bPaintjob1 = guiCreateButton( 0.05, 0.1, 0.9, 0.17, "Paintjob 1", true, wPaintjob )
 		addEventHandler( "onClientGUIClick", bPaintjob1, function(button, state)
 			if(button == "left" and state == "up") then
@@ -257,7 +284,7 @@ function paintjobWindow()
 			end
 		end, false)
 		
-		-- Back left
+		-- Paintjob 2
 		bPaintjob2 = guiCreateButton( 0.05, 0.3, 0.9, 0.17, "Paintjob 2", true, wPaintjob )
 		addEventHandler( "onClientGUIClick", bPaintjob2, function(button, state)
 			if(button == "left" and state == "up") then
@@ -268,7 +295,7 @@ function paintjobWindow()
 			end
 		end, false)
 		
-		-- front right
+		-- Paintjob 3
 		bPaintjob3 = guiCreateButton( 0.05, 0.5, 0.9, 0.17, "Paintjob 3", true, wPaintjob )
 		addEventHandler( "onClientGUIClick", bPaintjob3, function(button, state)
 			if(button == "left" and state == "up") then
@@ -279,7 +306,7 @@ function paintjobWindow()
 			end
 		end, false)
 		
-		-- back right
+		-- Paintjob 4
 		bPaintjob4 = guiCreateButton( 0.05, 0.7, 0.9, 0.17, "Paintjob 4", true, wPaintjob )
 		addEventHandler( "onClientGUIClick", bPaintjob4, function(button, state)
 			if(button == "left" and state == "up") then
@@ -595,9 +622,13 @@ function closeMechanicWindow()
 	
 	if(wTyre)then
 		destroyElement(bTyreOne)
-		destroyElement(bTyreTwo)
+		if bTyreTwo then
+			destroyElement(bTyreTwo)
+		end
 		destroyElement(bTyreThree)
-		destroyElement(bTyreFour)
+		if bTyreFour then
+			destroyElement(bTyreFour)
+		end
 		destroyElement(bTyreClose)
 		destroyElement(wTyre)
 		wTyre, bTyreOne, bTyreTwo, bTyreThree, bTyreFour, bTyreClose = nil

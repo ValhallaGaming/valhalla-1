@@ -27,5 +27,8 @@
 	<script src="ghettoblaster/tracks.lua" type="server"/>
 	<script src="ghettoblaster/c_ghettoblaster.lua" type="client"/>
 	<script src="ghettoblaster/s_ghettoblaster.lua" type="server"/>
-	<file src="ghettoblaster/loop.mp3" />
+	<file src="ghettoblaster/cali_vacation_loop.mp3" />
+	<file src="ghettoblaster/whats_my_name_loop.mp3" />
+	<file src="ghettoblaster/what_we_do_loop.mp3" />
+	<file src="ghettoblaster/mo_money_mo_problems_loop.mp3" />
 </meta>

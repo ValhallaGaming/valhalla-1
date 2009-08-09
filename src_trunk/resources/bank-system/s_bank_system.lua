@@ -103,16 +103,13 @@ addEvent("depositMoneyBusiness", true)
 addEventHandler("depositMoneyBusiness", getRootElement(), depositMoneyBusiness)
 
 function transferMoneyToPersonal(business, name, amount)
-	local reciever = getPlayerFromName(name)
-	local found, bankmoney
-	if reciever then
-		bankmoney = getElementData(reciever, "bankmoney")
-		found = true
-	else
-		local result = mysql_query(handler, "SELECT bankmoney FROM characters WHERE charactername='" .. string.gsub(name," ","_") .. "' LIMIT 1")
+	local reciever = getPlayerFromName(string.gsub(name," ","_"))
+	local dbid = nil
+	if not reciever then
+		local result = mysql_query(handler, "SELECT id FROM characters WHERE charactername='" .. string.gsub(name," ","_") .. "' LIMIT 1")
 		if result then
 			if mysql_num_rows(result) > 0 then
-				bankmoney = tonumber(mysql_result(result, 1, 1))
+				dbid = tonumber(mysql_result(result, 1, 1))
 				mysql_free_result(result)
 				found = true
 			end
@@ -121,21 +118,22 @@ function transferMoneyToPersonal(business, name, amount)
 		end
 	end
 	
-	if not found then
+	if not dbid and not reciever then
 		outputChatBox("Player not found. Please enter the full character name.", source, 255, 0, 0)
 	else
 		if business then
 			local theTeam = getPlayerTeam(source)
 			local money = getElementData(theTeam, "money")
 			mysql_query(handler, "UPDATE factions SET bankbalance='" .. money - amount .. "' WHERE name='" .. getTeamName(theTeam) .. "'")
+			setElementData(theTeam, "money", money - amount)
 		else
 			setElementData(source, "bankmoney", getElementData(source, "bankmoney") - amount)
 		end
 		
 		if reciever then
-			setElementData(reciever, "bankmoney", bankmoney + amount)
+			setElementData(reciever, "bankmoney", getElementData(reciever, "bankmoney") + amount)
 		else
-			mysql_query(handler, "UPDATE characters SET bankmoney='" .. bankmoney + amount .. "' WHERE charactername='" .. string.gsub(name," ","_") .. "'")
+			mysql_query(handler, "UPDATE characters SET bankmoney=bankmoney+" .. amount .. " WHERE id=" .. dbid)
 		end
 		triggerClientEvent(source, "hideBankUI", source)
 		outputChatBox("You transfered " .. amount .. "$ from your "..(business and "business" or "personal").." account to "..name..(string.sub(name,-1) == "s" and "'" or "'s").." account.", source, 255, 194, 14)

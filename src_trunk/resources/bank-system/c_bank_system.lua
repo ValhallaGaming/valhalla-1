@@ -160,7 +160,7 @@ function transferMoneyPersonal(button)
 		local money = getElementData(localPlayer, "bankmoney")
 		local playername = guiGetText(eTransferP)
 		
-		if (tostring(type(tonumber(amount)))~="number" or tonumber(amount)<=0) then
+		if not amount or amount <= 0 then
 			outputChatBox("Please enter a number greater than 0!", 255, 0, 0)
 		elseif (amount>money) then
 			outputChatBox("You do not have enough funds.", 255, 0, 0)
@@ -209,7 +209,7 @@ function transferMoneyBusiness(button)
 		local amount = tonumber(guiGetText(tTransferB))
 		local playername = guiGetText(eTransferB)
 		
-		if (tostring(type(tonumber(amount)))~="number" or tonumber(amount)<=0) then
+		if not amount or amount <= 0 then
 			outputChatBox("Please enter a number greater than 0!", 255, 0, 0)
 		elseif (amount>gfactionBalance) then
 			outputChatBox("You do not have enough funds.", 255, 0, 0)

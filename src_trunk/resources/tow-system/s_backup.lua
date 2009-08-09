@@ -1,77 +1,69 @@
-backupBlip = nil
+backupBlip = false
 backupPlayer = nil
 
 function removeBackup(thePlayer, commandName)
 	if (exports.global:isPlayerAdmin(thePlayer)) then
 		if (backupPlayer~=nil) then
-			destroyElement(backupBlip)
+			
+			for k,v in ipairs(getPlayersInTeam ( getTeamFromName("McJones Towing") )) do
+				triggerClientEvent(v, "destroyBackupBlip", backupBlip)
+			end
 			removeEventHandler("onPlayerQuit", backupPlayer, destroyBlip)
 			removeEventHandler("savePlayer", backupPlayer, destroyBlip)
 			backupPlayer = nil
-			backupBlip = nil
+			backupBlip = false
 			outputChatBox("Backup system reset!", thePlayer, 255, 194, 14)
 		else
 			outputChatBox("Backup system did not need reset.", thePlayer, 255, 194, 14)
 		end
 	end
 end
---addCommandHandler("resettowbackup", removeBackup, false, false)
+addCommandHandler("resettowbackup", removeBackup, false, false)
 
-function towtruck(thePlayer, commandName)
-	local theTeam = getTeamFromName("McJones Towing")
-	local thePlayerTeam = getPlayerTeam(thePlayer)
-	local factionType = getElementData(thePlayerTeam, "type")
+function backup(thePlayer, commandName)
+	local duty = tonumber(getElementData(thePlayer, "duty"))
+	local theTeam = getPlayerTeam(thePlayer)
+	local factionType = getElementData(theTeam, "type")
 	
 	--if (factionType==3 or getTeamName(thePlayerTeam) == "McJones Towing") then--Leaving this in in case of abuse.
-		if (backupBlip) and (backupPlayer~=thePlayer) then -- in use
-			outputChatBox("There is already a TowTruck request beacon in use.", thePlayer, 255, 194, 14)
-		elseif not (backupBlip) then -- make backup blip
+		if (backupBlip == true) and (backupPlayer~=thePlayer) then -- in use
+			outputChatBox("There is already a backup beacon in use.", thePlayer, 255, 194, 14)
+		elseif (backupBlip == false) then -- make backup blip
+			backupBlip = true
 			backupPlayer = thePlayer
-			local x, y, z = getElementPosition(thePlayer)
-			backupBlip = createBlip(x, y, z, 0, 3, 255, 0, 0, 255, 255, 32767)
-			exports.pool:allocateElement(backupBlip)
-			attachElements(backupBlip, thePlayer)
-			
+			for k,v in ipairs(getPlayersInTeam (theTeam)) do
+				triggerClientEvent(v, "createBackupBlip", thePlayer)
+				outputChatBox("A player requires a Tow Truck. Please respond ASAP!", v, 255, 194, 14)
+			end
+
 			addEventHandler("onPlayerQuit", thePlayer, destroyBlip)
 			addEventHandler("savePlayer", thePlayer, destroyBlip)
 			
-			setElementVisibleTo(backupBlip, getRootElement(), false)
-			
-			for key, value in ipairs(getPlayersInTeam(theTeam)) do
-				outputChatBox("A player requires a Tow Truck. Please respond ASAP!", value, 255, 194, 14)
-				setElementVisibleTo(backupBlip, value, true)
+		elseif (backupBlip == true) and (backupPlayer==thePlayer) then -- in use by this player
+			for key, v in ipairs(getPlayersInTeam(theTeam)) do
+				triggerClientEvent(v, "destroyBackupBlip", getRootElement())
+				outputChatBox("The player no longer requires a Tow Truck. Resume normal patrol", v, 255, 194, 14)
 			end
-			
-			
-			for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
-				
-				if (getPlayerTeam(value)~=theTeam) then
-					setElementVisibleTo(backupBlip, value, false)
-				end
-			end
-		elseif (backupBlip) and (backupPlayer==thePlayer) then -- in use by this player
-			for key, value in ipairs(getPlayersInTeam(theTeam)) do
-				outputChatBox("The player no longer requires a Tow Truck. Resume normal patrol", value, 255, 194, 14)
-			end
-			
-			destroyElement(backupBlip)
+
 			removeEventHandler("onPlayerQuit", thePlayer, destroyBlip)
 			removeEventHandler("savePlayer", thePlayer, destroyBlip)
 			backupPlayer = nil
-			backupBlip = nil
+			backupBlip = false
 		end
 	--end
 end
---addCommandHandler("towtruck", towtruck, false, false)
+addCommandHandler("towtruck", backup, false, false)
 
 function destroyBlip()
 	local theTeam = getPlayerTeam(source)
 	for key, value in ipairs(getPlayersInTeam(theTeam)) do
-		outputChatBox("The Officer no longer requires a Tow Truck. Resume normal patrol", value, 255, 194, 14)
+		outputChatBox("The unit no longer requires assistance. Resume normal patrol", value, 255, 194, 14)
 	end
-	destroyElement(backupBlip)
+	for k,v in ipairs(getPlayersInTeam ( getTeamFromName("McJones Towing") )) do
+		triggerClientEvent(v, "destroyBackupBlip", backupBlip)
+	end
 	removeEventHandler("onPlayerQuit", thePlayer, destroyBlip)
 	removeEventHandler("savePlayer", thePlayer, destroyBlip)
 	backupPlayer = nil
-	backupBlip = nil
+	backupBlip = false
 end

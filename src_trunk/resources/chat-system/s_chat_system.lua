@@ -1051,7 +1051,7 @@ function localWhisper(thePlayer, commandName, targetPlayerNick, ...)
 					local name = string.gsub(getPlayerName(thePlayer), "_", " ")
 					local targetName = string.gsub(getPlayerName(targetPlayer), "_", " ")
 					
-					exports.global:sendLocalMeAction(thePlayer, " whispers to " .. targetName .. ".")
+					exports.global:sendLocalMeAction(thePlayer, "whispers to " .. targetName .. ".")
 					outputChatBox(name .. " whispers: " .. message, thePlayer, 255, 255, 255)
 					outputChatBox(name .. " whispers: " .. message, targetPlayer, 255, 255, 255)
 				else

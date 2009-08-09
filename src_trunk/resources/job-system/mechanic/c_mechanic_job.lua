@@ -20,6 +20,9 @@ function displayMechanicJob()
 	outputChatBox("#FF9933Use the #FF0000right-click menu#FF9933 to view the services you can provide.", 255, 194, 15, true)
 end
 
+local noTyres = { Boat = true, Helicopter = true, Plane = true, Train = true }
+local noUpgrades = { Boat = true, Helicopter = true, Plane = true, Train = true, BMX = true }
+
 function mechanicWindow(vehicle)
 	local job = getElementData(getLocalPlayer(), "job")
 	if (job==5)then
@@ -38,32 +41,41 @@ function mechanicWindow(vehicle)
 				-- Create the window
 				wMechanic = guiCreateWindow(X, Y, Width, Height, "Mechanic Options.", false )
 				
+				local y = 0.05
 				-- Body work
-				bMechanicOne = guiCreateButton( 0.05, 0.05, 0.9, 0.1, "Bodywork Repair - $50", true, wMechanic )
+				bMechanicOne = guiCreateButton( 0.05, y, 0.9, 0.1, "Bodywork Repair - $50", true, wMechanic )
 				addEventHandler( "onClientGUIClick", bMechanicOne, bodyworkTrigger, false)
+				y = y + 0.1
 				
 				-- Service
-				bMechanicTwo = guiCreateButton( 0.05, 0.15, 0.9, 0.1, "Full Service - $100", true, wMechanic )
+				bMechanicTwo = guiCreateButton( 0.05, y, 0.9, 0.1, "Full Service - $100", true, wMechanic )
 				addEventHandler( "onClientGUIClick", bMechanicTwo, serviceTrigger, false)
+				y = y + 0.1
 				
 				-- Tyre Change
-				bMechanicThree = guiCreateButton( 0.05, 0.25, 0.9, 0.1, "Tyre Change - $10", true, wMechanic )
-				addEventHandler( "onClientGUIClick", bMechanicThree, tyreWindow, false)
+				if not noTyres[getVehicleType(vehicle)] then
+					bMechanicThree = guiCreateButton( 0.05, y, 0.9, 0.1, "Tyre Change - $10", true, wMechanic )
+					addEventHandler( "onClientGUIClick", bMechanicThree, tyreWindow, false)
+					y = y + 0.1
+				end
 				
 				-- Recolour
-				bMechanicFour = guiCreateButton( 0.05, 0.35, 0.9, 0.1, "Repaint Vehicle - $100", true, wMechanic )
+				bMechanicFour = guiCreateButton( 0.05, y, 0.9, 0.1, "Repaint Vehicle - $100", true, wMechanic )
 				addEventHandler( "onClientGUIClick", bMechanicFour, paintWindow, false)
+				y = y + 0.1
 				
 				-- Upgrades
-				if getVehicleType(vehicle) ~= "Boat" and #getVehicleCompatibleUpgrades(vehicle) > 0 then
-					bMechanicFive = guiCreateButton( 0.05, 0.45, 0.9, 0.1, "Add Upgrade", true, wMechanic )
+				if not noUpgrades[getVehicleType(vehicle)] and #getVehicleCompatibleUpgrades(vehicle) > 0 then
+					bMechanicFive = guiCreateButton( 0.05, y, 0.9, 0.1, "Add Upgrade", true, wMechanic )
 					addEventHandler( "onClientGUIClick", bMechanicFive, upgradeWindow, false)
+					y = y + 0.1
 				end
 				
 				-- Paintjob
 				if vehicleWithPaintjob[getElementModel(vehicle)] then
-					bMechanicSix = guiCreateButton( 0.05, 0.55, 0.9, 0.1, "Paintjob - $7500", true, wMechanic )
+					bMechanicSix = guiCreateButton( 0.05, y, 0.9, 0.1, "Paintjob - $7500", true, wMechanic )
 					addEventHandler( "onClientGUIClick", bMechanicSix, paintjobWindow, false)
+					y = y + 0.1
 				end
 				
 				-- Close
@@ -668,7 +680,9 @@ function closeMechanicWindow()
 	
 	destroyElement(bMechanicOne)
 	destroyElement(bMechanicTwo)
-	destroyElement(bMechanicThree)
+	if bMechanicThree then
+		destroyElement(bMechanicThree)
+	end
 	destroyElement(bMechanicFour)
 	if bMechanicFive then
 		destroyElement(bMechanicFive)

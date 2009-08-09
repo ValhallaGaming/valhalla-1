@@ -106,6 +106,7 @@ function transferMoneyToPersonal(business, name, amount)
 	local reciever = getPlayerFromName(string.gsub(name," ","_"))
 	if reciever == source then
 		outputChatBox("You can't wiretransfer money to yourself.", source, 255, 0, 0)
+		return
 	end
 	local dbid = nil
 	if not reciever then

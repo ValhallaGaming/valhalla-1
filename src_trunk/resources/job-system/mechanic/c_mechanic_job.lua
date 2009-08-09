@@ -10,8 +10,11 @@ wPaint, iColour1, iColour2, iColour3, iColour4, colourChart, bPaintSubmit, bPain
 -- Paintjob window
 wPaintjob, bPaintjob1, bPaintjob2, bPaintjob3, bPaintjob4, bPaintjobClose = nil
 
+-- Upgrade window
+wUpgrades, gUpgrades, bUpgradesClose = nil
+
 currentVehicle = nil
-vehicleWithPaintjob = { [558] = true, [559] = true, [560] = true, [561] = true, [562] = true }
+vehicleWithPaintjob = { [558] = true, [559] = true, [560] = true, [561] = true, [562] = true, [565] = true }
 
 function displayMechanicJob()
 	outputChatBox("#FF9933Use the #FF0000right-click menu#FF9933 to view the services you can provide.", 255, 194, 15, true)
@@ -51,14 +54,15 @@ function mechanicWindow(vehicle)
 				bMechanicFour = guiCreateButton( 0.05, 0.35, 0.9, 0.1, "Repaint Vehicle - $100", true, wMechanic )
 				addEventHandler( "onClientGUIClick", bMechanicFour, paintWindow, false)
 				
-				--[[-- Upgrades
+				-- Upgrades
 				if getVehicleType(vehicle) ~= "Boat" and #getVehicleCompatibleUpgrades(vehicle) > 0 then
 					bMechanicFive = guiCreateButton( 0.05, 0.45, 0.9, 0.1, "Add Upgrade", true, wMechanic )
-				end]]
+					addEventHandler( "onClientGUIClick", bMechanicFive, upgradeWindow, false)
+				end
 				
 				-- Paintjob
 				if vehicleWithPaintjob[getElementModel(vehicle)] then
-					bMechanicSix = guiCreateButton( 0.05, 0.45, 0.9, 0.1, "Paintjob - $7500", true, wMechanic )
+					bMechanicSix = guiCreateButton( 0.05, 0.55, 0.9, 0.1, "Paintjob - $7500", true, wMechanic )
 					addEventHandler( "onClientGUIClick", bMechanicSix, paintjobWindow, false)
 				end
 				
@@ -238,12 +242,12 @@ function paintjobWindow()
 	local X = (screenwidth - Width)/2
 	local Y = (screenheight - Height)/2
 	
-	if not (wTyre) then
+	if not (wPaintjob) then
 		-- Create the window
-		wTyre = guiCreateWindow(X+100, Y, Width, Height, "Select a new Paintjob.", false )
+		wPaintjob = guiCreateWindow(X+100, Y, Width, Height, "Select a new Paintjob.", false )
 		
 		-- Front left
-		bPaintjob1 = guiCreateButton( 0.05, 0.1, 0.9, 0.17, "Paintjob 1", true, wTyre )
+		bPaintjob1 = guiCreateButton( 0.05, 0.1, 0.9, 0.17, "Paintjob 1", true, wPaintjob )
 		addEventHandler( "onClientGUIClick", bPaintjob1, function(button, state)
 			if(button == "left" and state == "up") then
 				
@@ -254,7 +258,7 @@ function paintjobWindow()
 		end, false)
 		
 		-- Back left
-		bPaintjob2 = guiCreateButton( 0.05, 0.3, 0.9, 0.17, "Paintjob 2", true, wTyre )
+		bPaintjob2 = guiCreateButton( 0.05, 0.3, 0.9, 0.17, "Paintjob 2", true, wPaintjob )
 		addEventHandler( "onClientGUIClick", bPaintjob2, function(button, state)
 			if(button == "left" and state == "up") then
 				
@@ -265,7 +269,7 @@ function paintjobWindow()
 		end, false)
 		
 		-- front right
-		bPaintjob3 = guiCreateButton( 0.05, 0.5, 0.9, 0.17, "Paintjob 3", true, wTyre )
+		bPaintjob3 = guiCreateButton( 0.05, 0.5, 0.9, 0.17, "Paintjob 3", true, wPaintjob )
 		addEventHandler( "onClientGUIClick", bPaintjob3, function(button, state)
 			if(button == "left" and state == "up") then
 				
@@ -276,7 +280,7 @@ function paintjobWindow()
 		end, false)
 		
 		-- back right
-		bPaintjob4 = guiCreateButton( 0.05, 0.7, 0.9, 0.17, "Paintjob 4", true, wTyre )
+		bPaintjob4 = guiCreateButton( 0.05, 0.7, 0.9, 0.17, "Paintjob 4", true, wPaintjob )
 		addEventHandler( "onClientGUIClick", bPaintjob4, function(button, state)
 			if(button == "left" and state == "up") then
 				
@@ -287,7 +291,7 @@ function paintjobWindow()
 		end, false)
 		
 		-- Close
-		bPaintjobClose = guiCreateButton( 0.05, 0.9, 0.9, 0.1, "Close", true, wTyre )
+		bPaintjobClose = guiCreateButton( 0.05, 0.9, 0.9, 0.1, "Close", true, wPaintjob )
 		addEventHandler( "onClientGUIClick", bPaintjobClose,  function(button, state)
 			if(button == "left" and state == "up") then
 				
@@ -299,6 +303,279 @@ function paintjobWindow()
 				destroyElement(wPaintjob)
 				wPaintjob, bPaintjob1, bPaintjob2, bPaintjob3, bPaintjob4, bPaintjobClose = nil
 				
+			end
+		end, false)
+	end
+end
+
+local spoilerPrice = 8000
+local hoodPrice = 2700
+local sideskirtPrice = 5000
+local roofPrice = 2500
+local lightPrice = 1500
+local wheelPrice = 4500
+local exhaustPrice = 2000
+local bullbarPrice = 3000
+local bumperPrice = 3000
+local upgrades = {
+	{ "Pro", spoilerPrice }, -- TRANSFENDER
+	{ "Win", spoilerPrice },
+	{ "Drag", spoilerPrice },
+	{ "Alpha", spoilerPrice },
+	{ "Champ Scoop", hoodPrice },
+	{ "Fury Scoop", hoodPrice },
+	{ "Roof Scoop", roofPrice },
+	{ "Right Sideskirt", sideskirtPrice },
+	--{ "5x Nitro", 10000 }, -- NOS
+	--{ "2x Nitro", 6000 },
+	--{ "10x Nitro", 20000 },
+	false,
+	false,
+	false,
+	{ "Race Scoop", hoodPrice }, -- TRANSFENDER
+	{ "Worx Scoop", hoodPrice },
+	{ "Round Fog", lightPrice },
+	{ "Champ", spoilerPrice },
+	{ "Race", spoilerPrice },
+	{ "Worx", spoilerPrice },
+	{ "Left Sideskirt", sideskirtPrice },
+	{ "Upswept", exhaustPrice },
+	{ "Twin", exhaustPrice },
+	{ "Large", exhaustPrice },
+	{ "Medium", exhaustPrice },
+	{ "Small", exhaustPrice },
+	{ "Fury", spoilerPrice },
+	{ "Square Fog", lightPrice },
+	{ "Offroad", wheelPrice },
+	{ "Right Alien Sideskirt", sideskirtPrice }, -- SULTAN
+	{ "Left Alien Sideskirt", sideskirtPrice },
+	{ "Alien", exhaustPrice },
+	{ "X-Flow", exhaustPrice },
+	{ "Left X-Flow Sideskirt", sideskirtPrice },
+	{ "Right X-Flow Sideskirt", sideskirtPrice },
+	{ "Alien Roof Vent", roofPrice },
+	{ "X-Flow Roof Vent", roofPrice },
+	{ "Alien", exhaustPrice }, -- ELEGY
+	{ "X-Flow Roof Vent", roofPrice },
+	{ "Right Alien Sideskirt", sideskirtPrice },
+	{ "X-Flow", exhaustPrice },
+	{ "Alien Roof Vent", roofPrice },
+	{ "Left X-Flow Sideskirt", sideskirtPrice },
+	{ "Left Alien Sideskirt", sideskirtPrice },
+	{ "Right X-Flow Sideskirt", sideskirtPrice },
+	{ "Right Chrome Sideskirt", sideskirtPrice }, -- BROADWAY
+	{ "Slamin", exhaustPrice },
+	{ "Chrome", exhaustPrice },
+	{ "X-Flow", exhaustPrice }, -- FLASH
+	{ "Alien", exhaustPrice },
+	{ "Right Alien Sideskirt", sideskirtPrice },
+	{ "Right X-Flow Sideskirt", sideskirtPrice },
+	{ "Alien", spoilerPrice },
+	{ "X-Flow", spoilerPrice },
+	{ "Left Alien Sideskirt", sideskirtPrice },
+	{ "Left X-Flow Sideskirt", sideskirtPrice },
+	{ "X-Flow", roofPrice },
+	{ "Alien", roofPrice },
+	{ "Alien", roofPrice }, -- STRATUM
+	{ "Right Alien Sideskirt", sideskirtPrice },
+	{ "Right X-Flow Sideskirt", sideskirtPrice },
+	{ "Alien", spoilerPrice },
+	{ "X-Flow", exhaustPrice },
+	{ "X-Flow", spoilerPrice },
+	{ "X-Flow", roofPrice },
+	{ "Left Alien Sideskirt", sideskirtPrice },
+	{ "Left X-Flow Sideskirt", sideskirtPrice },
+	{ "Alien", exhaustPrice },
+	{ "Alien", exhaustPrice }, -- JESTER
+	{ "X-Flow", exhaustPrice },
+	{ "Alien", roofPrice },
+	{ "X-Flow", roofPrice },
+	{ "Right Alien Sideskirt", sideskirtPrice },
+	{ "Right X-Flow Sideskirt", sideskirtPrice },
+	{ "Left Alien Sideskirt", sideskirtPrice },
+	{ "Left X-Flow Sideskirt", sideskirtPrice },
+	{ "Shadow", wheelPrice }, -- MOST CARS (WHEELS)
+	{ "Mega", wheelPrice },
+	{ "Rimshine", wheelPrice },
+	{ "Wires", wheelPrice },
+	{ "Classic", wheelPrice },
+	{ "Twist", wheelPrice },
+	{ "Cutter", wheelPrice },
+	{ "Switch", wheelPrice },
+	{ "Grove", wheelPrice },
+	{ "Import", wheelPrice },
+	{ "Dollar", wheelPrice },
+	{ "Trance", wheelPrice },
+	{ "Atomic", wheelPrice },
+	{ "Stereo", 1000 },
+	{ "Hydraulics", 2200 },
+	{ "Alien", roofPrice }, -- URANUS
+	{ "X-Flow", exhaustPrice },
+	{ "Right Alien Sideskirt", sideskirtPrice },
+	{ "X-Flow", roofPrice },
+	{ "Alien", exhaustPrice },
+	{ "Right X-Flow Sideskirt", sideskirtPrice },
+	{ "Left Alien Sideskirt", sideskirtPrice },
+	{ "Left X-Flow Sideskirt", sideskirtPrice },
+	{ "Ahab", wheelPrice }, -- MOST CARS(WHEELS)
+	{ "Virtual", wheelPrice },
+	{ "Access", wheelPrice },
+	{ "Left Chrome Sideskirt", sideskirtPrice }, -- BROADWAY
+	{ "Chrome Grill", 4000 }, -- REMINGTON
+	{ "Left Chrome Flames Sideskirt", sideskirtPrice },
+	{ "Left Chrome Strip Sideskirt", sideskirtPrice }, -- SAVANNA
+	{ "Covertible", roofPrice }, -- BLADE
+	{ "Chrome", exhaustPrice },
+	{ "Slamin", exhaustPrice },
+	{ "Right Chrome Arches", sideskirtPrice }, -- REMINGTON
+	{ "Left Chrome Strip Sideskirt", sideskirtPrice }, -- BLADE
+	{ "Right Chrome Strip Sideskirt", sideskirtPrice },
+	{ "Chrome", bullbarPrice }, -- SLAMVAN
+	{ "Slamin", bullbarPrice },
+	false,
+	false, 
+	{ "Chrome", exhaustPrice },
+	{ "Slamin", exhaustPrice },
+	{ "Chrome", bullbarPrice },
+	{ "Slamin", bullbarPrice },
+	{ "Chrome", bumperPrice },
+	{ "Right Chrome Trim Sideskirt", sideskirtPrice },
+	{ "Right Wheelcovers Sideskirt", sideskirtPrice },
+	{ "Left Chrome Trim Sideskirt", sideskirtPrice },
+	{ "Left Wheelcovers Sideskirt", sideskirtPrice },
+	{ "Right Chrome Flames Sideskirt", sideskirtPrice }, -- REMINGTON
+	{ "Bullbar Chrome Bars", bullbarPrice },
+	{ "Left Chrome Arches Sideskirt", sideskirtPrice },
+	{ "Bullbar Chrome Lights", bullbarPrice },
+	{ "Chrome Exhaust", exhaustPrice },
+	{ "Slamin Exhaust", exhaustPrice },
+	{ "Vinyl Hardtop", roofPrice }, -- BLADE
+	{ "Chrome", exhaustPrice }, -- SAVANNA
+	{ "Hardtop", roofPrice },
+	{ "Softtop", roofPrice },
+	{ "Slamin", exhaustPrice },
+	{ "Right Chrom Strip Sideskirt", sideskirtPrice },
+	{ "Right Chrom Strip Sideskirt", sideskirtPrice }, -- TORNADO
+	{ "Slamin", exhaustPrice },
+	{ "Chrome", exhaustPrice },
+	{ "Left Chrome Strip Sideskirt", sideskirtPrice },
+	{ "Alien", spoilerPrice }, -- SULTAN
+	{ "X-Flow", spoilerPrice },
+	{ "X-Flow", bumperPrice },
+	{ "Alien", bumperPrice },
+	{ "Left Oval Vents", 500 }, -- CERTAIN TRANSFENDER CARS
+	{ "Right Oval Vents", 500 },
+	{ "Left Square Vents", 500 },
+	{ "Right Square Vents", 500 },
+	{ "X-Flow", spoilerPrice }, -- ELEGY
+	{ "Alien", spoilerPrice },
+	{ "X-Flow", bumperPrice },
+	{ "Alien", bumperPrice },
+	{ "Alien", bumperPrice }, -- FLASH
+	{ "X-Flow", bumperPrice },
+	{ "X-Flow", bumperPrice },
+	{ "Alien", bumperPrice },
+	{ "Alien", bumperPrice }, -- STRATUM
+	{ "Alien", bumperPrice },
+	{ "X-Flow", bumperPrice },
+	{ "X-Flow", bumperPrice },
+	{ "X-Flow", spoilerPrice }, -- JESTER
+	{ "Alien", bumperPrice },
+	{ "Alien", bumperPrice },
+	{ "X-Flow", bumperPrice },
+	{ "Alien", spoilerPrice },
+	{ "X-Flow", spoilerPrice }, -- URANUS
+	{ "Alien", spoilerPrice },
+	{ "X-Flow", bumperPrice },
+	{ "Alien", bumperPrice },
+	{ "X-Flow", bumperPrice },
+	{ "Alien", bumperPrice },
+	{ "Alien", bumperPrice }, -- SULTAN
+	{ "X-Flow", bumperPrice },
+	{ "Alien", bumperPrice }, -- ELEGY
+	{ "X-Flow", bumperPrice },
+	{ "X-Flow", bumperPrice }, -- JESTER
+	{ "Chrome", bumperPrice }, -- BROADWAY
+	{ "Slamin", bumperPrice },
+	{ "Chrome", bumperPrice },
+	{ "Slamin", bumperPrice },
+	{ "Slamin", bumperPrice }, -- REMINGTON
+	{ "Chrome", bumperPrice },
+	{ "Chrome", bumperPrice },
+	{ "Slamin", bumperPrice }, -- BLADE
+	{ "Chrome", bumperPrice },
+	{ "Slamin", bumperPrice },
+	{ "Chrome", bumperPrice },
+	{ "Slamin", bumperPrice }, -- REMINGTON
+	{ "Slamin", bumperPrice }, -- SAVANNA
+	{ "Chrome", bumperPrice },
+	{ "Slamin", bumperPrice },
+	{ "Chrome", bumperPrice },
+	{ "Slamin", bumperPrice }, -- TORNADO
+	{ "Chrome", bumperPrice },
+	{ "Chrome", bumperPrice },
+	{ "Slamin", bumperPrice }
+}
+
+function upgradeWindow()
+	-- Window variables
+	local Width = 270
+	local Height = 300
+	local screenwidth, screenheight = guiGetScreenSize()
+	local X = (screenwidth - Width)/2
+	local Y = (screenheight - Height)/2
+	
+	if not (wUpgrades) then
+		-- Create the window
+		wUpgrades = guiCreateWindow(X+100, Y, Width, Height, "Select the Upgrades you want", false )
+		
+		-- Add a gridlist with upgrades
+		gUpgrades = guiCreateGridList( 0.05, 0.1, 0.9, 0.75, true, wUpgrades )
+		cUpgradeName = guiGridListAddColumn( gUpgrades, "Name", 0.62 )
+		cUpgradePrice = guiGridListAddColumn( gUpgrades, "Price", 0.25 )
+		
+		-- add all compatible upgrades
+		for i = 0, 16 do
+			if i ~= 8 then -- skip nos
+				local slotupgrades = getVehicleCompatibleUpgrades(currentVehicle, i)
+				if #slotupgrades > 0 then
+					local row = guiGridListAddRow( gUpgrades )
+					guiGridListSetItemText( gUpgrades, row, cUpgradeName, getVehicleUpgradeSlotName(i), true, false)
+					
+					local currentUpgrade = getVehicleUpgradeOnSlot(currentVehicle, i)
+					-- add all items for that category
+					for key, value in pairs(slotupgrades) do
+						local upgrade = upgrades[value - 999]
+						if upgrade then
+							local row = guiGridListAddRow( gUpgrades )
+							guiGridListSetItemText( gUpgrades, row, cUpgradeName, upgrade[1], false, true)
+							guiGridListSetItemData( gUpgrades, row, cUpgradeName, tostring(value))
+							guiGridListSetItemText( gUpgrades, row, cUpgradePrice, "$" .. upgrade[2], false, true)
+							guiGridListSetItemData( gUpgrades, row, cUpgradePrice, tostring(upgrade[2]))
+						end
+					end
+				end
+			end
+		end
+		
+		addEventHandler( "onClientGUIDoubleClick", gUpgrades, function(button, state)
+			if button == "left" and state == "up" then
+				local row, col = guiGridListGetSelectedItem(gUpgrades)
+				if row ~= -1 and col ~= -1 then
+					triggerServerEvent( "changeVehicleUpgrade", getLocalPlayer(), currentVehicle, tonumber(guiGridListGetItemData(gUpgrades, row, 1)), guiGridListGetItemText(gUpgrades, row, 1), tonumber(guiGridListGetItemData(gUpgrades, row, 2)))
+				end
+			end
+		end)
+		
+		
+		-- Close
+		bUpgradesClose = guiCreateButton( 0.05, 0.9, 0.9, 0.1, "Close", true, wUpgrades )
+		addEventHandler( "onClientGUIClick", bUpgradesClose, function(button, state)
+			if(button == "left" and state == "up") then
+				destroyElement(bUpgradesClose)
+				destroyElement(gUpgrades)
+				destroyElement(wUpgrades)
+				wUpgrades, gUpgrades, bUpgradesClose = nil
 			end
 		end, false)
 	end
@@ -351,12 +628,23 @@ function closeMechanicWindow()
 		wPaintjob, bPaintjob1, bPaintjob2, bPaintjob3, bPaintjob4, bPaintjobClose = nil
 	end
 	
+	if wUpgrades then
+		destroyElement(bUpgradesClose)
+		destroyElement(gUpgrades)
+		destroyElement(wUpgrades)
+		wUpgrades, gUpgrades, bUpgradesClose = nil	
+	end
+	
 	destroyElement(bMechanicOne)
 	destroyElement(bMechanicTwo)
 	destroyElement(bMechanicThree)
 	destroyElement(bMechanicFour)
-	destroyElement(bMechanicFive)
-	destroyElement(bMechanicSix)
+	if bMechanicFive then
+		destroyElement(bMechanicFive)
+	end
+	if bMechanicSix then
+		destroyElement(bMechanicSix)
+	end
 	destroyElement(bMechanicClose)
 	destroyElement(wMechanic)
 	wMechanic, bMechanicOne, bMechanicOne, bMechanicClose, bMechanicThree, bMechanicFour, bMechanicFive, bMechanicSix = nil

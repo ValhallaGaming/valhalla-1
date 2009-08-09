@@ -86,6 +86,30 @@ end
 addEvent("paintjobChange", true)
 addEventHandler("paintjobChange", getRootElement(), changePaintjob)
 
+function changeVehicleUpgrade( veh, upgrade, name, cost )
+	if (veh) then
+		local money = getElementData(source, "money")
+		if money < cost then
+			outputChatBox("You can't afford to add " .. name .. " to this vehicle.", source, 255, 0, 0)
+		else
+			for i = 0, 16 do
+				if upgrade == getVehicleUpgradeOnSlot( veh, i ) then
+					outputChatBox("This car already has this upgrade.", source, 255, 0, 0)
+					return
+				end
+			end
+			if addVehicleUpgrade( veh, upgrade ) then
+				exports.global:takePlayerSafeMoney(source, cost)
+				exports.global:sendLocalMeAction(source, "added " .. name .. " to the vehicle.")
+			else
+				outputChatBox("Failed to apply the car upgrade.", source, 255, 0, 0)
+			end
+		end
+	end
+end
+addEvent("changeVehicleUpgrade", true)
+addEventHandler("changeVehicleUpgrade", getRootElement(), changeVehicleUpgrade)
+
 function changeVehicleColour(veh, col1, col2, col3, col4)
 	if (veh) then
 		local money = getElementData(source, "money")

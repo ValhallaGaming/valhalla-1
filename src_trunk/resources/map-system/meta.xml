@@ -9,7 +9,6 @@
 	<script src="LS Chinatown Ext.lua" type="client"/>
 	<script src="LS Harbor.lua" type="client"/>
 	<script src="LS Impound Ext.lua" type="client"/>
-	<script src="LS Prison Ext.lua" type="client"/>
 	<script src="LVMPD.lua" type="client"/>
 	<script src="Main Street.lua" type="client"/>
 	<script src="Marcos Bistro Interior Fix.lua" type="client"/>

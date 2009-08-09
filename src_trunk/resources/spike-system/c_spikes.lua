@@ -27,21 +27,4 @@ function SpikesOnGround(theElement, matchingDimension)
 		end
 	end
 end
-
-function AddedSpikes()
-	addEventHandler( "onClientColShapeHit", getRootElement(), SpikesOnGround )
-end
-addEvent( "onSpikesAdded", true )
-addEventHandler( "onSpikesAdded", getRootElement(), AddedSpikes)
-
-function AllSpikesRemoved(Shape,limit)
-	for value=1,limit,1 do
-		if(Shape[value] ~= nil) then
-		local id = tonumber ( value )
-		destroyElement(Shape[id])
-		end
-	end
-	removeEventHandler( "onClientColShapeHit", getRootElement(), SpikesOnGround )
-end
-addEvent( "onAllSpikesRemoved", true )
-addEventHandler( "onAllSpikesRemoved", getRootElement(), AllSpikesRemoved)
+addEventHandler( "onClientColShapeHit", getRootElement(), SpikesOnGround )

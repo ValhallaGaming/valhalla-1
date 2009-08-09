@@ -23,7 +23,6 @@ function PlacingSpikes(sourcePlayer, command)
 				Shape[value] = createColCuboid ( x1-0.5, y1-0.5, z1-0.8, 2.0, 2.0, 2.5)
 				exports.pool:allocateElement(Shape[value])
 				setElementData(Shape[value], "type", "spikes")
-				triggerClientEvent ("onSpikesAdded", getRootElement())
 				outputChatBox("Spawned spikes with ID:" .. value, sourcePlayer, 0, 194, 0)
 				
 				break end
@@ -36,28 +35,28 @@ end
 addCommandHandler("deployspikes", PlacingSpikes)
 
 
-function RemovingSpikes(sourcePlayer, command, ...)
+function RemovingSpikes(sourcePlayer, command, ID)
 	local theTeam = getPlayerTeam(sourcePlayer)
 	local teamType = getElementData(theTeam, "type")
 	
 	if (teamType==2) then
-		if not (...) then
+		if not (ID) then
 		outputChatBox("SYNTAX: /removespikes [ID]", sourcePlayer, 255, 194, 14)
 		
 		else
-			local message = table.concat({...}, " ")
-			message = tonumber ( message )
+			local message = tonumber(ID)
 			if(Spike[message] ~= nil) then
 				local x2,y2,z2 = getElementPosition(Spike[message])
 				local x1,y1,z1 = getElementPosition(sourcePlayer)
 				
-				if (getDistanceBetweenPoints3D(x1, y1, z1, x2, y2, z2) <= 5) then
+				if (getDistanceBetweenPoints3D(x1, y1, z1, x2, y2, z2) <= 10) then
 					outputChatBox("Removed spikes with ID:" .. message, sourcePlayer, 0, 194, 0)
 					TotalSpikes = TotalSpikes -1
-					destroyElement(Spike[tonumber(message)])
+					destroyElement(Spike[message])
 					Spike[message] = nil
+					destroyElement(Shape[message])
+					Shape[message] = nil
 					if(TotalSpikes <= 0) then
-						triggerClientEvent ("onAllSpikesRemoved", getRootElement(), Shape, SpikeLimit)
 						TotalSpikes = nil
 					end
 				else
@@ -77,6 +76,8 @@ function AdminRemovingSpikes(sourcePlayer, command)
 			local id = tonumber ( value )
 			destroyElement(Spike[id])
 			Spike[id] = nil
+			destroyElement(Shape[message])
+			Shape[message] = nil
 		end
 	end
 	triggerClientEvent ("onAllSpikesRemoved", getRootElement(), Shape, SpikeLimit)

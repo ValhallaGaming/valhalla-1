@@ -329,6 +329,9 @@ function showCarshopUI()
 	addEventHandler("onClientGUIScroll", sCol1, updateColors)
 	addEventHandler("onClientGUIScroll", sCol2, updateColors)
 	
+	guiSetProperty(sCol1, "StepSize", "0.01")
+	guiSetProperty(sCol2, "StepSize", "0.01")
+	
 	setCameraMatrix(533.1533203125, -1273.951171875, 19.2421875, 548.59375, -1276.373046875, 17.248237609863)
 	
 	guiSetInputEnabled(true)

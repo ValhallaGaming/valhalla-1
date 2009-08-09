@@ -204,11 +204,14 @@ function ticketPlayer(thePlayer, commandName, targetPlayerNick, amount, ...)
 						local reason = table.concat({...}, " ")
 						
 						local money = getElementData(targetPlayer, "money")
+						local bankmoney = getElementData(targetPlayer, "bankmoney")
 						
-						if (money<amount) then
+						if money + bankmoney < amount then
 							outputChatBox("This player cannot afford such a ticket.", thePlayer, 255, 0, 0)
 						else
-							exports.global:takePlayerSafeMoney(targetPlayer, amount)
+							local takeFromCash = math.min( money, amount )
+							local takeFromBank = amount - takeFromCash
+							exports.global:takePlayerSafeMoney(targetPlayer, takeFromCash)
 							
 							
 							-- Distribute money between the PD and Government
@@ -234,6 +237,10 @@ function ticketPlayer(thePlayer, commandName, targetPlayerNick, amount, ...)
 							
 							outputChatBox("You ticketed " .. getPlayerName(targetPlayer) .. " for " .. amount .. "$. Reason: " .. reason .. ".", thePlayer)
 							outputChatBox("You were ticketed for " .. amount .. "$ by " .. getPlayerName(thePlayer) .. ". Reason: " .. reason .. ".", targetPlayer)
+							if takeFromBank > 0 then
+								outputChatBox("Since you don't have enough money with you, $" .. takeFromBank .. " have been taken from your bank account.", targetPlayer)
+								setElementData(targetPlayer, "bankmoney", bankmoney - takeFromBank)
+							end
 						end
 					else
 						outputChatBox("You are too far away from " .. getPlayerName(targetPlayer) .. ".", thePlayer, 255, 0, 0)

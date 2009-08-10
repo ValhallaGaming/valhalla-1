@@ -41,7 +41,7 @@ function createElevator(thePlayer, commandName, interior, dimension, ix, iy, iz)
 			iy = tonumber(iy)
 			iz = tonumber(iz)
 			id = SmallestElevatorID()
-			if(id ~= nil and id ~= nil) then
+			if id then
 				local query = mysql_query(handler, "INSERT INTO elevators SET id='" .. id .. "', x='" .. x .. "', y='" .. y .. "', z='" .. z .. "', tpx='" .. ix .. "', tpy='" .. iy .. "', tpz='" .. iz .. "', dimensionwithin='" .. dimensionwithin .. "', interiorwithin='" .. interiorwithin .. "', dimension='" .. dimension .. "', interior='" .. interior .. "'")
 				
 				if (query) then
@@ -50,36 +50,17 @@ function createElevator(thePlayer, commandName, interior, dimension, ix, iy, iz)
 					exports.pool:allocateElement(pickup)
 					local intpickup = createPickup(ix, iy, iz, 3, 1318)
 					exports.pool:allocateElement(intpickup)
-					local shape1 = createColSphere(x, y, z, 2)
-					exports.pool:allocateElement(shape1)
-					local shape2 = createColSphere(ix, iy, iz, 2)
-					exports.pool:allocateElement(shape2)
 
-					setElementData(shape1, "dbid", id, false)
-					setElementData(shape1, "x", ix, false)
-					setElementData(shape1, "y", iy, false)
-					setElementData(shape1, "z", iz, false)
-					setElementData(shape1, "interior", interior, false)
-					setElementData(shape1, "dimension", dimension, false)
-					setElementData(shape1, "type", "elevator", false)
-					setElementData(pickup, "type", "elevator", false)
+					setElementData(pickup, "dbid", id, false)
+					setElementData(pickup, "other", intpickup, false)
 					setElementInterior(pickup, interiorwithin)
 					setElementDimension(pickup, dimensionwithin)
-					setElementInterior(shape1, interiorwithin)
-					setElementDimension(shape1, dimensionwithin)
 						
-					setElementData(shape2, "dbid", id, false)
-					setElementData(shape2, "x", x, false)
-					setElementData(shape2, "y", y, false)
-					setElementData(shape2, "z", z, false)
-					setElementData(shape2, "interior", interiorwithin, false)
-					setElementData(shape2, "dimension", dimensionwithin, false)
-					setElementData(shape2, "type", "elevator", false)
-					setElementData(intpickup, "type", "elevator", false)
+					setElementData(intpickup, "dbid", id, false)
+					setElementData(intpickup, "other", pickup, false)
 					setElementInterior(intpickup, interior)
 					setElementDimension(intpickup, dimension)
-					setElementInterior(shape2, interior)
-					setElementDimension(shape2, dimension)
+
 					outputChatBox("Elevator created with ID #" .. id .. "!", thePlayer, 0, 255, 0)
 				end
 			else
@@ -91,172 +72,136 @@ end
 addCommandHandler("addelevator", createElevator, false, false)
 
 function loadAllElevators(res)
-	if (res==getThisResource()) then
-		local players = exports.pool:getPoolElementsByType("player")
-		for k, thePlayer in ipairs(players) do
-			removeElementData(thePlayer, "UsedElevator")
-		end
-		local result = mysql_query(handler, "SELECT id, x, y, z, tpx, tpy, tpz, dimensionwithin, interiorwithin, dimension, interior FROM elevators")
-		local counter = 0
-		
-		if (result) then
-			for result, row in mysql_rows(result) do
-				local id = tonumber(row[1])
-				local x = tonumber(row[2])
-				local y = tonumber(row[3])
-				local z = tonumber(row[4])
-
-				local ix = tonumber(row[5])
-				local iy = tonumber(row[6])
-				local iz = tonumber(row[7])
-				
-				local dimensionwithin = tonumber(row[8])
-				local interiorwithin = tonumber(row[9])
-				
-				local dimension = tonumber(row[10])
-				local interior = tonumber(row[11])
-				
-				local pickup = createPickup(x, y, z, 3, 1318)
-				exports.pool:allocateElement(pickup)
-				local intpickup = createPickup(ix, iy, iz, 3, 1318)
-				exports.pool:allocateElement(intpickup)
-				local shape1 = createColSphere(x, y, z, 2)
-				exports.pool:allocateElement(shape1)
-				local shape2 = createColSphere(ix, iy, iz, 2)
-				exports.pool:allocateElement(shape2)
-
-				setElementData(shape1, "dbid", id, false)
-				setElementData(shape1, "x", ix, false)
-				setElementData(shape1, "y", iy, false)
-				setElementData(shape1, "z", iz, false)
-				setElementData(shape1, "interior", interior, false)
-				setElementData(shape1, "dimension", dimension, false)
-				setElementData(shape1, "type", "elevator", false)
-				setElementData(pickup, "type", "elevator", false)
-				setElementData(pickup, "dbid", id, false)
-				setElementInterior(pickup, interiorwithin)
-				setElementDimension(pickup, dimensionwithin)
-				setElementInterior(shape1, interiorwithin)
-				setElementDimension(shape1, dimensionwithin)
-					
-				setElementData(shape2, "dbid", id, false)
-				setElementData(shape2, "x", x, false)
-				setElementData(shape2, "y", y, false)
-				setElementData(shape2, "z", z, false)
-				setElementData(shape2, "interior", interiorwithin, false)
-				setElementData(shape2, "dimension", dimensionwithin, false)
-				setElementData(shape2, "type", "elevator", false)
-				setElementData(intpickup, "type", "elevator", false)
-				setElementInterior(intpickup, interior)
-				setElementDimension(intpickup, dimension)
-				setElementData(intpickup, "dbid", id, false)
-				setElementInterior(shape2, interior)
-				setElementDimension(shape2, dimension)
-				counter = counter + 1
-			end
-			mysql_free_result(result)
-		end
-		exports.irc:sendMessage("[SCRIPT] Loaded " .. counter .. " Elevators.")
+	local players = exports.pool:getPoolElementsByType("player")
+	for k, thePlayer in ipairs(players) do
+		removeElementData(thePlayer, "UsedElevator")
 	end
-end
-addEventHandler("onResourceStart", getRootElement(), loadAllElevators)
+	local result = mysql_query(handler, "SELECT id, x, y, z, tpx, tpy, tpz, dimensionwithin, interiorwithin, dimension, interior FROM elevators")
+	local counter = 0
+	
+	if (result) then
+		for result, row in mysql_rows(result) do
+			local id = tonumber(row[1])
+			local x = tonumber(row[2])
+			local y = tonumber(row[3])
+			local z = tonumber(row[4])
 
-function hitInteriorPickup( thePlayer, matchingDimension )
-	if(matchingDimension) then
-		local pickuptype = getElementData(source, "type")
-		if (pickuptype=="elevator") then
-			bindKeys(thePlayer, source)
-
+			local ix = tonumber(row[5])
+			local iy = tonumber(row[6])
+			local iz = tonumber(row[7])
+			
+			local dimensionwithin = tonumber(row[8])
+			local interiorwithin = tonumber(row[9])
+			
+			local dimension = tonumber(row[10])
+			local interior = tonumber(row[11])
+			
+			local pickup = createPickup(x, y, z, 3, 1318)
+			exports.pool:allocateElement(pickup)
+			local intpickup = createPickup(ix, iy, iz, 3, 1318)
+			exports.pool:allocateElement(intpickup)
+			
+			setElementData(pickup, "dbid", id, false)
+			setElementData(pickup, "other", intpickup, false)
+			setElementInterior(pickup, interiorwithin)
+			setElementDimension(pickup, dimensionwithin)
+				
+			setElementData(intpickup, "dbid", id, false)
+			setElementData(intpickup, "other", pickup, false)
+			setElementInterior(intpickup, interior)
+			setElementDimension(intpickup, dimension)
+			counter = counter + 1
 		end
+		mysql_free_result(result)
 	end
+	exports.irc:sendMessage("[SCRIPT] Loaded " .. counter .. " Elevators.")
 end
-addEventHandler("onColShapeHit", getRootElement(), hitInteriorPickup)
+addEventHandler("onResourceStart", getResourceRootElement(), loadAllElevators)
 
-function leaveInteriorPickup( thePlayer, matchingDimension )
-	if(matchingDimension) then
-		local pickuptype = getElementData(source, "type")
-		if (pickuptype=="elevator") then
-			unbindKeys(thePlayer, source)
-		end
-	end
-end
-addEventHandler("onColShapeLeave", getRootElement(), leaveInteriorPickup)
-
-function PickupEnter()
+function hitInteriorPickup( thePlayer )
+	bindKeys(thePlayer, source)
+	setTimer(checkLeavePickup, 1000, 1, thePlayer, source)
 	cancelEvent()
 end
-addEventHandler("onPickupHit", getRootElement(), PickupEnter)
+addEventHandler("onPickupHit", getResourceRootElement(), hitInteriorPickup)
 
-
-function func (playa, f, down, playa, shape) enterElevator(playa, shape) end 
-
-function bindKeys(playa, shape)
-	if (isElement(playa)) then
-		if not(isKeyBound(playa, "enter", "down", func)) then
-			bindKey(playa, "enter", "down", func, playa, shape)
-		end
-		
-		if not(isKeyBound(playa, "f", "down", func)) then
-			bindKey(playa, "f", "down", func, playa, shape)
-		end
-	end
+function isInPickup( thePlayer, thePickup, distance )
+	local ax, ay, az = getElementPosition(thePlayer)
+	local bx, by, bz = getElementPosition(thePickup)
+	
+	return getDistanceBetweenPoints3D(ax, ay, az, bx, by, bz) < ( distance or 2 ) and getElementInterior(thePlayer) == getElementInterior(thePickup) and getElementDimension(thePlayer) == getElementDimension(thePickup)
 end
 
-function unbindKeys(playa, shape)
-	if (isElement(playa)) then
-		if (isKeyBound(playa, "enter", "down", func)) then
-			unbindKey(playa, "enter", "down", func, playa, shape)
-		end
-		
-		if (isKeyBound(playa, "f", "down", func)) then
-			unbindKey(playa, "f", "down", func, playa, shape)
-		end
-	end
-end
-
-
-
-function enterElevator(playa, shape)
-	local check1 = isElementWithinColShape ( playa, shape )
-	if (check1 == true) then
-		local check2 = getElementData(playa, "UsedElevator")
-		if not (check2) then
-			--unbindKeys(playa, shape)
-			local x = getElementData(shape, "x")
-			local y = getElementData(shape, "y")
-			local z = getElementData(shape, "z")
-			local check3 = getElementData(playa,"IsInCustomInterior")
-			if(check3 == 1) then
-				removeElementData(playa,"IsInCustomInterior")
-				local weather, blend = getWeather()
-				triggerClientEvent (playa, "onClientWeatherChange", getRootElement(), weather, blend)
-			end
-			if( z <= -5) then
-				triggerClientEvent (playa, "onClientWeatherChange", getRootElement(), 7, nil)
-				setElementData(playa,"IsInCustomInterior", 1, false)
-			end
-			local interior = getElementData(shape, "interior")
-			local dimension = getElementData(shape, "dimension")
-
-			if (interior==3 or interior==4) then
-				triggerClientEvent(playa, "usedElevator", playa)
-				setPedFrozen(playa, true)
-				setPedGravity(playa, 0)
-			end
-			
-			setElementPosition(playa, x, y, z)
-			
-			setElementInterior(playa, interior)
-			setCameraInterior(playa, interior)
-			setElementDimension(playa, dimension)
-			playSoundFrontEnd(playa, 40)
-			setElementData(playa,"UsedElevator", 1, false)
-			
-			resetPlayerData(playa)
-			
+function checkLeavePickup( thePlayer, thePickup )
+	if isElement( thePlayer ) then
+		if isInPickup( thePlayer, thePickup ) then
+			setTimer(checkLeavePickup, 1000, 1, thePlayer, thePickup)
 		else
-			outputChatBox("Please wait before entering/leaving an interior again.", playa, 255, 0, 0)
+			unbindKeys(thePlayer, thePickup)
 		end
+	end
+end
+
+function func (player, f, down, player, pickup) enterElevator(player, pickup) end 
+
+function bindKeys(player, pickup)
+	if (isElement(player)) then
+		if not(isKeyBound(player, "enter", "down", func)) then
+			bindKey(player, "enter", "down", func, player, pickup)
+		end
+		
+		if not(isKeyBound(player, "f", "down", func)) then
+			bindKey(player, "f", "down", func, player, pickup)
+		end
+	end
+end
+
+function unbindKeys(player, pickup)
+	if (isElement(player)) then
+		if (isKeyBound(player, "enter", "down", func)) then
+			unbindKey(player, "enter", "down", func, player, pickup)
+		end
+		
+		if (isKeyBound(player, "f", "down", func)) then
+			unbindKey(player, "f", "down", func, player, pickup)
+		end
+	end
+end
+
+
+
+function enterElevator(player, pickup)
+	if isInPickup ( player, pickup ) and not getElementData(player, "UsedElevator") then
+		local other = getElementData( pickup, "other" )
+		local x, y, z = getElementPosition( other )
+		local interior = getElementInterior( other )
+		local dimension = getElementDimension( other )
+
+		if getElementData(player, "IsInCustomInterior") == 1 then
+			removeElementData(player,"IsInCustomInterior")
+			local weather, blend = getWeather()
+			triggerClientEvent(player, "onClientWeatherChange", getRootElement(), weather, blend)
+		end
+		if z <= -5 then
+			triggerClientEvent (player, "onClientWeatherChange", getRootElement(), 7, nil)
+			setElementData(player,"IsInCustomInterior", 1, false)
+		end
+
+		if interior == 3 or interior == 4 then
+			triggerClientEvent(player, "usedElevator", player)
+			setPedFrozen(player, true)
+			setPedGravity(player, 0)
+		end
+			
+		setElementPosition(player, x, y, z)
+		
+		setElementInterior(player, interior)
+		setCameraInterior(player, interior)
+		setElementDimension(player, dimension)
+		playSoundFrontEnd(player, 40)
+		setElementData(player,"UsedElevator", 1, false)
+		
+		resetPlayerData(player)
 	end
 end
 
@@ -267,15 +212,9 @@ end
 addEvent("resetGravity", true)
 addEventHandler("resetGravity", getRootElement(), resetGravity)
 
-function resetPlayerData(playa)
-	removeElementData(playa,"UsedElevator")
+function resetPlayerData(player)
+	removeElementData(player,"UsedElevator")
 end
-
-function resetElevatorData()
-	removeElementData(source,"UsedElevator")
-end
-addEventHandler("onPlayerJoin", getRootElement(), resetElevatorData)
-addEventHandler("onPlayerQuit", getRootElement(), resetElevatorData)
 
 function deleteElevator(thePlayer, commandName, id)
 	if (exports.global:isPlayerLeadAdmin(thePlayer)) then
@@ -283,32 +222,16 @@ function deleteElevator(thePlayer, commandName, id)
 			outputChatBox("SYNTAX: /" .. commandName .. " [ID]", thePlayer, 255, 194, 14)
 		else
 			id = tonumber(id)
-				
+			
 			local counter = 0
-			local pickups = exports.pool:getPoolElementsByType("pickup")
-			for k, thePickup in ipairs(pickups) do
-				local pickupType = getElementData(thePickup, "type")
-					
-				if (pickupType=="elevator") then
-					local pickupID = tonumber(getElementData(thePickup, "dbid"))
-					if (pickupID==id) then
-						destroyElement(thePickup)
-						counter = counter + 1
-					end
+			for k, thePickup in ipairs(getElementsByType("pickup", getResourceRootElement())) do
+				local pickupID = tonumber(getElementData(thePickup, "dbid"))
+				if pickupID == id then
+					destroyElement(thePickup)
+					counter = counter + 1
 				end
 			end
-			local shapes = exports.pool:getPoolElementsByType("colshape")
-			for k, v in ipairs(shapes) do
-				local shapeType = getElementData(v, "type")
-					
-				if (shapeType=="elevator") then
-					local shapeID = tonumber(getElementData(v, "dbid"))
-					
-					if (shapeID==tonumber(id)) then
-						destroyElement(v)
-					end
-				end
-			end
+			
 			if (counter>0) then -- ID Exists
 				local query = mysql_query(handler, "DELETE FROM elevators WHERE id='" .. id .. "'")
 				
@@ -328,19 +251,13 @@ addCommandHandler("delelevator", deleteElevator, false, false)
 
 function TempDelete(thePlayer, commandName)
 	if (exports.global:isPlayerLeadAdmin(thePlayer)) then
-		local posX, posY, posZ = getElementPosition(thePlayer)
-		for k, thePickup in ipairs(exports.pool:getPoolElementsByType("colshape")) do
-			local pickuptype = getElementData(thePickup, "type")
-			if (pickuptype=="elevator") then
-				local x, y, z = getElementPosition(thePickup)
-				local distance = getDistanceBetweenPoints3D(posX, posY, posZ, x, y, z)
-				if (distance<=2) then
-					local dbid = getElementData(thePickup, "dbid")
-					local query = mysql_query(handler, "DELETE FROM elevators WHERE id='" .. dbid .. "'")
-					if (query) then
-						outputChatBox(" Elevator deleted", thePlayer)
-						mysql_free_result(query)
-					end
+		for k, thePickup in ipairs(getElementsByType("pickup", getResourceRootElement())) do
+			if isInPickup(thePlayer, thePickup) then
+				local dbid = getElementData(thePickup, "dbid")
+				local query = mysql_query(handler, "DELETE FROM elevators WHERE id='" .. dbid .. "'")
+				if (query) then
+					outputChatBox(" Elevator deleted", thePlayer)
+					mysql_free_result(query)
 				end
 			end
 		end
@@ -354,68 +271,29 @@ function getNearbyElevators(thePlayer, commandName)
 		outputChatBox("Nearby Elevators:", thePlayer, 255, 126, 0)
 		local count = 0
 		
-		for k, thePickup in ipairs(exports.pool:getPoolElementsByType("colshape")) do
-			local pickuptype = getElementData(thePickup, "type")
-			if (pickuptype=="elevator") then
-				local x, y, z = getElementPosition(thePickup)
-				local distance = getDistanceBetweenPoints3D(posX, posY, posZ, x, y, z)
-				if (distance<=10) then
-					local dbid = getElementData(thePickup, "dbid")
-					outputChatBox("   Elevator with ID " .. dbid .. ".", thePlayer, 255, 126, 0)
-					count = count + 1
-				end
+		for k, thePickup in ipairs(getElementsByType("pickup", getResourceRootElement())) do
+			if isInPickup(thePlayer, thePickup, 10) then
+				local dbid = getElementData(thePickup, "dbid")
+				outputChatBox("   Elevator with ID " .. dbid .. ".", thePlayer, 255, 126, 0)
+				count = count + 1
 			end
 		end
 		
-		if (count==0) then
+		if count == 0 then
 			outputChatBox("   None.", thePlayer, 255, 126, 0)
 		end
 	end
 end
 addCommandHandler("nearbyelevators", getNearbyElevators, false, false)
 
-function SmallestElevatorID( ) --  Loop which finds the smallest ID in the SQL instead of the biggest one.
-	UsedID = {}		
-	local id = 0
-	local answer = 2 -- 0 = ID = 1 . 1 =Suitable ID found. 2= Still searching for ID.
-	local highest = 0
-	local result = mysql_query(handler, "SELECT id FROM elevators")
-	if(result) then
-		for result, row in mysql_rows(result) do
-						
-				UsedID[tonumber(row[1])] = 1
-				if (tonumber(row[1]) > highest) then
-					highest = tonumber(row[1])
-				end
-
-		end
+function SmallestElevatorID( ) -- finds the smallest ID in the SQL instead of auto increment
+	local result = mysql_query(handler, "SELECT MIN(e1.id+1) AS nextID FROM elevators AS e1 LEFT JOIN elevators AS e2 ON e1.id +1 = e2.id WHERE e2.id IS NULL")
+	if result then
+		local id = tonumber(mysql_result(result, 1, 1))
 		mysql_free_result(result)
-	end
-
-	if(highest > 0) then
-		for i = 1, highest do
-			if(UsedID[i] ~= 1) then
-				answer = 1
-				id = i
-				break
-			end
-		end
-	else
-		answer = 0
-		id = 1
-
-	end
-	
-	if(answer == 2) then
-		answer = 1
-		id = highest + 1
-
-	end
-	if(answer ~= 2) then
 		return id
-	else
-		return false
 	end
+	return false
 end
 
 function JoinsInCustomInt()
@@ -423,7 +301,7 @@ function JoinsInCustomInt()
 	interior = getElementInterior( source )
 	x,y,z = getElementPosition( source )
 	if( interior == 0 and dimension == 0) then
-		if(z <= 5) then
+		if z <= -5 then
 			setElementData(source,"IsInCustomInterior", 1, false)
 			triggerClientEvent (source, "onClientWeatherChange", getRootElement(), 7, nil)
 		end

@@ -86,7 +86,7 @@ function loadAllSprays(res)
 					
 				count = count + 1
 			end
-		mysql_free_result(result)
+			mysql_free_result(result)
 		end
 		exports.irc:sendMessage("[SCRIPT] Loaded " .. count .. " Pay n Sprays.")
 	end

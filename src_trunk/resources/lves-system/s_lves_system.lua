@@ -101,7 +101,6 @@ function respawnPlayer(thePlayer)
 			if (update3) then
 				mysql_free_result(update3)
 			end
-			mysql_free_result(result)
 			
 			setCameraInterior(thePlayer, 0)
 			

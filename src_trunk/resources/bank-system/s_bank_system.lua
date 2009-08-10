@@ -84,7 +84,8 @@ function withdrawMoneyBusiness(amount)
 	local theTeam = getPlayerTeam(source)
 	local money = getElementData(theTeam, "money")
 	setElementData(theTeam, "money", money-amount)
-	mysql_query(handler, "UPDATE factions SET bankbalance='" .. money-amount .. "' WHERE name='" .. getTeamName(theTeam) .. "'")
+	local query = mysql_query(handler, "UPDATE factions SET bankbalance='" .. money-amount .. "' WHERE name='" .. getTeamName(theTeam) .. "'")
+	mysql_free_result(query)
 	exports.global:givePlayerSafeMoney(source, amount)
 	outputChatBox("You withdraw " .. amount .. "$ from your business account.", source, 255, 194, 14)
 end
@@ -95,7 +96,8 @@ function depositMoneyBusiness(amount)
 	local theTeam = getPlayerTeam(source)
 	local money = getElementData(theTeam, "money")
 	setElementData(theTeam, "money", money+amount)
-	mysql_query(handler, "UPDATE factions SET bankbalance='" .. money+amount .. "' WHERE name='" .. getTeamName(theTeam) .. "'")
+	local query = mysql_query(handler, "UPDATE factions SET bankbalance='" .. money+amount .. "' WHERE name='" .. getTeamName(theTeam) .. "'")
+	mysql_free_result(query)
 	exports.global:takePlayerSafeMoney(source, amount)
 	outputChatBox("You deposited " .. amount .. "$ into your business account.", source, 255, 194, 14)
 end
@@ -114,9 +116,9 @@ function transferMoneyToPersonal(business, name, amount)
 		if result then
 			if mysql_num_rows(result) > 0 then
 				dbid = tonumber(mysql_result(result, 1, 1))
-				mysql_free_result(result)
 				found = true
 			end
+			mysql_free_result(result)
 		else
 			outputDebugString("s_bank_system.lua: mysql_query failed: (" .. mysql_errno(handler) .. ") " .. mysql_error(handler), 1, 255, 0, 0)
 		end
@@ -128,7 +130,8 @@ function transferMoneyToPersonal(business, name, amount)
 		if business then
 			local theTeam = getPlayerTeam(source)
 			local money = getElementData(theTeam, "money")
-			mysql_query(handler, "UPDATE factions SET bankbalance='" .. money - amount .. "' WHERE name='" .. getTeamName(theTeam) .. "'")
+			local query = mysql_query(handler, "UPDATE factions SET bankbalance='" .. money - amount .. "' WHERE name='" .. getTeamName(theTeam) .. "'")
+			mysql_free_result(query)
 			setElementData(theTeam, "money", money - amount)
 		else
 			setElementData(source, "bankmoney", getElementData(source, "bankmoney") - amount)
@@ -137,7 +140,8 @@ function transferMoneyToPersonal(business, name, amount)
 		if reciever then
 			setElementData(reciever, "bankmoney", getElementData(reciever, "bankmoney") + amount)
 		else
-			mysql_query(handler, "UPDATE characters SET bankmoney=bankmoney+" .. amount .. " WHERE id=" .. dbid)
+			local query = mysql_query(handler, "UPDATE characters SET bankmoney=bankmoney+" .. amount .. " WHERE id=" .. dbid)
+			mysql_free_result(query)
 		end
 		triggerClientEvent(source, "hideBankUI", source)
 		outputChatBox("You transfered " .. amount .. "$ from your "..(business and "business" or "personal").." account to "..name..(string.sub(name,-1) == "s" and "'" or "'s").." account.", source, 255, 194, 14)

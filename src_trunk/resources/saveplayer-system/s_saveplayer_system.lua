@@ -34,7 +34,8 @@ function saveWeapons(thePlayer)
 	local ammo = getElementData(thePlayer, "ammo")
 
 	if (weapons~=false) and (ammo~=false) then
-		mysql_query(handler, "UPDATE characters SET weapons='" .. weapons .. "', ammo='" .. ammo .. "' WHERE charactername='" .. getPlayerName(source) .. "'")
+		local query = mysql_query(handler, "UPDATE characters SET weapons='" .. weapons .. "', ammo='" .. ammo .. "' WHERE charactername='" .. getPlayerName(source) .. "'")
+		mysql_free_result(query)
 	end
 end
 

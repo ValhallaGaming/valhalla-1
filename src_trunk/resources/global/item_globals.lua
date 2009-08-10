@@ -216,7 +216,8 @@ function giveVehicleItem(theVehicle, itemID, itemValue)
 		setElementData(theVehicle, "itemvalues", itemvalues)
 		
 		local dbid = getElementData(theVehicle, "dbid")
-		mysql_query(handler, "UPDATE vehicles SET items='" .. items .. "', itemvalues='" .. itemvalues .. "' WHERE id='" .. dbid .. "' LIMIT 1")
+		local query = mysql_query(handler, "UPDATE vehicles SET items='" .. items .. "', itemvalues='" .. itemvalues .. "' WHERE id='" .. dbid .. "' LIMIT 1")
+		mysql_free_result(query)
 		return true
 	else
 		items = items .. itemID .. ","
@@ -226,7 +227,8 @@ function giveVehicleItem(theVehicle, itemID, itemValue)
 		setElementData(theVehicle, "itemvalues", itemvalues)
 		
 		local dbid = getElementData(theVehicle, "dbid")
-		mysql_query(handler, "UPDATE vehicles SET items='" .. items .. "', itemvalues='" .. itemvalues .. "' WHERE id='" .. dbid .. "' LIMIT 1")
+		local query = mysql_query(handler, "UPDATE vehicles SET items='" .. items .. "', itemvalues='" .. itemvalues .. "' WHERE id='" .. dbid .. "' LIMIT 1")
+		mysql_free_result(query)
 		return true
 	end
 end
@@ -271,7 +273,8 @@ function takeVehicleItem(theVehicle, itemID, itemValue)
 		setElementData(theVehicle, "itemvalues", itemvaluestring)
 		
 		local dbid = getElementData(theVehicle, "dbid")
-		mysql_query(handler, "UPDATE vehicles SET items='" .. itemstring .. "', itemvalues='" .. itemvaluestring .. "' WHERE id='" .. dbid .. "' LIMIT 1")
+		local query = mysql_query(handler, "UPDATE vehicles SET items='" .. itemstring .. "', itemvalues='" .. itemvaluestring .. "' WHERE id='" .. dbid .. "' LIMIT 1")
+		mysql_free_result(query)
 		return true
 	elseif not (found) then
 		return false
@@ -308,7 +311,8 @@ function giveSafeItem(theSafe, itemID, itemValue)
 		setElementData(theSafe, "itemvalues", itemvalues)
 		
 		local dbid = getElementDimension(theSafe)
-		mysql_query(handler, "UPDATE interiors SET items='" .. items .. "', itemvalues='" .. itemvalues .. "' WHERE id='" .. dbid .. "' LIMIT 1")
+		local query = mysql_query(handler, "UPDATE interiors SET items='" .. items .. "', itemvalues='" .. itemvalues .. "' WHERE id='" .. dbid .. "' LIMIT 1")
+		mysql_free_result(query)
 		return true
 	else
 		items = items .. itemID .. ","
@@ -318,7 +322,8 @@ function giveSafeItem(theSafe, itemID, itemValue)
 		setElementData(theSafe, "itemvalues", itemvalues)
 		
 		local dbid = getElementDimension(theSafe)
-		mysql_query(handler, "UPDATE interiors SET items='" .. items .. "', itemvalues='" .. itemvalues .. "' WHERE id='" .. dbid .. "' LIMIT 1")
+		local query = mysql_query(handler, "UPDATE interiors SET items='" .. items .. "', itemvalues='" .. itemvalues .. "' WHERE id='" .. dbid .. "' LIMIT 1")
+		mysql_free_result(query)
 		return true
 	end
 end
@@ -363,7 +368,8 @@ function takeSafeItem(theSafe, itemID, itemValue)
 		setElementData(theSafe, "itemvalues", itemvaluestring)
 		
 		local dbid = getElementDimension(theSafe)
-		mysql_query(handler, "UPDATE interiors SET items='" .. itemstring .. "', itemvalues='" .. itemvaluestring .. "' WHERE id='" .. dbid .. "' LIMIT 1")
+		local query = mysql_query(handler, "UPDATE interiors SET items='" .. itemstring .. "', itemvalues='" .. itemvaluestring .. "' WHERE id='" .. dbid .. "' LIMIT 1")
+		mysql_free_result(query)
 		return true
 	elseif not (found) then
 		return false

@@ -32,15 +32,13 @@ function doesPlayerHaveAchievement(thePlayer, id)
 
 		if (gameaccountID) then
 			local result = mysql_query(handler, "SELECT id FROM achievements WHERE achievementid='" .. id .. "' AND account='" .. gameaccountID .. "'")
-	
+			if (result) then
+				mysql_free_result(result)
+			end
 			if (mysql_num_rows(result)>0) then
 				return true
 			else
 				return false
-			end
-			
-			if (result) then
-				mysql_free_result(result)
 			end
 		end
 	end
@@ -68,14 +66,12 @@ function givePlayerAchievement(thePlayer, id)
 					local name = mysql_result(query, 1, 1)
 					local desc = mysql_result(query, 1, 2)
 					local points = mysql_result(query, 1, 3)
+					mysql_free_result(query)
 					triggerClientEvent(thePlayer, "onPlayerGetAchievement", thePlayer, name, desc, points)
 					return true
 				else
-					return false
-				end
-				
-				if (query) then
 					mysql_free_result(query)
+					return false
 				end
 			else
 				return false

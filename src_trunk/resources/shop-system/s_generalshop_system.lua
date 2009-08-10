@@ -47,7 +47,7 @@ addEventHandler("onPedWasted", getResourceRootElement(),
 	end
 )
 
-local skins = { { 211, 217 }, { 179 }, { 171 }, { 178 }, { 82 }, { 80, 81 }, { 28, 29 }, { 169 }, { 171, 172 } }
+local skins = { { 211, 217 }, { 179 }, false, { 178 }, { 82 }, { 80, 81 }, { 28, 29 }, { 169 }, { 171, 172 } }
 
 function createShopKeeper(x,y,z,interior,dimension,id,shoptype,rotation, skin)
 	if not skin then

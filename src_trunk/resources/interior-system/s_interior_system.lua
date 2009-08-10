@@ -73,6 +73,7 @@ function createInterior(thePlayer, commandName, interiorId, inttype, cost, ...)
 				
 				if (query) then
 					local id = mysql_insert_id(handler) -- Get the ID of the latest insert
+					mysql_free_result(query)
 					reloadOneInterior(id)
 				else
 					outputChatBox("Failed to create interior - Invalid characters used in name of the interior.", thePlayer, 255, 0, 0)
@@ -252,7 +253,9 @@ function sellTo(thePlayer, commandName, targetPlayerName)
 					if getElementData(entrance, "owner") == getElementData(thePlayer, "dbid") or exports.global:isPlayerAdmin(thePlayer) then
 						if getElementData(targetPlayer, "dbid") ~= getElementData(entrance, "owner") then
 							if exports.global:doesPlayerHaveSpaceForItem(targetPlayer) then
-								if mysql_query(handler, "UPDATE interiors SET owner = '" .. getElementData(targetPlayer, "dbid") .. "' WHERE id='" .. dbid .. "'") then
+								local query = mysql_query(handler, "UPDATE interiors SET owner = '" .. getElementData(targetPlayer, "dbid") .. "' WHERE id='" .. dbid .. "'")
+								if query then
+									mysql_free_result(query)
 									setElementData(entrance, "owner", getElementData(targetPlayer, "dbid"))
 									setElementData(exit, "owner", getElementData(targetPlayer, "dbid"))
 									
@@ -480,6 +483,7 @@ function reloadOneInterior(id, displayircmessage)
 		if displayircmessage then
 			exports.irc:sendMessage("[SCRIPT] Loaded 1 interior (ID: " .. id .. ")")
 		end
+		mysql_free_result(result)
 	end
 end
 
@@ -499,6 +503,7 @@ function loadAllInteriors()
 			reloadOneInterior(id, false)
 			counter = counter + 1
 		end
+		mysql_free_result(result)
 		exports.irc:sendMessage("[SCRIPT] Loaded " .. counter .. " interiors.")
 	end
 end
@@ -600,9 +605,10 @@ function hitInteriorPickup(thePlayer)
 				if (mysql_num_rows(result)>0) then
 					ownerName = mysql_result(result, 1, 1)
 					ownerName = string.gsub(tostring(ownerName), "_", " ")
+				end
+				if (result) then
 					mysql_free_result(result)
 				end
-
 				triggerClientEvent(thePlayer, "displayInteriorName", thePlayer, name, ownerName, inttype, cost)
 			end
 			
@@ -653,7 +659,8 @@ function buyInterior(player, pickup, cost, isHouse, isRentable)
 			end
 		end
 
-		mysql_query(handler, "UPDATE interiors SET owner='" .. charid .. "', locked='0' WHERE id='" .. pickupid .. "'")
+		local query = mysql_query(handler, "UPDATE interiors SET owner='" .. charid .. "', locked='0' WHERE id='" .. pickupid .. "'")
+		mysql_free_result(query)
 		local result = mysql_query(handler, "SELECT id, x, y, z, interiorx, interiory, interiorz, type, owner, locked, cost, name, interior, dimensionwithin, interiorwithin, angle, angleexit, items, items_values, max_items, rentable, tennant, rent, money FROM interiors WHERE id='" .. pickupid .. "'")
 		local id = tonumber(mysql_result(result, 1, 1))
 		local x = tonumber(mysql_result(result, 1, 2))
@@ -858,11 +865,12 @@ function setPlayerInsideInterior(thePickup, thePlayer)
 	
 	local ownerName = "None"
 	local result = mysql_query(handler, "SELECT charactername FROM characters WHERE id='" .. owner .. "' LIMIT 1")
-
+	if (result) then
+		mysql_free_result(result)
+	end
 	if (mysql_num_rows(result)>0) then
 		ownerName = mysql_result(result, 1, 1)
 		ownerName = string.gsub(tostring(ownerName), "_", " ")
-		mysql_free_result(result)
 	end
 
 	triggerClientEvent(thePlayer, "displayInteriorName", thePlayer, name, ownerName, inttype, cost)
@@ -908,7 +916,8 @@ function changeInteriorName( thePlayer, commandName, ...)
 		else
 			name = table.concat({...}, " ")
 		
-			mysql_query(handler, "UPDATE interiors SET name='" .. name .. "' WHERE id='" .. id .. "'") -- Update the name in the sql.
+			local query = mysql_query(handler, "UPDATE interiors SET name='" .. name .. "' WHERE id='" .. id .. "'") -- Update the name in the sql.
+			mysql_free_result(query)
 			outputChatBox("Interior name changed to ".. name ..".", thePlayer, 0, 255, 0) -- Output confirmation.
 			
 			-- update the name on the markers...
@@ -939,7 +948,8 @@ function addSafeAtPosition( thePlayer, x, y, z, rotz )
 	if ((exports.global:doesPlayerHaveItem( thePlayer, 5, dbid ) or exports.global:doesPlayerHaveItem( thePlayer, 4, dbid))) then
 		z = z - 0.5
 		rotz = rotz + 180
-		mysql_query(handler, "UPDATE interiors SET safepositionX='" .. x .. "', safepositionY='" .. y .. "', safepositionZ='" .. z .. "', safepositionRZ='" .. rotz .. "' WHERE id='" .. dbid .. "'") -- Update the name in the sql.
+		local query = mysql_query(handler, "UPDATE interiors SET safepositionX='" .. x .. "', safepositionY='" .. y .. "', safepositionZ='" .. z .. "', safepositionRZ='" .. rotz .. "' WHERE id='" .. dbid .. "'") -- Update the name in the sql.
+		mysql_free_result(query)
 		local tempobject = createObject(2332, x, y, z, 0, 0, rotz)
 		setElementInterior(tempobject, interior)
 		setElementDimension(tempobject, dbid)
@@ -958,7 +968,8 @@ function moveSafe ( thePlayer, commandName )
 			local oldsafe = safeTable[dbid]
 			z = z - 0.5
 			rotz = rotz + 180
-			mysql_query(handler, "UPDATE interiors SET safepositionX='" .. x .. "', safepositionY='" .. y .. "', safepositionZ='" .. z .. "', safepositionRZ='" .. rotz .. "' WHERE id='" .. dbid .. "'") -- Update the name in the sql.
+			local query = mysql_query(handler, "UPDATE interiors SET safepositionX='" .. x .. "', safepositionY='" .. y .. "', safepositionZ='" .. z .. "', safepositionRZ='" .. rotz .. "' WHERE id='" .. dbid .. "'") -- Update the name in the sql.
+			mysql_free_result(query)
 			setElementPosition(safeTable[dbid], x, y, z)
 			setObjectRotation(safeTable[dbid], 0, 0, rotz)
 		else

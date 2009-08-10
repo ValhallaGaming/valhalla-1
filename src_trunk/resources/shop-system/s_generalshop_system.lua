@@ -180,8 +180,8 @@ function deleteGeneralShop(thePlayer, commandName, id)
 						local dbid = getElementData(thePed, "dbid")
 						if (tonumber(id)==dbid) then
 							destroyElement(thePed)
-							mysql_query(handler, "DELETE FROM shops WHERE id='" .. dbid .. "' LIMIT 1")
-							
+							local query = mysql_query(handler, "DELETE FROM shops WHERE id='" .. dbid .. "' LIMIT 1")
+							mysql_free_result(query)
 							exports.irc:sendMessage("[ADMIN] " .. getPlayerName(thePlayer) ..  " deleted shop with ID #" .. id .. ".")
 							outputChatBox("Deleted shop with ID #" .. id .. ".", thePlayer, 0, 255, 0)
 							counter = counter + 1
@@ -373,8 +373,8 @@ function givePlayerBoughtItem(itemID, itemValue, theCost, isWeapon, name, supply
 			end
 			
 			if inttype == 1 then
-				mysql_query(handler, "UPDATE interiors SET supplies = supplies-1 WHERE id='" .. interior .. "'")
-				
+				local query = mysql_query(handler, "UPDATE interiors SET supplies = supplies-1 WHERE id='" .. interior .. "'")
+				mysql_free_result(query)
 				-- give the money to the shop owner
 				local owner = getElementData(thePickup, "owner")
 				local theOwner = nil
@@ -385,7 +385,8 @@ function givePlayerBoughtItem(itemID, itemValue, theCost, isWeapon, name, supply
 					end
 				end
 				
-				mysql_query(handler, "UPDATE characters SET bankmoney=bankmoney + " .. tonumber(theCost) .. " WHERE id='" .. owner .. "' LIMIT 1")
+				query = mysql_query(handler, "UPDATE characters SET bankmoney=bankmoney + " .. tonumber(theCost) .. " WHERE id='" .. owner .. "' LIMIT 1")
+				mysql_free_result(query)
 				if (theOwner) then
 					--exports.global:givePlayerSafeMoney(theOwner, theCost)
 					local profits = getElementData(theOwner, "businessprofit")
@@ -408,7 +409,8 @@ globalSupplies = 0
 
 function updateGlobalSupplies(value)
 	globalSupplies = globalSupplies + value
-	mysql_query(handler, "UPDATE settings SET value='" .. globalSupplies .. "' WHERE name='globalsupplies'")
+	local query = mysql_query(handler, "UPDATE settings SET value='" .. globalSupplies .. "' WHERE name='globalsupplies'")
+	mysql_free_result(query)
 end
 addEvent("updateGlobalSupplies", true)
 addEventHandler("updateGlobalSupplies", getRootElement(), updateGlobalSupplies)
@@ -489,8 +491,10 @@ function orderSupplies(thePlayer, commandName, amount)
 					else
 						exports.global:takePlayerSafeMoney(thePlayer, cost)
 						globalSupplies = globalSupplies - amount
-						mysql_query(handler, "UPDATE settings SET value='" .. globalSupplies .. "' where name='globalsupplies'")
-						mysql_query(handler, "UPDATE interiors SET supplies= supplies + " .. amount .. " where id='" .. dbid .. "'")
+						local query = mysql_query(handler, "UPDATE settings SET value='" .. globalSupplies .. "' where name='globalsupplies'")
+						mysql_free_result(query)
+						query = mysql_query(handler, "UPDATE interiors SET supplies= supplies + " .. amount .. " where id='" .. dbid .. "'")
+						mysql_free_result(query)
 						outputChatBox("You bought " .. amount .. " supplies for your business.", thePlayer, 255, 194, 14)
 					end
 				end

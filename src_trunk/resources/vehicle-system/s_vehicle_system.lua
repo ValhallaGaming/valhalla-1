@@ -94,7 +94,8 @@ function createPermVehicle(thePlayer, commandName, ...)
 						outputChatBox("This faction cannot afford this vehicle.", thePlayer, 255, 0, 0)
 					else
 						setElementData(theTeam, "money", money-cost)
-						mysql_query(handler, "UPDATE factions SET money='" .. money-cost .. "' WHERE id='" .. factionVehicle .. "'")
+						local query = mysql_query(handler, "UPDATE factions SET money='" .. money-cost .. "' WHERE id='" .. factionVehicle .. "'")
+						mysql_free_result(query)
 					end
 				else
 					factionVehicle = -1
@@ -530,7 +531,9 @@ function loadAllVehicles(res)
 				end
 			end
 		end
-	exports.irc:sendMessage("[SCRIPT] Loaded " .. counter .. " vehicles.")
+		mysql_free_result(result)
+		mysql_free_result(resultext)
+		exports.irc:sendMessage("[SCRIPT] Loaded " .. counter .. " vehicles.")
 	end
 end
 addEventHandler("onResourceStart", getRootElement(), loadAllVehicles)
@@ -967,7 +970,9 @@ function sellVehicle(thePlayer, commandName, targetPlayerName)
 						if getElementData(theVehicle, "owner") == getElementData(thePlayer, "dbid") or exports.global:isPlayerAdmin(thePlayer) then
 							if getElementData(targetPlayer, "dbid") ~= getElementData(theVehicle, "owner") then
 								if exports.global:doesPlayerHaveSpaceForItem(targetPlayer) then
-									if mysql_query(handler, "UPDATE vehicles SET owner = '" .. getElementData(targetPlayer, "dbid") .. "' WHERE id='" .. vehicleID .. "'") then
+									local query = mysql_query(handler, "UPDATE vehicles SET owner = '" .. getElementData(targetPlayer, "dbid") .. "' WHERE id='" .. vehicleID .. "'")
+									if query then
+										mysql_free_result(query)
 										setElementData(theVehicle, "owner", getElementData(targetPlayer, "dbid"))
 										
 										-- FIXME: remove all keys for that vehicle from all people
@@ -1073,7 +1078,8 @@ function lockUnlockOutside(vehicle)
 	if (isVehicleLocked(vehicle)) then
 		setVehicleLocked(vehicle, false)
 		
-		mysql_query(handler, "UPDATE vehicles SET locked='0' WHERE id='" .. dbid .. "' LIMIT 1")
+		local query = mysql_query(handler, "UPDATE vehicles SET locked='0' WHERE id='" .. dbid .. "' LIMIT 1")
+		mysql_free_result(query)
 		exports.global:sendLocalMeAction(source, "presses on the key to unlock the vehicle. ((" .. getVehicleName(vehicle) .. "))")
 	else
 		setVehicleLocked(vehicle, true)
@@ -1081,7 +1087,8 @@ function lockUnlockOutside(vehicle)
 			setVehicleDoorState(vehicle, i, 0)
 		end
 		
-		mysql_query(handler, "UPDATE vehicles SET locked='1' WHERE id='" .. dbid .. "' LIMIT 1")
+		local query = mysql_query(handler, "UPDATE vehicles SET locked='1' WHERE id='" .. dbid .. "' LIMIT 1")
+		mysql_free_result(query)
 		exports.global:sendLocalMeAction(source, "presses on the key to lock the vehicle. ((" .. getVehicleName(vehicle) .. "))")
 	end
 end

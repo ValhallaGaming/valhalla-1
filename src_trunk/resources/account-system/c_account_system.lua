@@ -1677,7 +1677,7 @@ function selectedCharacter(button, state)
 			
 			-- Player effect
 			if not (fading) then
-				setElementModel(getLocalPlayer(), 0)
+				setElementModel(getLocalPlayer(), 264)
 				
 				local rand = math.random(1,6)
 					if (rand==1) then
@@ -1734,20 +1734,20 @@ function characterCreation()
 	rot = 120.0
 	addEventHandler("onClientRender", getRootElement(), moveCameraToCreation)
 	
-	lType = guiCreateLabel(0.1, 0.45, 0.25, 0.1, "Character Type:", true, tabCreationOne)
-	guiSetFont(lType, "default-bold-small")
+	--lType = guiCreateLabel(0.1, 0.45, 0.25, 0.1, "Character Type:", true, tabCreationOne)
+	--guiSetFont(lType, "default-bold-small")
 	
-	rCJ = guiCreateRadioButton(0.15, 0.5, 0.6, 0.05, "CJ - Ultimate customization", true, tabCreationOne)
-	rNormal = guiCreateRadioButton(0.15, 0.65, 0.6, 0.05, "Normal - Pedestrian skin", true, tabCreationOne)
-	
-	
-	guiRadioButtonSetSelected(rCJ, true)
-	addEventHandler("onClientGUIClick", rNormal, spawnNormal, false)
-	addEventHandler("onClientGUIClick", rCJ, spawnCJ, false)
+	--rCJ = guiCreateRadioButton(0.15, 0.5, 0.6, 0.05, "CJ - Ultimate customization", true, tabCreationOne)
+	--rNormal = guiCreateRadioButton(0.15, 0.65, 0.6, 0.05, "Normal - Pedestrian skin", true, tabCreationOne)
 	
 	
-	guiSetFont(rNormal, "default-bold-small")
-	guiSetFont(rCJ, "default-bold-small")
+	--guiRadioButtonSetSelected(rCJ, true)
+	--addEventHandler("onClientGUIClick", rNormal, spawnNormal, false)
+	--addEventHandler("onClientGUIClick", rCJ, spawnCJ, false)
+	
+	
+	--guiSetFont(rNormal, "default-bold-small")
+	--guiSetFont(rCJ, "default-bold-small")
 	
 	bNext = guiCreateButton(0.05, 0.75, 0.9, 0.1, "Next", true, tabCreationOne)
 	addEventHandler("onClientGUIClick", bNext, loadNextPage, false)
@@ -1785,12 +1785,14 @@ function pauseCameraMovement()
 end
 
 function spawnCJ(button, state)
+	--[[
 	if (button=="left") and (state=="up") then
 		setElementModel(getLocalPlayer(), 0) 
 		for i = 0, 17 do
 			removePlayerClothes(getLocalPlayer(), i)
 		end
 	end
+	]]--
 end
 
 function spawnNormal(button, state)
@@ -1888,7 +1890,7 @@ function nextPage(exists)
 		guiSetText(tName, "Already Taken")
 		guiLabelSetColor(lRestrictions, 255, 0, 0)
 	elseif not (exists) then
-		local CJ = guiRadioButtonGetSelected(rCJ)
+		--local CJ = guiRadioButtonGetSelected(rCJ)
 			
 		name = guiGetText(tName)
 		destroyElement(tabCreationOne)
@@ -1897,11 +1899,11 @@ function nextPage(exists)
 		destroyElement(tabPanelCreation)
 		tabPanelCreation = nil
 		
-		if (CJ) then
-			characterCreationStep2CJ()
-		else
+		--if (CJ) then
+		--	characterCreationStep2CJ()
+		--else
 			characterCreationStep2Normal()
-		end
+		--end
 	end
 end
 addEvent("characterNextStep", true )

@@ -46,6 +46,7 @@ function loadAllCorpses(res)
 				--setTimer(setPedAnimation, 100, 1, ped, "WUZI", "CS_Dead_Guy", -1, false, false, false)
 				killPed(ped)
 			end
+			mysql_free_result(result)
 		end
 	end
 end

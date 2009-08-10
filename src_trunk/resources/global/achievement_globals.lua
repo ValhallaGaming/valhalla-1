@@ -32,12 +32,11 @@ function doesPlayerHaveAchievement(thePlayer, id)
 
 		if (gameaccountID) then
 			local result = mysql_query(handler, "SELECT id FROM achievements WHERE achievementid='" .. id .. "' AND account='" .. gameaccountID .. "'")
-			if (result) then
-				mysql_free_result(result)
-			end
 			if (mysql_num_rows(result)>0) then
+				mysql_free_result(result)
 				return true
 			else
+				mysql_free_result(result)
 				return false
 			end
 		end

@@ -547,6 +547,7 @@ function spawnCharacter(charname)
 		
 		fadeCamera(source, true, 2)
 		triggerEvent("onCharacterLogin", source, charname, factionID)
+		mysql_free_result(result)
 	end
 end
 addEvent("onCharacterLogin", false)
@@ -568,9 +569,9 @@ function timerUnjailPlayer(jailedPlayer)
 			setElementData(jailedPlayer, "jailserved", timeServed+1)
 			local timeLeft = timeLeft - 1
 			setElementData(jailedPlayer, "jailtime", timeLeft)
-		
+			local result
 			if (timeLeft==0) then
-				mysql_query(handler, "UPDATE accounts SET adminjail_time='0', adminjail='0' WHERE id='" .. accountID .. "'")
+				result = mysql_query(handler, "UPDATE accounts SET adminjail_time='0', adminjail='0' WHERE id='" .. accountID .. "'")
 				removeElementData(jailedPlayer, "jailtimer")
 				setElementPosition(jailedPlayer, 1519.7177734375, -1697.8154296875, 13.546875)
 				setPedRotation(jailedPlayer, 269.92446899414)
@@ -581,7 +582,10 @@ function timerUnjailPlayer(jailedPlayer)
 				exports.global:sendMessageToAdmins("AdmJail: " .. getPlayerName(jailedPlayer) .. " has served his jail time.")
 				exports.irc:sendMessage("[ADMIN] " .. getPlayerName(jailedPlayer) .. " was unjailed by script (Time Served)")
 			else
-				mysql_query(handler, "UPDATE accounts SET adminjail_time='" .. timeLeft .. "' WHERE id='" .. accountID .. "'")
+				result = mysql_query(handler, "UPDATE accounts SET adminjail_time='" .. timeLeft .. "' WHERE id='" .. accountID .. "'")
+			end
+			if (result) then
+				mysql_free_result(result)
 			end
 		else
 			if (isElement(jailedPlayer)) then
@@ -616,10 +620,10 @@ function loginPlayer(username, password, operatingsystem)
 				end
 			end
 		end
-		
+		mysql_free_result(result)
 		-- 0331: Query to check for invalid accounts, can possibly remove this later
-		mysql_query(handler, "UPDATE characters SET money=0 WHERE money<0")
-		
+		local resultUpdate = mysql_query(handler, "UPDATE characters SET money=0 WHERE money<0")
+		mysql_free_result(resultUpdate)
 		if not (found) then
 			triggerClientEvent(source, "hideUI", source, false)
 			local admin = tonumber(mysql_result(result, 1, 2))
@@ -933,19 +937,26 @@ function deleteCharacterByName(charname)
 	mysql_free_result(result)
 		
 	if (charid) then -- not ck'ed
-		mysql_query(handler, "DELETE FROM characters WHERE charactername='" .. fixedName .. "' AND account='" .. accountID .. "' LIMIT 1")
-		mysql_query(handler, "UPDATE interiors SET owner=-1, locked=1 WHERE owner='" .. tonumber(charid) .. "' AND type<2")
-		mysql_query(handler, "DELETE FROM vehicles WHERE owner='" .. tonumber(charid) .. "'")
+		local result
+		result = mysql_query(handler, "DELETE FROM characters WHERE charactername='" .. fixedName .. "' AND account='" .. accountID .. "' LIMIT 1")
+		mysql_free_result(result)
+		result = mysql_query(handler, "UPDATE interiors SET owner=-1, locked=1 WHERE owner='" .. tonumber(charid) .. "' AND type<2")
+		mysql_free_result(result)
+		result = mysql_query(handler, "DELETE FROM vehicles WHERE owner='" .. tonumber(charid) .. "'")
+		mysql_free_result(result)
 	else
 		fixedName = string.sub(fixedName, 0, string.len(fixedName)-11)
 		
 		local result = mysql_query(handler, "SELECT id FROM characters WHERE charactername='" .. fixedName .. "' AND account='" .. accountID .. "' LIMIT 1")
 		local charid = tonumber(mysql_result(result, 1, 1))
 		mysql_free_result(result)
-		
-		mysql_query(handler, "DELETE FROM characters WHERE charactername='" .. fixedName .. "' AND account='" .. accountID .. "' LIMIT 1")
-		mysql_query(handler, "UPDATE interiors SET owner=-1, locked=1 WHERE owner='" .. tonumber(charid) .. "' AND type<2")
-		mysql_query(handler, "DELETE FROM vehicles WHERE owner='" .. tonumber(charid) .. "'")
+		local result
+		result = mysql_query(handler, "DELETE FROM characters WHERE charactername='" .. fixedName .. "' AND account='" .. accountID .. "' LIMIT 1")
+		mysql_free_result(result)
+		result = mysql_query(handler, "UPDATE interiors SET owner=-1, locked=1 WHERE owner='" .. tonumber(charid) .. "' AND type<2")
+		mysql_free_result(result)
+		result = mysql_query(handler, "DELETE FROM vehicles WHERE owner='" .. tonumber(charid) .. "'")
+		mysql_free_result(result)
 	end
 	sendAccounts(source, accountID)
 	showChat(source, true)
@@ -1311,7 +1322,6 @@ function cguiSetNewPassword(oldPassword, newPassword)
 	if not (query) or (mysql_num_rows(query)==0) then
 		outputChatBox("Your current password you entered was wrong.", source, 255, 0, 0)
 	else
-		mysql_free_result(query)
 		local update = mysql_query(handler, "UPDATE accounts SET password=MD5('" .. salt .. safenewpassword .. "') WHERE id='" .. gameaccountID .. "'")
 
 		if (update) then
@@ -1320,6 +1330,9 @@ function cguiSetNewPassword(oldPassword, newPassword)
 		else
 			outputChatBox("Error 100004 - Report on forums.", source, 255, 0, 0)
 		end
+	end
+	if (query) then
+		mysql_free_result(query)
 	end
 end
 addEvent("cguiSavePassword", true)
@@ -1336,7 +1349,8 @@ function timerPDUnjailPlayer(jailedPlayer)
 
 		if (timeLeft<=0) then
 			fadeCamera(jailedPlayer, false)
-			mysql_query(handler, "UPDATE characters SET pdjail_time='0', pdjail='0', pdjail_station='0' WHERE charactername='" .. username .. "'")
+			local query = mysql_query(handler, "UPDATE characters SET pdjail_time='0', pdjail='0', pdjail_station='0' WHERE charactername='" .. username .. "'")
+			mysql_free_result(query)
 			removeElementData(jailedPlayer, "jailtimer")
 			setElementDimension(jailedPlayer, 1)
 			setElementInterior(jailedPlayer, 6)
@@ -1354,7 +1368,8 @@ function timerPDUnjailPlayer(jailedPlayer)
 			fadeCamera(jailedPlayer, true)
 			outputChatBox("Your time has been served.", jailedPlayer, 0, 255, 0)
 		else
-			mysql_query(handler, "UPDATE characters SET pdjail_time='" .. timeLeft .. "' WHERE charactername='" .. username .. "'")
+			local query = mysql_query(handler, "UPDATE characters SET pdjail_time='" .. timeLeft .. "' WHERE charactername='" .. username .. "'")
+			mysql_free_result(query)
 		end
 	else
 		local theTimer = getElementData(jailedPlayer, "jailtimer")

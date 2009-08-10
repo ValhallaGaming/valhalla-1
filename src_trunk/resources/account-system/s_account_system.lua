@@ -620,7 +620,6 @@ function loginPlayer(username, password, operatingsystem)
 				end
 			end
 		end
-		mysql_free_result(result)
 		-- 0331: Query to check for invalid accounts, can possibly remove this later
 		local resultUpdate = mysql_query(handler, "UPDATE characters SET money=0 WHERE money<0")
 		mysql_free_result(resultUpdate)

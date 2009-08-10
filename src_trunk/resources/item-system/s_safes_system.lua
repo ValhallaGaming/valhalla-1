@@ -67,5 +67,6 @@ function updateSafeItems(safe)
 	local dbid = getElementDimension(safe)
 	local items = getElementData(safe, "items")
 	local items_values = getElementData(safe, "itemvalues")
-	mysql_query(handler, "UPDATE interiors SET items='" .. items .. "', items_values='" .. items_values .. "' WHERE id='" .. dbid .. "'") -- Update the name in the sql.
+	local query = mysql_query(handler, "UPDATE interiors SET items='" .. items .. "', items_values='" .. items_values .. "' WHERE id='" .. dbid .. "'") -- Update the name in the sql.
+	mysql_free_result(query)
 end

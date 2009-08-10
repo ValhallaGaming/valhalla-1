@@ -90,7 +90,8 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 				
 				if (locked==1) then
 					setElementData(found, "locked", 0, false)
-					mysql_query(handler, "UPDATE interiors SET locked='0' WHERE id='" .. id .. "' LIMIT 1")
+					local query = mysql_query(handler, "UPDATE interiors SET locked='0' WHERE id='" .. id .. "' LIMIT 1")
+					mysql_free_result(query)
 					exports.global:sendLocalMeAction(source, "puts the key in the door to unlock it.")
 					
 					for key, value in ipairs(exports.pool:getPoolElementsByType("pickup")) do
@@ -101,7 +102,8 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 					end
 				else
 					setElementData(found, "locked", 1, false)
-					mysql_query(handler, "UPDATE interiors SET locked='1' WHERE id='" .. id .. "' LIMIT 1")
+					local query = mysql_query(handler, "UPDATE interiors SET locked='1' WHERE id='" .. id .. "' LIMIT 1")
+					mysql_free_result(query)
 					exports.global:sendLocalMeAction(source, "puts the key in the door to lock it.")
 					
 					for key, value in ipairs(exports.pool:getPoolElementsByType("pickup")) do
@@ -319,7 +321,8 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 					
 					if (locked==1) then
 						setElementData(found, "locked", 0, false)
-						mysql_query(handler, "UPDATE interiors SET locked='0' WHERE id='" .. id .. "' LIMIT 1")
+						local query = mysql_query(handler, "UPDATE interiors SET locked='0' WHERE id='" .. id .. "' LIMIT 1")
+						mysql_free_result(query)
 						exports.global:sendLocalMeAction(source, "swings the ram into the door, opening it.")
 						
 						for key, value in ipairs(exports.pool:getPoolElementsByType("pickup")) do
@@ -555,6 +558,7 @@ function dropItem(itemID, itemValue, itemName, x, y, z, gz, isWeapon, items, ite
 		
 		local insert = mysql_query(handler, "INSERT INTO worlditems SET itemid='" .. itemID .. "', itemvalue='" .. itemValue .. "', itemname='" .. itemName .. "', yearday='" .. yearday .. "', x='" .. x .. "', y='" .. y .. "', z='" .. gz+0.3 .. "', dimension='" .. dimension .. "', interior='" .. interior .. "', items='" .. stringitems .. "', itemvalues='" .. stringvalues .. "'")
 		local id = mysql_insert_id(handler)
+		mysql_free_result(insert)
 		setElementData(obj, "id", id, false)
 		setElementData(obj, "itemID", itemID)
 		setElementData(obj, "itemValue", itemValue)
@@ -562,7 +566,6 @@ function dropItem(itemID, itemValue, itemName, x, y, z, gz, isWeapon, items, ite
 		setElementData(obj, "type", "worlditem")
 		setElementData(obj, "items", stringitems)
 		setElementData(obj, "itemvalues", stringvalues)
-		
 		-- Check if he drops his current clothes
 		if tonumber(itemID) == 16 and tonumber(itemValue) == getPedSkin(source) and not exports.global:doesPlayerHaveItem(source, 16, tonumber(itemValue)) then
 			setPedSkin(source, 0)
@@ -608,8 +611,9 @@ function dropItem(itemID, itemValue, itemName, x, y, z, gz, isWeapon, items, ite
 			local yearday = time.yearday
 			
 			
-			mysql_query(handler, "INSERT INTO worlditems SET itemid='" .. itemID .. "', itemvalue='" .. itemValue .. "', itemname='" .. itemName .. "', yearday='" .. yearday .. "', x='" .. x .. "', y='" .. y .. "', z='" .. gz+0.1 .. "', dimension='" .. dimension .. "', interior='" .. interior .. "'")
+			local query = mysql_query(handler, "INSERT INTO worlditems SET itemid='" .. itemID .. "', itemvalue='" .. itemValue .. "', itemname='" .. itemName .. "', yearday='" .. yearday .. "', x='" .. x .. "', y='" .. y .. "', z='" .. gz+0.1 .. "', dimension='" .. dimension .. "', interior='" .. interior .. "'")
 			local id = mysql_insert_id(handler)
+			mysql_free_result(query)
 			setElementData(obj, "id", id, false)
 			setElementData(obj, "itemID", itemID)
 			setElementData(obj, "itemValue", itemValue)
@@ -631,10 +635,11 @@ function loadWorldItems(res)
 			
 			
 			if (yearday>(wyearday+7)) then
-				mysql_query(handler, "DELETE FROM worlditems WHERE id='" .. tonumber(row[1]) .. "' LIMIT 1")
+				local query = mysql_query(handler, "DELETE FROM worlditems WHERE id='" .. tonumber(row[1]) .. "' LIMIT 1")
+				mysql_free_result(query)
 			elseif (wyearday>yearday) then -- a new year
-				mysql_query(handler, "UPDATE worlditems SET yearday='" .. yearday .. "' WHERE id='" .. tonumber(row[1]) .. "' LIMIT 1")
-				
+				local query = mysql_query(handler, "UPDATE worlditems SET yearday='" .. yearday .. "' WHERE id='" .. tonumber(row[1]) .. "' LIMIT 1")
+				mysql_free_result(query)
 				local x = tonumber(row[6])
 				local y = tonumber(row[7])
 				local z = tonumber(row[8])
@@ -771,7 +776,8 @@ function pickupItem(object, itemID, itemValue, itemName)
 		destroyElement(object)
 
 		if (tostring(itemName)~=getWeaponNameFromID(tonumber(itemID)) and tostring(itemName)~="Body Armor") then
-			mysql_query(handler, "DELETE FROM worlditems WHERE id='" .. tonumber(id) .. "'")
+			local query = mysql_query(handler, "DELETE FROM worlditems WHERE id='" .. tonumber(id) .. "'")
+			mysql_free_result(query)
 			exports.global:givePlayerItem(source, tonumber(itemID), tonumber(itemValue))
 			
 			if (tonumber(itemID)==48) then -- BACKPACK, give the items inside it
@@ -788,10 +794,12 @@ function pickupItem(object, itemID, itemValue, itemName)
 				end
 			end
 		elseif (tostring(itemName)==getWeaponNameFromID(tonumber(itemID))) then
-			mysql_query(handler, "DELETE FROM worlditems WHERE id='" .. tonumber(id) .. "'")
+			local query = mysql_query(handler, "DELETE FROM worlditems WHERE id='" .. tonumber(id) .. "'")
+			mysql_free_result(query)
 			giveWeapon(source, tonumber(itemID), tonumber(itemValue), true)
 		elseif (tostring(itemName)=="Body Armor") then
-			mysql_query(handler, "DELETE FROM worlditems WHERE id='" .. tonumber(id) .. "'")
+			local query = mysql_query(handler, "DELETE FROM worlditems WHERE id='" .. tonumber(id) .. "'")
+			mysql_free_result(query)
 			setPedArmor(source, tonumber(itemValue))
 		end
 	else

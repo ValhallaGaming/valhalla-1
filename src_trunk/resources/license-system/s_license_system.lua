@@ -44,13 +44,15 @@ function giveLicense(license, cost)
 		removePedFromVehicle(source)
 		respawnVehicle(theVehicle)
 		setElementData(source, "license.car", 1)
-		mysql_query(handler, "UPDATE characters SET car_license='1' WHERE charactername='" .. mysql_escape_string(handler, getPlayerName(source)) .. "' LIMIT 1")
+		local query = mysql_query(handler, "UPDATE characters SET car_license='1' WHERE charactername='" .. mysql_escape_string(handler, getPlayerName(source)) .. "' LIMIT 1")
+		mysql_free_result(query)
 		outputChatBox("Congratulations, you've passed the second part of your driving examination.", source, 255, 194, 14)
 		outputChatBox("You are now fully licenses to drive on the public streets. You have paid the $350 processing fee.", source, 255, 194, 14)
 		exports.global:takePlayerSafeMoney(source, cost)
 	elseif (license==2) then
 		setElementData(source, "license.gun", 1)
-		mysql_query(handler, "UPDATE characters SET gun_license='1' WHERE charactername='" .. mysql_escape_string(handler, getPlayerName(source)) .. "' LIMIT 1")
+		local query = mysql_query(handler, "UPDATE characters SET gun_license='1' WHERE charactername='" .. mysql_escape_string(handler, getPlayerName(source)) .. "' LIMIT 1")
+		mysql_free_result(query)
 		outputChatBox("You obtained your weapons license.", source, 255, 194, 14)
 		exports.global:takePlayerSafeMoney(source, cost)
 	end
@@ -66,7 +68,8 @@ addEventHandler("payFee", getRootElement(), payFee)
 
 function passTheory()
 	setElementData(source,"license.car",3) -- Set data to "theory passed"
-	mysql_query(handler, "UPDATE characters SET car_license='3' WHERE charactername='" .. mysql_escape_string(handler, getPlayerName(source)) .. "' LIMIT 1")
+	local query = mysql_query(handler, "UPDATE characters SET car_license='3' WHERE charactername='" .. mysql_escape_string(handler, getPlayerName(source)) .. "' LIMIT 1")
+	mysql_free_result(query)
 end
 addEvent("theoryComplete", true)
 addEventHandler("theoryComplete", getRootElement(), passTheory)

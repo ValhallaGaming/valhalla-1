@@ -549,8 +549,8 @@ function createFaction(thePlayer, commandName, factionType, ...)
 					mysql_free_result(query)
 					
 					query = mysql_query(handler, "UPDATE factions SET rank_1='Dynamic Rank #1', rank_2='Dynamic Rank #2', rank_3='Dynamic Rank #3', rank_4='Dynamic Rank #4', rank_5='Dynamic Rank #5', rank_6='Dynamic Rank #6', rank_7='Dynamic Rank #7', rank_8='Dynamic Rank #8', rank_9='Dynamic Rank #9', rank_10='Dynamic Rank #10', rank_11='Dynamic Rank #11', rank_12='Dynamic Rank #12', rank_13='Dynamic Rank #13', rank_14='Dynamic Rank #14', rank_15='Dynamic Rank #15', motd='Welcome to the faction.' WHERE id='" .. id .. "'")
+					mysql_free_result(query)
 					outputChatBox("Faction " .. factionName .. " created with ID #" .. id .. ".", thePlayer, 0, 255, 0)
-					
 					setElementData(theTeam, "type", tonumber(factionType))
 					setElementData(theTeam, "id", id, false)
 					setElementData(theTeam, "money", 0.00, false)
@@ -609,9 +609,10 @@ function adminSetPlayerFaction(thePlayer, commandName, partialNick, factionID)
 				local query = mysql_query(handler, "UPDATE characters SET faction_leader='0', faction_id='" .. factionID .. "', faction_rank='1' WHERE charactername='" .. mysql_escape_string(handler, targetPlayerNick) .. "'")
 				
 				factionID = tonumber(factionID)
-				
-				if (query) and (factionID>0) then
+				if (query) then
 					mysql_free_result(query)
+				end
+				if (query) and (factionID>0) then
 					
 					local safeid = mysql_escape_string(handler, factionID)
 					
@@ -664,7 +665,7 @@ function adminSetFactionLeader(thePlayer, commandName, partialNick, factionID)
 				local targetPlayerNick = getPlayerName(targetPlayer)
 				local query = mysql_query(handler, "UPDATE characters SET faction_leader='1', faction_id='" .. tonumber(factionID) .. "', faction_rank='1' WHERE charactername='" .. mysql_escape_string(handler, targetPlayerNick) .. "'")
 				
-				if	(query) then
+				if (query) then
 					mysql_free_result(query)
 					query = mysql_query(handler, "SELECT name FROM factions WHERE id='" .. tonumber(factionID) .. "' LIMIT 1")
 					

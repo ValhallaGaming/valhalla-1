@@ -47,13 +47,14 @@ addEventHandler("onPedWasted", getResourceRootElement(),
 	end
 )
 
-local skins = { { 211, 217 }, { 179 }, false, { 178 }, { 82 }, { 80, 81 }, { 28, 29 }, { 169 }, { 171, 172 } }
+local skins = { { 211, 217 }, { 179 }, { 171 }, { 178 }, { 82 }, { 80, 81 }, { 28, 29 }, { 169 }, { 171, 172 } }
 
 function createShopKeeper(x,y,z,interior,dimension,id,shoptype,rotation, skin)
 	if not skin then
 		skin = 0
 		
 		if shoptype == 3 then
+			skin = 168
 			-- needs differences for burgershot etc
 			if interior == 5 then
 				skin = 155
@@ -61,6 +62,8 @@ function createShopKeeper(x,y,z,interior,dimension,id,shoptype,rotation, skin)
 				skin = 167
 			elseif interior == 10 then
 				skin = 205
+			elseif dimension == 1355 then
+				skin = 171
 			end
 			-- interior 17 = donut shop
 		else

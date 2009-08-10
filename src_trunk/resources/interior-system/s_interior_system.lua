@@ -865,12 +865,14 @@ function setPlayerInsideInterior(thePickup, thePlayer)
 	
 	local ownerName = "None"
 	local result = mysql_query(handler, "SELECT charactername FROM characters WHERE id='" .. owner .. "' LIMIT 1")
-	if (result) then
-		mysql_free_result(result)
-	end
+	
 	if (mysql_num_rows(result)>0) then
 		ownerName = mysql_result(result, 1, 1)
 		ownerName = string.gsub(tostring(ownerName), "_", " ")
+	end
+	
+	if (result) then
+		mysql_free_result(result)
 	end
 
 	triggerClientEvent(thePlayer, "displayInteriorName", thePlayer, name, ownerName, inttype, cost)

@@ -1094,6 +1094,8 @@ function lockUnlockOutside(vehicle)
 end
 addEvent("lockUnlockOutsideVehicle", true)
 addEventHandler("lockUnlockOutsideVehicle", getRootElement(), lockUnlockOutside)
+addEvent("lockUnlockVehicle", true)
+addEventHandler("lockUnlockVehicle", getRootElement(), lockUnlockOutside)
 
 function fillFuelTank(veh, fuel)
 	local currFuel = getElementData(veh, "fuel")

@@ -297,7 +297,7 @@ function ckPlayer(thePlayer, commandName, targetPlayer)
 				if (logged==0) then
 					outputChatBox("Player is not logged in.", thePlayer, 255, 0, 0)
 				elseif (logged==1) then
-					mysql_query(handler, "UPDATE characters SET cked='1' WHERE charactername='" .. targetPlayerName .. "'")
+					local query = mysql_query(handler, "UPDATE characters SET cked='1' WHERE charactername='" .. targetPlayerName .. "'")
 					
 					local x, y, z = getElementPosition(targetPlayer)
 					local skin = getPedSkin(targetPlayer)
@@ -315,6 +315,7 @@ function ckPlayer(thePlayer, commandName, targetPlayer)
 					outputChatBox("Your character was CK'ed by " .. getPlayerName(thePlayer) .. ".", targetPlayer, 255, 194, 14)
 					showChat(targetPlayer, true)
 					outputChatBox("You have CK'ed ".. getPlayerName(targetPlayer) ..".", thePlayer, 255, 194, 1, 14)
+					mysql_free_result(query)
 				end
 			end
 		end
@@ -335,7 +336,8 @@ function unckPlayer(thePlayer, commandName, targetPlayer)
 			elseif (mysql_num_rows(result)==0) then
 				outputChatBox("Player does not exist or is not CK'ed.", thePlayer, 255, 0, 0)
 			else
-				mysql_query(handler, "UPDATE characters SET cked='0' WHERE charactername='" .. tostring(targetPlayer) .. "' LIMIT 1")
+				local query = mysql_query(handler, "UPDATE characters SET cked='0' WHERE charactername='" .. tostring(targetPlayer) .. "' LIMIT 1")
+				mysql_free_result(query)
 				outputChatBox(targetPlayer .. " is no longer CK'ed.", thePlayer, 0, 255, 0)
 			end
 			mysql_free_result(result)
@@ -609,7 +611,7 @@ function asetPlayerName(thePlayer, commandName, targetPlayer, newName)
 					local name = setPlayerName(targetPlayer, tostring(newName))
 					
 					if (name) then
-						mysql_query(handler, "UPDATE characters SET charactername='" .. mysql_escape_string(handler, newName) .. "' WHERE charactername='" .. targetPlayerName .. "'")
+						local query = mysql_query(handler, "UPDATE characters SET charactername='" .. mysql_escape_string(handler, newName) .. "' WHERE charactername='" .. targetPlayerName .. "'")
 						local hiddenAdmin = getElementData(thePlayer, "hiddenadmin")
 						
 						if (hiddenAdmin==0) then
@@ -618,6 +620,7 @@ function asetPlayerName(thePlayer, commandName, targetPlayer, newName)
 						end
 						outputChatBox("You changed " .. targetPlayerName .. "'s Name to " .. tostring(newName) .. ".", thePlayer, 0, 255, 0)
 						setElementData(targetPlayer, "legitnamechange", 0, false)
+						mysql_free_result(query)
 					else
 						outputChatBox("Failed to change name.", thePlayer, 255, 0, 0)
 					end
@@ -1007,7 +1010,8 @@ function unbanPlayer(thePlayer, commandName, nickName)
 								if (ip==getBanIP(value)) then
 									exports.global:sendMessageToAdmins(tostring(nickName) .. " was unbanned by " .. getPlayerName(thePlayer) .. ".")
 									removeBan(value, thePlayer)
-									mysql_query(handler, "UPDATE accounts SET banned='0', banned_by=NULL WHERE ip='" .. ip .. "'")
+									local query = mysql_query(handler, "UPDATE accounts SET banned='0', banned_by=NULL WHERE ip='" .. ip .. "'")
+									mysql_free_result(query)
 									found = true
 									break
 								end
@@ -1026,6 +1030,7 @@ function unbanPlayer(thePlayer, commandName, nickName)
 				else
 					outputChatBox("No ban found for '" .. nickName .. "'", thePlayer, 255, 0, 0)
 				end
+				mysql_free_result(result1)
 			else
 				outputChatBox("No ban found for '" .. nickName .. "'", thePlayer, 255, 0, 0)
 			end
@@ -1047,7 +1052,8 @@ function unbanPlayerIP(thePlayer, commandName, ip)
 				if (ip==getBanIP(value)) then
 					exports.global:sendMessageToAdmins(tostring(ip) .. " was unbanned by " .. getPlayerName(thePlayer) .. ".")
 					removeBan(value, thePlayer)
-					mysql_query(handler, "UPDATE accounts SET banned='0', banned_by=NULL WHERE ip='" .. ip .. "'")
+					local query = mysql_query(handler, "UPDATE accounts SET banned='0', banned_by=NULL WHERE ip='" .. ip .. "'")
+					mysql_free_result(query)
 					found = true
 					break
 				end
@@ -1160,8 +1166,8 @@ function makePlayerAdmin(thePlayer, commandName, who, rank)
 					setElementData(targetPlayer, "hiddenadmin", 0, false)
 				end
 				
-				mysql_query(handler, "UPDATE accounts SET admin='" .. tonumber(rank) .. "', hiddenadmin='0' WHERE id='" .. accountID .. "'")
-				
+				local query = mysql_query(handler, "UPDATE accounts SET admin='" .. tonumber(rank) .. "', hiddenadmin='0' WHERE id='" .. accountID .. "'")
+				mysql_free_result(query)
 				outputChatBox("You set " .. targetPlayerName .. "'s Admin rank to " .. rank .. ".", thePlayer, 0, 255, 0)
 				
 				local hiddenAdmin = getElementData(thePlayer, "hiddenadmin")
@@ -1217,11 +1223,13 @@ function jailPlayer(thePlayer, commandName, who, minutes, ...)
 				end
 				
 				if (minutes>=999) then
-					mysql_query(handler, "UPDATE accounts SET adminjail='1', adminjail_time='" .. minutes .. "', adminjail_permanent='1', adminjail_by='" .. playerName .. "', adminjail_reason='" .. mysql_escape_string(handler, reason) .. "' WHERE id='" .. accountID .. "'")
+					local query = mysql_query(handler, "UPDATE accounts SET adminjail='1', adminjail_time='" .. minutes .. "', adminjail_permanent='1', adminjail_by='" .. playerName .. "', adminjail_reason='" .. mysql_escape_string(handler, reason) .. "' WHERE id='" .. accountID .. "'")
+					mysql_free_result(query)
 					minutes = "Unlimited"
 					setElementData(targetPlayer, "jailtimer", true, false)
 				else
-					mysql_query(handler, "UPDATE accounts SET adminjail='1', adminjail_time='" .. minutes .. "', adminjail_permanent='0', adminjail_by='" .. playerName .. "', adminjail_reason='" .. mysql_escape_string(handler, reason) .. "' WHERE id='" .. tonumber(accountID) .. "'")
+					local query = mysql_query(handler, "UPDATE accounts SET adminjail='1', adminjail_time='" .. minutes .. "', adminjail_permanent='0', adminjail_by='" .. playerName .. "', adminjail_reason='" .. mysql_escape_string(handler, reason) .. "' WHERE id='" .. tonumber(accountID) .. "'")
+					mysql_free_result(query)
 					local theTimer = setTimer(timerUnjailPlayer, 60000, minutes, targetPlayer)
 					setElementData(targetPlayer, "jailserved", 0, false)
 					setElementData(targetPlayer, "jailtimer", theTimer, false)
@@ -1282,7 +1290,8 @@ function timerUnjailPlayer(jailedPlayer)
 			setElementData(jailedPlayer, "jailtime", timeLeft, false)
 		
 			if (timeLeft==0) then
-				mysql_query(handler, "UPDATE accounts SET adminjail_time='0', adminjail='0' WHERE id='" .. accountID .. "'")
+				local query = mysql_query(handler, "UPDATE accounts SET adminjail_time='0', adminjail='0' WHERE id='" .. accountID .. "'")
+				mysql_free_result(query)
 				removeElementData(jailedPlayer, "jailtimer")
 				removeElementData(jailedPlayer, "adminjailed")
 				removeElementData(targetPlayer, "jailreason")
@@ -1301,7 +1310,8 @@ function timerUnjailPlayer(jailedPlayer)
 				exports.global:sendMessageToAdmins("AdmJail: " .. getPlayerName(jailedPlayer) .. " has served his jail time.")
 				exports.irc:sendMessage("[ADMIN] " .. getPlayerName(jailedPlayer) .. " was unjailed by script (Time Served)")
 			else
-				mysql_query(handler, "UPDATE accounts SET adminjail_time='" .. timeLeft .. "' WHERE id='" .. accountID .. "'")
+				local query = mysql_query(handler, "UPDATE accounts SET adminjail_time='" .. timeLeft .. "' WHERE id='" .. accountID .. "'")
+				mysql_free_result(query)
 			end
 		end
 	end
@@ -1323,7 +1333,8 @@ function unjailPlayer(thePlayer, commandName, who)
 				if not (jailed) then
 					outputChatBox(targetPlayerNick .. " is not jailed.", thePlayer, 255, 0, 0)
 				else
-					mysql_query(handler, "UPDATE accounts SET adminjail_time='0', adminjail='0' WHERE id='" .. accountID .. "'")
+					local query = mysql_query(handler, "UPDATE accounts SET adminjail_time='0', adminjail='0' WHERE id='" .. accountID .. "'")
+					mysql_free_result(query)
 					killTimer(jailed)
 					removeElementData(targetPlayer, "jailtimer")
 					removeElementData(targetPlayer, "adminjailed")
@@ -1707,35 +1718,43 @@ function makePlayerDonator(thePlayer, commandName, target, level)
 					
 					if (level==0) then
 						setElementData(targetPlayer, "donatorlevel", 0)
-						mysql_query(handler, "UPDATE accounts SET donator='0' WHERE id='" .. gameaccountID .. "'")
+						local query = mysql_query(handler, "UPDATE accounts SET donator='0' WHERE id='" .. gameaccountID .. "'")
+						mysql_free_result(query)
 						levelString = "Non-Donator"
 					elseif (level==1) then
 						setElementData(targetPlayer, "donatorlevel", 1)
-						mysql_query(handler, "UPDATE accounts SET donator='1' WHERE id='" .. gameaccountID .. "'")
+						local query = mysql_query(handler, "UPDATE accounts SET donator='1' WHERE id='" .. gameaccountID .. "'")
+						mysql_free_result(query)
 						levelString = "Bronze Donator"
 					elseif (level==2) then
 						setElementData(targetPlayer, "donatorlevel", 2)
-						mysql_query(handler, "UPDATE accounts SET donator='2' WHERE id='" .. gameaccountID .. "'")
+						local query = mysql_query(handler, "UPDATE accounts SET donator='2' WHERE id='" .. gameaccountID .. "'")
+						mysql_free_result(query)
 						levelString = "Silver Donator"
 					elseif (level==3) then
 						setElementData(targetPlayer, "donatorlevel", 3)
-						mysql_query(handler, "UPDATE accounts SET donator='3' WHERE id='" .. gameaccountID .. "'")
+						local query = mysql_query(handler, "UPDATE accounts SET donator='3' WHERE id='" .. gameaccountID .. "'")
+						mysql_free_result(query)
 						levelString = "Gold Donator"
 					elseif (level==4) then
 						setElementData(targetPlayer, "donatorlevel", 4)
-						mysql_query(handler, "UPDATE accounts SET donator='4' WHERE id='" .. gameaccountID .. "'")
+						local query = mysql_query(handler, "UPDATE accounts SET donator='4' WHERE id='" .. gameaccountID .. "'")
+						mysql_free_result(query)
 						levelString = "Platinum Donator"
 					elseif (level==5) then
 						setElementData(targetPlayer, "donatorlevel", 5)
-						mysql_query(handler, "UPDATE accounts SET donator='5' WHERE id='" .. gameaccountID .. "'")
+						local query = mysql_query(handler, "UPDATE accounts SET donator='5' WHERE id='" .. gameaccountID .. "'")
+						mysql_free_result(query)
 						levelString = "Pearl Donator"
 					elseif (level==6) then
 						setElementData(targetPlayer, "donatorlevel", 6)
-						mysql_query(handler, "UPDATE accounts SET donator='6' WHERE id='" .. gameaccountID .. "'")
+						local query = mysql_query(handler, "UPDATE accounts SET donator='6' WHERE id='" .. gameaccountID .. "'")
+						mysql_free_result(query)
 						levelString = "Diamond Donator"
 					elseif (level==7) then
 						setElementData(targetPlayer, "donatorlevel", 7)
-						mysql_query(handler, "UPDATE accounts SET donator='7' WHERE id='" .. gameaccountID .. "'")
+						local query = mysql_query(handler, "UPDATE accounts SET donator='7' WHERE id='" .. gameaccountID .. "'")
+						mysql_free_result(query)
 						levelString = "Godly Donator"
 					end
 					
@@ -2035,15 +2054,18 @@ function resetCharacter(thePlayer, commandName, character)
             local query = mysql_query(handler, "SELECT id FROM characters WHERE charactername='" .. character .. "'")
             local targetid = tonumber(mysql_result(query, 1, 1))
             local logged = getElementData(targetPlayer, "loggedin")
+            mysql_free_result(query)
             if logged == 1 then
                 kickPlayer(targetPlayer)
             end
             if (targetid == nil) then
                 outputChatBox(character .. " is not a valid character name.", thePlayer, 255, 0, 0)
             else
-                mysql_query(handler, "UPDATE characters SET money='0', weapons=NULL, ammo=NULL, items='', itemvalues='', car_license='0', gun_license='0', bankmoney='0' WHERE id='" .. targetid .. "'")
-                mysql_query(handler, "DELETE FROM vehicles WHERE owner='" .. targetid .. "'")
-                mysql_query(handler, "UPDATE interiors SET owner='-1',locked='1' WHERE owner='" .. targetid .. "'")
+                query = mysql_query(handler, "UPDATE characters SET money='0', weapons=NULL, ammo=NULL, items='', itemvalues='', car_license='0', gun_license='0', bankmoney='0' WHERE id='" .. targetid .. "'")
+                mysql_free_result(query)
+                query = mysql_query(handler, "DELETE FROM vehicles WHERE owner='" .. targetid .. "'")
+                mysql_free_result(query)
+                query = mysql_query(handler, "UPDATE interiors SET owner='-1',locked='1' WHERE owner='" .. targetid .. "'")
                 mysql_free_result(query)
                 restartResource(getResourceFromName(tostring("item-system")))
                 restartResource(getResourceFromName(tostring("interior-system")))

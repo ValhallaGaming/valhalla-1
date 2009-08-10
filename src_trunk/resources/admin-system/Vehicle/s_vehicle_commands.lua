@@ -700,7 +700,8 @@ function deleteVehicle(thePlayer, commandName, id)
 						destroyElement(theVehicle)
 					else
 						if (exports.global:isPlayerLeadAdmin(thePlayer)) then
-							mysql_query(handler, "DELETE FROM vehicles WHERE id='" .. dbid .. "'")
+							local query = mysql_query(handler, "DELETE FROM vehicles WHERE id='" .. dbid .. "'")
+							mysql_free_result(query)
 							destroyElement(theVehicle)
 							exports.irc:sendMessage("[ADMIN] " .. getPlayerName(thePlayer) .. " deleted vehicle #" .. dbid .. ".")
 						else
@@ -733,7 +734,8 @@ function deleteThisVehicle(thePlayer, commandName)
 				outputChatBox("You are not in a vehicle.", thePlayer, 255, 0, 0)
 			else
 				if dbid > 0 then
-					mysql_query(handler, "DELETE FROM vehicles WHERE id='" .. dbid .. "'")
+					local query = mysql_query(handler, "DELETE FROM vehicles WHERE id='" .. dbid .. "'")
+					mysql_free_result(query)
 					exports.irc:sendMessage("[ADMIN] " .. getPlayerName(thePlayer) .. " deleted vehicle #" .. dbid .. ".")
 				end
 				destroyElement(veh)
@@ -773,8 +775,8 @@ function setVehiclePosition(thePlayer, commandName)
 				local interior = getElementInterior(thePlayer)
 				local dimension = getElementDimension(thePlayer)
 				
-				mysql_query(handler, "UPDATE vehicles SET x='" .. x .. "', y='" .. y .."', z='" .. z .. "', rotx='" .. rx .. "', roty='" .. ry .. "', rotz='" .. rz .. "', currx='" .. x .. "', curry='" .. y .. "', currz='" .. z .. "', currrx='" .. rx .. "', currry='" .. ry .. "', currrz='" .. rz .. "', interior='" .. interior .. "', currinterior='" .. interior .. "', dimension='" .. dimension .. "', currdimension='" .. dimension .. "' WHERE id='" .. dbid .. "'")
-				
+				local query = mysql_query(handler, "UPDATE vehicles SET x='" .. x .. "', y='" .. y .."', z='" .. z .. "', rotx='" .. rx .. "', roty='" .. ry .. "', rotz='" .. rz .. "', currx='" .. x .. "', curry='" .. y .. "', currz='" .. z .. "', currrx='" .. rx .. "', currry='" .. ry .. "', currrz='" .. rz .. "', interior='" .. interior .. "', currinterior='" .. interior .. "', dimension='" .. dimension .. "', currdimension='" .. dimension .. "' WHERE id='" .. dbid .. "'")
+				mysql_free_result(query)
 				setVehicleRespawnPosition(veh, x, y, z, rx, ry, rz)
 				outputChatBox("Vehicle spawn position set.", thePlayer)
 			end

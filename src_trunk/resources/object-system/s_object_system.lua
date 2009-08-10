@@ -92,7 +92,7 @@ function loadAllObjects(res)
 					count = count + 1
 				end
 			end
-		mysql_free_result(result)
+			mysql_free_result(result)
 		end
 		exports.irc:sendMessage("[SCRIPT] Loaded " .. count .. " Objects.")
 	end

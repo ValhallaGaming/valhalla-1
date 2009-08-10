@@ -176,7 +176,8 @@ function removeFriend(id, username, dontShowFriends)
 				end
 			end
 		end
-		mysql_query(handler, "UPDATE accounts SET friends='" .. friendstring .. "' WHERE id='" .. accid .. "'")
+		local query = mysql_query(handler, "UPDATE accounts SET friends='" .. friendstring .. "' WHERE id='" .. accid .. "'")
+		mysql_free_result(query)
 		mysql_free_result(result)
 		outputChatBox("You removed '" .. username .. "' from your friends list.", source, 255, 194, 14)
 		

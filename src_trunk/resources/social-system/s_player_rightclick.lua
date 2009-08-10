@@ -4,7 +4,7 @@ function retrievePlayerInfo(targetPlayer)
 
 	if (result) then
 		local sfriends = mysql_result(result, 1, 1)
-		
+		mysql_free_result(result)
 		local friends = { }
 		local count = 1
 		
@@ -17,6 +17,7 @@ function retrievePlayerInfo(targetPlayer)
 					
 					local aresult = mysql_query(handler, "SELECT id FROM achievements WHERE account='" .. fid .. "'")
 					local numachievements = mysql_num_rows(aresult)
+					mysql_free_result(fresult)
 					mysql_free_result(aresult)
 					
 					friends[i] = tonumber(fid)
@@ -24,7 +25,6 @@ function retrievePlayerInfo(targetPlayer)
 					break
 				end
 			end
-			mysql_free_result(result)
 		end
 		
 		local result = mysql_query(handler, "SELECT description, age, weight, height, skincolor FROM characters WHERE charactername='" .. getPlayerName(targetPlayer) .. "'")
@@ -47,7 +47,7 @@ function addFriend(player)
 	
 	if (result) then
 		local sfriends = mysql_result(result, 1, 1)
-		
+		mysql_free_result(result)
 		if (tostring(sfriends)==tostring(mysql_null())) then
 			sfriends = ""
 		end
@@ -69,7 +69,8 @@ function addFriend(player)
 			outputChatBox("Your friends list is full!", source, 255, 194, 14)
 		else
 			sfriends = sfriends .. tonumber(getElementData(player, "gameaccountid")) .. ";"
-			mysql_query(handler, "UPDATE accounts SET friends='" .. tostring(sfriends) .. "' WHERE id='" .. accid .. "'")
+			local query = mysql_query(handler, "UPDATE accounts SET friends='" .. tostring(sfriends) .. "' WHERE id='" .. accid .. "'")
+			mysql_free_result(query)
 			outputChatBox("'" .. getPlayerName(player) .. "' was added to your friends list.", source, 255, 194, 14)
 		end
 	end

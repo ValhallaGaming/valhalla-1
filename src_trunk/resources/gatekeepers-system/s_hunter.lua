@@ -238,8 +238,8 @@ function statement11_S()
 	end
 	destroyElement (chatSphere)
 	resetHunterConvoStateDelayed()
-	mysql_query(handler, "UPDATE characters SET hunter='1' WHERE charactername='" .. mysql_escape_string(handler, getPlayerName(source)) .. "' LIMIT 1")
-
+	local query = mysql_query(handler, "UPDATE characters SET hunter='1' WHERE charactername='" .. mysql_escape_string(handler, getPlayerName(source)) .. "' LIMIT 1")
+	mysql_free_result(query)
 end
 addEvent( "hunterStatement11ServerEvent", true )
 addEventHandler( "hunterStatement11ServerEvent", getRootElement(), statement11_S )

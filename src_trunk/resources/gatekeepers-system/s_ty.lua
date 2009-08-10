@@ -182,8 +182,8 @@ function tyStatement8_S()
 	
 	resetTyConvoStateDelayed()
 	
-	mysql_query(handler, "UPDATE characters SET tyrese='1' WHERE charactername='" .. mysql_escape_string(handler, getPlayerName(source)) .. "' LIMIT 1")
-	
+	local query = mysql_query(handler, "UPDATE characters SET tyrese='1' WHERE charactername='" .. mysql_escape_string(handler, getPlayerName(source)) .. "' LIMIT 1")
+	mysql_free_result(query)
 end
 addEvent( "tyStatement8ServerEvent", true )
 addEventHandler( "tyStatement8ServerEvent", getRootElement(), tyStatement8_S )
@@ -226,8 +226,8 @@ function tyStatement10_S()
 	
 	resetTyConvoStateDelayed()
 	
-	mysql_query(handler, "UPDATE characters SET tyrese='1' WHERE charactername='" .. mysql_escape_string(handler, getPlayerName(source)) .. "' LIMIT 1")
-	
+	local query = mysql_query(handler, "UPDATE characters SET tyrese='1' WHERE charactername='" .. mysql_escape_string(handler, getPlayerName(source)) .. "' LIMIT 1")
+	mysql_free_result(query)
 end
 addEvent( "tyStatement10ServerEvent", true )
 addEventHandler( "tyStatement10ServerEvent", getRootElement(), tyStatement10_S )

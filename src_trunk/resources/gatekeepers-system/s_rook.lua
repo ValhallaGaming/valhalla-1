@@ -157,7 +157,8 @@ function rookStatement7_S()
 		outputChatBox("Rook whispers: Peace, homie.", player, 255, 255, 255)
 	end
 	destroyElement (chatSphere)
-	mysql_query(handler, "UPDATE characters SET rook='1' WHERE charactername='" .. mysql_escape_string(handler, getPlayerName(source)) .. "' LIMIT 1")
+	local query = mysql_query(handler, "UPDATE characters SET rook='1' WHERE charactername='" .. mysql_escape_string(handler, getPlayerName(source)) .. "' LIMIT 1")
+	mysql_free_result(query)
 	resetRookConvoStateDelayed()
 end
 addEvent( "rookStatement7ServerEvent", true )

@@ -324,7 +324,8 @@ function stevieSuccess_S()
 	exports.global:givePlayerItem(source, 55, 1) -- change the ID.
 	
 	-- set the players "stevie" stat to "1" meaning they have met him and successfully made it through the conversation.
-	mysql_query(handler, "UPDATE characters SET stevie='1' WHERE charactername='" .. mysql_escape_string(handler, getPlayerName(source)) .. "' LIMIT 1") -- NOT WORKING
+	local query = mysql_query(handler, "UPDATE characters SET stevie='1' WHERE charactername='" .. mysql_escape_string(handler, getPlayerName(source)) .. "' LIMIT 1") -- NOT WORKING
+	mysql_free_result(query)
 end
 addEvent( "stevieSuccessServerEvent", true )
 addEventHandler( "stevieSuccessServerEvent", getRootElement(), stevieSuccess_S )

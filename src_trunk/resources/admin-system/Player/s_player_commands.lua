@@ -377,9 +377,10 @@ end
 addCommandHandler("freconnect", forceReconnect, false, false)
 
 -- /GIVEGUN
-function givePlayerGun(thePlayer, commandName, targetPlayer, weapon, ammo)
+function givePlayerGun(thePlayer, commandName, targetPlayer, ...)
 	if (exports.global:isPlayerLeadAdmin(thePlayer)) then
-		if not (weapon) or not (ammo) or not (targetPlayer) then
+		local args = {...}
+		if not (targetPlayer) or (#args < 1) then
 			outputChatBox("SYNTAX: /" .. commandName .. " [Player Partial Nick / ID] [Weapon ID/Name] [Ammo]", thePlayer, 255, 194, 14)
 		else
 			local targetPlayer = exports.global:findPlayerByPartialNick(targetPlayer)
@@ -387,12 +388,28 @@ function givePlayerGun(thePlayer, commandName, targetPlayer, weapon, ammo)
 			if not (targetPlayer) then
 				outputChatBox("Player not found or multiple were found.", thePlayer, 255, 0, 0)
 			else
+				local weapon = tonumber(args[1])
+				local ammo = #args ~= 1 and tonumber(args[#args]) or -1
+				
+				if not weapon then -- weapon is specified as name
+					local weaponEnd = #args
+					repeat
+						weapon = getWeaponIDFromName(table.concat(args, " ", 1, weaponEnd))
+						weaponEnd = weaponEnd - 1
+					until weapon or weaponEnd == -1
+					if weaponEnd == -1 then
+						outputChatBox("Invalid Weapon Name.", thePlayer, 255, 0, 0)
+						return
+					elseif weaponEnd == #args - 1 then
+						ammo = -1
+					end
+				elseif not getWeaponNameFromID(weapon) then
+					outputChatBox("Invalid Weapon ID.", thePlayer, 255, 0, 0)
+				end
+				
 				local targetPlayerName = getPlayerName(targetPlayer)
 				local logged = getElementData(targetPlayer, "loggedin")
 				local hiddenAdmin = getElementData(thePlayer, "hiddenadmin")
-				
-				weapon = getWeaponIDFromName(weapon) or tonumber(weapon) or -1
-				ammo = tonumber(ammo)
 				
 				if (logged==0) then
 					outputChatBox("Player is not logged in.", thePlayer, 255, 0, 0)

@@ -43,15 +43,33 @@ end
 addCommandHandler("unlockcivcars", unlockAllCivilianCars, false, false)
 
 -- /veh
-function createTempVehicle(thePlayer, commandName, id, col1, col2)
-
+function createTempVehicle(thePlayer, commandName, ...)
 	if (exports.global:isPlayerAdmin(thePlayer)) then
-		if not (id) then
+		local args = {...}
+		if (#args < 1) then
 			outputChatBox("SYNTAX: /" .. commandName .. " [id/name] [color1] [color2]", thePlayer, 255, 194, 14)
 		else
-			id = getVehicleModelFromName(id) or tonumber(id) or -1
-			col1 = col1 or -1
-			col2 = col2 or -1
+			local vehicleID = tonumber(args[1])
+			local col1 = #args ~= 1 and tonumber(args[#args - 1]) or -1
+			local col2 = #args ~= 1 and tonumber(args[#args]) or -1
+			
+			if not vehicleID then -- vehicle is specified as name
+				local vehicleEnd = #args
+				repeat
+					vehicleID = getVehicleModelFromName(table.concat(args, " ", 1, vehicleEnd))
+					vehicleEnd = vehicleEnd - 1
+				until vehicleID or vehicleEnd == -1
+				outputDebugString("vehicleEnd = "..tostring(vehicleEnd).." #args = "..tostring(#args))
+				if vehicleEnd == -1 then
+					outputChatBox("Invalid Vehicle Name.", thePlayer, 255, 0, 0)
+					return
+				elseif vehicleEnd == #args - 2 then
+					col2 = -1
+				elseif vehicleEnd == #args - 1 then
+					col1 = -1
+					col2 = -1
+				end
+			end
 			
 			local r = getPedRotation(thePlayer)
 			local x, y, z = getElementPosition(thePlayer)
@@ -60,15 +78,14 @@ function createTempVehicle(thePlayer, commandName, id, col1, col2)
 			
 			local letter1 = exports.global:randChar()
 			local letter2 = exports.global:randChar()
-			local letter3 = exports.global:randChar()
 			local plate = letter1 .. letter2 .. math.random(0, 9) .. " " .. math.random(1000, 9999)
 			
-			local veh = createVehicle(id, x, y, z, 0, 0, r, plate)
+			local veh = createVehicle(vehicleID, x, y, z, 0, 0, r, plate)
 			
 			if not (veh) then
 				outputChatBox("Invalid Vehicle ID.", thePlayer, 255, 0, 0)
 			else
-				if (armoredCars[(tonumber(id))]) then
+				if (armoredCars[vehicleID]) then
 					setVehicleDamageProof(veh, true)
 				end
 

@@ -35,25 +35,47 @@ armoredCars = { [427]=true, [528]=true, [432]=true, [601]=true, [428]=true, [597
 addEvent("onVehicleSpawn", false)
 
 -- /makeveh
-function createPermVehicle(thePlayer, commandName, id, col1, col2, userName, factionVehicle, cost)
+function createPermVehicle(thePlayer, commandName, ...)
 	if (exports.global:isPlayerLeadAdmin(thePlayer)) then
-		if not (id) or not (col1) or not (col2) or not (userName) or not (factionVehicle) or not (cost) then
+		local args = {...}
+		if (#args < 6) then
 			outputChatBox("SYNTAX: /" .. commandName .. " [id/name] [color1 (-1 for random)] [color2 (-1 for random)] [Owner Partial Username] [Faction Vehicle (1/0)] [Cost] [Tinted Windows] ", thePlayer, 255, 194, 14)
 			outputChatBox("NOTE: If it is a faction vehicle, Username is the owner of the faction.", thePlayer, 255, 194, 14)
 			outputChatBox("NOTE: If it is a faction vehicle, The cost is taken from the faction fund, rather than the player.", thePlayer, 255, 194, 14)
 		else
+			local vehicleID = tonumber(args[1])
+			local col1, col2, userName, factionVehicle, cost
+			
+			if not vehicleID then -- vehicle is specified as name
+				local vehicleEnd = 1
+				repeat
+					vehicleID = getVehicleModelFromName(table.concat(args, " ", 1, vehicleEnd))
+					vehicleEnd = vehicleEnd + 1
+				until vehicleID or vehicleEnd == #args
+				if vehicleEnd == #args then
+					outputChatBox("Invalid Vehicle Name.", thePlayer, 255, 0, 0)
+					return
+				else
+					col1 = tonumber(args[vehicleEnd])
+					col2 = tonumber(args[vehicleEnd + 1])
+					userName = args[vehicleEnd + 2]
+					factionVehicle = tonumber(args[vehicleEnd + 3])
+					cost = tonumber(args[vehicleEnd + 4])
+				end
+			else
+				col1 = tonumber(args[2])
+				col2 = tonumber(args[3])
+				userName = args[4]
+				factionVehicle = tonumber(args[5])
+				cost = tonumber(args[6])
+			end
+			
+			local id = vehicleID
+			
 			local r = getPedRotation(thePlayer)
 			local x, y, z = getElementPosition(thePlayer)
 			x = x + ( ( math.cos ( math.rad ( r ) ) ) * 5 )
 			y = y + ( ( math.sin ( math.rad ( r ) ) ) * 5 )
-			
-			if (tonumber(col1)==-1) then
-				col1 = math.random(0, 126)
-			end
-			
-			if (tonumber(col2)==-1) then
-				col2 = math.random(0, 126)
-			end
 			
 			local targetPlayer = exports.global:findPlayerByPartialNick(userName)
 			
@@ -62,9 +84,8 @@ function createPermVehicle(thePlayer, commandName, id, col1, col2, userName, fac
 			else
 				local username = getPlayerName(targetPlayer)
 				local dbid = getElementData(targetPlayer, "dbid")
-				cost = tonumber(cost)
 				
-				if (tonumber(factionVehicle)==1) then
+				if (factionVehicle==1) then
 					factionVehicle = tonumber(getElementData(targetPlayer, "faction"))
 					local theTeam = getPlayerTeam(targetPlayer)
 					local money = getElementData(theTeam, "money")
@@ -72,8 +93,8 @@ function createPermVehicle(thePlayer, commandName, id, col1, col2, userName, fac
 					if (cost>money) then
 						outputChatBox("This faction cannot afford this vehicle.", thePlayer, 255, 0, 0)
 					else
-						setElementData(theTeam, "money", money-tonumber(cost))
-						mysql_query(handler, "UPDATE factions SET money='" .. money-tonumber(cost) .. "' WHERE id='" .. factionVehicle .. "'")
+						setElementData(theTeam, "money", money-cost)
+						mysql_query(handler, "UPDATE factions SET money='" .. money-cost .. "' WHERE id='" .. factionVehicle .. "'")
 					end
 				else
 					factionVehicle = -1
@@ -89,8 +110,6 @@ function createPermVehicle(thePlayer, commandName, id, col1, col2, userName, fac
 				local letter2 = exports.global:randChar()
 				local plate = letter1 .. letter2 .. math.random(0, 9) .. " " .. math.random(1000, 9999)
 				
-				id = getVehicleModelFromName(id) or tonumber(id) or -1
-
 				local veh = createVehicle(id, x, y, z, 0, 0, r, plate)
 				if not (veh) then
 					outputChatBox("Invalid Vehicle ID.", thePlayer, 255, 0, 0)
@@ -117,7 +136,7 @@ function createPermVehicle(thePlayer, commandName, id, col1, col2, userName, fac
 					end
 					
 					-- Set the vehicle armored if it is armored
-					if (armoredCars[tonumber(id)]) then
+					if (armoredCars[id]) then
 						setVehicleDamageProof(veh, true)
 					end
 						
@@ -162,34 +181,48 @@ end
 addCommandHandler("makeveh", createPermVehicle, false, false)
 
 -- /makecivveh
-function createCivilianPermVehicle(thePlayer, commandName, id, col1, col2, job)
+function createCivilianPermVehicle(thePlayer, commandName, ...)
 	if (exports.global:isPlayerLeadAdmin(thePlayer)) then
-		if not (id) or not (col1) or not (col2) then
+		local args = {...}
+		if (#args < 4) then
 			outputChatBox("SYNTAX: /" .. commandName .. " [id/name] [color1 (-1 for random)] [color2 (-1 for random)] [Job ID -1 for none]", thePlayer, 255, 194, 14)
 			outputChatBox("Job 1 = Delivery Driver", thePlayer, 255, 194, 14)
 			outputChatBox("Job 2 = Taxi Driver", thePlayer, 255, 194, 14)
 			outputChatBox("Job 3 = Bus Driver", thePlayer, 255, 194, 14)
 		else
+			local vehicleID = tonumber(args[1])
+			local col1, col2, job
+			
+			if not vehicleID then -- vehicle is specified as name
+				local vehicleEnd = 1
+				repeat
+					vehicleID = getVehicleModelFromName(table.concat(args, " ", 1, vehicleEnd))
+					vehicleEnd = vehicleEnd + 1
+				until vehicleID or vehicleEnd == #args
+				if vehicleEnd == #args then
+					outputChatBox("Invalid Vehicle Name.", thePlayer, 255, 0, 0)
+					return
+				else
+					col1 = tonumber(args[vehicleEnd])
+					col2 = tonumber(args[vehicleEnd + 1])
+					job = tonumber(args[vehicleEnd + 2])
+				end
+			else
+				col1 = tonumber(args[2])
+				col2 = tonumber(args[3])
+				job = tonumber(args[4])
+			end
+			
+			local id = vehicleID
+			
 			local r = getPedRotation(thePlayer)
 			local x, y, z = getElementPosition(thePlayer)
 			x = x + ( ( math.cos ( math.rad ( r ) ) ) * 5 )
 			y = y + ( ( math.sin ( math.rad ( r ) ) ) * 5 )
 			
-			if (tonumber(col1)==-1) then
-				col1 = math.random(0, 126)
-			end
-			
-			if (tonumber(col2)==-1) then
-				col2 = math.random(0, 126)
-			end
-			
-			job = tonumber(job)
-			
 			local letter1 = exports.global:randChar()
 			local letter2 = exports.global:randChar()
 			local plate = letter1 .. letter2 .. math.random(0, 9) .. " " .. math.random(1000, 9999)
-			
-			id = getVehicleModelFromName(id) or tonumber(id) or -1
 
 			local veh = createVehicle(id, x, y, z, 0, 0, r, plate)
 				
@@ -219,7 +252,7 @@ function createCivilianPermVehicle(thePlayer, commandName, id, col1, col2, job)
 				setElementData(veh, "job", job, false)
 				
 				-- Set the vehicle armored if it is armored
-				if (armoredCars[tonumber(id)]) then
+				if (armoredCars[id]) then
 					setVehicleDamageProof(veh, true)
 				end
 					
@@ -229,7 +262,7 @@ function createCivilianPermVehicle(thePlayer, commandName, id, col1, col2, job)
 					mysql_free_result(query)
 					local id = mysql_insert_id(handler)
 					
-					setElementData(veh, "dbid", tonumber(id))
+					setElementData(veh, "dbid", id)
 					setElementData(veh, "fuel", 100)
 					setElementData(veh, "engine", 0, false)
 					setElementData(veh, "oldx", x, false)

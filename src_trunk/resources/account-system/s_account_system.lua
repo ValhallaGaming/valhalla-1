@@ -981,6 +981,7 @@ function clearChatBox(thePlayer)
 end
 addCommandHandler("clearchat", clearChatBox) -- Users can now clear their chat if they wish
 
+--[[
 function stripPlayer()
 	for i = 0, 17 do
 		removePedClothes(source, i)
@@ -988,6 +989,7 @@ function stripPlayer()
 end
 addEvent("stripPlayer", true)
 addEventHandler("stripPlayer", getRootElement(), stripPlayer)
+]]--
 
 function declineTOS()
 	kickPlayer(source, getRootElement(), "Declined TOS")
@@ -995,6 +997,7 @@ end
 addEvent("declineTOS", true)
 addEventHandler("declineTOS", getRootElement(), declineTOS)
 
+--[[
 function adjustFatness(val)
 	setPedStat(source, 21, tonumber(val))
 end
@@ -1018,6 +1021,7 @@ function addClothes(texture, model, ctype)
 end
 addEvent("addClothes", true)
 addEventHandler("addClothes", getRootElement(), addClothes)
+]]--
 
 function doesCharacterExist(charname)
 	charname = string.gsub(tostring(charname), " ", "_")
@@ -1051,6 +1055,7 @@ addEventHandler("resetName", getRootElement(), resetNick)
 -- ////////////////////////////////////////
 -- STORE CREATED CHARACTERS
 -- ///////////////////////////////////////
+--[[
 leftUpperArmTattoos = { {"NONE", "NONE"}, {"4WEED", "4weed"}, {"4RIP", "4rip"}, {"4SPIDER", "4spider"} }
 leftLowerArmTattoos = { {"NONE", "NONE"}, {"5GUN", "5gun"}, {"5CROSS", "5cross"}, {"5CROSS2", "5cross2"}, {"5CROSS3", "5cross3"}  }
 rightUpperArmTattoos = { {"NONE", "NONE"}, {"6AZTEC", "6aztec"}, {"6CROWN", "6crown"}, {"6CLOWN", "6clown"}, {"6AFRICA", "6africa"} }
@@ -1210,8 +1215,9 @@ function spawnClothes(name)
 end
 addEvent("spawnClothes", true)
 addEventHandler("spawnClothes", getRootElement(), spawnClothes)
+]]--
 
-function createCharacter(name, gender, skincolour, weight, height, fatness, muscles, transport, description, age, skin, clothes)
+function createCharacter(name, gender, skincolour, weight, height, fatness, muscles, transport, description, age, skin)
 	-- Fix the name and check if its already taken...
 	local charname = string.gsub(tostring(name), " ", "_")
 	local safecharname = mysql_escape_string(handler, charname)
@@ -1249,12 +1255,12 @@ function createCharacter(name, gender, skincolour, weight, height, fatness, musc
 		if (query) then
 			local id = mysql_insert_id(handler)
 			mysql_free_result(query)
-			if (clothes) then -- Store CJ's clothes!
-				local update = mysql_query(handler, "UPDATE characters SET head='" .. clothes[1] .. "', hat='" .. clothes[2] .. "', neck='" .. clothes[3] .. "', glasses='" .. clothes[4] .. "', shirt='" .. clothes[5] .. "', watch='" .. clothes[6] .. "', trousers='" .. clothes[7] .. "', shoes='" .. clothes[8] .. "', extra='" .. clothes[9] .. "', tattoo_lu='" .. clothes[10] .. "', tattoo_ll='" .. clothes[11] .. "', tattoo_ru='" .. clothes[12] .. "', tattoo_rl='" .. clothes[13] .. "', tattoo_back='" .. clothes[14] .. "', tattoo_lc='" ..clothes[15] .. "', tattoo_rc='" .. clothes[16] .. "', tattoo_stomach='" .. clothes[17] .. "', tattoo_lb='" .. clothes[18] .. "' WHERE charactername='" .. safecharname .. "'")
-				if (update) then
-					mysql_free_result(update)
-				end
-			end
+			--if (clothes) then -- Store CJ's clothes!
+				--local update = mysql_query(handler, "UPDATE characters SET head='" .. clothes[1] .. "', hat='" .. clothes[2] .. "', neck='" .. clothes[3] .. "', glasses='" .. clothes[4] .. "', shirt='" .. clothes[5] .. "', watch='" .. clothes[6] .. "', trousers='" .. clothes[7] .. "', shoes='" .. clothes[8] .. "', extra='" .. clothes[9] .. "', tattoo_lu='" .. clothes[10] .. "', tattoo_ll='" .. clothes[11] .. "', tattoo_ru='" .. clothes[12] .. "', tattoo_rl='" .. clothes[13] .. "', tattoo_back='" .. clothes[14] .. "', tattoo_lc='" ..clothes[15] .. "', tattoo_rc='" .. clothes[16] .. "', tattoo_stomach='" .. clothes[17] .. "', tattoo_lb='" .. clothes[18] .. "' WHERE charactername='" .. safecharname .. "'")
+				--if (update) then
+				--	mysql_free_result(update)
+				--end
+			--end
 			
 			-- CELL PHONE
 			

@@ -1647,10 +1647,10 @@ function selectedCharacter(button, state)
 					setElementAlpha(getLocalPlayer(), 0)
 					
 					if (cked==0) then
-						if (skinID==0) then -- Load CJ's clothes etc.
-							local charname = tableAccounts[key][2]
-							triggerServerEvent("spawnClothes", getLocalPlayer(), charname)
-						end
+						--if (skinID==0) then -- Load CJ's clothes etc.
+						--	local charname = tableAccounts[key][2]
+						--	triggerServerEvent("spawnClothes", getLocalPlayer(), charname)
+						--end
 						fading = true
 						
 						tmrHideMouse = setTimer(unhideCursor, 200, 1)
@@ -1695,7 +1695,7 @@ function selectedCharacter(button, state)
 					end
 				
 				-- optomize this
-				triggerServerEvent("stripPlayer", getLocalPlayer())
+				--triggerServerEvent("stripPlayer", getLocalPlayer())
 				setElementAlpha(getLocalPlayer(), 0)
 				
 				
@@ -1834,7 +1834,7 @@ function checkName()
 end
 
 function cancelCreation(button, state)
-			triggerServerEvent("stripPlayer", getLocalPlayer())
+			--triggerServerEvent("stripPlayer", getLocalPlayer())
 			removeEventHandler("onClientRender", getRootElement(), moveCameraToCreation)
 			
 			if (isElement(bRotate)) then
@@ -2122,7 +2122,7 @@ function generateSkin()
 	curskin = skinint
 end
 	
-
+--[[
 function characterCreationStep2CJ()
 	fatness = 0
 	muscles = 0
@@ -2207,6 +2207,7 @@ function adjustMuscles(button, state)
 		end
 	end
 end
+
 
 leftUpperArmTattoos = { {"NONE", "NONE"}, {"4WEED", "4weed"}, {"4RIP", "4rip"}, {"4SPIDER", "4spider"} }
 leftLowerArmTattoos = { {"NONE", "NONE"}, {"5GUN", "5gun"}, {"5CROSS", "5cross"}, {"5CROSS2", "5cross2"}, {"5CROSS3", "5cross3"}  }
@@ -3050,6 +3051,7 @@ end
 lInformation, lHeight, tHeight, lWeight, tWeight, lCharDesc, tCharDesc, lAge, tAge = nil
 weight, height, description = "", "", ""
 age = 24
+]]--
 
 function characterCreationStep5(button, state)
 	if (button=="left") and (state=="up") and (source==bNext) then

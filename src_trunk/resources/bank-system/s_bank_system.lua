@@ -33,6 +33,7 @@ setElementInterior(shape, 3)
 setElementInterior(bankPickup, 3)
 
 function pickupUse(thePlayer)
+	cancelEvent()
 	local result = mysql_query(handler, "SELECT faction_id, faction_leader FROM characters WHERE charactername='" .. getPlayerName(thePlayer) .. "' LIMIT 1")
 	
 	if (result) then

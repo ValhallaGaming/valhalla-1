@@ -178,6 +178,7 @@ end
 addCommandHandler("nearbyatms", getNearbyATMs, false, false)
 
 function showATMInterface(thePlayer)
+	cancelEvent()
 	local result = mysql_query(handler, "SELECT faction_id, faction_leader FROM characters WHERE charactername='" .. getPlayerName(thePlayer) .. "' LIMIT 1")
 	
 	if (result) then

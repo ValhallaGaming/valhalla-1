@@ -229,10 +229,13 @@ function ticketPlayer(thePlayer, commandName, targetPlayerNick, amount, ...)
 								
 								setElementData(theTeamPD, "money", (currentPDBalance+PDMoney))
 								setElementData(theTeamGov, "money", (currentGOVBalance+GOVMoney))
-								
-								mysql_query(handler, "UPDATE factions SET bankbalance='" .. (currentPDBalance+PDMoney) .. "' WHERE id='1'")
-								mysql_query(handler, "UPDATE factions SET bankbalance='" .. (currentGOVBalance+GOVMoney) .. "' WHERE id='3'")
+								local query
+								query = mysql_query(handler, "UPDATE factions SET bankbalance='" .. (currentPDBalance+PDMoney) .. "' WHERE id='1'")
+								mysql_free_result(query)
+								query = mysql_query(handler, "UPDATE factions SET bankbalance='" .. (currentGOVBalance+GOVMoney) .. "' WHERE id='3'")
+								mysql_free_result(query)
 								mysql_free_result(result)
+								
 							end
 							
 							outputChatBox("You ticketed " .. getPlayerName(targetPlayer) .. " for " .. amount .. "$. Reason: " .. reason .. ".", thePlayer)
@@ -275,7 +278,8 @@ function takeLicense(thePlayer, commandName, targetPartialNick, licenseType)
 					
 					if (tonumber(licenseType)==1) then
 						if(tonumber(getElementData(targetPlayer, "license.car")) == 1) then
-							mysql_query(handler, "UPDATE characters SET car_license='0' WHERE charactername='" .. mysql_escape_string(handler, getPlayerName(targetPlayer)) .. "' LIMIT 1")
+							local query = mysql_query(handler, "UPDATE characters SET car_license='0' WHERE charactername='" .. mysql_escape_string(handler, getPlayerName(targetPlayer)) .. "' LIMIT 1")
+							mysql_free_result(query)
 							outputChatBox(name.." has revoked your driving license.", targetPlayer, 255, 194, 14)
 							outputChatBox("You have revoked " .. targetPlayerName .. "'s driving license.", thePlayer, 255, 194, 14)
 							setElementData(targetPlayer, "license.car", 0)
@@ -284,7 +288,8 @@ function takeLicense(thePlayer, commandName, targetPartialNick, licenseType)
 						end
 					elseif (tonumber(licenseType)==2) then
 						if(tonumber(getElementData(targetPlayer, "license.gun")) == 1) then
-							mysql_query(handler, "UPDATE characters SET gun_license='0' WHERE charactername='" .. mysql_escape_string(handler, getPlayerName(targetPlayer)) .. "' LIMIT 1")
+							local query = mysql_query(handler, "UPDATE characters SET gun_license='0' WHERE charactername='" .. mysql_escape_string(handler, getPlayerName(targetPlayer)) .. "' LIMIT 1")
+							mysql_free_result(query)
 							outputChatBox(name.." has revoked your weapon license.", targetPlayer, 255, 194, 14)
 							outputChatBox("You have revoked " .. targetPlayerName .. "'s weapon license.", thePlayer, 255, 194, 14)
 							setElementData(targetPlayer, "license.gun", 0)

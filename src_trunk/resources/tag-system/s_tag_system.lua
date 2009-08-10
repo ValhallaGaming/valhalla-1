@@ -42,6 +42,7 @@ function makeTagObject(cx, cy, cz, rot, interior, dimension)
 		exports.global:sendLocalMeAction(source, "tags the wall.")
 		
 		local id = mysql_insert_id(handler)
+		mysql_free_result(query)
 		setElementData(obj, "dbid", id, false)
 		setElementData(obj, "type", "tag")
 		outputChatBox("You have tagged the wall!", source, 255, 194, 14)
@@ -69,7 +70,8 @@ function makeTagObject(cx, cy, cz, rot, interior, dimension)
 			outputChatBox("You removed the tag. You earnt 30$ for doing so.", source, 255, 194, 14)
 			exports.global:givePlayerSafeMoney(source, 30)
 			destroyElement(object)
-			mysql_query(handler, "DELETE FROM tags WHERE id='" .. id .. "'")
+			local query = mysql_query(handler, "DELETE FROM tags WHERE id='" .. id .. "'")
+			mysql_free_result(query)
 		end
 		destroyElement(colshape)
 	end
@@ -101,7 +103,8 @@ function clearNearbyTag(thePlayer)
 		if (object) then
 			local id = getElementData(object, "dbid")
 			destroyElement(object)
-			mysql_query(handler, "DELETE FROM tags WHERE id='" .. id .. "'")
+			local query = mysql_query(handler, "DELETE FROM tags WHERE id='" .. id .. "'")
+			mysql_free_result(query)
 			outputChatBox("Deleted tag with id #" .. id .. ".", thePlayer, 0, 255, 0)
 		else
 			outputChatBox("You are not near any tag.", thePlayer, 255, 0, 0)
@@ -138,10 +141,11 @@ function loadAllTags(res)
 				local modelid = tonumber(row[10])
 
 				if (yearday>(wyearday+2)) then -- EXPIRED
-					mysql_query(handler, "DELETE FROM tags WHERE id='" .. id .. "'")
+					local query = mysql_query(handler, "DELETE FROM tags WHERE id='" .. id .. "'")
+					mysql_free_result(query)
 				elseif (wyearday>yearday) then -- NEW YEAR
-					mysql_query(handler, "UPDATE tags SET yearday='" .. yearday .. "' WHERE id='" .. id .. "'")
-				
+					local query = mysql_query(handler, "UPDATE tags SET yearday='" .. yearday .. "' WHERE id='" .. id .. "'")
+					mysql_free_result(query)
 					local object = createObject(modelid, x, y, z, rx, ry, rz)
 					exports.pool:allocateElement(object)
 					setElementInterior(object, interior)
@@ -166,8 +170,8 @@ function loadAllTags(res)
 				end
 			end
 			-- update the auto increment with highest used tag id + 1
-			mysql_query(handler, "ALTER TABLE `tags` AUTO_INCREMENT = " .. (highest + 1))
-			
+			local query = mysql_query(handler, "ALTER TABLE `tags` AUTO_INCREMENT = " .. (highest + 1))
+			mysql_free_result(query)
 			mysql_free_result(result)
 		end
 		exports.irc:sendMessage("[SCRIPT] Loaded " .. count .. " Tags.")

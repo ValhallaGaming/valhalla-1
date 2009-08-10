@@ -55,6 +55,6 @@ if you wish to use folders (its advised) then when editing the txd and dff part 
 Say you have enforcer.txd and enforcer.dff in a folder mods
 
 
-<mod txd="mods/enforcer.txd" dff="mods/enforcer.dff" MODEL="427" />
+<mod TXD="mods/enforcer.txd" DFF="mods/enforcer.dff" model="427" />
 
 is the line you would use

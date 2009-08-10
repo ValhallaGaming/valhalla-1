@@ -389,7 +389,7 @@ function SmallestElevatorID( ) --  Loop which finds the smallest ID in the SQL i
 				end
 
 		end
-		
+		mysql_free_result(result)
 	end
 
 	if(highest > 0) then

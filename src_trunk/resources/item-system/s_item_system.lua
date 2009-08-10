@@ -342,7 +342,12 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 			outputChatBox("Use the chemistry set purchasable from 24/7 to use this item.", source, 255, 0, 0)
 		elseif (itemID>=34 and itemID<=44) then -- DRUGS
 			exports.global:takePlayerItem(source, itemID, -1)
-			exports.global:sendLocalMeAction(source, "takes some " .. itemName .. ".")
+			
+			if getPedOccupiedVehicle(source) and ( itemID == 38 or itemID == 42 ) then
+				outputChatBox("You take some " .. itemName .. ", but nothing happens...", source, 255, 0, 0)
+			else
+				exports.global:sendLocalMeAction(source, "takes some " .. itemName .. ".")
+			end
 		elseif (itemID==45) or (itemID==46) or (itemID==47) then
 			outputChatBox("Right click a player to use this item.", source, 255, 0, 0)
 		elseif (itemID==48) then

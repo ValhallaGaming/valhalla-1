@@ -761,7 +761,9 @@ function useItem(button)
 			elseif (itemID==37) then
 				doDrug4Effect()
 			elseif (itemID==38) then
-				doDrug5Effect()
+				if not getPedOccupiedVehicle(getLocalPlayer()) then
+					doDrug5Effect()
+				end
 			elseif (itemID==39) then
 				doDrug6Effect()
 			elseif (itemID==40) then
@@ -771,8 +773,10 @@ function useItem(button)
 				doDrug4Effect()
 				doDrug6Effect()
 			elseif (itemID==42) then
-				doDrug5Effect()
-				doDrug2Effect()
+				if not getPedOccupiedVehicle(getLocalPlayer()) then
+					doDrug5Effect()
+					doDrug2Effect()
+				end
 			elseif (itemID==43) then
 				doDrug4Effect()
 				doDrug1Effect()

@@ -117,7 +117,8 @@ function checkVehpos(veh)
 			local id = tonumber(getElementData(veh, "dbid"))
 			exports.irc:sendMessage("Removing vehicle #" .. id .. " (Did not get Vehpossed).")
 			destroyElement(veh)
-			mysql_query(handler, "DELETE FROM vehicles WHERE id='" .. id .. "' LIMIT 1")
+			local query = mysql_query(handler, "DELETE FROM vehicles WHERE id='" .. id .. "' LIMIT 1")
+			mysql_free_result(query)
 		end
 	end
 end

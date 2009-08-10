@@ -69,6 +69,7 @@ function addNewSuspectToDatabase(details)
 	
 	if (name==nil) then
 		local result = mysql_query(handler, "INSERT INTO suspectDetails SET suspect_name='" .. details[1] .. "', birth='" .. details[2] .. "', gender='" .. details[3] .. "', ethnicy='" .. details[4] .. "', cell='" .. details[5] .. "', occupation='" .. details[6] .. "', address='" .. details[7] .. "', other='" .. details[8] .. "', is_wanted='0', wanted_reason='None', wanted_punishment='None', wanted_by='None', photo='" .. details[9] .. "', done_by='" .. details[10] .. "'")
+		mysql_free_result(result)
 		exports.irc:sendMessage(tostring(mysql_error(handler)))
 	end
 
@@ -113,9 +114,11 @@ function addUpdateSuspectToDatabase(details)
 		local sucess
 	
 		if(updatePhoto) then
-			mysql_query(handler, "UPDATE suspectDetails SET birth='" .. details[2] .. "', gender='" .. details[3] .. "', ethnicy='" .. details[4] .. "', cell='" .. details[5] .. "', occupation='" .. details[6] .. "', address='" .. details[7] .. "', other='" .. details[8] .. "', photo='" .. details[9] .. "', done_by='" .. details[10] .. "' WHERE suspect_name='" .. details[1] .. "'")
+			local query = mysql_query(handler, "UPDATE suspectDetails SET birth='" .. details[2] .. "', gender='" .. details[3] .. "', ethnicy='" .. details[4] .. "', cell='" .. details[5] .. "', occupation='" .. details[6] .. "', address='" .. details[7] .. "', other='" .. details[8] .. "', photo='" .. details[9] .. "', done_by='" .. details[10] .. "' WHERE suspect_name='" .. details[1] .. "'")
+			mysql_free_result(query)
 		else
-			mysql_query(handler, "UPDATE suspectDetails SET birth='" .. details[2] .. "', gender='" .. details[3] .. "', ethnicy='" .. details[4] .. "', cell='" .. details[5] .. "', occupation='" .. details[6] .. "', address='" .. details[7] .. "', other='" .. details[8] .. "', done_by='" .. details[10] .. "' WHERE suspect_name='" .. details[1] .. "'")
+			local query = mysql_query(handler, "UPDATE suspectDetails SET birth='" .. details[2] .. "', gender='" .. details[3] .. "', ethnicy='" .. details[4] .. "', cell='" .. details[5] .. "', occupation='" .. details[6] .. "', address='" .. details[7] .. "', other='" .. details[8] .. "', done_by='" .. details[10] .. "' WHERE suspect_name='" .. details[1] .. "'")
+			mysql_free_result(query)
 		end
 		
 		if(sucess) then
@@ -216,7 +219,8 @@ function addUpdateSuspectWarrantToDatabase(warrantDetails)
 	
 	--if player is already in the database, updatethem
 	if (name) then
-		mysql_query(handler, "UPDATE suspectDetails SET is_wanted = '"..warrantDetails[2].."', wanted_reason = '"..warrantDetails[3].."', wanted_punishment = '"..warrantDetails[4].."', wanted_by = '"..warrantDetails[5].."' WHERE suspect_name = '"..warrantDetails[1].. "'")
+		local query = mysql_query(handler, "UPDATE suspectDetails SET is_wanted = '"..warrantDetails[2].."', wanted_reason = '"..warrantDetails[3].."', wanted_punishment = '"..warrantDetails[4].."', wanted_by = '"..warrantDetails[5].."' WHERE suspect_name = '"..warrantDetails[1].. "'")
+		mysql_free_result(query)
 	end
 
 end
@@ -230,8 +234,9 @@ function saveCrime(details)
 		outputChatBox("Too much information passed, unable to save crime - please add again.", client, 255, 0 ,0, true)
 	else	
 		-- insert the crimes
-		mysql_query(handler, "INSERT INTO suspectCrime SET suspect_name='" .. details[1] .. "', time='" .. details[2] .. "', date='" .. details[3] .. "', officers='" .. details[4] .. "', ticket='" .. details[5] .. "', arrest='" .. details[6] .. "', fine='" .. details[7] .. "', ticket_price='" .. details[8] .. "', arrest_price='" .. details[9] .. "', fine_price='" .. details[10] .. "', illegal_items='" .. details[11] .. "', details='" .. details[12] .. "', done_by='" .. details[13] .. "'")
-			
+		local query = mysql_query(handler, "INSERT INTO suspectCrime SET suspect_name='" .. details[1] .. "', time='" .. details[2] .. "', date='" .. details[3] .. "', officers='" .. details[4] .. "', ticket='" .. details[5] .. "', arrest='" .. details[6] .. "', fine='" .. details[7] .. "', ticket_price='" .. details[8] .. "', arrest_price='" .. details[9] .. "', fine_price='" .. details[10] .. "', illegal_items='" .. details[11] .. "', details='" .. details[12] .. "', done_by='" .. details[13] .. "'")
+		mysql_free_result(query)
+
 		outputChatBox("Crime added sucessfully.", client, 0, 255 ,0, true)
 	end
 end
@@ -276,7 +281,8 @@ addEventHandler("onGetSuspectCrimes", getRootElement(), getSuspectCrime)
 
 -- function deletes a crime from the database
 function deleteCrime(crimeID)
-	mysql_query(handler, "DELETE FROM suspectCrime WHERE id='" .. tonumber(crimeID) .. "'")
+	local query = mysql_query(handler, "DELETE FROM suspectCrime WHERE id='" .. tonumber(crimeID) .. "'")
+	mysql_free_result(query)
 end
 addEvent("onDeleteCrime", true)
 addEventHandler("onDeleteCrime", getRootElement(), deleteCrime)
@@ -298,11 +304,11 @@ function clientLogIn(logInDetails)
 			tableresult[1][1] = mysql_result(result, 1, 1)
 			tableresult[1][2] = mysql_result(result, 1, 2)
 			tableresult[1][3] = mysql_result(result, 1, 3)
-			mysql_free_result(result)
 			triggerClientEvent("onCorrectLogInDetails", client, tableresult)
 		else
 			outputChatBox("Invalid Username or Password specified.", client, 255, 0, 0, true)
-		end	
+		end
+		mysql_free_result(result)
 	else
 		outputChatBox("Invalid username or password specified.", client, 255, 0, 0, true)
 	end
@@ -314,7 +320,8 @@ addEventHandler("onClientLogInToMDC", getRootElement(), clientLogIn)
 -- function updates the users account details
 function UpdateAccount(details)
 	-- ADD encrypt TO DETAILS 2
-	mysql_query(handler, "UPDATE mdcUsers SET password = '"..details[2].."', high_command = '"..details[3].."' WHERE user_name = '"..details[1].."'")
+	local query = mysql_query(handler, "UPDATE mdcUsers SET password = '"..details[2].."', high_command = '"..details[3].."' WHERE user_name = '"..details[1].."'")
+	mysql_free_result(query)
 end
 addEvent("onUpdateAccount", true)
 addEventHandler("onUpdateAccount", getRootElement(), UpdateAccount)
@@ -327,7 +334,8 @@ function CreateAccount(details)
 	local result = mysql_query(handler, "SELECT user_name FROM mdcUsers where user_name='" .. details[1] .. "'")
 	
 	if not (mysql_num_rows(result)>0) then
-		mysql_query(handler, "INSERT INTO mdcUsers SET user_name='" .. details[1] .. "', password='" .. details[2] .. "', high_command='" .. details[3] .. "'")
+		local query = mysql_query(handler, "INSERT INTO mdcUsers SET user_name='" .. details[1] .. "', password='" .. details[2] .. "', high_command='" .. details[3] .. "'")
+		mysql_free_result(query)
 		outputChatBox("Account: "..details[1].." with password "..details[2].." and high command limits: '"..details[3].."' sucessfully created.", client, 0, 255, 0, true)
 	else
 		outputChatBox("Unable to create the account: "..details[1].." since it already exists in the database.", client, 255, 0, 0, true)
@@ -344,7 +352,8 @@ function RemoveAccount(details)
 	local result = mysql_query(handler, "SELECT user_name FROM mdcUsers where user_name='" .. details[1] .. "'")
 	
 	if not (mysql_num_rows(result)>0) then
-		mysql_query(handler, "DELETE FROM mdcUsers WHERE user_name='" .. details[1] .. "'")
+		local query = mysql_query(handler, "DELETE FROM mdcUsers WHERE user_name='" .. details[1] .. "'")
+		mysql_free_result(query)
 		outputChatBox("Account: "..details[1].." has been removed from the database.", client, 0, 255, 0, true)
 	else
 		outputChatBox("Unable to remove the account: "..details[1].." since it does not exist in the database.", client, 255, 0, 0, true)
@@ -425,8 +434,10 @@ function deleteSuspect(name)
 	local result = mysql_query(handler, "SELECT suspect_name FROM suspectDetails WHERE suspect_name='" .. tostring(name) .. "'")
 	
 	if (mysql_num_rows(result)>0) then
-		mysql_query(handler, "DELETE FROM suspectDetails WHERE suspect_name='" .. name .. "'")
-		mysql_query(handler, "DELETE FROM suspectCrime WHERE suspect_name='" .. name .. "'")
+		local query = mysql_query(handler, "DELETE FROM suspectDetails WHERE suspect_name='" .. name .. "'")
+		mysql_free_result(query)
+		local query = mysql_query(handler, "DELETE FROM suspectCrime WHERE suspect_name='" .. name .. "'")
+		mysql_free_result(query)
 		outputChatBox("Sucessfull deletion of suspect: "..name..", including all of their crimes.", client, 0, 255, 0, true)
 	else
 		outputChatBox("Could not delete suspect "..name.." since they do not exist in the database.", client, 255, 0, 0, true)

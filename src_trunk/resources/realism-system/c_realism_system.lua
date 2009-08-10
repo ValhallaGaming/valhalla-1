@@ -68,8 +68,21 @@ setPedAnimation(gantonDancer2,"STRIP","STR_C2",-1,true,false,false)
 setElementInterior(gantonDancer2,3)
 setElementDimension(gantonDancer2,1350)
 
+------/////////////////////// bewbz night club ///////////////////////------
+local bewbzNClub1=createPed(87,-2677.560546875, 1410.3486328125, 907.5703125)
+setElementInterior(bewbzNClub1,3)
+setElementDimension(bewbzNClub1,1355)
+setPedAnimation(bewbzNClub1,"STRIP","STR_C1",-1,true,false,false)
+
+local bewbzNClub2=createPed(87, -2670.599609375, 1410.4853515625, 907.5703125)
+setElementInterior(bewbzNClub2,3)
+setElementDimension(bewbzNClub2,1355)
+setPedAnimation(bewbzNClub2,"STRIP","STR_C2",-1,true,false,false)
+
 local DancerOneDanceNumber=1
 local DancerTwoDanceNumber=1
+
+
 
 -- Dancer 1 Cycle
 function dancerOneLoop()
@@ -77,16 +90,19 @@ function dancerOneLoop()
 		setPedAnimation(pigpenDancer1,"STRIP","STR_Loop_C",-1,true,false,false)
 		setPedAnimation(eastBeachDancer1,"STRIP","STR_Loop_C",-1,true,false,false)
 		setPedAnimation(gantonDancer1,"STRIP","STR_Loop_C",-1,true,false,false)
+		setPedAnimation(bewbzNClub1,"STRIP","STR_Loop_C",-1,true,false,false)
 		DancerOneDanceNumber=DancerOneDanceNumber+1
 	elseif(DancerOneDanceNumber==2)then
 		setPedAnimation(pigpenDancer1,"STRIP","strip_D",-1,true,false,false)
 		setPedAnimation(eastBeachDancer1,"STRIP","strip_D",-1,true,false,false)
 		setPedAnimation(gantonDancer1,"STRIP","strip_D",-1,true,false,false)
+		setPedAnimation(bewbzNClub1,"STRIP","strip_D",-1,true,false,false)
 		DancerOneDanceNumber=DancerOneDanceNumber+1
 	elseif(DancerOneDanceNumber==3)then
 		setPedAnimation(pigpenDancer1,"STRIP","STR_C1",-1,true,false,false)
 		setPedAnimation(eastBeachDancer1,"STRIP","STR_C1",-1,true,false,false)
 		setPedAnimation(gantonDancer1,"STRIP","STR_C1",-1,true,false,false)
+		setPedAnimation(bewbzNClub1,"STRIP","STR_C1",-1,true,false,false)
 		DancerOneDanceNumber=1
 	end
 end
@@ -98,16 +114,19 @@ function dancerTwoLoop()
 		setPedAnimation(pigpenDancer2,"STRIP","Strip_Loop_B",-1,true,false,false)
 		setPedAnimation(eastBeachDancer2,"STRIP","Strip_Loop_B",-1,true,false,false)
 		setPedAnimation(gantonDancer2,"STRIP","Strip_Loop_B",-1,true,false,false)
+		setPedAnimation(bewbzNClub2,"STRIP","Strip_Loop_B",-1,true,false,false)
 		DancerTwoDanceNumber=DancerTwoDanceNumber+1
 	elseif(DancerTwoDanceNumber==2)then
 		setPedAnimation(pigpenDancer2,"STRIP","STR_Loop_A",-1,true,false,false)
 		setPedAnimation(eastBeachDancer2,"STRIP","STR_Loop_A",-1,true,false,false)
 		setPedAnimation(gantonDancer2,"STRIP","STR_Loop_A",-1,true,false,false)
+		setPedAnimation(bewbzNClub2,"STRIP","STR_Loop_A",-1,true,false,false)
 		DancerTwoDanceNumber=DancerTwoDanceNumber+1
 	elseif(DancerTwoDanceNumber==3)then
 		setPedAnimation(pigpenDancer2,"STRIP","STR_C2",-1,true,false,false)
 		setPedAnimation(eastBeachDancer2,"STRIP","STR_C2",-1,true,false,false)
 		setPedAnimation(gantonDancer2,"STRIP","STR_C2",-1,true,false,false)
+		setPedAnimation(bewbzNClub2,"STRIP","STR_C2",-1,true,false,false)
 		DancerTwoDanceNumber=1
 	end
 end

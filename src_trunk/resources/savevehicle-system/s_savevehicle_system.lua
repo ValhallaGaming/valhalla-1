@@ -69,8 +69,8 @@ function saveVehicleOnExit(thePlayer, seat, vehicle)
 				
 			local wheel1, wheel2, wheel3, wheel4 = getVehicleWheelStates(source)
 				
-			mysql_query(handler, "UPDATE vehicles SET model='" .. model .. "', currx='" .. x .. "', curry='" .. y .. "', currz='" .. z .. "', currrx='" .. rx .. "', currry='" .. ry .. "', currrz='" .. rz .. "', color1='" .. col1 .. "', color2='" .. col2 .. "', fuel='" .. fuel .. "', engine='" .. engine .. "', locked='" .. locked .. "', lights='" .. lights .. "', wheel1='" .. wheel1 .. "', wheel2='" .. wheel2 .. "', wheel3='" .. wheel3 .. "', wheel4='" .. wheel4 .. "' WHERE id='" .. dbid .. "'")
-				
+			local query = mysql_query(handler, "UPDATE vehicles SET model='" .. model .. "', currx='" .. x .. "', curry='" .. y .. "', currz='" .. z .. "', currrx='" .. rx .. "', currry='" .. ry .. "', currrz='" .. rz .. "', color1='" .. col1 .. "', color2='" .. col2 .. "', fuel='" .. fuel .. "', engine='" .. engine .. "', locked='" .. locked .. "', lights='" .. lights .. "', wheel1='" .. wheel1 .. "', wheel2='" .. wheel2 .. "', wheel3='" .. wheel3 .. "', wheel4='" .. wheel4 .. "' WHERE id='" .. dbid .. "'")
+			mysql_free_result(query)
 			local panel0 = getVehiclePanelState(source, 0)
 			local panel1 = getVehiclePanelState(source, 1)
 			local panel2 = getVehiclePanelState(source, 2)
@@ -117,10 +117,8 @@ function saveVehicleOnExit(thePlayer, seat, vehicle)
 			local update = mysql_query(handler, "UPDATE vehicles SET panel0='" .. panel0 .. "', panel1='" .. panel1 .. "', panel2='" .. panel2 .. "', panel3='" .. panel3 .. "', panel4='" .. panel4 .. "', panel5='" .. panel5 .. "', panel6='" .. panel6 .. "', door1='" .. door1 .. "', door2='" .. door2 .. "', door3='" .. door3 .. "', door4='" .. door4 .. "', door5='" .. door5 .. "', door6='" .. door6 .. "', hp='" .. health .. "', sirens='" .. sirens .. "', paintjob='" .. paintjob .. "', currdimension='" .. dimension .. "', currinterior='" .. interior .. "' WHERE id='" .. dbid .. "'")
 			local update2 = mysql_query(handler, "UPDATE vehicles SET upgrade0='" .. upgrade0 .. "', upgrade1='" .. upgrade1 .. "', upgrade2='" .. upgrade2 .. "', upgrade3='" .. upgrade3 .. "', upgrade4='" .. upgrade4 .. "', upgrade5='" .. upgrade5 .. "', upgrade6='" .. upgrade6 .. "', upgrade7='" .. upgrade7 .. "', upgrade8='" .. upgrade8 .. "', upgrade9='" .. upgrade9 .. "', upgrade10='" .. upgrade10 .. "', upgrade11='" .. upgrade11 .. "', upgrade12='" .. upgrade12 .. "', upgrade13='" .. upgrade13 .. "', upgrade14='" .. upgrade14 .. "', upgrade15='" .. upgrade15 .. "', upgrade16='" .. upgrade16 .. "', Impounded='" .. tonumber(Impounded) .. "' WHERE id='" .. dbid .. "'")
 			
-			if (update) then
-				mysql_free_result(update)
-				mysql_free_result(update2)
-			end
+			mysql_free_result(update)
+			mysql_free_result(update2)
 			
 			local timeTaken = (getTickCount() - tick)/1000
 			exports.irc:sendMessage("[SCRIPT] Saving Vehicle ID #" .. dbid .. " [Exit/Respawn] [" .. timeTaken .. " Seconds].")

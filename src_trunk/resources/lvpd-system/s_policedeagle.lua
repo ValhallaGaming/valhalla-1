@@ -10,6 +10,7 @@ function tazerFired(x, y, z, target)
 				triggerClientEvent(value, "showTazerEffect", value, x, y, z) -- show the sparks
 			end
 		end
+		destroyElement(colshape)
 		
 		if (isElement(target) and getElementType(target)=="player") then
 			setElementData(target, "tazed", 1, false)

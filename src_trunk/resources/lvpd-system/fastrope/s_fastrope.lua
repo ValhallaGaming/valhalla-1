@@ -36,6 +36,7 @@ function startRappel(x, y, z, gz)
 	for key, value in ipairs(getElementsWithinColShape(colshape, "player")) do
 		triggerClientEvent(value, "createRope", value, x, y, z, gz)
 	end
+	destroyElement(colshape)
 end
 addEvent("startRappel", true)
 addEventHandler("startRappel", getRootElement(), startRappel)

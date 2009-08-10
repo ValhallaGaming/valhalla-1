@@ -797,7 +797,7 @@ function call911(thePlayer, commandName, ...)
 	
 	if (logged==1) then
 		if not (...) then
-			outputChatBox("SYNTAX: /" .. commandName .. " [Description of Situation]", thePlayer, 255, 194, 14)
+			outputChatBox("SYNTAX: /" .. commandName .. " [Description and Location of Situation]", thePlayer, 255, 194, 14)
 		else
 			local message = table.concat({...}, " ")
 			local theTeam = getTeamFromName("Los Santos Police Department")

@@ -27,7 +27,7 @@ addEventHandler("onResourceStop", getResourceRootElement(getThisResource()), clo
 -- ////////////////////////////////////
 
 -- CELL PHONES
-function callSomeone(thePlayer, commandName, phoneNumber)
+function callSomeone(thePlayer, commandName, phoneNumber, ...)
 	local logged = getElementData(thePlayer, "loggedin")
 	
 	if (logged==1) then
@@ -41,64 +41,72 @@ function callSomeone(thePlayer, commandName, phoneNumber)
 					outputChatBox("You are already using your phone.", thePlayer, 255, 0, 0)
 				else
 					exports.global:sendLocalMeAction(thePlayer, "takes out a cell phone.")
-					local found, foundElement = false
-					
-					for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
-						local logged = getElementData(value, "loggedin")
-						
-						if (logged==1) then
-							local number = getElementData(value, "cellnumber")
-							if (number==tonumber(phoneNumber)) then
-								found = true
-								foundElement = value
-							end
+					if phoneNumber == "911" then
+						executeCommandHandler( "911", thePlayer, ... )
+					elseif phoneNumber == "081016" then
+						if not executeCommandHandler( "081016", thePlayer ) then
+							outputChatBox("You get a dead tone...", thePlayer, 255, 194, 14)
 						end
-						
-						if (found) then
-							if not (exports.global:doesPlayerHaveItem(foundElement, 2)) then -- Check the target has a phone, if not, they weren't found
-								found, foundElement = false
-							end
-						end
-					end
-					
-					local money = getElementData(thePlayer, "money")
-					
-					if (money<10) then
-						outputChatBox("You cannot afford a call.", thePlayer, 255, 0, 0)
-					elseif not (found) then--or (foundElement==thePlayer) then -- Player with this phone number isnt online...
-						outputChatBox("You get a dead tone...", thePlayer, 255, 194, 14)
 					else
-						local targetCalling = getElementData(foundElement, "calling")
+						local found, foundElement = false
 						
-						if (targetCalling) then
-							outputChatBox("You get a busy tone.", thePlayer)
-						else
-							setElementData(thePlayer, "calling", foundElement, false)
-							setElementData(thePlayer, "called", true, false)
-							setElementData(foundElement, "calling", thePlayer, false)
+						for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
+							local logged = getElementData(value, "loggedin")
 							
-							-- local player
-							exports.global:applyAnimation(thePlayer, "ped", "phone_in", 1.0, 1.0, 0.0, false, true, true)
-							toggleAllControls(thePlayer, true, true, true)
-							setTimer(startPhoneAnim, 1000, 2, thePlayer)
-							
-							--player around target and target start ringing
-							local x, y, z = getElementPosition(foundElement)
-							local phoneSphere = createColSphere(x, y, z, 10)
-							for _,nearbyPlayer in ipairs(getElementsWithinColShape(phoneSphere)) do
-								triggerClientEvent(nearbyPlayer, "startRinging", foundElement, 1)
+							if (logged==1) then
+								local number = getElementData(value, "cellnumber")
+								if (number==tonumber(phoneNumber)) then
+									found = true
+									foundElement = value
+								end
 							end
-							destroyElement(phoneSphere)
 							
-							-- target player
-							exports.global:sendLocalMeAction(foundElement, "'s Phone start's to ring.")
-							outputChatBox("Your phone is ringing. (( /pickup to answer ))", foundElement, 255, 194, 14)
+							if (found) then
+								if not (exports.global:doesPlayerHaveItem(foundElement, 2)) then -- Check the target has a phone, if not, they weren't found
+									found, foundElement = false
+								end
+							end
+						end
+						
+						local money = getElementData(thePlayer, "money")
+						
+						if (money<10) then
+							outputChatBox("You cannot afford a call.", thePlayer, 255, 0, 0)
+						elseif not (found) then--or (foundElement==thePlayer) then -- Player with this phone number isnt online...
+							outputChatBox("You get a dead tone...", thePlayer, 255, 194, 14)
+						else
+							local targetCalling = getElementData(foundElement, "calling")
 							
-							exports.global:givePlayerAchievement(thePlayer, 16) -- On the Blower
-							
-							-- Give the target 10 seconds to answer the call
-							setTimer(cancelCall, 10000, 1, thePlayer)
-							setTimer(cancelCall, 10000, 1, foundElement)
+							if (targetCalling) then
+								outputChatBox("You get a busy tone.", thePlayer)
+							else
+								setElementData(thePlayer, "calling", foundElement, false)
+								setElementData(thePlayer, "called", true, false)
+								setElementData(foundElement, "calling", thePlayer, false)
+								
+								-- local player
+								exports.global:applyAnimation(thePlayer, "ped", "phone_in", 1.0, 1.0, 0.0, false, true, true)
+								toggleAllControls(thePlayer, true, true, true)
+								setTimer(startPhoneAnim, 1000, 2, thePlayer)
+								
+								--player around target and target start ringing
+								local x, y, z = getElementPosition(foundElement)
+								local phoneSphere = createColSphere(x, y, z, 10)
+								for _,nearbyPlayer in ipairs(getElementsWithinColShape(phoneSphere)) do
+									triggerClientEvent(nearbyPlayer, "startRinging", foundElement, 1)
+								end
+								destroyElement(phoneSphere)
+								
+								-- target player
+								exports.global:sendLocalMeAction(foundElement, "'s Phone start's to ring.")
+								outputChatBox("Your phone is ringing. (( /pickup to answer ))", foundElement, 255, 194, 14)
+								
+								exports.global:givePlayerAchievement(thePlayer, 16) -- On the Blower
+								
+								-- Give the target 10 seconds to answer the call
+								setTimer(cancelCall, 10000, 1, thePlayer)
+								setTimer(cancelCall, 10000, 1, foundElement)
+							end
 						end
 					end
 				end

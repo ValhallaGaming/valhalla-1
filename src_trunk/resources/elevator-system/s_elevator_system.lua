@@ -238,12 +238,11 @@ function enterElevator(player, pickup)
 			-- fade camera in
 			setTimer(fadeCamera, 1000, 1 , player , true, 2)
 			setTimer(setPedFrozen, 2000, 1, player, false)
-
-			setElementData(player,"UsedElevator", 1, false)
-			
+	
 			resetPlayerData(player)
 		end, 1000, 1)
-			
+		
+		setElementData(player,"UsedElevator", 1, false)
 		playSoundFrontEnd(player, 40)
 	end
 end

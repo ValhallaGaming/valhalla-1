@@ -74,26 +74,43 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 				end
 			end
 		elseif (itemID==4) or (itemID==5) then -- house key or business key
-			local found, id = nil
+			local itemValue = tonumber(itemValue)
+			local found = nil
+			local elevatorres = getResourceRootElement(getResourceFromName("elevator-system"))
 			for key, value in ipairs(exports.pool:getPoolElementsByType("pickup")) do
-				local dbid = getElementData(value, "dbid")
 				local vx, vy, vz = getElementPosition(value)
 				local x, y, z = getElementPosition(source)
-				
-				if (dbid==itemValue) and (getDistanceBetweenPoints3D(x, y, z, vx, vy, vz)<=5) then -- house found
-					found = value
-					id = dbid
-					break
+
+				if getDistanceBetweenPoints3D(x, y, z, vx, vy, vz) <= 5 then
+					local dbid = getElementData(value, "dbid")
+					if dbid == itemValue then -- house found
+						found = value
+						break
+					elseif getElementData( value, "other" ) and getElementParent( getElementParent( value ) ) == elevatorres then
+						-- it's an elevator
+						if getElementDimension( value ) == itemValue then
+							found = value
+							break
+						elseif getElementDimension( getElementData( value, "other" ) ) == itemValue then
+							found = value
+							break
+						end
+					end
 				end
 			end
 			
-			if not (found) then
+			if not found then
 				outputChatBox("You are too far from the door.", source, 255, 194, 14)
 			else
-				local locked = getElementData(found, "locked")
+				local result = mysql_query(handler, "SELECT 1-locked FROM interiors WHERE id = " .. itemValue)
+				local locked = 0
+				if result then
+					locked = tonumber(mysql_result(result, 1, 1))
+					mysql_free_result(result)
+				end
 				
-				local query = mysql_query(handler, "UPDATE interiors SET locked='" .. locked .. "' WHERE id='" .. id .. "' LIMIT 1")
-				if (locked==1) then
+				mysql_free_result( mysql_query(handler, "UPDATE interiors SET locked='" .. locked .. "' WHERE id='" .. itemValue .. "' LIMIT 1") )
+				if locked == 0 then
 					exports.global:sendLocalMeAction(source, "puts the key in the door to unlock it.")
 				else
 					exports.global:sendLocalMeAction(source, "puts the key in the door to lock it.")
@@ -101,7 +118,7 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 
 				for key, value in ipairs(exports.pool:getPoolElementsByType("pickup")) do
 					local dbid = getElementData(value, "dbid")
-					if dbid == id then
+					if dbid == itemValue then
 						setElementData(value, "locked", locked, false)
 					end
 				end

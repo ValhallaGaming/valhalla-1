@@ -65,8 +65,8 @@ function makeCar(thePlayer, car, cost, id, col1, col2)
 
 	exports.global:takePlayerSafeMoney(thePlayer, tonumber(cost))
 				
-	local letter1 = exports.global:randChar()
-	local letter2 = exports.global:randChar()
+	local letter1 = string.char(math.random(65,90))
+	local letter2 = string.char(math.random(65,90))
 	local plate = letter1 .. letter2 .. math.random(0, 9) .. " " .. math.random(1000, 9999)
 	
 	local veh = createVehicle(id, x, y, z, 0, 0, rz, plate)

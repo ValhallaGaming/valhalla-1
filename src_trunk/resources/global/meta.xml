@@ -7,7 +7,6 @@
 	<export function="sendMessageToAdmins" type="server"/>
 	<export function="sendLocalMeAction" type="server"/>
 	<export function="sendLocalDoAction" type="server"/>
-	<export function="randChar" type="server"/>
 	<export function="findPlayerByPartialNick" type="server"/>
 	
 	<script src="admin_globals.lua" type="server"/>

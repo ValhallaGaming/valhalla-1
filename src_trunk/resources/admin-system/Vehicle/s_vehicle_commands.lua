@@ -76,8 +76,8 @@ function createTempVehicle(thePlayer, commandName, ...)
 			x = x + ( ( math.cos ( math.rad ( r ) ) ) * 5 )
 			y = y + ( ( math.sin ( math.rad ( r ) ) ) * 5 )
 			
-			local letter1 = exports.global:randChar()
-			local letter2 = exports.global:randChar()
+			local letter1 = string.char(math.random(65,90))
+			local letter2 = string.char(math.random(65,90))
 			local plate = letter1 .. letter2 .. math.random(0, 9) .. " " .. math.random(1000, 9999)
 			
 			local veh = createVehicle(vehicleID, x, y, z, 0, 0, r, plate)

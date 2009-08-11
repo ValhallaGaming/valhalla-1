@@ -751,7 +751,7 @@ function retrieveDetails(securityKey)
 	if (mysql_num_rows(result)>0) then
 		local username = mysql_result(result, 1, 1)
 
-		local letter1 = exports.global:randChar()
+		local letter1 = string.char(math.random(65,90))
 		local num = math.random(0, 999999)
 		
 		-- Randomize the casing
@@ -786,7 +786,7 @@ function retrieveDetails(securityKey)
 		
 		
 		
-		local letter2 = exports.global:randChar()
+		local letter2 = string.char(math.random(65,90))
 		local newPassword = letter2 .. tostring(num) .. letter1
 		local update = mysql_query(handler, "UPDATE accounts SET password=MD5('" .. salt .. newPassword .. "') WHERE username='" .. username .. "'")
 		

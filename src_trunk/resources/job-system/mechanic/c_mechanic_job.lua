@@ -621,12 +621,12 @@ function upgradeWindow()
 end
 
 function serviceTrigger()
-	triggerServerEvent( "serviceVehicle", currentVehicle, getLocalPlayer())
+	triggerServerEvent( "serviceVehicle", getLocalPlayer(), currentVehicle )
 	closeMechanicWindow()
 end
 
 function bodyworkTrigger()
-	triggerServerEvent( "repairBody", currentVehicle, getLocalPlayer())
+	triggerServerEvent( "repairBody", getLocalPlayer(), currentVehicle )
 	closeMechanicWindow()
 end
 

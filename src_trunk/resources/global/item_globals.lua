@@ -18,7 +18,7 @@ function doesPlayerHaveSpaceForItem(thePlayer)
 	end
 	return false
 end
-	
+
 function doesPlayerHaveItem(thePlayer, itemID, itemValue)
 	local items = getElementData(thePlayer, "items")
 	local itemvalues = getElementData(thePlayer, "itemvalues")

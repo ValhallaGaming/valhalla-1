@@ -140,8 +140,6 @@ function cdoesVehicleHaveItem(theVehicle, itemID, itemValue)
 					if (itemValue==-1) or not (itemValue) then -- any value is okay
 						return true, i
 					else
-						
-						local value = tonumber(gettok(itemvalues, i, string.byte(',')))
 						local value = tonumber(gettok(itemvalues, i, string.byte(',')))
 						if (value==itemValue) then
 							return true, i, value
@@ -168,8 +166,6 @@ function cdoesSafeHaveItem(theSafe, itemID, itemValue)
 					if (itemValue==-1) or not (itemValue) then -- any value is okay
 						return true, i
 					else
-						
-						local value = tonumber(gettok(itemvalues, i, string.byte(',')))
 						local value = tonumber(gettok(itemvalues, i, string.byte(',')))
 						if (value==itemValue) then
 							return true, i, value

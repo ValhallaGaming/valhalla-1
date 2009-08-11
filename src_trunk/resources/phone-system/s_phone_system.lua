@@ -117,6 +117,8 @@ function callSomeone(thePlayer, commandName, phoneNumber, ...)
 	end
 end
 addCommandHandler("call", callSomeone)
+addEvent("remoteCall", true)
+addEventHandler("remoteCall", getRootElement(), callSomeone)
 
 function startPhoneAnim(thePlayer)
 	exports.global:applyAnimation(thePlayer, "ped", "phone_talk", 1.0, 1.0, 0.0, true, true, true)
@@ -339,3 +341,12 @@ function phoneBook(thePlayer, commandName, partialNick)
 	end
 end
 addCommandHandler("phonebook", phoneBook)
+
+function saveCurrentRingtone(itemValue)
+	if itemValue then
+		exports.global:takePlayerItem(source, 2, -1)
+		exports.global:givePlayerItem(source, 2, itemValue)
+	end
+end
+addEvent("saveRingtone", true)
+addEventHandler("saveRingtone", getRootElement(), saveCurrentRingtone)

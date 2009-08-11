@@ -742,6 +742,9 @@ function useItem(button)
 				guiSetEnabled(bDropItem, false)
 				guiSetEnabled(bShowItem, false)
 				guiSetEnabled(bDestroyItem, false)
+			elseif (itemID==2) then -- cellphone
+				hideInventory()
+				triggerEvent("showPhoneGUI", getLocalPlayer(), itemValue)
 			elseif (itemID==57) then -- FUEL CAN
 				hideInventory()
 			end

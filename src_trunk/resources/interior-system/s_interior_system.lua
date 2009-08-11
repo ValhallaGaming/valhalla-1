@@ -327,7 +327,7 @@ function deleteInterior(thePlayer, commandName)
 						if (safe) then
 							setElementData(safe, "items", "")
 							setElementData(safe, "itemvalues", "")
-							call(getResourceFromName("items-system"), "updateSafeItems", safe)
+							call(getResourceFromName("item-system"), "updateSafeItems", safe)
 							destroyElement(safe)
 						end
 						destroyElement(thePickup)

@@ -77,7 +77,8 @@ function renderNametags()
 							end
 							
 							-- ARMOR
-							sx, sy = getScreenFromWorldPosition(x, y, z+0.25, 100, false)
+							--sx, sy2 = getScreenFromWorldPosition(x, y, z+0.25, 100, false)
+							sy = sy + 30
 							if (sx) and (sy) then
 								local armor = getPedArmor(player)
 								
@@ -104,7 +105,8 @@ function renderNametags()
 							end
 							
 							-- NAME
-							sx, sy = getScreenFromWorldPosition(x, y, z+0.6, 100, false)
+							--sx, sy = getScreenFromWorldPosition(x, y, z+0.6, 100, false)
+							sy = sy - 60
 							
 							if (sx) and (sy) then
 								if (distance < 1) then distance = 1 end

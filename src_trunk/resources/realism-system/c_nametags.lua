@@ -107,6 +107,8 @@ function renderNametags()
 							sx, sy = getScreenFromWorldPosition(x, y, z+0.6, 100, false)
 							
 							if (sx) and (sy) then
+								if (distance < 1) then distance = 1 end
+								if (distance > 2) then distance = 2 end
 								local offset = 65 / distance
 								local scale = 0.6 / distance
 								local font = "bankgothic"

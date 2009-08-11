@@ -228,8 +228,8 @@ function freecamMouse (cX,cY,aX,aY)
     if isPedInVehicle(localPlayer) then
         if rotY < -PI / 4 then
             rotY = -PI / 4
-        elseif rotY > PI/15 then
-            rotY = PI/15
+        elseif rotY > -PI/15 then
+            rotY = -PI/15
         end
     else
         if rotY < -PI / 4 then

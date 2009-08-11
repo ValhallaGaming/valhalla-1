@@ -1,3 +1,31 @@
+-- ////////////////////////////////////
+-- //			MYSQL				 //
+-- ////////////////////////////////////		
+sqlUsername = exports.mysql:getMySQLUsername()
+sqlPassword = exports.mysql:getMySQLPassword()
+sqlDB = exports.mysql:getMySQLDBName()
+sqlHost = exports.mysql:getMySQLHost()
+sqlPort = exports.mysql:getMySQLPort()
+
+handler = mysql_connect(sqlHost, sqlUsername, sqlPassword, sqlDB, sqlPort)
+
+function checkMySQL()
+	if not (mysql_ping(handler)) then
+		handler = mysql_connect(sqlHost, sqlUsername, sqlPassword, sqlDB, sqlPort)
+	end
+end
+setTimer(checkMySQL, 300000, 0)
+
+function closeMySQL()
+	if (handler~=nil) then
+		mysql_close(handler)
+	end
+end
+addEventHandler("onResourceStop", getResourceRootElement(getThisResource()), closeMySQL)
+-- ////////////////////////////////////
+-- //			MYSQL END			 //
+-- ////////////////////////////////////
+
 local huntersCar = createVehicle ( 506, 618.575193, -74.190429, 997.69464, 0, 0, 110, "D34M0N")
 exports.pool:allocateElement(huntersCar)
 setVehicleLocked(huntersCar, true)

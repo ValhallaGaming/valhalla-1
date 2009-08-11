@@ -165,7 +165,7 @@ function nextDeliveryCheckpoint()
 			local rand = -1
 			repeat
 				rand = math.random(1, #routes)
-			until oldroute ~= rand and getDistanceBetweenPoins2D(routes[oldroute][1], routes[oldroute][2], routes[rand][1], routes[rand][2]) > 250
+			until oldroute ~= rand and getDistanceBetweenPoints2D(routes[oldroute][1], routes[oldroute][2], routes[rand][1], routes[rand][2]) > 250
 			route = routes[rand]
 			oldroute = rand
 			local x, y, z = route[1], route[2], route[3]

@@ -237,24 +237,28 @@ function govAnnouncement(thePlayer, commandName, ...)
 								
 			local factionID = tonumber(mysql_result(result, 1, 1))
 			local factionRank = tonumber(mysql_result(result, 1, 2))
-					
-			mysql_free_result(result)
 			
-			local factionRankTitle
-			local titleresult = mysql_query(handler, "SELECT rank_" .. factionRank .. " FROM factions WHERE id='" .. factionID .. "' LIMIT 1")
-			if not mysql_result(titleresult, 1, 1) then
-				factionRankTitle = ""
+			if (factionRank<10) then
+				outputChatBox("You do not have permission to use this command.", thePlayer, 255, 0, 0)
 			else
-				factionRankTitle = tostring(mysql_result(titleresult, 1, 1))
-			end
-			mysql_free_result(titleresult)
-			
-			for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
-				local logged = getElementData(value, "loggedin")
+				mysql_free_result(result)
 				
-				if (logged==1) then
-					outputChatBox(">> Government Announcement from " .. factionRankTitle .. " " .. string.gsub(getPlayerName(thePlayer), "_", " "), value, 0, 183, 239)
-					outputChatBox(message, value, 0, 183, 239)
+				local factionRankTitle
+				local titleresult = mysql_query(handler, "SELECT rank_" .. factionRank .. " FROM factions WHERE id='" .. factionID .. "' LIMIT 1")
+				if not mysql_result(titleresult, 1, 1) then
+					factionRankTitle = ""
+				else
+					factionRankTitle = tostring(mysql_result(titleresult, 1, 1))
+				end
+				mysql_free_result(titleresult)
+				
+				for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
+					local logged = getElementData(value, "loggedin")
+					
+					if (logged==1) then
+						outputChatBox(">> Government Announcement from " .. factionRankTitle .. " " .. string.gsub(getPlayerName(thePlayer), "_", " "), value, 0, 183, 239)
+						outputChatBox(message, value, 0, 183, 239)
+					end
 				end
 			end
 		end

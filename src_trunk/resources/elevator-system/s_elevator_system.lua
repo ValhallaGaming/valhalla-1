@@ -169,13 +169,45 @@ function unbindKeys(player, pickup)
 end
 
 
+function isInteriorLocked(dimension)
+	local result = mysql_query(handler, "SELECT 1 FROM `interiors` WHERE (type = 2 OR locked = 0) AND id = " .. dimension)
+	local locked = true
+	if result then
+		if mysql_num_rows(result) > 0 then
+			locked = false
+		end
+		mysql_free_result(result)
+	end
+	return locked
+end
+
 
 function enterElevator(player, pickup)
 	if isInPickup ( player, pickup ) and not getElementData(player, "UsedElevator") then
 		local other = getElementData( pickup, "other" )
+		
 		local x, y, z = getElementPosition( other )
 		local interior = getElementInterior( other )
 		local dimension = getElementDimension( other )
+		
+		-- find the pickup inside to see if the house is locked
+		local ldimension = getElementDimension( pickup )
+		
+		local locked = false
+		if ldimension == 0 and dimension ~= 0 then -- entering a house
+			locked = isInteriorLocked(dimension)
+		elseif ldimension ~= 0 and dimension == 0 then -- leaving a house
+			locked = isInteriorLocked(ldimension)
+		elseif ldimension ~= 0 and dimension ~= 0 then -- changing between two houses
+			locked = isInteriorLocked(ldimension) or isInteriorLocked(dimension)
+		else -- outside
+			locked = false
+		end
+		
+		if locked then
+			outputChatBox("You try the door handle, but it seems to be locked.", player, 255, 0,0, true)
+			return
+		end
 
 		if getElementData(player, "IsInCustomInterior") == 1 then
 			removeElementData(player,"IsInCustomInterior")
@@ -192,16 +224,27 @@ function enterElevator(player, pickup)
 			setPedFrozen(player, true)
 			setPedGravity(player, 0)
 		end
+
+		-- fade camera to black
+		fadeCamera ( player, false, 1,0,0,0 )
+		setPedFrozen( player, true )
+		
+		-- teleport the player during the black fade
+		setTimer(function()
+			setElementInterior(player, interior, x, y, z)
+			setCameraInterior(player, interior)
+			setElementDimension(player, dimension)
+		
+			-- fade camera in
+			setTimer(fadeCamera, 1000, 1 , player , true, 2)
+			setTimer(setPedFrozen, 2000, 1, player, false)
+
+			setElementData(player,"UsedElevator", 1, false)
 			
-		setElementPosition(player, x, y, z)
-		
-		setElementInterior(player, interior)
-		setCameraInterior(player, interior)
-		setElementDimension(player, dimension)
+			resetPlayerData(player)
+		end, 1000, 1)
+			
 		playSoundFrontEnd(player, 40)
-		setElementData(player,"UsedElevator", 1, false)
-		
-		resetPlayerData(player)
 	end
 end
 

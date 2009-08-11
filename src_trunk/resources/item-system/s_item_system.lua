@@ -92,29 +92,17 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 			else
 				local locked = getElementData(found, "locked")
 				
+				local query = mysql_query(handler, "UPDATE interiors SET locked='" .. locked .. "' WHERE id='" .. id .. "' LIMIT 1")
 				if (locked==1) then
-					setElementData(found, "locked", 0, false)
-					local query = mysql_query(handler, "UPDATE interiors SET locked='0' WHERE id='" .. id .. "' LIMIT 1")
-					mysql_free_result(query)
 					exports.global:sendLocalMeAction(source, "puts the key in the door to unlock it.")
-					
-					for key, value in ipairs(exports.pool:getPoolElementsByType("pickup")) do
-						local dbid = getElementData(value, "dbid")
-						if (dbid==id) and (value~=found) then
-							setElementData(value, "locked", 0, false)
-						end
-					end
 				else
-					setElementData(found, "locked", 1, false)
-					local query = mysql_query(handler, "UPDATE interiors SET locked='1' WHERE id='" .. id .. "' LIMIT 1")
-					mysql_free_result(query)
 					exports.global:sendLocalMeAction(source, "puts the key in the door to lock it.")
-					
-					for key, value in ipairs(exports.pool:getPoolElementsByType("pickup")) do
-						local dbid = getElementData(value, "dbid")
-						if (dbid==id) and (value~=found) then
-							setElementData(value, "locked", 1, false)
-						end
+				end
+
+				for key, value in ipairs(exports.pool:getPoolElementsByType("pickup")) do
+					local dbid = getElementData(value, "dbid")
+					if dbid == id then
+						setElementData(value, "locked", locked, false)
 					end
 				end
 			end

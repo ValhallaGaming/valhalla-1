@@ -582,7 +582,7 @@ function setPlayerSkinCmd(thePlayer, commandName, targetPlayer, skinID)
 				
 				if (logged==0) then
 					outputChatBox("Player is not logged in.", thePlayer, 255, 0, 0)
-				elseif (tostring(type(tonumber(skinID))) == "number") then
+				elseif (tostring(type(tonumber(skinID))) == "number" and tonumber(skinID) ~= 0) then
 					local fat = getPedStat(targetPlayer, 21)
 					local muscle = getPedStat(targetPlayer, 23)
 					

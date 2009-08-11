@@ -46,7 +46,7 @@ function renderNametags()
 									if (distance<1) then distance = 1 end
 									if (distance>2) then distance = 2 end
 									if (reconx) then distance = 1 end
-									
+
 									local offset = 45 / distance
 									
 									-- DRAW BG
@@ -71,7 +71,7 @@ function renderNametags()
 										dxDrawRectangle((sx-offset)+(hpsize/distance), sy+5, barsize/distance, 10 / distance, tocolor(162, 162, 162, 100), false)
 									else
 										dxDrawRectangle(sx-offset, sy+5, hpsize/distance-5, 10 / distance-3, color, false)
-										dxDrawRectangle((sx-offset)+(hpsize/distance-5), sy+5, barsize/distance-5, 10 / distance-3, tocolor(162, 162, 162, 100), false)
+										dxDrawRectangle((sx-offset)+(hpsize/distance-5), sy+5, barsize/distance-2, 10 / distance-3, tocolor(162, 162, 162, 100), false)
 									end
 								end
 							end
@@ -107,7 +107,7 @@ function renderNametags()
 										dxDrawRectangle((sx-offset)+(armorsize/distance), sy+5, barsize/distance, 10 / distance, tocolor(162, 162, 162, 100), false)
 									else
 										dxDrawRectangle(sx-offset, sy+5, armorsize/distance-5, 10 / distance-3, tocolor(197, 197, 197, 130), false)
-										dxDrawRectangle((sx-offset)+(armorsize/distance-5), sy+5, barsize/distance-5, 10 / distance-3, tocolor(162, 162, 162, 100), false)
+										dxDrawRectangle((sx-offset)+(armorsize/distance-5), sy+5, barsize/distance-2, 10 / distance-3, tocolor(162, 162, 162, 100), false)
 									end
 								end
 							end

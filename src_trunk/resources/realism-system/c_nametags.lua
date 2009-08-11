@@ -10,6 +10,12 @@ function startRes(res)
 end
 addEventHandler("onClientResourceStart", getRootElement(), startRes)
 
+local playerhp = { }
+local lasthp = { }
+
+local playerarmor = { }
+local lastarmor = { }
+
 function setNametagOnJoin()
 	setPlayerNametagShowing(source, false)
 end
@@ -29,8 +35,18 @@ function renderNametags()
 				local limitdistance = 20
 				local reconx = getElementData(localPlayer, "reconx")
 				
+				-- smoothing
+				playerhp[player] = getElementHealth(player)
 				
+				if (lasthp[player] == nil) then
+					lasthp[player] = playerhp[player]
+				end
 				
+				playerarmor[player] = getPedArmor(player)
+				
+				if (lastarmor[player] == nil) then
+					lastarmor[player] = playerarmor[player]
+				end
 				
 				if (player~=localPlayera) and (isElementOnScreen(player)) and ((distance<limitdistance) or reconx) then
 					if not getElementData(player, "reconx") and not getElementData(player, "freecam:state") then
@@ -46,7 +62,14 @@ function renderNametags()
 							if (sx) and (sy) then
 								--if (isPedInVehicle(player)) then sy = sy - 50 end
 								
-								local health = getElementHealth(player)
+								local health = math.ceil(lasthp[player])
+								if ( math.ceil(playerhp[player]) < health ) then
+									health = health - 1
+									lasthp[player] = health
+								elseif ( math.ceil(playerhp[player]) > health ) then
+									health = health + 1
+									lasthp[player] = health
+								end
 								
 								if (health>0) then
 									distance = distance / 5
@@ -98,9 +121,17 @@ function renderNametags()
 								
 								
 								if (sx) and (sy) then
-									local armor = getPedArmor(player)
+									local armor = math.ceil(lastarmor[player])
+
+									if ( math.ceil(playerarmor[player]) < armor ) then
+										armor = armor - 1
+										lastarmor[player] = armor
+									elseif ( math.ceil(playerhp[player]) > armor ) then
+										armor = armor + 1
+										lastarmor[player] = armor
+									end
 									
-									if (armor>0) then
+									if (armor>5) then
 										local offset = 45 / distance
 										
 										-- DRAW BG

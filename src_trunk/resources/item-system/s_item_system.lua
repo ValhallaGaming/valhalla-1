@@ -511,7 +511,7 @@ function destroyItem(itemID, itemValue, itemName, isWeapon, items, values)
 		exports.global:takePlayerItem(source, tonumber(itemID), tonumber(itemValue))
 		
 		if (tonumber(itemID)==16) then
-			setPedSkin(source, 0)
+			setPedSkin(source, 264)
 		end
 	else
 		if (itemID==nil) then
@@ -582,7 +582,7 @@ function dropItem(itemID, itemValue, itemName, x, y, z, gz, isWeapon, items, ite
 		setElementData(obj, "itemvalues", stringvalues)
 		-- Check if he drops his current clothes
 		if tonumber(itemID) == 16 and tonumber(itemValue) == getPedSkin(source) and not exports.global:doesPlayerHaveItem(source, 16, tonumber(itemValue)) then
-			setPedSkin(source, 0)
+			setPedSkin(source, 264)
 		end
 	else
 		if tonumber(getElementData(source, "duty")) > 0 then

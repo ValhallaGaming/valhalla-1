@@ -50,24 +50,28 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 		elseif (itemID==2) then -- cellphone
 			outputChatBox("Use /call to use this item.", source, 255, 194, 14)
 		elseif (itemID==3) then -- car key
-			-- unlock nearby cars
-			local found, id = nil
-			for key, value in ipairs(exports.pool:getPoolElementsByType("vehicle")) do
-				local dbid = getElementData(value, "dbid")
-				local vx, vy, vz = getElementPosition(value)
-				local x, y, z = getElementPosition(source)
-				
-				if (dbid==itemValue) and (getDistanceBetweenPoints3D(x, y, z, vx, vy, vz)<=30) then -- car found
-					found = value
-					id = tonumber(getElementData(value, "dbid"))
-					break
-				end
-			end
-			
-			if not (found) then
-				outputChatBox("You are too far from the vehicle.", source, 255, 194, 14)
+			local veh = getPedOccupiedVehicle(source)
+			if veh then
+				triggerEvent("lockUnlockInsideVehicle", source, veh)
 			else
-				triggerEvent("lockUnlockVehicle", source, found)
+				-- unlock nearby cars
+				local found = nil
+				for key, value in ipairs(exports.pool:getPoolElementsByType("vehicle")) do
+					local dbid = getElementData(value, "dbid")
+					local vx, vy, vz = getElementPosition(value)
+					local x, y, z = getElementPosition(source)
+					
+					if (dbid==itemValue) and (getDistanceBetweenPoints3D(x, y, z, vx, vy, vz)<=30) then -- car found
+						found = value
+						break
+					end
+				end
+				
+				if not (found) then
+					outputChatBox("You are too far from the vehicle.", source, 255, 194, 14)
+				else
+					triggerEvent("lockUnlockOutsideVehicle", source, found)
+				end
 			end
 		elseif (itemID==4) or (itemID==5) then -- house key or business key
 			local found, id = nil

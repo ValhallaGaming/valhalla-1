@@ -10,6 +10,14 @@ function startRes(res)
 end
 addEventHandler("onClientResourceStart", getRootElement(), startRes)
 
+function playerQuit()
+	playerhp[source] = nil
+	lasthp[source] = nil
+	playerarmor[source] = nil
+	lastarmor[source] = nil
+end
+	
+
 local playerhp = { }
 local lasthp = { }
 

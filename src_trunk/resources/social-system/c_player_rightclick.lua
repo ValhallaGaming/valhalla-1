@@ -204,6 +204,7 @@ function cfriskPlayer(button, state, x, y)
 					end
 				end
 				
+				--[[
 				-- WEAPONS
 				for i = 1, 12 do
 					if (getPedWeapon(player, i)>0) then
@@ -213,6 +214,7 @@ function cfriskPlayer(button, state, x, y)
 						guiGridListSetSortingEnabled(gFriskItems, false)
 					end
 				end
+				]]--
 				
 				bFriskTakeItem = guiCreateButton(0.05, 0.85, 0.45, 0.1, "Take Item", true, wFriskItems)
 				addEventHandler("onClientGUIClick", bFriskTakeItem, takePlayerItem, false)

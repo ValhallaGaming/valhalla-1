@@ -224,6 +224,44 @@ end
 addCommandHandler("r", radio, false, false)
 addCommandHandler("radio", radio, false, false)
 
+function govAnnouncement(thePlayer, commandName, ...)
+	local theTeam = getPlayerTeam(thePlayer)
+	
+	if (theTeam) then
+		local teamID = tonumber(getElementData(theTeam, "id"))
+	
+		if (teamID==1 or teamID==2 or teamID==4) then
+			local message = table.concat({...}, " ")
+			
+			local result = mysql_query(handler, "SELECT faction_id, faction_rank FROM characters WHERE charactername='" .. getPlayerName(thePlayer) .. "' LIMIT 1")
+								
+			local factionID = tonumber(mysql_result(result, 1, 1))
+			local factionRank = tonumber(mysql_result(result, 1, 2))
+					
+			mysql_free_result(result)
+			
+			local factionRankTitle
+			local titleresult = mysql_query(handler, "SELECT rank_" .. factionRank .. " FROM factions WHERE id='" .. factionID .. "' LIMIT 1")
+			if not mysql_result(titleresult, 1, 1) then
+				factionRankTitle = ""
+			else
+				factionRankTitle = tostring(mysql_result(titleresult, 1, 1))
+			end
+			mysql_free_result(titleresult)
+			
+			for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
+				local logged = getElementData(value, "loggedin")
+				
+				if (logged==1) then
+					outputChatBox(">> Government Announcement from " .. factionRankTitle .. " " .. string.gsub(getPlayerName(thePlayer), "_", " "), value, 0, 183, 239)
+					outputChatBox(message, value, 0, 183, 239)
+				end
+			end
+		end
+	end
+end
+addCommandHandler("gov", govAnnouncement)
+
 function departmentradio(thePlayer, commandName, ...)
 	local theTeam = getPlayerTeam(thePlayer)
 	

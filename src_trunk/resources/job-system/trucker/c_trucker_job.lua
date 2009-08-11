@@ -16,8 +16,19 @@ routes = {
 	{ 1027, -1364.4248046875, 12.138906478882 },
 	{ 649.2734375, -1467.0302734375, 13.317453384399 },
 	{ 786.884765625, -1612.86328125, 11.937650680542 },
-	{ 815.9462890625, -1392.9716796875, 12.95408821106 }
+	{ 815.9462890625, -1392.9716796875, 12.95408821106 },
+	{ 1826.69140625, -1845.1533203125, 13.578125 },
+	{ 2400.4296875, -1486.8359375, 23.828125 },
+	{ 2148.263671875, -1006.384765625, 61.870578765869 },
+	{ 2857.71484375, -1536.0712890625, 10.576637268066 },
+	{ 2197.541015625, -2657.6513671875, 13.118523597717 },
+	{ 1751.4375, -2060.2880859375, 13.166693687439 }
 }
+
+--[[for k, v in pairs(routes) do
+	createBlip(v[1], v[2], v[3], 51, 2, 255, 127, 255)
+	createMarker(v[1], v[2], v[3], "checkpoint", 4, 255, 200, 0, 150)
+end]]
 
 local truck = { [414] = true }
 
@@ -154,7 +165,7 @@ function nextDeliveryCheckpoint()
 			local rand = -1
 			repeat
 				rand = math.random(1, #routes)
-			until oldroute ~= rand
+			until oldroute ~= rand and getDistanceBetweenPoins2D(routes[oldroute][1], routes[oldroute][2], routes[rand][1], routes[rand][2]) > 250
 			route = routes[rand]
 			oldroute = rand
 			local x, y, z = route[1], route[2], route[3]

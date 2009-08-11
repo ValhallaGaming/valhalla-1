@@ -300,14 +300,16 @@ function createMdcWindow(suspectName)
 	end, false)
 	
 	-- if the player clicks on remove suspect
-	addEventHandler ( "onClientGUIClick", guiViewSuspectRemoveButton,  function(button, state) 
-		if(clearShowWindow()) then
-			if(button == "left") then -- set it visible
-				createDeleteSuspectWindow()
-				guiSetVisible(guiDeleteSuspectWindow,true)
+	if(user[3] == "1") then
+		addEventHandler ( "onClientGUIClick", guiViewSuspectRemoveButton,  function(button, state) 
+			if(clearShowWindow()) then
+				if(button == "left") then -- set it visible
+					createDeleteSuspectWindow()
+					guiSetVisible(guiDeleteSuspectWindow,true)
+				end
 			end
-		end
-	end, false)
+		end, false)
+	end
 	
 	
 	
@@ -432,28 +434,30 @@ function createMdcWindow(suspectName)
 	
 	
 	-- If  view all suspects button is pressed
-	addEventHandler ( "onClientGUIClick", guiViewAllSuspectsButton,  function(button, state)
-		if(button == "left") then
-		
-			if(triggerServerEvent("onGetAllSuspects", getLocalPlayer(), details ) ) then
-										
-				if (guiPhotoImage) then
-					destroyElement(guiPhotoImage)
-				end
-					
-				guiSetInputEnabled(false)
+	if(user[3] == "1") then
+		addEventHandler ( "onClientGUIClick", guiViewAllSuspectsButton,  function(button, state)
+			if(button == "left") then
+			
+				if(triggerServerEvent("onGetAllSuspects", getLocalPlayer(), details ) ) then
+											
+					if (guiPhotoImage) then
+						destroyElement(guiPhotoImage)
+					end
+						
+					guiSetInputEnabled(false)
 
-				guiSetText(guiMdcMemo, "~~~ Searching for all of the suspects on the database ~~~\
-				\
-				Please allow 5 seconds for this to process.")	
-							
-				setTimer(function()
-					guiSetText(guiMdcMemo, getAllSuspectsText())
-					guiSetInputEnabled(true)
-				end, 2500 , 1)
+					guiSetText(guiMdcMemo, "~~~ Searching for all of the suspects on the database ~~~\
+					\
+					Please allow 5 seconds for this to process.")	
+								
+					setTimer(function()
+						guiSetText(guiMdcMemo, getAllSuspectsText())
+						guiSetInputEnabled(true)
+					end, 2500 , 1)
+				end
 			end
-		end
-	end, false)
+		end, false)
+	end
 	
 	
 	guiToggleButton = guiCreateButton ( 0.05 , 0.96 , 0.18 , 0.03 , "Toggle Input" , true , guiMdcWindow )
@@ -1575,7 +1579,7 @@ function getMemoText()
 					"
 				end
 				
-				tempcrime = tempcrime..temppunishment..crimeAddedBy
+				tempcrime = tempcrime..temppunishment..tostring(crimeAddedBy)
 				
 				crime = crime..tempcrime.."\
 				"

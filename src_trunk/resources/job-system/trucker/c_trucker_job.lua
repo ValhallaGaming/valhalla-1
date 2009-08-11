@@ -85,8 +85,6 @@ function startTruckerJob()
 	if (jobstate==1) then
 		local vehicle = getPedOccupiedVehicle(getLocalPlayer())
 		if vehicle and getVehicleController(vehicle) == getLocalPlayer() and truck[getElementModel(vehicle)] then
-			routescompleted = 0
-		
 			outputChatBox("#FF9933Drive to the #FFFF00blip#FF9933 to complete your first delivery.", 255, 194, 15, true)
 			outputChatBox("#FF9933Remember to #FFFF00follow the street rules#FF9933.", 255, 194, 15, true)
 			outputChatBox("#FF9933If your truck is #FFFF00damaged#FF9933, the customers may pay less or refuse to accept the goods.", 255, 194, 15, true)
@@ -102,6 +100,7 @@ function startTruckerJob()
 							
 			jobstate = 2
 			oldroute = rand
+			triggerServerEvent("loadDeliveryProgress", getLocalPlayer(), 0, 0)
 		else
 			outputChatBox("You must be in the van to start this job.", 255, 0, 0)
 		end
@@ -160,7 +159,9 @@ function nextDeliveryCheckpoint()
 			outputChatBox("You completed your " .. routescompleted .. ". trucking run and earned $" .. pay .. ".", 0, 255, 0)
 			outputChatBox("#FF9933You can now either return to the #CC0000warehouse #FF9933and obtain your wage", 0, 0, 0, true)
 			outputChatBox("#FF9933or continue onto the next #FFFF00drop off point#FF9933 and increase your wage.", 0, 0, 0, true)
-
+			
+			triggerServerEvent("saveDeliveryProgress", getLocalPlayer(), routescompleted, wage)
+			
 			-- next drop off
 			local rand = -1
 			repeat
@@ -200,6 +201,7 @@ function endDelivery(thePlayer)
 		else
 			outputChatBox("You earned $" .. wage .. " on your trucking runs.", 255, 194, 15)
 			triggerServerEvent("giveTruckingMoney", getLocalPlayer(), wage)
+			triggerServerEvent("saveDeliveryProgress", getLocalPlayer(), 0, 0)
 			
 			triggerServerEvent("respawnTruck", getLocalPlayer(), vehicle)
 			resetTruckerJob()
@@ -209,7 +211,10 @@ function endDelivery(thePlayer)
 end
 
 addEvent("restoreTruckerJob", true)
-addEventHandler("restoreTruckerJob", getRootElement(),function() displayTruckerJob(true) end)
+addEventHandler("restoreTruckerJob", getRootElement(), function() displayTruckerJob(true) end )
+
+addEvent("loadTruckerJob", true)
+addEventHandler("loadTruckerJob", getRootElement(), function(r, w) routescompleted = r wage = w end )
 
 addEvent("startTruckJob", true)
 addEventHandler("startTruckJob", getRootElement(), startTruckerJob)

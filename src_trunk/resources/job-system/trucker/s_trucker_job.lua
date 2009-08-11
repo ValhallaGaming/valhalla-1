@@ -21,3 +21,26 @@ function checkTruckingEnterVehicle(thePlayer, seat)
 	end
 end
 addEventHandler("onVehicleEnter", getRootElement(), checkTruckingEnterVehicle)
+
+function saveDeliveryProgress(runs, wage)
+	mysql_free_result(mysql_query(handler, "UPDATE characters SET truckingruns=" .. tonumber(runs) .. ", truckingwage=" .. tonumber(wage) .. "  WHERE id=" .. getElementData(source, "dbid")))
+end
+addEvent("saveDeliveryProgress", true)
+addEventHandler("saveDeliveryProgress", getRootElement(), saveDeliveryProgress)
+
+function restoreTruckingJob()
+	if getElementData(source, "job") == 1 then
+		triggerClientEvent(source, "restoreTruckerJob", source)
+	end
+end
+addEventHandler("restoreJob", getRootElement(), restoreTruckingJob)
+
+function loadDeliveryProgress(runs, wage)
+	local result = mysql_query(handler, "SELECT truckingruns, truckingwage FROM characters WHERE id=" .. getElementData(source, "dbid"))
+	local runs = tonumber(mysql_result(result, 1, 1))
+	local wage = tonumber(mysql_result(result, 1, 2))
+	mysql_free_result(result)
+	triggerClientEvent(source, "loadTruckerJob", source, runs, wage)
+end
+addEvent("loadDeliveryProgress", true)
+addEventHandler("loadDeliveryProgress", getRootElement(), loadDeliveryProgress)

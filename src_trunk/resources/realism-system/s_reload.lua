@@ -30,8 +30,6 @@ addCommandHandler("reload", reloadWeapon)
 function checkFalling(thePlayer)
 	local reloading = getElementData(thePlayer, "reloading")
 	if not (isPedOnGround(thePlayer)) and (reloading) then
-		removeElementData(thePlayer, "reloading.timer")
-		
 		-- reset state
 		removeElementData(thePlayer, "reloading.timer")
 		exports.global:removeAnimation(thePlayer)

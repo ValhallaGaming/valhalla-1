@@ -1,4 +1,12 @@
 ---
+Fishing
+---
+ALTER TABLE `characters`
+	ADD `fish` INT UNSIGNED NOT NULL DEFAULT '0',
+	ADD `truckingruns` INT UNSIGNED NOT NULL DEFAULT '0',
+	ADD `truckingwage` INT UNSIGNED NOT NULL DEFAULT '0'
+
+---
 Tow Trucks
 ---
 add row

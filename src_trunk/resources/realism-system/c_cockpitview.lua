@@ -11,14 +11,14 @@ function toggleCockpitView ()
     if (not isEnabled) then
         if (isPedInVehicle(localPlayer)) then
             isEnabled = true
-            addEventHandler ("onClientWorld", root, updateCamera)
+            addEventHandler ("onClientPreRender", root, updateCamera)
             addEventHandler ("onClientCursorMove",root, freecamMouse)
             setElementAlpha (localPlayer, 0)
         end
     else --reset view
         isEnabled = false
         setCameraTarget (localPlayer, localPlayer)
-        removeEventHandler ("onClientWorld", root, updateCamera)
+        removeEventHandler ("onClientPreRender", root, updateCamera)
         removeEventHandler ("onClientCursorMove", root, freecamMouse)
         setElementAlpha (localPlayer, 255)
     end

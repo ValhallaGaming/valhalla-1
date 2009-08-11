@@ -190,7 +190,7 @@ function cfriskPlayer(button, state, x, y)
 				local items = getElementData(player, "items")
 				
 				local slots = 10
-				if (exports.global:cdoesPlayerHaveItem(getLocalPlayer(), 48, -1)) then
+				if (exports.global:cdoesPlayerHaveItem(player, 48, -1)) then
 					slots = 20
 				end
 				

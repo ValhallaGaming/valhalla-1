@@ -49,6 +49,18 @@ end
 addEvent("castLine", true)
 addEventHandler("castLine", getRootElement(), castLine)
 
+function restoreFishingJob(amount)
+	totalCatch = amount
+	if not (fishingBlip) then -- If the /sellfish marker isnt already being shown...
+		fishingBlip = createBlip(375.96875, -2054.8271484375, 7, 0, 2, 255, 0, 255, 255 )
+		fishingMarker = createMarker(375.96875, -2054.8271484375, 7, "cylinder", 2, 255, 0, 255, 150 )
+		fishingCol = createColSphere (375.96875, -2054.8271484375, 7, 3)
+		outputChatBox("#FF9933You still have " .. amount .. " lbs of fish with you. Go to the fish market to sell it.", 255, 104, 91, true)
+	end
+end
+addEvent("restoreFishingJob", true)
+addEventHandler("restoreFishingJob", getLocalPlayer(), restoreFishingJob)
+
 function fishOnLine()
 	
 	killTimer(catchTimer)
@@ -130,7 +142,7 @@ function reelItIn()
 
 		totalCatch = math.floor(totalCatch + fishSize)
 		outputChatBox("You have caught "..totalCatch.."lbs of fish so far.", 255, 194, 14)
-		triggerServerEvent("catchFish", getLocalPlayer(), fishSize)
+		triggerServerEvent("catchFish", getLocalPlayer(), fishSize, totalCatch)
 	end
 end
 

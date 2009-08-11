@@ -152,7 +152,7 @@ addEvent("onPlayerRegister", false)
 addEvent("attemptRegister", true)
 addEventHandler("attemptRegister", getRootElement(), registerPlayer)
 
-
+addEvent("restoreJob", false)
 function spawnCharacter(charname)
 	takeAllWeapons(source)
 	local id = getElementData(source, "gameaccountid")
@@ -477,6 +477,7 @@ function spawnCharacter(charname)
 			-- trucker job fix
 			triggerClientEvent(source,"restoreTruckerJob",source)
 		end
+		triggerEvent("restoreJob", source)
 		
 		-- Let's give them their weapons
 		if (tostring(weapons)~=tostring(mysql_null())) and (tostring(ammo)~=tostring(mysql_null())) then -- if player has weapons saved

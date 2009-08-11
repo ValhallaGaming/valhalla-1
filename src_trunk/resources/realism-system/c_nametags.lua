@@ -17,6 +17,10 @@ addEventHandler("onClientPlayerJoin", getRootElement(), setNametagOnJoin)
 
 function renderNametags()
 	if (show) then
+		local players = { }
+		local distances = { }
+		local lx, ly, lz = getElementPosition(localPlayer)
+	
 		for key, player in ipairs(getElementsByType("player")) do
 			if (isElement(player)) then
 				local lx, ly, lz = getElementPosition(localPlayer)
@@ -26,7 +30,9 @@ function renderNametags()
 				local reconx = getElementData(localPlayer, "reconx")
 				
 				
-				if (player~=localPlayer) and (isElementOnScreen(player)) and ((distance<limitdistance) or reconx) then
+				
+				
+				if (player~=localPlayera) and (isElementOnScreen(player)) and ((distance<limitdistance) or reconx) then
 					if not getElementData(player, "reconx") and not getElementData(player, "freecam:state") then
 						local lx, ly, lz = getPedBonePosition(localPlayer, 7)
 						local vehicle = getPedOccupiedVehicle(player)
@@ -38,6 +44,8 @@ function renderNametags()
 							
 							-- HP
 							if (sx) and (sy) then
+								--if (isPedInVehicle(player)) then sy = sy - 50 end
+								
 								local health = getElementHealth(player)
 								
 								if (health>0) then
@@ -79,71 +87,74 @@ function renderNametags()
 							-- ARMOR
 							--sx, sy2 = getScreenFromWorldPosition(x, y, z+0.25, 100, false)
 							
-							if (distance==1) then
-								sy = sy + 30
-							elseif (distance<=1.5) then
-								sy = sy + 20
-							else
-								sy = sy + 10
-							end
-							
 							if (sx) and (sy) then
-								local armor = getPedArmor(player)
+								if (distance==1) then
+									sy = sy + 30
+								elseif (distance<=1.5) then
+									sy = sy + 20
+								else
+									sy = sy + 10
+								end
 								
-								if (armor>0) then
-									local offset = 45 / distance
+								
+								if (sx) and (sy) then
+									local armor = getPedArmor(player)
 									
-									-- DRAW BG
-									dxDrawRectangle(sx-offset-5, sy, 95 / distance, 20 / distance, tocolor(0, 0, 0, 100), false)
-									
-									-- DRAW HEALTH
-									local width = 85
-									local armorsize = (width / 100) * armor
-									local barsize = (width / 100) * (100-armor)
-									
-									
-									if (distance<1.2) then
-										dxDrawRectangle(sx-offset, sy+5, armorsize/distance, 10 / distance, tocolor(197, 197, 197, 130), false)
-										dxDrawRectangle((sx-offset)+(armorsize/distance), sy+5, barsize/distance, 10 / distance, tocolor(162, 162, 162, 100), false)
-									else
-										dxDrawRectangle(sx-offset, sy+5, armorsize/distance-5, 10 / distance-3, tocolor(197, 197, 197, 130), false)
-										dxDrawRectangle((sx-offset)+(armorsize/distance-5), sy+5, barsize/distance-2, 10 / distance-3, tocolor(162, 162, 162, 100), false)
+									if (armor>0) then
+										local offset = 45 / distance
+										
+										-- DRAW BG
+										dxDrawRectangle(sx-offset-5, sy, 95 / distance, 20 / distance, tocolor(0, 0, 0, 100), false)
+										
+										-- DRAW HEALTH
+										local width = 85
+										local armorsize = (width / 100) * armor
+										local barsize = (width / 100) * (100-armor)
+										
+										
+										if (distance<1.2) then
+											dxDrawRectangle(sx-offset, sy+5, armorsize/distance, 10 / distance, tocolor(197, 197, 197, 130), false)
+											dxDrawRectangle((sx-offset)+(armorsize/distance), sy+5, barsize/distance, 10 / distance, tocolor(162, 162, 162, 100), false)
+										else
+											dxDrawRectangle(sx-offset, sy+5, armorsize/distance-5, 10 / distance-3, tocolor(197, 197, 197, 130), false)
+											dxDrawRectangle((sx-offset)+(armorsize/distance-5), sy+5, barsize/distance-2, 10 / distance-3, tocolor(162, 162, 162, 100), false)
+										end
 									end
 								end
-							end
-							
-							-- NAME
-							--sx, sy = getScreenFromWorldPosition(x, y, z+0.6, 100, false)
-							--sy = sy - (60 - distance*10)
-
-							if (distance==1) then
-								sy = sy - 60
-							elseif (distance<=1.25) then
-								sy = sy - 50
-							elseif (distance<=1.5) then
-								sy = sy - 40
-								elseif (distance<=1.75) then
-								sy = sy - 30
-							else
-								sy = sy - 20
-							end
-							
-							if (sx) and (sy) then
-								if (distance < 1) then distance = 1 end
-								if (distance > 2) then distance = 2 end
-								local offset = 65 / distance
-								local scale = 0.6 / distance
-								local font = "bankgothic"
-								local r, g, b = getPlayerNametagColor(player)
-								dxDrawText(getPlayerNametagText(player), sx-offset+2, sy+2, (sx-offset)+130 / distance, sy+20 / distance, tocolor(0, 0, 0, 220), scale, font, "center", "middle", false, false, false)
-								dxDrawText(getPlayerNametagText(player), sx-offset, sy, (sx-offset)+130 / distance, sy+20 / distance, tocolor(r, g, b, 220), scale, font, "center", "middle", false, false, false)
 								
+								-- NAME
+								--sx, sy = getScreenFromWorldPosition(x, y, z+0.6, 100, false)
+								--sy = sy - (60 - distance*10)
+
+								if (distance==1) then
+									sy = sy - 60
+								elseif (distance<=1.25) then
+									sy = sy - 50
+								elseif (distance<=1.5) then
+									sy = sy - 40
+									elseif (distance<=1.75) then
+									sy = sy - 30
+								else
+									sy = sy - 20
+								end
+									
+								if (sx) and (sy) then
+									if (distance < 1) then distance = 1 end
+									if (distance > 2) then distance = 2 end
+									local offset = 65 / distance
+									local scale = 0.6 / distance
+									local font = "bankgothic"
+									local r, g, b = getPlayerNametagColor(player)
+									dxDrawText(getPlayerNametagText(player), sx-offset+2, sy+2, (sx-offset)+130 / distance, sy+20 / distance, tocolor(0, 0, 0, 220), scale, font, "center", "middle", false, false, false)
+									dxDrawText(getPlayerNametagText(player), sx-offset, sy, (sx-offset)+130 / distance, sy+20 / distance, tocolor(r, g, b, 220), scale, font, "center", "middle", false, false, false)
+								end
 							end
 						end
 					end
 				end
 			end
 		end
+		
 	end
 end
 addEventHandler("onClientRender", getRootElement(), renderNametags)

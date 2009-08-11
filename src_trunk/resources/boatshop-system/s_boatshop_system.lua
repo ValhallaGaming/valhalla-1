@@ -35,10 +35,10 @@ end
 addEventHandler("onPickupHit", carshopPickup, pickupUse)
 
 function buyCar(car, cost, id, col1, col2)
-	if not getElementData(thePlayer, "money") then return end
+	if not getElementData(source, "money") then return end
 	
-	local safemoney = tonumber(getElementData(thePlayer, "money"))
-	local hackmoney = getPlayerMoney(thePlayer)
+	local safemoney = tonumber(getElementData(source, "money"))
+	local hackmoney = getPlayerMoney(source)
 	if (safemoney == hackmoney and safemoney >= tonumber(cost)) then
 		outputChatBox("You bought a " .. car .. " for " .. cost .. "$. Enjoy!", source, 255, 194, 14)
 		outputChatBox("You can set this boats spawn position by parking it and typing /vehpos", source, 255, 194, 14)

@@ -14,7 +14,6 @@ function loadGlobal()
 	restartResource(getResourceFromName("mods-system"))
 	restartResource(getResourceFromName("global"))
 	setTimer(displayCredits, 1000, 1)
-	setTimer(freeRAM, 3600000, 0)
 end
 
 function displayCredits()
@@ -22,10 +21,4 @@ function displayCredits()
 	exports.irc:sendMessage("--  VG MTA:RP Script V2 Loaded - By vG.MTA Scripting Team  --")
 	exports.irc:sendMessage("--              www.valhallagaming.net                     --")
 	exports.irc:sendMessage("-------------------------------------------------------------")
-end
-
-function freeRAM()
-	restartResource(getResourceFromName("elevator-system"))
-	restartResource(getResourceFromName("paynspray-system"))
-	restartResource(getResourceFromName("shop-system"))
 end

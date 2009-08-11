@@ -34,6 +34,9 @@ function cSafeInventory(button, state)
 			local items = getElementData(localPlayer, "items")
 			
 			local slots = 10
+			if (exports.global:cdoesPlayerHaveItem(getLocalPlayer(), 48, -1)) then
+				slots = 20
+			end
 			
 			for i = 1, slots do
 				local itemID = tonumber(gettok(items, i, string.byte(',')))

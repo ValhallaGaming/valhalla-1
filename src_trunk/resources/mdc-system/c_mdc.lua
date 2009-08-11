@@ -64,7 +64,9 @@ function createDeleteCrimeWindow()
 				crimeID = nil
 			end
 			
-			destroyElement(guiPhotoImage)
+			if (guiPhotoImage) then
+				destroyElement(guiPhotoImage)
+			end
 			
 			if(crimeID) then
 				if(triggerServerEvent("onDeleteCrime", getLocalPlayer(), crimeID)) then
@@ -158,7 +160,9 @@ function createDeleteSuspectWindow()
 					
 			local name = guiGetText(guiDeleteSuspectEditBox)
 	
-			destroyElement(guiPhotoImage)
+			if (guiPhotoImage) then
+				destroyElement(guiPhotoImage)
+			end
 			
 			if not (name == "" ) then
 				if(triggerServerEvent("onDeleteSuspect", getLocalPlayer(), name)) then
@@ -333,8 +337,9 @@ function createMdcWindow(suspectName)
 				-- get the suspect name from the edit box
 				local suspectName = guiGetText ( guiSearchEditBox)
 				
-				
-				destroyElement(guiPhotoImage)
+				if (guiPhotoImage) then
+					destroyElement(guiPhotoImage)
+				end
 				-- get the suspects names and crimes from the database
 				triggerServerEvent("onGetSuspectDetails", getLocalPlayer(), suspectName)
 				triggerServerEvent("onGetSuspectCrimes", getLocalPlayer(), suspectName)
@@ -432,7 +437,9 @@ function createMdcWindow(suspectName)
 		
 			if(triggerServerEvent("onGetAllSuspects", getLocalPlayer(), details ) ) then
 										
-				destroyElement(guiPhotoImage)
+				if (guiPhotoImage) then
+					destroyElement(guiPhotoImage)
+				end
 					
 				guiSetInputEnabled(false)
 
@@ -548,7 +555,7 @@ function createAddCrimeWindow()
 	guiAddCrimeDetailsLabel =  guiCreateLabel ( 0.05 , 0.65, 0.7 , 0.05 , "Details of crime:", true,  guiAddCrimeWindow  )
 	guiAddCrimeDetailsWarningLabel =  guiCreateLabel ( 0.3 , 0.65, 0.7 , 0.05 , "350 characters remaining.", true,  guiAddCrimeWindow  )
 	guiLabelSetColor ( guiAddCrimeDetailsWarningLabel, 0, 255, 0)
-	guiAddCrimeDetailsMemo = guiCreateMemo ( 0.05 , 0.68, 0.9 , 0.2 , "Include all detials of the crime - where, when, how, what, who e.t.c.",true ,  guiAddCrimeWindow )
+	guiAddCrimeDetailsMemo = guiCreateMemo ( 0.05 , 0.68, 0.9 , 0.2 , "Include all details of the crime - where, when, how, what, who etc.",true ,  guiAddCrimeWindow )
 		
 	guiAddCrimeSubmitButton = guiCreateButton ( 0.2 , 0.9 , 0.2 , 0.05 , "Submit" , true ,guiAddCrimeWindow )
 	guiAddCrimeBackButton = guiCreateButton ( 0.6 , 0.9 , 0.2 , 0.05 , "Back" , true , guiAddCrimeWindow  )
@@ -607,10 +614,12 @@ function createAddCrimeWindow()
 			
 		if(triggerServerEvent("onSaveSuspectCrime", getLocalPlayer(), crimeDetails)) then
 				
-			destroyElement(guiPhotoImage)
+			if (guiPhotoImage) then
+				destroyElement(guiPhotoImage)
+			end
 		
 			guiSetInputEnabled(false)
-			guiSetText(guiMdcMemo, " ~~~ Adding the crime to "..suspectDetails[1].."'s permanant record. ~~~ \
+			guiSetText(guiMdcMemo, " ~~~ Adding the crime to "..suspectDetails[1].."'s permanent record. ~~~ \
 			\
 			\This may take up to 10 seconds to process - Please Wait.")
 		
@@ -682,11 +691,11 @@ function createDetailsWindow(details)
 	guiDetailsMaleRadio = guiCreateRadioButton ( 0.15 , 0.24, 0.3 , 0.05 , "Male", true,guiDetailsWindow)
 	guiDetailsFemaleRadio = guiCreateRadioButton ( 0.5 , 0.24, 0.4 , 0.05 , "Female", true,guiDetailsWindow)
 	
-	guiDetailsEthnicyLabel =  guiCreateLabel ( 0.05 , 0.3 , 0.3 , 0.05 , "Ethnicy:", true,  guiDetailsWindow )
+	guiDetailsEthnicyLabel =  guiCreateLabel ( 0.05 , 0.3 , 0.3 , 0.05 , "Ethnicity:", true,  guiDetailsWindow )
 	guiDetailsEthnicyEditBox = guiCreateEdit ( 0.2  ,0.3 , 0.7 , 0.05 , "" , true , guiDetailsWindow)
 	guiEditSetMaxLength (guiDetailsEthnicyEditBox, 20 )
 	
-	guiDetailsCellLabel =  guiCreateLabel ( 0.05 , 0.37 , 0.4 , 0.05 , "Cellphone Number:", true,  guiDetailsWindow )
+	guiDetailsCellLabel =  guiCreateLabel ( 0.05 , 0.37 , 0.4 , 0.05 , "Cellphone number:", true,  guiDetailsWindow )
 	guiDetailsCellEditBox = guiCreateEdit ( 0.4  ,0.37 , 0.5 , 0.05 , "" , true , guiDetailsWindow)
 	guiEditSetMaxLength (guiDetailsCellEditBox, 20 )	
 	
@@ -697,14 +706,14 @@ function createDetailsWindow(details)
 	guiDetailsAddressLabel =  guiCreateLabel ( 0.05 , 0.5 , 0.4 , 0.05 , "Address:", true,  guiDetailsWindow )
 	guiDetailsAddressMemo = guiCreateMemo ( 0.05 , 0.54, 0.85 , 0.15 , "",true ,  guiDetailsWindow )
 	
-	guiDetailsOtherLabel =  guiCreateLabel ( 0.05 , 0.7 , 0.4 , 0.05 , "Other Details:", true,  guiDetailsWindow )
-	guiDetailsOtherMemo = guiCreateMemo ( 0.05 , 0.75, 0.85 , 0.1 , "Clothes, facial features, e.t.c.",true ,  guiDetailsWindow )
+	guiDetailsOtherLabel =  guiCreateLabel ( 0.05 , 0.7 , 0.4 , 0.05 , "Other details:", true,  guiDetailsWindow )
+	guiDetailsOtherMemo = guiCreateMemo ( 0.05 , 0.75, 0.85 , 0.1 , "Clothes, facial features, etc.",true ,  guiDetailsWindow )
 		
 	guiAddBackButton = guiCreateButton ( 0.6 , 0.92 , 0.2 , 0.05 , "Back" , true , guiDetailsWindow )
 	
 	if(details == nil) then
 		guiAddDetailsSubmitButton = guiCreateButton ( 0.2 , 0.92 , 0.2 , 0.05 , "Submit" , true ,guiDetailsWindow )
-		guiDetailsPhotoRadio = guiCreateRadioButton(0.3, 0.85, 0.5, 0.05, "Attatch Photo", true, guiDetailsWindow)
+		guiDetailsPhotoRadio = guiCreateRadioButton(0.3, 0.85, 0.5, 0.05, "Attach Photo", true, guiDetailsWindow)
 	else
 		guiAddUpdateButton = guiCreateButton ( 0.2 , 0.92 , 0.2 , 0.05 , "Update" , true ,guiDetailsWindow )
 		guiDetailsUpdatePhotoRadio = guiCreateRadioButton(0.3, 0.85, 0.5, 0.05, "Update Photo", true, guiDetailsWindow)
@@ -772,10 +781,12 @@ function createDetailsWindow(details)
 			
 			suspectCrime = nil
 			
-			destroyElement(guiPhotoImage)
+			if (guiPhotoImage) then
+				destroyElement(guiPhotoImage)
+			end
 		
 			guiSetInputEnabled(false)
-			guiSetText(guiMdcMemo, " ~~~ Checking the database for "..name.." and adding new suspect if they do not exist. ~~~ \
+			guiSetText(guiMdcMemo, " ~~~ Checking the database for "..name.." and adding a new suspect if they do not exist. ~~~ \
 			\
 			\This may take up to 10 seconds to process - Please Wait.")
 		
@@ -798,7 +809,7 @@ function createDetailsWindow(details)
 	
 	end, false)
 	
-	addEventHandler ( "onClientGUIClick", guiAddUpdateButton,  function(button, state)
+	addEventHandler ("onClientGUIClick", guiAddUpdateButton,  function (button, state)
 		
 		if(button == "left") then
 			-- get all of the text box values
@@ -831,7 +842,9 @@ function createDetailsWindow(details)
 			
 			if(triggerServerEvent("onUpdateSuspectDetails", getLocalPlayer(), details ) ) then
 			
-				destroyElement(guiPhotoImage)
+				if (guiPhotoImage) then
+					destroyElement(guiPhotoImage)
+				end
 			
 				guiSetInputEnabled(false)
 				guiSetText(guiMdcMemo, " ~~~ Updating the records for "..name..". ~~~ \
@@ -909,7 +922,9 @@ function createWarrantWindow()
 					local warrantDetails = {suspectDetails[1], 0, "No details given", "No punishment required", "None"}
 					triggerServerEvent("onUpdateSuspectWarrantDetails", getLocalPlayer(), warrantDetails)
 					
-					destroyElement(guiPhotoImage)
+					if (guiPhotoImage) then
+						destroyElement(guiPhotoImage)
+					end
 					guiSetVisible(guiWarrantWindow, false)
 						
 					guiSetInputEnabled(false)
@@ -950,7 +965,9 @@ function createWarrantWindow()
 					
 					triggerServerEvent("onUpdateSuspectWarrantDetails", getLocalPlayer(), warrantDetails)
 					
-					destroyElement(guiPhotoImage)
+					if (guiPhotoImage) then
+						destroyElement(guiPhotoImage)
+					end
 					guiSetVisible(guiWarrantWindow, false)
 						
 					guiSetInputEnabled(false)
@@ -1077,7 +1094,9 @@ function createAccountWindow()
 				-- if added to the database sucessfully
 				if(triggerServerEvent("onUpdateAccount", getLocalPlayer(), details ) ) then
 									
-					destroyElement(guiPhotoImage)
+					if (guiPhotoImage) then
+						destroyElement(guiPhotoImage)
+					end
 				
 					guiSetInputEnabled(false)
 					guiSetText(guiMdcMemo, " ~~~ Updating "..NewUser.."''s account. ~~~ \
@@ -1137,7 +1156,9 @@ function createAccountWindow()
 				-- if added to the database sucessfully
 				if(triggerServerEvent("onCreateAccount", getLocalPlayer(), details ) ) then
 									
-					destroyElement(guiPhotoImage)
+					if (guiPhotoImage) then
+						destroyElement(guiPhotoImage)
+					end
 				
 					guiSetInputEnabled(false)
 					guiSetText(guiMdcMemo, " ~~~ Creating "..NewUser.."''s account if it does not already exist. ~~~ \
@@ -1182,7 +1203,9 @@ function createAccountWindow()
 					-- if added to the database sucessfully
 					if(triggerServerEvent("onRemoveAccount", getLocalPlayer(), details ) ) then
 										
-						destroyElement(guiPhotoImage)
+						if (guiPhotoImage) then
+							destroyElement(guiPhotoImage)
+						end
 					
 						guiSetInputEnabled(false)
 						guiSetText(guiMdcMemo, " ~~~ Deleting "..NewUser.."''s account if it exist. ~~~ \
@@ -1227,7 +1250,9 @@ function createAccountWindow()
 			if(triggerServerEvent("onGetAllAccounts", getLocalPlayer(), details ) ) then
 				
 				-- destroy the photo if it exists
-				destroyElement(guiPhotoImage)
+				if (guiPhotoImage) then
+					destroyElement(guiPhotoImage)
+				end
 				
 				guiSetInputEnabled(false)
 				guiSetText(guiMdcMemo, " ~~~ Loading all of the active accounts. ~~~ \

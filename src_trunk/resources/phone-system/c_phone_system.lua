@@ -61,6 +61,8 @@ function startPhoneRinging(ringType)
 		local _,_, itemValue = exports.global:cdoesPlayerHaveItem(getLocalPlayer(), 2, -1)
 		if not itemValue then itemValue = 1 end
 		p_Sound[source] = playSound3D(ringtones[itemValue], x, y, z, true)
+		setSoundVolume(p_Sound[source], 0.4)
+		setSoundMaxDistance(p_Sound[source], 20)
 		getSoundLength(p_Sound[source])
 		stopTimer[source] = setTimer(triggerEvent, 10000, 1, "stopRinging", source)
 	elseif ringType == 2 then -- sms

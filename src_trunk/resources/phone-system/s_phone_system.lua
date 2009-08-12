@@ -156,7 +156,7 @@ function answerPhone(thePlayer, commandName)
 					local x, y, z = getElementPosition(target)
 					local phoneSphere = createColSphere(x, y, z, 10)
 					for _,nearbyPlayer in ipairs(getElementsWithinColShape(phoneSphere)) do
-						triggerClientEvent(nearbyPlayer, "stopRinging", target)
+						triggerClientEvent(nearbyPlayer, "stopRinging", thePlayer)
 					end
 					destroyElement(phoneSphere)
 					

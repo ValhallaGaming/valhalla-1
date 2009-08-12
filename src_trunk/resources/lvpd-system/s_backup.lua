@@ -6,7 +6,7 @@ function removeBackup(thePlayer, commandName)
 		if (backupPlayer~=nil) then
 			
 			for k,v in ipairs(getPlayersInTeam ( getTeamFromName("Los Santos Police Department") )) do
-				triggerClientEvent(v, "destroyBackupBlip", backupBlip)
+				triggerClientEvent(v, "destroyBackupBlip", getRootElement())
 			end
 			removeEventHandler("onPlayerQuit", backupPlayer, destroyBlip)
 			removeEventHandler("savePlayer", backupPlayer, destroyBlip)
@@ -67,9 +67,7 @@ function destroyBlip()
 	local theTeam = getPlayerTeam(source)
 	for key, value in ipairs(getPlayersInTeam(theTeam)) do
 		outputChatBox("The unit no longer requires assistance. Resume normal patrol", value, 255, 194, 14)
-	end
-	for k,v in ipairs(getPlayersInTeam ( getTeamFromName("Los Santos Police Department") )) do
-		triggerClientEvent(v, "destroyBackupBlip", backupBlip)
+		triggerClientEvent(value, "destroyBackupBlip", getRootElement())
 	end
 	removeEventHandler("onPlayerQuit", thePlayer, destroyBlip)
 	removeEventHandler("savePlayer", thePlayer, destroyBlip)

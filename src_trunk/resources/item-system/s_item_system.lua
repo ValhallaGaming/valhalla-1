@@ -517,7 +517,7 @@ function destroyItem(itemID, itemValue, itemName, isWeapon, items, values)
 		if (itemID==nil) then
 			setPedArmor(source, 0)
 		else
-			takeWeapon(source, tonumber(itemID))
+			exports.global:takeWeapon(source, tonumber(itemID))
 		end
 	end
 end
@@ -599,7 +599,7 @@ function dropItem(itemID, itemValue, itemName, x, y, z, gz, isWeapon, items, ite
 			end
 			
 			triggerClientEvent(source, "saveGuns", source)
-			takeWeapon(source, tonumber(itemID))
+			exports.global:takeWeapon(source, tonumber(itemID))
 			
 			local modelid = 2969
 			-- MODEL ID
@@ -810,7 +810,7 @@ function pickupItem(object, itemID, itemValue, itemName)
 		elseif (tostring(itemName)==getWeaponNameFromID(tonumber(itemID))) then
 			local query = mysql_query(handler, "DELETE FROM worlditems WHERE id='" .. tonumber(id) .. "'")
 			mysql_free_result(query)
-			giveWeapon(source, tonumber(itemID), tonumber(itemValue), true)
+			exports.global:giveWeapon(source, tonumber(itemID), tonumber(itemValue), true)
 		elseif (tostring(itemName)=="Body Armor") then
 			local query = mysql_query(handler, "DELETE FROM worlditems WHERE id='" .. tonumber(id) .. "'")
 			mysql_free_result(query)

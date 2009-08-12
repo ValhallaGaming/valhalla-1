@@ -19,7 +19,7 @@ addEvent ( "requestAddParachute", true )
 addEventHandler ( "requestAddParachute", root, requestAddParachute )
 
 function requestRemoveParachute ()
-	takeWeapon ( source, 46 )
+	exports.global:takeWeapon ( source, 46 )
 	for key,player in ipairs(exports.pool:getPoolElementsByType("player")) do
 		if player ~= source then
 			triggerClientEvent ( player, "doRemoveParachuteFromPlayer", source )

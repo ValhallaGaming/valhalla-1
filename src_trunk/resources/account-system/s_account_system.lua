@@ -154,7 +154,7 @@ addEventHandler("attemptRegister", getRootElement(), registerPlayer)
 
 addEvent("restoreJob", false)
 function spawnCharacter(charname)
-	takeAllWeapons(source)
+	exports.global:takeAllWeapons(source)
 	local id = getElementData(source, "gameaccountid")
 	charname = string.gsub(tostring(charname), " ", "_")
 	
@@ -488,7 +488,7 @@ function spawnCharacter(charname)
 				if (not tokenweapon) or (not tokenammo) then
 					break
 				else
-					giveWeapon(source, tonumber(tokenweapon), tonumber(tokenammo), false)
+					exports.global:giveWeapon(source, tonumber(tokenweapon), tonumber(tokenammo), false)
 				end
 			end
 		end
@@ -811,7 +811,7 @@ addEvent("retrieveDetails", true)
 addEventHandler("retrieveDetails", getRootElement(), retrieveDetails)
 
 function sendAccounts(thePlayer, id, isChangeChar)
-	takeAllWeapons(thePlayer)
+	exports.global:takeAllWeapons(thePlayer)
 	local accounts = { }
 	
 	local result = mysql_query(handler, "SELECT id, charactername, cked, lastarea, age, gender, faction_id, faction_rank, skin, yearday, year FROM characters WHERE account='" .. id .. "'")

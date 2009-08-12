@@ -38,7 +38,7 @@ addEvent("moveItemToSafe", true)
 addEventHandler("moveItemToSafe", getRootElement(), moveItemToSafe)
 
 function moveWeaponToSafe(safe, weaponID, weaponAmmo)
-	takeWeapon(source, weaponID)
+	exports.global:takeWeapon(source, weaponID)
 
 	exports.global:giveSafeItem(safe, 9000+weaponID, weaponAmmo)
 	updateSafeItems(safe)
@@ -55,7 +55,7 @@ addEvent("moveItemToPlayerFromSafe", true)
 addEventHandler("moveItemToPlayerFromSafe", getRootElement(), moveItemToPlayerFromSafe)
 
 function moveWeaponToPlayerFromSafe(safe, weaponID, weaponAmmo)
-	giveWeapon(source, weaponID, weaponAmmo, true)
+	exports.global:giveWeapon(source, weaponID, weaponAmmo, true)
 
 	exports.global:takeSafeItem(safe, 9000+weaponID, weaponAmmo)
 	updateSafeItems(safe)

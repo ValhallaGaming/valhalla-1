@@ -89,8 +89,8 @@ addEventHandler("friskTakePlayerItem", getRootElement(), friskTakePlayerItem)
 
 function friskTakePlayerWeapon(player, weaponID, weaponAmmo)
 	exports.global:sendLocalMeAction(source, "takes a " .. getWeaponNameFromID(weaponID) .. " from " .. getPlayerName(player) .. ".")
-	takeWeapon(player, weaponID)
-	giveWeapon(source, weaponID, weaponAmmo)
+	exports.global:takeWeapon(player, weaponID)
+	exports.global:giveWeapon(source, weaponID, weaponAmmo)
 end
 addEvent("friskTakePlayerWeapon", true)
 addEventHandler("friskTakePlayerWeapon", getRootElement(), friskTakePlayerWeapon)

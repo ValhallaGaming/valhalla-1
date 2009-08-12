@@ -49,7 +49,7 @@ function giveReload(thePlayer, weapon, ammo)
 	else
 		clipsize = clipSize[weapon]
 	end
-	setWeaponAmmo(thePlayer, weapon, ammo, clipsize) -- fix for the ammo adding up bug
+	exports.global:setWeaponAmmo(thePlayer, weapon, ammo, clipsize) -- fix for the ammo adding up bug
 	--takeWeapon(thePlayer, weapon)
 	--giveWeapon(thePlayer, weapon, ammo, true)
 	setElementData(thePlayer, "reloading", false, false)
@@ -77,7 +77,7 @@ addEventHandler("onResourceStart", getRootElement(), bindKeys)
 addEventHandler("onPlayerJoin", getRootElement(), bindKeysOnJoin)
 
 function giveFakeBullet(weapon, ammo)
-	setWeaponAmmo(source, weapon, ammo, 1)
+	exports.global:setWeaponAmmo(source, weapon, ammo, 1)
 end
 addEvent("addFakeBullet", true)
 addEventHandler("addFakeBullet", getRootElement(), giveFakeBullet)

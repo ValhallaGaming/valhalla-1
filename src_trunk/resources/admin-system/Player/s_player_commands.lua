@@ -271,7 +271,7 @@ function disarmPlayer(thePlayer, commandName, targetPlayer)
 				if (logged==0) then
 					outputChatBox("Player is not logged in.", thePlayer, 255, 0, 0)
 				elseif (logged==1) then
-					takeAllWeapons(targetPlayer)
+					exports.global:takeAllWeapons(targetPlayer)
 					outputChatBox(targetPlayerName .. " is now disarmed.", thePlayer, 255, 194, 14)
 				end
 			end
@@ -414,8 +414,8 @@ function givePlayerGun(thePlayer, commandName, targetPlayer, ...)
 				if (logged==0) then
 					outputChatBox("Player is not logged in.", thePlayer, 255, 0, 0)
 				elseif (logged==1) then
-					takeWeapon(targetPlayer, weapon)
-					local give = giveWeapon(targetPlayer, weapon, ammo, true)
+					exports.global:takeWeapon(targetPlayer, weapon)
+					local give = exports.global:giveWeapon(targetPlayer, weapon, ammo, true)
 					
 					if not (give) then
 						outputChatBox("Invalid Weapon ID.", thePlayer, 255, 0, 0)

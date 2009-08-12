@@ -362,7 +362,7 @@ function givePlayerBoughtItem(itemID, itemValue, theCost, isWeapon, name, supply
 						exports.global:takePlayerSafeMoney(source, tonumber(theCost))
 						outputChatBox("You bought a " .. name .. ".", source, 255, 194, 14)
 						outputChatBox("You have $".. getElementData(source, "money").." left in your wallet.", source, 255, 194, 14)
-						giveWeapon(source, tonumber(itemID), tonumber(itemValue), true)
+						exports.global:giveWeapon(source, tonumber(itemID), tonumber(itemValue), true)
 					else
 						outputChatBox("You do not have a gun license - You can buy this license at City Hall.", source, 255, 194, 14)
 					end
@@ -370,7 +370,7 @@ function givePlayerBoughtItem(itemID, itemValue, theCost, isWeapon, name, supply
 					exports.global:takePlayerSafeMoney(source, tonumber(theCost))
 					outputChatBox("You bought a " .. name .. ".", source, 255, 194, 14)
 					outputChatBox("You have $"..getElementData(source, "money").." left in your wallet.", source, 255, 194, 14)
-					giveWeapon(source, tonumber(itemID), tonumber(itemValue), true)
+					exports.global:giveWeapon(source, tonumber(itemID), tonumber(itemValue), true)
 					exports.global:givePlayerAchievement(source, 22)
 				end
 			end

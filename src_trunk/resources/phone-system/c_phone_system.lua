@@ -10,10 +10,11 @@ function showPhoneGui(itemValue)
 	ePhoneNumber = guiCreateEdit(0.3559,0.0831,0.5975,0.0855,"",true,wPhoneMenu)
 	gRingtones = guiCreateGridList(0.0381,0.1977,0.9153,0.6706,true,wPhoneMenu)
 				 guiGridListAddColumn(gRingtones,"ringtones",0.85)
+				 guiGridListSetItemText(gRingtones, guiGridListAddRow(gRingtones), 1, "vibrate mode", false, false)
 				 for i, filename in ipairs(ringtones) do
 					guiGridListSetItemText(gRingtones, guiGridListAddRow(gRingtones), 1, filename:sub(1,-5), false, false)
 				 end
-				 guiGridListSetSelectedItem(gRingtones, itemValue - 1, 1)
+				 guiGridListSetSelectedItem(gRingtones, itemValue, 1)
 	bOK = guiCreateButton(0.0381,0.8821,0.4492,0.0742,"OK",true,wPhoneMenu)
 	bCancel = guiCreateButton(0.5212,0.8821,0.4322,0.0742,"Cancel",true,wPhoneMenu)
 	addEventHandler("onClientGUIClick", getRootElement(), onGuiClick)
@@ -40,7 +41,7 @@ function onGuiClick(button)
 			hidePhoneGUI()
 		elseif source == bOK then
 			if guiGridListGetSelectedItem(gRingtones) ~= -1 then
-				triggerServerEvent("saveRingtone", getLocalPlayer(), guiGridListGetSelectedItem(gRingtones) + 1)
+				triggerServerEvent("saveRingtone", getLocalPlayer(), guiGridListGetSelectedItem(gRingtones))
 			end
 			hidePhoneGUI()
 		end
@@ -55,11 +56,10 @@ function hidePhoneGUI()
 	showCursor(false)
 end
 
-function startPhoneRinging(ringType)
+function startPhoneRinging(ringType, itemValue)
 	if ringType == 1 then -- phone call
 		local x, y, z = getElementPosition(source)
-		local _,_, itemValue = exports.global:cdoesPlayerHaveItem(getLocalPlayer(), 2, -1)
-		if not itemValue then itemValue = 1 end
+		if not itemValue or itemValue < 0 then itemValue = 1 end
 		p_Sound[source] = playSound3D(ringtones[itemValue], x, y, z, true)
 		setSoundVolume(p_Sound[source], 0.4)
 		setSoundMaxDistance(p_Sound[source], 20)

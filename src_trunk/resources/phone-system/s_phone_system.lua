@@ -48,7 +48,7 @@ function callSomeone(thePlayer, commandName, phoneNumber, ...)
 							outputChatBox("You get a dead tone...", thePlayer, 255, 194, 14)
 						end
 					else
-						local found, foundElement = false
+						local found, foundElement, foundPhoneItemValue = false
 						
 						for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
 							local logged = getElementData(value, "loggedin")
@@ -62,7 +62,9 @@ function callSomeone(thePlayer, commandName, phoneNumber, ...)
 							end
 							
 							if (found) then
-								if not (exports.global:doesPlayerHaveItem(foundElement, 2)) then -- Check the target has a phone, if not, they weren't found
+								local find = false
+								find,_,foundPhoneItemValue = exports.global:doesPlayerHaveItem(foundElement, 2)
+								if not find then -- Check the target has a phone, if not, they weren't found
 									found, foundElement = false
 								end
 							end
@@ -72,7 +74,7 @@ function callSomeone(thePlayer, commandName, phoneNumber, ...)
 						
 						if (money<10) then
 							outputChatBox("You cannot afford a call.", thePlayer, 255, 0, 0)
-						elseif not (found) then--or (foundElement==thePlayer) then -- Player with this phone number isnt online...
+						elseif not (found) then or (foundElement==thePlayer) then -- Player with this phone number isnt online...
 							outputChatBox("You get a dead tone...", thePlayer, 255, 194, 14)
 						else
 							local targetCalling = getElementData(foundElement, "calling")
@@ -90,12 +92,14 @@ function callSomeone(thePlayer, commandName, phoneNumber, ...)
 								setTimer(startPhoneAnim, 1000, 2, thePlayer)
 								
 								--player around target and target start ringing
-								local x, y, z = getElementPosition(foundElement)
-								local phoneSphere = createColSphere(x, y, z, 10)
-								for _,nearbyPlayer in ipairs(getElementsWithinColShape(phoneSphere)) do
-									triggerClientEvent(nearbyPlayer, "startRinging", foundElement, 1)
+								if foundPhoneItemValue ~= 0 then -- not vibrate mode
+									local x, y, z = getElementPosition(foundElement)
+									local phoneSphere = createColSphere(x, y, z, 10)
+									for _,nearbyPlayer in ipairs(getElementsWithinColShape(phoneSphere)) do
+										triggerClientEvent(nearbyPlayer, "startRinging", foundElement, 1, foundPhoneItemValue)
+									end
+									destroyElement(phoneSphere)
 								end
-								destroyElement(phoneSphere)
 								
 								-- target player
 								exports.global:sendLocalMeAction(foundElement, "'s Phone start's to ring.")

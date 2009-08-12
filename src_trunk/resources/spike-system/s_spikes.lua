@@ -18,14 +18,15 @@ function PlacingSpikes(sourcePlayer, command)
 			for value=1,SpikeLimit,1 do
 				if(Spike[value] == nil) then
 
-				Spike[value] = createObject ( 1593, x1, y1, z1-0.8, 0.0, 0.0, rotz+90.0)
-				exports.pool:allocateElement(Spike[value])
-				Shape[value] = createColCuboid ( x1-0.5, y1-0.5, z1-0.8, 2.0, 2.0, 2.5)
-				exports.pool:allocateElement(Shape[value])
-				setElementData(Shape[value], "type", "spikes")
-				outputChatBox("Spawned spikes with ID:" .. value, sourcePlayer, 0, 194, 0)
-				
-				break end
+					Spike[value] = createObject ( 1593, x1, y1, z1-0.8, 0.0, 0.0, rotz+90.0)
+					exports.pool:allocateElement(Spike[value])
+					Shape[value] = createColCuboid ( x1-0.5, y1-0.5, z1-0.8, 2.0, 2.0, 2.5)
+					exports.pool:allocateElement(Shape[value])
+					setElementData(Shape[value], "type", "spikes")
+					outputChatBox("Spawned spikes with ID:" .. value, sourcePlayer, 0, 194, 0)
+					
+					break
+				end
 			end
 		else
 			outputChatBox("Too many spikes are already spawned.", sourcePlayer, 255, 194, 14)
@@ -76,11 +77,10 @@ function AdminRemovingSpikes(sourcePlayer, command)
 			local id = tonumber ( value )
 			destroyElement(Spike[id])
 			Spike[id] = nil
-			destroyElement(Shape[message])
-			Shape[message] = nil
+			destroyElement(Shape[id])
+			Shape[id] = nil
 		end
 	end
-	triggerClientEvent ("onAllSpikesRemoved", getRootElement(), Shape, SpikeLimit)
 	outputChatBox("Removed all the spawned spikes.", sourcePlayer, 0, 194, 0)
 	TotalSpikes = nil
 end

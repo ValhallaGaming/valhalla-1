@@ -42,7 +42,7 @@ function callSomeone(thePlayer, commandName, phoneNumber, ...)
 				else
 					exports.global:sendLocalMeAction(thePlayer, "takes out a cell phone.")
 					if phoneNumber == "911" then
-						executeCommandHandler( "911", thePlayer, ... )
+						executeCommandHandler( "911", thePlayer, table.concat({...}, " ") )
 					elseif phoneNumber == "081016" then
 						if not executeCommandHandler( "081016", thePlayer ) then
 							outputChatBox("You get a dead tone...", thePlayer, 255, 194, 14)

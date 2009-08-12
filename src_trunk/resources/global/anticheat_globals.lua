@@ -1,6 +1,7 @@
 local gw = giveWeapon
 local swa = setWeaponAmmo
 local taw = takeAllWeapons
+local tw = takeWeapon
 
 function isACRunning()
 	local running = getResourceState( getResourceFromName ("anticheat-system") ) == "running"
@@ -31,5 +32,13 @@ function takeAllWeapons(player)
 		return call( getResourceFromName( "anticheat-system" ), "takeAllWeaponsSafe", player)
 	else
 		return taw(player)
+	end
+end
+
+function takeWeapon(player, weapon)
+	if isACRunning() then
+		return call( getResourceFromName( "anticheat-system" ), "takeWeaponSafe", player, weapon)
+	else
+		return tw(player, weapon)
 	end
 end

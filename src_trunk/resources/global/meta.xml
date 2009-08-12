@@ -33,7 +33,7 @@
 	<export function="giveWeapon" type="server"/>
 	<export function="setWeaponAmmo" type="server"/>
 	<export function="takeAllWeapons" type="server"/>
-	<export function="takeWeapons" type="server"/>
+	<export function="takeWeapon" type="server"/>
 	
 	<script src="achievement_globals.lua" type="server"/>
 	<export function="doesPlayerHaveAchievement" type="server"/>

@@ -94,6 +94,9 @@ function createTempVehicle(thePlayer, commandName, ...)
 				
 				setVehicleColor(veh, col1, col2, col1, col2)
 				
+				setElementInterior(veh, getElementInterior(thePlayer))
+				setElementDimension(veh, getElementDimension(thePlayer))
+				
 				setVehicleOverrideLights(veh, 1)
 				setVehicleEngineState(veh, false)
 				setVehicleFuelTankExplodable(veh, false)

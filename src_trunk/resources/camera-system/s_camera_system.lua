@@ -65,13 +65,18 @@ function sendWarningToCops(vehicle, player, colshape, x, y, z, speed)
 	local vehid = getElementModel(vehicle)
 	
 	if not (lawVehicles[vehid]) then
-		if (ny>y) then -- north
+		local dx = nx - x
+		local dy = ny - y
+		
+		outputChatBox(dx.." "..dy)
+		
+		if dy > math.abs(dx) then
 			direction = "northbound"
-		elseif (ny<y) then -- south
+		elseif dy < -math.abs(dx) then
 			direction = "southbound"
-		elseif (nx>x) then -- east
+		elseif dx > math.abs(dy) then
 			direction = "eastbound"
-		elseif (nx<x) then -- west
+		elseif dx < -math.abs(dy) then
 			direction = "westbound"
 		end
 		

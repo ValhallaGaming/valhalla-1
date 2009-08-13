@@ -94,7 +94,7 @@ function createPermVehicle(thePlayer, commandName, ...)
 						outputChatBox("This faction cannot afford this vehicle.", thePlayer, 255, 0, 0)
 					else
 						setElementData(theTeam, "money", money-cost)
-						local query = mysql_query(handler, "UPDATE factions SET money='" .. money-cost .. "' WHERE id='" .. factionVehicle .. "'")
+						local query = mysql_query(handler, "UPDATE factions SET bankbalance=bankbalance-" .. cost .. " WHERE id='" .. getElementData(theTeam, "id") .. "'")
 						mysql_free_result(query)
 					end
 				else

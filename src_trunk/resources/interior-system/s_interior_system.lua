@@ -377,6 +377,8 @@ function reloadOneInterior(id, displayircmessage)
 		displayircmessage = true
 	end
 	local result = mysql_query(handler, "SELECT id, x, y, z , interiorx, interiory, interiorz, type, owner, locked, cost, name, interior, dimensionwithin, interiorwithin, angle, angleexit, items, items_values, max_items, rentable, tennant, rent, money, safepositionX, safepositionY, safepositionZ, safepositionRZ FROM interiors WHERE id='" .. id .. "'")
+	coroutine.yield()
+	
 	if (result) then
 		for result, row in mysql_rows(result) do
 			local id = tonumber(row[1])
@@ -393,7 +395,7 @@ function reloadOneInterior(id, displayircmessage)
 			local locked = tonumber(row[10])
 			local cost = tonumber(row[11])
 			local name = row[12]
-
+			coroutine.yield()
 			local interior = tonumber(row[13])
 			local dimension = tonumber(row[14])
 			local interiorwithin = tonumber(row[15])
@@ -409,7 +411,8 @@ function reloadOneInterior(id, displayircmessage)
 			local rent = tonumber(row[23])
 			
 			local money = tonumber(row[24])
-				
+			
+			coroutine.yield()
 			local safeX, safeY, safeZ, safeRZ = row[25], row[26], row[27], row[28]
 			-- If the is a house
 			if (inttype==0) then -- House
@@ -425,7 +428,7 @@ function reloadOneInterior(id, displayircmessage)
 				
 				local intpickup = createPickup(ix, iy, iz, 3, 1318)
 				exports.pool:allocateElement(intpickup)
-					
+				coroutine.yield()
 				setPickupElementData(pickup, id, ix, iy, iz, optAngle, interior, locked, owner, inttype, cost, name, items, items_values, max_items, tennant, rentable, rent, interiorwithin, x, y, z, dimension, money)
 				setIntPickupElementData(intpickup, id, x, y, z, rot, locked, owner, inttype, interiorwithin, dimension, interior, ix, iy, iz)
 			-- if it is a business
@@ -442,7 +445,7 @@ function reloadOneInterior(id, displayircmessage)
 				
 				local intpickup = createPickup(ix, iy, iz, 3, 1318)
 				exports.pool:allocateElement(intpickup)
-					
+				coroutine.yield()
 				setPickupElementData(pickup, id, ix, iy, iz, optAngle, interior, locked, owner, inttype, cost, name, items, items_values, max_items, tennant, rentable, rent, interiorwithin, x, y, z, dimension, money)
 				setIntPickupElementData(intpickup, id, x, y, z, rot, locked, owner, inttype, interiorwithin, dimension, interior, ix, iy, iz)
 			-- if it is a gov building
@@ -451,7 +454,7 @@ function reloadOneInterior(id, displayircmessage)
 				local intpickup = createPickup(ix, iy, iz, 3, 1318)
 				exports.pool:allocateElement(pickup)
 				exports.pool:allocateElement(intpickup)
-					
+				coroutine.yield()
 				setPickupElementData(pickup, id, ix, iy, iz, optAngle, interior, locked, owner, inttype, cost, name, items, items_values, max_items, tennant, rentable, rent, interiorwithin, x, y, z, dimension, money)
 				setIntPickupElementData(intpickup, id, x, y, z, rot, locked, owner, inttype, interiorwithin, dimension, interior, ix, iy, iz)
 			-- If the is rentable
@@ -468,7 +471,7 @@ function reloadOneInterior(id, displayircmessage)
 					
 				local intpickup = createPickup(ix, iy, iz, 3, 1318)
 				exports.pool:allocateElement(intpickup)
-					
+				coroutine.yield()
 				setPickupElementData(pickup, id, ix, iy, iz, optAngle, interior, locked, owner, inttype, cost, name, items, items_values, max_items, tennant, rentable, rent, interiorwithin, x, y, z, dimension, money)
 				setIntPickupElementData(intpickup, id, x, y, z, rot, locked, owner, inttype, interiorwithin, dimension, interior, ix, iy, iz)
 			end
@@ -487,6 +490,12 @@ function reloadOneInterior(id, displayircmessage)
 	end
 end
 
+local threads = { }
+function resume()
+	for key, value in ipairs(threads) do
+		coroutine.resume(value)
+	end
+end
 
 function loadAllInteriors()
 	local result = mysql_query(handler, "SELECT id FROM interiors")
@@ -500,11 +509,14 @@ function loadAllInteriors()
 	if (result) then
 		for result, row in mysql_rows(result) do
 			local id = tonumber(row[1])
-			reloadOneInterior(id, false)
+			local co = coroutine.create(reloadOneInterior)
+			coroutine.resume(co, id, false)
+			table.insert(threads, co)
 			counter = counter + 1
 		end
 		mysql_free_result(result)
 		exports.irc:sendMessage("[SCRIPT] Loaded " .. counter .. " interiors.")
+		setTimer(resume, 1000, 4)
 	end
 end
 addEventHandler("onResourceStart", getResourceRootElement(getThisResource()), loadAllInteriors)

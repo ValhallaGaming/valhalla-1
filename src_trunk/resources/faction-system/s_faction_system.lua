@@ -550,7 +550,7 @@ function createFaction(thePlayer, commandName, factionType, ...)
 					outputChatBox("Faction " .. factionName .. " created with ID #" .. id .. ".", thePlayer, 0, 255, 0)
 					setElementData(theTeam, "type", tonumber(factionType))
 					setElementData(theTeam, "id", id, false)
-					setElementData(theTeam, "money", 0.00, false)
+					setElementData(theTeam, "money", 0.00)
 				else
 					outputChatBox("Error creating faction.", thePlayer, 255, 0, 0)
 				end

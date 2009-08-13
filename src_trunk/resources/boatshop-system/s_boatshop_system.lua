@@ -31,6 +31,7 @@ exports.pool.allocatePickup(carshopPickup)
 
 function pickupUse(thePlayer)
 	triggerClientEvent(thePlayer, "showBoatshopUI", thePlayer)
+	cancelEvent()
 end
 addEventHandler("onPickupHit", carshopPickup, pickupUse)
 

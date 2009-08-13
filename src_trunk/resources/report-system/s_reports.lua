@@ -162,6 +162,7 @@ function handleReport(reportedPlayer, reportedReason)
 	removeElementData(source, "reportadmin")
 	
 	local admins = exports.global:getAdmins()
+	local count = 0
 	-- Show to admins
 	for key, value in ipairs(admins) do
 		local adminduty = getElementData(value, "adminduty")
@@ -175,10 +176,13 @@ function handleReport(reportedPlayer, reportedReason)
 			end
 			outputChatBox(" [-ADMIN REPORT-] Type /ar " .. slot .. " to accept this report.", value, 0, 255, 255)
 		end
+		if getElementData(value, "hiddenadmin") ~= 1 then
+			count = count + 1
+		end
 	end
 	
 	outputChatBox("[" .. timestring .. "] Thank you for submitting your admin report, Your report reference number is #" .. tostring(slot) .. ".", source, 255, 194, 14)
-	outputChatBox("[" .. timestring .. "] An admin will respond to your report ASAP. Currently there are " .. #admins .. " admin(s) available.", source, 255, 194, 14)
+	outputChatBox("[" .. timestring .. "] An admin will respond to your report ASAP. Currently there are " .. count .. " admin(s) available.", source, 255, 194, 14)
 	outputChatBox("[" .. timestring .. "] You can close this report at any time by typing /endreport.", source, 255, 194, 14)
 end
 

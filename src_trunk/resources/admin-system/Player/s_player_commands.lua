@@ -658,11 +658,11 @@ function hideAdmin(thePlayer, commandName)
 		if (hiddenAdmin==0) then
 			setElementData(thePlayer, "hiddenadmin", 1, false)
 			outputChatBox("You are now a hidden admin.", thePlayer, 255, 194, 14)
-			setPlayerNametagColor(targetPlayer, 255, 255, 255)
+			setPlayerNametagColor(thePlayer, 255, 255, 255)
 		elseif (hiddenAdmin==1) then
 			setElementData(thePlayer, "hiddenadmin", 0, false)
 			outputChatBox("You are no longer a hidden admin.", thePlayer, 255, 194, 14)
-			setPlayerNametagColor(targetPlayer, 255, 194, 14)
+			setPlayerNametagColor(thePlayer, 255, 194, 14)
 		end
 	end
 end

@@ -52,54 +52,52 @@ function createATM(thePlayer, commandName)
 end
 addCommandHandler("addatm", createATM, false, false)
 
-function loadAllATMs(res)
-	if (res==getThisResource()) then
-		local result = mysql_query(handler, "SELECT id, x, y, z, rotation, dimension, interior FROM atms")
-		local counter = 0
-		
-		if (result) then
-			for result, row in mysql_rows(result) do
-				local id = tonumber(row[1])
-				local x = tonumber(row[2])
-				local y = tonumber(row[3])
-				local z = tonumber(row[4])
+function loadAllATMs()
+	local result = mysql_query(handler, "SELECT id, x, y, z, rotation, dimension, interior FROM atms")
+	local counter = 0
+	
+	if (result) then
+		for result, row in mysql_rows(result) do
+			local id = tonumber(row[1])
+			local x = tonumber(row[2])
+			local y = tonumber(row[3])
+			local z = tonumber(row[4])
 
-				local rotation = tonumber(row[5])
-				local dimension = tonumber(row[6])
-				local interior = tonumber(row[7])
-				
-				local object = createObject(2942, x, y, z, 0, 0, rotation-180)
-				exports.pool:allocateElement(object)
-				setElementDimension(object, dimension)
-				setElementInterior(object, interior)
-				
-				local px = x + math.sin(math.rad(-rotation)) * 0.8
-				local py = y + math.cos(math.rad(-rotation)) * 0.8
-				local pz = z
-				
-				local pickup = createPickup(px, py, pz, 3, 1274)
-				local shape = getElementColShape(pickup)
-				setElementDimension(shape, dimension)
-				setElementInterior(shape, interior)
-				exports.pool:allocateElement(pickup)
-				setElementDimension(pickup, dimension)
-				setElementInterior(pickup, interior)
-				
-				setElementData(object, "dbid", id, false)
-				setElementData(object, "pickup", pickup, false)
-				setElementData(object, "type", "atm", false)
-				
-				setElementData(pickup, "dbid", id, false)
-				setElementData(pickup, "type", "atm", false)
-				addEventHandler("onPickupHit", pickup, showATMInterface)
-				counter = counter + 1
-			end
-			mysql_free_result(result)
+			local rotation = tonumber(row[5])
+			local dimension = tonumber(row[6])
+			local interior = tonumber(row[7])
+			
+			local object = createObject(2942, x, y, z, 0, 0, rotation-180)
+			exports.pool:allocateElement(object)
+			setElementDimension(object, dimension)
+			setElementInterior(object, interior)
+			
+			local px = x + math.sin(math.rad(-rotation)) * 0.8
+			local py = y + math.cos(math.rad(-rotation)) * 0.8
+			local pz = z
+			
+			local pickup = createPickup(px, py, pz, 3, 1274)
+			local shape = getElementColShape(pickup)
+			setElementDimension(shape, dimension)
+			setElementInterior(shape, interior)
+			exports.pool:allocateElement(pickup)
+			setElementDimension(pickup, dimension)
+			setElementInterior(pickup, interior)
+			
+			setElementData(object, "dbid", id, false)
+			setElementData(object, "pickup", pickup, false)
+			setElementData(object, "type", "atm", false)
+			
+			setElementData(pickup, "dbid", id, false)
+			setElementData(pickup, "type", "atm", false)
+			addEventHandler("onPickupHit", pickup, showATMInterface)
+			counter = counter + 1
 		end
-		exports.irc:sendMessage("[SCRIPT] Loaded " .. counter .. " ATMs.")
+		mysql_free_result(result)
 	end
+	exports.irc:sendMessage("[SCRIPT] Loaded " .. counter .. " ATMs.")
 end
-addEventHandler("onResourceStart", getRootElement(), loadAllATMs)
+addEventHandler("onResourceStart", getResourceRootElement(), loadAllATMs)
 
 function deleteATM(thePlayer, commandName, id)
 	if (exports.global:isPlayerLeadAdmin(thePlayer)) then

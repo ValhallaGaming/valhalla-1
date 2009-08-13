@@ -1,14 +1,12 @@
 local localPlayer = getLocalPlayer()
 local show = true
 
-function startRes(res)
-	if (res==getThisResource()) then
-		for key, value in ipairs(getElementsByType("player")) do
-			setPlayerNametagShowing(value, false)
-		end
+function startRes()
+	for key, value in ipairs(getElementsByType("player")) do
+		setPlayerNametagShowing(value, false)
 	end
 end
-addEventHandler("onClientResourceStart", getRootElement(), startRes)
+addEventHandler("onClientResourceStart", getResourceRootElement(), startRes)
 
 function playerQuit()
 	playerhp[source] = nil

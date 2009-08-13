@@ -23,11 +23,9 @@ function switchMode()
 end
 
 function bindKeys(res)
-	if (res==getThisResource()) then
-		bindKey("n", "down", switchMode)
-	end
+	bindKey("n", "down", switchMode)
 end
-addEventHandler("onClientResourceStart", getRootElement(), bindKeys)
+addEventHandler("onClientResourceStart", getResourceRootElement(), bindKeys)
 
 function enableCooldown()
 	cooldown = 1

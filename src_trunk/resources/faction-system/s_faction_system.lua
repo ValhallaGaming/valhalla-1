@@ -30,71 +30,68 @@ addEventHandler("onResourceStop", getResourceRootElement(getThisResource()), clo
 addEvent("onPlayerJoinFaction", false)
 
 function loadAllFactions(res)
-	if (res==getThisResource()) then
-		
-		-- work out how many minutes it is until the next hour
-		local mins = getRealTime().minute
-		local minutes = 60 - mins
-		setTimer(payAllWages, 60000*minutes, 1)
-		
-		local result = mysql_query(handler, "SELECT id, name, bankbalance, type FROM factions")
-		local counter = 0
-		
-		if (result) then
-			for result, row in mysql_rows(result) do
-				local id = row[1]
-				local name = row[2]
-				local money = tonumber(row[3])
-				local factionType = tonumber(row[4])
-				
-				local theTeam = createTeam(tostring(name))
-				exports.pool:allocateElement(theTeam)
-				setElementData(theTeam, "type", factionType)
-				setElementData(theTeam, "money", money)
-				setElementData(theTeam, "id", id, false)
-				counter = counter + 1
-			end
-			mysql_free_result(result)
+	-- work out how many minutes it is until the next hour
+	local mins = getRealTime().minute
+	local minutes = 60 - mins
+	setTimer(payAllWages, 60000*minutes, 1)
+	
+	local result = mysql_query(handler, "SELECT id, name, bankbalance, type FROM factions")
+	local counter = 0
+	
+	if (result) then
+		for result, row in mysql_rows(result) do
+			local id = row[1]
+			local name = row[2]
+			local money = tonumber(row[3])
+			local factionType = tonumber(row[4])
 			
-			local citteam = createTeam("Citizen", 255, 255, 255)
-			exports.pool:allocateElement(citteam)
+			local theTeam = createTeam(tostring(name))
+			exports.pool:allocateElement(theTeam)
+			setElementData(theTeam, "type", factionType)
+			setElementData(theTeam, "money", money)
+			setElementData(theTeam, "id", id, false)
+			counter = counter + 1
+		end
+		mysql_free_result(result)
+		
+		local citteam = createTeam("Citizen", 255, 255, 255)
+		exports.pool:allocateElement(citteam)
+		
+		-- set all players into their appropriate faction
+		local players = exports.pool:getPoolElementsByType("player")
+		for k, thePlayer in ipairs(players) do
+			local username = getPlayerName(thePlayer)
+			local safeusername = mysql_escape_string(handler, username)
 			
-			-- set all players into their appropriate faction
-			local players = exports.pool:getPoolElementsByType("player")
-			for k, thePlayer in ipairs(players) do
-				local username = getPlayerName(thePlayer)
-				local safeusername = mysql_escape_string(handler, username)
+			local result = mysql_query(handler, "SELECT faction_id FROM characters WHERE charactername='" .. safeusername .. "' LIMIT 1")
+			if (result) then
+				local factionID = tonumber(mysql_result(result, 1, 1))
+
+				setElementData(thePlayer, "factionMenu", 0)
+				setElementData(thePlayer, "faction", factionID, false)
 				
-				local result = mysql_query(handler, "SELECT faction_id FROM characters WHERE charactername='" .. safeusername .. "' LIMIT 1")
-				if (result) then
-					local factionID = tonumber(mysql_result(result, 1, 1))
+				mysql_free_result(result)
+				if (factionID) then
+					if (factionID~=-1) then
+						result = mysql_query(handler, "SELECT name FROM factions WHERE id='" .. factionID .. "' LIMIT 1")
 
-					setElementData(thePlayer, "factionMenu", 0)
-					setElementData(thePlayer, "faction", factionID, false)
-					
-					mysql_free_result(result)
-					if (factionID) then
-						if (factionID~=-1) then
-							result = mysql_query(handler, "SELECT name FROM factions WHERE id='" .. factionID .. "' LIMIT 1")
-
-							if (result) then
-								local factionName = tostring(mysql_result(result, 1, 1))
-								local theTeam = getTeamFromName(factionName)
-								setPlayerTeam(thePlayer, theTeam)
-								mysql_free_result(result)
-							end
-						else
-							local theTeam = getTeamFromName("Citizen")
+						if (result) then
+							local factionName = tostring(mysql_result(result, 1, 1))
+							local theTeam = getTeamFromName(factionName)
 							setPlayerTeam(thePlayer, theTeam)
+							mysql_free_result(result)
 						end
+					else
+						local theTeam = getTeamFromName("Citizen")
+						setPlayerTeam(thePlayer, theTeam)
 					end
 				end
 			end
 		end
-		exports.irc:sendMessage("[SCRIPT] Loaded " .. counter .. " factions.")
 	end
+	exports.irc:sendMessage("[SCRIPT] Loaded " .. counter .. " factions.")
 end
-addEventHandler("onResourceStart", getRootElement(), loadAllFactions)
+addEventHandler("onResourceStart", getResourceRootElement(), loadAllFactions)
 
 -- Bind Keys required
 function bindKeys()
@@ -109,7 +106,7 @@ end
 function bindKeysOnJoin()
 	bindKey(source, "F3", "down", showFactionMenu)
 end
-addEventHandler("onResourceStart", getRootElement(), bindKeys)
+addEventHandler("onResourceStart", getResourceRootElement(), bindKeys)
 addEventHandler("onPlayerJoin", getRootElement(), bindKeysOnJoin)
 
 function showFactionMenu(source)

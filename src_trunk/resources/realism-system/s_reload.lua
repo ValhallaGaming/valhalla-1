@@ -73,7 +73,7 @@ end
 function bindKeysOnJoin()
 	bindKey(source, "r", "down", reloadWeapon)
 end
-addEventHandler("onResourceStart", getRootElement(), bindKeys)
+addEventHandler("onResourceStart", getResourceRootElement(), bindKeys)
 addEventHandler("onPlayerJoin", getRootElement(), bindKeysOnJoin)
 
 function giveFakeBullet(weapon, ammo)

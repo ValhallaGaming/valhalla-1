@@ -3,18 +3,16 @@ fuellessVehicle = { [594]=true, [537]=true, [538]=true, [569]=true, [590]=true, 
 pFuel, lFuel = nil
 
 function resourceStarted(res)
-	if (res==getThisResource()) then
-		pFuel = guiCreateProgressBar(0.425, 0.85, 0.2, 0.035, true)
-		lFuel = guiCreateLabel(0.425, 0.85, 0.2, 0.035, "Fuel:", true)
-		guiLabelSetColor(lFuel, 0, 0, 0)
-		guiSetFont(lFuel, "default-bold-small")
-		guiLabelSetHorizontalAlign(lFuel, "center")
-		guiLabelSetVerticalAlign(lFuel, "center")
-		guiSetVisible(pFuel, false)
-		guiSetVisible(lFuel, false)
-	end
+	pFuel = guiCreateProgressBar(0.425, 0.85, 0.2, 0.035, true)
+	lFuel = guiCreateLabel(0.425, 0.85, 0.2, 0.035, "Fuel:", true)
+	guiLabelSetColor(lFuel, 0, 0, 0)
+	guiSetFont(lFuel, "default-bold-small")
+	guiLabelSetHorizontalAlign(lFuel, "center")
+	guiLabelSetVerticalAlign(lFuel, "center")
+	guiSetVisible(pFuel, false)
+	guiSetVisible(lFuel, false)
 end
-addEventHandler("onClientResourceStart", getRootElement(), resourceStarted)
+addEventHandler("onClientResourceStart", getResourceRootElement(), resourceStarted)
 
 function vehicleEnter(thePlayer, seat)
 	if (seat==0) and (thePlayer==getLocalPlayer()) then

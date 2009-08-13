@@ -42,7 +42,7 @@ function bindKeysOnJoin()
 	
 	setElementData(source, "friends.visible", 0, false)
 end
-addEventHandler("onResourceStart", getRootElement(), bindKeys)
+addEventHandler("onResourceStart", getResourceRootElement(), bindKeys)
 addEventHandler("onPlayerJoin", getRootElement(), bindKeysOnJoin)
 
 function toggleFriends(source)

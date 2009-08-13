@@ -1,14 +1,12 @@
 reports = { }
 
 function resourceStart(res)
-	if (res==getThisResource()) then
-		for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
-			removeElementData(value, "report")
-			removeElementData(value, "reportadmin")
-		end
+	for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
+		removeElementData(value, "report")
+		removeElementData(value, "reportadmin")
 	end
 end
-addEventHandler("onResourceStart", getRootElement(), resourceStart)
+addEventHandler("onResourceStart", getResourceRootElement(), resourceStart)
 
 function showReports(thePlayer)
 	if (exports.global:isPlayerAdmin(thePlayer)) then

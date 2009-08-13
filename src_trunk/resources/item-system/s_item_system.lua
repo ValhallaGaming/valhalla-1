@@ -640,126 +640,124 @@ addEvent("dropItem", true)
 addEventHandler("dropItem", getRootElement(), dropItem)
 
 function loadWorldItems(res)
-	if (res==getThisResource()) then
-		local result = mysql_query(handler, "SELECT id, itemid, itemvalue, itemname, yearday, x, y, z, dimension, interior, items, itemvalues FROM worlditems")
-		for result, row in mysql_rows(result) do
-			local wyearday = tonumber(row[5])
-			local time = getRealTime()
-			local yearday = time.yearday
+	local result = mysql_query(handler, "SELECT id, itemid, itemvalue, itemname, yearday, x, y, z, dimension, interior, items, itemvalues FROM worlditems")
+	for result, row in mysql_rows(result) do
+		local wyearday = tonumber(row[5])
+		local time = getRealTime()
+		local yearday = time.yearday
+		
+		
+		if (yearday>(wyearday+7)) then
+			local query = mysql_query(handler, "DELETE FROM worlditems WHERE id='" .. tonumber(row[1]) .. "' LIMIT 1")
+			mysql_free_result(query)
+		elseif (wyearday>yearday) then -- a new year
+			local query = mysql_query(handler, "UPDATE worlditems SET yearday='" .. yearday .. "' WHERE id='" .. tonumber(row[1]) .. "' LIMIT 1")
+			mysql_free_result(query)
+			local x = tonumber(row[6])
+			local y = tonumber(row[7])
+			local z = tonumber(row[8])
 			
+			local interior = tonumber(row[9])
+			local dimension = tonumber(row[10])
 			
-			if (yearday>(wyearday+7)) then
-				local query = mysql_query(handler, "DELETE FROM worlditems WHERE id='" .. tonumber(row[1]) .. "' LIMIT 1")
-				mysql_free_result(query)
-			elseif (wyearday>yearday) then -- a new year
-				local query = mysql_query(handler, "UPDATE worlditems SET yearday='" .. yearday .. "' WHERE id='" .. tonumber(row[1]) .. "' LIMIT 1")
-				mysql_free_result(query)
-				local x = tonumber(row[6])
-				local y = tonumber(row[7])
-				local z = tonumber(row[8])
-				
-				local interior = tonumber(row[9])
-				local dimension = tonumber(row[10])
-				
-				if (tostring(row[4])==getWeaponNameFromID(tonumber(row[2])) or tostring(row[4])=="Body Armor") then
-					local modelid = 2969
-					-- MODEL ID
-					if (tonumber(row[2])==100) then
-						modelid = 1242
-					elseif (tonumber(row[2])==42) then
-						modelid = 2690
-					else
-						modelid = 2969
-					end
-				
-					local obj = createObject(modelid, x, y, z)
-					exports.pool:allocateElement(obj)
-					setElementDimension(obj, dimension)
-					setElementInterior(obj, interior)
-					setElementData(obj, "id", tonumber(row[1]), false)
-					setElementData(obj, "itemID", tonumber(row[2]))
-					setElementData(obj, "itemValue", tonumber(row[3]))
-					setElementData(obj, "itemName", tostring(row[4]))
-					setElementData(obj, "type", "worlditem")
+			if (tostring(row[4])==getWeaponNameFromID(tonumber(row[2])) or tostring(row[4])=="Body Armor") then
+				local modelid = 2969
+				-- MODEL ID
+				if (tonumber(row[2])==100) then
+					modelid = 1242
+				elseif (tonumber(row[2])==42) then
+					modelid = 2690
 				else
-					local objectresult = mysql_query(handler, "SELECT modelid FROM items WHERE id='" .. tonumber(row[2]) .. "' LIMIT 1")
-					local modelid = tonumber(mysql_result(objectresult, 1, 1))
-					local items = tostring(row[11])
-					local itemvalues = tostring(row[12])
-					outputDebugString(tostring(items))
-					mysql_free_result(objectresult)
-					
-					local obj = createObject(modelid, x, y, z)
-					exports.pool:allocateElement(obj)
-					setElementDimension(obj, dimension)
-					setElementInterior(obj, interior)
-					setElementData(obj, "id", tonumber(row[1]), false)
-					setElementData(obj, "itemID", tonumber(row[2]))
-					setElementData(obj, "itemValue", tonumber(row[3]))
-					setElementData(obj, "itemName", tostring(row[4]))
-					setElementData(obj, "type", "worlditem")
-					
-					if (tonumber(row[2])==48) then -- BACKPACK
-						setElementData(obj, "items", items)
-						setElementData(obj, "itemvalues", itemvalues)
-					end
+					modelid = 2969
 				end
+			
+				local obj = createObject(modelid, x, y, z)
+				exports.pool:allocateElement(obj)
+				setElementDimension(obj, dimension)
+				setElementInterior(obj, interior)
+				setElementData(obj, "id", tonumber(row[1]), false)
+				setElementData(obj, "itemID", tonumber(row[2]))
+				setElementData(obj, "itemValue", tonumber(row[3]))
+				setElementData(obj, "itemName", tostring(row[4]))
+				setElementData(obj, "type", "worlditem")
 			else
-				local interior = tonumber(row[10])
-				local dimension = tonumber(row[9])
-				local x = tonumber(row[6])
-				local y = tonumber(row[7])
-				local z = tonumber(row[8])
+				local objectresult = mysql_query(handler, "SELECT modelid FROM items WHERE id='" .. tonumber(row[2]) .. "' LIMIT 1")
+				local modelid = tonumber(mysql_result(objectresult, 1, 1))
+				local items = tostring(row[11])
+				local itemvalues = tostring(row[12])
+				outputDebugString(tostring(items))
+				mysql_free_result(objectresult)
 				
-				if (tostring(row[4])==getWeaponNameFromID(tonumber(row[2]))  or tostring(row[4])=="Body Armor") then
-					local modelid = 2969
-					-- MODEL ID
-					if (tonumber(row[2])==100) then
-						modelid = 1242
-					elseif (tonumber(row[2])==42) then
-						modelid = 2690
-					else
-						modelid = 2969
-					end
+				local obj = createObject(modelid, x, y, z)
+				exports.pool:allocateElement(obj)
+				setElementDimension(obj, dimension)
+				setElementInterior(obj, interior)
+				setElementData(obj, "id", tonumber(row[1]), false)
+				setElementData(obj, "itemID", tonumber(row[2]))
+				setElementData(obj, "itemValue", tonumber(row[3]))
+				setElementData(obj, "itemName", tostring(row[4]))
+				setElementData(obj, "type", "worlditem")
 				
-					local obj = createObject(modelid, x, y, z, 0, 0, 0)
-					exports.pool:allocateElement(obj)
-					setElementDimension(obj, dimension)
-					setElementInterior(obj, interior)
-					setElementData(obj, "id", tonumber(row[1]), false)
-					setElementData(obj, "itemID", tonumber(row[2]))
-					setElementData(obj, "itemValue", tonumber(row[3]))
-					setElementData(obj, "itemName", tostring(row[4]))
-					setElementData(obj, "type", "worlditem")
+				if (tonumber(row[2])==48) then -- BACKPACK
+					setElementData(obj, "items", items)
+					setElementData(obj, "itemvalues", itemvalues)
+				end
+			end
+		else
+			local interior = tonumber(row[10])
+			local dimension = tonumber(row[9])
+			local x = tonumber(row[6])
+			local y = tonumber(row[7])
+			local z = tonumber(row[8])
+			
+			if (tostring(row[4])==getWeaponNameFromID(tonumber(row[2]))  or tostring(row[4])=="Body Armor") then
+				local modelid = 2969
+				-- MODEL ID
+				if (tonumber(row[2])==100) then
+					modelid = 1242
+				elseif (tonumber(row[2])==42) then
+					modelid = 2690
 				else
-					local objectresult = mysql_query(handler, "SELECT modelid FROM items WHERE id='" .. tonumber(row[2]) .. "' LIMIT 1")
-					local modelid = tonumber(mysql_result(objectresult, 1, 1))
-					local items = tostring(row[11])
-					local itemvalues = tostring(row[12])
-					mysql_free_result(objectresult)
-					
-					local obj = createObject(modelid, x, y, z, 270, 0, 0)
-					exports.pool:allocateElement(obj)
-					setElementDimension(obj, dimension)
-					setElementInterior(obj, interior)
-					setElementData(obj, "id", tonumber(row[1]))
-					setElementData(obj, "itemID", tonumber(row[2]))
-					setElementData(obj, "itemValue", tonumber(row[3]))
-					setElementData(obj, "itemName", tostring(row[4]))
-					setElementData(obj, "type", "worlditem")
-					
-					if (tonumber(row[2])==48) then -- BACKPACK
-						setElementData(obj, "items", items)
-						setElementData(obj, "itemvalues", itemvalues)
-					end
+					modelid = 2969
+				end
+			
+				local obj = createObject(modelid, x, y, z, 0, 0, 0)
+				exports.pool:allocateElement(obj)
+				setElementDimension(obj, dimension)
+				setElementInterior(obj, interior)
+				setElementData(obj, "id", tonumber(row[1]), false)
+				setElementData(obj, "itemID", tonumber(row[2]))
+				setElementData(obj, "itemValue", tonumber(row[3]))
+				setElementData(obj, "itemName", tostring(row[4]))
+				setElementData(obj, "type", "worlditem")
+			else
+				local objectresult = mysql_query(handler, "SELECT modelid FROM items WHERE id='" .. tonumber(row[2]) .. "' LIMIT 1")
+				local modelid = tonumber(mysql_result(objectresult, 1, 1))
+				local items = tostring(row[11])
+				local itemvalues = tostring(row[12])
+				mysql_free_result(objectresult)
+				
+				local obj = createObject(modelid, x, y, z, 270, 0, 0)
+				exports.pool:allocateElement(obj)
+				setElementDimension(obj, dimension)
+				setElementInterior(obj, interior)
+				setElementData(obj, "id", tonumber(row[1]))
+				setElementData(obj, "itemID", tonumber(row[2]))
+				setElementData(obj, "itemValue", tonumber(row[3]))
+				setElementData(obj, "itemName", tostring(row[4]))
+				setElementData(obj, "type", "worlditem")
+				
+				if (tonumber(row[2])==48) then -- BACKPACK
+					setElementData(obj, "items", items)
+					setElementData(obj, "itemvalues", itemvalues)
 				end
 			end
 		end
-		exports.irc:sendMessage("[SCRIPT] Loaded " .. tonumber(mysql_num_rows(result)) .. " world items.")
-		mysql_free_result(result)
 	end
+	exports.irc:sendMessage("[SCRIPT] Loaded " .. tonumber(mysql_num_rows(result)) .. " world items.")
+	mysql_free_result(result)
 end
-addEventHandler("onResourceStart", getRootElement(), loadWorldItems)
+addEventHandler("onResourceStart", getResourceRootElement(), loadWorldItems)
 
 function showItem(itemName)
 	if isPedDead(source) then return end

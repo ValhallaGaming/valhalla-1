@@ -27,27 +27,25 @@ addEventHandler("onResourceStop", getResourceRootElement(getThisResource()), clo
 -- ////////////////////////////////////
 
 function loadAllCorpses(res)
-	if (res==getThisResource()) then
-		local result = mysql_query(handler, "SELECT x, y, z, skin, rotation FROM characters WHERE cked=1")
-		
-		local counter = 0
-		local rowc = 1
-		
-		if (result) then
-			for result, row in mysql_rows(result) do
-				local x = tonumber(row[1])
-				local y = tonumber(row[2])
-				local z = tonumber(row[3])
-				local skin = tonumber(row[4])
-				local rotation = tonumber(row[5])
-				
-				local ped = createPed(skin, x, y, z)
-				setPedRotation(ped, rotation)
-				--setTimer(setPedAnimation, 100, 1, ped, "WUZI", "CS_Dead_Guy", -1, false, false, false)
-				killPed(ped)
-			end
-			mysql_free_result(result)
+	local result = mysql_query(handler, "SELECT x, y, z, skin, rotation FROM characters WHERE cked=1")
+	
+	local counter = 0
+	local rowc = 1
+	
+	if (result) then
+		for result, row in mysql_rows(result) do
+			local x = tonumber(row[1])
+			local y = tonumber(row[2])
+			local z = tonumber(row[3])
+			local skin = tonumber(row[4])
+			local rotation = tonumber(row[5])
+			
+			local ped = createPed(skin, x, y, z)
+			setPedRotation(ped, rotation)
+			--setTimer(setPedAnimation, 100, 1, ped, "WUZI", "CS_Dead_Guy", -1, false, false, false)
+			killPed(ped)
 		end
+		mysql_free_result(result)
 	end
 end
---addEventHandler("onResourceStart", getRootElement(), loadAllCorpses)
+--addEventHandler("onResourceStart", getResourceRootElement(), loadAllCorpses)

@@ -1,12 +1,10 @@
 local count = 0
 
 function createTimer(res)
-	if (res==getThisResource()) then
-		local selectionTime = math.random(300000, 1200000) -- random time between 5 and 20 minutes
-		local selectPlayerTimer = setTimer(selectPlayer, selectionTime, 1)
-	end
+	local selectionTime = math.random(300000, 1200000) -- random time between 5 and 20 minutes
+	local selectPlayerTimer = setTimer(selectPlayer, selectionTime, 1)
 end
-addEventHandler("onResourceStart", getRootElement(), createTimer)
+addEventHandler("onResourceStart", getResourceRootElement(), createTimer)
 
 function selectPlayer()
 	-- get a random player

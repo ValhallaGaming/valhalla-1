@@ -3,11 +3,9 @@ y = 0
 z = 0
 timer = nil
 function resourceStart(res)
-	if (res==getThisResource()) then
-		timer = setTimer(checkAFK, 300000, 0)
-	end
+	timer = setTimer(checkAFK, 300000, 0)
 end
-addEventHandler("onClientResourceStart", getRootElement(), resourceStart)
+addEventHandler("onClientResourceStart", getResourceRootElement(), resourceStart)
 
 function checkAFK()
 	local px, py, pz = getElementPosition(getLocalPlayer())

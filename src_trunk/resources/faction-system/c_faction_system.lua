@@ -626,13 +626,11 @@ function closeFactionList(button, state)
 	end
 end
 
-function resourceStopped(res)
-	if (res==getThisResource()) then
-		showCursor(false)
-		guiSetInputEnabled(false)
-	end
+function resourceStopped()
+	showCursor(false)
+	guiSetInputEnabled(false)
 end
-addEventHandler("onClientResourceStop", getRootElement(), resourceStopped)
+addEventHandler("onClientResourceStop", getResourceRootElement(), resourceStopped)
 
 function btRespawnVehicles(button, state)
 	if (button=="left") then

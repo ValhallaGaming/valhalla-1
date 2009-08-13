@@ -1,19 +1,15 @@
 wReportMain, lWelcome, bClose, pHelp, lHelp, lHelpAbout, bHelp, wHelp, lNameCheck, lLengthCheck, bSubmitReport, lPlayerName, reportedPlayer, tPlayerName, lReport, tReport, tHelpMessage = nil
 
-function resourceStop(res)
-	if (res==getThisResource()) then
-		guiSetInputEnabled(false)
-		showCursor(false)
-	end
+function resourceStop()
+	guiSetInputEnabled(false)
+	showCursor(false)
 end
-addEventHandler("onClientResourceStop", getRootElement(), resourceStop)
+addEventHandler("onClientResourceStop", getResourceRootElement(), resourceStop)
 
-function resourceStart(res)
-	if (res==getThisResource()) then
-		bindKey("F2", "down", toggleReport)
-	end
+function resourceStart()
+	bindKey("F2", "down", toggleReport)
 end
-addEventHandler("onClientResourceStart", getRootElement(), resourceStart)
+addEventHandler("onClientResourceStart", getResourceRootElement(), resourceStart)
 
 function toggleReport()
 	executeCommandHandler("report")

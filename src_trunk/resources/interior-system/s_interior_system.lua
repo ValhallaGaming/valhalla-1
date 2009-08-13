@@ -579,7 +579,7 @@ function bindKeysOnJoin()
 	bindKey(source, "enter", "down", enterInterior)
 	bindKey(source, "f", "down", enterInterior)
 end
-addEventHandler("onResourceStart", getRootElement(), bindKeys)
+addEventHandler("onResourceStart", getResourceRootElement(), bindKeys)
 addEventHandler("onPlayerJoin", getRootElement(), bindKeysOnJoin)
 
 function hitInteriorPickup(thePlayer)

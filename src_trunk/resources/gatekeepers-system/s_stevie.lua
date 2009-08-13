@@ -29,22 +29,19 @@ local phoneState = 0
 local doneDeals = 0
 
 function timeCheck(res) -- When the resource starts check what time it is. If the time is between 1900 and 2359 spawn stevie in the steak house.
-	if (res==getThisResource()) then
-		
-		hour, minutes = getTime()
-		
-		if (hour>=19) and (hour<=23) then -- If the time is between 1900 and 0000 create Stevie. Start a timer that will remove him at 0000.
-			createStevie()
-		else -- If the time is not between 1900 and 0000 calculate how many minutes are left start a timer to create stevie  at 1900.
-			local minutesLeft = 60 - minutes
-			local hoursLeft = 18 - hour
-			local spawnTime = (hoursLeft*60) + minutesLeft
-			stevieSpawnTimer = setTimer ( createStevie, spawnTime*60000, 1 ) -- spawn stevie at 1900
-			outputDebugString("Stevie will spawn in "..spawnTime.." minutes.")			
-		end
-	end	
+	hour, minutes = getTime()
+	
+	if (hour>=19) and (hour<=23) then -- If the time is between 1900 and 0000 create Stevie. Start a timer that will remove him at 0000.
+		createStevie()
+	else -- If the time is not between 1900 and 0000 calculate how many minutes are left start a timer to create stevie  at 1900.
+		local minutesLeft = 60 - minutes
+		local hoursLeft = 18 - hour
+		local spawnTime = (hoursLeft*60) + minutesLeft
+		stevieSpawnTimer = setTimer ( createStevie, spawnTime*60000, 1 ) -- spawn stevie at 1900
+		outputDebugString("Stevie will spawn in "..spawnTime.." minutes.")			
+	end
 end
-addEventHandler("onResourceStart", getRootElement(), timeCheck)
+addEventHandler("onResourceStart", getResourceRootElement(), timeCheck)
 
 function createStevie()
 

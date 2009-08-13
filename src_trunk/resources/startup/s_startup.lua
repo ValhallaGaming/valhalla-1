@@ -1,11 +1,9 @@
 -- This is a fix for the global resource not starting up
 
-function resStart(res)
-	if (res==getThisResource()) then
-		setTimer(loadGlobal, 1000, 1)
-	end
+function resStart()
+	setTimer(loadGlobal, 1000, 1)
 end
-addEventHandler("onResourceStart", getRootElement(), resStart)
+addEventHandler("onResourceStart", getResourceRootElement(), resStart)
 
 function loadGlobal()
 	restartResource(getResourceFromName("account-system"))

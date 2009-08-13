@@ -32,18 +32,14 @@ function drawLaser()
 end
 
 function resourceStart(res)
-	if (res==getThisResource()) then
-		bindKey("aim_weapon", "down", showLaser)
-		bindKey("aim_weapon", "up", showLaser)
-	end
+	bindKey("aim_weapon", "down", showLaser)
+	bindKey("aim_weapon", "up", showLaser)
 end
-addEventHandler("onClientResourceStart", getRootElement(), resourceStart)
+addEventHandler("onClientResourceStart", getResourceRootElement(), resourceStart)
 
 function resourceStop(res)
-	if (res==getThisResource()) then
-		unbindKey("aim_weapon", "down", showLaser)
-		unbindKey("aim_weapon", "up", showLaser)
-	end
+	unbindKey("aim_weapon", "down", showLaser)
+	unbindKey("aim_weapon", "up", showLaser)
 end
-addEventHandler("onClientResourceStop", getRootElement(), resourceStop)
+addEventHandler("onClientResourceStop", getResourceRootElement(), resourceStop)
 

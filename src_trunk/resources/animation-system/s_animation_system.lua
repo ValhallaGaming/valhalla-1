@@ -11,7 +11,7 @@ end
 function bindKeysOnJoin()
 	bindKey(source, "space", "down", stopAnimation)
 end
-addEventHandler("onResourceStart", getRootElement(), bindKeys)
+addEventHandler("onResourceStart", getResourceRootElement(), bindKeys)
 addEventHandler("onPlayerJoin", getRootElement(), bindKeysOnJoin)
 
 function stopAnimation(thePlayer)

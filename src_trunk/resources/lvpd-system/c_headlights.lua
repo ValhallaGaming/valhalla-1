@@ -1,10 +1,8 @@
 -- Bind Keys required
 function bindKeys(res)
-	if (res==getThisResource()) then
-		bindKey("p", "down", toggleFlashers)
-	end
+	bindKey("p", "down", toggleFlashers)
 end
-addEventHandler("onClientResourceStart", getRootElement(), bindKeys)
+addEventHandler("onClientResourceStart", getResourceRootElement(), bindKeys)
 
 function toggleFlashers()
 	local veh = getPedOccupiedVehicle(getLocalPlayer())

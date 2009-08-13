@@ -9,33 +9,30 @@ local delay2 = 1
 
 -- Function run on resource start to set the weather to a particular type
 function startWeather(resource)
-	
-	if(resource == getThisResource()) then
-		-- tempoarily set the weather to cloudy
-		setWeather(13)
+	-- tempoarily set the weather to cloudy
+	setWeather(13)
 
-		local choice = math.random(1, 5)
-		     
-		     -- On server startup, set the weather to a certain type, use the delay variable since its pointless creating a new one.
-			if(choice==1) then
-				weather = "clear"
-			elseif(choice ==2 ) then
-				weather = "hot"
-			elseif(choice == 3) then
-				weather = "cloudy"
-			elseif(choice ==4) then
-				weather = "rain"
-			else
-				weather = "fog"
-			end
-			
-		-- trigger event to select the next best weather type
-		triggerEvent("onChangeLaterWeatherType", getRootElement())
-		triggerEvent("onChangeNextWeatherType", getRootElement())
-		triggerEvent("onChangeWeatherType", getRootElement())
-		-- trigger event to blend into the weather ID
-		triggerEvent ( "onChangeWeather", getRootElement() )
-	end
+	local choice = math.random(1, 5)
+		 
+		 -- On server startup, set the weather to a certain type, use the delay variable since its pointless creating a new one.
+		if(choice==1) then
+			weather = "clear"
+		elseif(choice ==2 ) then
+			weather = "hot"
+		elseif(choice == 3) then
+			weather = "cloudy"
+		elseif(choice ==4) then
+			weather = "rain"
+		else
+			weather = "fog"
+		end
+		
+	-- trigger event to select the next best weather type
+	triggerEvent("onChangeLaterWeatherType", getRootElement())
+	triggerEvent("onChangeNextWeatherType", getRootElement())
+	triggerEvent("onChangeWeatherType", getRootElement())
+	-- trigger event to blend into the weather ID
+	triggerEvent ( "onChangeWeather", getRootElement() )
 end
 addEventHandler ( "onResourceStart", getResourceRootElement(getThisResource()), startWeather)
 

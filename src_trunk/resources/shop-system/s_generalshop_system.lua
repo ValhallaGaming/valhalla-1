@@ -202,32 +202,30 @@ end
 addCommandHandler("delshop", deleteGeneralShop, false, false)
 
 function loadAllGeneralshops(res)
-	if (res==getThisResource()) then
-		local result = mysql_query(handler, "SELECT id, x, y, z, dimension, interior, shoptype, rotation FROM shops")
-		
-		local counter = 0
-		if (result) then
-			for result, row in mysql_rows(result) do
-				local id = tonumber(row[1])
-				local x = tonumber(row[2])
-				local y = tonumber(row[3])
-				local z = tonumber(row[4])
-				
-				local dimension = tonumber(row[5])
-				local interior = tonumber(row[6])
-				local shoptype = tonumber(row[7])
-				
-				local rotation = tonumber(row[8])
-				
-				createShopKeeper(x,y,z,interior,dimension,id,shoptype,rotation)
-				counter = counter + 1
-			end
-			mysql_free_result(result)
+	local result = mysql_query(handler, "SELECT id, x, y, z, dimension, interior, shoptype, rotation FROM shops")
+	
+	local counter = 0
+	if (result) then
+		for result, row in mysql_rows(result) do
+			local id = tonumber(row[1])
+			local x = tonumber(row[2])
+			local y = tonumber(row[3])
+			local z = tonumber(row[4])
+			
+			local dimension = tonumber(row[5])
+			local interior = tonumber(row[6])
+			local shoptype = tonumber(row[7])
+			
+			local rotation = tonumber(row[8])
+			
+			createShopKeeper(x,y,z,interior,dimension,id,shoptype,rotation)
+			counter = counter + 1
 		end
-		exports.irc:sendMessage("[SCRIPT] Loaded " .. counter .. " general shops.")
+		mysql_free_result(result)
 	end
+	exports.irc:sendMessage("[SCRIPT] Loaded " .. counter .. " general shops.")
 end
-addEventHandler("onResourceStart", getRootElement(), loadAllGeneralshops)
+addEventHandler("onResourceStart", getResourceRootElement(), loadAllGeneralshops)
 
 function clickStoreKeeper(ped)
 	local shoptype = getElementData(ped, "shoptype")
@@ -509,12 +507,10 @@ function orderSupplies(thePlayer, commandName, amount)
 end
 addCommandHandler("ordersupplies", orderSupplies, false, false)
 
-function resStart(res)
-	if (res==getThisResource()) then
-		local result = mysql_query(handler, "SELECT value FROM settings WHERE name='globalsupplies' LIMIT 1")
-		globalSupplies = tonumber(mysql_result(result, 1, 1))
+function resStart()
+	local result = mysql_query(handler, "SELECT value FROM settings WHERE name='globalsupplies' LIMIT 1")
+	globalSupplies = tonumber(mysql_result(result, 1, 1))
 
-		mysql_free_result(result)
-	end
+	mysql_free_result(result)
 end
-addEventHandler("onResourceStart", getRootElement(), resStart)
+addEventHandler("onResourceStart", getResourceRootElement(), resStart)

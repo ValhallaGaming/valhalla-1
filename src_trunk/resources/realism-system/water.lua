@@ -1,17 +1,15 @@
 -- waves
 function setInitialWaves(res)
-	if (res==getThisResource()) then
-		local hour, mins = getTime()
-		createSewerFlood()
-		if (hour%2==0) then -- even hour
-			
-			setWaveHeight(1)
-		else
-			setWaveHeight(0)
-		end
+	local hour, mins = getTime()
+	createSewerFlood()
+	if (hour%2==0) then -- even hour
+		
+		setWaveHeight(1)
+	else
+		setWaveHeight(0)
 	end
 end
-addEventHandler("onClientResourceStart", getRootElement(), setInitialWaves)
+addEventHandler("onClientResourceStart", getResourceRootElement(), setInitialWaves)
 
 function updateWaves()
 	local hour, mins = getTime()

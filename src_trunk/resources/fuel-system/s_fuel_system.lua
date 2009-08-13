@@ -143,34 +143,32 @@ end
 setTimer(randomizeFuelPrice, 3600000, randomizeFuelPrice)
 
 function loadFuelPoints(res)
-	if (res==getThisResource()) then
-		local result = mysql_query(handler, "SELECT id, x, y, z, dimension, interior FROM fuelstations")
-		local counter = 0
-		
-		if (result) then
-			for result, row in mysql_rows(result) do
-				local id = row[1]
-				local x = tonumber(row[2])
-				local y = tonumber(row[3])
-				local z = tonumber(row[4])
-				
-				local dimension = tonumber(row[5])
-				local interior = tonumber(row[6])
-				
-				local theSphere = createColSphere(x, y, z, 20)
-				exports.pool:allocateElement(theSphere)
-				setElementDimension(theSphere, dimension)
-				setElementInterior(theSphere, interior)
-				setElementData(theSphere, "type", "fuel", false)
-				setElementData(theSphere, "dbid", id, false)
-				counter = counter + 1
-			end
-			mysql_free_result(result)
+	local result = mysql_query(handler, "SELECT id, x, y, z, dimension, interior FROM fuelstations")
+	local counter = 0
+	
+	if (result) then
+		for result, row in mysql_rows(result) do
+			local id = row[1]
+			local x = tonumber(row[2])
+			local y = tonumber(row[3])
+			local z = tonumber(row[4])
+			
+			local dimension = tonumber(row[5])
+			local interior = tonumber(row[6])
+			
+			local theSphere = createColSphere(x, y, z, 20)
+			exports.pool:allocateElement(theSphere)
+			setElementDimension(theSphere, dimension)
+			setElementInterior(theSphere, interior)
+			setElementData(theSphere, "type", "fuel", false)
+			setElementData(theSphere, "dbid", id, false)
+			counter = counter + 1
 		end
-		exports.irc:sendMessage("[SCRIPT] Loaded " .. counter .. " Fuel stations.")
+		mysql_free_result(result)
 	end
+	exports.irc:sendMessage("[SCRIPT] Loaded " .. counter .. " Fuel stations.")
 end
-addEventHandler("onResourceStart", getRootElement(), loadFuelPoints)
+addEventHandler("onResourceStart", getResourceRootElement(), loadFuelPoints)
 
 function fillVehicle(thePlayer, commandName)
 	if not (isPedInVehicle(thePlayer)) then

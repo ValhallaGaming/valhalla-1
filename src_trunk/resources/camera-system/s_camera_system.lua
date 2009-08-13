@@ -6,21 +6,19 @@ stripCamera1Speed = nil
 
 
 function resourceStart(res)
-	if (res==getThisResource()) then
-		-- STRIP CAMERA 1
-		stripCamera1 = createObject(1293, 1342.5859375, -1471.4306640625, 12.939081573486, 0, 0, 347.48364257813)
-		exports.pool:allocateElement(stripCamera1)
-		stripCamera1Col = createColTube(1342.5859375, -1471.4306640625, 5, 80, 9)
-		exports.pool:allocateElement(stripCamera1Col)
-		stripCamera1ColWarn = createColTube(1342.5859375, -1471.4306640625, 5, 150, 10)
-		exports.pool:allocateElement(stripCamera1ColWarn)
-		stripCamera1Speed = 65
-		addEventHandler("onColShapeHit", stripCamera1ColWarn, sendWarning)
-		addEventHandler("onColShapeHit", stripCamera1Col, monitorSpeed)
-		addEventHandler("onColShapeLeave", stripCamera1Col, stopMonitorSpeed)
-	end
+	-- STRIP CAMERA 1
+	stripCamera1 = createObject(1293, 1342.5859375, -1471.4306640625, 12.939081573486, 0, 0, 347.48364257813)
+	exports.pool:allocateElement(stripCamera1)
+	stripCamera1Col = createColTube(1342.5859375, -1471.4306640625, 5, 80, 9)
+	exports.pool:allocateElement(stripCamera1Col)
+	stripCamera1ColWarn = createColTube(1342.5859375, -1471.4306640625, 5, 150, 10)
+	exports.pool:allocateElement(stripCamera1ColWarn)
+	stripCamera1Speed = 65
+	addEventHandler("onColShapeHit", stripCamera1ColWarn, sendWarning)
+	addEventHandler("onColShapeHit", stripCamera1Col, monitorSpeed)
+	addEventHandler("onColShapeLeave", stripCamera1Col, stopMonitorSpeed)
 end
-addEventHandler("onResourceStart", getRootElement(), resourceStart)
+addEventHandler("onResourceStart", getResourceRootElement(), resourceStart)
 
 -- dynamic stuff
 function monitorSpeed(element, matchingDimension)

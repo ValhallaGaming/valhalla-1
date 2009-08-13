@@ -1,4 +1,4 @@
-function anticheatStarted(res)
+function anticheatStarted()
 	exports.global:sendMessageToAdmins("[ANTICHEAT] Version 2.1 Protection Started.")
 	exports.irc:sendMessage("[ANTICHEAT] Version 2.1 Protection Started.")
 end

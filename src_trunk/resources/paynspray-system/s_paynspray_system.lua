@@ -45,7 +45,6 @@ function createSpray(thePlayer, commandName)
 			setElementInterior(shape, interior)
 			setElementDimension(shape, dimension)
 			setElementData(shape, "dbid", id, false)
-			setElementData(shape, "type", "paynspray", false)
 			
 			local sprayblip = createBlip(x, y, z, 63, 2, 255, 0, 0, 255, 0, 300)
 			exports.pool:allocateElement(sprayblip)
@@ -59,39 +58,36 @@ end
 addCommandHandler("makepaynspray", createSpray, false, false)
 
 function loadAllSprays(res)
-	if (res==getThisResource()) then
-		local result = mysql_query(handler, "SELECT id, x, y, z, interior, dimension FROM paynspray")
-		local count = 0
-		
-		if (result) then
-			for result, row in mysql_rows(result) do
-				local id = tonumber(row[1])
-					
-				local x = tonumber(row[2])
-				local y = tonumber(row[3])
-				local z = tonumber(row[4])
-					
-				local interior = tonumber(row[5])
-				local dimension = tonumber(row[6])
+	local result = mysql_query(handler, "SELECT id, x, y, z, interior, dimension FROM paynspray")
+	local count = 0
+	
+	if (result) then
+		for result, row in mysql_rows(result) do
+			local id = tonumber(row[1])
 				
-				local sprayblip = createBlip(x, y, z, 63, 2, 255, 0, 0, 255, 0, 300)
-				exports.pool:allocateElement(sprayblip)
+			local x = tonumber(row[2])
+			local y = tonumber(row[3])
+			local z = tonumber(row[4])
 				
-				local shape = createColSphere(x, y, z, 5)
-				exports.pool:allocateElement(shape)
-				setElementInterior(shape, interior)
-				setElementDimension(shape, dimension)
-				setElementData(shape, "dbid", id, false)
-				setElementData(shape, "type", "paynspray", false)
-					
-				count = count + 1
-			end
-			mysql_free_result(result)
+			local interior = tonumber(row[5])
+			local dimension = tonumber(row[6])
+			
+			local sprayblip = createBlip(x, y, z, 63, 2, 255, 0, 0, 255, 0, 300)
+			exports.pool:allocateElement(sprayblip)
+			
+			local shape = createColSphere(x, y, z, 5)
+			exports.pool:allocateElement(shape)
+			setElementInterior(shape, interior)
+			setElementDimension(shape, dimension)
+			setElementData(shape, "dbid", id, false)
+				
+			count = count + 1
 		end
-		exports.irc:sendMessage("[SCRIPT] Loaded " .. count .. " Pay n Sprays.")
+		mysql_free_result(result)
 	end
+	exports.irc:sendMessage("[SCRIPT] Loaded " .. count .. " Pay n Sprays.")
 end
-addEventHandler("onResourceStart", getRootElement(), loadAllSprays)
+addEventHandler("onResourceStart", getResourceRootElement(), loadAllSprays)
 
 function getNearbySprays(thePlayer, commandName)
 	if (exports.global:isPlayerAdmin(thePlayer)) then
@@ -99,18 +95,13 @@ function getNearbySprays(thePlayer, commandName)
 		outputChatBox("Nearby Pay n Sprays:", thePlayer, 255, 126, 0)
 		local count = 0
 		
-		for k, theColshape in ipairs(exports.pool:getPoolElementsByType("colshape")) do
-			local colshapeType = getElementData(theColshape, "type")
-			if (colshapeType) then
-				if (colshapeType=="paynspray") then
-					local x, y = getElementPosition(theColshape)
-					local distance = getDistanceBetweenPoints2D(posX, posY, x, y)
-					if (distance<=10) then
-						local dbid = getElementData(theColshape, "dbid")
-						outputChatBox("   Pay n Spray with ID " .. dbid .. ".", thePlayer, 255, 126, 0)
-						count = count + 1
-					end
-				end
+		for k, theColshape in ipairs(getElementsByType("colshape", getResourceRootElement())) do
+			local x, y = getElementPosition(theColshape)
+			local distance = getDistanceBetweenPoints2D(posX, posY, x, y)
+			if (distance<=10) then
+				local dbid = getElementData(theColshape, "dbid")
+				outputChatBox("   Pay n Spray with ID " .. dbid .. ".", thePlayer, 255, 126, 0)
+				count = count + 1
 			end
 		end
 		
@@ -124,36 +115,24 @@ addCommandHandler("nearbypaynsprays", getNearbySprays, false, false)
 function delSpray(thePlayer, commandName)
 	if (exports.global:isPlayerLeadAdmin(thePlayer)) then
 		local colShape = nil
-			
-		for key, value in ipairs(exports.pool:getPoolElementsByType("colshape")) do
-			local shapeType = getElementData(value, "type")
-			if (shapeType) then
-				if (shapeType=="paynspray") then
-					if (isElementWithinColShape(thePlayer, value)) then
-						colShape = value
-					end
-				end
+		
+		for key, value in ipairs(getElementsByType("colshape", getResourceRootElement())) do
+			if (isElementWithinColShape(thePlayer, value)) then
+				colShape = value
 			end
 		end
 		
 		if (colShape) then
-			local shapeType = getElementData(colShape, "type")
-			if (shapeType) then
-				if (shapeType=="paynspray") then
-					local id = getElementData(colShape, "dbid")
-					local result = mysql_query(handler, "DELETE FROM paynspray WHERE id='" .. id .. "'")
-					
-					if (result) then
-						mysql_free_result(result)
-					end
-					
-					outputChatBox("Pay n Spray #" .. id .. " deleted.", thePlayer)
-					exports.irc:sendMessage(getPlayerName(thePlayer) .. " deleted Pay n Spray #" .. id .. ".")
-					destroyElement(colShape)
-				end
-			else
-				outputChatBox("You are not in a Pay n Spray.", thePlayer, 255, 0, 0)
+			local id = getElementData(colShape, "dbid")
+			local result = mysql_query(handler, "DELETE FROM paynspray WHERE id='" .. id .. "'")
+			
+			if (result) then
+				mysql_free_result(result)
 			end
+			
+			outputChatBox("Pay n Spray #" .. id .. " deleted.", thePlayer)
+			exports.irc:sendMessage(getPlayerName(thePlayer) .. " deleted Pay n Spray #" .. id .. ".")
+			destroyElement(colShape)
 		else
 			outputChatBox("You are not in a Pay n Spray.", thePlayer, 255, 0, 0)
 		end
@@ -163,34 +142,29 @@ addCommandHandler("delpaynspray", delSpray, false, false)
 
 function shapeHit(element, matchingDimension)
 	if (isElement(element)) and (getElementType(element)=="vehicle") and (matchingDimension) then
-		local shapetype = getElementData(source, "type")
-		if (shapetype) then
-			if (shapetype=="paynspray") then
-				local thePlayer = getVehicleOccupant(element)
-				
-                if (thePlayer) then
-                    local money = getElementData(thePlayer, "money")
-    				
-    				local faction = getPlayerTeam(thePlayer)
-    				local ftype = getElementData(faction, "type")
-                    local free = false
-                    if (ftype==2 or ftype==3 or ftype==4) then
-                        free = true
-                    end
-    				
-    				if (money<250 and not free) then
-    					outputChatBox("You cannot afford to have your car worked on.", thePlayer, 255, 0, 0)
-    				else
-    					outputChatBox("Welcome to Pay 'n' Spray. Please wait while we work on your " .. getVehicleName(element) .. ".", thePlayer, 255, 194, 14)
-    					setTimer(spraySoundEffect, 2000, 5, thePlayer, source)
-    					setTimer(sprayEffect, 10000, 1, element, thePlayer, source, free)
-    				end
-                end
+		local thePlayer = getVehicleOccupant(element)
+		
+		if (thePlayer) then
+			local money = getElementData(thePlayer, "money")
+			
+			local faction = getPlayerTeam(thePlayer)
+			local ftype = getElementData(faction, "type")
+			local free = false
+			if (ftype==2 or ftype==3 or ftype==4) then
+				free = true
+			end
+			
+			if (money<250 and not free) then
+				outputChatBox("You cannot afford to have your car worked on.", thePlayer, 255, 0, 0)
+			else
+				outputChatBox("Welcome to Pay 'n' Spray. Please wait while we work on your " .. getVehicleName(element) .. ".", thePlayer, 255, 194, 14)
+				setTimer(spraySoundEffect, 2000, 5, thePlayer, source)
+				setTimer(sprayEffect, 10000, 1, element, thePlayer, source, free)
 			end
 		end
 	end
 end
-addEventHandler("onColShapeHit", getRootElement(), shapeHit)
+addEventHandler("onColShapeHit", getResourceRootElement(), shapeHit)
 
 function spraySoundEffect(thePlayer, shape)
 	if (isElementWithinColShape(thePlayer, shape)) then
@@ -200,20 +174,16 @@ end
 
 function sprayEffect(vehicle, thePlayer, shape, free)
 	if (isElementWithinColShape(thePlayer, shape)) then
-		local faction = getPlayerTeam(thePlayer)
-		local ftype = getElementData(faction, "type")
 		outputChatBox(" ", thePlayer)
 		outputChatBox("Thank you for visting Pay 'n' Spray garage. Have a safe journey.", thePlayer, 255, 194, 14)
 		
-		if ((ftype~=2 and ftype~=3 and ftype~=4) and (not free)) then
+		if not free then
 			exports.global:takePlayerSafeMoney(thePlayer, 250)
 			outputChatBox("BILL: Car Repair - 250$", thePlayer, 255, 194, 14)
 		else
 			outputChatBox("BILL: Car Repair - 0$", thePlayer, 255, 194, 14)
 		end
-		
-		local id = getElementModel(vehicle)
-		
+
 		fixVehicle(vehicle)
 	else
 		outputChatBox("You forgot to wait for your repair!", thePlayer, 255, 0, 0)

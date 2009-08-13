@@ -63,41 +63,39 @@ end
 addCommandHandler("addobject", createNewObject, false, false)
 
 function loadAllObjects(res)
-	if (res==getThisResource()) then
-		local result = mysql_query(handler, "SELECT id, x, y, z, interior, dimension, rotation, modelid FROM objects")
-		local count = 0
-		
-		if (result) then
-			for result, row in mysql_rows(result) do
-				local id = tonumber(row[1])
-					
-				local x = tonumber(row[2])
-				local y = tonumber(row[3])
-				local z = tonumber(row[4])
-					
-				local interior = tonumber(row[5])
-				local dimension = tonumber(row[6])
+	local result = mysql_query(handler, "SELECT id, x, y, z, interior, dimension, rotation, modelid FROM objects")
+	local count = 0
+	
+	if (result) then
+		for result, row in mysql_rows(result) do
+			local id = tonumber(row[1])
 				
-				local rotation = tonumber(row[7])
-				local modelid = tonumber(row[8])
-					
-				local object = createObject(modelid, x, y, z, 0, 0, rotation)
+			local x = tonumber(row[2])
+			local y = tonumber(row[3])
+			local z = tonumber(row[4])
 				
-				if (object) then
-					exports.pool:allocateElement(object)
-					setElementInterior(object, interior)
-					setElementDimension(object, dimension)
-					setElementData(object, "dbid", id, false)
-						
-					count = count + 1
-				end
+			local interior = tonumber(row[5])
+			local dimension = tonumber(row[6])
+			
+			local rotation = tonumber(row[7])
+			local modelid = tonumber(row[8])
+				
+			local object = createObject(modelid, x, y, z, 0, 0, rotation)
+			
+			if (object) then
+				exports.pool:allocateElement(object)
+				setElementInterior(object, interior)
+				setElementDimension(object, dimension)
+				setElementData(object, "dbid", id, false)
+					
+				count = count + 1
 			end
-			mysql_free_result(result)
 		end
-		exports.irc:sendMessage("[SCRIPT] Loaded " .. count .. " Objects.")
+		mysql_free_result(result)
 	end
+	exports.irc:sendMessage("[SCRIPT] Loaded " .. count .. " Objects.")
 end
-addEventHandler("onResourceStart", getRootElement(), loadAllObjects)
+addEventHandler("onResourceStart", getResourceRootElement(), loadAllObjects)
 
 function getNearbyObjects(thePlayer, commandName)
 	if (exports.global:isPlayerAdmin(thePlayer)) then

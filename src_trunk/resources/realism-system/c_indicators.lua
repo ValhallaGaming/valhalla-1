@@ -1,10 +1,8 @@
-function bindKeys(res)
-	if (res==getThisResource()) then
-		bindKey("vehicle_look_left", "down", "indicator_left", "")
-		bindKey("vehicle_look_right", "down", "indicator_right", "")
-	end
+function bindKeys()
+	bindKey("vehicle_look_left", "down", "indicator_left", "")
+	bindKey("vehicle_look_right", "down", "indicator_right", "")
 end
-addEventHandler("onClientResourceStart", getRootElement(), bindKeys)
+addEventHandler("onClientResourceStart", getResourceRootElement(), bindKeys)
 
 leftTimer = nil
 rotation = 0

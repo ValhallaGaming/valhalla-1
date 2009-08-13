@@ -102,12 +102,10 @@ end
 addEvent("showFriendsList", true)
 addEventHandler("showFriendsList", getRootElement(), showFriendsUI)
 
-function unload(res)
-	if (res==getThisResource()) then
-		guiSetInputEnabled(false)
-	end
+function unload()
+	guiSetInputEnabled(false)
 end
-addEventHandler("onClientResourceStop", getRootElement(), unload)
+addEventHandler("onClientResourceStop", getResourceRootElement(), unload)
 
 function sendMessage()
 	local message = guiGetText(tMessage)

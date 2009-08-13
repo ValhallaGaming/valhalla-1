@@ -1,11 +1,9 @@
 tick = getTickCount()
 
-function statsStarted(res)
-	if (res==getThisResource()) then
-		exports.irc:sendMessage("[STATISTICS] Statistics Engine Started.")
-	end
+function statsStarted()
+	exports.irc:sendMessage("[STATISTICS] Statistics Engine Started.")
 end
-addEventHandler("onResourceStart", getRootElement(), statsStarted)
+addEventHandler("onResourceStart", getResourceRootElement(), statsStarted)
 
 -- /UPTIME
 function getUptime(thePlayer, commandName)

@@ -115,66 +115,64 @@ end
 addCommandHandler("clearnearbytag", clearNearbyTag, false, false)
 
 function loadAllTags(res)
-	if (res==getThisResource()) then
-		local result = mysql_query(handler, "SELECT id, x, y, z, interior, dimension, rx, ry, rz, modelid,yearday FROM tags")
-		local count = 0
-		
-		local time = getRealTime()
-		local yearday = time.yearday
-		
-		if (result) then
-			local highest = 0
-			for result, row in mysql_rows(result) do
-				local wyearday = tonumber(row[11])
-				local id = tonumber(row[1])
-					
-				local x = tonumber(row[2])
-				local y = tonumber(row[3])
-				local z = tonumber(row[4])
-					
-				local interior = tonumber(row[5])
-				local dimension = tonumber(row[6])
+	local result = mysql_query(handler, "SELECT id, x, y, z, interior, dimension, rx, ry, rz, modelid,yearday FROM tags")
+	local count = 0
+	
+	local time = getRealTime()
+	local yearday = time.yearday
+	
+	if (result) then
+		local highest = 0
+		for result, row in mysql_rows(result) do
+			local wyearday = tonumber(row[11])
+			local id = tonumber(row[1])
 				
-				local rx = tonumber(row[7])
-				local ry = tonumber(row[8])
-				local rz = tonumber(row[9])
-				local modelid = tonumber(row[10])
+			local x = tonumber(row[2])
+			local y = tonumber(row[3])
+			local z = tonumber(row[4])
+				
+			local interior = tonumber(row[5])
+			local dimension = tonumber(row[6])
+			
+			local rx = tonumber(row[7])
+			local ry = tonumber(row[8])
+			local rz = tonumber(row[9])
+			local modelid = tonumber(row[10])
 
-				if (yearday>(wyearday+2)) then -- EXPIRED
-					local query = mysql_query(handler, "DELETE FROM tags WHERE id='" .. id .. "'")
-					mysql_free_result(query)
-				elseif (wyearday>yearday) then -- NEW YEAR
-					local query = mysql_query(handler, "UPDATE tags SET yearday='" .. yearday .. "' WHERE id='" .. id .. "'")
-					mysql_free_result(query)
-					local object = createObject(modelid, x, y, z, rx, ry, rz)
-					exports.pool:allocateElement(object)
-					setElementInterior(object, interior)
-					setElementDimension(object, dimension)
-					setElementData(object, "dbid", id, false)
-					setElementData(object, "type", "tag")
-					count = count + 1
-					if id > highest then
-						highest = id
-					end
-				else
-					local object = createObject(modelid, x, y, z, rx, ry, rz)
-					exports.pool:allocateElement(object)
-					setElementInterior(object, interior)
-					setElementDimension(object, dimension)
-					setElementData(object, "dbid", id, false)
-					setElementData(object, "type", "tag")
-					count = count + 1
-					if id > highest then
-						highest = id
-					end
+			if (yearday>(wyearday+2)) then -- EXPIRED
+				local query = mysql_query(handler, "DELETE FROM tags WHERE id='" .. id .. "'")
+				mysql_free_result(query)
+			elseif (wyearday>yearday) then -- NEW YEAR
+				local query = mysql_query(handler, "UPDATE tags SET yearday='" .. yearday .. "' WHERE id='" .. id .. "'")
+				mysql_free_result(query)
+				local object = createObject(modelid, x, y, z, rx, ry, rz)
+				exports.pool:allocateElement(object)
+				setElementInterior(object, interior)
+				setElementDimension(object, dimension)
+				setElementData(object, "dbid", id, false)
+				setElementData(object, "type", "tag")
+				count = count + 1
+				if id > highest then
+					highest = id
+				end
+			else
+				local object = createObject(modelid, x, y, z, rx, ry, rz)
+				exports.pool:allocateElement(object)
+				setElementInterior(object, interior)
+				setElementDimension(object, dimension)
+				setElementData(object, "dbid", id, false)
+				setElementData(object, "type", "tag")
+				count = count + 1
+				if id > highest then
+					highest = id
 				end
 			end
-			-- update the auto increment with highest used tag id + 1
-			local query = mysql_query(handler, "ALTER TABLE `tags` AUTO_INCREMENT = " .. (highest + 1))
-			mysql_free_result(query)
-			mysql_free_result(result)
 		end
-		exports.irc:sendMessage("[SCRIPT] Loaded " .. count .. " Tags.")
+		-- update the auto increment with highest used tag id + 1
+		local query = mysql_query(handler, "ALTER TABLE `tags` AUTO_INCREMENT = " .. (highest + 1))
+		mysql_free_result(query)
+		mysql_free_result(result)
 	end
+	exports.irc:sendMessage("[SCRIPT] Loaded " .. count .. " Tags.")
 end
-addEventHandler("onResourceStart", getRootElement(), loadAllTags)
+addEventHandler("onResourceStart", getResourceRootElement(), loadAllTags)

@@ -654,7 +654,7 @@ end
 
 
 ---------------------- [ ACCOUNT SCRIPT ] ----------------------
-lLostSecurityKey, tLostSecurityKey, bForgot, chkRemember, chkAutoLogin, bLogin, lLogUsername, lLogUsernameNote, tLogUsername, tLogPassword, lLogPassword, tabPanelMain, tabLogin, tabRegister, tabForgot, lRegUsername, tRegUsername, lRegUsernameNote, lRegPassword, tRegPassword, lRegPassword2, tRegPassword2, bRegister = nil
+lLostSecurityKey, tLostSecurityKey, bForgot, chkRemember, chkAutoLogin, bLogin, lLogUsername, lLogUsernameNote, tLogUsername, tLogPassword, lLogPassword, tabPanelMain, tabLogin, tabRegister, tabForgot, lRegUsername, tRegUsername, lRegUsernameNote, lRegPassword, tRegPassword, lRegPassword2, tRegPassword2, bRegister, wDelConfirmation = nil
 -- increasing this will reshow the tos as updated
 tosversion = 100
 
@@ -1231,6 +1231,11 @@ function hideUI(regged)
 		destroyElement(bChangeAccount)
 		bChangeAccount = nil
 	end
+	
+	if wDelConfirmation then
+		destroyElement(wDelConfirmation)
+		wDelConfirmation = nil
+	end
 end
 addEvent("hideUI", true)
 addEventHandler("hideUI", getRootElement(), hideUI)
@@ -1478,10 +1483,29 @@ spawned = false
 
 function deleteSelectedCharacter(button, state)
 	if (button=="left") and (state=="up") and (source==bDeleteChar) then
-		if (selectedChar) then
+		if (selectedChar) and not wDelConfirmation then
 			local charname = tostring(guiGetText(paneChars[selectedChar][2]))
-			hideUI()
-			triggerServerEvent("deleteCharacter", getLocalPlayer(), charname)
+			local sx, sy = guiGetScreenSize() 
+			wDelConfirmation = guiCreateWindow(sx/2 - 125,sy/2 - 50,250,100,"Deletion Confirmation", false)
+			local lQuestion = guiCreateLabel(0.05,0.25,0.9,0.3,"Do you really want to delete the character "..charname.."?",true,wDelConfirmation)
+							  guiLabelSetHorizontalAlign (lQuestion,"center",true)
+			local bYes = guiCreateButton(0.1,0.65,0.37,0.23,"Yes",true,wDelConfirmation)
+			local bNo = guiCreateButton(0.53,0.65,0.37,0.23,"No",true,wDelConfirmation)
+			addEventHandler("onClientGUIClick", getRootElement(), 
+				function(button)
+					if (button=="left") then
+						if source == bYes then
+							hideUI()
+							triggerServerEvent("deleteCharacter", getLocalPlayer(), charname)
+						elseif source == bNo then
+							if wDelConfirmation then
+								destroyElement(wDelConfirmation)
+								wDelConfirmation = nil
+							end
+						end
+					end
+				end
+			)
 		end
 	end
 end

@@ -55,11 +55,14 @@ function resetWeaponTimer()
 end
 
 function checkWeapons()
-	for i = 0, 47 do
+	for i = 1, 47 do
 		local onslot = getSlotFromWeapon(i)
 		if getPedWeapon(localPlayer, onslot) == i then
 			local ammo = getElementData(localPlayer, "ACweapon" .. i) or 0
 			local totalAmmo = getPedTotalAmmo(localPlayer, onslot)
+			if totalAmmo >= 60000 and (i <= 15 or i >= 44) then -- fix for melee with 60k+ ammo
+				totalAmmo = 1
+			end
 			if totalAmmo > ammo then
 				strikes = strikes + 1
 				triggerServerEvent("notifyWeaponHacks", localPlayer, i, totalAmmo, ammo, strikes)

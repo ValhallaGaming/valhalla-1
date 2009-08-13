@@ -347,7 +347,6 @@ end
 addCommandHandler("phonebook", phoneBook)
 
 function saveCurrentRingtone(itemValue)
-	outputChatBox(tostring(itemValue), source)
 	if itemValue then
 		exports.global:takePlayerItem(source, 2, -1)
 		exports.global:givePlayerItem(source, 2, itemValue)

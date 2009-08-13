@@ -39,8 +39,8 @@ function onGuiClick(button)
 		elseif source == bCancel then
 			hidePhoneGUI()
 		elseif source == bOK then
-			if guiGridListGetSelectedItem(gRingtones) ~= -1 then	
-				outputChatBox(tostring(triggerServerEvent("saveRingtone", getLocalPlayer(), guiGridListGetSelectedItem(gRingtones))))
+			if guiGridListGetSelectedItem(gRingtones) ~= -1 then
+				triggerServerEvent("saveRingtone", getLocalPlayer(), guiGridListGetSelectedItem(gRingtones))
 			end
 			hidePhoneGUI()
 		end

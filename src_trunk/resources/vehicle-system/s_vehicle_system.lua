@@ -544,7 +544,11 @@ function vehicleRespawn(exploded)
 	local id = getElementData(source, "dbid")
 	local faction = getElementData(source, "faction")
 	local owner = getElementData(source, "owner")
-		
+	
+	if (owner>0) and (faction==-1) then -- an owned vehicle
+		setVehicleLocked(source, true)
+	end
+	
 	-- Set the vehicle armored if it is armored
 	local vehid = getElementModel(source)
 	if (armoredCars[tonumber(vehid)]) then

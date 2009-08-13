@@ -188,7 +188,8 @@ function moveItemToSafe(button, state)
 		end
 	end
 end
-function clickVehicle(button, state, absX, absY, wx, wy, wz, element)
+
+function clickSafe(button, state, absX, absY, wx, wy, wz, element)
 	if (element) and (getElementType(element)=="object") and (button=="right") and (state=="down") and not (wInventory) and getElementModel(element) == 2332 then
 		local x, y, z = getElementPosition(localPlayer)
 		
@@ -209,7 +210,7 @@ function clickVehicle(button, state, absX, absY, wx, wy, wz, element)
 		end
 	end
 end
-addEventHandler("onClientClick", getRootElement(), clickVehicle, true)
+addEventHandler("onClientClick", getRootElement(), clickSafe, true)
 
 function showSafeMenu()
 	wRightClick = guiCreateWindow(ax, ay, 150, 100, "Safe", false)

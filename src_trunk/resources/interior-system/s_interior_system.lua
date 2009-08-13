@@ -712,24 +712,12 @@ function buyInterior(player, pickup, cost, isHouse, isRentable)
 		if (isHouse) then
 			-- Achievement
 			exports.global:givePlayerAchievement(player, 9)
-			local blip = createBlip(x, y, z, 31, 2, 255, 0, 0, 255, 200)
-			exports.pool:allocateElement(blip)
-			setElementVisibleTo(blip, getRootElement(), false)
-			setElementVisibleTo(blip, player, true)
 			exports.global:givePlayerItem(player, 4, id)
 		elseif isRentable then
-			local blip = createBlip(x, y, z, 31, 2, 255, 0, 0, 255, 200)
-			exports.pool:allocateElement(blip)
-			setElementVisibleTo(blip, getRootElement(), false)
-			setElementVisibleTo(blip, player, true)
 			exports.global:givePlayerItem(player, 4, id)
 		else
 			-- Achievement
 			exports.global:givePlayerAchievement(player, 10)
-			local blip = createBlip(x, y, z, 32, 2, 255, 0, 0, 255, 200)
-			exports.pool:allocateElement(blip)
-			setElementVisibleTo(blip, getRootElement(), false)
-			setElementVisibleTo(blip, player, true)
 			exports.global:givePlayerItem(player, 5, id)
 		end
 		

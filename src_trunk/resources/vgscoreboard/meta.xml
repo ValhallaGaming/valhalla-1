@@ -1,12 +1,8 @@
 <meta>
 	<info author="jbeta" type="script" name="Scoreboard" showInResourceBrowser="true" version="1.0.0" />
 	<script src="scoreboard_exports.lua" type="server"/>
-	<script src="scoreboard_http.lua" type="server"/>
 	<script src="scoreboard_client.lua" type="client"/>
 
-	<html src="scoreboard.htm" default="true"/>
-	<html src="scoreboard.css" raw="true" />
-	<html src="scoreboard.js" raw="true" />
 
 	<export function="getScoreboardColumns" type="server" http="true" />
 	<export function="getScoreboardRows" type="server" http="true" />

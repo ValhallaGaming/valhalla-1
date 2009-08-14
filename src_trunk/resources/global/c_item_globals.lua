@@ -106,6 +106,7 @@ function cgetItemName(itemID)
 	elseif (itemID==58) then return "Ziebrand Beer"
 	elseif (itemID==59) then return "Mudkip"
 	elseif (itemID==60) then return "Safe"
+	elseif (itemID==61) then return "Emergency Light Becon"
 	else return false 
 	end
 end

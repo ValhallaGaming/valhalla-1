@@ -454,6 +454,8 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 			elseif (retval == 2) then
 				outputChatBox("You need to own the interior you are placing the safe in!", source, 255, 0, 0)
 			end
+		elseif (itemID==61) then -- Emergency Light Becon
+			outputChatBox("Put it in your car inventory and press 'P' to toggle it.", source, 255, 194, 14)
 		else
 			outputChatBox("Error 800001 - Report on http://bugs.valhallagaming.net", source, 255, 0, 0)
 		end

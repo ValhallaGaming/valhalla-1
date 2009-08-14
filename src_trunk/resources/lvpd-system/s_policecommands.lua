@@ -256,8 +256,6 @@ end
 addCommandHandler("ticket", ticketPlayer, false, false)
 
 function takeLicense(thePlayer, commandName, targetPartialNick, licenseType)
-
-	local username = getPlayerName(thePlayer)
 	local logged = getElementData(thePlayer, "loggedin")
 	
 	if (logged==1) then

@@ -960,6 +960,7 @@ function addSafeAtPosition( thePlayer, x, y, z, rotz )
 	end
 	return 2
 end
+
 function moveSafe ( thePlayer, commandName )
 	local x,y,z = getElementPosition( thePlayer )
 	local rotz = getPedRotation( thePlayer )
@@ -979,5 +980,11 @@ function moveSafe ( thePlayer, commandName )
 		end
 	end
 end
-
 addCommandHandler("movesafe", moveSafe)
+
+function removeAllKeysFromProperty(keyType, dbid)
+	local character = mysql_query(handler, "SELECT items, itemvalues FROM characters WHERE items LIKE '%,"..keyType..",%' and itemvalues LIKE '%,"..dbid..",%' or items LIKE '"..keyType..",%' and itemvalues LIKE '"..dbid..",%';")
+	local interior = mysql_query(handler, "SELECT items, items_values FROM interiors WHERE items LIKE '%,"..keyType..",%' and items_values LIKE '%,"..dbid..",%' or items LIKE '"..keyType..",%' and items_values LIKE '"..dbid..",%';")
+	local vehicle = mysql_query(handler, "SELECT items, itemvalues FROM vehicles WHERE items LIKE '%,"..keyType..",%' and itemvalues LIKE '%,"..dbid..",%' or items LIKE '"..keyType..",%' and itemvalues LIKE '"..dbid..",%';")
+	local worlditem = mysql_query(handler, "SELECT itemid, itemvalue, items, itemvalues FROM worlditems WHERE itemid = '"..keyType.."' and itemvalue = '"..dbid.."' or items LIKE '%,"..keyType..",%' and itemvalues LIKE '%,"..dbid..",%' or items LIKE '"..keyType..",%' and itemvalues LIKE '"..dbid..",%';")
+end

@@ -411,7 +411,7 @@ function startPhoneCall(thePlayer)
 							if(doneDeals >= 5) then
 								triggerClientEvent ( thePlayer, "outOfDeals", getRootElement() ) -- Trigger Client side function to create GUI.
 							else
-								triggerClientEvent ( thePlayer, "showPhoneConvo", getRootElement(), factionType ) -- Trigger Client side function to create GUI.
+								triggerClientEvent ( thePlayer, "showPhoneConvo", getRootElement() ) -- Trigger Client side function to create GUI.
 								addEventHandler ( "onPlayerQuit", thePlayer, endCall )
 							end
 						end
@@ -455,12 +455,13 @@ addEventHandler( "declineSteviePhoneDeal", getRootElement(), declineDeal_S )
 ------------------------------
 
 -- The item spawn locations. Stack the items 3 high to give 15 items in total.
-locations = { } 
-locations[1] = { 1610, 889.6044921875, 9.701148033142 } 
-locations[2] = { 1313.4462890625, 1144.5, 9.8203125 }
-locations[3] = { 1125, 1892.029296875, 9.8203125 }
-locations[4] = { 1628.8, 1033.72, 9.91 }
-locations[5] = { 1754.33, 682.533, 9.914 }
+locations = {
+	{ 1685.32, -2434.40, 12.54 },
+	{ 2076.93, -2046.77, 12.54 },
+	{ 1892.95, -2243.80, 12.54 },
+	{ 2160.79, -2180.71, 12.54 },
+	{ 1889.20, -2639.80, 12.54 }
+}
 
 function acceptDeal_S( dealNumber )
 	
@@ -491,17 +492,13 @@ function acceptDeal_S( dealNumber )
 		
 		local x, y, z = locations[doneDeals][1], locations[doneDeals][2], locations[doneDeals][3]
 		
-		stevieBlip = createBlip(x, y, z, 0, 2, 255, 127, 255)
+		triggerClientEvent(source, "addStevieBlip", source, x, y, z)
 		stevieMarker = createMarker(x, y, z, "cylinder", 2, 255, 127, 255, 150)
 		stevieCol = createColSphere(x, y, z, 2)
 			
-		exports.pool:allocateElement(stevieBlip)
 		exports.pool:allocateElement(stevieMarker)
 		exports.pool:allocateElement(stevieCol)
 			
-		setElementVisibleTo(stevieBlip, getRootElement(), false) -- everyone can see the marker. Only the caller sees the blip.
-		setElementVisibleTo(stevieBlip, source, true)
-		
 		setElementData(stevieCol, "dealNumber", dealNumber, false)
 		setElementData(source, "stevie.money", cost, false)
 	
@@ -520,35 +517,36 @@ end
 addEventHandler( "onPlayerQuit", getRootElement(), decreaseDeals_S )
 
 -- { isWeapon, item/weapon ID, Value/Ammo }
-deal1={}
-deal1[1] = { true, 23, 100 }	-- silenced pistol
-deal1[3] = { true, 25, 30 }		-- shotgun
-deal1[2] = { true, 28, 250 }	-- Uzi
-deal1[4] = { true, 32, 250 }	-- tec 9
-
-deal2={}
-deal2[1] = { false, 19, 1 }		-- MP3
-deal2[2] = { false, 54, 1 }		-- Ghettoblaster
-deal2[3] = { false, 6, 1 }		-- radio
-deal2[4] = { false, 2, 1 }		-- cellphone
-
-deal3={}
-deal3[1] = { true, 30, 500 }	-- AK47
-deal3[2] = { false, 29, 1 }		-- Door ram
-deal3[3] = { false, 6, 1 }		-- radio
-deal3[4] = { true, 34, 10 }		-- Sniper rifle
-deal3[5] = { true, 16, 6 }		-- grenade
-deal3[6] = { true, 39, 4 }		-- satchel
-deal3[7] = { false, 16, 287 }	-- uniform
-deal3[8] = { true, 29, 500 }	-- MP5
-deal3[9] = { true, 31, 400 }	-- M4
-deal3[10] = { true, 17, 6 }		-- teargas
-
-deal4={}
-deal4[1] = { false, 32, 1 }		-- Lysergic acid
-deal4[2] = { false, 33, 1 }		-- PCP
-deal4[3] = { false, 31, 1 }		-- Cocaine Alcaloid
-
+deals = { 
+	{ 
+		{ true, 23, 100 },	-- silenced pistol
+		{ true, 25, 30 },	-- shotgun
+		{ true, 28, 250 },	-- Uzi
+		{ true, 32, 250 },	-- tec 9
+	},
+	{
+		{ false, 19, 1 },	-- MP3
+		{ false, 54, 1 },	-- Ghettoblaster
+		{ false, 6, 1 },	-- radio
+		{ false, 2, 1 },	-- cellphone
+	},
+	{
+		{ true, 30, 500 },	-- AK47
+		{ false, 6, 1 },	-- radio
+		{ true, 34, 10 },	-- Sniper rifle
+		-- { true, 16, 6 },	-- grenade
+		-- { true, 39, 4 },	-- satchel
+		{ false, 16, 287 },	-- uniform
+		{ true, 29, 500 },	-- MP5
+		{ true, 31, 400 },	-- M4
+		{ true, 17, 6 }		-- teargas
+	},
+	{ 
+		{ false, 32, 1 },		-- Lysergic acid
+		{ false, 33, 1 },		-- PCP
+		{ false, 31, 1 },		-- Cocaine Alcaloid
+	}
+}
 
 function giveGoods(thePlayer)
 	local veh = getPedOccupiedVehicle(thePlayer)
@@ -558,53 +556,17 @@ function giveGoods(thePlayer)
 		
 		local deal = getElementData(source, "dealNumber")
 		
-		if(source==stevieCol)then
-			destroyElement(stevieBlip)
-			destroyElement(stevieMarker)
-			destroyElement(stevieCol)
-			stevieBlip = nil
-			stevieMarker = nil
-			stevieCol = nil
-		end
-		if(source==stevieCol2)then
-			destroyElement(stevieBlip2)
-			destroyElement(stevieMarker2)
-			destroyElement(stevieCol2)
-			stevieBlip2 = nil
-			stevieMarker2 = nil
-			stevieCol2 = nil
-		end
-		if(source==stevieCol3)then
-			destroyElement(stevieBlip3)
-			destroyElement(stevieMarker3)
-			destroyElement(stevieCol3)
-			stevieBlip3 = nil
-			stevieMarker3 = nil
-			stevieCol3 = nil
-		end
-		if(source==stevieCol4)then
-			destroyElement(stevieBlip4)
-			destroyElement(stevieMarker4)
-			destroyElement(stevieCol4)
-			stevieBlip4 = nil
-			stevieMarker4 = nil
-			stevieCol4 = nil
-		end
-		if(source==stevieCol5)then
-			destroyElement(stevieBlip5)
-			destroyElement(stevieMarker5)
-			destroyElement(stevieCol5)
-			stevieBlip5 = nil
-			stevieMarker5 = nil
-			stevieCol5 = nil
-		end
+		destroyElement(stevieCol)
+		stevieCol = nil
+		triggerClientEvent(thePlayer, "removeStevieBlip", thePlayer)
 		
 		-- give the player the items.
-		giveItemsTimer = setTimer(givePlayerStevieItems, 2000, 21, thePlayer, veh, deal)
+		giveItemsTimer = setTimer(givePlayerStevieItems, 2000, 20, thePlayer, veh, deal)
+		stopItemsTimer = setTimer(stopPlayerStevieItems, 21 * 2000, 1, thePlayer)
 		exports.global:sendLocalMeAction(thePlayer,"loads the car up with packages.")
 		outputChatBox("((Wait while the vehicle is loaded with the items.))", thePlayer)
 		local x,y,z = getElementPosition(veh)
-		collectionCol = createColSphere(x, y, z, 4)
+		collectionCol = createColSphere(x, y, z, 5)
 		removeElementData(thePlayer, "stevie.money")
 	end
 end
@@ -612,65 +574,51 @@ end
 function givePlayerStevieItems(thePlayer, veh, deal)
 	if not(isElementWithinColShape(veh, collectionCol)) then
 		outputChatBox("You didn't wait to load the vehicle!", thePlayer, 255, 0, 0)
-		if(giveItemsTimer)then
+		if giveItemsTimer then
 			killTimer(giveItemsTimer)
+			giveItemsTimer = nil
 		end
+		if stopItemsTimer then
+			killTimer(stopItemsTimer)
+			stopItemsTimer = nil
+		end
+		destroyElement(stevieMarker)
+		stevieMarker = nil
 	else
 		if not(exports.global:doesVehicleHaveSpaceForItem(veh))then
 			outputChatBox("The vehicle is full.", thePlayer, 255, 0, 0)
 			destroyElement(collectionCol)
 			collectionCol = nil
-			if(giveItemsTimer)then
+			if giveItemsTimer then
 				killTimer(giveItemsTimer)
+				giveItemsTimer = nil
 			end
+			if stopItemsTimer then
+				killTimer(stopItemsTimer)
+				stopItemsTimer = nil
+			end
+			destroyElement(stevieMarker)
+			stevieMarker = nil
 		else
-			if(deal==1)then
-				local rand = math.random(1,4) -- select a random item to give the player.
-				
-				local isWeapon = deal1[rand][1]
-				local itemID = deal1[rand][2]
-				local value = deal1[rand][3]
-				if(isWeapon==true)then
-					exports.global:giveVehicleItem(veh, 9000+itemID, value)
-				else
-					exports.global:giveVehicleItem(veh, itemID, value)
-				end
-			elseif(deal==2)then
-				local rand = math.random(1,4) -- select a random item to give the player.
-				
-				local isWeapon = deal2[rand][1]
-				local itemID = deal2[rand][2]
-				local value = deal2[rand][3]
-				if(isWeapon==true)then
-					exports.global:giveVehicleItem(veh, 9000+itemID, value)
-				else
-					exports.global:giveVehicleItem(veh, itemID, value)
-				end
-			elseif(deal==3)then
-				local rand = math.random(1,10) -- select a random item to give the player.
-				
-				local isWeapon = deal3[rand][1]
-				local itemID = deal3[rand][2]
-				local value = deal3[rand][3]
-				if(isWeapon==true)then
-					exports.global:giveVehicleItem(veh, 9000+itemID, value)
-				else
-					exports.global:giveVehicleItem(veh, itemID, value)
-				end
-			elseif(deal==4)then
-				local rand = math.random(1,3) -- select a random item to give the player.
-				
-				local isWeapon = deal4[rand][1]
-				local itemID = deal4[rand][2]
-				local value = deal4[rand][3]
-				if(isWeapon==true)then
-					exports.global:giveVehicleItem(veh, 9000+itemID, value)
-				else
-					exports.global:giveVehicleItem(veh, itemID, value)
-				end
+			local deal = deals[deal]
+			local rand = math.random(1,#deal) -- select a random item to give the player.
+			
+			local isWeapon = deal[rand][1]
+			local itemID = deal[rand][2]
+			local value = deal[rand][3]
+			if(isWeapon==true)then
+				exports.global:giveVehicleItem(veh, 9000+itemID, value)
+			else
+				exports.global:giveVehicleItem(veh, itemID, value)
 			end
 		end
 	end
+end
+
+function stopPlayerStevieItems(thePlayer)
+	outputChatBox("The vehicle is full.", thePlayer, 255, 0, 0)
+	destroyElement(stevieMarker)
+	stevieMarker = nil
 end
 
 ---------------------

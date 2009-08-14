@@ -40,7 +40,7 @@ function callSomeone(thePlayer, commandName, phoneNumber, ...)
 				if (calling) then -- Using phone already
 					outputChatBox("You are already using your phone.", thePlayer, 255, 0, 0)
 				else
-					exports.global:sendLocalMeAction(thePlayer, "takes out a cell phone.")
+					
 					if phoneNumber == "911" then
 						executeCommandHandler( "911", thePlayer, table.concat({...}, " ") )
 					elseif phoneNumber == "081016" then
@@ -48,6 +48,7 @@ function callSomeone(thePlayer, commandName, phoneNumber, ...)
 							outputChatBox("You get a dead tone...", thePlayer, 255, 194, 14)
 						end
 					else
+						exports.global:sendLocalMeAction(thePlayer, "takes out a cell phone.")
 						local found, foundElement, foundPhoneItemValue = false
 						
 						for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do

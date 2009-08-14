@@ -836,6 +836,8 @@ function call911(thePlayer, commandName, ...)
 		if not (...) then
 			outputChatBox("SYNTAX: /" .. commandName .. " [Description and Location of Situation]", thePlayer, 255, 194, 14)
 		else
+			exports.global:sendLocalMeAction(thePlayer, "takes out a cell phone.")
+			
 			local message = table.concat({...}, " ")
 			local theTeam = getTeamFromName("Los Santos Police Department")
 			local theTeamES = getTeamFromName("Los Santos Emergency Services")

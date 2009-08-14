@@ -267,7 +267,7 @@ end
 addEvent("outOfDeals", true)
 addEventHandler("outOfDeals",  getRootElement(), noDeal)
 
-function createPhoneConvo( factionType )
+function createPhoneConvo( )
 
 	-- Window variables
 	local Width = 400
@@ -286,7 +286,7 @@ function createPhoneConvo( factionType )
 			
 		-- Create options
 		poptionOne = guiCreateButton( 0.05, 0.45, 0.9, 0.2, "Accept the offer.", true, pwStevie )
-		addEventHandler( "onClientGUIClick", poptionOne, cacceptSteviePhoneDeal, false ) -- this button needs to pass factionType to be used in the "cacceptSteviePhoneDeal" function.
+		addEventHandler( "onClientGUIClick", poptionOne, cacceptSteviePhoneDeal, false )
 
 		poptionTwo = guiCreateButton( 0.05, 0.65, 0.9, 0.2, "Decline the offer.", true, pwStevie )
 		addEventHandler( "onClientGUIClick", poptionTwo, cdeclineSteviePhoneDeal, false )
@@ -331,7 +331,8 @@ end
 -- Accepting phone deal --
 --------------------------
 
-function cacceptSteviePhoneDeal( factionType )
+function cacceptSteviePhoneDeal( )
+	local factionType = getElementData(getPlayerTeam(getLocalPlayer()), "type")
 	
 	-- Create the window
 	destroyElement ( poptionOne )
@@ -459,3 +460,26 @@ function c_closePhoneGUI()
 end
 addEvent("closePhoneGUI")
 addEventHandler("closePhoneGUI", getRootElement(), c_closePhoneGUI )
+
+--------------------
+-- blip for deals --
+--------------------
+local stevieBlip = nil
+
+function addBlip(x, y, z)
+	removeBlip()
+	stevieBlip = createBlip(x, y, z, 0, 2, 255, 127, 255)
+end
+
+function removeBlip()
+	if stevieBlip then
+		destroyElement(stevieBlip)
+		stevieBlip = nil
+	end
+end
+
+addEvent("addStevieBlip", true)
+addEventHandler("addStevieBlip", getLocalPlayer(), addBlip)
+
+addEvent("removeStevieBlip", true)
+addEventHandler("removeStevieBlip", getLocalPlayer(), removeBlip)

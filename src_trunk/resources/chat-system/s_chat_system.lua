@@ -278,7 +278,6 @@ function departmentradio(thePlayer, commandName, ...)
 				
 				local PDFaction = getPlayersInTeam(getTeamFromName("Los Santos Police Department"))
 				local ESFaction = getPlayersInTeam(getTeamFromName("Los Santos Emergency Services"))
-				local FBIFaction = getPlayersInTeam(getTeamFromName("Federal Bureau of Investigation"))
 				local TowFaction = getPlayersInTeam(getTeamFromName("McJones Towing"))
 				local playerName = string.gsub(getPlayerName(thePlayer), "_", " ")
 				
@@ -290,10 +289,6 @@ function departmentradio(thePlayer, commandName, ...)
 					outputChatBox("[DEPARTMENT RADIO] " .. playerName .. " says: " .. message, value, 0, 102, 255)
 				end
 				
-				for key, value in ipairs(FBIFaction) do
-					outputChatBox("[DEPARTMENT RADIO] " .. playerName .. " says: " .. message, value, 0, 102, 255)
-				end
-
 				for key, value in ipairs(TowFaction) do
 					outputChatBox("[DEPARTMENT RADIO] " .. playerName .. " says: " .. message, value, 0, 102, 255)
 				end

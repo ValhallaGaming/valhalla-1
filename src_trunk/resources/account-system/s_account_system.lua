@@ -678,11 +678,11 @@ function loginPlayer(username, password, operatingsystem)
 			end
 			
 			if (banned==1) then
-				clearChatBox()
+				clearChatBox(source)
 				outputChatBox("You have been banned from this server by: " .. tostring(banned_by) .. ".", source, 255, 0, 0)
 				outputChatBox("Ban Reason: " .. tostring(banned_reason) .. ".", source, 255, 0, 0)
 				outputChatBox(" ", source)
-				outputChatBox("You can appeal against this ban on our forums at http://www.valhallagaming.net/forums")
+				outputChatBox("You can appeal against this ban on our forums at http://www.valhallagaming.net/forums", source)
 				setTimer(kickPlayer, 15000, 1, source, getRootElement(), "Account is banned")
 			else
 				setElementData(source, "gameaccountloggedin", 1, false)

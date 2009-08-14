@@ -12,9 +12,7 @@ function showReports(thePlayer)
 	if (exports.global:isPlayerAdmin(thePlayer)) then
 		outputChatBox("~~~~~~~~~ Reports ~~~~~~~~~", thePlayer, 255, 194, 15)
 		
-		local count = 0
-		for i = 1, 128 do
-			local report = reports[i]
+		for i, report in ipairs(reports) do
 			if report then
 				local reporter = report[1]
 				local reported = report[2]
@@ -29,11 +27,10 @@ function showReports(thePlayer)
 				end
 				
 				outputChatBox("Report #" .. i .. ": '" .. getPlayerName(reporter) .. "' reporting '" .. getPlayerName(reported) .. "' at " .. timestring .. ". Handler: " .. handler .. ".", thePlayer, 255, 195, 15)
-				count = count + 1
 			end
 		end
 		
-		if count == 0 then
+		if #reports == 0 then
 			outputChatBox("None.", thePlayer, 255, 194, 15)
 		else
 			outputChatBox("Type /reportinfo [id] to obtain more information about the report.", thePlayer, 255, 194, 15)
@@ -48,8 +45,7 @@ function reportInfo(thePlayer, commandName, id)
 			outputChatBox("SYNTAX: " .. commandName .. " [ID]", thePlayer, 255, 194, 15)
 		else
 			id = tonumber(id)
-			if (reports[id]~= nil) then
-				id = tonumber(id)
+			if reports[id] then
 				local reporter = reports[id][1]
 				local reported = reports[id][2]
 				local reason = reports[id][3]
@@ -95,11 +91,11 @@ function playerQuit()
 		local alertTimer = reports[report][6]
 		local timeoutTimer = reports[report][7]
 		
-		if (alertTimer~=nil) then
+		if isTimer(alertTimer) then
 			killTimer(alertTimer)
 		end
 		
-		if (timeoutTimer~=nil) then
+		if isTimer(timeoutTimer) then
 			killTimer(timeoutTimer)
 		end
 		
@@ -113,8 +109,9 @@ function handleReport(reportedPlayer, reportedReason)
 	local slot = nil
 	
 	for i = 1, 128 do -- Support 128 reports at any one time, since each player can only have one report
-		if (reports[i]==nil) and not (slot) then
+		if not reports[i] then
 			slot = i
+			break
 		end
 	end
 	
@@ -386,7 +383,7 @@ function closeReport(thePlayer, commandName, id)
 			id = tonumber(id)
 			if (reports[id]==nil) then
 				outputChatBox("Invalid Report ID.", thePlayer, 255, 0, 0)
-			else							
+			else
 				local reporter = reports[id][1]
 				
 				reports[id] = nil

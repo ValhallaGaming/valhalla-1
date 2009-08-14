@@ -211,8 +211,8 @@ end
 
 function checkWaitAtStop(thePlayer)
 	if thePlayer == getLocalPlayer() then
-		outputChatBox("You didn't wait at the bus stop.", 255, 0, 0)
 		if busStopTimer then
+			outputChatBox("You didn't wait at the bus stop.", 255, 0, 0)
 			killTimer(busStopTimer)
 			busStopTimer = nil
 		end

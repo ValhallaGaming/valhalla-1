@@ -72,6 +72,13 @@ function savePlayer(reason, player)
 		cuffed = getElementData(source, "restrain")
 		skin = getElementModel(source)
 		
+		-- Fix for #0000984
+		local businessprofit = tonumber(getElementData(source, "businessprofit"))
+		if (businessprofit) then
+			money = money + businessprofit
+		end
+		
+		
 		muted = getElementData(source, "muted")
 		hiddenAdmin = getElementData(source, "hiddenadmin")
 		pmblocked = getElementData(source, "pmblocked")

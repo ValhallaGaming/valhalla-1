@@ -121,10 +121,10 @@ function applyMods()
 	tag6 = engineLoadTXD ( "tags/tags_latemple.txd" ) -- Pomerelle St. Vice Lords
 	engineImportTXD ( tag6, 1529 )
 
-	-- tag7 = engineLoadTXD ( "tags/tags_laazteca.txd" )
+	-- tag7 = engineLoadTXD ( "tags/tags_lavagos.txd" )
 	-- engineImportTXD ( tag7, 1530 )
 
-	-- tag8 = engineLoadTXD ( "tags/tags_lavagos.txd" )
-	-- engineImportTXD ( tag8, 1531 )
+	tag8 = engineLoadTXD ( "tags/tags_laazteca.txd" )
+	engineImportTXD ( tag8, 1531 )
 end
 addEventHandler("onClientResourceStart", getResourceRootElement(), applyMods)

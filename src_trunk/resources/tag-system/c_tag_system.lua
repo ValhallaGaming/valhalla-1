@@ -114,6 +114,8 @@ function setTag(commandName, newTag)
 				outputChatBox("You are not a member of the Grove Street OGs.", 255, 0, 0)
 			elseif (teamName~="Blood State Villains") and (newTag==6) then -- Blood State Villains
 				outputChatBox("You are not a member of the Blood State Villains.", 255, 0, 0)
+			elseif (teamName~="Los Malvados") and (newTag==8) then -- Los Malvados
+				outputChatBox("You are not a member of Los Malvados.", 255, 0, 0)
 			else
 				setElementData(getLocalPlayer(), "tag", newTag, true)
 				outputChatBox("Tag changed to #" .. newTag .. ".", 0, 255, 0)

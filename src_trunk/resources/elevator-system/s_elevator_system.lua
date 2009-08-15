@@ -170,11 +170,13 @@ end
 
 
 function isInteriorLocked(dimension)
-	local result = mysql_query(handler, "SELECT 1 FROM `interiors` WHERE (type = 2 OR locked = 0) AND id = " .. dimension)
-	local locked = true
+	local result = mysql_query(handler, "SELECT type, locked FROM `interiors` WHERE id = " .. dimension)
+	local locked = false
 	if result then
 		if mysql_num_rows(result) > 0 then
-			locked = false
+			if tonumber(mysql_result(result, 1, 1)) ~= 2 and tonumber(mysql_result(result, 1, 2)) == 1 then 
+				locked = true
+			end
 		end
 		mysql_free_result(result)
 	end
@@ -183,7 +185,7 @@ end
 
 
 function enterElevator(player, pickup)
-	if isInPickup ( player, pickup ) and not getElementData(player, "UsedElevator") then
+	if isInPickup ( player, pickup ) and not getElementData(player, "UsedElevator") and not getPedOccupiedVehicle( player ) then
 		local other = getElementData( pickup, "other" )
 		
 		local x, y, z = getElementPosition( other )
@@ -198,7 +200,7 @@ function enterElevator(player, pickup)
 			locked = isInteriorLocked(dimension)
 		elseif ldimension ~= 0 and dimension == 0 then -- leaving a house
 			locked = isInteriorLocked(ldimension)
-		elseif ldimension ~= 0 and dimension ~= 0 then -- changing between two houses
+		elseif ldimension ~= 0 and dimension ~= 0 and ldimension ~= dimension then -- changing between two houses
 			locked = isInteriorLocked(ldimension) or isInteriorLocked(dimension)
 		else -- outside
 			locked = false
@@ -219,26 +221,25 @@ function enterElevator(player, pickup)
 			setElementData(player,"IsInCustomInterior", 1, false)
 		end
 
-		if interior == 3 or interior == 4 then
-			triggerClientEvent(player, "usedElevator", player)
-			setPedFrozen(player, true)
-			setPedGravity(player, 0)
-		end
-
 		-- fade camera to black
 		fadeCamera ( player, false, 1,0,0,0 )
-		setPedFrozen( player, true )
 		
 		-- teleport the player during the black fade
 		setTimer(function()
-			setElementInterior(player, interior, x, y, z)
+			setElementPosition(player, x, y, z)
+			setElementInterior(player, interior)
 			setCameraInterior(player, interior)
 			setElementDimension(player, dimension)
 		
 			-- fade camera in
 			setTimer(fadeCamera, 1000, 1 , player , true, 2)
-			setTimer(setPedFrozen, 2000, 1, player, false)
-	
+			
+			if interior == 3 or interior == 4 then
+				triggerClientEvent(player, "usedElevator", player)
+				setPedFrozen(player, true)
+				setPedGravity(player, 0)
+			end
+
 			resetPlayerData(player)
 		end, 1000, 1)
 		

@@ -20,7 +20,7 @@ function showLaser()
 							cz = ez
 						end
 						
-						dxDrawLine3D(sx, sy, sz-0.1, cx, cy, cz, tocolor(255,0,0,75), 2, false, 0)
+						dxDrawLine3D(sx, sy, sz-0.05, cx, cy, cz, tocolor(255,0,0,75), 2, false, 0)
 					end
 				end
 			end

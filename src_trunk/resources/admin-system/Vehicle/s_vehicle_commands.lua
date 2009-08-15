@@ -59,6 +59,7 @@ function createTempVehicle(thePlayer, commandName, ...)
 					vehicleID = getVehicleModelFromName(table.concat(args, " ", 1, vehicleEnd))
 					vehicleEnd = vehicleEnd - 1
 				until vehicleID or vehicleEnd == -1
+				outputDebugString("vehicleEnd = "..tostring(vehicleEnd).." #args = "..tostring(#args))
 				if vehicleEnd == -1 then
 					outputChatBox("Invalid Vehicle Name.", thePlayer, 255, 0, 0)
 					return

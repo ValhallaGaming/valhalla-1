@@ -211,8 +211,7 @@ function getItemDescription(itemID)
 	elseif (itemID==58) then return "The finest beer, imported from Holland."
 	elseif (itemID==59) then return "So i herd u liek mudkips? Mabako's Favorite."
 	elseif (itemID==60) then return "A safe to store your items in."
-	elseif (itemID==61) then return "A Emergency Light Becon which you can put on you car."
-	else return false
+	else return false 
 	end
 end
 
@@ -345,8 +344,6 @@ function getItemType(itemID)
 		return 1
 	elseif (itemID==60) then -- SAFE
 		return 4
-	elseif (itemID==61) then -- Emergency Light Becon
-		return 7
 	else
 		return false
 	end

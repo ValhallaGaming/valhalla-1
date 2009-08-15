@@ -69,6 +69,14 @@ function acceptJob(button, state)
 			local job = 0
 			local jobtext = guiGridListGetItemText(jobList, guiGridListGetSelectedItem(jobList), 1)
 			
+			if ( jobtext=="Delivery Driver" or jobtext=="Taxi Driver" or jobtext=="Bus Driver" ) then  -- Driving job, requires the license
+				local carlicense = getElementData(getLocalPlayer(), "license.car")
+				if (carlicense==0) then
+					outputChatBox("You require a drivers license to do this job.", 255, 0, 0)
+					return
+				end
+			end
+			
 			if (jobtext=="Delivery Driver") then
 				displayTruckerJob()
 				job = 1

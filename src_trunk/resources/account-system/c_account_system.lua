@@ -155,11 +155,11 @@ function showTutorial()
 		
 	-- if the player hasn't got an element data, set it to 1
 	if not (getElementData(thePlayer, "tutorialStage")) then
-		setElementData(thePlayer, "tutorialStage", 0)
+		setElementData(thePlayer, "tutorialStage", 0, false)
 	end
 	
 	-- ionc
-	setElementData(thePlayer, "tutorialStage", getElementData(thePlayer, "tutorialStage")+1)
+	setElementData(thePlayer, "tutorialStage", getElementData(thePlayer, "tutorialStage")+1, false)
 
 	
 	-- stop the player from using any controls to move around or chat
@@ -208,7 +208,7 @@ function showTutorial()
 						-- show the quiz after a certain time
 						endTutorial()
 						
-						setElementData ( thePlayer, "tutorialStage", 0 )
+						setElementData ( thePlayer, "tutorialStage", 0, false )
 						
 					end, fadeTime+fadeDelay,1 )
 				else -- else more stages to go, show the next stage
@@ -3560,7 +3560,7 @@ function updateTimeInServer()
 	if (logged==1) then
 		local timeinserver = getElementData(getLocalPlayer(), "timeinserver")
 		timeinserver = timeinserver + 1
-		setElementData(getLocalPlayer(), "timeinserver", true, timeinserver)
+		setElementData(getLocalPlayer(), "timeinserver", timeinserver, true)
 	end
 end
 setTimer(updateTimeInServer, 60000, 0)

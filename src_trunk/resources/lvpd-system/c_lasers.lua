@@ -43,16 +43,16 @@ function showLaser()
 end
 addEventHandler("onClientRender", getRootElement(), showLaser)
 
-setElementData(getLocalPlayer(), "laser", true, 1)
+setElementData(getLocalPlayer(), "laser", 1, false)
 
 function toggleLaser()
 	local laser = getElementData(getLocalPlayer(), "laser")
 	
 	if (laser==0) then
-		setElementData(getLocalPlayer(), "laser", true, 1)
+		setElementData(getLocalPlayer(), "laser", 1, false)
 		outputChatBox("Your weapon laser is now ON.", 0, 255, 0)
 	else
-		setElementData(getLocalPlayer(), "laser", true, 0)
+		setElementData(getLocalPlayer(), "laser", 0, false)
 		outputChatBox("Your weapon laser is now OFF.", 255, 0, 0)
 	end
 end

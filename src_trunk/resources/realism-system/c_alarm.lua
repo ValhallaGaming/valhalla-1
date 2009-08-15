@@ -3,7 +3,7 @@ local localPlayer = getLocalPlayer()
 local alarmtable = { [1] = {}, [2] = {} }
 function resStart()
 	for key, value in ipairs(getElementsByType("vehicle")) do
-		setElementData(value, "alarm", nil)
+		setElementData(value, "alarm", nil, false)
 	end
 end
 addEventHandler("onClientResourceStart", getResourceRootElement(), resStart)
@@ -30,7 +30,7 @@ function carAlarm()
 	local alarm = getElementData(source, "alarm")
 	if not alarm then
 		alarmtable[1][source] = setTimer(doCarAlarm, 1000, 20, source)
-		setElementData(source, "alarm", 1)
+		setElementData(source, "alarm", 1, false)
 		alarmtable[2][source] = setTimer(resetAlarm, 11000, 1, source)
 	end
 end
@@ -45,13 +45,13 @@ end
 addEventHandler("onClientVehicleStartEnter", getRootElement(), updateCar)
 
 function resetAlarm(vehicle)
-	setElementData(vehicle, "alarm", nil)
+	setElementData(vehicle, "alarm", nil, false)
 end
 
 function doCarAlarm(vehicle)
 	if isElement(vehicle) then
 		if (isVehicleLocked(vehicle) == false) then
-			setElementData(vehicle, "alarm", nil)
+			setElementData(vehicle, "alarm", nil, false)
 			killTimer(alarmtable[1][vehicle])
 			killTimer(alarmtable[2][vehicle])
 			alarmtable[2][vehicle] = nil

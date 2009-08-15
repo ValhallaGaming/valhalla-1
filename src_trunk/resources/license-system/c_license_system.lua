@@ -525,13 +525,13 @@ function startDrivingTest()
 		triggerServerEvent("payFee", getLocalPlayer(), 100)
 		
 		local vehicle = getPedOccupiedVehicle ( getLocalPlayer() )
-		setElementData(getLocalPlayer(), "drivingTest.marker", "1")
+		setElementData(getLocalPlayer(), "drivingTest.marker", "1", false)
 
 		local x1,y1,z1 = nil -- Setup the first checkpoint
 		x1 = testRoute[2][1]
 		y1 = testRoute[2][2]
 		z1 = testRoute[2][3]
-		setElementData(getLocalPlayer(), "drivingTest.checkmarkers", 23)
+		setElementData(getLocalPlayer(), "drivingTest.checkmarkers", 23, false)
 
 		blip = createBlip(x1, y1 , z1, 0, 2, 255, 0, 255, 255)
 		marker = createMarker( x1, y1,z1 , "checkpoint", 4, 255, 0, 255, 150)
@@ -562,7 +562,7 @@ function UpdateCheckpoints(element)
     			outputChatBox("#FF9933Pull over at the #FF66CCside of the road #FF9933ahead to complete the test.", 255, 194, 14, true)
     			
     			local newnumber = m_number+1
-    			setElementData(getLocalPlayer(), "drivingTest.marker", newnumber)
+    			setElementData(getLocalPlayer(), "drivingTest.marker", newnumber, false)
     				
     			local x2, y2, z2 = nil
     			x2 = testRoute[newnumber][1]
@@ -578,7 +578,7 @@ function UpdateCheckpoints(element)
     		else
     		
     			local newnumber = m_number+1
-    			setElementData(getLocalPlayer(), "drivingTest.marker", newnumber)
+    			setElementData(getLocalPlayer(), "drivingTest.marker", newnumber, false)
     					
     			local x2, y2, z2 = nil
     			x2 = testRoute[newnumber][1]

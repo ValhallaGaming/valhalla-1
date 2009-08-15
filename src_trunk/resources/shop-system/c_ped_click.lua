@@ -2,8 +2,8 @@ local messages = { "F*** off, Punk!", "You're not welcome.", "I'm not selling yo
 
 function pedDamage()
 	if getElementData(source,"shopkeeper") then
-		setElementData(source,"ignores",false,true)
-		setTimer(setElementData,300000,1,source,"ignores",false,nil)
+		setElementData(source,"ignores", true, false)
+		setTimer(setElementData,300000,1,source,"ignores", nil, true)
 		cancelEvent()
 	end
 end

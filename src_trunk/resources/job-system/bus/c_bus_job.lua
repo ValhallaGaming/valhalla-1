@@ -97,8 +97,8 @@ function startBusJob()
 				busMarker = createMarker(x, y, z, "checkpoint", 4, 255, 200, 0, 150) -- start marker.
 				addEventHandler("onClientMarkerHit", busMarker, updateBusCheckpoint)
 				
-				setElementData(getLocalPlayer(), "busRoute.marker", 1)
-				setElementData(getLocalPlayer(), "busRoute.totalmarkers", #busRoute)
+				setElementData(getLocalPlayer(), "busRoute.marker", 1, false)
+				setElementData(getLocalPlayer(), "busRoute.totalmarkers", #busRoute, false)
 				
 				outputChatBox("#FF9933Drive around the bus #FFCC00route #FF9933stopping at the #A00101stops #FF9933along the way.", 255, 194, 14, true)
 				outputChatBox("#FF9933You will be paid for each stop you make and for people you pick up.", 255, 194, 14, true)
@@ -186,7 +186,7 @@ function updateBusCheckpoint(thePlayer)
 					busNextBlip = createBlip( nx, ny, nz, 0, 1.5, 255, 200, 0, 255) -- small yellow blip
 				end
 				
-				setElementData(getLocalPlayer(), "busRoute.marker", newnumber)
+				setElementData(getLocalPlayer(), "busRoute.marker", newnumber, false)
 				
 				addEventHandler("onClientMarkerHit", busMarker, updateBusCheckpoint)
 			end
@@ -195,7 +195,7 @@ function updateBusCheckpoint(thePlayer)
 				setMarkerIcon(busNextMarker, "finish")
 			end
 			
-			setElementData(getLocalPlayer(), "busRoute.marker", newnumber)
+			setElementData(getLocalPlayer(), "busRoute.marker", newnumber, false)
 			
 		end
 	end

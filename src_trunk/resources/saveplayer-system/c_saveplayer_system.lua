@@ -22,8 +22,8 @@ function saveGuns()
 				end
 			end
 		end
-		setElementData(getLocalPlayer(), "weapons", weaponstring)
-		setElementData(getLocalPlayer(), "ammo", ammostring)
+		setElementData(getLocalPlayer(), "weapons", weaponstring, true)
+		setElementData(getLocalPlayer(), "ammo", ammostring, true)
 	end
 end
 addEvent("saveGuns", true)

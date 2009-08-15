@@ -2,6 +2,7 @@ cooldown = 0
 cooldownTimer = nil
 localPlayer = getLocalPlayer()
 
+
 function isLSPD()
 	return getTeamName(getPlayerTeam(getLocalPlayer())) == "Los Santos Police Department"
 end
@@ -10,13 +11,13 @@ function switchMode()
 	if (getPedWeapon(localPlayer)==24) and (getPedTotalAmmo(localPlayer)>0) then -- has an un-empty deagle
 		local mode = getElementData(localPlayer, "deaglemode")
 		if mode == 0 then -- tazer mode
-			setElementData(localPlayer, "deaglemode", 1)
+			setElementData(localPlayer, "deaglemode", 1, false)
 			triggerServerEvent("sendLocalMeAction", localPlayer, localPlayer, "switched their multipurpose handgun to Lethal mode.")
 		elseif mode == 1 and isLSPD() then -- lethal mode
-			setElementData(localPlayer, "deaglemode", 2)
+			setElementData(localPlayer, "deaglemode", 2, false)
 			triggerServerEvent("sendLocalMeAction", localPlayer, localPlayer, "switched their multipurpose handgun to Radar Gun mode.")
 		elseif mode == 2 or mode == 1 then -- radar gun mode
-			setElementData(localPlayer, "deaglemode", 0)
+			setElementData(localPlayer, "deaglemode", 0, false)
 			triggerServerEvent("sendLocalMeAction", localPlayer, localPlayer, "switched their multipurpose handgun to Tazer mode.")
 		end
 	end
@@ -24,6 +25,9 @@ end
 
 function bindKeys(res)
 	bindKey("n", "down", switchMode)
+	
+	local mode = getElementData(localPlayer, "deaglemode")
+	if not (mode) then setElementDAta(localPlayer, "deaglemode", 0, false)
 end
 addEventHandler("onClientResourceStart", getResourceRootElement(), bindKeys)
 

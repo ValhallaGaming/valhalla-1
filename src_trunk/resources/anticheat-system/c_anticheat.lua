@@ -68,10 +68,10 @@ function checkWeapons()
 				triggerServerEvent("notifyWeaponHacks", localPlayer, i, totalAmmo, ammo, strikes)
 			elseif totalAmmo < ammo then
 				-- update the new ammo count
-				setElementData(localPlayer, "ACweapon" .. i, false, totalAmmo)
+				setElementData(localPlayer, "ACweapon" .. i, totalAmmo, false)
 			end
 		else -- weapon on that slot, but not the current one
-			setElementData(localPlayer, "ACweapon" .. i, false, nil)
+			setElementData(localPlayer, "ACweapon" .. i, nil, false)
 		end
 	end
 end
@@ -79,14 +79,14 @@ addCommandHandler("fwc", checkWeapons)
 
 function giveSafeWeapon(weapon, ammo)
 	resetWeaponTimer()
-	setElementData(localPlayer, "ACweapon" .. weapon, false, (getElementData(localPlayer, "ACweapon" .. weapon) or 0) + ammo)
+	setElementData(localPlayer, "ACweapon" .. weapon, (getElementData(localPlayer, "ACweapon" .. weapon) or 0) + ammo, false)
 end
 addEvent("giveSafeWeapon", true)
 addEventHandler("giveSafeWeapon", getLocalPlayer(), giveSafeWeapon)
 
 function setSafeWeaponAmmo(weapon, ammo)
 	resetWeaponTimer()
-	setElementData(localPlayer, "ACweapon" .. weapon, false, ammo)
+	setElementData(localPlayer, "ACweapon" .. weapon, ammo, false)
 end
 addEvent("setSafeWeaponAmmo", true)
 addEventHandler("setSafeWeaponAmmo", getLocalPlayer(), setSafeWeaponAmmo)
@@ -94,7 +94,7 @@ addEventHandler("setSafeWeaponAmmo", getLocalPlayer(), setSafeWeaponAmmo)
 function takeAllWeaponsSafe()
 	resetWeaponTimer()
 	for weapon = 0, 47 do
-		setElementData(localPlayer, "ACweapon" .. weapon, false, nil)
+		setElementData(localPlayer, "ACweapon" .. weapon, nil, false)
 	end
 end
 addEvent("takeAllWeaponsSafe", true)
@@ -102,7 +102,7 @@ addEventHandler("takeAllWeaponsSafe", getLocalPlayer(), takeAllWeaponsSafe)
 
 function takeWeaponSafe(weapon)
 	resetWeaponTimer()
-	setElementData(localPlayer, "ACweapon" .. weapon, false, nil)
+	setElementData(localPlayer, "ACweapon" .. weapon, nil, false)
 end
 addEvent("takeWeaponSafe", true)
 addEventHandler("takeWeaponSafe", getLocalPlayer(), takeWeaponSafe)
@@ -110,6 +110,6 @@ addEventHandler("takeWeaponSafe", getLocalPlayer(), takeWeaponSafe)
 addEventHandler("onClientResourceStart", getResourceRootElement(), resetWeaponTimer)
 
 function updateWeaponOnFire(weapon, ammo)
-	setElementData(localPlayer, "ACweapon" .. weapon, false, (getElementData(localPlayer, "ACweapon" .. weapon) or 0) - 1)
+	setElementData(localPlayer, "ACweapon" .. weapon, (getElementData(localPlayer, "ACweapon" .. weapon) or 0) - 1, false)
 end
 addEventHandler("onClientPlayerWeaponFire", localPlayer, updateWeaponOnFire)

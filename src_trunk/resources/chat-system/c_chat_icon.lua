@@ -2,13 +2,13 @@ function checkForChat()
 	local chatting = getElementData(getLocalPlayer(), "chatting")
 	
 	if (isChatBoxInputActive() and chatting==0) then
-		setElementData(getLocalPlayer(), "chatting", true, 1)
+		setElementData(getLocalPlayer(), "chatting", 1, true)
 	elseif (not isChatBoxInputActive() and chatting==1) then
-		setElementData(getLocalPlayer(), "chatting", true, 0)
+		setElementData(getLocalPlayer(), "chatting", 0, true)
 	end
 end
 setTimer(checkForChat, 50, 0)
-setElementData(getLocalPlayer(), "chatting", true, 0)
+setElementData(getLocalPlayer(), "chatting", 0, true)
 
 function render()
 	local x, y, z = getElementPosition(getLocalPlayer())

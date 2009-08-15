@@ -543,7 +543,7 @@ function hideFactionMenu()
 	end
 	
 	gFactionWindow, gMemberGrid = nil
-	setElementData(getLocalPlayer(), "factionMenu", 0)
+	setElementData(getLocalPlayer(), "factionMenu", 0, true)
 	
 	if (wInvite) then
 		destroyElement(wInvite)

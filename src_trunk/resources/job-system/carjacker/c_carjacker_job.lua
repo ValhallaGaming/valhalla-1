@@ -25,7 +25,7 @@ function createHunterMarkers()
 	local modelID = math.random(1, 10) -- random vehicle ID from the list above.
 	local vehicleID = vehicles[modelID][1]
 	local vehicleName = getVehicleNameFromModel (vehicleID)
-	setElementData(source, "missionModel", vehicleID) -- set the players element data to the car requested car model.
+	setElementData(source, "missionModel", vehicleID, true) -- set the players element data to the car requested car model.
 	local rand = math.random(1, 5) -- random car part from the list above.
 	local carPart = parts[rand][1]
 	

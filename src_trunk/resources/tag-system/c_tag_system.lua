@@ -115,7 +115,7 @@ function setTag(commandName, newTag)
 			elseif (teamName~="Blood State Villains") and (newTag==6) then -- Blood State Villains
 				outputChatBox("You are not a member of the Blood State Villains.", 255, 0, 0)
 			else
-				setElementData(getLocalPlayer(), "tag", true, newTag)
+				setElementData(getLocalPlayer(), "tag", newTag, true)
 				outputChatBox("Tag changed to #" .. newTag .. ".", 0, 255, 0)
 			end
 		else

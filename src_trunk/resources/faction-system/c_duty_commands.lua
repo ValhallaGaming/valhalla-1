@@ -7,7 +7,7 @@ local function saveGuns()
 			weapons[weapon] = ammo
 		end
 	end
-	setElementData(getLocalPlayer(),"dutyguns",weapons)
+	setElementData(getLocalPlayer(),"dutyguns",weapons,true)
 end
 
 addEvent("saveGunsDuty", true)

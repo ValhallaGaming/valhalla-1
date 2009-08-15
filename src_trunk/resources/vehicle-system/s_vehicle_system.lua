@@ -233,6 +233,12 @@ function createCivilianPermVehicle(thePlayer, commandName, ...)
 				exports.pool:allocateElement(veh)
 				setElementData(veh, "fuel", 100)
 					
+				if (job>0) then
+					toggleVehicleRespawn(veh, true)
+					setVehicleRespawnDelay(veh, 60000)
+					setVehicleIdleRespawnDelay(veh, 180000)
+				end
+					
 				local rx, ry, rz = getVehicleRotation(veh)
 				setVehicleRespawnPosition(veh, x, y, z, rx, ry, rz)
 				setVehicleLocked(veh, false)
@@ -384,7 +390,7 @@ function loadAllVehicles(res)
 				locked = 0
 			end
 			
-			local job = mysql_result(resultext, rowc, 30)
+			local job = tonumber(mysql_result(resultext, rowc, 30))
 			
 			-- Spawn the vehicle
 			local veh = createVehicle(vehid, x, y, z, rx, ry, rz, plate)
@@ -458,6 +464,12 @@ function loadAllVehicles(res)
 				setVehicleSirensOn(veh, true)
 			else
 				setVehicleSirensOn(veh, false)
+			end
+			
+			if (job>0) then
+				toggleVehicleRespawn(veh, true)
+				setVehicleRespawnDelay(veh, 60000)
+				setVehicleIdleRespawnDelay(veh, 180000)
 			end
 			
 			-- Set the vehicles color
@@ -536,17 +548,28 @@ end
 addEventHandler("onResourceStart", getResourceRootElement(), loadAllVehicles)
 
 function vehicleExploded()
-	setTimer(respawnVehicle, 60000, 1, source)
+	local job = getElementData(source, "job")
+	
+	if not job or job<=0 then
+		setTimer(respawnVehicle, 60000, 1, source)
+	end
 end
 addEventHandler("onVehicleExplode", getRootElement(), vehicleExploded)
 
 function vehicleRespawn(exploded)
 	local id = getElementData(source, "dbid")
 	local faction = getElementData(source, "faction")
+	local job = getElementData(source, "job")
 	local owner = getElementData(source, "owner")
 	
 	if (owner>0) and (faction==-1) then -- an owned vehicle
 		setVehicleLocked(source, true)
+	end
+	
+	if (job>0) then
+		toggleVehicleRespawn(source, true)
+		setVehicleRespawnDelay(source, 60000)
+		setVehicleIdleRespawnDelay(source, 180000)
 	end
 	
 	-- Set the vehicle armored if it is armored

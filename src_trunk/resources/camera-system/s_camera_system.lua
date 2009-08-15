@@ -68,8 +68,6 @@ function sendWarningToCops(vehicle, player, colshape, x, y, z, speed)
 		local dx = nx - x
 		local dy = ny - y
 		
-		outputChatBox(dx.." "..dy)
-		
 		if dy > math.abs(dx) then
 			direction = "northbound"
 		elseif dy < -math.abs(dx) then

@@ -27,7 +27,7 @@ function bindKeys(res)
 	bindKey("n", "down", switchMode)
 	
 	local mode = getElementData(localPlayer, "deaglemode")
-	if not (mode) then setElementDAta(localPlayer, "deaglemode", 0, false) end
+	if not (mode) then setElementData(localPlayer, "deaglemode", 0, false) end
 end
 addEventHandler("onClientResourceStart", getResourceRootElement(), bindKeys)
 

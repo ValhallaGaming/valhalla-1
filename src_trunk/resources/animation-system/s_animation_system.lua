@@ -69,7 +69,8 @@ function copawayAnimation(thePlayer)
 	local logged = getElementData(thePlayer, "loggedin")
 	
 	if (logged==1) then
-		exports.global:applyAnimation(thePlayer, "police", "coptraf_away", -1, true, false, false)
+		exports.global:applyAnimation(thePlayer, "police", "coptraf_away", 1300, true, false, false)
+		setTimer(resetAnimation, 1300, 1, thePlayer)
 	end
 end
 addCommandHandler("copaway", copawayAnimation, false, false)
@@ -190,7 +191,8 @@ function pedCarFix(thePlayer)
 	local logged = getElementData(thePlayer, "loggedin")
 	
 	if (logged==1) then
-		exports.global:applyAnimation( thePlayer, "CAR", "Fixn_Car_loop", 999999, true, false, false)
+		exports.global:applyAnimation( thePlayer, "CAR", "Fixn_Car_loop", 8000, true, false, false)
+		setTimer(resetAnimation, 8000, 1, thePlayer)
 	end
 end
 addCommandHandler ( "fixcar", pedCarFix, false, false )

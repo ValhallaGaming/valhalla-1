@@ -20,21 +20,7 @@ function showLaser()
 							cz = ez
 						end
 						
-						if (isPedDucked(value)) then
-							if (value==getLocalPlayer()) then
-								local sx, sy, sz = getPedBonePosition(value, 35)
-								dxDrawLine3D(sx, sy, sz, cx, cy, cz, tocolor(255,0,0,75), 2, false, 0)
-							else
-								dxDrawLine3D(sx, sy, sz-0.4, cx, cy, cz, tocolor(255,0,0,75), 2, false, 0)
-							end
-						else
-							if (value==getLocalPlayer()) then
-								local sx, sy, sz = getPedBonePosition(value, 35)
-								dxDrawLine3D(sx, sy, sz, cx, cy, cz, tocolor(255,0,0,75), 2, false, 0)
-							else
-								dxDrawLine3D(sx, sy, sz-0.1, cx, cy, cz, tocolor(255,0,0,75), 2, false, 0)
-							end
-						end
+						dxDrawLine3D(sx, sy, sz-0.1, cx, cy, cz, tocolor(255,0,0,75), 2, false, 0)
 					end
 				end
 			end

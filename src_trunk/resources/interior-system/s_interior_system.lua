@@ -74,7 +74,7 @@ function createInterior(thePlayer, commandName, interiorId, inttype, cost, ...)
 				if (query) then
 					local id = mysql_insert_id(handler) -- Get the ID of the latest insert
 					mysql_free_result(query)
-					reloadOneInterior(id)
+					reloadOneInterior(id, false)
 				else
 					outputChatBox("Failed to create interior - Invalid characters used in name of the interior.", thePlayer, 255, 0, 0)
 				end
@@ -227,7 +227,7 @@ function publicSellProperty(thePlayer, dbid, showmessages)
 		destroyElement(entrance)
 		destroyElement(exit)
 		
-		reloadOneInterior(dbid)
+		reloadOneInterior(dbid, false)
 	else
 		outputChatBox("Error 504914 - Report on forums.", thePlayer, 255, 0, 0)
 	end
@@ -364,7 +364,7 @@ function reloadInterior(thePlayer, commandName, interiorID)
 				destroyElement(entrance)
 				destroyElement(exit)
 				
-				reloadOneInterior(dbid)
+				reloadOneInterior(dbid, false)
 				outputChatBox("Reloaded Interior #" .. dbid, thePlayer, 0, 255, 0)
 			end
 		end
@@ -372,12 +372,19 @@ function reloadInterior(thePlayer, commandName, interiorID)
 end
 addCommandHandler("reloadinterior", reloadInterior, false, false)
 
-function reloadOneInterior(id, displayircmessage)
+function reloadOneInterior(id, hasCoroutine, displayircmessage)
+	if (hasCoroutine==nil) then
+		hasCoroutine = false
+	end
+
 	if displayircmessage == nil then
-		displayircmessage = true
+		displayircmessage = false
 	end
 	local result = mysql_query(handler, "SELECT id, x, y, z , interiorx, interiory, interiorz, type, owner, locked, cost, name, interior, dimensionwithin, interiorwithin, angle, angleexit, items, items_values, max_items, rentable, tennant, rent, money, safepositionX, safepositionY, safepositionZ, safepositionRZ FROM interiors WHERE id='" .. id .. "'")
-	coroutine.yield()
+	
+	if (hasCoroutine) then
+		coroutine.yield()
+	end
 	
 	if (result) then
 		for result, row in mysql_rows(result) do
@@ -395,7 +402,11 @@ function reloadOneInterior(id, displayircmessage)
 			local locked = tonumber(row[10])
 			local cost = tonumber(row[11])
 			local name = row[12]
-			coroutine.yield()
+			
+			if (hasCoroutine) then
+				coroutine.yield()
+			end
+			
 			local interior = tonumber(row[13])
 			local dimension = tonumber(row[14])
 			local interiorwithin = tonumber(row[15])
@@ -412,7 +423,10 @@ function reloadOneInterior(id, displayircmessage)
 			
 			local money = tonumber(row[24])
 			
-			coroutine.yield()
+			if (hasCoroutine) then
+				coroutine.yield()
+			end
+			
 			local safeX, safeY, safeZ, safeRZ = row[25], row[26], row[27], row[28]
 			-- If the is a house
 			if (inttype==0) then -- House
@@ -428,7 +442,9 @@ function reloadOneInterior(id, displayircmessage)
 				
 				local intpickup = createPickup(ix, iy, iz, 3, 1318)
 				exports.pool:allocateElement(intpickup)
-				coroutine.yield()
+				if (hasCoroutine) then
+					coroutine.yield()
+				end
 				setPickupElementData(pickup, id, ix, iy, iz, optAngle, interior, locked, owner, inttype, cost, name, items, items_values, max_items, tennant, rentable, rent, interiorwithin, x, y, z, dimension, money)
 				setIntPickupElementData(intpickup, id, x, y, z, rot, locked, owner, inttype, interiorwithin, dimension, interior, ix, iy, iz)
 			-- if it is a business
@@ -454,7 +470,9 @@ function reloadOneInterior(id, displayircmessage)
 				local intpickup = createPickup(ix, iy, iz, 3, 1318)
 				exports.pool:allocateElement(pickup)
 				exports.pool:allocateElement(intpickup)
-				coroutine.yield()
+				if (hasCoroutine) then
+					coroutine.yield()
+				end
 				setPickupElementData(pickup, id, ix, iy, iz, optAngle, interior, locked, owner, inttype, cost, name, items, items_values, max_items, tennant, rentable, rent, interiorwithin, x, y, z, dimension, money)
 				setIntPickupElementData(intpickup, id, x, y, z, rot, locked, owner, inttype, interiorwithin, dimension, interior, ix, iy, iz)
 			-- If the is rentable
@@ -471,7 +489,9 @@ function reloadOneInterior(id, displayircmessage)
 					
 				local intpickup = createPickup(ix, iy, iz, 3, 1318)
 				exports.pool:allocateElement(intpickup)
-				coroutine.yield()
+				if (hasCoroutine) then
+					coroutine.yield()
+				end
 				setPickupElementData(pickup, id, ix, iy, iz, optAngle, interior, locked, owner, inttype, cost, name, items, items_values, max_items, tennant, rentable, rent, interiorwithin, x, y, z, dimension, money)
 				setIntPickupElementData(intpickup, id, x, y, z, rot, locked, owner, inttype, interiorwithin, dimension, interior, ix, iy, iz)
 			end
@@ -510,7 +530,7 @@ function loadAllInteriors()
 		for result, row in mysql_rows(result) do
 			local id = tonumber(row[1])
 			local co = coroutine.create(reloadOneInterior)
-			coroutine.resume(co, id, false)
+			coroutine.resume(co, id, true)
 			table.insert(threads, co)
 			counter = counter + 1
 		end

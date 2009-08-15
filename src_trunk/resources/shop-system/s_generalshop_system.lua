@@ -89,7 +89,7 @@ function createShopKeeper(x,y,z,interior,dimension,id,shoptype,rotation, skin)
 end
 
 function isGun(weaponID)
-	if weaponID <= 15 or weaponID >= 41 then
+	if weaponID <= 15 or weaponID >= 42 then
 		return false
 	end
 	return true
@@ -362,7 +362,7 @@ function givePlayerBoughtItem(itemID, itemValue, theCost, isWeapon, name, supply
 						outputChatBox("You have $".. getElementData(source, "money").." left in your wallet.", source, 255, 194, 14)
 						exports.global:giveWeapon(source, tonumber(itemID), tonumber(itemValue), true)
 					else
-						outputChatBox("You do not have a gun license - You can buy this license at City Hall.", source, 255, 194, 14)
+						outputChatBox("You do not have a weapons license - You can buy this license at City Hall.", source, 255, 194, 14)
 					end
 				else
 					exports.global:takePlayerSafeMoney(source, tonumber(theCost))

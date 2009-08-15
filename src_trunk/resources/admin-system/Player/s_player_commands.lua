@@ -975,7 +975,8 @@ function banAPlayer(thePlayer, commandName, targetPlayer, hours, ...)
 						
 						local ban = banPlayer(targetPlayer, true, false, false, thePlayer, reason, seconds)
 						
-						--mysql_query(handler, "UPDATE accounts SET banned='1', banned_reason='" .. reason .. "', banned_by='" .. playerName .. "' WHERE id='" .. accountID .. "'")
+						local query = mysql_query(handler, "UPDATE accounts SET banned='1', banned_reason='" .. reason .. "', banned_by='" .. playerName .. "' WHERE id='" .. accountID .. "'")
+						mysql_free_result(query)
 					elseif (hiddenAdmin==1) then
 						outputChatBox("AdmBan: Hidden Admin banned " .. targetPlayerName .. ". (" .. hours .. ")", getRootElement(), 255, 0, 51)
 						outputChatBox("AdmBan: Reason: " .. reason, getRootElement(), 255, 0, 51)
@@ -983,7 +984,8 @@ function banAPlayer(thePlayer, commandName, targetPlayer, hours, ...)
 						
 						local ban = banPlayer(targetPlayer, true, false, false, getRootElement(), reason, seconds)
 						
-						--mysql_query(handler, "UPDATE accounts SET banned='1', banned_reason='" .. reason .. "', banned_by='" .. playerName .. "' WHERE id='" .. accountID .. "'")
+						local query = mysql_query(handler, "UPDATE accounts SET banned='1', banned_reason='" .. reason .. "', banned_by='" .. playerName .. "' WHERE id='" .. accountID .. "'")
+						mysql_free_result(query)
 					end
 				else
 					outputChatBox(" This player is a higher level admin than you.", thePlayer, 255, 0, 0)
@@ -995,10 +997,11 @@ function banAPlayer(thePlayer, commandName, targetPlayer, hours, ...)
 end
 addCommandHandler("pban", banAPlayer, false, false)
 
---function unbanAccount(ipserial, two)
-	--mysql_query(handler, "UPDATE accounts SET banned='0', banned_by=NULL WHERE ip='" .. ipserial .. "'")
---end
---addEventHandler("onUnban", getRootElement(), unbanAccount)
+function unbanAccount(theBan)
+	local ip = getBanIP(theBan)
+	mysql_query(handler, "UPDATE accounts SET banned='0', banned_by=NULL WHERE ip='" .. ip .. "'")
+end
+addEventHandler("onUnban", getRootElement(), unbanAccount)
 
 
 -- /UNBAN

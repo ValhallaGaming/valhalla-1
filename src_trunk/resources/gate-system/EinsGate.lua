@@ -1,5 +1,5 @@
 local Gate = createObject(971, 264.52899780273, -1334.2608642578, 55.889999389648, 0, 0, 215.40502929688)
-local GateName = "Yakuza Gate"
+local GateName = "Private Property Gate"
 exports.pool:allocateElement(Gate)
 local GatePass = "ohayena123"
 local open = false

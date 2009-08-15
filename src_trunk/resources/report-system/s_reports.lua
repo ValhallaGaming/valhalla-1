@@ -12,7 +12,9 @@ function showReports(thePlayer)
 	if (exports.global:isPlayerAdmin(thePlayer)) then
 		outputChatBox("~~~~~~~~~ Reports ~~~~~~~~~", thePlayer, 255, 194, 15)
 		
-		for i, report in ipairs(reports) do
+		local count = 0
+		for i = 1, 128 do
+			local report = reports[i]
 			if report then
 				local reporter = report[1]
 				local reported = report[2]
@@ -21,16 +23,17 @@ function showReports(thePlayer)
 				
 				local handler = ""
 				if (isElement(admin)) then
-					handler = getPlayerName(admin)
+					handler = tostring(getPlayerName(admin))
 				else
 					handler = "None."
 				end
 				
-				outputChatBox("Report #" .. i .. ": '" .. getPlayerName(reporter) .. "' reporting '" .. getPlayerName(reported) .. "' at " .. timestring .. ". Handler: " .. handler .. ".", thePlayer, 255, 195, 15)
+				outputChatBox("Report #" .. tostring(i) .. ": '" .. tostring(getPlayerName(reporter)) .. "' reporting '" .. tostring(getPlayerName(reported)) .. "' at " .. timestring .. ". Handler: " .. handler .. ".", thePlayer, 255, 195, 15)
+				count = count + 1
 			end
 		end
 		
-		if #reports == 0 then
+		if count == 0 then
 			outputChatBox("None.", thePlayer, 255, 194, 15)
 		else
 			outputChatBox("Type /reportinfo [id] to obtain more information about the report.", thePlayer, 255, 194, 15)
@@ -100,6 +103,19 @@ function playerQuit()
 		end
 		
 		reports[report] = nil -- Destroy any reports made by the player
+	end
+	
+	-- check for reports assigned to him, unassigned if neccessary	
+	for i = 1, 128 do -- Support 128 reports at any one time, since each player can only have one report
+		if reports[i] and reports[i][5] == source then
+			reports[i][5] = nil
+			for key, value in ipairs(exports.global:getAdmins()) do
+				local adminduty = getElementData(value, "adminduty")
+				if adminduty == 1 then
+					outputChatBox(" [-ADMIN REPORT-] Report #" .. i .. " is unassigned (" .. getPlayerName(source) .. " left the game)", value, 0, 255, 255)
+				end
+			end
+		end
 	end
 end
 addEventHandler("onPlayerQuit", getRootElement(), playerQuit)
@@ -220,8 +236,13 @@ function pendingReportTimeout(id)
 		local alertTimer = reports[id][6]
 		local timeoutTimer = reports[id][7]
 		
-		killTimer(alertTimer)
-		killTimer(timeoutTimer)
+		if isTimer(alertTimer) then
+			killTimer(alertTimer)
+		end
+		
+		if isTimer(timeoutTimer) then
+			killTimer(timeoutTimer)
+		end
 		
 		reports[id] = nil -- Destroy any reports made by the player
 		
@@ -275,6 +296,14 @@ function falseReport(thePlayer, commandName, id)
 					local alertTimer = reports[id][6]
 					local timeoutTimer = reports[id][7]
 					
+					if isTimer(alertTimer) then
+						killTimer(alertTimer)
+					end
+					
+					if isTimer(timeoutTimer) then
+						killTimer(timeoutTimer)
+					end
+
 					reports[id] = nil
 					
 					local time = getRealTime()
@@ -331,8 +360,13 @@ function acceptReport(thePlayer, commandName, id)
 					local alertTimer = reports[id][6]
 					local timeoutTimer = reports[id][7]
 					
-					killTimer(alertTimer)
-					killTimer(timeoutTimer)
+					if isTimer(alertTimer) then
+						killTimer(alertTimer)
+					end
+					
+					if isTimer(timeoutTimer) then
+						killTimer(timeoutTimer)
+					end
 					
 					reports[id][5] = thePlayer -- Admin dealing with this report
 					
@@ -385,9 +419,19 @@ function closeReport(thePlayer, commandName, id)
 				outputChatBox("Invalid Report ID.", thePlayer, 255, 0, 0)
 			else
 				local reporter = reports[id][1]
+				local alertTimer = reports[id][6]
+				local timeoutTimer = reports[id][7]
+				
+				if isTimer(alertTimer) then
+					killTimer(alertTimer)
+				end
+				
+				if isTimer(timeoutTimer) then
+					killTimer(timeoutTimer)
+				end
 				
 				reports[id] = nil
-				
+
 				if (isElement(reporter)) then
 					removeElementData(reporter, "report")
 					removeElementData(reporter, "reportadmin")
@@ -430,7 +474,9 @@ function endReport(thePlayer, commandName)
 					
 		local timestring = hours .. ":" .. minutes
 		local reportHandler = reports[report][5]
-		
+		local alertTimer = reports[id][6]
+		local timeoutTimer = reports[id][7]
+
 		reports[report] = nil
 		removeElementData(thePlayer, "report")
 		removeElementData(thePlayer, "reportadmin")

@@ -122,8 +122,8 @@ function eventTriggered ( source,killer,weapon,bodypart,suicide,usedVehicle )
 end
 
 function outputConsoleKillMessage ( text )
-	local time = getRealTime()
-	text = ("[%02d:%02d] %s"):format(time.hour, time.minute, text)
+	local hour, minute = getTime()
+	text = ("[%02d:%02d] %s"):format(hour, minute, text)
 	for k, v in pairs(exports.pool:getPoolElementsByType("player")) do
 		if exports.global:isPlayerAdmin(v) then
 			triggerClientEvent(v,"onClientPlayerKillMessageConsole",v,text)

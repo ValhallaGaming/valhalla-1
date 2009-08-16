@@ -1,181 +1,88 @@
-local columnByName = {}
-local scoreboardColumns = {}
 local scoreboardRows = {}
 local scoreboardGrid
 local updateInterval = 1000 --ms
-local visibilityCheckInterval = 500 --ms
 local indent = ' '
 
 local playerCount
 
 local localPlayer = getLocalPlayer()
-local playerTeam = getPlayerTeam(localPlayer)
-local playerParent = getElementParent(localPlayer)
 local rootElement = getRootElement()
-local thisResourceRoot = getResourceRootElement(getThisResource())
 
-function getName(element)
-	local eType = getElementType(element)
+local players = {}
+local columns = {
+	{name="ID #"}, 
+	{name="name",size=0.55},
+	{name="ping"}
+}
+
+function addToScoreboard(player)
+	local player = player or source
+	local id = getElementData(player, "ID #")
 	
-	if eType == "player" then
-		return getPlayerName(element)
-	elseif eType == "team" then
-		return getTeamName(element)..' ('..countPlayersInTeam(element)..' players)'
+	if not id then
+		setTimer(addToScoreboard, 100, 1, player)
+	else
+		players[id] = player
+		
+		updatePlayers()
 	end
 end
 
-function updateScoreboardData(element,field,data)
-	local sectionheader = (getElementType(element) == "team")
+function removeFromScoreboard()
+	local id = getElementData(source, "ID #")
+
+	players[id] = nil
 	
-	if scoreboardRows[element] and columnByName[field] then
-		data = tostring(data or "")
-		if field == "name" and getElementType(element) == "player" and getPlayerTeam(element) then
-			data = indent .. data
-		end
-		guiGridListSetItemText(
-			scoreboardGrid,
-			scoreboardRows[element],
-			scoreboardColumns[columnByName[field]].id,
-			data,
-			sectionheader,
-			false
-		)
-	end
+	updatePlayers()
 end
 
-function updatePlayerNick()
-	updateScoreboardData(source,"name",getPlayerName(source))
-end
+function updatePlayers()
+	guiGridListClear(scoreboardGrid)
+	scoreboardRows = {}
 
-function updateChangedData(field)
-	if not isElement(source) then return false end --!wk
-	
-	local eType = getElementType(source)	
-	
-	if eType == "player" or eType == "team" then
-		updateScoreboardData(source,field,getElementData(source,field))
-	end
-end
-
-function addToScoreboard(element)
-	element = element or source
+	-- add all players
 	local row = guiGridListAddRow(scoreboardGrid)
-	
-	scoreboardRows[element] = row
-	updateScoreboardData(element,"name",getName(element))
-	return row
-end
+	scoreboardRows[localPlayer] = row
 
-function removeFromScoreboard(element)
-	element = element or source
-	if not scoreboardRows[element] then return false end
-	
-	guiGridListRemoveRow(scoreboardRows[element])
-	scoreboardRows[element] = nil
-end
+	guiGridListSetItemText(scoreboardGrid, row, 1, tostring(getElementData(localPlayer, "ID #")), false, true)
+	guiGridListSetItemText(scoreboardGrid, row, 2, getPlayerName(localPlayer), false, false)
+	guiGridListSetItemText(scoreboardGrid, row, 3, tostring(getPlayerPing(localPlayer)), false, true)
 
-function refreshScoreboardElementData()
-	for element, row in pairs(scoreboardRows) do
-		for i, column in ipairs(scoreboardColumns) do
-			local columnName = column.name
-			if columnName ~= "name" and columnName ~= "ping" then
-				if isElement(element) then
-					updateScoreboardData(element,columnName,getElementData(element,columnName))
---				else outputDebugString("Unexpected: "..tostring(element),0)
-				end
-			end
+	for i = 1, 128 do
+		if players[i] and players[i] ~= localPlayer then
+			local player = players[i]
+			local row = guiGridListAddRow(scoreboardGrid)
+			scoreboardRows[player] = row
+			
+			guiGridListSetItemText(scoreboardGrid, row, 1, tostring(i), false, true)
+			guiGridListSetItemText(scoreboardGrid, row, 2, getPlayerName(player), false, false)
+			guiGridListSetItemText(scoreboardGrid, row, 3, tostring(getPlayerPing(player)), false, true)
 		end
 	end
+	guiGridListSetSelectedItem(scoreboardGrid, 0, 1)
+end
+
+function updatePlayerNick(old, new)
+	guiGridListSetItemText(scoreboardGrid, scoreboardRows[source], 2, new, false, false)
 end
 
 function refreshScoreboardPings()
 	for i,player in ipairs(getElementsByType("player")) do
-		updateScoreboardData(player,"ping",getPlayerPing(player))
+		guiGridListSetItemText(scoreboardGrid, scoreboardRows[player], 3, tostring(getPlayerPing(player)), false, false)
 	end
 	guiSetText(playerCount, guiGridListGetRowCount(scoreboardGrid))
 end
 
-function refreshScoreboardTeams()
-	guiGridListClear(scoreboardGrid)
-	scoreboardRows = {}
-	for i, player in ipairs(getElementsByType("player")) do
-		addToScoreboard(player)
-	end
-	
-	--[[for i,team in ipairs(getElementsByType("team")) do
-		addToScoreboard(team)
-		local teamname = getTeamName(team)
-		for i,player in ipairs(getPlayersInTeam(team)) do
-			addToScoreboard(player)
-			updateScoreboardData(player,"team",teamname)
-		end
-	end]]--
-end
-
 function updateScoreboard()
-	refreshScoreboardTeams()
 	refreshScoreboardPings()
-	refreshScoreboardElementData()
 	
 	guiSetText(playerCount, "Players: " .. guiGridListGetRowCount(scoreboardGrid))
-	
-	if scoreboardColumns[1] then
-		guiGridListSetSelectedItem(scoreboardGrid, scoreboardRows[localPlayer], scoreboardColumns[1].id)
-	end
+	guiGridListSetSelectedItem(scoreboardGrid, 0, 1)
 end
 
 function refreshScoreboard()
 	if guiGetVisible(scoreboardGrid) and not isCursorShowing() then
 		updateScoreboard()
-		
-	end
-end
-
-function addScoreboardColumn(columnData, position)
-	local name = columnData[1]
-	local size = columnData[2] or 0.1
-	
-	local numberOfColumns = #scoreboardColumns
-	position = position or numberOfColumns
-	if name and not columnByName[name] then
-		if position <= numberOfColumns and numberOfColumns > 0 then
-			--delete all columns to the right of the new one, insert it and readd them
-			for i=position, numberOfColumns do
-				guiGridListRemoveColumn(scoreboardGrid,scoreboardColumns[i].id)
-			end
-			columnByName[name] = position
-			table.insert(scoreboardColumns,position,{name=name,id=guiGridListAddColumn(scoreboardGrid,name,size),size=size})
-			for i=position+1, numberOfColumns+1 do
-				columnByName[scoreboardColumns[i].name] = i
-				scoreboardColumns[i].id = guiGridListAddColumn(scoreboardGrid,scoreboardColumns[i].name,scoreboardColumns[i].size)
-			end
-		else
-			columnByName[name] = #scoreboardColumns + 1
-			table.insert(scoreboardColumns,{name=name,id=guiGridListAddColumn(scoreboardGrid,name,size), size=size})
-		end
-	end
-	return true
-end
-
-function removeScoreboardColumn(name)
-	if name and columnByName[name] then
-		local index = columnByName[name]
-		columnByName[name] = nil
-		guiGridListRemoveColumn(scoreboardGrid,scoreboardColumns[index].id)
-		table.remove(scoreboardColumns,index)
-		for i=index, #scoreboardColumns do
-			columnByName[scoreboardColumns[i].name] = i
-		end
-		return true
-	end
-end
-
-function replaceAllColumns(columnList)
-	for name in pairs(columnByName) do
-		removeScoreboardColumn(name)
-	end
-	for i, columnData in ipairs(columnList) do
-		addScoreboardColumn(columnData,#scoreboardColumns+1)
 	end
 end
 
@@ -204,35 +111,13 @@ function toggleScoreboardPressed(key,keystate,state)
 	toggleScoreboard(state)
 end
 
-function checkVisibility()
-	local currentTeam = getPlayerTeam(localPlayer)
-	local currentParent = getElementParent(localPlayer)
-	if not ( currentTeam == playerTeam and currentParent == playerParent ) then
-		triggerServerEvent("onClientVisibilityChange",localPlayer)
-		playerTeam = currentTeam
-		playerParent = currentParent
-	end
-end
-
-function setScoreboardForced(state)
-	if state == true then
-		unbindKey("tab","down",toggleScoreboardPressed)
-		unbindKey("tab","up",toggleScoreboardPressed)
-	elseif state == false then
-		bindKey("tab","down",toggleScoreboardPressed,true)
-		bindKey("tab","up",toggleScoreboardPressed,false)
-	else
-		return false
-	end
-	toggleScoreboard(state)
-end
-
-addEventHandler("onClientResourceStart", thisResourceRoot,
+addEventHandler("onClientResourceStart", getResourceRootElement(),
 	function ()
 		scoreboardGrid = guiCreateGridList(0.15,0.2,0.7,0.6,true)
 		
 		guiSetAlpha(scoreboardGrid,0.7)
 		guiSetVisible(scoreboardGrid,false)
+		guiGridListSetSortingEnabled(scoreboardGrid,false)
 		
 		local rmbLabel = guiCreateLabel(0, 0, 0, 0, "(Hold right mouse button to enable scrolling)",false,scoreboardGrid)
 		local scoreX, scoreY = guiGetSize(scoreboardGrid, false)
@@ -261,32 +146,29 @@ addEventHandler("onClientResourceStart", thisResourceRoot,
 		setTimer(refreshScoreboard, updateInterval, 0)
 		updateScoreboard()
 		
-		--serverside control events
-		addEvent("onServerSendColumns", true)
-		addEvent("doAddColumn", true)
-		addEvent("doRemoveColumn", true)
-		addEvent("doForceScoreboard", true)
-		
-		--serverside control event handlers
-		addEventHandler("onServerSendColumns", rootElement, replaceAllColumns)
-		addEventHandler("doAddColumn", rootElement, addScoreboardColumn)
-		addEventHandler("doRemoveColumn", rootElement, removeScoreboardColumn)
-		addEventHandler("doForceScoreboard", rootElement, setScoreboardForced)
-		
 		--scoreboard update event handlers
 		addEventHandler("onClientPlayerJoin", rootElement, addToScoreboard)
 		addEventHandler("onClientPlayerQuit", rootElement, removeFromScoreboard)
 		addEventHandler("onClientPlayerChangeNick", rootElement, updatePlayerNick)
-		addEventHandler("onClientElementDataChange", rootElement, updateChangedData)
 		
 		addEventHandler("onClientClick", scoreboardGrid,
 			function()
-				if scoreboardColumns[1] and guiGetVisible(scoreboardGrid) then
-					guiGridListSetSelectedItem(scoreboardGrid, scoreboardRows[localPlayer], scoreboardColumns[1].id)
+				if guiGetVisible(scoreboardGrid) then
+					guiGridListSetSelectedItem(scoreboardGrid, scoreboardRows[localPlayer], 1)
 				end
 			end
 		)
-		triggerServerEvent("onClientScoreboardLoaded", localPlayer)
-		setTimer(checkVisibility, visibilityCheckInterval, 0)
+
+		-- add all columns
+		for key, value in pairs(columns) do
+			guiGridListAddColumn(scoreboardGrid,value.name,value.size or 0.1)
+		end
+		
+		-- add all players
+		for key, value in ipairs(getElementsByType("player")) do
+			addToScoreboard(value)
+		end
+		
+		updatePlayers()
 	end
 )

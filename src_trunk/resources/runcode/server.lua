@@ -1,3 +1,31 @@
+-- ////////////////////////////////////
+-- //			MYSQL				 //
+-- ////////////////////////////////////		
+local sqlUsername = exports.mysql:getMySQLUsername()
+local sqlPassword = exports.mysql:getMySQLPassword()
+local sqlDB = exports.mysql:getMySQLDBName()
+local sqlHost = exports.mysql:getMySQLHost()
+local sqlPort = exports.mysql:getMySQLPort()
+
+sql = mysql_connect(sqlHost, sqlUsername, sqlPassword, sqlDB, sqlPort)
+
+local function checkMySQL()
+	if not (mysql_ping(sql)) then
+		sql = mysql_connect(sqlHost, sqlUsername, sqlPassword, sqlDB, sqlPort)
+	end
+end
+
+local function closeMySQL()
+	if (sql) then
+		mysql_close(sql)
+		sql = nil
+	end
+end
+addEventHandler("onResourceStop", getResourceRootElement(getThisResource()), closeMySQL)
+
+-- ////////////////////////////////////
+-- //			RUNCODE				 //
+-- ////////////////////////////////////		
 local rootElement = getRootElement()
 
 function runString (commandstring, outputTo, source)
@@ -8,6 +36,14 @@ function runString (commandstring, outputTo, source)
 		sourceName = "Console"
 	end
 	outputChatBoxR(sourceName.." executed command: "..commandstring, outputTo)
+	
+	-- ease the execution of client-side code on the server
+	function getLocalPlayer( )
+		return source
+	end
+	_G['source'] = source
+	checkMySQL()
+	
 	local notReturned
 	--First we test with return
 	local commandFunction,errorMsg = loadstring("return "..commandstring)

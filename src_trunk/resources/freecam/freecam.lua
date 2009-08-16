@@ -247,6 +247,7 @@ function setFreecamEnabled (x, y, z)
 	addEventHandler("onClientRender", rootElement, freecamFrame)
 	addEventHandler("onClientCursorMove",rootElement, freecamMouse)
 	setElementData(localPlayer, "freecam:state", true)
+	setPedWeaponSlot(localPlayer, 0)
 	toggleAllControls(false, true, false)
     
 	return true

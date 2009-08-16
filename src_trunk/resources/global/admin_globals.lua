@@ -81,6 +81,7 @@ local scripterAccounts = {
 	Serizzim = true,
 	CCC = true,
 	Flobu = true,
+	ryden = true,
 	['Mr.Hankey'] = true
 }
 function isPlayerScripter(thePlayer)

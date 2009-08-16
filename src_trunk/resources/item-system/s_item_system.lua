@@ -585,7 +585,9 @@ function dropItem(itemID, itemValue, itemName, x, y, z, gz, isWeapon, items, ite
 			setPedSkin(source, 264)
 		end
 	else
-		if tonumber(getElementData(source, "duty")) > 0 then
+		if itemID == 16 or itemID == 18 or ( itemID >= 35 and itemID <= 40 ) then
+			outputChatBox("You can't drop this weapon.", source, 255, 0, 0)
+		elseif tonumber(getElementData(source, "duty")) > 0 then
 			outputChatBox("You can't drop your weapons while being on duty.", source, 255, 0, 0)
 		elseif tonumber(getElementData(source, "job")) == 4 and itemID == 41 then
 			outputChatBox("You can't drop this spray can.", source, 255, 0, 0)

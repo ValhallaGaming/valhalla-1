@@ -16,4 +16,5 @@
 	<script src="Steak House Floor Fix.lua" type="client"/>
 	<script src="Strip Club Back Room.lua" type="client"/>
 	<script src="Yakuza HQ.lua" type="client"/>
+	<script src="Idlewood Gas.lua" type="client"/>
 </meta>

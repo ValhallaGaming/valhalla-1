@@ -16,6 +16,7 @@
 	<config src="commonsense.xml" type="client" />
 	<config src="revengekilling.xml" type="client" />
 	<config src="serverrules.xml" type="client" />
+	<config src="serverrules2.xml" type="client" />
 	
 	<script src="rphelp.lua" type="client"/>
 	

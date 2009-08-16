@@ -5,6 +5,7 @@ username2 = "ValhallaGaming2"
 channel = "#Valhalla.echo"
 channeladmins = "#Valhalla.admins"
 pubchannel = "#mta"
+pubchannel2 = "#Valhalla"
 password = "adminmtavg"
 
 conn = nil
@@ -19,9 +20,10 @@ function initIRC()
 	sendMessage("Server Started.")
 	conn2 = ircOpen(server, port, username2, channel, password)
 	displayStatus()
-	timer = setTimer(displayStatus, 600000, 0)
+	timer = setTimer(displayStatus, 900000, 0)
 	ircJoin(conn, pubchannel)
 	ircJoin(conn2, pubchannel)
+	ircJoin(conn2, pubchannel2)
 	ircJoin(conn, channeladmins)
 	ircJoin(conn2, channeladmins)
 end
@@ -91,8 +93,10 @@ function displayStatus()
 	if not (useSecond) then
 		useSecond = true
 		ircMessage(conn2, channeladmins, output)
+		ircMessage(conn2, pubchannel2, output)
 	else
 		useSecond = false
 		ircMessage(conn, channeladmins, output)
+		ircMessage(conn, pubchannel2, output)
 	end
 end

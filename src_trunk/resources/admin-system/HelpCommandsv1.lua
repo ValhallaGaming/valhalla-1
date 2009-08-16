@@ -673,6 +673,12 @@ function playerhelp( sourcePlayer, commandName )
 				guiGridListSetItemText ( misccommandslist, sellfishcreaterow, misccommanduse, "/sellfish [while at the fish market]", false, false )
 				guiGridListSetItemText ( misccommandslist, sellfishcreaterow, misccommandexplanation, "This command is used to sell the fish you caught.", false, false )
 				guiGridListSetItemText ( misccommandslist, sellfishcreaterow, misccommandexample, "/sellfish", false, false )
+				
+				cruisecontrolcreaterow = guiGridListAddRow ( misccommandslist )
+                guiGridListSetItemText ( misccommandslist, cruisecontrolcreaterow, misccommand, "/cc", false, false )
+				guiGridListSetItemText ( misccommandslist, cruisecontrolcreaterow, misccommanduse, "/cc [Speed or none to disable]", false, false )
+				guiGridListSetItemText ( misccommandslist, cruisecontrolcreaterow, misccommandexplanation, "This command is used to toggle cruise control.", false, false )
+				guiGridListSetItemText ( misccommandslist, cruisecontrolcreaterow, misccommandexample, "/cc 40", false, false )
 		else
 		    local visible = guiGetVisible ( myWindow )
 		    if ( visible == false ) then

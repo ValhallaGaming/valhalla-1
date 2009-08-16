@@ -1043,10 +1043,14 @@ addEvent("moveItemToVehicle", true)
 addEventHandler("moveItemToVehicle", getRootElement(), moveItemToVehicle)
 
 function moveWeaponToVehicle(vehicle, weaponID, weaponAmmo)
-	exports.global:takeWeapon(source, weaponID)
+	if weaponID == 16 or weaponID == 18 or ( weaponID >= 35 and weaponID <= 40 ) then
+		outputChatBox("You can't put this weapon in a vehicle.", source, 255, 0, 0)
+	else
+		exports.global:takeWeapon(source, weaponID)
 
-	exports.global:giveVehicleItem(vehicle, 9000+weaponID, weaponAmmo)
-	exports.global:sendLocalMeAction(source, "puts a " .. getWeaponNameFromID(weaponID) .. " inside the " .. getVehicleName(vehicle) .. ".")
+		exports.global:giveVehicleItem(vehicle, 9000+weaponID, weaponAmmo)
+		exports.global:sendLocalMeAction(source, "puts a " .. getWeaponNameFromID(weaponID) .. " inside the " .. getVehicleName(vehicle) .. ".")
+	end
 end
 addEvent("moveWeaponToVehicle", true)
 addEventHandler("moveWeaponToVehicle", getRootElement(), moveWeaponToVehicle)

@@ -38,10 +38,14 @@ addEvent("moveItemToSafe", true)
 addEventHandler("moveItemToSafe", getRootElement(), moveItemToSafe)
 
 function moveWeaponToSafe(safe, weaponID, weaponAmmo)
-	exports.global:takeWeapon(source, weaponID)
+	if weaponID == 16 or weaponID == 18 or ( weaponID >= 35 and weaponID <= 40 ) then
+		outputChatBox("You can't put this weapon in a safe.", source, 255, 0, 0)
+	else
+		exports.global:takeWeapon(source, weaponID)
 
-	exports.global:giveSafeItem(safe, 9000+weaponID, weaponAmmo)
-	updateSafeItems(safe)
+		exports.global:giveSafeItem(safe, 9000+weaponID, weaponAmmo)
+		updateSafeItems(safe)
+	end
 end
 addEvent("moveWeaponToSafe", true)
 addEventHandler("moveWeaponToSafe", getRootElement(), moveWeaponToSafe)

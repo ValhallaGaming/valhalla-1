@@ -157,7 +157,7 @@ function spawnCharacter(charname)
 	
 	local safecharname = mysql_escape_string(handler, charname)
 	
-	local result = mysql_query(handler, "SELECT id, x, y, z, rotation, interior_id, dimension_id, health, armor, skin, money, faction_id, cuffed, radiochannel, masked, duty, cellnumber, fightstyle, pdjail, pdjail_time, job, casualskin, weapons, ammo, items, itemvalues, car_license, gun_license, bankmoney, fingerprint, tag, hoursplayed, pdjail_station, timeinserver, restrainedobj, restrainedby, faction_rank, dutyskin FROM characters WHERE charactername='" .. charname .. "' AND account='" .. id .. "'")
+	local result = mysql_query(handler, "SELECT id, x, y, z, rotation, interior_id, dimension_id, health, armor, skin, money, faction_id, cuffed, radiochannel, masked, duty, cellnumber, fightstyle, pdjail, pdjail_time, job, casualskin, weapons, ammo, items, itemvalues, car_license, gun_license, bankmoney, fingerprint, tag, hoursplayed, pdjail_station, timeinserver, restrainedobj, restrainedby, faction_rank, dutyskin, phoneoff FROM characters WHERE charactername='" .. charname .. "' AND account='" .. id .. "'")
 	
 	if (result) then
 		local id = mysql_result(result, 1, 1)
@@ -209,6 +209,7 @@ function spawnCharacter(charname)
 		local restrainedby = tonumber(mysql_result(result, 1, 36))
 		local factionrank = tonumber(mysql_result(result, 1, 37))
 		local dutyskin = tonumber(mysql_result(result, 1, 38))
+		local phoneoff = tonumber(mysql_result(result, 1, 39))
 		
 		setElementData(source, "timeinserver", timeinserver)
 		
@@ -460,6 +461,7 @@ function spawnCharacter(charname)
 		setElementData(source, "fingerprint", fingerprint, false)
 		setElementData(source, "tag", tag)
 		setElementData(source, "dutyskin", dutyskin, false)
+		setElementData(source, "phoneoff", phoneoff, false)
 		
 		if (restrainedobj>0) then
 			setElementData(source, "restrainedObj", restrainedobj, false)

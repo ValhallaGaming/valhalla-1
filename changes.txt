@@ -1,4 +1,9 @@
 ---
+Toggling off your Phone
+---
+ALTER TABLE `characters` ADD `phoneoff` TINYINT NOT NULL DEFAULT '0'
+
+---
 Biz/Personal Transactions (Transfers, Withdraws, Deposits, Paydays)
 ---
 CREATE TABLE IF NOT EXISTS `wiretransfers` (

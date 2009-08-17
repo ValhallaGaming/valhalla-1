@@ -75,8 +75,10 @@ function callSomeone(thePlayer, commandName, phoneNumber, ...)
 						
 						if not exports.global:isPlayerSilverDonator(thePlayer) and money < 10 then
 							outputChatBox("You cannot afford a call.", thePlayer, 255, 0, 0)
-						elseif not (found) or (foundElement==thePlayer) then -- Player with this phone number isnt online...
+						elseif not found or foundElement == thePlayer then -- Player with this phone number isnt online...
 							outputChatBox("You get a dead tone...", thePlayer, 255, 194, 14)
+						elseif getElementData(foundElement, "phoneoff") == 1 then
+							outputChatBox("The phone you are trying to call is switched off.", thePlayer, 255, 194, 14)
 						else
 							local targetCalling = getElementData(foundElement, "calling")
 							
@@ -350,6 +352,27 @@ function phoneBook(thePlayer, commandName, partialNick)
 	end
 end
 addCommandHandler("phonebook", phoneBook)
+
+function togglePhone(thePlayer, commandName)
+	local logged = getElementData(thePlayer, "loggedin")
+	
+	if logged == 1 and ( exports.global:isPlayerAdmin(thePlayer) or exports.global:isPlayerBronzeDonator(thePlayer) ) then
+		if getElementData( thePlayer, "calling" ) then
+			outputChatBox("You are using your phone!", thePlayer, 255, 0, 0)
+		else
+			local phoneoff = getElementData( thePlayer, "phoneoff" )
+			
+			if phoneoff == 1 then
+				outputChatBox("You switched your phone on.", thePlayer, 0, 255, 0)
+			else
+				outputChatBox("You switched your phone off.", thePlayer, 255, 0, 0)
+			end
+			setElementData(thePlayer, "phoneoff", 1 - phoneoff, false)
+			mysql_free_result( mysql_query( handler, "UPDATE characters SET phoneoff=" .. ( 1 - phoneoff ) .. " WHERE id = " .. getElementData(thePlayer, "dbid") ) )
+		end
+	end
+end
+addCommandHandler("togglephone", togglePhone)
 
 function saveCurrentRingtone(itemValue)
 	if itemValue then

@@ -1,4 +1,18 @@
 ---
+Biz/Personal Transactions (Transfers, Withdraws, Deposits, Paydays)
+---
+CREATE TABLE IF NOT EXISTS `wiretransfers` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `from` int(11) NOT NULL,
+  `to` int(11) NOT NULL,
+  `amount` int(11) NOT NULL,
+  `reason` text NOT NULL,
+  `time` timestamp NOT NULL default CURRENT_TIMESTAMP,
+  `type` int(11) NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM;
+
+---
 Fishing
 ---
 ALTER TABLE `characters`

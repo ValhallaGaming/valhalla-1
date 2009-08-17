@@ -334,14 +334,24 @@ function spawnCharacter(charname)
 		-- PD JAIL
 		if (pdjail==1) then
 			outputChatBox("You still have " .. pdjail_time .. " minute(s) to serve of your state jail sentance.", source, 255, 0, 0)
-				
+			
 			local theTimer = setTimer(timerPDUnjailPlayer, 60000, pdjail_time, source)
 			setElementData(source, "pd.jailserved", 0, false)
 			setElementData(source, "pd.jailtime", pdjail_time, false)
 			setElementData(source, "pd.jailtimer", theTimer, false)
 			setElementData(source, "pd.jailstation", pdjail_station, false)
-		end
+		else
+			local timer = getElementData(source, "pd.jailtimer")
+			if isTimer(timer) then
+				killTimer(timer)
+			end
 			
+			removeElementData(source, "pd.jailserved")
+			removeElementData(source, "pd.jailtime")
+			removeElementData(source, "pd.jailtimer")
+			removeElementData(source, "pd.jailstation")
+		end
+		
 		-- FACTIONS
 		local factionName = nil
 		if (factionID~=-1) then

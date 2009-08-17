@@ -104,7 +104,11 @@ function respawnPlayer(thePlayer)
 			
 			setCameraInterior(thePlayer, 0)
 			
-			outputChatBox("You have recieved treatment from the Los Santos Emergency Services. Cost: " .. cost .. "$", thePlayer, 255, 255, 0)
+			local text = "You have recieved treatment from the Los Santos Emergency Services."
+			if cost > 0 then
+				text = text .. " Cost: " .. cost .. "$"
+			end
+			outputChatBox(text, thePlayer, 255, 255, 0)
 			
 			-- take all drugs
 			local count = 0

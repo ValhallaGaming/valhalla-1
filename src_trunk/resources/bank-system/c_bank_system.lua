@@ -303,6 +303,13 @@ function recieveTransfer(grid,  id, amount, time, type, from, to, reason)
 	guiGridListSetItemText(grid, row, 2, from, false, false)
 	guiGridListSetItemText(grid, row, 3, to, false, false)
 	guiGridListSetItemText(grid, row, 4, amount, false, true)
+	if guiGridListSetItemColor then
+		if amount:sub( 1, 1 ) == '-' then
+			guiGridListSetItemColor(grid, row, 4, 255, 127, 127)
+		else
+			guiGridListSetItemColor(grid, row, 4, 127, 255, 127)
+		end
+	end
 	guiGridListSetItemText(grid, row, 5, time, false, false)
 	guiGridListSetItemText(grid, row, 6, " " .. getTransactionReason(type, reason, from), false, false)
 end

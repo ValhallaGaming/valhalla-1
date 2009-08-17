@@ -5,9 +5,20 @@ function restartSingleResource(thePlayer, commandName, resourceName)
 		else
 			local theResource = getResourceFromName(tostring(resourceName))
 			if (theResource) then
-				restartResource(theResource)
-				outputChatBox("Resource " .. resourceName .. " was restarted.", thePlayer, 0, 255, 0)
-				exports.global:sendMessageToAdmins("AdmScript: " .. getPlayerName(thePlayer) .. " restarted the resource '" .. resourceName .. "'.")
+				if getResourceState(theResource) == "running" then
+					restartResource(theResource)
+					outputChatBox("Resource " .. resourceName .. " was restarted.", thePlayer, 0, 255, 0)
+					exports.global:sendMessageToAdmins("AdmScript: " .. getPlayerName(thePlayer) .. " restarted the resource '" .. resourceName .. "'.")
+				elseif getResourceState(theResource) == "loaded" then
+					startResource(theResource, true)
+					outputChatBox("Resource " .. resourceName .. " was started.", thePlayer, 0, 255, 0)
+					exports.global:sendMessageToAdmins("AdmScript: " .. getPlayerName(thePlayer) .. " started the resource '" .. resourceName .. "'.")
+				elseif getResourceState(theResource) == "failed to load" then
+					outputChatBox("Resource " .. resourceName .. " could not be loaded (" .. getResourceLoadFailureReason(theResource) .. ")", thePlayer, 255, 0, 0)
+				else
+					outputChatBox("Resource " .. resourceName .. " could not be started (" .. getResourceState(theResource) .. ")", thePlayer, 255, 0, 0)
+				end
+				
 			else
 				outputChatBox("Resource not found.", thePlayer, 255, 0, 0)
 			end
@@ -25,9 +36,12 @@ function stopSingleResource(thePlayer, commandName, resourceName)
 		else
 			local theResource = getResourceFromName(tostring(resourceName))
 			if (theResource) then
-				stopResource(theResource)
-				outputChatBox("Resource " .. resourceName .. " was stopped.", thePlayer, 0, 255, 0)
-				exports.global:sendMessageToAdmins("AdmScript: " .. getPlayerName(thePlayer) .. " stopped the resource '" .. resourceName .. "'.")
+				if stopResource(theResource) then
+					outputChatBox("Resource " .. resourceName .. " was stopped.", thePlayer, 0, 255, 0)
+					exports.global:sendMessageToAdmins("AdmScript: " .. getPlayerName(thePlayer) .. " stopped the resource '" .. resourceName .. "'.")
+				else
+					outputChatBox("Couldn't stop Resource " .. resourceName .. ".", thePlayer, 255, 0, 0)
+				end
 			else
 				outputChatBox("Resource not found.", thePlayer, 255, 0, 0)
 			end
@@ -43,9 +57,17 @@ function startSingleResource(thePlayer, commandName, resourceName)
 		else
 			local theResource = getResourceFromName(tostring(resourceName))
 			if (theResource) then
-				startResource(theResource, true)
-				outputChatBox("Resource " .. resourceName .. " was started.", thePlayer, 0, 255, 0)
-				exports.global:sendMessageToAdmins("AdmScript: " .. getPlayerName(thePlayer) .. " started the resource '" .. resourceName .. "'.")
+				if getResourceState(theResource) == "running" then
+					outputChatBox("Resource " .. resourceName .. " is already started.", thePlayer, 0, 255, 0)
+				elseif getResourceState(theResource) == "loaded" then
+					startResource(theResource, true)
+					outputChatBox("Resource " .. resourceName .. " was started.", thePlayer, 0, 255, 0)
+					exports.global:sendMessageToAdmins("AdmScript: " .. getPlayerName(thePlayer) .. " started the resource '" .. resourceName .. "'.")
+				elseif getResourceState(theResource) == "failed to load" then
+					outputChatBox("Resource " .. resourceName .. " could not be loaded (" .. getResourceLoadFailureReason(theResource) .. ")", thePlayer, 255, 0, 0)
+				else
+					outputChatBox("Resource " .. resourceName .. " could not be started (" .. getResourceState(theResource) .. ")", thePlayer, 255, 0, 0)
+				end
 			else
 				outputChatBox("Resource not found.", thePlayer, 255, 0, 0)
 			end
@@ -58,10 +80,17 @@ function restartGateKeepers(thePlayer, commandName)
 	if exports.global:isPlayerAdmin(thePlayer) then
 		local theResource = getResourceFromName("gatekeepers-system")
 		if theResource then
-			stopResource(theResource)
-			startResource(theResource)
-			outputChatBox("Gatekeepers were restarted.", thePlayer, 0, 255, 0)
-			exports.global:sendMessageToAdmins("AdmScript: " .. getPlayerName(thePlayer) .. " restarted the gatekeepers.")
+			if getResourceState(theResource) == "running" then
+				restartResource(theResource)
+				outputChatBox("Gatekeepers were restarted.", thePlayer, 0, 255, 0)
+				exports.global:sendMessageToAdmins("AdmScript: " .. getPlayerName(thePlayer) .. " restarted the gatekeepers.")
+			elseif getResourceState(theResource) == "loaded" then
+				startResource(theResource)
+				outputChatBox("Gatekeepers were started", thePlayer, 0, 255, 0)
+				exports.global:sendMessageToAdmins("AdmScript: " .. getPlayerName(thePlayer) .. " started the gatekeepers.")
+			elseif getResourceState(theResource) == "failed to load" then
+				outputChatBox("Gatekeepers could not be loaded (" .. getResourceLoadFailureReason(theResource) .. ")", thePlayer, 255, 0, 0)
+			end
 		end
 	end
 end

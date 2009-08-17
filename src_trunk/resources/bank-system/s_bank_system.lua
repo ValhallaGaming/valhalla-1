@@ -203,9 +203,11 @@ function tellTransfersBusiness()
 end
 
 function tellTransfers(source, dbid, event)
-	local where = "`from` = " .. dbid .. " OR `to` = " .. dbid
+	local where = "( `from` = " .. dbid .. " OR `to` = " .. dbid .. " )"
 	if dbid < 0 then
-		where = "(" .. where .. ") AND type != 6" -- skip paydays for factions 
+		where = where .. " AND type != 6" -- skip paydays for factions 
+	else
+		where = where .. " AND type != 4 AND type != 5" -- skip stuff that's not paid from bank money
 	end
 	local query = mysql_query(handler, "SELECT w.*, a.charactername, b.charactername FROM wiretransfers w LEFT JOIN characters a ON a.id = `from` LEFT JOIN characters b ON b.id = `to` WHERE " .. where .. " ORDER BY id DESC LIMIT 40")
 	if query then

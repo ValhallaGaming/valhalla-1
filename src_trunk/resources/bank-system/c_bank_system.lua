@@ -291,27 +291,25 @@ function getTransactionReason(type, reason, from)
 	end
 end
 
-function recievePersonalTransfer(id, amount, time, type, from, to, reason)
-	local row = guiGridListAddRow(gPersonalTransactions)
-	guiGridListSetItemText(gPersonalTransactions, row, 1, tostring(id), false, true)
-	guiGridListSetItemText(gPersonalTransactions, row, 2, from, false, false)
-	guiGridListSetItemText(gPersonalTransactions, row, 3, to, false, false)
-	guiGridListSetItemText(gPersonalTransactions, row, 4, amount, false, true)
-	guiGridListSetItemText(gPersonalTransactions, row, 5, time, false, false)
-	guiGridListSetItemText(gPersonalTransactions, row, 6, " " .. getTransactionReason(type, reason, from), false, false)
+function recieveTransfer(grid,  id, amount, time, type, from, to, reason)
+	local row = guiGridListAddRow(grid)
+	guiGridListSetItemText(grid, row, 1, tostring(id), false, true)
+	guiGridListSetItemText(grid, row, 2, from, false, false)
+	guiGridListSetItemText(grid, row, 3, to, false, false)
+	guiGridListSetItemText(grid, row, 4, amount, false, true)
+	guiGridListSetItemText(grid, row, 5, time, false, false)
+	guiGridListSetItemText(grid, row, 6, " " .. getTransactionReason(type, reason, from), false, false)
+end
+
+function recievePersonalTransfer(...)
+	recieveTransfer(gPersonalTransactions, ...)
 end
 
 addEvent("recievePersonalTransfer", true)
 addEventHandler("recievePersonalTransfer", getLocalPlayer(), recievePersonalTransfer)
 
-function recieveBusinessTransfer(id, amount, time, type, from, to, reason)
-	local row = guiGridListAddRow(gBusinessTransactions)
-	guiGridListSetItemText(gBusinessTransactions, row, 1, tostring(id), false, true)
-	guiGridListSetItemText(gBusinessTransactions, row, 2, from, false, false)
-	guiGridListSetItemText(gBusinessTransactions, row, 3, to, false, false)
-	guiGridListSetItemText(gBusinessTransactions, row, 4, amount, false, true)
-	guiGridListSetItemText(gBusinessTransactions, row, 5, time, false, false)
-	guiGridListSetItemText(gBusinessTransactions, row, 6, " " .. getTransactionReason(type, reason), false, false)
+function recieveBusinessTransfer(...)
+	recieveTransfer(gBusinessTransactions, ...)
 end
 
 addEvent("recieveBusinessTransfer", true)

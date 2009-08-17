@@ -71,8 +71,10 @@ function showPlayerMenu(targetPlayer, friends, sdescription, sage, sweight, shei
 	sent = false
 	
 	-- FRISK
-	bFrisk = guiCreateButton(0.05, 0.25, 0.45, 0.1, "Frisk", true, wRightClick)
-	addEventHandler("onClientGUIClick", bFrisk, cfriskPlayer, false)
+	if getElementData(getLocalPlayer(), "hoursplayed") >= 12 then
+		bFrisk = guiCreateButton(0.05, 0.25, 0.45, 0.1, "Frisk", true, wRightClick)
+		addEventHandler("onClientGUIClick", bFrisk, cfriskPlayer, false)
+	end
 	
 	-- RESTRAIN
 	local cuffed = getElementData(player, "restrain")

@@ -305,3 +305,16 @@ function takeLicense(thePlayer, commandName, targetPartialNick, licenseType)
 	end
 end
 addCommandHandler("takelicense", takeLicense, false, false)
+
+function tellNearbyPlayersVehicleStrobesOn()
+	local x, y, z = getElementType(source)
+	local checkSphere = createColSphere(x, y, z, 300)
+	local nearbyPlayers = getElementsWithinColShape(checkSphere, "player")
+	destroyElement(checkSphere)
+	
+	for _, nearbyPlayer in ipairs(nearbyPlayers) do
+		triggerClientEvent(nearbyPlayer, "forceElementStreamIn", source)
+	end
+end
+addEvent("forceElementStreamIn", true)
+addEventHandler("forceElementStreamIn", getRootElement(), tellNearbyPlayersVehicleStrobesOn)

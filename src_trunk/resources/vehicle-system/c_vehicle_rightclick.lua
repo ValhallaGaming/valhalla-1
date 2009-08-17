@@ -125,6 +125,8 @@ function moveItemToVehicle(button, state)
 			if (itemID==48) then -- BACKPACK
 				outputChatBox("This item cannot be stored in a vehicle.", 255, 0, 0)
 				return
+			elseif itemID == 61 then -- Emergency Light Becon
+				triggerServerEvent("forceStreamIn", vehicle)
 			end
 			
 			if (itemName) and not (exports.global:cdoesPlayerHaveItem(localPlayer, itemID, itemValue)) then

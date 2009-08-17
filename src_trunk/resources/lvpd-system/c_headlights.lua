@@ -9,15 +9,14 @@ function toggleFlashers()
 
 	if (veh) then
 		local modelid = getElementModel(veh)
-		
-		if (governmentVehicle[modelid]) then
+		if (governmentVehicle[modelid]) or exports.global:cdoesVehicleHaveItem(veh, 61) then -- Emergency Light Becon
 			local lights = getVehicleOverrideLights(veh)
 			local state = getElementData(veh, "flashers")
 
 			if (lights==2) then
 				if not (state) then
 					setElementData(veh, "flashers", true, true)
-					setVehicleHeadLightColor(veh, 255, 0, 0)
+					setVehicleHeadLightColor(veh, 0, 0, 255)
 					setVehicleLightState(veh, 0, 1)
 					setVehicleLightState(veh, 1, 0)
 				else
@@ -39,8 +38,7 @@ policevehicleids = { }
 function streamIn()
 	if (getElementType(source)=="vehicle") then
 		local modelid = getElementModel(source)
-		
-		if (governmentVehicle[modelid]) then
+		if (governmentVehicle[modelid]) or exports.global:cdoesVehicleHaveItem(source, 61) then
 			for i = 1, #policevehicles+1 do
 				if (policevehicles[i]==nil) then
 					policevehicles[i] = source
@@ -51,10 +49,13 @@ function streamIn()
 		end
 	end
 end
+addEvent("forceElementStreamIn", true)
+addEventHandler("forceElementStreamIn", getRootElement(), streamIn)
 addEventHandler("onClientElementStreamIn", getRootElement(), streamIn)
 
 function streamOut()
 	if (getElementType(source)=="vehicle") then
+		local modelid = getElementModel(source)
 		if (policevehicleids[source]~=nil) then
 			local id = policevehicleids[source]
 			setVehicleHeadLightColor(source, 255, 255, 255)

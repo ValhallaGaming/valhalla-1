@@ -217,6 +217,9 @@ function transferMoneyPersonal(button)
 			outputChatBox("Please enter the full character name of the reciever!", 255, 0, 0)
 		else
 			triggerServerEvent("transferMoneyToPersonal", localPlayer, false, playername, amount, reason) 
+			guiSetText(tTransferP, "0")
+			guiSetText(tTransferPReason, "")
+			guiSetText(eTransferP, "")
 		end
 	end
 end
@@ -269,6 +272,9 @@ function transferMoneyBusiness(button)
 			outputChatBox("Please enter the full character name of the reciever!", 255, 0, 0)
 		else
 			triggerServerEvent("transferMoneyToPersonal", localPlayer, true, playername, amount, reason) 
+			guiSetText(tTransferB, "0")
+			guiSetText(tTransferBReason, "")
+			guiSetText(eTransferB, "")
 		end
 	end
 end
@@ -306,11 +312,23 @@ function recievePersonalTransfer(...)
 end
 
 addEvent("recievePersonalTransfer", true)
-addEventHandler("recievePersonalTransfer", getLocalPlayer(), recievePersonalTransfer)
+addEventHandler("recievePersonalTransfer", localPlayer, recievePersonalTransfer)
 
 function recieveBusinessTransfer(...)
 	recieveTransfer(gBusinessTransactions, ...)
 end
 
 addEvent("recieveBusinessTransfer", true)
-addEventHandler("recieveBusinessTransfer", getLocalPlayer(), recieveBusinessTransfer)
+addEventHandler("recieveBusinessTransfer", localPlayer, recieveBusinessTransfer)
+
+function checkDataChange(dn)
+	if wBank then
+		if dn == "bankmoney" and source == localPlayer then
+			guiSetText(lBalance, "Balance: " .. getElementData(source, "bankmoney") .. "$")
+		elseif dn == "money" and source == getPlayerTeam(localPlayer) then
+			gfactionBalance = getElementData(source, "money")
+			guiSetText(lBalanceB, "Balance: " .. gfactionBalance .. "$")
+		end
+	end
+end
+addEventHandler("onClientElementDataChange", getRootElement(), checkDataChange)

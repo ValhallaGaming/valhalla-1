@@ -34,7 +34,7 @@ MAX_FUEL = 100
 function fuelDepleting()
 	local players = exports.pool:getPoolElementsByType("player")
 	for k, v in ipairs(players) do
-		if(isPedInVehicle(v)) then
+		if isPedInVehicle(v) and not exports.global:isPlayerSilverDonator(v) then
 			local veh = getPedOccupiedVehicle(v)
 			if (veh) then
 				local seat = getPedOccupiedVehicleSeat(v)
@@ -60,15 +60,10 @@ function fuelDepleting()
 							setElementData(veh, "oldz", z, false)
 
 							if (newFuel<1) then
-								triggerClientEvent(v, "setClientFuel", v, newFuel)
 								setVehicleEngineState(veh, false)
 								setElementData(veh, "engine", 0, false)
-							else
-								triggerClientEvent(v, "setClientFuel", v, newFuel)
 							end
 						elseif (tonumber(fuel)<1) then
-							fuel = getElementData(veh, "fuel")
-							triggerClientEvent(v, "setClientFuel", v, fuel)
 							setVehicleEngineState(veh, false)
 						end
 					end

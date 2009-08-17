@@ -73,7 +73,7 @@ function callSomeone(thePlayer, commandName, phoneNumber, ...)
 						
 						local money = getElementData(thePlayer, "money")
 						
-						if (money<10) then
+						if not exports.global:isPlayerSilverDonator(thePlayer) and money < 10 then
 							outputChatBox("You cannot afford a call.", thePlayer, 255, 0, 0)
 						elseif not (found) or (foundElement==thePlayer) then -- Player with this phone number isnt online...
 							outputChatBox("You get a dead tone...", thePlayer, 255, 194, 14)
@@ -191,11 +191,15 @@ function hangupPhone(thePlayer, commandName)
 			if (calling) then
 				local target = calling
 				local phoneState = getElementData(thePlayer, "phonestate")
-				if (phoneState>=1) then -- lets charge the player
+				if phoneState >= 1 then -- lets charge the player
 					if (getElementData(thePlayer, "called")) then
-						exports.global:takePlayerSafeMoney(thePlayer, 10)
+						if not exports.global:isPlayerSilverDonator(thePlayer) then
+							exports.global:takePlayerSafeMoney(thePlayer, 10)
+						end
 					else
-						exports.global:takePlayerSafeMoney(calling, 10)
+						if not exports.global:isPlayerSilverDonator(calling) then
+							exports.global:takePlayerSafeMoney(calling, 10)
+						end
 					end
 				end
 			

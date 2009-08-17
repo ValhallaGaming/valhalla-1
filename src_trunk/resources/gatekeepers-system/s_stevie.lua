@@ -377,7 +377,7 @@ function startPhoneCall(thePlayer)
 			outputChatBox("You are already using your phone.", thePlayer, 255, 0, 0)
 		else
 			local money = getElementData(thePlayer, "money")
-			if (money<10) then
+			if not exports.global:isPlayerSilverDonator(thePlayer) and money < 10 then
 				outputChatBox("You cannot afford a call.", thePlayer, 255, 0, 0)
 			else
 				if(stevie)then -- If stevie is currently spawned (i.e., if it's between 1900 and 2200).   -- disabled while testing.
@@ -631,7 +631,9 @@ function endCall(thePlayer) -- to cancel the phone animation and reset the phone
 	exports.global:removeAnimation(thePlayer)
 	toggleAllControls(thePlayer, true, true, true)
 	removeElementData(thePlayer, "calling")
-	exports.global:takePlayerSafeMoney(thePlayer, 10)
+	if not exports.global:isPlayerSilverDonator(thePlayer) then
+		exports.global:takePlayerSafeMoney(thePlayer, 10)
+	end
 	phoneState = 0
 	removeEventHandler ( "onPlayerQuit", thePlayer, endCall )
 end

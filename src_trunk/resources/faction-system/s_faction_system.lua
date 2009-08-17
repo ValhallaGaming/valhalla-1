@@ -848,6 +848,8 @@ function payWage(player, pay, faction, tax)
 	if not faction then
 		if pay >= 0 then
 			outputChatBox("    State Benefits: " .. pay .. "$", player, 255, 194, 14)
+			
+			mysql_free_result( mysql_query( handler, "INSERT INTO wiretransfers (`from`, `to`, `amount`, `reason`, `type`) VALUES (0, " .. getElementData(player, "dbid") .. ", " .. pay .. ", '', 6)" ) )
 		else
 			outputChatBox("    The government could not afford to pay you your state benefits.", player, 255, 0, 0)
 			pay = 0
@@ -855,13 +857,24 @@ function payWage(player, pay, faction, tax)
 	else
 		if pay >= 0 then
 			outputChatBox("    Wage Paid: " .. pay .. "$", player, 255, 194, 14)			
+
+			local teamid = tonumber( getElementData(getPlayerTeam(player), "id" ) )
+			if teamid <= 0 then
+				teamid = 0
+			else
+				teamid = -teamid
+			end
+
+			mysql_free_result( mysql_query( handler, "INSERT INTO wiretransfers (`from`, `to`, `amount`, `reason`, `type`) VALUES (" .. teamid .. ", " .. getElementData(player, "dbid") .. ", " .. pay-tax .. ", '', 6)" ) )
 		else
 			outputChatBox("    Your employer could not afford to pay your wages.", player, 255, 0, 0)
 			pay = 0
 		end
 	end
 	
-	outputChatBox("    Business Profit: " .. profit .. "$", player, 255, 194, 14)
+	if profit > 0 then
+		outputChatBox("    Business Profit: " .. profit .. "$", player, 255, 194, 14)
+	end
 	
 	if tax > 0 then
 		local incomeTax = exports.global:getIncomeTaxAmount()
@@ -883,6 +896,9 @@ function payWage(player, pay, faction, tax)
 
 	outputChatBox("----------------------------------------------------------", player, 255, 194, 14)
 	outputChatBox("  Gross Income: " .. pay+profit+interest+donatormoney-rent .. "$ (Wire-Transferred to bank)", player, 255, 194, 14)
+	
+	-- Insert in Transactions
+	mysql_free_result( mysql_query( handler, "INSERT INTO wiretransfers (`from`, `to`, `amount`, `reason`, `type`) VALUES (0, " .. getElementData(player, "dbid") .. ", " .. profit+interest+donatormoney-rent .. ", '', 7)" ) )
 end
 
 function payAllWages()

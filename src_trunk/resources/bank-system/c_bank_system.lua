@@ -1,8 +1,18 @@
-wBank, bClose, lBalance, tabPanel, tabPersonal, tabBusiness, lWithdrawP, tWithdrawP, bWithdrawP, lDepositP, tDepositP, bDepositP = nil
-lWithdrawB, tWithdrawB, bWithdrawB, lDepositB, tDepositB, bDepositB, lBalanceB = nil
+wBank, bClose, lBalance, tabPanel, tabPersonal, tabPersonalTransactions, tabBusiness, tabBusinessTransactions, lWithdrawP, tWithdrawP, bWithdrawP, lDepositP, tDepositP, bDepositP = nil
+lWithdrawB, tWithdrawB, bWithdrawB, lDepositB, tDepositB, bDepositB, lBalanceB, gPersonalTransactions, gBusinessTransactions = nil
 gfactionBalance = nil
 
 local localPlayer = getLocalPlayer()
+
+function updateTabStuff()
+	if guiGetSelectedTab(tabPanel) == tabPersonalTransactions then
+		guiGridListClear(gPersonalTransactions)
+		triggerServerEvent("tellTransfersPersonal", localPlayer)
+	elseif guiGetSelectedTab(tabPanel) == tabBusinessTransactions then
+		guiGridListClear(gBusinessTransactions)
+		triggerServerEvent("tellTransfersBusiness", localPlayer)
+	end
+end
 
 function showBankUI(isInFaction, isFactionLeader, factionBalance)
 	if not (wBank) then
@@ -11,12 +21,23 @@ function showBankUI(isInFaction, isFactionLeader, factionBalance)
 		local x = scrWidth/2 - (width/2)
 		local y = scrHeight/2 - (height/2)
 		
+		local transactionColumns = {
+			{ "ID", 0.09 },
+			{ "From", 0.2 },
+			{ "To", 0.2 },
+			{ "Amount", 0.1 },
+			{ "Date", 0.2 },
+			{ "Reason", 0.5 }
+		}
+		
 		wBank = guiCreateWindow(x, y, width, height, "Bank of Los Santos", false)
 		guiWindowSetSizable(wCars, false)
 		
 		tabPanel = guiCreateTabPanel(0.05, 0.05, 0.9, 0.85, true, wBank)
+		addEventHandler( "onClientGUITabSwitched", tabPanel, updateTabStuff )
 		
 		tabPersonal = guiCreateTab("Personal Banking", tabPanel)
+		tabPersonalTransactions = guiCreateTab("Personal Transactions", tabPanel)
 		
 		local hoursplayed = getElementData(localPlayer, "hoursplayed")
 		
@@ -60,6 +81,19 @@ function showBankUI(isInFaction, isFactionLeader, factionBalance)
 				addEventHandler("onClientGUIClick", bTransferB, transferMoneyBusiness, false)
 				
 				eTransferB = guiCreateEdit(0.66, 0.43, 0.3, 0.075, "", true, tabBusiness)
+				
+				lTransferBReason = guiCreateLabel(0.1, 0.55, 0.2, 0.05, "Reason:", true, tabBusiness)
+				guiSetFont(lTransferBReason, "default-bold-small")
+				
+				tTransferBReason = guiCreateEdit(0.22, 0.54, 0.74, 0.075, "", true, tabBusiness)
+			end
+			
+			-- TRANSACTION HISTORY
+			tabBusinessTransactions = guiCreateTab("Business Transactions", tabPanel)
+			
+			gBusinessTransactions = guiCreateGridList(0.02, 0.02, 0.96, 0.96, true, tabBusinessTransactions)
+			for key, value in ipairs( transactionColumns ) do
+				guiGridListAddColumn( gBusinessTransactions, value[1], value[2] or 0.1 )
 			end
 		end
 		
@@ -103,8 +137,20 @@ function showBankUI(isInFaction, isFactionLeader, factionBalance)
 			addEventHandler("onClientGUIClick", bTransferP, transferMoneyPersonal, false)
 			
 			eTransferP = guiCreateEdit(0.66, 0.43, 0.3, 0.075, "", true, tabPersonal)
+
+			lTransferPReason = guiCreateLabel(0.1, 0.55, 0.2, 0.05, "Reason:", true, tabPersonal)
+			guiSetFont(lTransferPReason, "default-bold-small")
+			
+			tTransferPReason = guiCreateEdit(0.22, 0.54, 0.74, 0.075, "", true, tabPersonal)
 		end
 		
+		-- TRANSACTION HISTORY
+		
+		gPersonalTransactions = guiCreateGridList(0.02, 0.02, 0.96, 0.96, true, tabPersonalTransactions)
+		for key, value in ipairs( transactionColumns ) do
+			guiGridListAddColumn( gPersonalTransactions, value[1], value[2] or 0.1 )
+		end
+
 		guiSetInputEnabled(true)
 		
 		outputChatBox("Welcome to The Bank of Los Santos")
@@ -158,16 +204,19 @@ function transferMoneyPersonal(button)
 	if (button=="left") then
 		local amount = tonumber(guiGetText(tTransferP))
 		local money = getElementData(localPlayer, "bankmoney")
+		local reason = guiGetText(tTransferPReason)
 		local playername = guiGetText(eTransferP)
 		
 		if not amount or amount <= 0 then
 			outputChatBox("Please enter a number greater than 0!", 255, 0, 0)
 		elseif (amount>money) then
 			outputChatBox("You do not have enough funds.", 255, 0, 0)
+		elseif reason == "" then
+			outputChatBox("Please enter a reason for the Transfer!", 255, 0, 0)
 		elseif playername == "" then
 			outputChatBox("Please enter the full character name of the reciever!", 255, 0, 0)
 		else
-			triggerServerEvent("transferMoneyToPersonal", localPlayer, false, playername, amount) 
+			triggerServerEvent("transferMoneyToPersonal", localPlayer, false, playername, amount, reason) 
 		end
 	end
 end
@@ -208,15 +257,62 @@ function transferMoneyBusiness(button)
 	if (button=="left") then
 		local amount = tonumber(guiGetText(tTransferB))
 		local playername = guiGetText(eTransferB)
+		local reason = guiGetText(tTransferBReason)
 		
 		if not amount or amount <= 0 then
 			outputChatBox("Please enter a number greater than 0!", 255, 0, 0)
 		elseif (amount>gfactionBalance) then
 			outputChatBox("You do not have enough funds.", 255, 0, 0)
+		elseif reason == "" then
+			outputChatBox("Please enter a reason for the Transfer!", 255, 0, 0)
 		elseif playername == "" then
 			outputChatBox("Please enter the full character name of the reciever!", 255, 0, 0)
 		else
-			triggerServerEvent("transferMoneyToPersonal", localPlayer, true, playername, amount) 
+			triggerServerEvent("transferMoneyToPersonal", localPlayer, true, playername, amount, reason) 
 		end
 	end
 end
+
+function getTransactionReason(type, reason, from)
+	if type == 0 or type == 4 then
+		return "Withdraw"
+	elseif type == 1 or type == 5 then
+		return "Deposit"
+	elseif type == 6 then
+		if from == "Government" then
+			return "State Benefits"
+		else
+			return "Wage"
+		end
+	elseif type == 7 then
+		return "Payday (Biz+Interest+Donator)"
+	else
+		return "Transfer: " .. tostring(reason or "")
+	end
+end
+
+function recievePersonalTransfer(id, amount, time, type, from, to, reason)
+	local row = guiGridListAddRow(gPersonalTransactions)
+	guiGridListSetItemText(gPersonalTransactions, row, 1, tostring(id), false, true)
+	guiGridListSetItemText(gPersonalTransactions, row, 2, from, false, false)
+	guiGridListSetItemText(gPersonalTransactions, row, 3, to, false, false)
+	guiGridListSetItemText(gPersonalTransactions, row, 4, amount, false, true)
+	guiGridListSetItemText(gPersonalTransactions, row, 5, time, false, false)
+	guiGridListSetItemText(gPersonalTransactions, row, 6, " " .. getTransactionReason(type, reason, from), false, false)
+end
+
+addEvent("recievePersonalTransfer", true)
+addEventHandler("recievePersonalTransfer", getLocalPlayer(), recievePersonalTransfer)
+
+function recieveBusinessTransfer(id, amount, time, type, from, to, reason)
+	local row = guiGridListAddRow(gBusinessTransactions)
+	guiGridListSetItemText(gBusinessTransactions, row, 1, tostring(id), false, true)
+	guiGridListSetItemText(gBusinessTransactions, row, 2, from, false, false)
+	guiGridListSetItemText(gBusinessTransactions, row, 3, to, false, false)
+	guiGridListSetItemText(gBusinessTransactions, row, 4, amount, false, true)
+	guiGridListSetItemText(gBusinessTransactions, row, 5, time, false, false)
+	guiGridListSetItemText(gBusinessTransactions, row, 6, " " .. getTransactionReason(type, reason), false, false)
+end
+
+addEvent("recieveBusinessTransfer", true)
+addEventHandler("recieveBusinessTransfer", getLocalPlayer(), recieveBusinessTransfer)

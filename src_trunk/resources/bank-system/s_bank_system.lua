@@ -65,6 +65,8 @@ function withdrawMoneyPersonal(amount)
 	local money = getElementData(source, "bankmoney")
 	setElementData(source, "bankmoney", money-amount)
 	
+	mysql_free_result( mysql_query( handler, "INSERT INTO wiretransfers (`from`, `to`, `amount`, `reason`, `type`) VALUES (0, " .. getElementData(source, "dbid") .. ", " .. -amount .. ", '', 0)" ) )
+
 	outputChatBox("You withdraw " .. amount .. "$ from your personal account.", source, 255, 194, 14)
 end
 addEvent("withdrawMoneyPersonal", true)
@@ -76,6 +78,8 @@ function depositMoneyPersonal(amount)
 	local money = getElementData(source, "bankmoney")
 	setElementData(source, "bankmoney", money+amount)
 	
+	mysql_free_result( mysql_query( handler, "INSERT INTO wiretransfers (`from`, `to`, `amount`, `reason`, `type`) VALUES (" .. getElementData(source, "dbid") .. ", 0, " .. amount .. ", '', 1)" ) )
+
 	outputChatBox("You deposited " .. amount .. "$ into your personal account.", source, 255, 194, 14)
 end
 addEvent("depositMoneyPersonal", true)
@@ -85,8 +89,12 @@ function withdrawMoneyBusiness(amount)
 	local theTeam = getPlayerTeam(source)
 	local money = getElementData(theTeam, "money")
 	setElementData(theTeam, "money", money-amount)
+
 	local query = mysql_query(handler, "UPDATE factions SET bankbalance='" .. money-amount .. "' WHERE name='" .. getTeamName(theTeam) .. "'")
 	mysql_free_result(query)
+
+	mysql_free_result( mysql_query( handler, "INSERT INTO wiretransfers (`from`, `to`, `amount`, `reason`, `type`) VALUES (" .. -getElementData(theTeam, "id") .. ", " .. getElementData(source, "dbid") .. ", " .. amount .. ", '', 4)" ) )
+
 	exports.global:givePlayerSafeMoney(source, amount)
 	outputChatBox("You withdraw " .. amount .. "$ from your business account.", source, 255, 194, 14)
 end
@@ -97,15 +105,20 @@ function depositMoneyBusiness(amount)
 	local theTeam = getPlayerTeam(source)
 	local money = getElementData(theTeam, "money")
 	setElementData(theTeam, "money", money+amount)
+	
 	local query = mysql_query(handler, "UPDATE factions SET bankbalance='" .. money+amount .. "' WHERE name='" .. getTeamName(theTeam) .. "'")
 	mysql_free_result(query)
+	
+	mysql_free_result( mysql_query( handler, "INSERT INTO wiretransfers (`from`, `to`, `amount`, `reason`, `type`) VALUES (" .. getElementData(source, "dbid") .. ", " .. -getElementData(theTeam, "id") .. ", " .. amount .. ", '', 5)" ) )
+
 	exports.global:takePlayerSafeMoney(source, amount)
 	outputChatBox("You deposited " .. amount .. "$ into your business account.", source, 255, 194, 14)
 end
 addEvent("depositMoneyBusiness", true)
 addEventHandler("depositMoneyBusiness", getRootElement(), depositMoneyBusiness)
 
-function transferMoneyToPersonal(business, name, amount)
+function transferMoneyToPersonal(business, name, amount, reason)
+	reason = mysql_escape_string(handler, reason)
 	local reciever = getPlayerFromName(string.gsub(name," ","_"))
 	if reciever == source then
 		outputChatBox("You can't wiretransfer money to yourself.", source, 255, 0, 0)
@@ -123,6 +136,8 @@ function transferMoneyToPersonal(business, name, amount)
 		else
 			outputDebugString("s_bank_system.lua: mysql_query failed: (" .. mysql_errno(handler) .. ") " .. mysql_error(handler), 1, 255, 0, 0)
 		end
+	else
+		dbid = getElementData(reciever, "dbid")
 	end
 	
 	if not dbid and not reciever then
@@ -134,8 +149,10 @@ function transferMoneyToPersonal(business, name, amount)
 			local query = mysql_query(handler, "UPDATE factions SET bankbalance='" .. money - amount .. "' WHERE name='" .. getTeamName(theTeam) .. "'")
 			mysql_free_result(query)
 			setElementData(theTeam, "money", money - amount)
+			mysql_free_result( mysql_query( handler, "INSERT INTO wiretransfers (`from`, `to`, `amount`, `reason`, `type`) VALUES (" .. ( -getElementData( theTeam, "id" ) ) .. ", " .. dbid .. ", " .. amount .. ", '" .. reason .. "', 3)" ) )
 		else
 			setElementData(source, "bankmoney", getElementData(source, "bankmoney") - amount)
+			mysql_free_result( mysql_query( handler, "INSERT INTO wiretransfers (`from`, `to`, `amount`, `reason`, `type`) VALUES (" .. getElementData(source, "dbid") .. ", " .. dbid .. ", " .. amount .. ", '" .. reason .. "', 2)" ) )
 		end
 		
 		if reciever then
@@ -150,3 +167,95 @@ function transferMoneyToPersonal(business, name, amount)
 end
 addEvent("transferMoneyToPersonal", true)
 addEventHandler("transferMoneyToPersonal", getRootElement(), transferMoneyToPersonal)
+
+-- TRANSACTION HISTORY STUFF
+
+--[[
+	Transaction Types:
+	0: Withdraw Personal
+	1: Deposit Personal
+	2: Transfer from Personal to Personal
+	3: Transfer from Business to Personal
+	4: Withdraw Business
+	5: Deposit Business
+	6: Wage/State Benefits
+	7: everything in payday except Wage/State Benefits
+]]
+
+function findTeamByID(id)	
+	for key, value in ipairs(exports.pool:getPoolElementsByType("team")) do
+		if tonumber(getElementData(value, "id")) == id then
+			return value
+		end
+	end
+end
+
+function tellTransfersPersonal()
+	local dbid = getElementData(source, "dbid")
+	tellTransfers(source, dbid, "recievePersonalTransfer")
+end
+
+function tellTransfersBusiness()
+	local dbid = tonumber(getElementData(getPlayerTeam(source), "id")) or 0
+	if dbid > 0 then
+		tellTransfers(source, -dbid, "recieveBusinessTransfer")
+	end
+end
+
+function tellTransfers(source, dbid, event)
+	local where = "`from` = " .. dbid .. " OR `to` = " .. dbid
+	if dbid < 0 then
+		where = "(" .. where .. ") AND type != 6" -- skip paydays for factions 
+	end
+	local query = mysql_query(handler, "SELECT w.*, a.charactername, b.charactername FROM wiretransfers w LEFT JOIN characters a ON a.id = `from` LEFT JOIN characters b ON b.id = `to` WHERE " .. where .. " ORDER BY id DESC LIMIT 40")
+	if query then
+		for result, row in mysql_rows(query) do
+			local id = tonumber(row[1])
+			local amount = tonumber(row[4])
+			local time = row[6]
+			local type = tonumber(row[7])
+			local reason = row[5]
+			if reason == mysql_null() then
+				reason = ""
+			end
+			
+			local from, to = "-", "-"
+			if row[8] ~= mysql_null() then
+				from = row[8]:gsub("_", " ")
+			elseif tonumber(row[2]) then
+				num = tonumber(row[2]) 
+				if num < 0 then
+					from = getTeamName(findTeamByID(-num))
+				elseif num == 0 and ( type == 6 or type == 7 ) then
+					from = "Government"
+				end
+			end
+			if row[9] ~= mysql_null() then
+				to = row[9]:gsub("_", " ")
+			elseif tonumber(row[3]) and tonumber(row[3]) < 0 then
+				to = getTeamName(findTeamByID(-tonumber(row[3])))
+			end
+			
+			if type >= 2 and type <= 5 and tonumber(row[2]) == dbid then
+				amount = -amount
+			end
+			
+			if amount < 0 then
+				amount = "-$" .. -amount
+			else
+				amount = "$" .. amount
+			end
+			
+			triggerClientEvent(source, event, source, id, amount, time, type, from, to, reason)
+		end
+		mysql_free_result(query)
+	else
+		outputDebugString(mysql_error(handler), 2)
+	end
+end
+
+addEvent("tellTransfersPersonal", true)
+addEventHandler("tellTransfersPersonal", getRootElement(), tellTransfersPersonal)
+
+addEvent("tellTransfersBusiness", true)
+addEventHandler("tellTransfersBusiness", getRootElement(), tellTransfersBusiness)

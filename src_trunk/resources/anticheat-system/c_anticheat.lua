@@ -64,7 +64,7 @@ function checkWeapons()
 				setElementData(localPlayer, "ACweapon" .. i, 0, false)
 			end
 			local totalAmmo = getPedTotalAmmo(localPlayer, onslot)
-			if totalAmmo >= 60000 and (i <= 15 or i >= 44) then -- fix for melee with 60k+ ammo
+			if i <= 15 or i >= 44 then -- fix for melee with 60k+ ammo
 				totalAmmo = 1
 			end
 			if totalAmmo > ammo then

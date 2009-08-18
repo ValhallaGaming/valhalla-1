@@ -23,6 +23,8 @@ function selectPlayer()
 				outputDebugString("no players found")
 				count = 0
 			end
+		elseif getElementData( theChosenOne, "phoneoff" ) == 1 then
+			outputDebugString("Player " .. getPlayerName(theChosenOne) .. " has his phone off")
 		else
 			local query = mysql_query(handler, "SELECT hunter FROM characters WHERE charactername='" .. mysql_escape_string(handler, getPlayerName(theChosenOne)) .."'")
 			local huntersFriend = tonumber(mysql_result(query, 1, 1))
@@ -58,7 +60,7 @@ function selectPlayer()
 		end
 	end
 end
-addCommandHandler("starthunter", selectPlayer)
+-- addCommandHandler("starthunter", selectPlayer)
 
 function dropOffCar()
 	local thePlayer = source

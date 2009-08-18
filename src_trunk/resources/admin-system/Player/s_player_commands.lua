@@ -1559,25 +1559,29 @@ function freezePlayer(thePlayer, commandName, target)
 		if not (target) then
 			outputChatBox("SYNTAX: /" .. commandName .. " [Partial Player Nick]", thePlayer, 255, 194, 14)
 		else
-			local username = getPlayerName(thePlayer)
 			local targetPlayer = exports.global:findPlayerByPartialNick(target)
-			local targetPlayerName = getPlayerName(targetPlayer)
-			
-			local veh = getPedOccupiedVehicle( targetPlayer )
-            if (veh) then
-                setVehicleFrozen(veh, true)
-				toggleAllControls(targetPlayer, false, true, false)
-				outputChatBox(" You have been frozen by an admin. Take care when following instructions.", targetPlayer)
-				outputChatBox(" You have frozen " ..targetPlayerName.. ".", thePlayer)
-			else	
-				toggleAllControls(targetPlayer, false, true, false)
-				setPedWeaponSlot(targetPlayer, 0)
-				setElementData(targetPlayer, "freeze", 1)
-				outputChatBox(" You have been frozen by an admin. Take care when following instructions.", targetPlayer)
-				outputChatBox(" You have frozen " ..targetPlayerName.. ".", thePlayer)
-			end
+			if targetPlayer then
+				local targetPlayerName = getPlayerName(targetPlayer)
+				
+				local veh = getPedOccupiedVehicle( targetPlayer )
+				if (veh) then
+					setVehicleFrozen(veh, true)
+					toggleAllControls(targetPlayer, false, true, false)
+					outputChatBox(" You have been frozen by an admin. Take care when following instructions.", targetPlayer)
+					outputChatBox(" You have frozen " ..targetPlayerName.. ".", thePlayer)
+				else	
+					toggleAllControls(targetPlayer, false, true, false)
+					setPedWeaponSlot(targetPlayer, 0)
+					setElementData(targetPlayer, "freeze", 1)
+					outputChatBox(" You have been frozen by an admin. Take care when following instructions.", targetPlayer)
+					outputChatBox(" You have frozen " ..targetPlayerName.. ".", thePlayer)
+				end
 				local adminTitle = exports.global:getPlayerAdminTitle(thePlayer)
+				local username = getPlayerName(thePlayer)
 				exports.global:sendMessageToAdmins("AdmCmd: " .. tostring(adminTitle) .. " " .. username .. " froze " .. targetPlayerName .. ".")
+			else
+				outputChatBox("Player not found or multiple were found.", thePlayer, 255, 0, 0)
+			end
 		end
 	end
 end
@@ -1591,37 +1595,41 @@ function unfreezePlayer(thePlayer, commandName, target)
 		if not (target) then
 			outputChatBox("SYNTAX: /" .. commandName .. " /unfreeze [Partial Player Nick]", thePlayer, 255, 194, 14)
 		else
-			local username = getPlayerName(thePlayer)
 			local targetPlayer = exports.global:findPlayerByPartialNick(target)
-			local targetPlayerName = getPlayerName(targetPlayer)
-			
-			local veh = getPedOccupiedVehicle( targetPlayer )
-            if (veh) then
-                setVehicleFrozen(veh, false)
-				toggleAllControls(targetPlayer, true, true, true)
+			if targetPlayer then
+				local targetPlayerName = getPlayerName(targetPlayer)
 				
-				if (isElement(targetPlayer)) then
+				local veh = getPedOccupiedVehicle( targetPlayer )
+				if (veh) then
+					setVehicleFrozen(veh, false)
+					toggleAllControls(targetPlayer, true, true, true)
+					
+					if (isElement(targetPlayer)) then
+						outputChatBox(" You have been unfrozen by an admin. Thanks for your co-operation.", targetPlayer)
+					end
+					
+					if (isElement(thePlayer)) then
+						outputChatBox(" You have unfrozen " ..targetPlayerName.. ".", thePlayer)
+					end
+				else	
+					toggleAllControls(targetPlayer, true, true, true)
+					
+					-- Disable weapon scrolling if restrained
+					if getElementData(targetPlayer, "restrain") == 1 then
+						setPedWeaponSlot(targetPlayer, 0)
+						toggleControl(targetPlayer, "next_weapon", false)
+						toggleControl(targetPlayer, "previous_weapon", false)
+					end
+					removeElementData(targetPlayer, "freeze")
 					outputChatBox(" You have been unfrozen by an admin. Thanks for your co-operation.", targetPlayer)
-				end
-				
-				if (isElement(thePlayer)) then
 					outputChatBox(" You have unfrozen " ..targetPlayerName.. ".", thePlayer)
 				end
-			else	
-				toggleAllControls(targetPlayer, true, true, true)
-				
-				-- Disable weapon scrolling if restrained
-				if getElementData(targetPlayer, "restrain") == 1 then
-					setPedWeaponSlot(targetPlayer, 0)
-					toggleControl(targetPlayer, "next_weapon", false)
-					toggleControl(targetPlayer, "previous_weapon", false)
-				end
-				removeElementData(targetPlayer, "freeze")
-				outputChatBox(" You have been unfrozen by an admin. Thanks for your co-operation.", targetPlayer)
-				outputChatBox(" You have unfrozen " ..targetPlayerName.. ".", thePlayer)
+				local adminTitle = exports.global:getPlayerAdminTitle(thePlayer)
+				local username = getPlayerName(thePlayer)
+				exports.global:sendMessageToAdmins("AdmCmd: " .. tostring(adminTitle) .. " " .. username .. " unfroze " .. targetPlayerName .. ".")
+			else
+				outputChatBox("Player not found or multiple were found.", thePlayer, 255, 0, 0)
 			end
-			local adminTitle = exports.global:getPlayerAdminTitle(thePlayer)
-			exports.global:sendMessageToAdmins("AdmCmd: " .. tostring(adminTitle) .. " " .. username .. " unfroze " .. targetPlayerName .. ".")
 		end
 	end
 end

@@ -117,7 +117,11 @@ function toggleFriends(source)
 								friends[count][5] = "Last Seen: Today"
 							else
 								local diff = yearday - fyearday
-								friends[count][5] = "Last Seen: " .. tostring(diff) .. " days ago."
+								if diff == 1 then
+									friends[count][5] = "Last Seen: Yesterday"
+								else
+									friends[count][5] = "Last Seen: " .. tostring(diff) .. " days ago"
+								end
 							end
 							count = count + 1
 						end

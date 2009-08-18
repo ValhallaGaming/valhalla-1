@@ -29,6 +29,18 @@ end
 addEventHandler("onClientResourceStart", getResourceRootElement(getThisResource()), resourceStart)
 
 
+function getDiscountedPrice(price, isweapon)
+	if not isweapon then
+		if exports.global:cisPlayerPearlDonator(getLocalPlayer()) then
+			return math.ceil( 0.5 * price )
+		elseif exports.global:cisPlayerSilverDonator(getLocalPlayer()) then
+			return math.ceil( 0.75 * price )
+		end
+	end
+	return price
+end
+
+
 function showGeneralshopUI(shop_type, race, gender)
 	if (wGeneralshop==nil) then
 		local screenwidth, screenheight = guiGetScreenSize ()
@@ -73,7 +85,7 @@ function showGeneralshopUI(shop_type, race, gender)
 				if(items[y][6] == i) then
 					grGShopItemTypeRow[i][y] = guiGridListAddRow (gGShopItemTypeGrid[i]  )
 					guiGridListSetItemText ( gGShopItemTypeGrid[i]  , grGShopItemTypeRow[i][y] , gcGShopItemTypeColumnName[i] ,items[y][1], false, false )
-					guiGridListSetItemText ( gGShopItemTypeGrid[i] , grGShopItemTypeRow[i][y] ,gcGShopItemTypeColumnPrice[i], "$"..items[y][3], false, false )
+					guiGridListSetItemText ( gGShopItemTypeGrid[i] , grGShopItemTypeRow[i][y] ,gcGShopItemTypeColumnPrice[i], "$"..getDiscountedPrice(items[y][3], items[y][7]), false, false )
 					guiGridListSetItemText ( gGShopItemTypeGrid[i] , grGShopItemTypeRow[i][y], gcGShopItemTypeColumnDesc[i] ,items[y][2], false, false)
 				end
 			end
@@ -397,8 +409,8 @@ function getShopSelectedItem(button, state)
 					if(items[i][1] == name) then
 						local id = items[i][4]
 						local value = items[i][5]
-						local price = tonumber(items[i][3])
 						local isWeapon = items[i][7]
+						local price = getDiscountedPrice(tonumber(items[i][3]), isWeapon)
 						local name = items[i][1]
 						local supplyCost = items[i][8]
 						

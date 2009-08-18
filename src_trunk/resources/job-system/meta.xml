@@ -20,6 +20,7 @@
 	<script src="photographer/c_photographer_job.lua" type="client"/>
 
 	<script src="mechanic/s_mechanic_job.lua" type="server"/>
+	<script src="mechanic/s_mechanic_previews.lua" type="server"/>
 	<script src="mechanic/c_mechanic_job.lua" type="client"/>	
 	<file src="mechanic/colourChart.png" />	
 	

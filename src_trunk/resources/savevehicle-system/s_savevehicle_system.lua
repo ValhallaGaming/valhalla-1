@@ -44,6 +44,9 @@ function saveVehicleOnExit(thePlayer, seat, vehicle)
 		
 		if (owner~=-1) then
 			local col1, col2, col3, col4 = getVehicleColor(source)
+			if getElementData(source, "oldcolors") then
+				col1, col2, col3, col4 = unpack(getElementData(source, "oldcolors"))
+			end
 			
 			local fuel = getElementData(source, "fuel")
 			
@@ -110,6 +113,9 @@ function saveVehicleOnExit(thePlayer, seat, vehicle)
 			local health = getElementHealth(source)
 			
 			local paintjob = getVehiclePaintjob(source)
+			if getElementData(source, "oldpaintjob") then
+				paintjob = getElementData(source, "oldpaintjob")
+			end
 			
 			local dimension = getElementDimension(source)
 			local interior = getElementInterior(source)

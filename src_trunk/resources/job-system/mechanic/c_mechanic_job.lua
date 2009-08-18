@@ -16,6 +16,9 @@ wUpgrades, gUpgrades, bUpgradesClose = nil
 currentVehicle = nil
 vehicleWithPaintjob = { [558] = true, [559] = true, [560] = true, [561] = true, [562] = true, [565] = true }
 
+oldPaintjob = -1
+oldColors = { 0, 0, 0, 0 }
+
 function displayMechanicJob()
 	outputChatBox("#FF9933Use the #FF0000right-click menu#FF9933 to view the services you can provide.", 255, 194, 15, true)
 end
@@ -282,6 +285,9 @@ function paintjobWindow()
 	local Y = (screenheight - Height)/2
 	
 	if not (wPaintjob) then
+		oldPaintjob = getVehiclePaintjob( currentVehicle )
+		oldColors = { getVehicleColor( currentVehicle ) }
+		
 		-- Create the window
 		wPaintjob = guiCreateWindow(X+100, Y, Width, Height, "Select a new Paintjob.", false )
 		
@@ -295,6 +301,11 @@ function paintjobWindow()
 				
 			end
 		end, false)
+		addEventHandler( "onClientMouseEnter", bPaintjob1, function()
+			if source == bPaintjob1 then
+				triggerServerEvent( "paintjobPreview", getLocalPlayer(), currentVehicle, 0)
+			end
+		end)
 		
 		-- Paintjob 2
 		bPaintjob2 = guiCreateButton( 0.05, 0.3, 0.9, 0.17, "Paintjob 2", true, wPaintjob )
@@ -306,6 +317,11 @@ function paintjobWindow()
 				
 			end
 		end, false)
+		addEventHandler( "onClientMouseEnter", bPaintjob2, function()
+			if source == bPaintjob2 then
+				triggerServerEvent( "paintjobPreview", getLocalPlayer(), currentVehicle, 1)
+			end
+		end)
 		
 		-- Paintjob 3
 		bPaintjob3 = guiCreateButton( 0.05, 0.5, 0.9, 0.17, "Paintjob 3", true, wPaintjob )
@@ -317,6 +333,11 @@ function paintjobWindow()
 				
 			end
 		end, false)
+		addEventHandler( "onClientMouseEnter", bPaintjob3, function()
+			if source == bPaintjob3 then
+				triggerServerEvent( "paintjobPreview", getLocalPlayer(), currentVehicle, 2)
+			end
+		end)
 		
 		-- Paintjob 4
 		bPaintjob4 = guiCreateButton( 0.05, 0.7, 0.9, 0.17, "Paintjob 4", true, wPaintjob )
@@ -328,6 +349,20 @@ function paintjobWindow()
 				
 			end
 		end, false)
+		addEventHandler( "onClientMouseEnter", bPaintjob4, function()
+			if source == bPaintjob4 then
+				triggerServerEvent( "paintjobPreview", getLocalPlayer(), currentVehicle, 3)
+			end
+		end)
+		
+		function restorePaintjob()
+			triggerServerEvent( "paintjobEndPreview", getLocalPlayer(), currentVehicle, 3)
+		end
+		
+		addEventHandler( "onClientMouseLeave", bPaintjob1, restorePaintjob)
+		addEventHandler( "onClientMouseLeave", bPaintjob2, restorePaintjob)
+		addEventHandler( "onClientMouseLeave", bPaintjob3, restorePaintjob)
+		addEventHandler( "onClientMouseLeave", bPaintjob4, restorePaintjob)
 		
 		-- Close
 		bPaintjobClose = guiCreateButton( 0.05, 0.9, 0.9, 0.1, "Close", true, wPaintjob )
@@ -341,6 +376,7 @@ function paintjobWindow()
 				destroyElement(bPaintjobClose)
 				destroyElement(wPaintjob)
 				wPaintjob, bPaintjob1, bPaintjob2, bPaintjob3, bPaintjob4, bPaintjobClose = nil
+				triggerServerEvent( "paintjobEndPreview", getLocalPlayer(), currentVehicle, 3)
 				
 			end
 		end, false)

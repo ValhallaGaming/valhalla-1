@@ -74,7 +74,12 @@ function changePaintjob( veh, paintjob )
 		if money < 7500 then
 			outputChatBox("You can't afford to repaint this vehicle.", source, 255, 0, 0)
 		else
+			triggerEvent( "paintjobEndPreview", source, veh )
 			if setVehiclePaintjob( veh, paintjob ) then
+				local col1, col2 = getVehicleColor( veh )
+				if col1 == 0 or col2 == 0 then
+					setVehicleColor( veh, 1, 1, 1, 1 )
+				end
 				exports.global:takePlayerSafeMoney(source, 7500)
 				exports.global:sendLocalMeAction(source, "repaints the vehicle.")
 			else

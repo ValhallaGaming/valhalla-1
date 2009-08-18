@@ -1388,8 +1388,8 @@ function jailedPlayers(thePlayer, commandName)
 		local count = 0
 		for key, value in ipairs(players) do
 			if getElementData(value, "adminjailed") then
-				outputChatBox("[JAIL] " .. getPlayerName(value) .. ", jailed by " .. getElementData(value, "jailadmin") .. ", served " .. getElementData(value, "jailserved") .. " minutes, " .. getElementData(value,"jailtime") .. " minutes left", thePlayer, 255, 194, 15)
-				outputChatBox("[JAIL] Reason: " .. getElementData(value, "jailreason"), thePlayer, 255, 194, 15)
+				outputChatBox("[JAIL] " .. getPlayerName(value) .. ", jailed by " .. tostring(getElementData(value, "jailadmin")) .. ", served " .. tostring(getElementData(value, "jailserved")) .. " minutes, " .. tostring(getElementData(value,"jailtime")) .. " minutes left", thePlayer, 255, 194, 15)
+				outputChatBox("[JAIL] Reason: " .. tostring(getElementData(value, "jailreason")), thePlayer, 255, 194, 15)
 				count = count + 1
 			end
 		end

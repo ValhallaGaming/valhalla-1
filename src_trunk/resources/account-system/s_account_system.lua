@@ -251,20 +251,7 @@ function spawnCharacter(charname)
 		local muted = getElementData(source, "muted")
 		local donator = getElementData(source, "donator")
 		
-		if (adminlevel>0) and (adminduty==1) and (hiddenAdmin==0) then
-			setPlayerNametagColor(source, 255, 194, 14)
-		else
-			setPlayerNametagColor(source, 255, 255, 255)
-		end
-		
-		-- Donator
-		if (adminlevel==0) or (adminduty==0) or (hiddenadmin==0) then
-			if (donator>0) then
-				setPlayerNametagColor(source, 167, 133, 63)
-			else
-				setPlayerNametagColor(source, 255, 255, 255)
-			end
-		end
+		exports.global:updateNametagColor(source)
 		setPlayerNametagShowing(source, false)
 		
 		-- Server message

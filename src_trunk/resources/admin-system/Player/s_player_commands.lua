@@ -658,12 +658,11 @@ function hideAdmin(thePlayer, commandName)
 		if (hiddenAdmin==0) then
 			setElementData(thePlayer, "hiddenadmin", 1, false)
 			outputChatBox("You are now a hidden admin.", thePlayer, 255, 194, 14)
-			setPlayerNametagColor(thePlayer, 255, 255, 255)
 		elseif (hiddenAdmin==1) then
 			setElementData(thePlayer, "hiddenadmin", 0, false)
 			outputChatBox("You are no longer a hidden admin.", thePlayer, 255, 194, 14)
-			setPlayerNametagColor(thePlayer, 255, 194, 14)
 		end
+		exports.global:updateNametagColor(thePlayer)
 	end
 end
 addCommandHandler("hideadmin", hideAdmin, false, false)
@@ -1196,11 +1195,10 @@ function makePlayerAdmin(thePlayer, commandName, who, rank)
 				local targetAdminTitle = exports.global:getPlayerAdminTitle(targetPlayer)
 				if (rank>0) or (rank==-999999999) then
 					setElementData(targetPlayer, "adminduty", 1, false)
-					setPlayerNametagColor(targetPlayer, 255, 194, 14)
 				else
 					setElementData(targetPlayer, "adminduty", 0, false)
-					setPlayerNametagColor(targetPlayer, 255, 255, 255)
 				end
+				exports.global:updateNametagColor(targetPlayer)
 				
 				if (hiddenAdmin==0) then
 					local adminTitle = exports.global:getPlayerAdminTitle(thePlayer)
@@ -1792,27 +1790,20 @@ end
 addCommandHandler("makedonator", makePlayerDonator, false, false)
 
 function adminDuty(thePlayer, commandName)
-	local adminlevel = getElementData(thePlayer, "adminlevel")
-	
-	if (adminlevel>0) then
+	if exports.global:isPlayerAdmin(thePlayer) then
 		local adminduty = getElementData(thePlayer, "adminduty")
-		
 		local username = getPlayerName(thePlayer)
 		
 		if (adminduty==0) then
 			setElementData(thePlayer, "adminduty", 1, false)
-			local adminTitle = exports.global:getPlayerAdminTitle(thePlayer)
-			
-			setPlayerNametagColor(thePlayer, 255, 194, 14)
 			outputChatBox("You went on admin duty.", thePlayer, 0, 255, 0)
 			exports.global:sendMessageToAdmins("AdmDuty: " .. username .. " came on duty.")
 		elseif (adminduty==1) then
 			setElementData(thePlayer, "adminduty", 0, false)
-			
-			setPlayerNametagColor(thePlayer, 255, 255, 255)
 			outputChatBox("You went off admin duty.", thePlayer, 255, 0, 0)
 			exports.global:sendMessageToAdmins("AdmDuty: " .. username .. " went off duty.")
 		end
+		exports.global:updateNametagColor(thePlayer)
 	end
 end
 addCommandHandler("adminduty", adminDuty, false, false)

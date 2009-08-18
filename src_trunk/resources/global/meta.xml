@@ -102,4 +102,7 @@
 	<script src="s_animation_globals.lua" type="server"/>
 	<export function="applyAnimation" type="server"/>
 	<export function="removeAnimation" type="server"/>
+	
+	<script src="nametag_globals.lua" type="server"/>
+	<export function="updateNametagColor" type="server"/>
 </meta>

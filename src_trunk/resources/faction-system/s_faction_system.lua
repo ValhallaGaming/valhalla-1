@@ -783,7 +783,7 @@ addCommandHandler("setfactionmoney", setFactionMoney, false, false)
 -- /////////////// WAGES
 function payWage(player, pay, faction, tax)
 	local bankmoney = getElementData(player, "bankmoney")
-	local interestrate = 0.0004
+	local interestrate = 0.004
 	
 	-- DONATOR PERKS
 	local donator = getElementData(player, "donatorlevel")
@@ -882,7 +882,7 @@ function payWage(player, pay, faction, tax)
 		pay = pay - tax
 	end
 	
-	outputChatBox("    Bank Interest (" .. interestrate*1000 .. "%): " .. interest .. "$", player, 255, 194, 14)
+	outputChatBox("    Bank Interest (" .. interestrate*100 .. "%): " .. interest .. "$", player, 255, 194, 14)
 	if (donator>0) then
 		outputChatBox("    Donator Money: " .. donatormoney .. "$", player, 255, 194, 14)
 	end

@@ -11,7 +11,7 @@ function previewPaintjob( veh, paintjob )
 				end
 				setVehicleColor( veh, 1, 1, 1, 1 )
 			end
-			setTimer(endPaintjobPreview, 15000, 1, veh)
+			setTimer(endPaintjobPreview, 45000, 1, veh)
 		end
 	end
 end
@@ -34,3 +34,32 @@ function endPaintjobPreview( veh )
 end
 addEvent("paintjobEndPreview", true)
 addEventHandler("paintjobEndPreview", getRootElement(), endPaintjobPreview)
+
+function previewUpgrade( veh, upgrade, slot )
+	if veh then
+		if not getElementData( veh, "oldupgrade" .. slot ) then
+			setElementData( veh, "oldupgrade" .. slot, getVehicleUpgradeOnSlot( veh, slot ), false )
+		end
+		if addVehicleUpgrade( veh, upgrade ) then
+			setTimer(endUpgradePreview, 45000, 1, veh, slot)
+		end
+	end
+end
+addEvent("upgradePreview", true)
+addEventHandler("upgradePreview", getRootElement(), previewUpgrade)
+
+function endUpgradePreview( veh, slot )
+	if veh then
+		local upgrade = getElementData( veh, "oldupgrade" .. slot )
+		if upgrade then
+			if upgrade == 0 then
+				removeVehicleUpgrade( veh, getVehicleUpgradeOnSlot( veh, slot ) )
+			else
+				addVehicleUpgrade( veh, upgrade )
+			end
+			removeElementData( veh, "oldupgrade" .. slot )
+		end
+	end
+end
+addEvent("upgradeEndPreview", true)
+addEventHandler("upgradeEndPreview", getRootElement(), endUpgradePreview)

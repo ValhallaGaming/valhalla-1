@@ -16,9 +16,6 @@ wUpgrades, gUpgrades, bUpgradesClose = nil
 currentVehicle = nil
 vehicleWithPaintjob = { [558] = true, [559] = true, [560] = true, [561] = true, [562] = true, [565] = true }
 
-oldPaintjob = -1
-oldColors = { 0, 0, 0, 0 }
-
 function displayMechanicJob()
 	outputChatBox("#FF9933Use the #FF0000right-click menu#FF9933 to view the services you can provide.", 255, 194, 15, true)
 end
@@ -356,7 +353,7 @@ function paintjobWindow()
 		end)
 		
 		function restorePaintjob()
-			triggerServerEvent( "paintjobEndPreview", getLocalPlayer(), currentVehicle, 3)
+			triggerServerEvent( "paintjobEndPreview", getLocalPlayer(), currentVehicle)
 		end
 		
 		addEventHandler( "onClientMouseLeave", bPaintjob1, restorePaintjob)
@@ -376,7 +373,7 @@ function paintjobWindow()
 				destroyElement(bPaintjobClose)
 				destroyElement(wPaintjob)
 				wPaintjob, bPaintjob1, bPaintjob2, bPaintjob3, bPaintjob4, bPaintjobClose = nil
-				triggerServerEvent( "paintjobEndPreview", getLocalPlayer(), currentVehicle, 3)
+				triggerServerEvent( "paintjobEndPreview", getLocalPlayer(), currentVehicle)
 				
 			end
 		end, false)
@@ -592,6 +589,7 @@ local upgrades = {
 	{ "Slamin", bumperPrice }
 }
 
+oldUpgradeSlot = nil
 function upgradeWindow()
 	-- Window variables
 	local Width = 270
@@ -608,6 +606,7 @@ function upgradeWindow()
 		gUpgrades = guiCreateGridList( 0.05, 0.1, 0.9, 0.75, true, wUpgrades )
 		cUpgradeName = guiGridListAddColumn( gUpgrades, "Name", 0.62 )
 		cUpgradePrice = guiGridListAddColumn( gUpgrades, "Price", 0.25 )
+		cUpgradeSlot = guiGridListAddColumn( gUpgrades, "", 0.01 )
 		
 		-- add all compatible upgrades
 		for i = 0, 16 do
@@ -627,26 +626,48 @@ function upgradeWindow()
 							guiGridListSetItemData( gUpgrades, row, cUpgradeName, tostring(value))
 							guiGridListSetItemText( gUpgrades, row, cUpgradePrice, "$" .. upgrade[2], false, true)
 							guiGridListSetItemData( gUpgrades, row, cUpgradePrice, tostring(upgrade[2]))
+							guiGridListSetItemText( gUpgrades, row, cUpgradeSlot, " ", false, true)
+							guiGridListSetItemData( gUpgrades, row, cUpgradeSlot, tostring(i))
 						end
 					end
 				end
 			end
 		end
 		
+		addEventHandler( "onClientGUIClick", gUpgrades, function(button, state)
+			if button == "left" and state == "up" then
+				if oldUpgradeSlot then
+					triggerServerEvent( "upgradeEndPreview", getLocalPlayer(), currentVehicle, oldUpgradeSlot)
+					oldUpgradeSlot = nil
+				end
+				local row, col = guiGridListGetSelectedItem(gUpgrades)
+				if row ~= -1 and col ~= -1 then
+					oldUpgradeSlot = tonumber(guiGridListGetItemData(gUpgrades, row, 3))
+					triggerServerEvent( "upgradePreview", getLocalPlayer(), currentVehicle, tonumber(guiGridListGetItemData(gUpgrades, row, 1)), oldUpgradeSlot)
+				end
+			end
+		end)
+		
 		addEventHandler( "onClientGUIDoubleClick", gUpgrades, function(button, state)
 			if button == "left" and state == "up" then
+				if oldUpgradeSlot then
+					triggerServerEvent( "upgradeEndPreview", getLocalPlayer(), currentVehicle, oldUpgradeSlot)
+					oldUpgradeSlot = nil
+				end
 				local row, col = guiGridListGetSelectedItem(gUpgrades)
 				if row ~= -1 and col ~= -1 then
 					triggerServerEvent( "changeVehicleUpgrade", getLocalPlayer(), currentVehicle, tonumber(guiGridListGetItemData(gUpgrades, row, 1)), guiGridListGetItemText(gUpgrades, row, 1), tonumber(guiGridListGetItemData(gUpgrades, row, 2)))
 				end
 			end
-		end)
-		
-		
+		end)		
 		-- Close
 		bUpgradesClose = guiCreateButton( 0.05, 0.9, 0.9, 0.1, "Close", true, wUpgrades )
 		addEventHandler( "onClientGUIClick", bUpgradesClose, function(button, state)
 			if(button == "left" and state == "up") then
+				if oldUpgradeSlot then
+					triggerServerEvent( "upgradeEndPreview", getLocalPlayer(), currentVehicle, oldUpgradeSlot)
+					oldUpgradeSlot = nil
+				end
 				destroyElement(bUpgradesClose)
 				destroyElement(gUpgrades)
 				destroyElement(wUpgrades)
@@ -705,6 +726,7 @@ function closeMechanicWindow()
 		destroyElement(bPaintjobClose)
 		destroyElement(wPaintjob)
 		wPaintjob, bPaintjob1, bPaintjob2, bPaintjob3, bPaintjob4, bPaintjobClose = nil
+		triggerServerEvent( "paintjobEndPreview", getLocalPlayer(), currentVehicle)
 	end
 	
 	if wUpgrades then
@@ -712,6 +734,11 @@ function closeMechanicWindow()
 		destroyElement(gUpgrades)
 		destroyElement(wUpgrades)
 		wUpgrades, gUpgrades, bUpgradesClose = nil	
+		
+		if oldUpgradeSlot then
+			triggerServerEvent( "upgradeEndPreview", getLocalPlayer(), currentVehicle, oldUpgradeSlot)
+			oldUpgradeSlot = nil
+		end
 	end
 	
 	destroyElement(bMechanicOne)

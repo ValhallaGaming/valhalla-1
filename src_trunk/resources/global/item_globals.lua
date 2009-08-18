@@ -143,6 +143,9 @@ end
 
 -- VEHICLES
 function doesVehicleHaveSpaceForItem(theVehicle)
+	if getElementData(theVehicle, "dbid") < 0 then
+		return false
+	end
 	local items = getElementData(theVehicle, "items")
 
 	for i=1, 20 do

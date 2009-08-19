@@ -1,4 +1,9 @@
 ---
+Chatbubbles
+---
+ALTER TABLE `accounts` ADD `chatbubbles` TINYINT NOT NULL DEFAULT '1'
+
+---
 Toggling off your Phone
 ---
 ALTER TABLE `characters` ADD `phoneoff` TINYINT NOT NULL DEFAULT '0'

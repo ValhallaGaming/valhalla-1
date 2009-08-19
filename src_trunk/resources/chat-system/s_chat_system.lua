@@ -125,6 +125,10 @@ function chatMain(message, messageType)
 				if (nearbyPlayerDimension==dimension) and (nearbyPlayerInterior==interior) then
 					local logged = tonumber(getElementData(nearbyPlayer, "loggedin"))
 					if not (isPedDead(nearbyPlayer)) and (logged==1) then
+						local mode = tonumber(getElementData(nearbyPlayer, "chatbubbles"))
+						if mode > 0 then
+							triggerClientEvent(nearbyPlayer, "onMessageIncome", source, message, mode)
+						end
 						local nx, ny, nz = getElementPosition(nearbyPlayer)
 						local distance = getDistanceBetweenPoints3D(x, y, z, nx, ny, nz)
 						if distance < 4 then
@@ -570,9 +574,14 @@ function localShout(thePlayer, commandName, ...)
 				
 				if (nearbyPlayerDimension==dimension) and (nearbyPlayerInterior==interior) then
 					local logged = getElementData(nearbyPlayer, "loggedin")
-				
+					
 					if (logged==1) and not (isPedDead(nearbyPlayer)) then
-						outputChatBox(playerName .. " shouts: " .. trunklateText(nearbyPlayer, message) .. "!!", nearbyPlayer, 255, 255, 255)
+						local mode = tonumber(getElementData(nearbyPlayer, "chatbubbles"))
+						message = trunklateText(nearbyPlayer, message)
+						if mode > 0 then
+							triggerClientEvent(nearbyPlayer, "onMessageIncome", thePlayer, message, mode)
+						end
+						outputChatBox(playerName .. " shouts: " .. message .. "!!", nearbyPlayer, 255, 255, 255)
 					end
 				end
 			end
@@ -837,6 +846,28 @@ function showAdmins(thePlayer, commandName)
 end
 addCommandHandler("admins", showAdmins, false, false)
 
+function playerChangeChatbubbleMode(thePlayer, commandName, mode)
+	local logged = getElementData(thePlayer, "loggedin")
+	
+	if logged == 1 then
+		mode = tonumber(mode)
+		if not mode or mode < 0 or mode > 2 then
+			outputChatBox("SYNTAX: /" .. commandName .. " [chatbubblesMode]", thePlayer, 255, 194, 14)
+			outputChatBox("0 = hide all  1 = hide own  2 = show all", thePlayer, 255, 194, 14)
+		else
+			if (mode == 0) then
+				outputChatBox("All chatbubbles are now hidden.", thePlayer, 255, 194, 14)
+			elseif (mode == 1) then
+				outputChatBox("Only your own chatbubbles are hidden others are visible.", thePlayer, 255, 194, 14)
+			elseif (mode == 2) then
+				outputChatBox("All chatbubbles are now visible.", thePlayer, 255, 194, 14)
+			end
+			setElementData(thePlayer, "chatbubbles", mode, false)
+		end
+	end
+end
+addCommandHandler("changecbmode", playerChangeChatbubbleMode, false, false)
+
 function toggleOOC(thePlayer, commandName)
 	local logged = getElementData(thePlayer, "loggedin")
 
@@ -936,31 +967,18 @@ function call911(thePlayer, commandName, ...)
 				if (nearbyPlayerDimension==dimension) and (nearbyPlayerInterior==interior) then
 					local logged = tonumber(getElementData(nearbyPlayer, "loggedin"))
 					if not (isPedDead(nearbyPlayer)) and (logged==1) then
-						chatSphere = createColSphere(x, y, z, 20*0.2)
-						exports.pool:allocateElement(chatSphere)
-						if isElementWithinColShape(nearbyPlayer, chatSphere) then
-							outputChatBox( "#EEEEEE" .. playerName .. " [Cellphone]: " .. message, nearbyPlayer, 255, 255, 255, true)
-							destroyElement(chatSphere)
-							chatSphere = createColSphere(x, y, z, 20*0.4)
-							exports.pool:allocateElement(chatSphere)
-						elseif isElementWithinColShape(nearbyPlayer, chatSphere) then
-							outputChatBox( "#DDDDDD" .. playerName .. " [Cellphone]: " .. message, nearbyPlayer, 255, 255, 255, true)
-							destroyElement(chatSphere)
-							chatSphere = createColSphere(x, y, z, 20*0.6)
-							exports.pool:allocateElement(chatSphere)
-						elseif isElementWithinColShape(nearbyPlayer, chatSphere) then          
-							outputChatBox( "#CCCCCC" .. playerName .. " [Cellphone]: " .. message, nearbyPlayer, 255, 255, 255, true)
-							destroyElement(chatSphere)
-							chatSphere = createColSphere(x, y, z, 20*0.8)
-							exports.pool:allocateElement(chatSphere)
-						elseif isElementWithinColShape(nearbyPlayer, chatSphere) then
-							outputChatBox( "#BBBBBB" .. playerName .. " [Cellphone]: " .. message, nearbyPlayer, 255, 255, 255, true)
+						local nx, ny, nz = getElementPosition(nearbyPlayer)
+						local distance = getDistanceBetweenPoints3D(x, y, z, nx, ny, nz)
+						if distance < 4 then
+							outputChatBox( "#EEEEEE" .. playerName .. " [Cellphone]: " .. message , nearbyPlayer, 255, 255, 255, true)
+						elseif distance < 8 then
+							outputChatBox( "#DDDDDD" .. playerName .. " [Cellphone]: " .. message , nearbyPlayer, 255, 255, 255, true)
+						elseif distance < 12 then
+							outputChatBox( "#CCCCCC" .. playerName .. " [Cellphone]: " .. message , nearbyPlayer, 255, 255, 255, true)
+						elseif distance < 16 then
+							outputChatBox( "#BBBBBB" .. playerName .. " [Cellphone]: " .. message , nearbyPlayer, 255, 255, 255, true)
 						else
-							outputChatBox( "#AAAAAA" .. playerName .. " [Cellphone]: " .. message, nearbyPlayer, 255, 255, 255, true)
-						end
-						
-						if (chatSphere) then
-							destroyElement(chatSphere)
+							outputChatBox( "#AAAAAA" .. playerName .. " [Cellphone]: " .. message , nearbyPlayer, 255, 255, 255, true)
 						end
 					end
 				end
@@ -1019,31 +1037,18 @@ function calltaxi(thePlayer, commandName, ...)
 					if (nearbyPlayerDimension==dimension) and (nearbyPlayerInterior==interior) then
 						local logged = tonumber(getElementData(nearbyPlayer, "loggedin"))
 						if not (isPedDead(nearbyPlayer)) and (logged==1) then
-							chatSphere = createColSphere(x, y, z, 20*0.2)
-							exports.pool:allocateElement(chatSphere)
-							if isElementWithinColShape(nearbyPlayer, chatSphere) then
-								outputChatBox( "#EEEEEE" .. playerName .. " [Cellphone]: " .. message, nearbyPlayer, 255, 255, 255, true)
-								destroyElement(chatSphere)
-								chatSphere = createColSphere(x, y, z, 20*0.4)
-								exports.pool:allocateElement(chatSphere)
-							elseif isElementWithinColShape(nearbyPlayer, chatSphere) then
-								outputChatBox( "#DDDDDD" .. playerName .. " [Cellphone]: " .. message, nearbyPlayer, 255, 255, 255, true)
-								destroyElement(chatSphere)
-								chatSphere = createColSphere(x, y, z, 20*0.6)
-								exports.pool:allocateElement(chatSphere)
-							elseif isElementWithinColShape(nearbyPlayer, chatSphere) then          
-								outputChatBox( "#CCCCCC" .. playerName .. " [Cellphone]: " .. message, nearbyPlayer, 255, 255, 255, true)
-								destroyElement(chatSphere)
-								chatSphere = createColSphere(x, y, z, 20*0.8)
-								exports.pool:allocateElement(chatSphere)
-							elseif isElementWithinColShape(nearbyPlayer, chatSphere) then
-								outputChatBox( "#BBBBBB" .. playerName .. " [Cellphone]: " .. message, nearbyPlayer, 255, 255, 255, true)
+							local nx, ny, nz = getElementPosition(nearbyPlayer)
+						local distance = getDistanceBetweenPoints3D(x, y, z, nx, ny, nz)
+							if distance < 4 then
+								outputChatBox( "#EEEEEE" .. playerName .. " [Cellphone]: " .. message , nearbyPlayer, 255, 255, 255, true)
+							elseif distance < 8 then
+								outputChatBox( "#DDDDDD" .. playerName .. " [Cellphone]: " .. message , nearbyPlayer, 255, 255, 255, true)
+							elseif distance < 12 then
+								outputChatBox( "#CCCCCC" .. playerName .. " [Cellphone]: " .. message , nearbyPlayer, 255, 255, 255, true)
+							elseif distance < 16 then
+								outputChatBox( "#BBBBBB" .. playerName .. " [Cellphone]: " .. message , nearbyPlayer, 255, 255, 255, true)
 							else
-								outputChatBox( "#AAAAAA" .. playerName .. " [Cellphone]: " .. message, nearbyPlayer, 255, 255, 255, true)
-							end
-							
-							if (chatSphere) then
-								destroyElement(chatSphere)
+								outputChatBox( "#AAAAAA" .. playerName .. " [Cellphone]: " .. message , nearbyPlayer, 255, 255, 255, true)
 							end
 						end
 					end

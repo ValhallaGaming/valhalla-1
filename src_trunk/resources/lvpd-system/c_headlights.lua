@@ -1,6 +1,21 @@
 -- Bind Keys required
 function bindKeys(res)
 	bindKey("p", "down", toggleFlashers)
+	
+	for key, value in ipairs(getElementsByType("vehicle")) do
+		local modelid = getVehicleModel(value)
+		if (isElementStreamedIn(value)) then
+			if (governmentVehicle[modelid]) or exports.global:cdoesVehicleHaveItem(value, 61) then
+				for i = 1, #policevehicles+1 do
+					if (policevehicles[i]==nil) then
+						policevehicles[i] = value
+						policevehicleids[value] = i
+						break
+					end
+				end
+			end
+		end
+	end
 end
 addEventHandler("onClientResourceStart", getResourceRootElement(), bindKeys)
 
@@ -35,6 +50,7 @@ governmentVehicle = { [416]=true, [427]=true, [490]=true, [528]=true, [407]=true
 policevehicles = { }
 policevehicleids = { }
 
+
 function streamIn()
 	if (getElementType(source)=="vehicle") then
 		local modelid = getElementModel(source)
@@ -66,9 +82,10 @@ function streamOut()
 end
 addEventHandler("onClientElementStreamOut", getRootElement(), streamOut)
 
+count = 0
 function doFlashes()
 	if (#policevehicles==0) then return end
-
+	
 	for key, veh in ipairs(policevehicles) do
 		if not (isElement(veh)) then
 			local id = policevehicleids[veh]

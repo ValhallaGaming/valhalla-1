@@ -34,21 +34,10 @@ function arrestPlayer(thePlayer, commandName, targetPlayerNick, fine, jailtime, 
 			else
 				local targetPlayer = exports.global:findPlayerByPartialNick(targetPlayerNick)
 				
-				local isSouthDivision = false
-				if (isElementWithinColShape(thePlayer, arrestColShape2)) then
-					isSouthDivision = true
-				end
-				
 				if not (targetPlayer) then
 					outputChatBox("Player is not online.", thePlayer, 255, 0, 0)
 				else
-					local elems = nil
-					
-					if (isSouthDivision) then
-						elems = getElementsWithinColShape(arrestColShape2, "player")
-					else
-						elems = getElementsWithinColShape(arrestColShape, "player")
-					end
+					local elems = getElementsWithinColShape(arrestColShape, "player")
 					
 					local found = false
 					for key, value in ipairs(elems) do
@@ -83,6 +72,24 @@ function arrestPlayer(thePlayer, commandName, targetPlayerNick, fine, jailtime, 
 								toggleControl(targetPlayer,'previous_weapon',false)
 								toggleControl(targetPlayer,'fire',false)
 								toggleControl(targetPlayer,'aim_weapon',false)
+								
+								-- auto-uncuff
+								local restrainedObj = getElementData(targetPlayer, "restrainedObj")
+								if restrainedObj then
+									toggleControl(targetPlayer, "sprint", true)
+									toggleControl(targetPlayer, "jump", true)
+									toggleControl(targetPlayer, "accelerate", true)
+									toggleControl(targetPlayer, "brake_reverse", true)
+									setElementData(targetPlayer, "restrain", 0)
+									removeElementData(targetPlayer, "restrainedBy")
+									removeElementData(targetPlayer, "restrainedObj")
+									if restrainedObj == 45 then -- If handcuffs.. take the key
+										local dbid = getElementData(targetPlayer, "dbid")
+										exports.global:takePlayerItem(thePlayer, 47, dbid)
+									end
+									exports.global:givePlayerItem(thePlayer, restrainedObj, 1)
+								end
+	
 								setPedWeaponSlot(targetPlayer,0)
 								
 								local station = 1
@@ -202,7 +209,7 @@ function jailRelease(thePlayer, commandName, targetPlayerNick)
 		local theTeam = getPlayerTeam(thePlayer)
 		local factionType = getElementData(theTeam, "type")
 		
-		if (factionType==2) and (isElementWithinColShape(thePlayer, arrestColShape) or isElementWithinColShape(thePlayer, arrestColShape2)) then
+		if factionType == 2 and isElementWithinColShape(thePlayer, arrestColShape) then
 			if not (targetPlayerNick) then
 				outputChatBox("SYNTAX: /release [Player Partial Nick / ID]", thePlayer, 255, 194, 14)
 			else

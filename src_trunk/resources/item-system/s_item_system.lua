@@ -438,6 +438,11 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 			else
 				outputChatBox("You are too far from a vehicle.", source, 255, 194, 14)
 			end
+		elseif (itemID==58) then
+			exports.global:sendLocalMeAction(source, "drinks some good Ziebrand Beer.")
+			exports.global:takePlayerItem(source, itemID, itemValue)
+			setElementData(source, "alcohollevel", ( getElementData(source, "alcohollevel") or 0 ) + 0.2)
+			setElementHealth(source, math.max(100, getElementHealth(source)) + 20)
 		elseif (itemID==59) then -- MUDKIP
 			exports.global:sendLocalMeAction(source, "eats a mudkip.")
 			exports.global:takePlayerItem(source, itemID, itemValue)

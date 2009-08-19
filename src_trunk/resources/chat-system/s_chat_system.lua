@@ -25,6 +25,29 @@ addEventHandler("onResourceStop", getResourceRootElement(getThisResource()), clo
 -- ////////////////////////////////////
 -- //			MYSQL END			 //
 -- ////////////////////////////////////
+function trunklateText(thePlayer, text, factor)
+	if getElementData(thePlayer,"alcohollevel") and getElementData(thePlayer,"alcohollevel") > 0 then
+		local level = math.ceil( getElementData(thePlayer,"alcohollevel") * #text / ( factor or 3.5 ) )
+		outputDebugString( tostring( level ) )
+		for i = 1, level do
+			x = math.random( 1, #text )
+			-- dont replace spaces
+			if text.sub( x, x ) == ' ' then
+				i = i - 1
+			else
+				local a, b = text:sub( 1, x - 1 ) or "", text:sub( x + 1 ) or ""
+				local c = ""
+				if math.random( 1, 2 ) == 1 then
+					c = string.char(math.random(65,90))
+				else
+					c = string.char(math.random(97,122))
+				end
+				text = a .. c .. b
+			end
+		end
+	end
+	return text
+end
 
 -- /ad
 function advertMessage(thePlayer, commandName, showNumber, ...)
@@ -40,6 +63,7 @@ function advertMessage(thePlayer, commandName, showNumber, ...)
 					message = showNumber .. " " .. message
 					showNumber = 0
 				end
+				message = trunklateText( thePlayer, message, 2.5 )
 				
 				local cost = math.ceil(string.len(message)/6)
 				local money = getElementData(thePlayer, "money")
@@ -89,6 +113,7 @@ function chatMain(message, messageType)
 			
 			destroyElement(chatSphere)
 			message = string.gsub(message, "#%x%x%x%x%x%x", "") -- Remove colour codes
+			message = trunklateText( source, message )
 			
 			-- Show chat to console, for admins + log
 			exports.irc:sendMessage("[IC: Local Chat] " .. playerName .. ": " .. message)
@@ -103,15 +128,15 @@ function chatMain(message, messageType)
 						local nx, ny, nz = getElementPosition(nearbyPlayer)
 						local distance = getDistanceBetweenPoints3D(x, y, z, nx, ny, nz)
 						if distance < 4 then
-							outputChatBox( "#EEEEEE" .. playerName .. " Says: " .. message, nearbyPlayer, 255, 255, 255, true)
+							outputChatBox( "#EEEEEE" .. playerName .. " Says: " .. trunklateText( nearbyPlayer, message ), nearbyPlayer, 255, 255, 255, true)
 						elseif distance < 8 then
-							outputChatBox( "#DDDDDD" .. playerName .. " Says: " .. message, nearbyPlayer, 255, 255, 255, true)
+							outputChatBox( "#DDDDDD" .. playerName .. " Says: " .. trunklateText( nearbyPlayer, message ), nearbyPlayer, 255, 255, 255, true)
 						elseif distance < 12 then
-							outputChatBox( "#CCCCCC" .. playerName .. " Says: " .. message, nearbyPlayer, 255, 255, 255, true)
+							outputChatBox( "#CCCCCC" .. playerName .. " Says: " .. trunklateText( nearbyPlayer, message ), nearbyPlayer, 255, 255, 255, true)
 						elseif distance < 16 then
-							outputChatBox( "#BBBBBB" .. playerName .. " Says: " .. message, nearbyPlayer, 255, 255, 255, true)
+							outputChatBox( "#BBBBBB" .. playerName .. " Says: " .. trunklateText( nearbyPlayer, message ), nearbyPlayer, 255, 255, 255, true)
 						else
-							outputChatBox( "#AAAAAA" .. playerName .. " Says: " .. message, nearbyPlayer, 255, 255, 255, true)
+							outputChatBox( "#AAAAAA" .. playerName .. " Says: " .. trunklateText( nearbyPlayer, message ), nearbyPlayer, 255, 255, 255, true)
 						end
 					end
 				end
@@ -149,6 +174,7 @@ function chatMain(message, messageType)
 			local theChannel = getElementData(source, "radiochannel")
 			if theChannel > 0 then
 				local username = string.gsub(getPlayerName(source), "_", " ")
+				message = trunklateText( source, message )
 				for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
 					local targetChannel = getElementData(value, "radiochannel")
 					local logged = getElementData(source, "loggedin")
@@ -173,7 +199,7 @@ function chatMain(message, messageType)
 							end
 							mysql_free_result(titleresult)
 							
-							outputChatBox("[RADIO #" .. theChannel .. "] " .. factionRankTitle .. username .. " says: " .. message, value, 0, 102, 255)
+							outputChatBox("[RADIO #" .. theChannel .. "] " .. factionRankTitle .. username .. " says: " .. trunklateText( value, message ), value, 0, 102, 255)
 							
 							-- Show it to people near who can hear his radio
 							local x, y, z = getElementPosition(value)
@@ -186,7 +212,7 @@ function chatMain(message, messageType)
 							for k, v in ipairs(nearbyPlayers) do
 								local channel = getElementData(v, "radiochannel")
 								if (v~=source) and (channel~=targetChannel) then
-									outputChatBox(getPlayerName(value) .. "'s Radio: " .. message, v, 255, 255, 255)
+									outputChatBox(getPlayerName(value) .. "'s Radio: " .. trunklateText( v, message ), v, 255, 255, 255)
 								end
 							end
 							setTimer(playSoundFrontEnd, 700, 1, value, 48)
@@ -278,8 +304,7 @@ function departmentradio(thePlayer, commandName, ...)
 
 		if (teamID==1 or teamID==2 or teamID==4 or teamID == 24) then
 			if (...) then
-				local message = table.concat({...}, " ")
-				
+				local message = trunklateText( thePlayer, table.concat({...}, " ") )
 				local PDFaction = getPlayersInTeam(getTeamFromName("Los Santos Police Department"))
 				local ESFaction = getPlayersInTeam(getTeamFromName("Los Santos Emergency Services"))
 				local TowFaction = getPlayersInTeam(getTeamFromName("McJones Towing"))
@@ -534,7 +559,7 @@ function localShout(thePlayer, commandName, ...)
 			exports.pool:allocateElement(chatSphere)
 			local nearbyPlayers = getElementsWithinColShape(chatSphere, "player")
 			local playerName = string.gsub(getPlayerName(thePlayer), "_", " ")
-			local message = table.concat({...}, " ")
+			local message = trunklateText(thePlayer, table.concat({...}, " "))
 			
 			destroyElement(chatSphere)
 			
@@ -547,7 +572,7 @@ function localShout(thePlayer, commandName, ...)
 					local logged = getElementData(nearbyPlayer, "loggedin")
 				
 					if (logged==1) and not (isPedDead(nearbyPlayer)) then
-						outputChatBox(playerName .. " shouts: " .. message .. "!!", nearbyPlayer, 255, 255, 255)
+						outputChatBox(playerName .. " shouts: " .. trunklateText(nearbyPlayer, message) .. "!!", nearbyPlayer, 255, 255, 255)
 					end
 				end
 			end
@@ -574,7 +599,7 @@ function megaphoneShout(thePlayer, commandName, ...)
 				exports.pool:allocateElement(chatSphere)
 				local nearbyPlayers = getElementsWithinColShape(chatSphere, "player")
 				local playerName = string.gsub(getPlayerName(thePlayer), "_", " ")
-				local message = table.concat({...}, " ")
+				local message = trunklateText(thePlayer, table.concat({...}, " "))
 				
 				destroyElement(chatSphere)
 				
@@ -587,7 +612,7 @@ function megaphoneShout(thePlayer, commandName, ...)
 						local logged = getElementData(nearbyPlayer, "loggedin")
 					
 						if (logged==1) and not (isPedDead(nearbyPlayer)) then
-							outputChatBox("((" .. playerName .. ")) Megaphone <O: " .. message, nearbyPlayer, 255, 255, 0)
+							outputChatBox("((" .. playerName .. ")) Megaphone <O: " .. trunklateText(nearbyPlayer, message), nearbyPlayer, 255, 255, 0)
 						end
 					end
 				end

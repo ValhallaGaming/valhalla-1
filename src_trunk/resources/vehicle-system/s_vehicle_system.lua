@@ -28,7 +28,7 @@ addEventHandler("onResourceStop", getResourceRootElement(getThisResource()), clo
 
 enginelessVehicle = { [510]=true, [509]=true, [481]=true }
 lightlessVehicle = { [592]=true, [577]=true, [511]=true, [548]=true, [512]=true, [593]=true, [425]=true, [520]=true, [417]=true, [487]=true, [553]=true, [488]=true, [497]=true, [563]=true, [476]=true, [447]=true, [519]=true, [460]=true, [469]=true, [513]=true, [472]=true, [473]=true, [493]=true, [595]=true, [484]=true, [430]=true, [453]=true, [452]=true, [446]=true, [454]=true }
-locklessVehicle = { [472]=true, [473]=true, [493]=true, [595]=true, [484]=true, [430]=true, [453]=true, [452]=true, [446]=true, [454]=true, [581]=true, [509]=true, [481]=true, [462]=true, [521]=true, [463]=true, [510]=true, [522]=true, [461]=true, [448]=true, [468]=true, [586]=true }
+locklessVehicle = { [581]=true, [509]=true, [481]=true, [462]=true, [521]=true, [463]=true, [510]=true, [522]=true, [461]=true, [448]=true, [468]=true, [586]=true }
 armoredCars = { [427]=true, [528]=true, [432]=true, [601]=true, [428]=true, [597]=true } -- Enforcer, FBI Truck, Rhino, SWAT Tank, Securicar, SFPD Car
 
 -- Events
@@ -809,7 +809,7 @@ end
 function checkLock(thePlayer)
 	local locked = isVehicleLocked(source)
 	
-	if (locked) and (getVehicleType(source)~="Boat") then
+	if (locked) then
 		cancelEvent()
 		outputChatBox("The door is locked.", thePlayer)
 	end
@@ -845,7 +845,7 @@ end
 
 -- bike lock fix
 function checkBikeLock(thePlayer)
-	if (isVehicleLocked(source)) and (getVehicleType(source)=="Bike" or getVehicleType(source)=="BMX" or getVehicleType(source)=="Quad" or getElementModel(source)==568 or getElementModel(source)==571) then
+	if (isVehicleLocked(source)) and (getVehicleType(source)=="Bike" or getVehicleType(source)=="Boat" or getVehicleType(source)=="BMX" or getVehicleType(source)=="Quad" or getElementModel(source)==568 or getElementModel(source)==571) then
 		outputChatBox("That vehicle is locked.", thePlayer, 255, 194, 15)
 		cancelEvent()
 	end
@@ -1077,7 +1077,7 @@ function lockUnlockInside(vehicle)
 	local owner = getElementData(vehicle, "owner")
 	
 	if (owner ~= -2) then
-		if not (locklessVehicle[model] and (getVehicleType(vehicle)~="Boat")) then
+		if not (locklessVehicle[model]) then
 			local locked = isVehicleLocked(vehicle)
 			local seat = getPedOccupiedVehicleSeat(source)
 			if (seat==0) then

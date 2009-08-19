@@ -26,7 +26,7 @@ function showChemistrySet()
 					
 					if (token) and (token>=30) and (token<=33) then
 						chemItems[i] = { }
-						chemItems[i][1] = exports.global:cgetItemName(token)
+						chemItems[i][1] = getItemName(token)
 						chemItems[i][2] = token
 						chemItems[i][3] = i
 					end

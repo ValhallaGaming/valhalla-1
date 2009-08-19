@@ -41,7 +41,7 @@ function cSafeInventory(button, state)
 			for i = 1, slots do
 				local itemID = tonumber(gettok(items, i, string.byte(',')))
 				if (itemID~=nil) then
-					local itemName = exports.global:cgetItemName(itemID)
+					local itemName = getItemName(itemID)
 					local row = guiGridListAddRow(gUserItems)
 					guiGridListSetItemText(gUserItems, row, UIColName, tostring(itemName), false, false)
 					guiGridListSetSortingEnabled(gUserItems, false)
@@ -69,7 +69,7 @@ function cSafeInventory(button, state)
 				for i = 1, 20 do
 					local itemID = tonumber(gettok(items, i, string.byte(',')))
 					if (itemID~=nil) then
-						local itemName = exports.global:cgetItemName(itemID)
+						local itemName = getItemName(itemID)
 						local row = guiGridListAddRow(gSafeItems)
 						
 						if (itemName) then
@@ -109,7 +109,7 @@ function takeItemFromSafe(button, state)
 			local itemvalues = getElementData(safe, "itemvalues")
 			local itemID = tonumber(gettok(items, row+1, string.byte(',')))
 			local itemValue = tonumber(gettok(itemvalues, row+1, string.byte(',')))
-			local itemName = exports.global:cgetItemName(itemID)
+			local itemName = getItemName(itemID)
 			
 			if not (exports.global:cdoesPlayerHaveSpaceForItem(localPlayer)) and (itemName) then
 				outputChatBox("Your inventory is full.", 255, 0, 0)
@@ -155,7 +155,7 @@ function moveItemToSafe(button, state)
 			local itemvalues = getElementData(localPlayer, "itemvalues")
 			local itemID = tonumber(gettok(items, row+1, string.byte(',')))
 			local itemValue = tonumber(gettok(itemvalues, row+1, string.byte(',')))
-			local itemName = exports.global:cgetItemName(itemID)
+			local itemName = getItemName(itemID)
 			
 			if (itemID==48 ) then -- BACKPACK or the key to the safe
 				outputChatBox("This item cannot be stored in a safe.", 255, 0, 0)

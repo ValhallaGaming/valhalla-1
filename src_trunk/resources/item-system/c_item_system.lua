@@ -270,7 +270,7 @@ function showInventory(player)
 				
 				if (token) then
 					items[i] = { }
-					items[i][1] = exports.global:cgetItemName(token)
+					items[i][1] = getItemName(token)
 					items[i][2] = getItemDescription(token)
 					items[i][3] = token
 					items[i][4] = gettok(itemvalues, i, string.byte(','))

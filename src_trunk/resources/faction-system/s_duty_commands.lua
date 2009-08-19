@@ -54,7 +54,7 @@ function lvesHeal(thePlayer, commandName, targetPartialNick, price)
 	            local theTeam = getPlayerTeam(thePlayer)
 		        local factionType = getElementData(theTeam, "type")
 				
-				if not (factionType==2) then
+				if not (factionType==4) then
 				    outputChatBox("You have no basic medic skills, contact the ES.", thePlayer, 255, 0, 0)
 				else
 			        price = tonumber(price)

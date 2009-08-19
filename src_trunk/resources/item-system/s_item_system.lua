@@ -580,9 +580,29 @@ function dropItem(itemID, itemValue, itemName, x, y, z, gz, isWeapon, items, ite
 		setElementData(obj, "type", "worlditem")
 		setElementData(obj, "items", stringitems)
 		setElementData(obj, "itemvalues", stringvalues)
+		
 		-- Check if he drops his current clothes
 		if tonumber(itemID) == 16 and tonumber(itemValue) == getPedSkin(source) and not exports.global:doesPlayerHaveItem(source, 16, tonumber(itemValue)) then
-			setPedSkin(source, 264)
+			local result = mysql_query(handler, "SELECT skincolor, gender FROM characters WHERE charactername='" .. getPlayerName(source) .. "' LIMIT 1")
+			local skincolor = tonumber(mysql_result(result, 1, 1))
+			local gender = tonumber(mysql_result(result, 1, 2))
+
+			if (gender==0) then -- MALE
+				if (skincolor==0) then -- BLACK
+					setPedSkin(source, 80)
+				elseif (skincolor==1 or skincolor==2) then -- WHITE
+					setPedSkin(source, 252)
+				end
+			elseif (gender==1) then -- FEMALE
+				if (skincolor==0) then -- BLACK
+					setPedSkin(source, 139)
+				elseif (skincolor==1) then -- WHITE
+					setPedSkin(source, 138)
+				elseif (skincolor==2) then -- ASIAN
+					setPedSkin(source, 140)
+				end
+			end
+			mysql_free_result(result)
 		end
 	else
 		if itemID == 16 or itemID == 18 or ( itemID >= 35 and itemID <= 40 ) then

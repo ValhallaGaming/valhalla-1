@@ -27,6 +27,7 @@ addEventHandler("onResourceStop", getResourceRootElement(getThisResource()), clo
 -- ////////////////////////////////////
 
 -- /GLUE
+local glueSpace = { [406] = 25, [422] = 10, [444] = 10, [455] = 10, [525] = 3, [543] = 10, [554] = 10, [556] = 10, [557] = 10, [600] = 10, [605] = 5 }
 function gluePlayer(thePlayer, commandName)
 	local glued = getElementData(thePlayer, "glue")
 	
@@ -39,6 +40,10 @@ function gluePlayer(thePlayer, commandName)
 			if not (contactElement) or (getElementType(contactElement)~="vehicle") then
 				outputChatBox("There is nothing nearby to glue you to.", thePlayer, 255, 0, 0)
 				detachElements(thePlayer)
+			elseif getVehicleType(contactElement) == "Bike" or getVehicleType(contactElement) == "BMX" or getVehicleType(contactElement) == "Quad" then
+				outputChatBox("You can't glue yourself to this vehicle.", thePlayer, 255, 0, 0)
+			elseif getVehicleType(contactElement) == "Automobile" and #getAttachedElements(contactElement) >= (glueSpace[getElementModel(contactElement)] or 1) then
+				outputChatBox("This vehicle is full.", thePlayer, 255, 0, 0)
 			else
 				local px, py, pz = getElementPosition(thePlayer)
 				local vx, vy, vz = getElementPosition(contactElement)

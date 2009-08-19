@@ -776,15 +776,14 @@ addCommandHandler("delthisveh", deleteThisVehicle, false, false)
 
 function setVehiclePosition(thePlayer, commandName)
 	local veh = getPedOccupiedVehicle(thePlayer)
-	local playerid = getElementData(thePlayer, "dbid")
-	local owner = getElementData(veh, "owner")
-	local dbid = getElementData(veh, "dbid")
-	local TowingReturn = call(getResourceFromName("tow-system"), "CanTowTruckDriverVehPos", thePlayer) -- 2 == in towing and in col shape, 1 == colshape only, 0 == not in col shape
-	if (exports.global:isPlayerAdmin(thePlayer)) or (owner==playerid and TowingReturn == 0) or (exports.global:doesPlayerHaveItem(thePlayer, 3, dbid)) or (TowingReturn == 2) then
-		
-		if not (veh) then
-			outputChatBox("You are not in a vehicle.", thePlayer, 255, 0, 0)
-		else
+	if not veh then
+		outputChatBox("You are not in a vehicle.", thePlayer, 255, 0, 0)
+	else
+		local playerid = getElementData(thePlayer, "dbid")
+		local owner = getElementData(veh, "owner")
+		local dbid = getElementData(veh, "dbid")
+		local TowingReturn = call(getResourceFromName("tow-system"), "CanTowTruckDriverVehPos", thePlayer) -- 2 == in towing and in col shape, 1 == colshape only, 0 == not in col shape
+		if (exports.global:isPlayerAdmin(thePlayer)) or (owner==playerid and TowingReturn == 0) or (exports.global:doesPlayerHaveItem(thePlayer, 3, dbid)) or (TowingReturn == 2) then
 			if (dbid<0) then
 				outputChatBox("This vehicle is not permanently spawned.", thePlayer, 255, 0, 0)
 			else

@@ -28,37 +28,47 @@ addEventHandler("onResourceStop", getResourceRootElement(getThisResource()), clo
 
 carshopPickup = createPickup(544.4990234375, -1292.7890625, 17.2421875, 3, 1239)
 exports.pool:allocateElement(carshopPickup)
+setElementData(carshopPickup, "shopid", 1, false)
+
+boatshopPickup = createPickup(715.35546875, -1705.5791015625, 2.4296875, 3, 1239)
+exports.pool:allocateElement(boatshopPickup)
+setElementData(boatshopPickup, "shopid", 2, false)
 
 function pickupUse(thePlayer)
-	triggerClientEvent(thePlayer, "showCarshopUI", thePlayer)
+	triggerClientEvent(thePlayer, "showCarshopUI", thePlayer, getElementData(source, "shopid"))
 	cancelEvent()
 end
-addEventHandler("onPickupHit", carshopPickup, pickupUse)
+addEventHandler("onPickupHit", getResourceRootElement(), pickupUse)
 
-function buyCar(car, cost, id, col1, col2)
+function buyCar(id, cost, col1, col2, x, y, z, rz, px, py, pz, prz, shopID)
 	if not getElementData(source, "money") then return end
 	
 	local safemoney = tonumber(getElementData(source, "money"))
 	local hackmoney = getPlayerMoney(source)
 	if (safemoney == hackmoney and safemoney >= tonumber(cost)) then
-		outputChatBox("You bought a " .. car .. " for " .. cost .. "$. Enjoy!", source, 255, 194, 14)
-		outputChatBox("You can set this vehicles spawn position by parking it and typing /vehpos", source, 255, 194, 14)
-		outputChatBox("Vehicles parked near the dealership or bus spawn point will be deleted without notice.", source, 255, 0, 0)
-		outputChatBox("Press I and use your car key to unlock this vehicle.", source, 255, 194, 14)
-		makeCar(source, car, cost, id, col1, col2)
+		outputChatBox("You bought a " .. getVehicleNameFromModel(id) .. " for " .. cost .. "$. Enjoy!", source, 255, 194, 14)
+		
+		if shopID == 1 then
+			outputChatBox("You can set this vehicles spawn position by parking it and typing /vehpos", source, 255, 194, 14)
+			outputChatBox("Vehicles parked near the dealership or bus spawn point will be deleted without notice.", source, 255, 0, 0)
+		elseif shopID == 2 then
+			outputChatBox("You can set this boats spawn position by parking it and typing /vehpos", source, 255, 194, 14)
+			outputChatBox("Boats parked near the marina will be deleted without notice.", source, 255, 0, 0)
+		end
+		outputChatBox("If you do not use /vehpos within an hour, your car will be DELETED.", source, 255, 0, 0)
+		outputChatBox("Press 'K' to unlock this vehicle.", source, 255, 194, 14)
+		makeCar(source, id, cost, col1, col2, x, y, z, rz, px, py, pz, prz)
 	end
 end
 addEvent("buyCar", true)
 addEventHandler("buyCar", getRootElement(), buyCar)
 
-function makeCar(thePlayer, car, cost, id, col1, col2)
+function makeCar(thePlayer, id, cost, col1, col2, x, y, z, rz, px, py, pz, prz)
 	local rx = 0
 	local ry = 0
-	local rz = 333.74502563477
-	local x, y, z = 548.59375, -1276.373046875, 17.248237609863
 		
-	setElementPosition(thePlayer, 541.6484375, -1274.1513671875, 17.2421875)
-	setPedRotation(thePlayer, 266.69442749023)
+	setElementPosition(thePlayer, px, py, pz)
+	setPedRotation(thePlayer, prz)
 	
 	local username = getPlayerName(thePlayer)
 	local dbid = getElementData(thePlayer, "dbid")

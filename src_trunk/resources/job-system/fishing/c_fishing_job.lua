@@ -29,7 +29,7 @@ function castLine()
 						if (totalCatch >= 2000) then
 							outputChatBox("#FF9933The boat can't hold any more fish. #FF66CCSell#FF9933 the fish you have caught before continuing.", 255, 104, 91, true)
 						else
-							local biteTimer = math.random(3000,300000) -- 30 seconds to 5 minutes for a bite.
+							local biteTimer = math.random(30000,300000) -- 30 seconds to 5 minutes for a bite.
 							catchTimer = setTimer( fishOnLine, biteTimer, 1 ) -- A fish will bite within 1 and 5 minutes.
 							triggerServerEvent("castOutput", getLocalPlayer())	
 							if not (fishingBlip) then -- If the /sellfish marker isnt already being shown...
@@ -82,7 +82,8 @@ function fishOnLine()
 		pFish = guiCreateProgressBar(0.425, 0.75, 0.2, 0.035, true)
 		outputChatBox("You got a bite! ((Tap - and = to reel in the catch.))", 0, 255, 0)
 		bindKey("-", "down", reelItIn)
-				
+		setElementData(getLocalPlayer(), "fishing", true, false)
+		
 		-- create two timers
 		resetTimer = setTimer(resetProgress, 2750, 0)
 		gotAwayTimer = setTimer(gotAway, 60000, 1)
@@ -113,6 +114,7 @@ function fishOnLine()
 				unbindKey("-", "down", reelItIn)
 				unbindKey("=", "down", reelItIn)
 				fishSize = 0
+				setElementData(getLocalPlayer(), "fishing", false, false)
 			end
 		end
 	end
@@ -139,10 +141,13 @@ function reelItIn()
 		pFish = nil
 		unbindKey("-", "down", reelItIn)
 		unbindKey("=", "down", reelItIn)
+		fishSize = 0
 
 		totalCatch = math.floor(totalCatch + fishSize)
 		outputChatBox("You have caught "..totalCatch.."lbs of fish so far.", 255, 194, 14)
 		triggerServerEvent("catchFish", getLocalPlayer(), fishSize, totalCatch)
+		
+		setElementData(getLocalPlayer(), "fishing", false, false)
 	end
 end
 
@@ -164,6 +169,7 @@ function gotAway()
 	unbindKey("=", "down", reelItIn)
 	outputChatBox("#FF9933The fish got away.", 255, 0, 0, true)
 	fishSize = 0
+	setElementData(getLocalPlayer(), "fishing", false, false)
 end
 
 -- /totalcatch command

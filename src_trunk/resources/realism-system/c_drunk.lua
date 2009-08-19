@@ -47,7 +47,8 @@ function drunkenDataChange(name)
 						-- press a random key
 						if isPedInVehicle(getLocalPlayer()) then
 							local key = { 'vehicle_left', 'vehicle_right', 'accelerate', 'steer_back' }
-							setControlState( key[math.random(1, #key)], true )
+							key = key[math.random(1, #key)]
+							setControlState( key, not getControlState( key ) )
 						end
 					elseif rand == 2 then
 						--blackout or sth

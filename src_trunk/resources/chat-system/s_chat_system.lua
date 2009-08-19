@@ -146,65 +146,69 @@ function chatMain(message, messageType)
 		end
 	elseif (messageType==2) and (logged==1) then -- Radio
 		if (exports.global:doesPlayerHaveItem(source, 6)) then
-			local username = string.gsub(getPlayerName(source), "_", " ")
 			local theChannel = getElementData(source, "radiochannel")
-			for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
-				local targetChannel = getElementData(value, "radiochannel")
-				local logged = getElementData(source, "loggedin")
-				
-				if (logged==1) and (targetChannel) and (exports.global:doesPlayerHaveItem(value, 6)) then
-					if (targetChannel==theChannel) then
-						playSoundFrontEnd(value, 47)
-						
-						-- get faction rank title
-						local result = mysql_query(handler, "SELECT faction_id, faction_rank FROM characters WHERE charactername='" .. getPlayerName(source) .. "' LIMIT 1")
-								
-						local factionID = tonumber(mysql_result(result, 1, 1))
-						local factionRank = tonumber(mysql_result(result, 1, 2))
-								
-						mysql_free_result(result)
-								
-						local titleresult = mysql_query(handler, "SELECT rank_" .. factionRank .. " FROM factions WHERE id='" .. factionID .. "' LIMIT 1")
-						if not mysql_result(titleresult, 1, 1) then
-							factionRankTitle = ""
-						else
-							factionRankTitle = tostring(mysql_result(titleresult, 1, 1)) .. " - "
-						end
-						mysql_free_result(titleresult)
-						
-						outputChatBox("[RADIO #" .. theChannel .. "] " .. factionRankTitle .. username .. " says: " .. message, value, 0, 102, 255)
-						
-						-- Show it to people near who can hear his radio
-						local x, y, z = getElementPosition(value)
-						local chatSphere = createColSphere(x, y, z, 10)
-						exports.pool:allocateElement(chatSphere)
-						local nearbyPlayers = getElementsWithinColShape(chatSphere, "player")
-						
-						destroyElement(chatSphere)
-						
-						for k, v in ipairs(nearbyPlayers) do
-							local channel = getElementData(v, "radiochannel")
-							if (v~=source) and (channel~=targetChannel) then
-								outputChatBox(getPlayerName(value) .. "'s Radio: " .. message, v, 255, 255, 255)
+			if theChannel > 0 then
+				local username = string.gsub(getPlayerName(source), "_", " ")
+				for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
+					local targetChannel = getElementData(value, "radiochannel")
+					local logged = getElementData(source, "loggedin")
+					
+					if (logged==1) and (targetChannel) and (exports.global:doesPlayerHaveItem(value, 6)) then
+						if (targetChannel==theChannel) then
+							playSoundFrontEnd(value, 47)
+							
+							-- get faction rank title
+							local result = mysql_query(handler, "SELECT faction_id, faction_rank FROM characters WHERE charactername='" .. getPlayerName(source) .. "' LIMIT 1")
+									
+							local factionID = tonumber(mysql_result(result, 1, 1))
+							local factionRank = tonumber(mysql_result(result, 1, 2))
+									
+							mysql_free_result(result)
+									
+							local titleresult = mysql_query(handler, "SELECT rank_" .. factionRank .. " FROM factions WHERE id='" .. factionID .. "' LIMIT 1")
+							if not mysql_result(titleresult, 1, 1) then
+								factionRankTitle = ""
+							else
+								factionRankTitle = tostring(mysql_result(titleresult, 1, 1)) .. " - "
 							end
+							mysql_free_result(titleresult)
+							
+							outputChatBox("[RADIO #" .. theChannel .. "] " .. factionRankTitle .. username .. " says: " .. message, value, 0, 102, 255)
+							
+							-- Show it to people near who can hear his radio
+							local x, y, z = getElementPosition(value)
+							local chatSphere = createColSphere(x, y, z, 10)
+							exports.pool:allocateElement(chatSphere)
+							local nearbyPlayers = getElementsWithinColShape(chatSphere, "player")
+							
+							destroyElement(chatSphere)
+							
+							for k, v in ipairs(nearbyPlayers) do
+								local channel = getElementData(v, "radiochannel")
+								if (v~=source) and (channel~=targetChannel) then
+									outputChatBox(getPlayerName(value) .. "'s Radio: " .. message, v, 255, 255, 255)
+								end
+							end
+							setTimer(playSoundFrontEnd, 700, 1, value, 48)
+							setTimer(playSoundFrontEnd, 800, 1, value, 48)
 						end
-						setTimer(playSoundFrontEnd, 700, 1, value, 48)
-						setTimer(playSoundFrontEnd, 800, 1, value, 48)
 					end
 				end
-			end
-			
-			-- Show the radio to nearby listening in people near the speaker
-			local x, y, z = getElementPosition(source)
-			local chatSphere = createColSphere(x, y, z, 10)
-			exports.pool:allocateElement(chatSphere)
-			local nearbyPlayers = getElementsWithinColShape(chatSphere, "player")
-			destroyElement(chatSphere)
-			
-			for key, value in ipairs(nearbyPlayers) do
-				if (value~=source) then
-					outputChatBox(getPlayerName(source) .. " [RADIO] Says: " .. message, value, 255, 255, 255)
+				
+				-- Show the radio to nearby listening in people near the speaker
+				local x, y, z = getElementPosition(source)
+				local chatSphere = createColSphere(x, y, z, 10)
+				exports.pool:allocateElement(chatSphere)
+				local nearbyPlayers = getElementsWithinColShape(chatSphere, "player")
+				destroyElement(chatSphere)
+				
+				for key, value in ipairs(nearbyPlayers) do
+					if (value~=source) then
+						outputChatBox(getPlayerName(source) .. " [RADIO] Says: " .. message, value, 255, 255, 255)
+					end
 				end
+			else
+				outputChatBox("Your radio is off. ((/toggleradio))", source, 255, 0, 0)
 			end
 		else
 			outputChatBox("You do not have a radio.", source, 255, 0, 0)
@@ -628,17 +632,49 @@ addCommandHandler("f", factionOOC, false, false)
 
 function setRadioChannel(thePlayer, commandName, channel)
 	if not (channel) then
-		outputChatBox("SYNTAX: /" .. commandName .. " [Channel Number 0->65535]", thePlayer, 255, 194, 14)
+		outputChatBox("SYNTAX: /" .. commandName .. " [Channel Number]", thePlayer, 255, 194, 14)
 	else
 		if (exports.global:doesPlayerHaveItem(thePlayer, 6)) then
-			local channel = tonumber(channel)
-			setElementData(thePlayer, "radiochannel", tonumber(channel), false)
-			outputChatBox("You retuned your radio to channel #" .. channel .. ".", thePlayer)
-			exports.global:sendLocalMeAction(thePlayer, "retunes their radio.")
+			if getElementData(thePlayer, "radiochannel") > 0 then
+				local channel = tonumber(channel)
+				if channel > 0 then
+					setElementData(thePlayer, "radiochannel", tonumber(channel), false)
+					outputChatBox("You retuned your radio to channel #" .. channel .. ".", thePlayer)
+					exports.global:sendLocalMeAction(thePlayer, "retunes their radio.")
+				else
+					outputChatBox("You can't tune your radio to that frequency!", thePlayer, 255, 0, 0)
+				end
+			else
+				outputChatBox("Your radio is off. ((/toggleradio))", thePlayer, 255, 0, 0)
+			end
+		else
+			outputChatBox("You do not have a radio!", thePlayer, 255, 0, 0)
 		end
 	end
 end
 addCommandHandler("tuneradio", setRadioChannel, false, false)
+
+function toggleRadio(thePlayer, commandName)
+	if (exports.global:doesPlayerHaveItem(thePlayer, 6)) then
+		local channel = getElementData(thePlayer, "radiochannel")
+		if not channel or channel == 0 then
+			channel = 1
+		else
+			channel = -channel
+		end
+		if channel > 0 then
+			outputChatBox("You turned your radio on.", thePlayer, 255, 194, 14)
+			exports.global:sendLocalMeAction(thePlayer, "turns his radio on.")
+		else
+			outputChatBox("You turned your radio off.", thePlayer, 255, 194, 14)
+			exports.global:sendLocalMeAction(thePlayer, "turns his radio off.")
+		end
+		setElementData(thePlayer, "radiochannel", channel, false)
+	else
+		outputChatBox("You do not have a radio!", thePlayer, 255, 0, 0)
+	end
+end
+addCommandHandler("toggleradio", toggleRadio, false, false)
 
 -- Admin chat
 function adminChat(thePlayer, commandName, ...)

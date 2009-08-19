@@ -461,6 +461,12 @@ function playerhelp( sourcePlayer, commandName )
 				guiGridListSetItemText ( itemcommandslist, radiofreqcreaterow, itemcommanduse, "/tuneradio <channel mumber 0-65535>", false, false )
 				guiGridListSetItemText ( itemcommandslist, radiofreqcreaterow, itemcommandexplanation, "Use this command to change the frequency of your radio.", false, false )
 				guiGridListSetItemText ( itemcommandslist, radiofreqcreaterow, itemcommandexample, "/tuneradio 7331", false, false )
+
+				toggleradiocreaterow = guiGridListAddRow ( chatcommandslist )
+				guiGridListSetItemText ( chatcommandslist, toggleradiocreaterow, chatcommand, "/toggleradio", false, false )
+				guiGridListSetItemText ( chatcommandslist, toggleradiocreaterow, chatcommanduse, "/toggleradio", false, false )
+				guiGridListSetItemText ( chatcommandslist, toggleradiocreaterow, chatcommandexplanation, "Turns your radio on or off." , false, false )
+				guiGridListSetItemText ( chatcommandslist, toggleradiocreaterow, chatcommandexample, "/toggleradio", false, false )
 				
 				--Misc Commands
 				

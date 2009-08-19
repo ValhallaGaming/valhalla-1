@@ -149,208 +149,6 @@ function pickupItem(button, state)
 		end
 	end
 end
-
-function getItemDescription(itemID)
-	if (itemID==1) then return "A plump haggis animal, straight from the hills of Scotland."
-	elseif (itemID==2) then return "A sleek cellphone, look's like a new one too."
-	elseif (itemID==3) then return "A vehicle key with a small manufacturers badge on it. (( Opens vehicle ##v ))"
-	elseif (itemID==4) then return "A green house key."
-	elseif (itemID==5) then return "A blue business key."
-	elseif (itemID==6) then return "A black radio."
-	elseif (itemID==7) then return "A torn phonebook."
-	elseif (itemID==8) then return "A yummy sandwich with cheese."
-	elseif (itemID==9) then return "A can of sprunk."
-	elseif (itemID==10) then return "A red dice with white dots."
-	elseif (itemID==11) then return "A greasy mexican taco."
-	elseif (itemID==12) then return "A double cheeseburger with bacon."
-	elseif (itemID==13) then return "Hot sticky sugar covered donut."
-	elseif (itemID==14) then return "A luxury chocolate chip cookie."
-	elseif (itemID==15) then return "A bottle of mineral water."
-	elseif (itemID==16) then return "A set of clean clothes. (( Skin ID ##v ))"
-	elseif (itemID==17) then return "A smart gold watch."
-	elseif (itemID==18) then return "A small city guide booklet."
-	elseif (itemID==19) then return "A white, sleek looking MP3 Player. The brand reads EyePod."
-	elseif (itemID==20) then return "A book on how to do standard fighting."
-	elseif (itemID==21) then return "A book on how to do boxing."
-	elseif (itemID==22) then return "A book on how to do kung fu."
-	elseif (itemID==23) then return "A book on how to do grab kick fighting."
-	elseif (itemID==24) then return "A book on how to do elbow fighting."
-	elseif (itemID==25) then return "A book on how to do elbow fighting."
-	elseif (itemID==26) then return "A black gas mask, blocks out the effects of gas and flashbangs."
-	elseif (itemID==27) then return "A small grenade canister with FB written on the side."
-	elseif (itemID==28) then return "A green glowstick."
-	elseif (itemID==29) then return "A red metal door ram."
-	elseif (itemID==30) then return "Cannabis Sativa, when mixed can create some strong drugs."
-	elseif (itemID==31) then return "Cocaine Alkaloid, when mixed can create some strong drugs."
-	elseif (itemID==32) then return "Lysergic Acid, when mixed can create some strong drugs."
-	elseif (itemID==33) then return "Unprocessed PCP, when mixed can create some strong drugs."
-	elseif (itemID==34) then return "1g of cocaine."
-	elseif (itemID==35) then return "A marijuana joint laced in cocaine."
-	elseif (itemID==36) then return "50mg of cocaine laced in lysergic acid."
-	elseif (itemID==37) then return "50mg of cocaine laced in phencyclidine."
-	elseif (itemID==38) then return "A marijuana joint."
-	elseif (itemID==39) then return "A marijuana joint laced in lysergic acid."
-	elseif (itemID==40) then return "A marijuana joint laced in phencyclidine."
-	elseif (itemID==41) then return "80 micrograms of LSD."
-	elseif (itemID==42) then return "100milligrams of yellow liquid."
-	elseif (itemID==43) then return "10mg of phencyclidine powder."
-	elseif (itemID==44) then return "A small chemistry set."
-	elseif (itemID==45) then return "A pair of metal handcuffs."
-	elseif (itemID==46) then return "A long rope."
-	elseif (itemID==47) then return "A small pair of handcuff keys."
-	elseif (itemID==48) then return "A reasonably sized backpack."
-	elseif (itemID==49) then return "A 7 foot carbon steel fishing rod."
-	elseif (itemID==50) then return "The Los Santos Highway Code."
-	elseif (itemID==51) then return "Chemistry 101."
-	elseif (itemID==52) then return "The Police Officer's Manual."
-	elseif (itemID==53) then return "A small black breathalizer."
-	elseif (itemID==54) then return "A black Ghettoblaster."
-	elseif (itemID==55) then return "Steven Pullman - L.S. Freight Depot, Tel: ((/081016))"
-	elseif (itemID==56) then return "A comical mask."
-	elseif (itemID==57) then return "A small metal fuel canister."
-	elseif (itemID==58) then return "The finest beer, imported from Holland."
-	elseif (itemID==59) then return "So i herd u liek mudkips? Mabako's Favorite."
-	elseif (itemID==60) then return "A safe to store your items in."
-	elseif (itemID==61) then return "A Emergency Light Becon which you can put on you car."
-	else return false 
-	end
-end
-
-function getItemType(itemID)
-	-- 1 = Food & Drink
-	-- 2 = Keys
-	-- 3 = Drugs
-	-- 4 = Other
-	-- 5 = Books
-	-- 6 = Clothing & Accessories
-	-- 7 = Electronics
-	
-	if (itemID==1) then
-		return 1
-	elseif (itemID==2) then
-		return 7
-	elseif (itemID==3) then
-		return 2
-	elseif (itemID==4) then
-		return 2
-	elseif (itemID==5) then
-		return 2
-	elseif (itemID==6) then
-		return 7
-	elseif (itemID==7) then
-		return 5
-	elseif (itemID==8) then
-		return 1
-	elseif (itemID==9) then
-		return 1
-	elseif (itemID==10) then
-		return 4
-	elseif (itemID==11) then
-		return 1
-	elseif (itemID==12) then
-		return 1
-	elseif (itemID==13) then
-		return 1
-	elseif (itemID==14) then
-		return 1
-	elseif (itemID==15) then
-		return 1
-	elseif (itemID==16) then
-		return 6
-	elseif (itemID==17) then
-		return 6
-	elseif (itemID==18) then
-		return 5
-	elseif (itemID==19) then
-		return 7
-	elseif (itemID==20) then
-		return 5
-	elseif (itemID==21) then
-		return 5
-	elseif (itemID==22) then
-		return 5
-	elseif (itemID==23) then
-		return 5
-	elseif (itemID==24) then
-		return 5
-	elseif (itemID==25) then
-		return 5
-	elseif (itemID==26) then
-		return 6
-	elseif (itemID==27) then
-		return 4
-	elseif (itemID==28) then
-		return 4
-	elseif (itemID==29) then
-		return 4
-	elseif (itemID==30) then
-		return 3
-	elseif (itemID==31) then
-		return 3
-	elseif (itemID==32) then
-		return 3
-	elseif (itemID==33) then
-		return 3
-	elseif (itemID==34) then
-		return 3
-	elseif (itemID==35) then
-		return 3
-	elseif (itemID==36) then
-		return 3
-	elseif (itemID==37) then
-		return 3
-	elseif (itemID==38) then
-		return 3
-	elseif (itemID==39) then
-		return 3
-	elseif (itemID==40) then
-		return 3
-	elseif (itemID==41) then
-		return 3
-	elseif (itemID==42) then
-		return 3
-	elseif (itemID==43) then
-		return 3
-	elseif (itemID==44) then
-		return 3
-	elseif (itemID==45) then
-		return 4
-	elseif (itemID==46) then
-		return 4
-	elseif (itemID==47) then
-		return 4
-	elseif (itemID==48) then
-		return 4
-	elseif (itemID==49) then
-		return 4
-	elseif (itemID==50) then -- book
-		return 5
-	elseif (itemID==51) then -- book
-		return 5
-	elseif (itemID==52) then -- book
-		return 5
-	elseif (itemID==53) then -- breathalizer
-		return 4
-	elseif (itemID==54) then -- ghettoblaster
-		return 7
-	elseif (itemID==55) then -- Stevie's business card.
-		return 4
-	elseif (itemID==56) then -- Mask
-		return 6
-	elseif (itemID==57) then -- Fuel Can
-		return 4
-	elseif (itemID==58) then -- BEER
-		return 1
-	elseif (itemID==59) then -- MUDKIP
-		return 1
-	elseif (itemID==60) then -- SAFE
-		return 4
-	elseif (itemID==61) then -- Emergency Light Becon
-		return 7
-	else
-		return false
-	end
-end
 	
 function toggleCategory()
 	if (source==chkFood) then
@@ -984,7 +782,10 @@ addEventHandler("onClientPlayerDamage", getLocalPlayer(), stopGasmaskDamage)
 -- /itemlist (admin command to get item IDs)
 wItemList, bItemListClose = nil
 
-function showItemList(items)
+function showItemList()
+	if getElementData(getLocalPlayer(), "adminlevel") == 0 then
+		return
+	end
 	if not (wItemsList) then
 		wItemsList = guiCreateWindow(0.15, 0.15, 0.7, 0.7, "Items List", true)
 		local gridItems = guiCreateGridList(0.025, 0.1, 0.95, 0.775, true, wItemsList)
@@ -992,17 +793,12 @@ function showItemList(items)
 		local colID = guiGridListAddColumn(gridItems, "ID", 0.1)
 		local colName = guiGridListAddColumn(gridItems, "Item Name", 0.3)
 		local colDesc = guiGridListAddColumn(gridItems, "Description", 0.6)
-		local scrollPane = guiCreateScrollPane(0.02, 0.02, 0.95, 0.95, true, gridItems)
 		
-		for key, value in pairs(items) do
-			local itemID = items[key][1]
-			local itemName = tostring(items[key][2])
-			local itemDescription = tostring(items[key][3])
-
+		for key, value in pairs(g_items) do
 			local row = guiGridListAddRow(gridItems)
-			guiGridListSetItemText(gridItems, row, colID, itemID, false, true)
-			guiGridListSetItemText(gridItems, row, colName, itemName, false, false)
-			guiGridListSetItemText(gridItems, row, colDesc, itemDescription, false, false)
+			guiGridListSetItemText(gridItems, row, colID, tostring(key), false, true)
+			guiGridListSetItemText(gridItems, row, colName, value[1], false, false)
+			guiGridListSetItemText(gridItems, row, colDesc, value[2], false, false)
 		end
 
 		bItemListClose = guiCreateButton(0.025, 0.9, 0.95, 0.1, "Close", true, wItemsList)
@@ -1015,8 +811,7 @@ function showItemList(items)
 		showCursor(true)
 	end
 end
-addEvent("showItemList", true)
-addEventHandler("showItemList", getRootElement(), showItemList)
+addCommandHandler("itemlist", showItemList)
 
 function closeItemsList(button, state)
 	if (source==bItemListClose) and (button=="left") and (state=="up") then

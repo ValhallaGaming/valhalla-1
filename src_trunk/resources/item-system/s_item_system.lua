@@ -19,6 +19,7 @@ setTimer(checkMySQL, 300000, 0)
 function closeMySQL()
 	if (handler) then
 		mysql_close(handler)
+		handler = nil
 	end
 end
 addEventHandler("onResourceStop", getResourceRootElement(getThisResource()), closeMySQL)
@@ -541,10 +542,7 @@ function dropItem(itemID, itemValue, itemName, x, y, z, gz, isWeapon, items, ite
 			setTimer(removeAnimation, 500, 1, source)
 		end
 	
-		local objectresult = mysql_query(handler, "SELECT modelid FROM items WHERE id='" .. tonumber(itemID) .. "' LIMIT 1")
-		local modelid = tonumber(mysql_result(objectresult, 1, 1))
-		mysql_free_result(objectresult)
-		
+		local modelid = getItemModel(tonumber(itemID))
 		local obj = createObject(modelid, x, y, z)
 		exports.pool:allocateElement(obj)
 		
@@ -685,12 +683,10 @@ function loadWorldItems(res)
 				setElementData(obj, "itemName", tostring(row[4]))
 				setElementData(obj, "type", "worlditem")
 			else
-				local objectresult = mysql_query(handler, "SELECT modelid FROM items WHERE id='" .. tonumber(row[2]) .. "' LIMIT 1")
-				local modelid = tonumber(mysql_result(objectresult, 1, 1))
+				local modelid = getItemModel(tonumber(row[2]))
 				local items = tostring(row[11])
 				local itemvalues = tostring(row[12])
 				outputDebugString(tostring(items))
-				mysql_free_result(objectresult)
 				
 				local obj = createObject(modelid, x, y, z)
 				exports.pool:allocateElement(obj)
@@ -735,11 +731,9 @@ function loadWorldItems(res)
 				setElementData(obj, "itemName", tostring(row[4]))
 				setElementData(obj, "type", "worlditem")
 			else
-				local objectresult = mysql_query(handler, "SELECT modelid FROM items WHERE id='" .. tonumber(row[2]) .. "' LIMIT 1")
-				local modelid = tonumber(mysql_result(objectresult, 1, 1))
+				local modelid = getItemModel(tonumber(row[2]))
 				local items = tostring(row[11])
 				local itemvalues = tostring(row[12])
-				mysql_free_result(objectresult)
 				
 				local obj = createObject(modelid, x, y, z, 270, 0, 0)
 				exports.pool:allocateElement(obj)
@@ -825,31 +819,6 @@ function pickupItem(object, itemID, itemValue, itemName)
 end
 addEvent("pickupItem", true)
 addEventHandler("pickupItem", getRootElement(), pickupItem)
-
-function adminItemList(thePlayer)
-	if (exports.global:isPlayerAdmin(thePlayer)) then
-		local result = mysql_query(handler, "SELECT id, item_name, item_description FROM items")
-				
-		if (result) then
-			local items = { }
-			local key = 1
-			
-			for result, row in mysql_rows(result) do
-				items[key] = { }
-				items[key][1] = row[1]
-				items[key][2] = row[2]
-				items[key][3] = row[3]
-				key = key + 1
-			end
-			
-			mysql_free_result(result)
-			triggerClientEvent(thePlayer, "showItemList", getRootElement(), items)
-		else
-			outputChatBox("Error 300001 - Report on forums.", thePlayer, 255, 0, 0)
-		end
-	end
-end
-addCommandHandler("itemlist", adminItemList, false, false)
 
 function breathTest(thePlayer, commandName, targetPlayer)
 	if (exports.global:doesPlayerHaveItem(thePlayer, 53, -1)) then

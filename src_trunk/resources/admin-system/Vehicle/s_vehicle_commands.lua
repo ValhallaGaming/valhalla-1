@@ -776,7 +776,7 @@ addCommandHandler("delthisveh", deleteThisVehicle, false, false)
 
 function setVehiclePosition(thePlayer, commandName)
 	local veh = getPedOccupiedVehicle(thePlayer)
-	if not veh then
+	if not veh or getElementData(thePlayer, "realinvehicle") == 0 then
 		outputChatBox("You are not in a vehicle.", thePlayer, 255, 0, 0)
 	else
 		local playerid = getElementData(thePlayer, "dbid")

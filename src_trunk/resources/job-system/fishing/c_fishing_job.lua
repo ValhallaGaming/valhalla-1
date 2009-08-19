@@ -9,7 +9,7 @@ local fishingBlip, fishingMarker, fishingCol = nil
 
 function castLine()
 
-	local element = getPedContactElement(getLocalPlayer())
+	local element = getPedContactElement(getLocalPlayer()) or getElementAttachedTo(getLocalPlayer())
 	if not (isElement(element)) then
 		outputChatBox("You must be on a boat to fish.", 255, 0, 0)
 	else

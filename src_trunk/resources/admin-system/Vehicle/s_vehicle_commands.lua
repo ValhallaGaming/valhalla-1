@@ -166,6 +166,8 @@ function gotoCar(thePlayer, commandNAme, id)
 					
 					setElementPosition(thePlayer, x, y, z)
 					setPedRotation(thePlayer, rz)
+					setElementInterior(thePlayer, getElementInterior(theVehicle))
+					setElementDimension(thePlayer, getElementDimension(theVehicle))
 					
 					counter = counter + 1
 					outputChatBox("Teleported to vehicles location.", thePlayer, 255, 194, 14)
@@ -205,6 +207,9 @@ function getCar(thePlayer, commandName, id)
 						setVehicleRotation(theVehicle, 0, 0, r)
 					end
 					
+					setElementInterior(theVehicle, getElementInterior(thePlayer))
+					setElementDimension(theVehicle, getElementDimension(thePlayer))
+
 					counter = counter + 1
 					outputChatBox("Vehicle teleported to your location.", thePlayer, 255, 194, 14)
 				end

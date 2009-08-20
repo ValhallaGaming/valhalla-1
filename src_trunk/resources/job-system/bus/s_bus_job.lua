@@ -57,14 +57,14 @@ addEvent("payBusDriver",true)
 addEventHandler("payBusDriver", getRootElement(), payBusDriver)
 
 function takeBusFare(thePlayer)
-	exports.global:takePlayerSafeMoney(thePlayer, 5)
-	exports.global:givePlayerSafeMoney(source, 5)
+	exports.global:takePlayerSafeMoney(source, 5)
+	exports.global:givePlayerSafeMoney(thePlayer, 5)
 end
 addEvent("payBusFare", true)
 addEventHandler("payBusFare", getRootElement(), takeBusFare)
 
-function ejectPlayerFromBus(thePlayer)
-	removePedFromVehicle(thePlayer)
+function ejectPlayerFromBus()
+	removePedFromVehicle(source)
 end
 addEvent("removePlayerFromBus", true)
 addEventHandler("removePlayerFromBus", getRootElement(), ejectPlayerFromBus)

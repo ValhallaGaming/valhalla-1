@@ -122,19 +122,12 @@ function createPermVehicle(thePlayer, commandName, ...)
 					local rx, ry, rz = getVehicleRotation(veh)
 					setVehicleRespawnPosition(veh, x, y, z, rx, ry, rz)
 					setVehicleLocked(veh, true)
-					local locked = 1
 							
 					setVehicleColor(veh, col1, col2, col1, col2)
 						
 					setVehicleOverrideLights(veh, 1)
 					setVehicleEngineState(veh, false)
 					setVehicleFuelTankExplodable(veh, false)
-					
-					-- faction vehicles are unlocked
-					if (factionVehicle~=-1) then
-						locked = 0
-						setVehicleLocked(veh, false)
-					end
 					
 					-- Set the vehicle armored if it is armored
 					if (armoredCars[id]) then
@@ -143,7 +136,7 @@ function createPermVehicle(thePlayer, commandName, ...)
 						
 					local dimension = getElementDimension(thePlayer)
 					local interior = getElementInterior(thePlayer)
-					local query = mysql_query(handler, "INSERT INTO vehicles SET model='" .. id .. "', x='" .. x .. "', y='" .. y .. "', z='" .. z .. "', rotx='" .. rx .. "', roty='" .. ry .. "', rotz='" .. rz .. "', color1='" .. col1 .. "', color2='" .. col2 .. "', faction='" .. factionVehicle .. "', owner='" .. dbid .. "', plate='" .. plate .. "', currx='" .. x .. "', curry='" .. y .. "', currz='" .. z .. "', currrx='0', currry='0', currrz='" .. r .. "', locked='" .. locked .. "', interior='" .. interior .. "', currinterior='" .. interior .. "', dimension='" .. dimension .. "', currdimension='" .. dimension .. "'")
+					local query = mysql_query(handler, "INSERT INTO vehicles SET model='" .. id .. "', x='" .. x .. "', y='" .. y .. "', z='" .. z .. "', rotx='" .. rx .. "', roty='" .. ry .. "', rotz='" .. rz .. "', color1='" .. col1 .. "', color2='" .. col2 .. "', faction='" .. factionVehicle .. "', owner='" .. dbid .. "', plate='" .. plate .. "', currx='" .. x .. "', curry='" .. y .. "', currz='" .. z .. "', currrx='0', currry='0', currrz='" .. r .. "', locked=1, interior='" .. interior .. "', currinterior='" .. interior .. "', dimension='" .. dimension .. "', currdimension='" .. dimension .. "'")
 
 					if (query) then
 						local insertid = mysql_insert_id( handler )
@@ -159,7 +152,7 @@ function createPermVehicle(thePlayer, commandName, ...)
 						setElementData(veh, "oldx", x, false)
 						setElementData(veh, "oldy", y, false)
 						setElementData(veh, "oldz", z, false)
-						setElementData(veh, "faction", factionVehicle, false)
+						setElementData(veh, "faction", factionVehicle)
 						setElementData(veh, "owner", dbid, false)
 						setElementData(veh, "job", 0, false)
 						
@@ -275,7 +268,7 @@ function createCivilianPermVehicle(thePlayer, commandName, ...)
 					setElementData(veh, "oldx", x, false)
 					setElementData(veh, "oldy", y, false)
 					setElementData(veh, "oldz", z, false)
-					setElementData(veh, "faction", -1, false)
+					setElementData(veh, "faction", -1)
 					setElementData(veh, "owner", -2, false)
 					setElementData(veh, "job", job, false)
 					outputChatBox(getVehicleName(veh) .. " (Civilian) spawned with ID #" .. id .. ".", thePlayer, 255, 194, 14)
@@ -490,7 +483,7 @@ function loadAllVehicles(res)
 			setElementData(veh, "oldx", x, false)
 			setElementData(veh, "oldy", y, false)
 			setElementData(veh, "oldz", z, false)
-			setElementData(veh, "faction", faction, false)
+			setElementData(veh, "faction", faction)
 			setElementData(veh, "owner", owner, false)
 			setElementData(veh, "job", tonumber(job), false)
 			setElementData(veh, "items", items)
@@ -595,7 +588,7 @@ function vehicleRespawn(exploded)
 	setElementData(source, "oldy", y, false)
 	setElementData(source, "oldz", z, false)
 	
-	setElementData(source, "faction", faction, false)
+	setElementData(source, "faction", faction)
 	setElementData(source, "owner", owner, false)
 	
 	setVehicleOverrideLights(source, 1)
@@ -613,8 +606,8 @@ function vehicleRespawn(exploded)
 	setElementDimension(source, dimension)
 	setElementInterior(source, interior)
 	
-	-- unlock civ & faction vehicles
-	if faction ~= -1 or owner == -2 then
+	-- unlock civ vehicles
+	if owner == -2 then
 		setVehicleLocked(source, false)
 	end
 end
@@ -794,7 +787,7 @@ function toggleLock(source, key, keystate)
 		for i, veh in ipairs(nearbyVehicles) do
 			local dbid = tonumber(getElementData(veh, "dbid"))
 			local distanceToVehicle = getDistanceBetweenPoints3D(x, y, z, getElementPosition(veh))
-			if shortest > distanceToVehicle and exports.global:doesPlayerHaveItem(source, 3, dbid) then
+			if shortest > distanceToVehicle and ( exports.global:doesPlayerHaveItem(source, 3, dbid) or (getElementData(source, "faction") > 0 and getElementData(source, "faction") == getElementData(veh, "faction")) ) then
 				shortest = distanceToVehicle
 				found = veh
 			end

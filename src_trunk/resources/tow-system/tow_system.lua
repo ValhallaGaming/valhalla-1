@@ -74,9 +74,7 @@ function UnlockVehicle(element, matchingdimension)
 						--PD make sure its not marked as impounded so it cannot be recovered and unlock/undp it
 						setVehicleLocked(temp, false)
 						setElementData(temp, "locked", false)
-						setElementData(temp, "Impounded", 0)		
-						setVehicleLocked(temp, false)
-						setElementData(temp, "locked", false)
+						setElementData(temp, "Impounded", 0)
 						setElementData(temp, "enginebroke", 0, false)
 						setVehicleDamageProof(temp, false)
 						setVehicleEngineState(temp, false)
@@ -110,14 +108,8 @@ function payRelease(vehID)
 		call(getResourceFromName("faction-system"), "addToFactionMoney", dbid, 75)
 		setElementData(vehID, "Impounded", 0)
 		setElementPosition(vehID, 1104.6435546875, -932.0029296875, 43.187454223633)
-		local locked
-		if (getElementData(vehID, "faction") == 1) then
-			locked = false
-		else
-			locked = true
-		end
-		setVehicleLocked(vehID, locked)
-		setElementData(vehID, "locked", locked)
+		setVehicleLocked(vehID, true)
+		setElementData(vehID, "locked", true)
 		setElementData(vehID, "enginebroke", 0, false)
 		setVehicleDamageProof(vehID, false)
 		setVehicleEngineState(vehID, false)

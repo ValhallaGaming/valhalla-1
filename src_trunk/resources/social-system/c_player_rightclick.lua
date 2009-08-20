@@ -98,7 +98,7 @@ function showPlayerInfo(button, state)
 		outputChatBox("~~~~~~~~~~~~ " .. getPlayerName(player) .. " ~~~~~~~~~~~~", 255, 194, 14)
 		outputChatBox("Race: " .. race, 255, 194, 14)
 		outputChatBox("Age: " .. age .. " years old", 255, 194, 14)
-		outputChatBox("Weight: " .. weight .. "cm", 255, 194, 14)
+		outputChatBox("Weight: " .. weight .. "kg", 255, 194, 14)
 		outputChatBox("Height: " .. height .. "cm", 255, 194, 14)
 		outputChatBox("Description: " .. description, 255, 194, 14)
 	end

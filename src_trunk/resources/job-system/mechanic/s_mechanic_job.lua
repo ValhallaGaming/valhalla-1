@@ -26,7 +26,7 @@ function serviceVehicle(veh)
 			outputChatBox("You can't afford the parts to service this vehicle.", source, 255, 0, 0)
 		else
 			fixVehicle(veh)
-			if (not getElementData(veh, "Impounded") or getElementData(veh, "Impounded") > 0) then
+			if not getElementData(veh, "Impounded") or getElementData(veh, "Impounded") == 0 then
 				setElementData(veh, "enginebroke", 0, false)
 			end
 			exports.global:takePlayerSafeMoney(source, 100)

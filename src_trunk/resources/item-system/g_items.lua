@@ -75,7 +75,11 @@ g_items = {
 }
 
 function getItemName(id)
-	return g_items[id][1] or nil
+	if (g_items[id] == nil) then
+		return nil
+	else
+		return g_items[id][1]
+	end
 end
 
 function getItemDescription(id)

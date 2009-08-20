@@ -113,7 +113,7 @@ addCommandHandler("crun",
 		if (exports.global:isPlayerScripter(player)) then
 		local commandstring = table.concat({...}, " ")
 		if player then
-			return triggerClientEvent(player, "doCrun", rootElement, commandstring)
+			return triggerClientEvent(player, "doCrun", player, commandstring)
 		else
 			return runString(commandstring, false, false)
 		end

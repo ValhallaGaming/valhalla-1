@@ -1,7 +1,7 @@
 local tyColSphere = createColSphere( 2242.52, -1170.7, 1029.79, 1)
 exports.pool:allocateElement(tyColSphere)
-setElementInterior( tyColSphere, 15 )
-setElementDimension( tyColSphere, 1160 )
+tyColDim = 1160
+setElementDimension( tyColSphere, tyColDim )
 
 tyrese = createPed (28, 2264.65234375, -1134.3662109375, 1050.6328125)
 exports.pool:allocateElement(tyrese)
@@ -15,8 +15,16 @@ setElementData(tyrese, "name", "Ty")
 setElementData(tyrese, "talk", true)
 setElementData(tyrese, "rotation", getPedRotation(tyrese), false)
 
-function startTy(thePlayer, hitDimension )
-	triggerClientEvent( thePlayer, "startTy_c", getRootElement())
+function startTy(thePlayer, matchingDimension )
+	if matchingDimension then
+		local logged = getElementData(thePlayer, "loggedin")
+		
+		if (logged==1) then
+			if (isElementWithinColShape(thePlayer, tyColSphere)) then
+				triggerClientEvent( thePlayer, "startTy_c", getRootElement())
+			end
+		end
+	end
 end
 addEventHandler("onColShapeHit", tyColSphere, startTy )
 

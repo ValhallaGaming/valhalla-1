@@ -1379,3 +1379,24 @@ function timerPDUnjailPlayer(jailedPlayer)
 		killTimer(theTimer)
 	end
 end
+
+function sendEditingInformation(charname)
+	local result = mysql_query(handler, "SELECT description, age, weight, height, gender FROM characters WHERE charactername='" .. mysql_escape_string(handler, charname:gsub(" ", "_")) .. "'")
+	local description = tostring(mysql_result(result, 1, 1))
+	local age = tostring(mysql_result(result, 1, 2))
+	local weight = tostring(mysql_result(result, 1, 3))
+	local height = tostring(mysql_result(result, 1, 4))
+	local gender = tonumber(mysql_result(result, 1, 5))
+	mysql_free_result(result)
+	
+	triggerClientEvent(source, "sendEditingInformation", source, height, weight, age, description, gender)
+end
+addEvent("requestEditCharInformation", true)
+addEventHandler("requestEditCharInformation", getRootElement(), sendEditingInformation)
+
+function updateEditedCharacter(charname, height, weight, age, description)
+	local result = mysql_query(handler, "UPDATE characters SET description='" .. mysql_escape_string(handler, description) .. "', height=" .. height .. ", weight=" .. weight .. ", age=" .. age .. " WHERE charactername='" .. mysql_escape_string(handler, charname:gsub(" ", "_")) .. "'")
+	mysql_free_result(result)
+end
+addEvent("updateEditedCharacter", true)
+addEventHandler("updateEditedCharacter", getRootElement(), updateEditedCharacter)

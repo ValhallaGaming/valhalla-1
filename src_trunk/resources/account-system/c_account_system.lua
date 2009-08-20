@@ -1243,6 +1243,7 @@ addEventHandler("hideUI", getRootElement(), hideUI)
 tabPanelCharacter, tabCharacter, tabAccount, tabAchievements, tabStatistics, tableAccounts, lCharacters, paneCharacters, lCreateFakepane, lCreateBG, lCreateName, lCreateImage = nil
 paneChars = { }
 tableAchievements, tableStatistics, iAchievementCount, iAchievementPointsCount = nil
+bEditChar = nil
 bDeleteChar = nil
 bChangeAccount = nil
 
@@ -1309,7 +1310,7 @@ function showCharacterUI(accounts, firstTime)
 	lCharacters = guiCreateLabel(0.05, 0.025, 0.9, 0.15, "Characters: " .. #accounts .. " (" .. charsAlive .. " Alive, " .. charsDead .. " Dead).", true, tabCharacter)
 	guiSetFont(lCharacters, "default-bold-small")
 	
-	paneCharacters = guiCreateScrollPane(0.05, 0.075, 0.9, 0.85, true, tabCharacter)
+	paneCharacters = guiCreateScrollPane(0.05, 0.075, 0.9, 0.8, true, tabCharacter)
 	
 	paneChars = { }
 	local y = 0.0
@@ -1431,9 +1432,12 @@ function showCharacterUI(accounts, firstTime)
 	addEventHandler("onClientGUIDoubleClick", lCreateName, dcselectedCharacter)
 	addEventHandler("onClientGUIDoubleClick", lCreateImage, dcselectedCharacter)
 	
+	-- Edit Char button
+	bEditChar = guiCreateButton(0.05, 0.875, 0.9, 0.05, "Edit Character", true, tabCharacter)
+	addEventHandler("onClientGUIClick", bEditChar, editSelectedCharacter, false)
+	
 	-- Delete char button
 	bDeleteChar = guiCreateButton(0.05, 0.925, 0.9, 0.05, "Delete Character", true, tabCharacter)
-	
 	addEventHandler("onClientGUIClick", bDeleteChar, deleteSelectedCharacter, false)
 	
 	guiSetAlpha(tabPanelCharacter, 0.75)
@@ -3564,3 +3568,112 @@ function updateTimeInServer()
 	end
 end
 setTimer(updateTimeInServer, 60000, 0)
+
+
+--/////////////////////////////////////////////////////////////////
+--DISPLAY CHARACTER EDITING
+--////////////////////////////////////////////////////////////////
+local charGender = 0
+function editSelectedCharacter(button, state)
+	if button=="left" and state=="up" and selectedChar and paneChars[selectedChar] then
+		triggerServerEvent("requestEditCharInformation", getLocalPlayer(), guiGetText(paneChars[selectedChar][2]))
+	end
+end
+function editCharacter(height, weight, age, description, gender)
+	if selectedChar and paneChars[selectedChar] then
+		charGender = gender
+		
+		guiSetVisible(tabPanelCharacter, false)
+		
+		local xwidth, xheight = 400, 400
+		
+		local scrWidth, scrHeight = guiGetScreenSize()
+		local x = scrWidth/2 - (xwidth/2)
+		local y = scrHeight/2 - (xheight/2)
+		
+		tabPanelCreation = guiCreateTabPanel(5, y, xwidth, xheight, false)
+		tabCreationFive = guiCreateTab("Character Editing", tabPanelCreation)
+		guiSetAlpha(tabPanelCreation, 0.75)
+		
+		lInformation = guiCreateLabel(0.1, 0.025, 0.8, 0.15, tostring(guiGetText(paneChars[selectedChar][2])), true, tabCreationFive) 
+		guiSetFont(lInformation, "sa-header")
+		
+		--/////////////
+		-- HEIGHT
+		--/////////////
+		lHeight = guiCreateLabel(0.1, 0.145, 0.5, 0.15, "Height (cm)(between 100 and 200):", true, tabCreationFive)
+		guiSetFont(lHeight, "default-bold-small")
+		guiLabelSetColor(lHeight, 0, 255, 0)
+		
+		tHeight = guiCreateEdit(0.635, 0.143, 0.15, 0.05, height, true, tabCreationFive)
+		addEventHandler("onClientGUIChanged", tHeight, checkInput)
+		
+		--/////////////
+		-- WEIGHT
+		--/////////////
+		lWeight = guiCreateLabel(0.1, 0.215, 0.5, 0.15, "Weight (kg)(between 40 and 200):", true, tabCreationFive)
+		guiSetFont(lWeight, "default-bold-small")
+		guiLabelSetColor(lWeight, 0, 255, 0)
+		
+		tWeight = guiCreateEdit(0.635, 0.213, 0.15, 0.05, weight, true, tabCreationFive)
+		addEventHandler("onClientGUIChanged", tWeight, checkInput)
+		
+		--/////////////
+		-- AGE
+		--/////////////
+		lAge = guiCreateLabel(0.1, 0.285, 0.5, 0.15, "Age (between 18 and 80):", true, tabCreationFive)
+		guiSetFont(lAge, "default-bold-small")
+		guiLabelSetColor(lAge, 0, 255, 0)
+		
+		tAge = guiCreateEdit(0.635, 0.283, 0.15, 0.05, age, true, tabCreationFive)
+		addEventHandler("onClientGUIChanged", tAge, checkInput)
+		
+		--/////////////
+		-- DESCRIPTION
+		--/////////////
+		lCharDesc = guiCreateLabel(0.1, 0.385, 0.8, 0.15, "Description(between 30 and 100 characters):", true, tabCreationFive)
+		guiSetFont(lCharDesc, "default-bold-small")
+		guiLabelSetColor(lCharDesc, 0, 255, 0)
+		
+		tCharDesc = guiCreateMemo(0.1, 0.455, 0.8, 0.25, description, true, tabCreationFive)
+		addEventHandler("onClientGUIChanged", tCharDesc, checkInput)
+		
+		--/////////////
+		-- SAVE/CANCEL
+		--/////////////
+		bNext = guiCreateButton(0.05, 0.75, 0.9, 0.1, "Save", true, tabCreationFive)
+		addEventHandler("onClientGUIClick", bNext, updateEditedCharacter, false)
+		
+		bCancel = guiCreateButton(0.05, 0.85, 0.9, 0.1, "Cancel", true, tabCreationFive)
+		addEventHandler("onClientGUIClick", bCancel,
+			function()
+				destroyElement(tabPanelCreation)
+				tabPanelCreation = nil
+				guiSetVisible(tabPanelCharacter, true)
+			end, false)
+	end
+end
+addEvent("sendEditingInformation", true)
+addEventHandler("sendEditingInformation", getLocalPlayer(), editCharacter)
+
+function updateEditedCharacter()
+	if heightvalid and weightvalid and descvalid and agevalid and selectedChar then
+		height = tonumber(guiGetText(tHeight))
+		weight = tonumber(guiGetText(tWeight))
+		age = tonumber(guiGetText(tAge))
+		description = guiGetText(tCharDesc)
+		
+		triggerServerEvent("updateEditedCharacter", getLocalPlayer(), guiGetText(paneChars[selectedChar][2]), height, weight, age, description)
+		
+		destroyElement(tabPanelCreation)
+		tabPanelCreation = nil
+		guiSetVisible(tabPanelCharacter, true)
+		
+		-- update character screen (avoids us from reloading all accounts)
+		local gender = "Male" 
+		if charGender == 1 then
+			gender = "Female"
+		end
+		guiSetText(paneChars[selectedChar][4], age .. " year old " .. gender .. ".", true)
+	end
+end

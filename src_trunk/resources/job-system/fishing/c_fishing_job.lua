@@ -141,11 +141,11 @@ function reelItIn()
 		pFish = nil
 		unbindKey("-", "down", reelItIn)
 		unbindKey("=", "down", reelItIn)
-		fishSize = 0
 
 		totalCatch = math.floor(totalCatch + fishSize)
 		outputChatBox("You have caught "..totalCatch.."lbs of fish so far.", 255, 194, 14)
 		triggerServerEvent("catchFish", getLocalPlayer(), fishSize, totalCatch)
+		fishSize = 0
 		
 		setElementData(getLocalPlayer(), "fishing", false, false)
 	end

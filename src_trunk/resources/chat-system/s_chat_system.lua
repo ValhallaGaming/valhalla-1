@@ -125,22 +125,23 @@ function chatMain(message, messageType)
 				if (nearbyPlayerDimension==dimension) and (nearbyPlayerInterior==interior) then
 					local logged = tonumber(getElementData(nearbyPlayer, "loggedin"))
 					if not (isPedDead(nearbyPlayer)) and (logged==1) then
+						local message2 = trunklateText( nearbyPlayer, message )
 						local mode = tonumber(getElementData(nearbyPlayer, "chatbubbles"))
 						if mode > 0 then
-							triggerClientEvent(nearbyPlayer, "onMessageIncome", source, message, mode)
+							triggerClientEvent(nearbyPlayer, "onMessageIncome", source, message2, mode)
 						end
 						local nx, ny, nz = getElementPosition(nearbyPlayer)
 						local distance = getDistanceBetweenPoints3D(x, y, z, nx, ny, nz)
 						if distance < 4 then
-							outputChatBox( "#EEEEEE" .. playerName .. " Says: " .. trunklateText( nearbyPlayer, message ), nearbyPlayer, 255, 255, 255, true)
+							outputChatBox( "#EEEEEE" .. playerName .. " Says: " .. message2, nearbyPlayer, 255, 255, 255, true)
 						elseif distance < 8 then
-							outputChatBox( "#DDDDDD" .. playerName .. " Says: " .. trunklateText( nearbyPlayer, message ), nearbyPlayer, 255, 255, 255, true)
+							outputChatBox( "#DDDDDD" .. playerName .. " Says: " .. message2, nearbyPlayer, 255, 255, 255, true)
 						elseif distance < 12 then
-							outputChatBox( "#CCCCCC" .. playerName .. " Says: " .. trunklateText( nearbyPlayer, message ), nearbyPlayer, 255, 255, 255, true)
+							outputChatBox( "#CCCCCC" .. playerName .. " Says: " .. message2, nearbyPlayer, 255, 255, 255, true)
 						elseif distance < 16 then
-							outputChatBox( "#BBBBBB" .. playerName .. " Says: " .. trunklateText( nearbyPlayer, message ), nearbyPlayer, 255, 255, 255, true)
+							outputChatBox( "#BBBBBB" .. playerName .. " Says: " .. message2, nearbyPlayer, 255, 255, 255, true)
 						else
-							outputChatBox( "#AAAAAA" .. playerName .. " Says: " .. trunklateText( nearbyPlayer, message ), nearbyPlayer, 255, 255, 255, true)
+							outputChatBox( "#AAAAAA" .. playerName .. " Says: " .. message2, nearbyPlayer, 255, 255, 255, true)
 						end
 					end
 				end
@@ -577,11 +578,11 @@ function localShout(thePlayer, commandName, ...)
 					
 					if (logged==1) and not (isPedDead(nearbyPlayer)) then
 						local mode = tonumber(getElementData(nearbyPlayer, "chatbubbles"))
-						message = trunklateText(nearbyPlayer, message)
+						local message2 = trunklateText(nearbyPlayer, message)
 						if mode > 0 then
-							triggerClientEvent(nearbyPlayer, "onMessageIncome", thePlayer, message, mode)
+							triggerClientEvent(nearbyPlayer, "onMessageIncome", thePlayer, message2, mode)
 						end
-						outputChatBox(playerName .. " shouts: " .. message .. "!!", nearbyPlayer, 255, 255, 255)
+						outputChatBox(playerName .. " shouts: " .. message2 .. "!!", nearbyPlayer, 255, 255, 255)
 					end
 				end
 			end

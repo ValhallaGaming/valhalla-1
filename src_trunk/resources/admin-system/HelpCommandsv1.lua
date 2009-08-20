@@ -355,6 +355,13 @@ function playerhelp( sourcePlayer, commandName )
 				    guiGridListSetItemText ( factcommandslist, forecastcreaterow, factcommandexplanation, "Displays the weather prediction.", false, false )
 				    guiGridListSetItemText ( factcommandslist, forecastcreaterow, factcommandexample, "/forecast", false, false )
 					
+					issuebadgecreaterow = guiGridListAddRow ( factcommandslist )
+				    guiGridListSetItemText ( factcommandslist, issuebadgecreaterow, factcommand, "/issuebadge", false, false )
+					guiGridListSetItemText ( factcommandslist, issuebadgecreaterow, factusecommand, "PD and ES", false, false )
+				    guiGridListSetItemText ( factcommandslist, issuebadgecreaterow, factcommanduse, "/issuebadge <player name/ID><badge number>", false, false )
+				    guiGridListSetItemText ( factcommandslist, issuebadgecreaterow, factcommandexplanation, "Issue a goverment faction (PD or ES) ID.", false, false )
+				    guiGridListSetItemText ( factcommandslist, issuebadgecreaterow, factcommandexample, "/issuebadge John_Smith 1337", false, false )
+					
 				-- elseif (factiontype == 3) then
 				
 				    -- fthreecreaterow = guiGridListAddRow ( factcommandslist )

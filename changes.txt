@@ -1,3 +1,9 @@
+-----------------
+PD and ES badges
+-----------------
+INSERT INTO items SET id='64', item_name='LSPD Badge', item_description='A Los Santos Police Department badge.';
+INSERT INTO items SET id='65', item_name='LSES Identification', item_description='An Los Santos Emergency Service Identification.';
+
 ---
 Chatbubbles
 ---
@@ -69,13 +75,3 @@ all with default of null
 modify the following columns in interiors type to TEXT
 items
 items_values
-
-
----
-SQL
----
-
----------------------
-Chamberlains changes.
----------------------
-Scripts in "unfinished code" need to be completed, checked and added to the correct resources by someone who knows what they are doing.

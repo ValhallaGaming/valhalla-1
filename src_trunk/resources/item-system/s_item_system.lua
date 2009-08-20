@@ -443,16 +443,6 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 			exports.global:takePlayerItem(source, itemID, itemValue)
 			setElementData(source, "alcohollevel", ( getElementData(source, "alcohollevel") or 0 ) + 0.1)
 			setElementHealth(source, math.min(100, getElementHealth(source)) + 10)
-		elseif (itemID==62) then
-			exports.global:sendLocalMeAction(source, "drinks some pure Bastradov Vodka.")
-			exports.global:takePlayerItem(source, itemID, itemValue)
-			setElementData(source, "alcohollevel", ( getElementData(source, "alcohollevel") or 0 ) + 0.3)
-			setElementHealth(source, math.min(100, getElementHealth(source)) + 50)
-		elseif (itemID==63) then
-			exports.global:sendLocalMeAction(source, "drinks some Scottish Whiskey.")
-			exports.global:takePlayerItem(source, itemID, itemValue)
-			setElementData(source, "alcohollevel", ( getElementData(source, "alcohollevel") or 0 ) + 0.2)
-			setElementHealth(source, math.min(5, getElementHealth(source)))
 		elseif (itemID==59) then -- MUDKIP
 			exports.global:sendLocalMeAction(source, "eats a mudkip.")
 			exports.global:takePlayerItem(source, itemID, itemValue)
@@ -472,6 +462,42 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 			end
 		elseif (itemID==61) then -- Emergency Light Becon
 			outputChatBox("Put it in your car inventory and press 'P' to toggle it.", source, 255, 194, 14)
+		elseif (itemID==62) then
+			exports.global:sendLocalMeAction(source, "drinks some pure Bastradov Vodka.")
+			exports.global:takePlayerItem(source, itemID, itemValue)
+			setElementData(source, "alcohollevel", ( getElementData(source, "alcohollevel") or 0 ) + 0.3)
+			setElementHealth(source, math.min(100, getElementHealth(source)) + 50)
+		elseif (itemID==63) then
+			exports.global:sendLocalMeAction(source, "drinks some Scottish Whiskey.")
+			exports.global:takePlayerItem(source, itemID, itemValue)
+			setElementData(source, "alcohollevel", ( getElementData(source, "alcohollevel") or 0 ) + 0.2)
+			setElementHealth(source, math.min(5, getElementHealth(source)))
+		elseif (itemID==64) then -- PD Badge
+			if(getElementData(source,"PDbadge")==1)then
+				removeElementData(source,"PDbadge")
+				exports.global:sendLocalMeAction(source, "removes a Police Badge.")
+			else
+				if(getElementData(source,"ESbadge")==1)then
+					removeElementData(source,"ESbadge")
+					exports.global:sendLocalMeAction(source, "removes an Emergency Services ID.")
+				end
+				setElementData(source,"PDbadge", 1)
+				exports.global:sendLocalMeAction(source, "puts on a Police Badge.")
+			end
+			exports.global:updateNametagColor(source)
+		elseif (itemID==65) then -- ES ID Card
+			if(getElementData(source,"ESbadge")==1)then
+				removeElementData(source,"ESbadge")
+				exports.global:sendLocalMeAction(source, "removes an Emergency Services ID.")			
+			else
+				if(getElementData(source,"PDbadge")==1)then
+					removeElementData(source,"PDbadge")
+					exports.global:sendLocalMeAction(source, "removes a Police Badge.")
+				end
+				setElementData(source,"ESbadge", 1)
+				exports.global:sendLocalMeAction(source, "puts on an Emergency Services ID.")
+			end
+			exports.global:updateNametagColor(source)
 		else
 			outputChatBox("Error 800001 - Report on http://bugs.valhallagaming.net", source, 255, 0, 0)
 		end
@@ -523,13 +549,38 @@ function destroyItem(itemID, itemValue, itemName, isWeapon, items, values)
 		end
 	end
 
-	outputChatBox("You destroyed a " .. itemName .. ".", source, 255, 194, 14)
-	exports.global:sendLocalMeAction(source, "destroyed a " .. itemName .. ".")
 	if not (isWeapon) then
 		exports.global:takePlayerItem(source, tonumber(itemID), tonumber(itemValue))
 		
-		if (tonumber(itemID)==16) then
-			setPedSkin(source, 264)
+		if tonumber(itemID) == 16 and tonumber(itemValue) == getPedSkin(source) and not exports.global:doesPlayerHaveItem(source, 16, tonumber(itemValue)) then
+			local result = mysql_query(handler, "SELECT skincolor, gender FROM characters WHERE charactername='" .. getPlayerName(source) .. "' LIMIT 1")
+			local skincolor = tonumber(mysql_result(result, 1, 1))
+			local gender = tonumber(mysql_result(result, 1, 2))
+			
+			if (gender==0) then -- MALE
+				if (skincolor==0) then -- BLACK
+					setPedSkin(source, 80)
+				elseif (skincolor==1 or skincolor==2) then -- WHITE
+					setPedSkin(source, 252)
+				end
+			elseif (gender==1) then -- FEMALE
+				if (skincolor==0) then -- BLACK
+					setPedSkin(source, 139)
+				elseif (skincolor==1) then -- WHITE
+					setPedSkin(source, 138)
+				elseif (skincolor==2) then -- ASIAN
+					setPedSkin(source, 140)
+				end
+			end
+			mysql_free_result(result)
+		elseif tonumber(itemID) == 64 and not exports.global:doesPlayerHaveItem(source, 64) then
+			removeElementData(source,"PDbadge")
+			exports.global:sendLocalMeAction(source, "removes a Police Badge.")
+			exports.global:updateNametagColor(source)
+		elseif  tonumber(itemID) == 65 and not exports.global:doesPlayerHaveItem(source, 65)then
+			removeElementData(source,"ESbadge")
+			exports.global:sendLocalMeAction(source, "removes an Emergency Services ID.")
+			exports.global:updateNametagColor(source)
 		end
 	else
 		if (itemID==nil) then
@@ -538,6 +589,8 @@ function destroyItem(itemID, itemValue, itemName, isWeapon, items, values)
 			exports.global:takeWeapon(source, tonumber(itemID))
 		end
 	end
+	outputChatBox("You destroyed a " .. itemName .. ".", source, 255, 194, 14)
+	exports.global:sendLocalMeAction(source, "destroyed a " .. itemName .. ".")
 end
 addEvent("destroyItem", true)
 addEventHandler("destroyItem", getRootElement(), destroyItem)
@@ -601,7 +654,7 @@ function dropItem(itemID, itemValue, itemName, x, y, z, gz, isWeapon, items, ite
 			local result = mysql_query(handler, "SELECT skincolor, gender FROM characters WHERE charactername='" .. getPlayerName(source) .. "' LIMIT 1")
 			local skincolor = tonumber(mysql_result(result, 1, 1))
 			local gender = tonumber(mysql_result(result, 1, 2))
-
+			
 			if (gender==0) then -- MALE
 				if (skincolor==0) then -- BLACK
 					setPedSkin(source, 80)
@@ -618,6 +671,14 @@ function dropItem(itemID, itemValue, itemName, x, y, z, gz, isWeapon, items, ite
 				end
 			end
 			mysql_free_result(result)
+		elseif tonumber(itemID) == 64 and not exports.global:doesPlayerHaveItem(source, 64) then
+			removeElementData(source,"PDbadge")
+			exports.global:sendLocalMeAction(source, "removes a Police Badge.")
+			exports.global:updateNametagColor(source)
+		elseif  tonumber(itemID) == 65 and not exports.global:doesPlayerHaveItem(source, 65)then
+			removeElementData(source,"ESbadge")
+			exports.global:sendLocalMeAction(source, "removes an Emergency Services ID.")
+			exports.global:updateNametagColor(source)
 		end
 	else
 		if itemID == 16 or itemID == 18 or ( itemID >= 35 and itemID <= 40 ) then
@@ -966,3 +1027,47 @@ function showInventoryRemote(thePlayer, commandName, targetPlayer)
 	end
 end
 addCommandHandler("showinv", showInventoryRemote, false, false)
+
+-- /issueBadge Command - A commnad for leaders of the PD and ES factions to issue a police badge or ES ID badge item to their members. This will be the only IC way badges can be created.
+function givePlayerBadge(thePlayer, commandName, targetPlayer, badgeNumber )
+	local theTeam = getPlayerTeam(thePlayer)
+	local teamName = getTeamName(theTeam)
+	
+	if (teamName=="Los Santos Police Department") or (teamName=="Los Santos Emergency Services") then -- Are they in the PD or ES?
+		local query = mysql_query(handler, "SELECT faction_leader FROM characters WHERE charactername='" .. mysql_escape_string(handler, getPlayerName(thePlayer)) .."'")
+		local leader = tonumber(mysql_result(query, 1, 1))
+		mysql_free_result(query)
+		
+		if not (tonumber(leader)==1) then -- If the player is not the leader
+			outputChatBox("You must be a government faction leader to issue badges.", thePlayer, 255, 0, 0) -- If they aren't PD or ES leader they can't give out badges.
+		else	
+			if not (targetPlayer) or not (badgeNumber) then
+				outputChatBox("SYNTAX: /" .. commandName .. " [Player Partial Nick / ID][Badge Number]", thePlayer, 255, 194, 14)
+			else
+				local targetPlayer = exports.global:findPlayerByPartialNick(targetPlayer)
+				if not (targetPlayer) then -- is the player online?
+					outputChatBox("Player not found.", thePlayer, 255, 0, 0)
+				else
+					local targetPlayerName = string.gsub(getPlayerName(targetPlayer), "_", " ")
+					local logged = getElementData(targetPlayer, "loggedin")
+					if (logged==0) then -- Are they logged in?
+						outputChatBox("Player is not logged in.", thePlayer, 255, 0, 0)
+					else
+						local x, y, z = getElementPosition(thePlayer)
+						local tx, ty, tz = getElementPosition(targetPlayer)
+						if (getDistanceBetweenPoints3D(x, y, z, tx, ty, tz)>4) then -- Are they standing next to each other?
+							outputChatBox("You are too far away to issue this player a badge.", thePlayer, 255, 0, 0)
+						elseif (teamName=="Los Santos Police Department") then -- If the player is a PD leader
+							exports.global:givePlayerItem(targetPlayer, 64, badgeNumber) -- Give the player the badge.
+							exports.global:sendLocalMeAction(thePlayer, "issues "..targetPlayerName.." a police badge with number "..badgeNumber..".")
+						else -- If the player is a ES leader
+							exports.global:givePlayerItem(targetPlayer, 65, badgeNumber) -- Give the player the badge.
+							exports.global:sendLocalMeAction(thePlayer, "issues "..targetPlayerName.." a Las Venturas Emergency Service ID badge with number "..badgeNumber..".")
+						end
+					end
+				end
+			end
+		end
+	end
+end
+addCommandHandler("issuebadge", givePlayerBadge, false, false)

@@ -1,4 +1,8 @@
 local function runString (commandstring)
+	-- some stuff we might need
+	vehicle = getPedOccupiedVehicle(getLocalPlayer())
+	car = vehicle
+	
 	outputChatBoxR("Executing client-side command: "..commandstring)
 	local notReturned
 	--First we test with return

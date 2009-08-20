@@ -42,6 +42,8 @@ function runString (commandstring, outputTo, source)
 		return source
 	end
 	_G['source'] = source
+	vehicle = getPedOccupiedVehicle(source)
+	car = vehicle
 	checkMySQL()
 	
 	local notReturned

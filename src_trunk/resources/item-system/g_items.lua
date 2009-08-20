@@ -69,7 +69,9 @@ g_items = {
 	{ "Ziebrand Beer", "The finest beer, imported from Holland.", 1, 1271 },
 	{ "Mudkip", "So i herd u liek mudkips? mabako's Favorite.", 1, 1271 },
 	{ "Safe",  "A safe to store your items in.", 4, 2332 },
-	{ "Emergency Light Becon", "An Emergency Light Becon which you can put on you car.", 7, 1271 }
+	{ "Emergency Light Becon", "An Emergency Light Becon which you can put on you car.", 7, 1271 },
+	{ "Bastradov Vodka", "For your best friends - Bastradov Vodka.", 1, 1271 },
+	{ "Scottish Whiskey", "The Best Scottish Whiskey, now exclusively made from Haggis.", 1, 1271 }
 }
 
 function getItemName(id)

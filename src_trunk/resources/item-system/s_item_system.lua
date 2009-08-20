@@ -441,8 +441,18 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 		elseif (itemID==58) then
 			exports.global:sendLocalMeAction(source, "drinks some good Ziebrand Beer.")
 			exports.global:takePlayerItem(source, itemID, itemValue)
+			setElementData(source, "alcohollevel", ( getElementData(source, "alcohollevel") or 0 ) + 0.1)
+			setElementHealth(source, math.min(100, getElementHealth(source)) + 10)
+		elseif (itemID==62) then
+			exports.global:sendLocalMeAction(source, "drinks some pure Bastradov Vodka.")
+			exports.global:takePlayerItem(source, itemID, itemValue)
+			setElementData(source, "alcohollevel", ( getElementData(source, "alcohollevel") or 0 ) + 0.3)
+			setElementHealth(source, math.min(100, getElementHealth(source)) + 50)
+		elseif (itemID==63) then
+			exports.global:sendLocalMeAction(source, "drinks some Scottish Whiskey.")
+			exports.global:takePlayerItem(source, itemID, itemValue)
 			setElementData(source, "alcohollevel", ( getElementData(source, "alcohollevel") or 0 ) + 0.2)
-			setElementHealth(source, math.max(100, getElementHealth(source)) + 20)
+			setElementHealth(source, math.min(5, getElementHealth(source)))
 		elseif (itemID==59) then -- MUDKIP
 			exports.global:sendLocalMeAction(source, "eats a mudkip.")
 			exports.global:takePlayerItem(source, itemID, itemValue)

@@ -690,14 +690,17 @@ function dropItem(itemID, itemValue, itemName, x, y, z, gz, isWeapon, items, ite
 		else
 			outputChatBox("You dropped a " .. itemName .. ".", source, 255, 194, 14)
 			
-			if (itemID==nil) then
-				itemID = 100
+			if itemID == 100 then
 				gz = gz + 0.5
 				setPedArmor(source, 0)
 			end
 			
 			triggerClientEvent(source, "saveGuns", source)
 			exports.global:takeWeapon(source, tonumber(itemID))
+			
+			if tonumber(items) then
+				exports.global:giveWeapon(source, tonumber(itemID), tonumber(items))
+			end
 			
 			local modelid = 2969
 			-- MODEL ID

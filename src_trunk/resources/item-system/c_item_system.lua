@@ -735,26 +735,28 @@ function dropItem(button)
 				local itemSlot = tonumber(guiGridListGetItemText(gWeapons, row, 1))
 				local itemName = tostring(guiGridListGetItemText(gWeapons, row, 2))
 				local itemValue = tonumber(guiGridListGetItemText(gWeapons, row, 3))
-				local itemID = tonumber(getPedWeapon(getLocalPlayer(), itemSlot))
+				local itemID = 0
+				if itemSlot == 13 then
+					itemID = 100
+				else
+					itemID = tonumber(getPedWeapon(getLocalPlayer(), itemSlot))
+				end
 				
 				guiGridListSetSelectedItem(gWeapons, 0, 0)
-				guiGridListSetItemText(gWeapons, row, colName, "Empty", false, false)
-				guiGridListSetItemText(gWeapons, row, colValue, "None", false, false)
-				guiGridListSetSelectedItem(gWeapons, row, col)
-				guiSetText(lDescription, "An empty slot.")
-				guiSetEnabled(bUseItem, false)
-				guiSetEnabled(bDropItem, false)
-				guiSetEnabled(bShowItem, false)
-				guiSetEnabled(bDestroyItem, false)
+				if itemSlot >= 2 and itemSlot <= 9 then
+					openWeaponDropGUI(itemID, itemValue, row)
+				else
+					guiGridListRemoveRow(gWeapons, row)
 				
-				local x, y, z = getElementPosition(getLocalPlayer())
-				local rot = getPedRotation(getLocalPlayer())
-				x = x + math.sin( math.rad( rot ) ) * 1
-				y = y + math.cos( math.rad( rot ) ) * 1
-				
-				local gz = getGroundPosition(x, y, z)
-				
-				triggerServerEvent("dropItem", getLocalPlayer(), itemID, itemValue, itemName, x, y, z, gz, true)
+					local x, y, z = getElementPosition(getLocalPlayer())
+					local rot = getPedRotation(getLocalPlayer())
+					x = x + math.sin( math.rad( rot ) ) * 1
+					y = y + math.cos( math.rad( rot ) ) * 1
+					
+					local gz = getGroundPosition(x, y, z)
+					
+					triggerServerEvent("dropItem", getLocalPlayer(), itemID, itemValue, itemName, x, y, z, gz, true)
+				end
 			end
 		end
 	end

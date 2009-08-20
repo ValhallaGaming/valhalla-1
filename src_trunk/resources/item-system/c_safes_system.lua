@@ -10,10 +10,9 @@ wInventory, gSafeItems, gUserItems, lYou, lSafe, bGiveItem, bTakeItem, bCloseInv
 -- INVENTORY
 function cSafeInventory(button, state)
 	if (button=="left") then
-		
-		local dbid = getElementData(safe, "dbid")
-			
-		--if (dbid>0) then
+		if not getElementData(localPlayer, "exclusiveGUI") then
+			setElementData(localPlayer, "exclusiveGUI", true, false)
+
 			destroyElement(wRightClick)
 			wRightClick = nil
 				
@@ -93,8 +92,9 @@ function cSafeInventory(button, state)
 				
 			bTakeItem = guiCreateButton(0.5, 0.81, 0.45, 0.075, "<---- Move ", true, wInventory)
 			addEventHandler("onClientGUIClick", bTakeItem, takeItemFromSafe, false)
-				
-		--end
+		else
+			outputChatBox("You can't access that inventory at the moment.", 255, 0, 0)
+		end
 	end
 end
 
@@ -248,5 +248,6 @@ function hideSafeMenu()
 
 
 	showCursor(false)
-	triggerEvent("cursorHide", getLocalPlayer())
+	triggerEvent("cursorHide", localPlayer)
+	setElementData(localPlayer, "exclusiveGUI", false, false)
 end

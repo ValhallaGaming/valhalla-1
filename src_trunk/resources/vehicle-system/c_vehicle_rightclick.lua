@@ -10,6 +10,10 @@ wInventory, gVehicleItems, gUserItems, lYou, lVehicle, bGiveItem, bTakeItem, bCl
 -- INVENTORY
 function cVehicleInventory(button, state)
 	if (button=="left") then
+		if getElementData(localPlayer, "exclusiveGUI") then
+			outputChatBox("You can't access that inventory at the moment.", 255, 0, 0)
+			return
+		end
 		local locked = isVehicleLocked(vehicle)
 		local theVehicle = getPedOccupiedVehicle(localPlayer)
 		
@@ -22,6 +26,7 @@ function cVehicleInventory(button, state)
 			if (dbid<0) then
 				outputChatBox("Admin cars do not have inventories.", 255, 0, 0)
 			else
+				setElementData(localPlayer, "exclusiveGUI", true, false)
 				destroyElement(wRightClick)
 				wRightClick = nil
 				
@@ -328,6 +333,7 @@ function hideVehicleMenu()
 	bCloseMenu = nil
 
 	if (isElement(wInventory)) then
+		setElementData(localPlayer, "exclusiveGUI", false, false)
 		destroyElement(wInventory)
 	end
 	wInventory = nil

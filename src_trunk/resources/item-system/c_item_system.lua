@@ -171,10 +171,10 @@ function toggleCategory()
 	
 	-- let's add the items again
 	guiGridListClear(gItems)
-	local itemvalues = getElementData(getLocalPlayer(), "itemvalues")
+	local itemvalues = getElementData(player, "itemvalues")
 	
 	local slots = 10
-	if (exports.global:cdoesPlayerHaveItem(getLocalPlayer(), 48, -1)) then
+	if (exports.global:cdoesPlayerHaveItem(player, 48, -1)) then
 		slots = 20
 	end
 	
@@ -242,6 +242,10 @@ function showInventory(player)
 		if wItems then
 			hideInventory()
 		end
+		if getElementData(getLocalPlayer(), "exclusiveGUI") then
+			return
+		end
+		setElementData(getLocalPlayer(), "exclusiveGUI", true, false)
 		local width, height = 600, 500
 		local scrWidth, scrHeight = guiGetScreenSize()
 		local x = scrWidth/2 - (width/2)
@@ -459,6 +463,7 @@ function hideInventory()
 	wItems = nil
 	
 	showCursor(false)
+	setElementData(getLocalPlayer(), "exclusiveGUI", false, false)
 end
 addEvent("hideInventory", true)
 addEventHandler("hideInventory", getRootElement(), hideInventory)

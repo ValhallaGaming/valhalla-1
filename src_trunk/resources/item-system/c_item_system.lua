@@ -63,14 +63,14 @@ function showItemMenu()
 			y = y + 0.14
 			
 			bPreviousTrack = guiCreateButton(0.05, y, 0.42, 0.1, "Previous", true, wRightClick)
-			addEventHandler("onClientGUIClick", bPreviousTrack, function() triggerServerEvent("changeGhettoblasterTrack", getLocalPlayer(), item, -1) end)
+			addEventHandler("onClientGUIClick", bPreviousTrack, function() triggerServerEvent("changeGhettoblasterTrack", getLocalPlayer(), item, -1) end, false)
 			
 			bNextTrack = guiCreateButton(0.53, y, 0.42, 0.1, "Next", true, wRightClick)
-			addEventHandler("onClientGUIClick", bNextTrack, function() triggerServerEvent("changeGhettoblasterTrack", getLocalPlayer(), item, 1) end)
+			addEventHandler("onClientGUIClick", bNextTrack, function() triggerServerEvent("changeGhettoblasterTrack", getLocalPlayer(), item, 1) end, false)
 		else
 			bToggle = guiCreateButton(0.05, y, 0.9, 0.1, "Turn On", true, wRightClick)
 		end
-		addEventHandler("onClientGUIClick", bToggle, toggleGhettoblaster)
+		addEventHandler("onClientGUIClick", bToggle, toggleGhettoblaster, false)
 	
 		y = y + 0.14
 	end

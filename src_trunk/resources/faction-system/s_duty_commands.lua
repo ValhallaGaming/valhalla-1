@@ -96,6 +96,7 @@ function lvesHeal(thePlayer, commandName, targetPartialNick, price)
 							mysql_free_result(result)
 							
 					        setElementHealth(targetPlayer, 100)
+							triggerEvent("onPlayerHeal", targetPlayer)
 					        outputChatBox("You have been healed by '" ..getPlayerName(thePlayer).. "'.", targetPlayer, 0, 255, 0)
 					    end
 					end

@@ -6,4 +6,6 @@
 	
 	<script src="s_bleedout.lua" type="server"/>
 	<script src="c_bleedout.lua" type="client"/>
+
+	<script src="s_injuries.lua" type="server"/>
 </meta>

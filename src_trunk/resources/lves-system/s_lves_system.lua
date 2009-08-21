@@ -26,27 +26,6 @@ addEventHandler("onResourceStop", getResourceRootElement(getThisResource()), clo
 -- //			MYSQL END			 //
 -- ////////////////////////////////////
 
-function realisticDamage(attacker, weapon, bodypart, loss)
-	if (attacker) and (weapon) then
-		local health = getElementHealth(source)
-		local intLoss = loss * health
-		local armor = getPedArmor(source)
-			
-		if (weapon==8) then -- katana
-			setPedHeadless(source, true)
-			killPed(source, attacker, weapon, bodypart)
-		end
-			
-		if (bodypart==9) and not (armor>0) then -- Head and no armor.
-			setPedHeadless(source, true)
-			killPed(source, attacker, weapon, bodypart)
-			exports.global:givePlayerAchievement(attacker, 12)
-			exports.global:givePlayerAchievement(source, 15)
-		end
-	end
-end
-addEventHandler("onPlayerDamage", getRootElement(), realisticDamage)
-
 function playerDeath()
 	outputChatBox("Respawn in 10 seconds.", source)
 	setTimer(respawnPlayer, 10000, 1, source)
@@ -57,8 +36,6 @@ function respawnPlayer(thePlayer)
 	if (isElement(thePlayer)) then
 		local cost = math.random(25,50)
 		local money = getElementData(thePlayer, "money")
-		
-		setPedHeadless(thePlayer, false)
 		
 		-- Fix for injected cash
 		if (cost>money) then

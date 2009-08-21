@@ -1,4 +1,9 @@
 ---
+Blindfold
+---
+ALTER TABLE `characters` ADD `blindfold` TINYINT NOT NULL DEFAULT '0'
+
+---
 Chatbubbles
 ---
 ALTER TABLE `accounts` ADD `chatbubbles` TINYINT NOT NULL DEFAULT '1'

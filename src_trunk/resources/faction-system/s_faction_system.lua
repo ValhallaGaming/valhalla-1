@@ -972,13 +972,13 @@ function payAllWages()
 			end
 			
 			setElementData(value, "timeinserver", timeinserver-60)
+			
+			triggerClientEvent(value, "cPayDay", value)
+			local hoursplayed = getElementData(value, "hoursplayed") or 0
+			setElementData(value, "hoursplayed", hoursplayed+1, false)
 		elseif (timeinserver<60) then
 			outputChatBox("You have not played long enough to recieve a payday. (You require another " .. 60-timeinserver .. " Minutes of play.)", value, 255, 0, 0)
 		end
-		
-		triggerClientEvent(value, "cPayDay", value)
-		local hoursplayed = getElementData(value, "hoursplayed")
-		setElementData(value, "hoursplayed", hoursplayed+1, false)
 	end
 	
 	-- Store the government money

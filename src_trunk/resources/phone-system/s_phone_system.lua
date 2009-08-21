@@ -42,7 +42,15 @@ function callSomeone(thePlayer, commandName, phoneNumber, ...)
 				else
 					
 					if phoneNumber == "911" then
-						executeCommandHandler( "911", thePlayer, table.concat({...}, " ") )
+						outputChatBox("911 Operator says: 911 emergency. Please state your location.", thePlayer)
+						setElementData(thePlayer, "callprogress", 1, false)
+						setElementData(thePlayer, "phonestate", 1)
+						setElementData(thePlayer, "calling", 911)
+					elseif phoneNumber == "8294" then
+						outputChatBox("Taxi Operator says: LS Cabs here. Please state your location.", thePlayer)
+						setElementData(thePlayer, "callprogress", 1, false)
+						setElementData(thePlayer, "phonestate", 1)
+						setElementData(thePlayer, "calling", 8294)
 					elseif phoneNumber == "081016" then
 						if not executeCommandHandler( "081016", thePlayer ) then
 							outputChatBox("You get a dead tone...", thePlayer, 255, 194, 14)
@@ -111,8 +119,8 @@ function callSomeone(thePlayer, commandName, phoneNumber, ...)
 								exports.global:givePlayerAchievement(thePlayer, 16) -- On the Blower
 								
 								-- Give the target 10 seconds to answer the call
-								setTimer(cancelCall, 10000, 1, thePlayer)
-								setTimer(cancelCall, 10000, 1, foundElement)
+								setTimer(cancelCall, 30000, 1, thePlayer)
+								setTimer(cancelCall, 30000, 1, foundElement)
 							end
 						end
 					end
@@ -191,36 +199,40 @@ function hangupPhone(thePlayer, commandName)
 			local calling = getElementData(thePlayer, "calling")
 			
 			if (calling) then
-				local target = calling
-				local phoneState = getElementData(thePlayer, "phonestate")
-				if phoneState >= 1 then -- lets charge the player
-					if (getElementData(thePlayer, "called")) then
-						if not exports.global:isPlayerSilverDonator(thePlayer) then
-							exports.global:takePlayerSafeMoney(thePlayer, 10)
-						end
-					else
-						if not exports.global:isPlayerSilverDonator(calling) then
-							exports.global:takePlayerSafeMoney(calling, 10)
+				if (type(calling)~="number") then
+					local target = calling
+					local phoneState = getElementData(thePlayer, "phonestate")
+					if phoneState >= 1 then -- lets charge the player
+						if (getElementData(thePlayer, "called")) then
+							if not exports.global:isPlayerSilverDonator(thePlayer) then
+								exports.global:takePlayerSafeMoney(thePlayer, 10)
+							end
+						else
+							if not exports.global:isPlayerSilverDonator(calling) then
+								exports.global:takePlayerSafeMoney(calling, 10)
+							end
 						end
 					end
+					removeElementData(calling, "calling")
+					outputChatBox("They hung up.", target)
+					removeElementData(calling, "caller")
+					setElementData(calling, "phonestate", 0, false)
+					exports.global:applyAnimation(calling, "ped", "phone_out", 1.0, 1.0, 0.0, false, true, true)
+					toggleAllControls(calling, true, true, true)
+					setTimer(removeAnimation, 1305, 1, calling)
 				end
-			
-				outputChatBox("They hung up.", target)
+				
 				removeElementData(thePlayer, "calling")
-				removeElementData(calling, "calling")
 				removeElementData(thePlayer, "caller")
-				removeElementData(calling, "caller")
+				removeElementData(thePlayer, "callprogress")
+				removeElementData(thePlayer, "call.situation")
+				removeElementData(thePlayer, "call.location")
 				setElementData(thePlayer, "phonestate", 0, false)
-				setElementData(calling, "phonestate", 0, false)
 				exports.global:sendLocalMeAction(thePlayer, "hangs up their cellphone.")
 				
-				exports.global:applyAnimation(thePlayer, "ped", "phone_out", 1.0, 1.0, 0.0, false, true, true)
+				exports.global:applyAnimation(thePlayer, "ped", "phone_out", 1.0, 1.0, 0.0, false, false, true)
 				toggleAllControls(thePlayer, true, true, true)
-				setTimer(removeAnimation, 1305, 1, thePlayer)
-				
-				exports.global:applyAnimation(calling, "ped", "phone_out", 1.0, 1.0, 0.0, false, true, true)
-				toggleAllControls(calling, true, true, true)
-				setTimer(removeAnimation, 1305, 1, calling)
+				setTimer(removeAnimation, 1305, 2, thePlayer)
 			else
 				outputChatBox("Your phone is not in use.", thePlayer, 255, 0, 0)
 			end
@@ -276,7 +288,94 @@ function talkPhone(thePlayer, commandName, ...)
 					local phoneNumber = getElementData(thePlayer, "cellnumber")
 					
 					local target = getElementData(thePlayer, "calling")
+					
+					local callprogress = getElementData(thePlayer, "callprogress")
+					if (callprogress) then
+						outputChatBox("You [Cellphone]: " ..message, thePlayer)
+						-- Send it to nearby players of the speaker
+						local x, y, z = getElementPosition(thePlayer)
+						local chatSphere = createColSphere(x, y, z, 10)
+						exports.pool:allocateElement(chatSphere)
+						local nearbyPlayers = getElementsWithinColShape(chatSphere, "player")
+						
+						destroyElement(chatSphere)
+						
+						for index, nearbyPlayer in ipairs(nearbyPlayers) do
+							if (nearbyPlayer~=thePlayer) then
+								outputChatBox(username .. " [Cellphone]: " .. message, nearbyPlayer)
+							end
+						end
+					
+						if (tonumber(target)==911) then -- EMERGENCY SERVICES
+							if (callprogress==1) then -- Requesting the location
+								setElementData(thePlayer, "call.location", message)
+								setElementData(thePlayer, "callprogress", 2)
+								outputChatBox("911 Operator says: Can you describe your emergency please?", thePlayer)
+								return
+							elseif (callprogress==2) then -- Requesting the situation
+								outputChatBox("911 Operator says: Thanks for your call, we've dispatched a unit to your location.", thePlayer)
+																
+								local location = getElementData(thePlayer, "call.location")
+								local theTeam = getTeamFromName("Los Santos Police Department")
+								local theTeamES = getTeamFromName("Los Santos Emergency Services")
+								local teamMembers = getPlayersInTeam(theTeam)
+								local teamMembersES = getPlayersInTeam(theTeamES)
+								
+								for key, value in ipairs(teamMembers) do
+									outputChatBox("[RADIO] This is dispatch, We've got an incident, Over.", value, 0, 183, 239)
+									outputChatBox("[RADIO] Situation: '" .. message .. "', Over. ((" .. getPlayerName(thePlayer) .. "))", value, 0, 183, 239)
+									outputChatBox("[RADIO] Location: '" .. tostring(location) .. "', Over. ((" .. getPlayerName(thePlayer) .. "))", value, 0, 183, 239)
+								end
+								
+								for key, value in ipairs(teamMembersES) do
+									outputChatBox("[RADIO] This is dispatch, We've got an incident, Over.", value, 0, 183, 239)
+									outputChatBox("[RADIO] Situation: '" .. message .. "', Over. ((" .. getPlayerName(thePlayer) .. "))", value, 0, 183, 239)
+									outputChatBox("[RADIO] Location: '" .. tostring(location) .. "', Over. ((" .. getPlayerName(thePlayer) .. "))", value, 0, 183, 239)
+								end
+								
+								removeElementData(thePlayer, "calling")
+								removeElementData(thePlayer, "caller")
+								removeElementData(thePlayer, "callprogress")
+								removeElementData(thePlayer, "call.location")
+								setElementData(thePlayer, "phonestate", 0, false)
+								exports.global:sendLocalMeAction(thePlayer, "hangs up their cellphone.")
+								
+								exports.global:applyAnimation(thePlayer, "ped", "phone_out", 1.0, 1.0, 0.0, false, true, true)
+								toggleAllControls(thePlayer, true, true, true)
+								setTimer(removeAnimation, 1305, 1, thePlayer)
+								return
+							end
+						elseif (tonumber(target)==8294) then -- TAXI
+							if (callprogress==1) then
+								outputChatBox("Taxi Operator says: Thanks for your call, a taxi will be with you shortly.", thePlayer)
+								
+								local playerNumber = getElementData(thePlayer, "cellnumber")
+				
+								for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
+									local job = getElementData(value, "job")
+									
+									if (job==2) then
+										outputChatBox("[New Fare] " .. getPlayerName(thePlayer) .." Ph:" .. playerNumber .. " Location: " .. message .."." , value, 0, 183, 239)
+									end
+								end
+							
+								removeElementData(thePlayer, "calling")
+								removeElementData(thePlayer, "caller")
+								removeElementData(thePlayer, "callprogress")
+								removeElementData(thePlayer, "call.location")
+								setElementData(thePlayer, "phonestate", 0, false)
+								exports.global:sendLocalMeAction(thePlayer, "hangs up their cellphone.")
+								
+								exports.global:applyAnimation(thePlayer, "ped", "phone_out", 1.0, 1.0, 0.0, false, true, true)
+								toggleAllControls(thePlayer, true, true, true)
+								setTimer(removeAnimation, 1305, 1, thePlayer)
+								return
+							end
+						end
+					end
+					
 					message = call( getResourceFromName( "chat-system" ), "trunklateText", thePlayer, call( getResourceFromName( "chat-system" ), "trunklateText", target, message ) )
+					
 					
 					-- Send the message to the person on the other end of the line
 					outputChatBox("((" .. username .. ")) #" .. phoneNumber .. " [Cellphone]: " .. message, target)

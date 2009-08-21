@@ -366,7 +366,9 @@ function hidePlayerMenu()
 	weight = nil
 	height = nil
 	
-	removeEventHandler("onClientPlayerQuit", player, hidePlayerMenu)
+	if player then
+		removeEventHandler("onClientPlayerQuit", player, hidePlayerMenu)
+	end
 	
 	sent = false
 	player = nil

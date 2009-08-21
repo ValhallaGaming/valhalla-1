@@ -21,7 +21,9 @@ function drunkenDataChange(name)
 				setElementData(source, name, false)
 				
 				-- restore all keys
-				if alcohollevel > 0 then
+				if not alcohollevel then
+					return
+				elseif alcohollevel > 0 then
 					for k, v in pairs( delayedKeys ) do
 						unbindKey( v, 'both', delayedKeyPress )
 						toggleControl( v, true )

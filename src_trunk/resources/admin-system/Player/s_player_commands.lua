@@ -184,6 +184,38 @@ function adminUncuff(thePlayer, commandName, targetPlayer)
 end
 addCommandHandler("auncuff", adminUncuff, false, false)
 
+function adminUnblindfold(thePlayer, commandName, targetPlayer)
+	if (exports.global:isPlayerAdmin(thePlayer)) then
+		if not (targetPlayer) then
+			outputChatBox("SYNTAX: /" .. commandName .. " [Player Partial Nick / ID]", thePlayer, 255, 194, 14)
+		else
+			local targetPlayer = exports.global:findPlayerByPartialNick(targetPlayer)
+			
+			if not (targetPlayer) then
+				outputChatBox("Player not found or multiple were found.", thePlayer, 255, 0, 0)
+			else
+				local targetPlayerName = getPlayerName(targetPlayer)
+				local logged = getElementData(targetPlayer, "loggedin")
+				local username = getPlayerName(thePlayer)
+				
+				if (logged==0) then
+					outputChatBox("Player is not logged in.", thePlayer, 255, 0, 0)
+				else
+					local blindfolded = getElementData(targetPlayer, "rblindfold")
+					
+					if (blindfolded==0) then
+						outputChatBox("Player is not blindfolded", thePlayer, 255, 0, 0)
+					else
+						removeElementData(thePlayer, "blindfold")
+						fadeCamera(thePlayer, true)
+					end
+				end
+			end
+		end
+	end
+end
+addCommandHandler("aunblindfold", adminUnblindfold, false, false)
+
 -- /MUTE
 function mutePlayer(thePlayer, commandName, targetPlayer)
 	if (exports.global:isPlayerAdmin(thePlayer)) then

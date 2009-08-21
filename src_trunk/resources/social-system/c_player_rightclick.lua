@@ -1,5 +1,5 @@
 wRightClick = nil
-bAddAsFriend, bFrisk, bRestrain, bCloseMenu, bInformation = nil
+bAddAsFriend, bFrisk, bRestrain, bCloseMenu, bInformation, bBlindfold = nil
 sent = false
 ax, ay = nil
 player = nil
@@ -12,7 +12,7 @@ height = nil
 race = nil
 
 function clickPlayer(button, state, absX, absY, wx, wy, wz, element)
-	if (element) and (getElementType(element)=="player") and (button=="right") and (state=="down") and (sent==false) and (element~=getLocalPlayer()) then
+	if (element) and (getElementType(element)=="player") and (button=="right") and (state=="down") and (sent==false) and (elementa~=getLocalPlayer()) then
 		local x, y, z = getElementPosition(getLocalPlayer())
 		
 		if (getDistanceBetweenPoints3D(x, y, z, wx, wy, wz)<=5) then
@@ -66,7 +66,7 @@ function showPlayerMenu(targetPlayer, friends, sdescription, sage, sweight, shei
 		addEventHandler("onClientGUIClick", bAddAsFriend, cremoveFriend, false)
 	end
 	
-	bCloseMenu = guiCreateButton(0.05, 0.51, 0.87, 0.1, "Close Menu", true, wRightClick)
+	bCloseMenu = guiCreateButton(0.05, 0.64, 0.87, 0.1, "Close Menu", true, wRightClick)
 	addEventHandler("onClientGUIClick", bCloseMenu, hidePlayerMenu, false)
 	sent = false
 	
@@ -87,6 +87,17 @@ function showPlayerMenu(targetPlayer, friends, sdescription, sage, sweight, shei
 		addEventHandler("onClientGUIClick", bRestrain, cunrestrainPlayer, false)
 	end
 	
+	-- BLINDFOLD
+	local blindfold = getElementData(player, "blindfold")
+	
+	if (blindfold) and (blindfold == 1) then
+		bBlindfold = guiCreateButton(0.05, 0.51, 0.87, 0.1, "Remove Blindfold", true, wRightClick)
+		addEventHandler("onClientGUIClick", bBlindfold, cremoveBlindfold, false)
+	else
+		bBlindfold = guiCreateButton(0.05, 0.51, 0.87, 0.1, "Blindfold", true, wRightClick)
+		addEventHandler("onClientGUIClick", bBlindfold, cBlindfold, false)
+	end
+	
 	bInformation = guiCreateButton(0.05, 0.38, 0.87, 0.1, "Information", true, wRightClick)
 	addEventHandler("onClientGUIClick", bInformation, showPlayerInfo, false)
 end
@@ -101,6 +112,44 @@ function showPlayerInfo(button, state)
 		outputChatBox("Weight: " .. weight .. "kg", 255, 194, 14)
 		outputChatBox("Height: " .. height .. "cm", 255, 194, 14)
 		outputChatBox("Description: " .. description, 255, 194, 14)
+	end
+end
+
+--------------------
+--  BLINDFOLDING  --
+-------------------
+function cBlindfold(button, state, x, y)
+	if (button=="left") then
+		if (exports.global:cdoesPlayerHaveItem(getLocalPlayer(), 66, -1)) then -- Has blindfold?
+			local blindfolded = getElementData(player, "blindfold")
+			local restrained = getElementData(player, "restrain")
+			
+			if (blindfolded==1) then
+				outputChatBox("This player is already blindfolded.", 255, 0, 0)
+				hidePlayerMenu()
+			elseif (restrained==0) then
+				outputChatBox("This player must be restrained in order to blindfold them.", 255, 0, 0)
+				hidePlayerMenu()
+			else
+				triggerServerEvent("blindfoldPlayer", getLocalPlayer(), player)
+				hidePlayerMenu()
+			end
+		else
+			outputChatBox("You do not have a blindfold.", 255, 0, 0)
+		end
+	end
+end
+
+function cremoveBlindfold(button, state, x, y)
+	if (button=="left") then
+		local blindfolded = getElementData(player, "blindfold")
+		if (blindfolded==1) then
+			triggerServerEvent("removeBlindfold", getLocalPlayer(), player)
+			hidePlayerMenu()
+		else
+			outputChatBox("This player is not blindfolded.", 255, 0, 0)
+			hidePlayerMenu()
+		end
 	end
 end
 

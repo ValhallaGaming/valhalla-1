@@ -154,3 +154,32 @@ function unrestrainPlayer(player, restrainedObj)
 end
 addEvent("unrestrainPlayer", true)
 addEventHandler("unrestrainPlayer", getRootElement(), unrestrainPlayer)
+
+-- BLINDFOLDS
+function blindfoldPlayer(player)
+	local username = getPlayerName(source)
+	local targetPlayerName = getPlayerName(player)
+	
+	outputChatBox("You have been blindfolded by " .. username .. ".", player)
+	outputChatBox("You blindfolded " .. targetPlayerName .. ".", source)
+	
+	exports.global:takePlayerItem(source, 66, -1) -- take their blindfold
+	setElementData(player, "blindfold", 1)
+	fadeCamera(player, false)
+end
+addEvent("blindfoldPlayer", true)
+addEventHandler("blindfoldPlayer", getRootElement(), blindfoldPlayer)
+
+function removeblindfoldPlayer(player)
+	local username = getPlayerName(source)
+	local targetPlayerName = getPlayerName(player)
+	
+	outputChatBox("You have had your blindfold removed by " .. username .. ".", player)
+	outputChatBox("You removed " .. targetPlayerName .. "'s blindfold.", source)
+	
+	exports.global:givePlayerItem(source, 66, -1) -- give the remove the blindfold
+	removeElementData(player, "blindfold")
+	fadeCamera(player, true)
+end
+addEvent("removeBlindfold", true)
+addEventHandler("removeBlindfold", getRootElement(), removeblindfoldPlayer)

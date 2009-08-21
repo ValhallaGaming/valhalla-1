@@ -73,7 +73,8 @@ g_items = {
 	{ "Bastradov Vodka", "For your best friends - Bastradov Vodka.", 1, 1271 },
 	{ "Scottish Whiskey", "The Best Scottish Whiskey, now exclusively made from Haggis.", 1, 1271 },
 	{ "LSPD Badge", "A Los Santos Police Department badge.", 4, 1271 },
-	{ "LSES Identification", "An Los Santos Emergency Service Identification.", 4, 1271 }
+	{ "LSES Identification", "An Los Santos Emergency Service Identification.", 4, 1271 },
+	{ "Blindfold", "A black blindfold.", 6, 1271 }
 }
 
 function getItemName(id)

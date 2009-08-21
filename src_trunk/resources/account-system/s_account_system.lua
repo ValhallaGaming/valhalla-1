@@ -157,7 +157,7 @@ function spawnCharacter(charname)
 	
 	local safecharname = mysql_escape_string(handler, charname)
 	
-	local result = mysql_query(handler, "SELECT id, x, y, z, rotation, interior_id, dimension_id, health, armor, skin, money, faction_id, cuffed, radiochannel, masked, duty, cellnumber, fightstyle, pdjail, pdjail_time, job, casualskin, weapons, ammo, items, itemvalues, car_license, gun_license, bankmoney, fingerprint, tag, hoursplayed, pdjail_station, timeinserver, restrainedobj, restrainedby, faction_rank, dutyskin, phoneoff FROM characters WHERE charactername='" .. charname .. "' AND account='" .. id .. "'")
+	local result = mysql_query(handler, "SELECT id, x, y, z, rotation, interior_id, dimension_id, health, armor, skin, money, faction_id, cuffed, radiochannel, masked, duty, cellnumber, fightstyle, pdjail, pdjail_time, job, casualskin, weapons, ammo, items, itemvalues, car_license, gun_license, bankmoney, fingerprint, tag, hoursplayed, pdjail_station, timeinserver, restrainedobj, restrainedby, faction_rank, dutyskin, phoneoff, blindfold FROM characters WHERE charactername='" .. charname .. "' AND account='" .. id .. "'")
 	
 	if (result) then
 		local id = mysql_result(result, 1, 1)
@@ -210,6 +210,7 @@ function spawnCharacter(charname)
 		local factionrank = tonumber(mysql_result(result, 1, 37))
 		local dutyskin = tonumber(mysql_result(result, 1, 38))
 		local phoneoff = tonumber(mysql_result(result, 1, 39))
+		local blindfold = tonumber(mysql_result(result, 1, 40))
 		
 		setElementData(source, "timeinserver", timeinserver)
 		
@@ -459,6 +460,7 @@ function spawnCharacter(charname)
 		setElementData(source, "tag", tag)
 		setElementData(source, "dutyskin", dutyskin, false)
 		setElementData(source, "phoneoff", phoneoff, false)
+		setElementData(source, "blindfold", blindfold, false)
 		
 		if (restrainedobj>0) then
 			setElementData(source, "restrainedObj", restrainedobj, false)
@@ -541,7 +543,15 @@ function spawnCharacter(charname)
 		--outputChatBox("Welcome to the MTA 1.0 Beta Test #2.", source, 0, 255, 0)
 		--outputChatBox("Please report any bugs you encounter on http://bugs.multitheftauto.com", source, 0, 255, 0)
 		
-		fadeCamera(source, true, 2)
+		-- blindfolds
+		if (blindfold==1) then
+			setElementData(source, "blindfold", 1)
+			outputChatBox("Your character is blindfolded. If this was an OOC action, please contact an administrator via F2.", source, 255, 194, 15)
+			--fadeCamera(player, false)
+		else
+			fadeCamera(source, true, 2)
+		end
+		
 		triggerEvent("onCharacterLogin", source, charname, factionID)
 		mysql_free_result(result)
 	end

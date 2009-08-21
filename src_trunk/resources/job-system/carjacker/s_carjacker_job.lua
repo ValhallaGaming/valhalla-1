@@ -1,8 +1,7 @@
 local count = 0
 
 function createTimer(res)
-	local selectionTime = math.random(300000, 1200000) -- random time between 5 and 20 minutes
-	local selectPlayerTimer = setTimer(selectPlayer, selectionTime, 1)
+	local selectPlayerTimer = setTimer(selectPlayer, 300000, 1)
 end
 addEventHandler("onResourceStart", getResourceRootElement(), createTimer)
 
@@ -18,8 +17,7 @@ function selectPlayer()
 				selectPlayer() -- if this player is not a friend of Hunter's go back and select another player
 				outputDebugString("Player not logged in")
 			else
-				local selectionTime = math.random(1200000,2400000) -- random time between 20 and 40 minutes
-				selectPlayerTimer = setTimer(selectPlayer, selectionTime, 1)
+				selectPlayerTimer = setTimer(selectPlayer, 300000, 1)
 				outputDebugString("no players found")
 				count = 0
 			end
@@ -34,8 +32,7 @@ function selectPlayer()
 				if (count<10) then -- check 10 players before resetting the timer.
 					selectPlayer() -- if this player is not a friend of Hunter's go back and select another player
 				else
-					local selectionTime = math.random(1200000,2400000) -- random time between 20 and 40 minutes
-					selectPlayerTimer = setTimer(selectPlayer, selectionTime, 1)
+					selectPlayerTimer = setTimer(selectPlayer, 300000, 1)
 					count = 0
 				end
 			else
@@ -43,8 +40,7 @@ function selectPlayer()
 					if (count<10) then
 						selectPlayer() -- if this player is already on a car jacking mission go back and select another player.
 					else
-						local selectionTime = math.random(1200000,2400000) -- random time between 20 and 40 minutes
-						selectPlayerTimer = setTimer(selectPlayer, selectionTime, 1)
+						selectPlayerTimer = setTimer(selectPlayer, 300000, 1)
 						count = 0
 					end
 				else				
@@ -77,7 +73,7 @@ function dropOffCar()
 				outputChatBox("Hunter says: I wanted you to bring a ".. requestedName .. ", what am I supposed to do with a " .. deliveredName .. "?", thePlayer, 255, 255, 255)
 			else
 				local health = getElementHealth(vehicle)
-				local profit = math.floor(health*2.5)
+				local profit = math.floor(health*1.5)
 				exports.global:givePlayerSafeMoney(thePlayer, profit)
 				local pedX, pedY, pedZ = getElementPosition( thePlayer )
 				local chatSphere = createColSphere( pedX, pedY, pedZ, 10 )

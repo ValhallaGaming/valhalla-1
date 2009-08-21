@@ -153,7 +153,7 @@ function answerPhone(thePlayer, commandName)
 			if (calling) then
 				if (phoneState==0) then
 					local target = calling
-					outputChatBox("You picked up the phone.", thePlayer)
+					outputChatBox("You picked up the phone. (( /p to talk ))", thePlayer)
 					outputChatBox("They picked up the phone.", target)
 					exports.global:sendLocalMeAction(thePlayer, "takes out a cell phone.")
 					setElementData(thePlayer, "phonestate", 1, false) -- Your in an actual call
@@ -276,6 +276,8 @@ function talkPhone(thePlayer, commandName, ...)
 					local phoneNumber = getElementData(thePlayer, "cellnumber")
 					
 					local target = getElementData(thePlayer, "calling")
+					message = call( getResourceFromName( "chat-system" ), "trunklateText", thePlayer, call( getResourceFromName( "chat-system" ), "trunklateText", target, message ) )
+					
 					-- Send the message to the person on the other end of the line
 					outputChatBox("((" .. username .. ")) #" .. phoneNumber .. " [Cellphone]: " .. message, target)
 					outputChatBox("You [Cellphone]: " ..message, thePlayer)

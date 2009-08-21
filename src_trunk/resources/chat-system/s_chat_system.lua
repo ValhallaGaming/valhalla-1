@@ -27,7 +27,7 @@ addEventHandler("onResourceStop", getResourceRootElement(getThisResource()), clo
 -- ////////////////////////////////////
 function trunklateText(thePlayer, text, factor)
 	if getElementData(thePlayer,"alcohollevel") and getElementData(thePlayer,"alcohollevel") > 0 then
-		local level = math.ceil( getElementData(thePlayer,"alcohollevel") * #text / ( factor or 3.5 ) )
+		local level = math.ceil( getElementData(thePlayer,"alcohollevel") * #text / ( factor or 5.5 ) )
 		outputDebugString( tostring( level ) )
 		for i = 1, level do
 			x = math.random( 1, #text )
@@ -37,7 +37,7 @@ function trunklateText(thePlayer, text, factor)
 			else
 				local a, b = text:sub( 1, x - 1 ) or "", text:sub( x + 1 ) or ""
 				local c = ""
-				if math.random( 1, 2 ) == 1 then
+				if math.random( 1, 6 ) == 1 then
 					c = string.char(math.random(65,90))
 				else
 					c = string.char(math.random(97,122))
@@ -56,6 +56,8 @@ function advertMessage(thePlayer, commandName, showNumber, ...)
 	if (logged==1) then
 		if not (...) or not (showNumber) then
 			outputChatBox("SYNTAX: /" .. commandName .. " [Show Phone Number 0/1] [Message]", thePlayer, 255, 194, 14)
+		elseif getElementData(thePlayer, "alcohollevel") and getElementData(thePlayer, "alcohollevel") ~= 0 then
+			outputChatBox("You are too drunk to advertise!", thePlayer, 255, 0, 0)
 		else
 			if (exports.global:doesPlayerHaveItem(thePlayer, 2)) then
 				message = table.concat({...}, " ")
@@ -63,7 +65,6 @@ function advertMessage(thePlayer, commandName, showNumber, ...)
 					message = showNumber .. " " .. message
 					showNumber = 0
 				end
-				message = trunklateText( thePlayer, message, 2.5 )
 				
 				local cost = math.ceil(string.len(message)/6)
 				local money = getElementData(thePlayer, "money")

@@ -7,4 +7,6 @@
 	<script src="c_chat_icon.lua" type="client"/>
 	<script src="c_chatbubbles.lua" type="client"/>
 	<file src="chat.png"/>
+	
+	<export function="trunklateText" type="server"/>
 </meta>

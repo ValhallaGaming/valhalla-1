@@ -498,6 +498,8 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 				exports.global:sendLocalMeAction(source, "puts on an Emergency Services ID.")
 			end
 			exports.global:updateNametagColor(source)
+		elseif (itemID==66) then -- blindfold
+			outputChatBox("Press M and right click a player to use this item.", source, 255, 195, 15)
 		else
 			outputChatBox("Error 800001 - Report on http://bugs.valhallagaming.net", source, 255, 0, 0)
 		end

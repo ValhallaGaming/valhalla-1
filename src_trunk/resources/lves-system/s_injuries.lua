@@ -25,7 +25,7 @@ function injuries(attacker, weapon, bodypart, loss)
 		playerInjuries[source] = { [bodypart] = true } -- table
 	end
 	
-	if ( bodypart == 3 and getElementHealth(source)-loss < 40 ) or bodypart == 7 or bodypart == 8 then -- damaged either left or right leg
+	if ( bodypart == 3 and getElementHealth(source) < 40 ) or bodypart == 7 or bodypart == 8 then -- damaged either left or right leg
 		if playerInjuries[source][7] and playerInjuries[source][8] then -- both were already hit
 			toggleControl(source, 'forwards', false) -- disable walking forwards for the player who was hit
 			toggleControl(source, 'left', false)

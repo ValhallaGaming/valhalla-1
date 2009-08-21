@@ -83,7 +83,17 @@ function injuries(attacker, weapon, bodypart, loss)
 end
 
 addEventHandler( "onPlayerDamage", getRootElement(), injuries )
-addCommandHandler( "fi", function(thePlayer, command, weapon, bodypart) source=thePlayer injuries(nil, tonumber(weapon), tonumber(bodypart), 0) end)
+
+addCommandHandler( "fakeinjury",
+	function(thePlayer, command, weapon, bodypart, loss)
+		if exports.global:isPlayerAdmin(thePlayer) then
+			source = thePlayer
+			loss = tonumber(loss)
+			setElementHealth(thePlayer, math.max(0, getElementHealth(thePlayer) - loss))
+			injuries(nil, tonumber(weapon), tonumber(bodypart), loss)
+		end
+	end
+)
 
 function healInjuries(healed)
 	if playerInjuries[source] and not isPedHeadless(source) then

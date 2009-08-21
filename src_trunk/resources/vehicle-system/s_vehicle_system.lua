@@ -799,10 +799,10 @@ function toggleLock(source, key, keystate)
 	end
 end
 
-function checkLock(thePlayer)
+function checkLock(thePlayer, seat, jacked)
 	local locked = isVehicleLocked(source)
 	
-	if (locked) then
+	if (locked) and not (jacked) then
 		cancelEvent()
 		outputChatBox("The door is locked.", thePlayer)
 	end

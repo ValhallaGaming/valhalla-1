@@ -481,7 +481,7 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 					removeElementData(source,"ESbadge")
 					exports.global:sendLocalMeAction(source, "removes an Emergency Services ID.")
 				end
-				setElementData(source,"PDbadge", 1)
+				setElementData(source,"PDbadge", 1, false)
 				exports.global:sendLocalMeAction(source, "puts on a Police Badge.")
 			end
 			exports.global:updateNametagColor(source)
@@ -494,7 +494,7 @@ function useItem(itemID, itemName, itemValue, isWeapon, groundz)
 					removeElementData(source,"PDbadge")
 					exports.global:sendLocalMeAction(source, "removes a Police Badge.")
 				end
-				setElementData(source,"ESbadge", 1)
+				setElementData(source,"ESbadge", 1, false)
 				exports.global:sendLocalMeAction(source, "puts on an Emergency Services ID.")
 			end
 			exports.global:updateNametagColor(source)

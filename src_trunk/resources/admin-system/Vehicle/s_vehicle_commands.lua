@@ -771,39 +771,3 @@ function deleteThisVehicle(thePlayer, commandName)
 	end						
 end
 addCommandHandler("delthisveh", deleteThisVehicle, false, false)
-
--- VEHPOS
-
-function setVehiclePosition(thePlayer, commandName)
-	local veh = getPedOccupiedVehicle(thePlayer)
-	if not veh or getElementData(thePlayer, "realinvehicle") == 0 then
-		outputChatBox("You are not in a vehicle.", thePlayer, 255, 0, 0)
-	else
-		local playerid = getElementData(thePlayer, "dbid")
-		local owner = getElementData(veh, "owner")
-		local dbid = getElementData(veh, "dbid")
-		local TowingReturn = call(getResourceFromName("tow-system"), "CanTowTruckDriverVehPos", thePlayer) -- 2 == in towing and in col shape, 1 == colshape only, 0 == not in col shape
-		if (exports.global:isPlayerAdmin(thePlayer)) or (owner==playerid and TowingReturn == 0) or (exports.global:doesPlayerHaveItem(thePlayer, 3, dbid)) or (TowingReturn == 2) then
-			if (dbid<0) then
-				outputChatBox("This vehicle is not permanently spawned.", thePlayer, 255, 0, 0)
-			else
-				if (call(getResourceFromName("tow-system"), "CanTowTruckDriverGetPaid", thePlayer)) then
-					call(getResourceFromName("faction-system"), "addToFactionMoney", 24, 75)
-					call(getResourceFromName("faction-system"), "addToFactionMoney", 1, 75)
-				end
-				removeElementData(veh, "requires.vehpos")
-				local x, y, z = getElementPosition(veh)
-				local rx, ry, rz = getVehicleRotation(veh)
-				
-				local interior = getElementInterior(thePlayer)
-				local dimension = getElementDimension(thePlayer)
-				
-				local query = mysql_query(handler, "UPDATE vehicles SET x='" .. x .. "', y='" .. y .."', z='" .. z .. "', rotx='" .. rx .. "', roty='" .. ry .. "', rotz='" .. rz .. "', currx='" .. x .. "', curry='" .. y .. "', currz='" .. z .. "', currrx='" .. rx .. "', currry='" .. ry .. "', currrz='" .. rz .. "', interior='" .. interior .. "', currinterior='" .. interior .. "', dimension='" .. dimension .. "', currdimension='" .. dimension .. "' WHERE id='" .. dbid .. "'")
-				mysql_free_result(query)
-				setVehicleRespawnPosition(veh, x, y, z, rx, ry, rz)
-				outputChatBox("Vehicle spawn position set.", thePlayer)
-			end
-		end
-	end
-end
-addCommandHandler("vehpos", setVehiclePosition, false, false)

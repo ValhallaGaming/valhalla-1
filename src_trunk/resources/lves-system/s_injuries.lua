@@ -1,5 +1,19 @@
 local playerInjuries = {} -- create a table to save the injuries
 
+function killknockedout(source)
+	setElementHealth(source, 0)
+end
+
+function knockout()
+	outputChatBox("You've been knocked out!", source, 255, 0, 0)
+	toggleAllControls(source, false, true, false)
+	
+	fadeCamera(source, false, 120)
+	playerInjuries[source]['knockout'] = setTimer(killknockedout, 120000, 1, source)
+	
+	exports.global:applyAnimation( source, "CRACK", "crckidle2", 999999, true, false, true)
+end
+
 function injuries(attacker, weapon, bodypart, loss)
 	-- source = player who was hit
 	
@@ -60,33 +74,52 @@ function injuries(attacker, weapon, bodypart, loss)
 		killPed(source, attacker, weapon, bodypart)
 		exports.global:givePlayerAchievement(attacker, 12)
 		exports.global:givePlayerAchievement(source, 15)
+		return
+	end
+	
+	if ( getElementHealth(source) < 20 or ( isElement( attacker ) and getElementType( attacker ) == "vehicle" and getElementHealth(source) < 40 ) ) and math.random( 1, 3 ) <= 2 then
+		knockout()
 	end
 end
 
 addEventHandler( "onPlayerDamage", getRootElement(), injuries )
 addCommandHandler( "fi", function(thePlayer, command, weapon, bodypart) source=thePlayer injuries(nil, tonumber(weapon), tonumber(bodypart), 0) end)
 
-function healInjuries()
+function healInjuries(healed)
 	if playerInjuries[source] and not isPedHeadless(source) then
-		if playerInjuries[source][7] and playerInjuries[source][8] then
-			toggleControl(source, 'forwards', true) -- disable walking forwards for the player who was hit
-			toggleControl(source, 'left', true)
-			toggleControl(source, 'right', true)
-			toggleControl(source, 'backwards', true)
-			toggleControl(source, 'enter_passenger', true)
-			toggleControl(source, 'enter_exit', true)
-		end
-		if playerInjuries[source][7] or playerInjuries[source][8] then
-			toggleControl(source, 'sprint', true)
-			toggleControl(source, 'jump', true)
-		end
-		
-		if playerInjuries[source][5] and playerInjuries[source][6] then
-			toggleControl(source, 'fire', true)
-		end
-		if playerInjuries[source][5] or playerInjuries[source][6] then
-			toggleControl(source, 'aim_weapon', true)
-			toggleControl(source, 'jump', true)
+		if playerInjuries[source]['knockout'] then
+			if isTimer(playerInjuries[source]['knockout']) then
+				killTimer(playerInjuries[source]['knockout'])
+				playerInjuries[source]['knockout'] = nil
+				
+				if healed then
+					fadeCamera(source, true, 2)
+					setPedAnimation(source)
+					exports.global:removeAnimation(source)
+				end
+			end
+			toggleAllControls(source, true, true, false)
+		else
+			if playerInjuries[source][7] and playerInjuries[source][8] then
+				toggleControl(source, 'forwards', true) -- disable walking forwards for the player who was hit
+				toggleControl(source, 'left', true)
+				toggleControl(source, 'right', true)
+				toggleControl(source, 'backwards', true)
+				toggleControl(source, 'enter_passenger', true)
+				toggleControl(source, 'enter_exit', true)
+			end
+			if playerInjuries[source][7] or playerInjuries[source][8] then
+				toggleControl(source, 'sprint', true)
+				toggleControl(source, 'jump', true)
+			end
+			
+			if playerInjuries[source][5] and playerInjuries[source][6] then
+				toggleControl(source, 'fire', true)
+			end
+			if playerInjuries[source][5] or playerInjuries[source][6] then
+				toggleControl(source, 'aim_weapon', true)
+				toggleControl(source, 'jump', true)
+			end
 		end
 	end
 end

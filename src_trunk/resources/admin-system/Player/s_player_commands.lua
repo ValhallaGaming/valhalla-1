@@ -563,6 +563,7 @@ function setPlayerHealth(thePlayer, commandName, targetPlayer, health)
 					outputChatBox("Invalid health value.", thePlayer, 255, 0, 0)
 				else
 					outputChatBox("Player " .. targetPlayerName .. " now has " .. health .. " Health.", thePlayer, 0, 255, 0)
+					triggerEvent("onPlayerHeal", targetPlayer, true)
 				end
 			end
 		end

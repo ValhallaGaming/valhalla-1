@@ -39,7 +39,7 @@ function playerDeath()
 	deathTimer = 10
 	deathLabel = nil
 	rot = 0.0
-	fadeCamera(false, 29, 255, 255, 255)
+	fadeCamera(false, 29)
 	vehicle = isPedInVehicle(getLocalPlayer())
 	
 	local pX, pY, pZ = getElementPosition(getLocalPlayer())

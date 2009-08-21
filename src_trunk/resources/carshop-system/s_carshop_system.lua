@@ -35,7 +35,9 @@ exports.pool:allocateElement(boatshopPickup)
 setElementData(boatshopPickup, "shopid", 2, false)
 
 function pickupUse(thePlayer)
-	triggerClientEvent(thePlayer, "showCarshopUI", thePlayer, getElementData(source, "shopid"))
+	if getElementData(source, "shopid") then
+		triggerClientEvent(thePlayer, "showCarshopUI", thePlayer, getElementData(source, "shopid"))
+	end
 	cancelEvent()
 end
 addEventHandler("onPickupHit", getResourceRootElement(), pickupUse)

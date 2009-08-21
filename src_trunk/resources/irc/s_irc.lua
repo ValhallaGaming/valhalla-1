@@ -72,6 +72,18 @@ function sendMessage(message)
 	end
 end
 
+function sendAdminMessage(message)
+	outputDebugString(tostring(message))
+	
+	if not (useSecond) then
+		useSecond = true
+		ircMessage(conn, channeladmins, tostring(message))
+	else
+		useSecond = false
+		ircMessage(conn2, channeladmins, tostring(message))
+	end
+end
+
 function displayStatus()
 	local playerCount = getPlayerCount()
 	local maxPlayers = getMaxPlayers()

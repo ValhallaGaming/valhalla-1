@@ -69,10 +69,12 @@ function addNewSuspectToDatabase(details)
 	
 	if (name==nil) then
 		local result = mysql_query(handler, "INSERT INTO suspectDetails SET suspect_name='" .. details[1] .. "', birth='" .. details[2] .. "', gender='" .. details[3] .. "', ethnicy='" .. details[4] .. "', cell='" .. details[5] .. "', occupation='" .. details[6] .. "', address='" .. details[7] .. "', other='" .. details[8] .. "', is_wanted='0', wanted_reason='None', wanted_punishment='None', wanted_by='None', photo='" .. details[9] .. "', done_by='" .. details[10] .. "'")
-		mysql_free_result(result)
-		exports.irc:sendMessage(tostring(mysql_error(handler)))
+		if result then
+			mysql_free_result(result)
+		else
+			exports.irc:sendAdminMessage(tostring(mysql_error(handler)))
+		end
 	end
-
 end
 addEvent("onAddNewSuspect", true)
 addEventHandler("onAddNewSuspect", getRootElement(), addNewSuspectToDatabase)

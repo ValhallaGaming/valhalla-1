@@ -100,7 +100,7 @@ local function crushCar(thePlayer, matching)
 						
 						-- just make sure admins/irc are informed (just in case, so he can't reclaim the vehicle)
 						exports.global:sendMessageToAdmins("Removing vehicle #" .. dbid .. " (Crushed by " .. getPlayerName(thePlayer) .. ").")
-						exports.irc:sendMessage("AdmInfo: Removing vehicle #" .. dbid .. " (Crushed by " .. getPlayerName(thePlayer) .. ").")
+						exports.irc:sendAdminMessage("AdmInfo: Removing vehicle #" .. dbid .. " (Crushed by " .. getPlayerName(thePlayer) .. ").")
 						mysql_free_result(result)
 
 						destroyElement(theVehicle)

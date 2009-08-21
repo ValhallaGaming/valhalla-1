@@ -27,11 +27,9 @@ addEventHandler("onResourceStop", getResourceRootElement(getThisResource()), clo
 -- ////////////////////////////////////
 
 carshopPickup = createPickup(544.4990234375, -1292.7890625, 17.2421875, 3, 1239)
-exports.pool:allocateElement(carshopPickup)
 setElementData(carshopPickup, "shopid", 1, false)
 
 boatshopPickup = createPickup(715.35546875, -1705.5791015625, 2.4296875, 3, 1239)
-exports.pool:allocateElement(boatshopPickup)
 setElementData(boatshopPickup, "shopid", 2, false)
 
 function pickupUse(thePlayer)

@@ -1884,6 +1884,8 @@ function getPlayerID(thePlayer, commandName, target)
 			if (logged==1) then
 				local id = getElementData(targetPlayer, "playerid")
 				outputChatBox("** " .. targetPlayerName .. "'s ID is " .. id .. ".", thePlayer, 255, 194, 14)
+			else
+				outputChatBox("Player is not logged in.", thePlayer, 255, 0, 0)
 			end
 		else
 			outputChatBox("Player not found or multiple were found.", thePlayer, 255, 0, 0)

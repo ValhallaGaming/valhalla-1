@@ -121,6 +121,10 @@ end
 addEventHandler("onPlayerQuit", getRootElement(), playerQuit)
 	
 function handleReport(reportedPlayer, reportedReason)
+	if getElementData(reportedPlayer, "loggedin") ~= 1 then
+		outputChatBox("The Player you're reporting is not logged in.", source, 255, 0, 0)
+		return
+	end
 	-- Find a free report slot
 	local slot = nil
 	

@@ -58,7 +58,7 @@ function showCarshopUI(id)
 	
 	guiSetInputEnabled(true)
 	
-	outputChatBox("Welcome to Grotti.")
+	outputChatBox("Welcome to " .. activeShop.name .. ".")
 end
 addEvent("showCarshopUI", true)
 addEventHandler("showCarshopUI", getRootElement(), showCarshopUI)

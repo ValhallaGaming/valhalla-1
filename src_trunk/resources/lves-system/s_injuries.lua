@@ -12,6 +12,7 @@ function knockout()
 	playerInjuries[source]['knockout'] = setTimer(killknockedout, 120000, 1, source)
 	
 	exports.global:applyAnimation( source, "CRACK", "crckidle2", 999999, true, false, true)
+	setElementData(source, "injuriedanimation", true)
 end
 
 function injuries(attacker, weapon, bodypart, loss)
@@ -98,6 +99,7 @@ addCommandHandler( "fakeinjury",
 function healInjuries(healed)
 	if playerInjuries[source] and not isPedHeadless(source) then
 		if playerInjuries[source]['knockout'] then
+			removeElementData(source, "injuriedanimation")
 			if isTimer(playerInjuries[source]['knockout']) then
 				killTimer(playerInjuries[source]['knockout'])
 				playerInjuries[source]['knockout'] = nil

@@ -1,4 +1,7 @@
 function applyAnimation(thePlayer, block, name, animtime, loop, updatePosition, forced)
+	if getElementData(thePlayer, "injuriedanimation") then
+		return false
+	end
 	if animtime==nil then animtime=-1 end
 	if loop==nil then loop=true end
 	if updatePosition==nil then updatePosition=true end
@@ -25,7 +28,7 @@ end
 addEventHandler("onPlayerSpawn", getRootElement(), onSpawn)
 
 function removeAnimation(thePlayer)
-	if isElement(thePlayer) and getElementType(thePlayer)=="player" and getElementData(thePlayer, "freeze") ~= 1 then
+	if isElement(thePlayer) and getElementType(thePlayer)=="player" and getElementData(thePlayer, "freeze") ~= 1 and not getElementData(thePlayer, "injuriedanimation") then
 		local setanim = setPedAnimation(thePlayer)
 		setElementData(thePlayer, "forcedanimation", false)
 		setElementData(thePlayer, "animation", false, false)

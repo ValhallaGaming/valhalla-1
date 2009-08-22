@@ -112,6 +112,39 @@ addCommandHandler( "fakeinjury",
 	end
 )
 
+function stabilize()
+	if playerInjuries[source] and not isPedHeadless(source) then
+		if playerInjuries[source]['knockout'] then
+			removeElementData(source, "injuriedanimation")
+			if isTimer(playerInjuries[source]['knockout']) then
+				killTimer(playerInjuries[source]['knockout'])
+				playerInjuries[source]['knockout'] = nil
+				
+				fadeCamera(source, true, 2)
+				setPedAnimation(source)
+				exports.global:removeAnimation(source)
+
+				toggleControl(source, 'forwards', true)
+				toggleControl(source, 'left', true)
+				toggleControl(source, 'right', true)
+				toggleControl(source, 'backwards', true)
+				toggleControl(source, 'enter_passenger', true)
+			end
+		else
+			if playerInjuries[source][7] and playerInjuries[source][8] then
+				toggleControl(source, 'forwards', true)
+				toggleControl(source, 'left', true)
+				toggleControl(source, 'right', true)
+				toggleControl(source, 'backwards', true)
+				toggleControl(source, 'enter_passenger', true)
+			end
+		end
+	end
+end
+
+addEvent( "onPlayerStabilize", false )
+addEventHandler( "onPlayerStabilize", getRootElement(), stabilize )
+
 function healInjuries(healed)
 	if playerInjuries[source] and not isPedHeadless(source) then
 		if playerInjuries[source]['knockout'] then

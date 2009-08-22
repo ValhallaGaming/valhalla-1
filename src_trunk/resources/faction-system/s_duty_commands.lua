@@ -107,6 +107,40 @@ function lvesHeal(thePlayer, commandName, targetPartialNick, price)
 end
 addCommandHandler("heal", lvesHeal, false, false)
 
+function lvesStabilize(thePlayer, commandName, targetPartialNick)
+	if not targetPartialNick then -- if missing target player arg.
+		outputChatBox("SYNTAX: /" .. commandName .. " [Player Partial Nick / ID]", thePlayer, 255, 194, 14)
+	else
+	    local targetPlayer = exports.global:findPlayerByPartialNick(targetPartialNick)
+		if not targetPlayer then -- is the player online?
+			outputChatBox("Player not found or multiple were found.", thePlayer, 255, 0, 0)
+	    else
+		    local logged = getElementData(thePlayer, "loggedin")
+	
+	        if logged==1 then
+	            local theTeam = getPlayerTeam(thePlayer)
+		        local factionType = getElementData(theTeam, "type")
+				
+				if not (factionType==4) then
+				    outputChatBox("You have no basic medic skills, contact the ES.", thePlayer, 255, 0, 0)
+				else
+				    local targetPlayerName = getPlayerName(targetPlayer)
+		            local x, y, z = getElementPosition(thePlayer)
+		            local tx, ty, tz = getElementPosition(targetPlayer)
+		        
+		            if (getDistanceBetweenPoints3D(x, y, z, tx, ty, tz)>5) then -- Are they standing next to each other?
+				        outputChatBox("You are too far away to heal '"..getPlayerName(targetPlayerName).."'.", thePlayer, 255, 0, 0)
+	                else
+						triggerEvent("onPlayerStabilize", targetPlayer)
+						outputChatBox("You have been stabilized by '" ..getPlayerName(thePlayer).. "'.", targetPlayer, 0, 255, 0)
+					end
+				end
+			end
+		end
+	end
+end
+addCommandHandler("stabilize", lvesStabilize, false, false)
+
 function lvesduty(thePlayer, commandName)	
 	local logged = getElementData(thePlayer, "loggedin")
 

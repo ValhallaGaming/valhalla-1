@@ -42,11 +42,13 @@ function callSomeone(thePlayer, commandName, phoneNumber, ...)
 				else
 					
 					if phoneNumber == "911" then
+						exports.global:sendLocalMeAction(thePlayer, "takes out a cell phone.")
 						outputChatBox("911 Operator says: 911 emergency. Please state your location.", thePlayer)
 						setElementData(thePlayer, "callprogress", 1, false)
 						setElementData(thePlayer, "phonestate", 1)
 						setElementData(thePlayer, "calling", 911)
 					elseif phoneNumber == "8294" then
+						exports.global:sendLocalMeAction(thePlayer, "takes out a cell phone.")
 						outputChatBox("Taxi Operator says: LS Cabs here. Please state your location.", thePlayer)
 						setElementData(thePlayer, "callprogress", 1, false)
 						setElementData(thePlayer, "phonestate", 1)

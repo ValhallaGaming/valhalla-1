@@ -17,6 +17,9 @@ end
 
 function injuries(attacker, weapon, bodypart, loss)
 	-- source = player who was hit
+	if not bodypart and getPedOccupiedVehicle(source) then
+		bodypart = 3
+	end
 	
 	-- BODY ARMOR
 	if ( bodypart == 3 or bodypart == 9 ) and getPedArmor(source) > 0 then -- GOT (torso/head) PROTECTION?
@@ -56,8 +59,10 @@ function injuries(attacker, weapon, bodypart, loss)
 
 		if bodypart == 3 then
 			bodypart = math.random( 7, 8 )
+			if not playerInjuries[source][bodypart] then
+				outputChatBox("You broke your " .. ( bodypart == 7 and "Left" or "Right" ) .. " Leg!", source, 255, 0, 0)
+			end
 			playerInjuries[source][bodypart] = true
-			outputChatBox("You broke your " .. ( bodypart == 7 and "Left" or "Right" ) .. " Leg!", source, 255, 0, 0)
 		else
 			outputChatBox("Your " .. ( bodypart == 7 and "Left" or "Right" ) .. " Leg was hit!", source, 255, 0, 0)
 		end

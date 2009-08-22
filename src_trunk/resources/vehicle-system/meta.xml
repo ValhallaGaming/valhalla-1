@@ -4,4 +4,6 @@
 	<script src="s_vehicle_system.lua" type="server"/>
 	
 	<script src="c_vehicle_rightclick.lua" type="client"/>
+
+	<export function="createShopVehicle" type="server"/>
 </meta>

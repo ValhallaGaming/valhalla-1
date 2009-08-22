@@ -1,7 +1,5 @@
 function createATM(thePlayer, commandName)
 	if (exports.global:isPlayerLeadAdmin(thePlayer)) then
-		local x, y, z = getElementPosition(thePlayer)
-			
 		local dimension = getElementDimension(thePlayer)
 		local interior = getElementInterior(thePlayer)
 		local x, y, z  = getElementPosition(thePlayer)
@@ -21,25 +19,11 @@ function createATM(thePlayer, commandName)
 			setElementInterior(object, interior)
 			
 			local px = x + math.sin(math.rad(-rotation)) * 0.8
-				local py = y + math.cos(math.rad(-rotation)) * 0.8
-				local pz = z
-			
-			local pickup = createPickup(px, py, pz, 3, 1274)
-			exports.pool:allocateElement(pickup)
-			local shape = getElementColShape(pickup)
-			setElementDimension(shape, dimension)
-			setElementInterior(shape, interior)
-			
-			setElementDimension(pickup, dimension)
-			setElementInterior(pickup, interior)
+			local py = y + math.cos(math.rad(-rotation)) * 0.8
+			local pz = z
 			
 			setElementData(object, "dbid", id, false)
-			setElementData(object, "type", "atm", false)
-			
-			setElementData(pickup, "dbid", id, false)
-			setElementData(pickup, "type", "atm", false)
-			addEventHandler("onPickupHit", pickup, showATMInterface)
-			
+
 			x = x + ((math.cos(math.rad(rotation)))*5)
 			y = y + ((math.sin(math.rad(rotation)))*5)
 			setElementPosition(thePlayer, x, y, z)
@@ -76,21 +60,8 @@ function loadAllATMs()
 			local py = y + math.cos(math.rad(-rotation)) * 0.8
 			local pz = z
 			
-			local pickup = createPickup(px, py, pz, 3, 1274)
-			local shape = getElementColShape(pickup)
-			setElementDimension(shape, dimension)
-			setElementInterior(shape, interior)
-			exports.pool:allocateElement(pickup)
-			setElementDimension(pickup, dimension)
-			setElementInterior(pickup, interior)
-			
 			setElementData(object, "dbid", id, false)
-			setElementData(object, "pickup", pickup, false)
-			setElementData(object, "type", "atm", false)
 			
-			setElementData(pickup, "dbid", id, false)
-			setElementData(pickup, "type", "atm", false)
-			addEventHandler("onPickupHit", pickup, showATMInterface)
 			counter = counter + 1
 		end
 		mysql_free_result(result)
@@ -107,28 +78,12 @@ function deleteATM(thePlayer, commandName, id)
 			id = tonumber(id)
 				
 			local counter = 0
-			local objects = exports.pool:getPoolElementsByType("object")
+			local objects = getElementsByType("object", getResourceRootElement())
 			for k, theObject in ipairs(objects) do
-				local objectType = getElementData(theObject, "type")
-					
-				if (objectType=="atm") then
-					local objectID = getElementData(theObject, "dbid")
-					if (objectID==id) then
-						destroyElement(theObject)
-						counter = counter + 1
-					end
-				end
-			end
-			
-			local pickups = exports.pool:getPoolElementsByType("pickup")
-			for k, thePickup in ipairs(pickups) do
-				local pickupType = getElementData(thePickup, "type")
-					
-				if (pickupType=="atm") then
-					local pickupID = getElementData(thePickup, "dbid")
-					if (pickupID==id) then
-						destroyElement(thePickup)
-					end
+				local objectID = getElementData(theObject, "dbid")
+				if (objectID==id) then
+					destroyElement(theObject)
+					counter = counter + 1
 				end
 			end
 			
@@ -155,16 +110,13 @@ function getNearbyATMs(thePlayer, commandName)
 		outputChatBox("Nearby ATMs:", thePlayer, 255, 126, 0)
 		local count = 0
 		
-		for k, theObject in ipairs(exports.pool:getPoolElementsByType("object")) do
-			local objecttype = getElementData(theObject, "type")
-			if (objecttype=="atm") then
-				local x, y, z = getElementPosition(theObject)
-				local distance = getDistanceBetweenPoints3D(posX, posY, posZ, x, y, z)
-				if (distance<=10) then
-					local dbid = getElementData(theObject, "dbid")
-					outputChatBox("   ATM with ID " .. dbid .. ".", thePlayer)
-					count = count + 1
-				end
+		for k, theObject in ipairs(getElementsByType("object", getResourceRootElement())) do
+			local x, y, z = getElementPosition(theObject)
+			local distance = getDistanceBetweenPoints3D(posX, posY, posZ, x, y, z)
+			if (distance<=10) then
+				local dbid = getElementData(theObject, "dbid")
+				outputChatBox("   ATM with ID " .. dbid .. ".", thePlayer)
+				count = count + 1
 			end
 		end
 		
@@ -175,9 +127,8 @@ function getNearbyATMs(thePlayer, commandName)
 end
 addCommandHandler("nearbyatms", getNearbyATMs, false, false)
 
-function showATMInterface(thePlayer)
-	cancelEvent()
-	local result = mysql_query(handler, "SELECT faction_id, faction_leader FROM characters WHERE charactername='" .. getPlayerName(thePlayer) .. "' LIMIT 1")
+function showATMInterface()
+	local result = mysql_query(handler, "SELECT faction_id, faction_leader FROM characters WHERE charactername='" .. getPlayerName(source) .. "' LIMIT 1")
 	
 	if (result) then
 		local faction_id = tonumber(mysql_result(result, 1, 1))
@@ -195,8 +146,10 @@ function showATMInterface(thePlayer)
 			isFactionLeader = true
 		end
 		
-		local faction = getPlayerTeam(thePlayer)
+		local faction = getPlayerTeam(source)
 		local money = getElementData(faction, "money")
-		triggerClientEvent(thePlayer, "showBankUI", thePlayer, isInFaction, isFactionLeader, money)
+		triggerClientEvent(source, "showBankUI", source, isInFaction, isFactionLeader, money)
 	end
 end
+addEvent( "requestATMInterface", true )
+addEventHandler( "requestATMInterface", getRootElement(), showATMInterface )

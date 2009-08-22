@@ -1,6 +1,7 @@
 wBank, bClose, lBalance, tabPanel, tabPersonal, tabPersonalTransactions, tabBusiness, tabBusinessTransactions, lWithdrawP, tWithdrawP, bWithdrawP, lDepositP, tDepositP, bDepositP = nil
 lWithdrawB, tWithdrawB, bWithdrawB, lDepositB, tDepositB, bDepositB, lBalanceB, gPersonalTransactions, gBusinessTransactions = nil
 gfactionBalance = nil
+cooldown = nil
 
 local localPlayer = getLocalPlayer()
 
@@ -13,6 +14,18 @@ function updateTabStuff()
 		triggerServerEvent("tellTransfersBusiness", localPlayer)
 	end
 end
+
+function clickATM(button, state, absX, absY, wx, wy, wz, element)
+	if not cooldown and element and getElementType(element) =="object" and state=="up" and getElementParent(getElementParent(element)) == getResourceRootElement() then
+		local px, py, pz = getElementPosition( localPlayer )
+		local ax, ay, az = getElementPosition( element )
+		
+		if getDistanceBetweenPoints3D( px, py, pz, ax, ay, az ) < 1.3 then
+			triggerServerEvent( "requestATMInterface", localPlayer )
+		end
+	end
+end
+addEventHandler( "onClientClick", getRootElement(), clickATM )
 
 function showBankUI(isInFaction, isFactionLeader, factionBalance)
 	if not (wBank) then
@@ -164,6 +177,8 @@ function hideBankUI()
 	wBank = nil
 		
 	guiSetInputEnabled(false)
+	
+	cooldown = setTimer(function() cooldown = nil end, 1000, 1)
 end
 addEvent("hideBankUI", true)
 addEventHandler("hideBankUI", getRootElement(), showBankUI)

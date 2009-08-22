@@ -1,5 +1,9 @@
 local playerInjuries = {} -- create a table to save the injuries
 
+function isMelee( weapon )
+	return weapon <= 15
+end
+
 function killknockedout(source)
 	setElementHealth(source, 0)
 end
@@ -34,6 +38,11 @@ function injuries(attacker, weapon, bodypart, loss)
 		return
 	end
 
+	-- 2% chance of melee knockout
+	if isMelee( weapon ) and math.random( 1, 50 ) == 1 then
+		knockout()
+		return
+	end
 	
 	-- if we have injuries saved for the player, we add it to their table
 	if playerInjuries[source] then

@@ -17,7 +17,7 @@ showElectronics = true
 showEmpty = true
 
 function clickItem(button, state, absX, absY, wx, wy, wz, element)
-	if (element) and (getElementType(element)=="object") and (button=="right") and (state=="down") then
+	if (element) and (getElementType(element)=="object") and (button=="right") and (state=="down") and getElementParent(getElementParent(element)) == getResourceRootElement() then
 		local objtype = getElementData(element, "type")
 		local pickedup = getElementData(element, "pickedup")
 		

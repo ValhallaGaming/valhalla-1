@@ -3,36 +3,40 @@ fuellessVehicle = { [594]=true, [537]=true, [538]=true, [569]=true, [590]=true, 
 enginelessVehicle = { [510]=true, [509]=true, [481]=true }
 
 function drawSpeedo()
-	local vehicle = getPedOccupiedVehicle(getLocalPlayer())
-	if (vehicle) then
-		speedx, speedy, speedz = getElementVelocity(vehicle)
-		speed = ((speedx^2 + speedy^2 + speedz^2)^(0.5)*100)
-		local width, height = guiGetScreenSize()
-		local x = width
-		local y = height
-		
-		dxDrawImage(x-210, y-275, 200, 200, "disc.png", 0, 0, 0, tocolor(255, 255, 255, 200), false)
-		--outputChatBox(tostring(speed))
-		speed = speed - 100
-		nx = x + math.sin(math.rad(-(speed)-150)) * 90
-		ny = y + math.cos(math.rad(-(speed)-150)) * 90
-		dxDrawLine(x-110, y-175, nx-110, ny-175, tocolor(255, 0, 0, 255), 2, true)
+	if not isPlayerMapVisible() then
+		local vehicle = getPedOccupiedVehicle(getLocalPlayer())
+		if (vehicle) then
+			speedx, speedy, speedz = getElementVelocity(vehicle)
+			speed = ((speedx^2 + speedy^2 + speedz^2)^(0.5)*100)
+			local width, height = guiGetScreenSize()
+			local x = width
+			local y = height
+			
+			dxDrawImage(x-210, y-275, 200, 200, "disc.png", 0, 0, 0, tocolor(255, 255, 255, 200), false)
+			--outputChatBox(tostring(speed))
+			speed = speed - 100
+			nx = x + math.sin(math.rad(-(speed)-150)) * 90
+			ny = y + math.cos(math.rad(-(speed)-150)) * 90
+			dxDrawLine(x-110, y-175, nx-110, ny-175, tocolor(255, 0, 0, 255), 2, true)
+		end
 	end
 end
 
 function drawFuel()
-	local vehicle = getPedOccupiedVehicle(getLocalPlayer())
-	if (vehicle) then
-		local fuel = getElementData(vehicle, "fuel")	
-		
-		local width, height = guiGetScreenSize()
-		local x = width
-		local y = height
+	if not isPlayerMapVisible() then
+		local vehicle = getPedOccupiedVehicle(getLocalPlayer())
+		if (vehicle) then
+			local fuel = getElementData(vehicle, "fuel")	
 			
-		dxDrawImage(x-265, y-165, 100, 100, "fueldisc.png", 0, 0, 0, tocolor(255, 255, 255, 200), false)	
-		movingx = x + math.sin(math.rad(-(fuel)-50)) * 50
-		movingy = y + math.cos(math.rad(-(fuel)-50)) * 50
-		dxDrawLine(x-215, y-115, movingx-210, movingy-115, tocolor(255, 0, 0, 255), 2, true)
+			local width, height = guiGetScreenSize()
+			local x = width
+			local y = height
+				
+			dxDrawImage(x-265, y-165, 100, 100, "fueldisc.png", 0, 0, 0, tocolor(255, 255, 255, 200), false)	
+			movingx = x + math.sin(math.rad(-(fuel)-50)) * 50
+			movingy = y + math.cos(math.rad(-(fuel)-50)) * 50
+			dxDrawLine(x-215, y-115, movingx-210, movingy-115, tocolor(255, 0, 0, 255), 2, true)
+		end
 	end
 end
 

@@ -3677,3 +3677,17 @@ function updateEditedCharacter()
 		guiSetText(paneChars[selectedChar][4], age .. " year old " .. gender .. ".", true)
 	end
 end
+
+local oldvisible
+function checkForRadarMap()
+	local visible = not isPlayerMapVisible()
+	if visible ~= oldvisible then
+		if bChangeChar and isElement(bChangeChar) then
+			guiSetVisible(bChangeChar, visible)
+		end
+		if bChangeAccount and isElement(bChangeAccount) then
+			guiSetVisible(bChangeAccount, visible)
+		end
+	end
+end
+addEventHandler( "onClientRender", getRootElement(), checkForRadarMap )

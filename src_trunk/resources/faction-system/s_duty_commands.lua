@@ -44,33 +44,33 @@ function lvesHeal(thePlayer, commandName, targetPartialNick, price)
 	if not (targetPartialNick) or not (price) then -- if missing target player arg.
 		outputChatBox("SYNTAX: /" .. commandName .. " [Player Partial Nick / ID] [Price of Heal]", thePlayer, 255, 194, 14)
 	else
-	    local targetPlayer = exports.global:findPlayerByPartialNick(targetPartialNick)
+		local targetPlayer = exports.global:findPlayerByPartialNick(targetPartialNick)
 		if not (targetPlayer) then -- is the player online?
 			outputChatBox("Player not found or multiple were found.", thePlayer, 255, 0, 0)
-	    else
-		    local logged = getElementData(thePlayer, "loggedin")
+		else
+			local logged = getElementData(thePlayer, "loggedin")
 	
-	        if (logged==1) then
-	            local theTeam = getPlayerTeam(thePlayer)
-		        local factionType = getElementData(theTeam, "type")
+			if (logged==1) then
+				local theTeam = getPlayerTeam(thePlayer)
+				local factionType = getElementData(theTeam, "type")
 				
 				if not (factionType==4) then
-				    outputChatBox("You have no basic medic skills, contact the ES.", thePlayer, 255, 0, 0)
+					outputChatBox("You have no basic medic skills, contact the ES.", thePlayer, 255, 0, 0)
 				else
-			        price = tonumber(price)
+					price = tonumber(price)
 				
-				    local targetPlayerName = getPlayerName(targetPlayer)
-		            local x, y, z = getElementPosition(thePlayer)
-		            local tx, ty, tz = getElementPosition(targetPlayer)
-		        
-		            if (getDistanceBetweenPoints3D(x, y, z, tx, ty, tz)>5) then -- Are they standing next to each other?
-				        outputChatBox("You are too far away to heal '"..getPlayerName(targetPlayerName).."'.", thePlayer, 255, 0, 0)
-	                else
-				        local money = getElementData(targetPlayer, "money")
+					local targetPlayerName = getPlayerName(targetPlayer)
+					local x, y, z = getElementPosition(thePlayer)
+					local tx, ty, tz = getElementPosition(targetPlayer)
+				
+					if (getDistanceBetweenPoints3D(x, y, z, tx, ty, tz)>5) then -- Are they standing next to each other?
+						outputChatBox("You are too far away to heal '"..getPlayerName(targetPlayerName).."'.", thePlayer, 255, 0, 0)
+					else
+						local money = getElementData(targetPlayer, "money")
 							
-					    if (price>money) then
-						    outputChatBox("The player cannot afford the heal.", thePlayer, 255, 0, 0)
-				        else
+						if (price>money) then
+							outputChatBox("The player cannot afford the heal.", thePlayer, 255, 0, 0)
+						else
 							exports.global:takePlayerSafeMoney(targetPlayer, price)
 							
 							local result = mysql_query(handler, "SELECT bankbalance FROM factions WHERE id='2' OR id='3' LIMIT 2")
@@ -95,10 +95,10 @@ function lvesHeal(thePlayer, commandName, targetPartialNick, price)
 							end
 							mysql_free_result(result)
 							
-					        setElementHealth(targetPlayer, 100)
+							setElementHealth(targetPlayer, 100)
 							triggerEvent("onPlayerHeal", targetPlayer, true)
-					        outputChatBox("You have been healed by '" ..getPlayerName(thePlayer).. "'.", targetPlayer, 0, 255, 0)
-					    end
+							outputChatBox("You have been healed by '" ..getPlayerName(thePlayer).. "'.", targetPlayer, 0, 255, 0)
+						end
 					end
 				end
 			end
@@ -111,26 +111,26 @@ function lvesStabilize(thePlayer, commandName, targetPartialNick)
 	if not targetPartialNick then -- if missing target player arg.
 		outputChatBox("SYNTAX: /" .. commandName .. " [Player Partial Nick / ID]", thePlayer, 255, 194, 14)
 	else
-	    local targetPlayer = exports.global:findPlayerByPartialNick(targetPartialNick)
+		local targetPlayer = exports.global:findPlayerByPartialNick(targetPartialNick)
 		if not targetPlayer then -- is the player online?
 			outputChatBox("Player not found or multiple were found.", thePlayer, 255, 0, 0)
-	    else
-		    local logged = getElementData(thePlayer, "loggedin")
+		else
+			local logged = getElementData(thePlayer, "loggedin")
 	
-	        if logged==1 then
-	            local theTeam = getPlayerTeam(thePlayer)
-		        local factionType = getElementData(theTeam, "type")
+			if logged==1 then
+				local theTeam = getPlayerTeam(thePlayer)
+				local factionType = getElementData(theTeam, "type")
 				
 				if not (factionType==4) then
-				    outputChatBox("You have no basic medic skills, contact the ES.", thePlayer, 255, 0, 0)
+					outputChatBox("You have no basic medic skills, contact the ES.", thePlayer, 255, 0, 0)
 				else
-				    local targetPlayerName = getPlayerName(targetPlayer)
-		            local x, y, z = getElementPosition(thePlayer)
-		            local tx, ty, tz = getElementPosition(targetPlayer)
-		        
-		            if (getDistanceBetweenPoints3D(x, y, z, tx, ty, tz)>5) then -- Are they standing next to each other?
-				        outputChatBox("You are too far away to heal '"..getPlayerName(targetPlayerName).."'.", thePlayer, 255, 0, 0)
-	                else
+					local targetPlayerName = getPlayerName(targetPlayer)
+					local x, y, z = getElementPosition(thePlayer)
+					local tx, ty, tz = getElementPosition(targetPlayer)
+				
+					if (getDistanceBetweenPoints3D(x, y, z, tx, ty, tz)>5) then -- Are they standing next to each other?
+						outputChatBox("You are too far away to heal '"..getPlayerName(targetPlayerName).."'.", thePlayer, 255, 0, 0)
+					else
 						triggerEvent("onPlayerStabilize", targetPlayer)
 						outputChatBox("You have been stabilized by '" ..getPlayerName(thePlayer).. "'.", targetPlayer, 0, 255, 0)
 					end

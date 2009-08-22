@@ -11,8 +11,7 @@ end
 
 -----------------------------
 function updateDamage()
-	c_veh = getPedOccupiedVehicle( c_player )
-    c_speed = getActualVelocity( c_veh, getElementVelocity( c_veh ) )
+	c_speed = getActualVelocity( c_veh, getElementVelocity( c_veh ) )
 	if c_lastspeed - c_speed >= 0.25 then
 		if (c_lastspeed - c_speed >= 0.35) then -- trigger throwing out of the vehicle
 			local vehicle = getPedOccupiedVehicle(getLocalPlayer())
@@ -54,7 +53,10 @@ addEventHandler( "onClientVehicleStartExit", c_root,onJumpOut)
 addEventHandler( "onClientVehicleExit", c_root,onJumpFinished)
 addEventHandler( "onClientRender", c_root,function  ( )
 	if isplayernotjumpaway and isPedInVehicle(c_player) then
-		updateDamage()
+		c_veh = getPedOccupiedVehicle(c_player)
+		if c_veh then
+			updateDamage()
+		end
 	else
 		c_speed = 0
 		c_lastspeed = 0

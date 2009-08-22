@@ -1,7 +1,7 @@
 local playerInjuries = {} -- create a table to save the injuries
 
 function isMelee( weapon )
-	return weapon <= 15
+	return weapon and weapon <= 15
 end
 
 function killknockedout(source)

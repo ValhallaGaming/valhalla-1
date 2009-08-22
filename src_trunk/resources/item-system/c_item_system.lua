@@ -823,7 +823,7 @@ addCommandHandler("itemlist", showItemList)
 function closeItemsList(button, state)
 	if (source==bItemListClose) and (button=="left") and (state=="up") then
 		showCursor(false)
-		destroyElement(bItemClose)
+		destroyElement(bItemListClose)
 		destroyElement(wItemsList)
 		bItemListClose = nil
 		wItemsList = nil

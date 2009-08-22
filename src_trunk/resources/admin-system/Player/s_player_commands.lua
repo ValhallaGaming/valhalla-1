@@ -685,7 +685,7 @@ addCommandHandler("changename", asetPlayerName, false, false)
 
 -- /HIDEADMIN
 function hideAdmin(thePlayer, commandName)
-	if (exports.global:isPlayerHeadAdmin(thePlayer)) then
+	if exports.global:isPlayerHeadAdmin(thePlayer) or exports.global:isPlayerScripter(thePlayer) then
 		local hiddenAdmin = getElementData(thePlayer, "hiddenadmin")
 		
 		if (hiddenAdmin==0) then

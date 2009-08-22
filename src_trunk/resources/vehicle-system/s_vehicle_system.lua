@@ -1189,42 +1189,53 @@ function checkVehpos(veh, dbid)
 	end
 end
 -- VEHPOS
+local PershingSquareCol = createColRectangle( 1420, -1775, 130, 257 )
+local HospitalCol = createColRectangle( 1166, -1384, 52, 92 )
+
 function setVehiclePosition(thePlayer, commandName)
 	local veh = getPedOccupiedVehicle(thePlayer)
 	if not veh or getElementData(thePlayer, "realinvehicle") == 0 then
 		outputChatBox("You are not in a vehicle.", thePlayer, 255, 0, 0)
 	else
-		local playerid = getElementData(thePlayer, "dbid")
-		local owner = getElementData(veh, "owner")
-		local dbid = getElementData(veh, "dbid")
-		local TowingReturn = call(getResourceFromName("tow-system"), "CanTowTruckDriverVehPos", thePlayer) -- 2 == in towing and in col shape, 1 == colshape only, 0 == not in col shape
-		if (exports.global:isPlayerAdmin(thePlayer)) or (owner==playerid and TowingReturn == 0) or (exports.global:doesPlayerHaveItem(thePlayer, 3, dbid)) or (TowingReturn == 2) then
-			if (dbid<0) then
-				outputChatBox("This vehicle is not permanently spawned.", thePlayer, 255, 0, 0)
-			else
-				if (call(getResourceFromName("tow-system"), "CanTowTruckDriverGetPaid", thePlayer)) then
-					call(getResourceFromName("faction-system"), "addToFactionMoney", 24, 75)
-					call(getResourceFromName("faction-system"), "addToFactionMoney", 1, 75)
-				end
-				removeElementData(veh, "requires.vehpos")
-				local x, y, z = getElementPosition(veh)
-				local rx, ry, rz = getVehicleRotation(veh)
-				
-				local interior = getElementInterior(thePlayer)
-				local dimension = getElementDimension(thePlayer)
-				
-				local query = mysql_query(handler, "UPDATE vehicles SET x='" .. x .. "', y='" .. y .."', z='" .. z .. "', rotx='" .. rx .. "', roty='" .. ry .. "', rotz='" .. rz .. "', currx='" .. x .. "', curry='" .. y .. "', currz='" .. z .. "', currrx='" .. rx .. "', currry='" .. ry .. "', currrz='" .. rz .. "', interior='" .. interior .. "', currinterior='" .. interior .. "', dimension='" .. dimension .. "', currdimension='" .. dimension .. "' WHERE id='" .. dbid .. "'")
-				mysql_free_result(query)
-				setVehicleRespawnPosition(veh, x, y, z, rx, ry, rz)
-				outputChatBox("Vehicle spawn position set.", thePlayer)
-				
-				for key, value in ipairs(destroyTimers) do
-					if (tonumber(destroyTimers[key][2]) == dbid) then
-						local timer = destroyTimers[key][1]
-						
-						if (isTimer(timer)) then
-							killTimer(timer)
-							table.remove(destroyTimers, key)
+		if call( getResourceFromName("tow-system"), "cannotVehpos", thePlayer ) then
+			outputChatBox("Only McJones Towing is allowed to park their vehicles on the Impound Lot.", thePlayer, 255, 0, 0)
+		elseif isElementWithinColShape( thePlayer, HospitalCol ) and getElementData( thePlayer, "faction" ) ~= 2 then
+			outputChatBox("Only Los Santos Emergency Service is allowed to park their vehicles in front of the Hospital.", thePlayer, 255, 0, 0)
+		elseif isElementWithinColShape( thePlayer, PershingSquareCol ) and getElementData( thePlayer, "faction" ) ~= 1 then
+			outputChatBox("Only Los Santos Police Department is allowed to park their vehicles on Pershing Square.", thePlayer, 255, 0, 0)
+		else
+			local playerid = getElementData(thePlayer, "dbid")
+			local owner = getElementData(veh, "owner")
+			local dbid = getElementData(veh, "dbid")
+			local TowingReturn = call(getResourceFromName("tow-system"), "CanTowTruckDriverVehPos", thePlayer) -- 2 == in towing and in col shape, 1 == colshape only, 0 == not in col shape
+			if (exports.global:isPlayerAdmin(thePlayer)) or (owner==playerid and TowingReturn == 0) or (exports.global:doesPlayerHaveItem(thePlayer, 3, dbid)) or (TowingReturn == 2) then
+				if (dbid<0) then
+					outputChatBox("This vehicle is not permanently spawned.", thePlayer, 255, 0, 0)
+				else
+					if (call(getResourceFromName("tow-system"), "CanTowTruckDriverGetPaid", thePlayer)) then
+						call(getResourceFromName("faction-system"), "addToFactionMoney", 24, 75)
+						call(getResourceFromName("faction-system"), "addToFactionMoney", 1, 75)
+					end
+					removeElementData(veh, "requires.vehpos")
+					local x, y, z = getElementPosition(veh)
+					local rx, ry, rz = getVehicleRotation(veh)
+					
+					local interior = getElementInterior(thePlayer)
+					local dimension = getElementDimension(thePlayer)
+					
+					local query = mysql_query(handler, "UPDATE vehicles SET x='" .. x .. "', y='" .. y .."', z='" .. z .. "', rotx='" .. rx .. "', roty='" .. ry .. "', rotz='" .. rz .. "', currx='" .. x .. "', curry='" .. y .. "', currz='" .. z .. "', currrx='" .. rx .. "', currry='" .. ry .. "', currrz='" .. rz .. "', interior='" .. interior .. "', currinterior='" .. interior .. "', dimension='" .. dimension .. "', currdimension='" .. dimension .. "' WHERE id='" .. dbid .. "'")
+					mysql_free_result(query)
+					setVehicleRespawnPosition(veh, x, y, z, rx, ry, rz)
+					outputChatBox("Vehicle spawn position set.", thePlayer)
+					
+					for key, value in ipairs(destroyTimers) do
+						if (tonumber(destroyTimers[key][2]) == dbid) then
+							local timer = destroyTimers[key][1]
+							
+							if (isTimer(timer)) then
+								killTimer(timer)
+								table.remove(destroyTimers, key)
+							end
 						end
 					end
 				end

@@ -85,11 +85,13 @@ function injuries(attacker, weapon, bodypart, loss)
 
 		outputChatBox("Your " .. ( bodypart == 5 and "Left" or "Right" ) .. " Arm was hit!", source, 255, 0, 0)
 	elseif bodypart == 9 then -- headshot
-		setPedHeadless(source, true)
-		killPed(source, attacker, weapon, bodypart)
-		exports.global:givePlayerAchievement(attacker, 12)
-		exports.global:givePlayerAchievement(source, 15)
-		return
+		if not attacker or weapon ~= 24 or getElementData(attacker, "deaglemode") ~= 0 then 
+			setPedHeadless(source, true)
+			killPed(source, attacker, weapon, bodypart)
+			exports.global:givePlayerAchievement(attacker, 12)
+			exports.global:givePlayerAchievement(source, 15)
+			return
+		end
 	end
 	
 	if ( getElementHealth(source) < 20 or ( isElement( attacker ) and getElementType( attacker ) == "vehicle" and getElementHealth(source) < 40 ) ) and math.random( 1, 3 ) <= 2 then

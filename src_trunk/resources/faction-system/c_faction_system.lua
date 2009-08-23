@@ -1,4 +1,4 @@
-gFactionWindow, gMemberGrid, gMOTDLabel, colName, colRank, colWage, colLastLogin, colLocation, colLeader, colOnline, gButtonKick, gButtonPromote, gButtonDemote, gButtonEditRanks, gButtonEditMOTD, gButtonInvite, gButtonLeader, gButtonQuit, gButtonExit = nil
+gFactionWindow, gMemberGrid, gMOTDLabel, colName, colRank, colWage, colLastLogin, colLocation, colLeader, colOnline, gButtonKick, gButtonPromote, gButtonDemote, gButtonEditRanks, gButtonEditMOTD, gButtonInvite, gButtonLeader, gButtonQuit, gButtonExit, wConfirmQuit = nil
 theMotd, theTeam, arrUsernames, arrRanks, arrLeaders, arrOnline, arrFactionRanks, arrLocations, arrFactionWages, arrLastLogin, membersOnline, membersOffline, gButtonRespawn = nil
 
 function showFactionMenu(motd, memberUsernames, memberRanks, memberLeaders, memberOnline, memberLastLogin, memberLocation, factionRanks, factionWages, factionTheTeam)
@@ -413,8 +413,26 @@ function btQuitFaction(button, state)
 		if (numLeaders==1) and (isLeader) then
 			outputChatBox("You must promote someone to lead this faction before quitting. You are the only leader.", 255, 0, 0)
 		else
-			triggerServerEvent("cguiQuitFaction", getLocalPlayer())
-			hideFactionMenu()
+			local sx, sy = guiGetScreenSize() 
+			wConfirmQuit = guiCreateWindow(sx/2 - 125,sy/2 - 50,250,100,"Leaving Confirmation", false)
+			local lQuestion = guiCreateLabel(0.05,0.25,0.9,0.3,"Do you really want to leave " .. getTeamName(theTeam) .. "?",true,wConfirmQuit)
+			guiLabelSetHorizontalAlign (lQuestion,"center",true)
+			local bYes = guiCreateButton(0.1,0.65,0.37,0.23,"Yes",true,wConfirmQuit)
+			local bNo = guiCreateButton(0.53,0.65,0.37,0.23,"No",true,wConfirmQuit)
+			addEventHandler("onClientGUIClick", getRootElement(), 
+				function(button)
+					if button=="left" and ( source == bYes or source == bNo ) then
+						if source == bYes then
+							hideFactionMenu()
+							triggerServerEvent("cguiQuitFaction", getLocalPlayer())
+						end
+						if wConfirmQuit then
+							destroyElement(wConfirmQuit)
+							wConfirmQuit = nil
+						end
+					end
+				end
+			)
 		end
 	end
 end

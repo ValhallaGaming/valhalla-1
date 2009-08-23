@@ -28,7 +28,8 @@ function CreateCheckWindow()
 		guiCreateLabel(0.6674,0.129,0.2907,0.0806,"Interior: N/A",true,Window),
 		guiCreateLabel(0.6674,0.1935,0.2907,0.0806,"Dimension: N/A",true,Window),
 		guiCreateLabel(0.5441,0.36035,0.4031,0.0766,"Admin Reports: N/A",true,Window),
-		guiCreateLabel(0.0529,0.2850,0.9524,0.0887,"Donator Level: N/A",true,Window)
+		guiCreateLabel(0.0529,0.2850,0.9524,0.0887,"Donator Level: N/A",true,Window),
+		guiCreateLabel(0.6674,0.2625,0.4093,0.0806,"Hours Ingame: N/A",true,Window)
 	}
 	--Image[1] = guiCreateStaticImage(0.4758,0.1089,0.1278,0.2177,"search.png",true,Window)
 	guiSetVisible(Window, false)
@@ -70,7 +71,15 @@ addEventHandler( "onClientRender", getRootElement(),
 			guiSetText ( Label[4], "Health: " .. math.ceil( getElementHealth( player ) ) )
 			guiSetText ( Label[5], "Armour: " .. math.ceil( getPedArmor( player ) ) )
 			guiSetText ( Label[6], "Skin: " .. getElementModel( player ) )
-			guiSetText ( Label[7], "Weapon: " .. getWeaponNameFromID( getPedWeapon( player ) ) )
+			
+			local weapon = getPedWeapon( player )
+			if weapon then 
+				weapon = getWeaponNameFromID( weapon )
+			else
+				weapon = "N/A"
+			end
+			guiSetText ( Label[7], "Weapon: " .. weapon )
+
 			local team = getPlayerTeam(player)
 			if team then
 				guiSetText ( Label[8], "Faction: " .. getTeamName(team) )
@@ -90,6 +99,7 @@ addEventHandler( "onClientRender", getRootElement(),
 			guiSetText ( Label[12], "Location: " .. getZoneName( x, y, z ) )
 			guiSetText ( Label[16], "Interior: " .. getElementInterior( player ) )
 			guiSetText ( Label[17], "Dimension: " .. getElementDimension( player ) )
+			guiSetText ( Label[20], "Hours Ingame: " .. ( getElementData( player, "hoursplayed" ) or 0 ) )
 		end
 	end
 )

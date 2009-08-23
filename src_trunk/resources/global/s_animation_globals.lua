@@ -27,6 +27,7 @@ function onSpawn()
 end
 addEventHandler("onPlayerSpawn", getRootElement(), onSpawn)
 
+addEvent( "onPlayerStopAnimation", true )
 function removeAnimation(thePlayer)
 	if isElement(thePlayer) and getElementType(thePlayer)=="player" and getElementData(thePlayer, "freeze") ~= 1 and not getElementData(thePlayer, "injuriedanimation") then
 		local setanim = setPedAnimation(thePlayer)
@@ -34,6 +35,7 @@ function removeAnimation(thePlayer)
 		setElementData(thePlayer, "animation", false, false)
 		toggleAllControls(thePlayer, true, true, false)
 		setPedAnimation(thePlayer)
+		setTimer(triggerEvent, 100, 1, "onPlayerStopAnimation", thePlayer)
 		return setanim
 	else
 		return false

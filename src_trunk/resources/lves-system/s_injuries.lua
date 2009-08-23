@@ -1,5 +1,15 @@
 local playerInjuries = {} -- create a table to save the injuries
 
+function copy( t )
+	local r = {}
+	if type(t) == 'table' then
+		for k, v in pairs( t ) do
+			r[k] = v
+		end
+	end
+	return r
+end
+
 function isMelee( weapon )
 	return weapon and weapon <= 15
 end
@@ -39,12 +49,15 @@ function injuries(attacker, weapon, bodypart, loss)
 	end
 
 	-- 2% chance of melee knockout
-	if isMelee( weapon ) and math.random( 1, 50 ) == 1 then
-		knockout()
+	if isMelee( weapon ) then
+		if math.random( 1, 50 ) == 1 then
+			knockout()
+		end
 		return
 	end
 	
 	-- if we have injuries saved for the player, we add it to their table
+	local injuredBefore = copy( playerInjuries[source] )
 	if playerInjuries[source] then
 		playerInjuries[source][bodypart] = true
 	else
@@ -53,6 +66,16 @@ function injuries(attacker, weapon, bodypart, loss)
 	end
 	
 	if ( bodypart == 3 and getElementHealth(source) < 40 ) or bodypart == 7 or bodypart == 8 then -- damaged either left or right leg
+		if bodypart == 3 then
+			bodypart = math.random( 7, 8 )
+			if not injuredBefore[bodypart] then
+				outputChatBox("You broke your " .. ( bodypart == 7 and "Left" or "Right" ) .. " Leg!", source, 255, 0, 0)
+			end
+			playerInjuries[source][bodypart] = true
+		elseif not injuredBefore[bodypart] then
+			outputChatBox("Your " .. ( bodypart == 7 and "Left" or "Right" ) .. " Leg was hit!", source, 255, 0, 0)
+		end
+
 		if playerInjuries[source][7] and playerInjuries[source][8] then -- both were already hit
 			toggleControl(source, 'forwards', false) -- disable walking forwards for the player who was hit
 			toggleControl(source, 'left', false)
@@ -65,16 +88,6 @@ function injuries(attacker, weapon, bodypart, loss)
 		-- we can be sure at least one of the legs was hit here, since we checked it above
 		toggleControl(source, 'sprint', false) -- disable running forwards for the player who was hit
 		toggleControl(source, 'jump', false) -- tried jumping with broken legs yet?
-
-		if bodypart == 3 then
-			bodypart = math.random( 7, 8 )
-			if not playerInjuries[source][bodypart] then
-				outputChatBox("You broke your " .. ( bodypart == 7 and "Left" or "Right" ) .. " Leg!", source, 255, 0, 0)
-			end
-			playerInjuries[source][bodypart] = true
-		else
-			outputChatBox("Your " .. ( bodypart == 7 and "Left" or "Right" ) .. " Leg was hit!", source, 255, 0, 0)
-		end
 	elseif bodypart == 5 or bodypart == 6 then -- damaged either arm
 		if playerInjuries[source][5] and playerInjuries[source][6] then -- both were already hit
 			toggleControl(source, 'fire', false) -- disable firing weapons for the player who was hit
@@ -187,6 +200,32 @@ end
 
 addEvent( "onPlayerHeal", false ) -- add a new event for it (called from /heal)
 addEventHandler( "onPlayerHeal", getRootElement(), healInjuries)
+
+function restoreInjuries( )
+	if playerInjuries[source] and not isPedHeadless(source) then
+		if playerInjuries[source][7] and playerInjuries[source][8] then
+			toggleControl(source, 'forwards', false)
+			toggleControl(source, 'left', false)
+			toggleControl(source, 'right', false)
+			toggleControl(source, 'backwards', false)
+			toggleControl(source, 'enter_passenger', false)
+			toggleControl(source, 'enter_exit', false)
+		end
+		if playerInjuries[source][7] or playerInjuries[source][8] then
+			toggleControl(source, 'sprint', false)
+			toggleControl(source, 'jump', false)
+		end
+		
+		if playerInjuries[source][5] and playerInjuries[source][6] then
+			toggleControl(source, 'fire', false)
+		end
+		if playerInjuries[source][5] or playerInjuries[source][6] then
+			toggleControl(source, 'aim_weapon', false)
+			toggleControl(source, 'jump', false)
+		end
+	end
+end
+addEventHandler( "onPlayerStopAnimation", getRootElement(), restoreInjuries )
 
 function resetInjuries() -- it actually has some parameters, but we only need source right now - the wiki explains them though
 	setPedHeadless(source, false)

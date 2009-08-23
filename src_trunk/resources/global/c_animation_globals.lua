@@ -25,6 +25,7 @@ function removeAnimation(thePlayer)
 		setElementData(thePlayer, "forcedanimation", true, false)
 		setElementData(thePlayer, "animation", false, true)
 		toggleAllControls(true, true, false)
+		setTimer(triggerServerEvent, 100, 1, "onPlayerStopAnimation", thePlayer, true )
 		return setanim
 	else
 		return false

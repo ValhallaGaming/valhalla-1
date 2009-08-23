@@ -1,21 +1,15 @@
 -- This is a fix for the global resource not starting up
 
 function resStart()
-	--setTimer(loadGlobal, 1000, 1)
-	setTimer(displayCredits, 1000, 1)
+	setTimer(loadGlobal, 1000, 1)
 end
 addEventHandler("onResourceStart", getResourceRootElement(), resStart)
 
---[[
+
 function loadGlobal()
-	restartResource(getResourceFromName("account-system"))
-	restartResource(getResourceFromName("interior-system"))
-	restartResource(getResourceFromName("fuel-system"))
-	restartResource(getResourceFromName("mods-system"))
-	restartResource(getResourceFromName("global"))]]
+	restartResource(getResourceFromName("global"))
 	setTimer(displayCredits, 1000, 1)
 end
---]]
 
 function displayCredits()
 	exports.irc:sendMessage("-------------------------------------------------------------")

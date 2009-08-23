@@ -6,7 +6,7 @@ exports.pool:allocateElement(adamashape)
 
 function giveAdamaAchievement(hitElement, matchingDimension)
 	if (matchingDimension) and (getElementType(hitElement)=="player") then
-		exports.global:givePlayerAchievement(hitElement, 23)
+		givePlayerAchievement(hitElement, 23)
 	end
 end
 addEventHandler("onColShapeHit", adamashape, giveAdamaAchievement)
@@ -19,7 +19,7 @@ exports.pool:allocateElement(jackshape)
 
 function giveJackAchievement(hitElement, matchingDimension)
 	if (matchingDimension) and (getElementType(hitElement)=="player") then
-		exports.global:givePlayerAchievement(hitElement, 24)
+		givePlayerAchievement(hitElement, 24)
 	end
 end
 addEventHandler("onColShapeHit", jackshape, giveJackAchievement)
@@ -32,7 +32,7 @@ exports.pool:allocateElement(benshape)
 
 function giveBenAchievement(hitElement, matchingDimension)
 	if (matchingDimension) and (getElementType(hitElement)=="player") then
-		exports.global:givePlayerAchievement(hitElement, 25)
+		givePlayerAchievement(hitElement, 25)
 	end
 end
 addEventHandler("onColShapeHit", benshape, giveBenAchievement)

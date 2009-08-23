@@ -1,29 +1,5 @@
-stopNumber = {}
-stopNumber[1] = "Unity Station, Washington Road, Idlewood (START OF SERVICE)"
-stopNumber[2] = "Idlewood Gas, Idlewood"
-stopNumber[3] = "Ten Green Bottles & Grove St, Ganton"
-stopNumber[4] = "Atlantic Avenue, Jefferson"
-stopNumber[5] = "Pig Pen, Caesar Road, East Los Santos"
-stopNumber[6] = "Jefferson Motel, E. Vinewood, Jefferson"
-stopNumber[7] = "Glen Park"
-stopNumber[8] = "Skate Park"
-stopNumber[9] = "City Hall, Pershing Sq."
-stopNumber[10] = "Main Street, Central LS"
-stopNumber[11] = "All Saints General Hospital, Pawn Street, Market."
-stopNumber[12] = "Impound Lot, Burger Shot"
-stopNumber[13] = "W. Broadway, Rodeo"
-stopNumber[14] = "Santa Maria Beach"
-stopNumber[15] = "The Rusted Anchor"
-stopNumber[16] = "Unity Station, Washington Road, Idlewood (END OF SERVICE)"
-
-function payBusDriver(stop)
+function payBusDriver(line, stop)
 	exports.global:givePlayerSafeMoney(source, 18)
-	local nextStopNumber = stop+1
-	local thisStop = tostring(stopNumber[stop])
-	
-	if(stop<#stopNumber)then
-		nextStop = tostring(stopNumber[nextStopNumber])
-	end
 	
 	local x, y, z = getElementPosition(source)
 	local chatSphere = createColSphere(x, y, z, 20)
@@ -45,9 +21,9 @@ function payBusDriver(stop)
 			
 			local logged = getElementData(nearbyPlayer, "loggedin")
 			if not(isPedDead(nearbyPlayer)) and (logged==1) then
-				outputChatBox(" -- This stop: [".. thisStop .. "] --", nearbyPlayer, 255, 51, 102)
-				if(stop<#stopNumber)then
-					outputChatBox(" -- Next stop: [".. nextStop .. "] --", nearbyPlayer, 255, 51, 102)
+				outputChatBox(" -- This stop: [".. g_bus_routes[line].stops[stop] .. "] --", nearbyPlayer, 255, 51, 102)
+				if(stop<#g_bus_routes[line].stops)then
+					outputChatBox(" -- Next stop: [".. g_bus_routes[line].stops[stop+1] .. "] --", nearbyPlayer, 255, 51, 102)
 				end
 			end
 		end

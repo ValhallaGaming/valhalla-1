@@ -26,6 +26,8 @@
 	
 	<script src="taxi/c_taxi_job.lua" type="client"/>
 
+	<script src="bus/g_bus_routes.lua" type="client"/>
+	<script src="bus/g_bus_routes.lua" type="server"/>
 	<script src="bus/c_bus_job.lua" type="client"/>
 	<script src="bus/s_bus_job.lua" type="server"/>
 	

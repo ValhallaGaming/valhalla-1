@@ -129,7 +129,7 @@ addEventHandler("onClientResourceStart", getResourceRootElement(),
 		guiSetAlpha(rmbLabel, .8)
 		guiLabelSetColor(rmbLabel, 200, 200, 255)
 		
-		playerCount = guiCreateLabel(0, 0, 0, 0, "Players:     ",false,scoreboardGrid)
+		playerCount = guiCreateLabel(0, 0, 0, 0, "Players:        ",false,scoreboardGrid)
 		labelWidth = guiLabelGetTextExtent(playerCount)
 		labelHeight = guiLabelGetFontHeight(playerCount)
 		

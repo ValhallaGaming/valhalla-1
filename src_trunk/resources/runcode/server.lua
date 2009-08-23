@@ -120,8 +120,3 @@ addCommandHandler("crun",
 		end
 	end
 )
-
--- http interface run export
-function httpRun(commandstring)
-	--return pcall(loadstring(commandstring))
-end

@@ -11,13 +11,13 @@ function switchMode()
 	if (getPedWeapon(localPlayer)==24) and (getPedTotalAmmo(localPlayer)>0) then -- has an un-empty deagle
 		local mode = getElementData(localPlayer, "deaglemode")
 		if mode == 0 then -- tazer mode
-			setElementData(localPlayer, "deaglemode", 1, false)
+			setElementData(localPlayer, "deaglemode", 1, true)
 			triggerServerEvent("sendLocalMeAction", localPlayer, localPlayer, "switched their multipurpose handgun to Lethal mode.")
 		elseif mode == 1 and isLSPD() then -- lethal mode
-			setElementData(localPlayer, "deaglemode", 2, false)
+			setElementData(localPlayer, "deaglemode", 2, true)
 			triggerServerEvent("sendLocalMeAction", localPlayer, localPlayer, "switched their multipurpose handgun to Radar Gun mode.")
 		elseif mode == 2 or mode == 1 then -- radar gun mode
-			setElementData(localPlayer, "deaglemode", 0, false)
+			setElementData(localPlayer, "deaglemode", 0, true)
 			triggerServerEvent("sendLocalMeAction", localPlayer, localPlayer, "switched their multipurpose handgun to Tazer mode.")
 		end
 	end
@@ -27,7 +27,7 @@ function bindKeys(res)
 	bindKey("n", "down", switchMode)
 	
 	local mode = getElementData(localPlayer, "deaglemode")
-	if not (mode) then setElementData(localPlayer, "deaglemode", 0, false) end
+	if not (mode) then setElementData(localPlayer, "deaglemode", 0, true) end
 end
 addEventHandler("onClientResourceStart", getResourceRootElement(), bindKeys)
 

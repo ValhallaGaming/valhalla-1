@@ -241,6 +241,7 @@ function getItemsForSale(shop_type, race, gender)
 			{"Los Santos Highway Code", "A paperback book.", "10", 50, 1, 1, false, 5},
 			{"Chemistry 101", "A hardback academic book.", "20", 51, 1, 1, false, 10},
 			{"Blindfold", "A black blindfold.", "15", 66, 1,1, false,2},
+			{"Lottery Ticket", "A lottery ticket.","50", 67, 1,1, false,40},
 
 			-- Consumable
 			{"Sandwich", "A yummy sandwich with cheese.", "8", 8, 1,2,false,4},

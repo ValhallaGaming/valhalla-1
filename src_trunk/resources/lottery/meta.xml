@@ -1,0 +1,6 @@
+<meta>
+	<info author="vG MTA Scripting Team" type="script" description="Lottery System"/>
+
+	<script src="s_lottery_system.lua" type="server" />
+	<export function="giveTicket" type="server"/>
+</meta>

@@ -303,6 +303,12 @@ function givePlayerBoughtItem(itemID, itemValue, theCost, isWeapon, name, supply
 				setPedSkin(source, tonumber(itemValue))
 				setElementData(source, "casualskin", tonumber(itemValue), false)
 				exports.global:givePlayerAchievement(source, 21)
+			elseif (isWeapon==false) and (itemID==67) then
+				local ticketNumber = exports.lottery:giveTicket(source)
+				exports.global:takePlayerSafeMoney(source, tonumber(theCost))
+				outputChatBox("You bought a " .. name .. ". The ticket number is: " .. ticketNumber .. ".", source, 255, 194, 14)
+				outputChatBox("The money will be transfered to your account if you win.", source, 255, 194, 14)
+				outputChatBox("You have $"..getElementData(source, "money").." left in your wallet.", source, 255, 194, 14)
 			elseif (isWeapon==false) then
 				if(exports.global:givePlayerItem(source, itemID, itemValue)) then
 					exports.global:takePlayerSafeMoney(source, tonumber(theCost))

@@ -1,4 +1,11 @@
 ---
+Lottery
+---
+CREATE TABLE lottery (characterid INT(255) NOT NULL, ticketnumber INT(3) NOT NULL)
+CREATE TABLE lotteryjackpot (ammount INT(255) NOT NULL)
+c_generalshop_system modified line 244
+s_generalshop_system modified line 306 to 311
+---
 Blindfold
 ---
 ALTER TABLE `characters` ADD `blindfold` TINYINT NOT NULL DEFAULT '0'

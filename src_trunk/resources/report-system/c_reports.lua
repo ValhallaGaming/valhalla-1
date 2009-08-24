@@ -160,13 +160,28 @@ function checkNameExists(theEditBox)
 	local found = nil
 	local count = 0
 	
-	local players = getElementsByType("player")
-	for key, value in ipairs(players) do
-		local username = string.lower(tostring(getPlayerName(value)))
-		if (string.find(username, string.lower(tostring(guiGetText(theEditBox))))) and (guiGetText(theEditBox)~="") then
-			count = count + 1
-			found = value
-			break
+	
+	local text = guiGetText(theEditBox)
+	if text and #text > 0 then
+		local players = getElementsByType("player")
+		if tonumber(text) then
+			local id = tonumber(text)
+			for key, value in ipairs(players) do
+				if getElementData(value, "playerid") == id then
+					found = value
+					count = 1
+					break
+				end
+			end
+		else
+			for key, value in ipairs(players) do
+				local username = string.lower(tostring(getPlayerName(value)))
+				if string.find(username, string.lower(text)) then
+					count = count + 1
+					found = value
+					break
+				end
+			end
 		end
 	end
 	
@@ -176,13 +191,13 @@ function checkNameExists(theEditBox)
 		guiMemoSetReadOnly(tReport, true)
 		guiSetEnabled(bSubmitReport, false)
 	elseif (count==1) then
-		guiSetText(lNameCheck, "Player Found.")
+		guiSetText(lNameCheck, "Player Found: " .. getPlayerName(found) .. " (ID #" .. getElementData(found, "playerid") .. ")")
 		guiLabelSetColor(lNameCheck, 0, 255, 0)
 		reportedPlayer = found
 		guiMemoSetReadOnly(tReport, false)
 		guiSetEnabled(bSubmitReport, true)
 	elseif (count==0) then
-		guiSetText(lNameCheck, "Player not found or multiple were found.")
+		guiSetText(lNameCheck, "Player not found.")
 		guiLabelSetColor(lNameCheck, 255, 0, 0)
 		guiMemoSetReadOnly(tReport, true)
 		guiSetEnabled(bSubmitReport, false)

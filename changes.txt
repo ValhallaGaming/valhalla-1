@@ -1,4 +1,10 @@
 ---
+updates to items/achievements
+---
+DROP TABLE achievementslist;
+DROP TABLE items;
+
+---
 Lottery
 ---
 CREATE TABLE lottery (characterid INT(255) NOT NULL, ticketnumber INT(3) NOT NULL)

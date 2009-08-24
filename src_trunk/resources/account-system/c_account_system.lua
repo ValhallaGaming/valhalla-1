@@ -3367,39 +3367,23 @@ tabPanel, tabMystats, tabAllstats = nil
 --/////////////////////////////////////////////////////////////////
 lAchievements, lLoading, lPoints, paneAchievements, pane = nil
 tableAchievements, iAchievementCount, iAchievementPointsCount = nil
-function displayAchievements(achievementCount, achievementPointsCount, achievements)
-	tableAchievements = achievements
-	iAchievementCount = achievementCount
-	iAchievementPointsCount = achievementPointsCount
-	
+function displayAchievements(achievements)
 	destroyElement(lLoading)
 	lLoading = nil
-	
-	local numAchievements = 0
-	local currpoints = 0
-	for key, value in pairs(tableAchievements) do
-		numAchievements = numAchievements + 1
-		currpoints = currpoints + tonumber(tableAchievements[key][3])
-	end
 
-	lAchievements = guiCreateLabel(0.05, 0.025, 0.9, 0.15, numAchievements .. " Achievements of a possible " .. iAchievementCount .. " (" .. tostring(math.ceil((numAchievements/iAchievementCount)*100)) .. "%).", true, tabAchievements)
-	guiSetFont(lAchievements, "default-bold-small")
-	
-	lPoints = guiCreateLabel(0.05, 0.07, 0.9, 0.15, currpoints .. " Achievement Points of a possible " .. iAchievementPointsCount .. " (" .. tostring(math.ceil((currpoints/iAchievementPointsCount)*100)) .. "%).", true, tabAchievements)
-	guiSetFont(lPoints, "default-bold-small")
-	
 	paneAchievements = guiCreateScrollPane(0.05, 0.125, 0.9, 0.85, true, tabAchievements)
 	
 	pane = { }
+	
+	local currpoints = 0
+	
 	local y = 0.0
 	local height = 0.2
 	local resource = getResourceFromName("achievement-system")
 	
-	for key, value in pairs(tableAchievements) do
-		local name = tableAchievements[key][1]
-		local desc = tableAchievements[key][2]
-		local points = tableAchievements[key][3]
-		local date = tableAchievements[key][4]
+	for key, value in pairs(achievements) do
+		local name, desc, points = unpack( call( getResourceFromName( "achievement-system" ), "getAchievementInfo", value[1] ) )
+		local date = value[2]
 		
 		pane[key] = {}
 		pane[key][7] = guiCreateScrollPane(0.0, y, 1.0, 0.35, true, paneAchievements)
@@ -3419,7 +3403,16 @@ function displayAchievements(achievementCount, achievementPointsCount, achieveme
 		guiSetFont(pane[key][5], "default-small")
 		
 		y = y + 0.205
+		currpoints = currpoints + points
 	end
+
+	local iAchievementCount = call( getResourceFromName( "achievement-system" ), "getAchievementCount" )
+	lAchievements = guiCreateLabel(0.05, 0.025, 0.9, 0.15, #achievements .. " Achievements of a possible " .. iAchievementCount .. " (" .. tostring(math.ceil((#achievements/iAchievementCount)*100)) .. "%).", true, tabAchievements)
+	guiSetFont(lAchievements, "default-bold-small")
+	
+	local iAchievementPointsCount = call( getResourceFromName( "achievement-system" ), "getAchievementPoints" )
+	lPoints = guiCreateLabel(0.05, 0.07, 0.9, 0.15, currpoints .. " Achievement Points of a possible " .. iAchievementPointsCount .. " (" .. tostring(math.ceil((currpoints/iAchievementPointsCount)*100)) .. "%).", true, tabAchievements)
+	guiSetFont(lPoints, "default-bold-small")
 end
 addEvent("returnAchievements", true)
 addEventHandler("returnAchievements", getRootElement(), displayAchievements)

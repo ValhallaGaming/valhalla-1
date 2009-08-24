@@ -66,21 +66,10 @@ function givePlayerAchievement(thePlayer, id)
 		
 			local result = mysql_query(handler, "INSERT INTO achievements SET account='" .. gameaccountID .. "', achievementid='" .. id .. "', date='" .. date .. "'")
 		
-			if (result) then	
+			if result then	
+				triggerClientEvent(thePlayer, "onPlayerGetAchievement", thePlayer, id)
 				mysql_free_result(result)
-				local query = mysql_query(handler, "SELECT name, description, points FROM achievementslist WHERE id='" .. id .. "'")
-
-				if (mysql_num_rows(query)>0) then
-					local name = mysql_result(query, 1, 1)
-					local desc = mysql_result(query, 1, 2)
-					local points = mysql_result(query, 1, 3)
-					mysql_free_result(query)
-					triggerClientEvent(thePlayer, "onPlayerGetAchievement", thePlayer, name, desc, points)
-					return true
-				else
-					mysql_free_result(query)
-					return false
-				end
+				return true
 			else
 				return false
 			end

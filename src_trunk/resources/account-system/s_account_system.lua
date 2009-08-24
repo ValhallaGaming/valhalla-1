@@ -889,47 +889,17 @@ function requestAchievements()
 	local gameAccountID = getElementData(source, "gameaccountid")
 	local aresult = mysql_query(handler, "SELECT achievementid, date FROM achievements WHERE account='" .. gameAccountID .. "'")
 	
-	local allAchievements = mysql_query(handler, "SELECT points FROM achievementslist")
 	local achievements = { }
 	
 	-- Determine the total number of achievements & points
-	local achievementCount = 0
-	local achievementPointsCount = 0
-	local points = 0
-	local amount = 0
-	if (allAchievements) then
-		for result, row in mysql_rows(allAchievements) do
-			achievementPointsCount = achievementPointsCount + tonumber(row[1])
-			achievementCount = achievementCount + 1
-		end
-		mysql_free_result(allAchievements)
-	end
-	
-	if (aresult) then
-		local key = 1
+	if aresult then
 		for result, row in mysql_rows(aresult) do
-			local achievementID = row[1]
-			achievements[key] = { }
-			achievements[key][4] = row[2]
-			
-			local achresult = mysql_query(handler, "SELECT name, description, points FROM achievementslist WHERE id='" .. achievementID .. "'")
-			if (mysql_num_rows(achresult)>0) then
-				achievements[key][1] = tostring(mysql_result(achresult, 1, 1))
-				achievements[key][2] = tostring(mysql_result(achresult, 1, 2))
-				achievements[key][3] = tonumber(mysql_result(achresult, 1, 3))
-				amount = amount + 1
-				points = points + tonumber(mysql_result(achresult, 1, 3))
-				key = key + 1
-			end
-			
-			if (achresult) then
-				mysql_free_result(achresult)
-			end
+			achievements[#achievements+1] = { tonumber( row[1] ), row[2] }
 		end
 		mysql_free_result(aresult)
 	end
 	
-	triggerClientEvent(source, "returnAchievements", source, achievementCount, achievementPointsCount, achievements)
+	triggerClientEvent(source, "returnAchievements", source, achievements)
 end
 addEvent("requestAchievements", true)
 addEventHandler("requestAchievements", getRootElement(), requestAchievements)

@@ -1,5 +1,8 @@
 wAchievement, imgAchievement, lTitle, lDesc = nil
-function displayAchievement(name, description, points)
+
+function displayAchievement(id)
+	local name, description, points = unpack(getAchievementInfo(id))
+	
 	local width, height = 600, 100
 	local scrWidth, scrHeight = guiGetScreenSize()
 	local x = scrWidth/2 - (width/2)

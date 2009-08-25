@@ -444,7 +444,7 @@ function declineDeal_S ()
 	destroyElement (chatSphere)
 	outputChatBox("((Steven Pullman)) #081016 [Cellphone]: Sure thing.", source)
 	
-	endCall(source)
+	endCall()
 	
 end
 addEvent( "declineSteviePhoneDeal", true )
@@ -625,7 +625,7 @@ end
 -- ending the call --
 ---------------------
 function endCall(thePlayer) -- to cancel the phone animation and reset the phone states.
-	if not (thePlayer) then
+	if not thePlayer or not isElement(thePlayer) or getElementType(thePlayer) ~= "player" then
 		thePlayer = source
 	end
 	exports.global:removeAnimation(thePlayer)

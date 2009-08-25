@@ -32,6 +32,7 @@ function createNewObject(thePlayer, commandName, modelid)
 			outputChatBox("SYNTAX: " .. commandName .. " [Model ID]", thePlayer, 255, 194, 14)
 		else
 			local x, y, z = getElementPosition(thePlayer)
+			z = z - 1
 			local interior = getElementInterior(thePlayer)
 			local dimension = getElementDimension(thePlayer)
 			local rotation = getPedRotation(thePlayer)

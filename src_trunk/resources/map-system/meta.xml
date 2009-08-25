@@ -19,4 +19,5 @@
 	<script src="Idlewood Gas.lua" type="client"/>
 	<script src="seville.lua" type="client"/>
 	<script src="Busstops_LS_LineAB.lua" />
+	<script src="littleitaly.lua" />
 </meta>

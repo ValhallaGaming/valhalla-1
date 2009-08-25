@@ -435,31 +435,13 @@ function hideInventory()
 	colName = nil
 	colValue = nil
 	
-	destroyElement(gItems)
-	gItems = nil
-	
-	destroyElement(lDescription)
-	lDescription = nil
-	
-	items = nil
-	
-	destroyElement(gWeapons)
-	gWeapons = nil
-	
 	colWSlot = nil
 	colWName = nil
 	colWValue = nil
 	
-	destroyElement(tabItems)
-	tabItems = nil
-	
-	destroyElement(tabWeapons)
-	tabWeapons = nil
-	
-	destroyElement(tabPanel)
-	tabPanel = nil
-	
-	destroyElement(wItems)
+	if wItems then
+		destroyElement(wItems)
+	end
 	wItems = nil
 	
 	showCursor(false)

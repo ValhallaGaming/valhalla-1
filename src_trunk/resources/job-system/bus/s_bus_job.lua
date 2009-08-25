@@ -45,7 +45,10 @@ addEventHandler( "onPlayerQuit", getRootElement(), removeDriverOnAllLines )
 addEventHandler("onCharacterLogin", getRootElement(), removeDriverOnAllLines )
 
 function payBusDriver(line, stop)
-	if stop == -1 then
+	if stop == -2 then
+		removeDriver()
+		exports.global:givePlayerSafeMoney(source, 36)
+	elseif stop == -1 then
 		removeDriver()
 	elseif stop == 0 then
 		table.insert( drivers[line][1], source )
@@ -81,8 +84,8 @@ function payBusDriver(line, stop)
 		end
 		
 		-- "remove" driver from current blip
-		removeDriver()
 		if drivers[line][stop+1] then
+			removeDriver()
 			table.insert( drivers[line][stop+1], source )
 		end
 	end
@@ -112,7 +115,7 @@ function createBusBlips( )
 		for pointID, point in ipairs( route.points ) do
 			if point[4] and #route.points ~= pointID then
 				local stop = #blips[routeID]+1
-				blips[routeID][stop] = createBlip( point[1], point[2], point[3], 0, 2, 255, 127, 127, 127, -5, 40 )
+				blips[routeID][stop] = createBlip( point[1], point[2], point[3], 0, 2, 255, 63, 63, 127, -5, 65 )
 				drivers[routeID][stop] = {}
 			end
 		end

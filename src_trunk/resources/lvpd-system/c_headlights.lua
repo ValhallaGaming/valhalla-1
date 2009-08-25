@@ -3,14 +3,13 @@ function bindKeys(res)
 	bindKey("p", "down", toggleFlashers)
 	
 	for key, value in ipairs(getElementsByType("vehicle")) do
-		local modelid = getElementModel(value)
 		if (isElementStreamedIn(value)) then
+			local modelid = getElementModel(value)
 			if (governmentVehicle[modelid]) or exports.global:cdoesVehicleHaveItem(value, 61) then
 				for i = 1, #policevehicles+1 do
 					if (policevehicles[i]==nil) then
 						policevehicles[i] = value
 						policevehicleids[value] = i
-						break
 					end
 				end
 			end
@@ -21,13 +20,13 @@ addEventHandler("onClientResourceStart", getResourceRootElement(), bindKeys)
 
 function toggleFlashers()
 	local veh = getPedOccupiedVehicle(getLocalPlayer())
-
+	
 	if (veh) then
 		local modelid = getElementModel(veh)
 		if (governmentVehicle[modelid]) or exports.global:cdoesVehicleHaveItem(veh, 61) then -- Emergency Light Becon
 			local lights = getVehicleOverrideLights(veh)
 			local state = getElementData(veh, "flashers")
-
+			
 			if (lights==2) then
 				if not (state) then
 					setElementData(veh, "flashers", true, true)
@@ -71,7 +70,6 @@ addEventHandler("onClientElementStreamIn", getRootElement(), streamIn)
 
 function streamOut()
 	if (getElementType(source)=="vehicle") then
-		local modelid = getElementModel(source)
 		if (policevehicleids[source]~=nil) then
 			local id = policevehicleids[source]
 			setVehicleHeadLightColor(source, 255, 255, 255)
@@ -82,7 +80,6 @@ function streamOut()
 end
 addEventHandler("onClientElementStreamOut", getRootElement(), streamOut)
 
-count = 0
 function doFlashes()
 	if (#policevehicles==0) then return end
 	

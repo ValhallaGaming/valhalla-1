@@ -158,6 +158,38 @@ end
 addEvent( "onPlayerStabilize", false )
 addEventHandler( "onPlayerStabilize", getRootElement(), stabilize )
 
+function examine(to)
+	local name = getPlayerName(source):gsub("_", " ")
+	if isPedDead(source) then
+		outputChatBox(name .. " is dead.", to, 255, 0, 0)
+	elseif playerInjuries[source] and not isPedHeadless(source) then
+		if playerInjuries[source]['knockout'] then
+			outputChatBox(name.. " is knocked out.", to, 255, 255, 0)
+		end
+
+		if playerInjuries[source][7] and playerInjuries[source][8] then
+			outputChatBox("Both of " .. name .. "s legs are broken.", to, 255, 255, 0)
+		elseif playerInjuries[source][7] then
+			outputChatBox(name .. "s left leg is broken.", to, 255, 255, 0)
+		elseif playerInjuries[source][8] then
+			outputChatBox(name .. "s right leg is broken.", to, 255, 255, 0)
+		end
+
+		if playerInjuries[source][5] and playerInjuries[source][6] then
+			outputChatBox("Both of " .. name .. "s arms are broken.", to, 255, 255, 0)
+		elseif playerInjuries[source][5] then
+			outputChatBox(name .. "s left arm is broken.", to, 255, 255, 0)
+		elseif playerInjuries[source][6] then
+			outputChatBox(name .. "s right arm is broken.", to, 255, 255, 0)
+		end
+	else
+		outputChatBox(name .. " is not injured.", to, 255, 255, 0)
+	end
+end
+
+addEvent( "onPlayerExamine", false )
+addEventHandler( "onPlayerExamine", getRootElement(), examine )
+
 function healInjuries(healed)
 	if playerInjuries[source] and not isPedHeadless(source) then
 		if playerInjuries[source]['knockout'] then

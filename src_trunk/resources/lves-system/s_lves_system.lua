@@ -34,7 +34,7 @@ addEventHandler("onPlayerWasted", getRootElement(), playerDeath)
 
 function respawnPlayer(thePlayer)
 	if (isElement(thePlayer)) then
-		local cost = math.random(25,50)
+		local cost = math.random(150,300)
 		local money = getElementData(thePlayer, "money")
 		
 		-- Fix for injected cash

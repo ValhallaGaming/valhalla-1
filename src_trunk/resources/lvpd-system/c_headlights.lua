@@ -3,7 +3,7 @@ function bindKeys(res)
 	bindKey("p", "down", toggleFlashers)
 	
 	for key, value in ipairs(getElementsByType("vehicle")) do
-		local modelid = getVehicleModel(value)
+		local modelid = getElementModel(value)
 		if (isElementStreamedIn(value)) then
 			if (governmentVehicle[modelid]) or exports.global:cdoesVehicleHaveItem(value, 61) then
 				for i = 1, #policevehicles+1 do

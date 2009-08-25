@@ -1163,7 +1163,6 @@ local destroyTimers = { }
 function createShopVehicle(dbid, ...)
 	local veh = createVehicle(unpack({...}))
 
-	outputChatBox(dbid)
 	setElementData(veh, "dbid", dbid)
 	setElementData(veh, "requires.vehpos", 1, false)
 	local timer = setTimer(checkVehpos, 3600000, 1, veh, dbid)

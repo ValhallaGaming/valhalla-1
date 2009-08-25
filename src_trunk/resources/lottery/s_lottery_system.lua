@@ -65,7 +65,7 @@ function giveTicket(aPlayer)
 end
 
 function drawLottery()
-	local drawNumbers = tostring(math.random(100, 999))
+	local drawNumbers = tostring(math.random(1000, 9999))
 	local result = mysql_query(handler, "SELECT characterid FROM lottery WHERE ticketnumber ='" .. drawNumbers .. "'")
 	if (mysql_num_rows(result) ~= 0) then
 		local playername = mysql_result(mysql_query(handler, "SELECT charactername FROM characters WHERE id='" .. mysql_result(result,1,1) .. "'"),1,1)

@@ -717,6 +717,13 @@ function adminDeleteFaction(thePlayer, commandName, factionID)
 					
 					mysql_free_result(deleted)
 					outputChatBox("Faction #" .. factionID .. " was deleted.", thePlayer, 0, 255, 0)
+					
+					local civTeam = getTeamFromName("Citizen")
+					for key, value in pairs( getPlayersInTeam( theTeam ) ) do
+						setPlayerTeam( value, civTeam )
+						setElementData( value, "faction", -1 )
+					end
+					destroyElement( theTeam )
 				else
 					outputChatBox("Invalid Faction ID.", thePlayer, 255, 0, 0)
 				end

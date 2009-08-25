@@ -258,10 +258,14 @@ function cfriskPlayer(button, state, x, y)
 				-- WEAPONS
 				for i = 1, 12 do
 					if (getPedWeapon(player, i)>0) then
-						local itemName = getWeaponNameFromID(getPedWeapon(player, i))
-						local row = guiGridListAddRow(gFriskItems)
-						guiGridListSetItemText(gFriskItems, row, FriskColName, tostring(itemName), false, false)
-						guiGridListSetSortingEnabled(gFriskItems, false)
+						local ammo = getPedTotalAmmo(player, i)
+						
+						if (ammo>0) then
+							local itemName = getWeaponNameFromID(getPedWeapon(player, i))
+							local row = guiGridListAddRow(gFriskItems)
+							guiGridListSetItemText(gFriskItems, row, FriskColName, tostring(itemName), false, false)
+							guiGridListSetSortingEnabled(gFriskItems, false)
+						end
 					end
 				end
 				

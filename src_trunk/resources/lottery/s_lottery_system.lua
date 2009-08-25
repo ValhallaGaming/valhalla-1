@@ -48,7 +48,7 @@ addEventHandler("onResourceStart", getResourceRootElement(), correctTime)
 
 function giveTicket(aPlayer)
 	local PlayerID = getElementData(aPlayer, "dbid")
-	local ticketNumber = tostring(math.random(100, 999))
+	local ticketNumber = tostring(math.random(1000, 9999))
 	local result = mysql_query(handler, "SELECT characterid FROM lottery WHERE ticketnumber ='" .. ticketNumber .. "'")
 	if (mysql_num_rows(result) == 0) then
 		mysql_free_result(mysql_query(handler, "INSERT INTO lottery (characterid, ticketnumber) VALUES (" .. PlayerID .. ", " .. ticketNumber .. " )"))
@@ -57,6 +57,8 @@ function giveTicket(aPlayer)
 		mysql_free_result(mysql_query(handler, "UPDATE lotteryjackpot SET ammount='" .. jackpot .. "'"))	
 		mysql_free_result(result)
 		return tonumber(ticketNumber)
+	elseif (mysql_num_rows(mysql_query(handler, "SELECT ticketnumber FROM lottery") >= 8999 then
+		return false
 	else
 		giveTicket(aPlayer)
 	end

@@ -63,4 +63,6 @@
 	<script src="c_mp3_player.lua" type="client"/>
 
 	<script src="c_drunk.lua" type="client"/>
+
+	<script src="c_heli_rotors.lua" type="client"/>
 </meta>

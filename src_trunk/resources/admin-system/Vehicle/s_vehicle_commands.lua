@@ -1,5 +1,6 @@
 armoredCars = { [427]=true, [528]=true, [432]=true, [601]=true, [428]=true, [597]=true } -- Enforcer, FBI Truck, Rhino, SWAT Tank, Securicar, SFPD Car
 totalTempVehicles = 0
+respawnTimer = nil
 
 -- EVENTS
 addEvent("onVehicleDelete", false)
@@ -318,8 +319,15 @@ function respawnCmdVehicle(thePlayer, commandName, id)
 end
 addCommandHandler("respawnveh", respawnCmdVehicle, false, false)
 
-function respawnAllVehicles(thePlayer, commandName)
+function respawnAllVehicles(thePlayer, commandName, timeToRespawn)
 	if (exports.global:isPlayerAdmin(thePlayer)) then
+		if commandName then
+			timeToRespawn = tonumber(timeToRespawn) or 30
+			outputChatBox("All vehicles will be respawned in "..timeToRespawn.." seconds!")
+			outputChatBox("You can stop it by typing /respawnstop!", thePlayer)
+			respawnTimer = setTimer(respawnAllVehicles, timeToRespawn*1000, 1, thePlayer)
+			return
+		end
 		local vehicles = exports.pool:getPoolElementsByType("vehicle")
 		local counter = 0
 		local tempcounter = 0
@@ -364,6 +372,17 @@ function respawnAllVehicles(thePlayer, commandName)
 	end
 end
 addCommandHandler("respawnall", respawnAllVehicles, false, false)
+
+function respawnVehiclesStop(thePlayer, commandName)
+	if exports.global:isPlayerAdmin(thePlayer) and isTimer(respawnTimer) then
+		killTimer(respawnTimer)
+		respawnTimer = nil
+		if commandName then
+			outputChatBox(getPlayerName(thePlayer) .. " stops the timer to respawn all vehicles!")
+		end
+	end
+end
+addCommandHandler("respawnstop", respawnVehiclesStop, false, false)
 
 function addUpgrade(thePlayer, commandName, target, upgradeID)
 	if (exports.global:isPlayerAdmin(thePlayer)) then

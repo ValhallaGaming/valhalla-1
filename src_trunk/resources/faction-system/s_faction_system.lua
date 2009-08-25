@@ -40,7 +40,7 @@ function loadAllFactions(res)
 	
 	if (result) then
 		for result, row in mysql_rows(result) do
-			local id = row[1]
+			local id = tonumber(row[1])
 			local name = row[2]
 			local money = tonumber(row[3])
 			local factionType = tonumber(row[4])
@@ -219,7 +219,7 @@ end
 -- // CALL BACKS FROM CLIENT GUI
 function callbackUpdateRanks(ranks, wages)
 	local theTeam = getPlayerTeam(source)
-	local factionID = tonumber(getElementData(theTeam, "id"))
+	local factionID = getElementData(theTeam, "id")
 	
 	for key, value in ipairs(ranks) do
 		ranks[key] = mysql_escape_string(handler, ranks[key])
@@ -250,11 +250,11 @@ function callbackRespawnVehicles()
 	local factionCooldown = getElementData(theTeam, "cooldown")
 	
 	if not (factionCooldown) then
-		local factionID = tonumber(getElementData(theTeam, "id"))
+		local factionID = getElementData(theTeam, "id")
 		
 		for key, value in ipairs(exports.pool:getPoolElementsByType("vehicle")) do
 			local faction = getElementData(value, "faction")
-			if ((tonumber(faction)==factionID) and not getVehicleOccupant(value, 0) and not getVehicleOccupant(value, 1) and not getVehicleOccupant(value, 2) and not getVehicleOccupant(value, 3) and not getVehicleTowingVehicle(value)) then
+			if (faction == factionID and not getVehicleOccupant(value, 0) and not getVehicleOccupant(value, 1) and not getVehicleOccupant(value, 2) and not getVehicleOccupant(value, 3) and not getVehicleTowingVehicle(value)) then
 				respawnVehicle(value)
 			end
 		end
@@ -549,7 +549,7 @@ function createFaction(thePlayer, commandName, factionType, ...)
 					mysql_free_result(query)
 					outputChatBox("Faction " .. factionName .. " created with ID #" .. id .. ".", thePlayer, 0, 255, 0)
 					setElementData(theTeam, "type", tonumber(factionType))
-					setElementData(theTeam, "id", id, false)
+					setElementData(theTeam, "id", tonumber(id), false)
 					setElementData(theTeam, "money", 0.00)
 				else
 					outputChatBox("Error creating faction.", thePlayer, 255, 0, 0)
@@ -567,23 +567,28 @@ function adminRenameFaction(thePlayer, commandName, factionID, ...)
 		if not (factionID) or not (...)  then
 			outputChatBox("SYNTAX: /" .. commandName .. " [Faction ID] [Faction Name]", thePlayer, 255, 194, 14)
 		else
-			theTeam = nil
-			for key, value in ipairs(exports.pool:getPoolElementsByType("team")) do
-				local id = tonumber(getElementData(value, "id"))
-				
-				if (id==tonumber(factionID)) then
-					theTeam = value
+			factionID = tonumber(factionID)
+			if factionID then
+				theTeam = nil
+				for key, value in ipairs(exports.pool:getPoolElementsByType("team")) do
+					local id = getElementData(value, "id")
+					
+					if id== tonumber(factionID)) then
+						theTeam = value
+					end
 				end
-			end
-			
-			if (theTeam) then
-				local factionName = table.concat({...}, " ")
-				local updated = mysql_query(handler, "UPDATE factions SET name='" .. factionName .. "' WHERE id='" .. tonumber(factionID) .. "'")
 				
-				setTeamName(theTeam, factionName)
-				
-				mysql_free_result(updated)
-				outputChatBox("Faction #" .. factionID .. " was renamed to " .. factionName .. ".", thePlayer, 0, 255, 0)
+				if (theTeam) then
+					local factionName = table.concat({...}, " ")
+					local updated = mysql_query(handler, "UPDATE factions SET name='" .. factionName .. "' WHERE id='" .. factionID .. "'")
+					
+					setTeamName(theTeam, factionName)
+					
+					mysql_free_result(updated)
+					outputChatBox("Faction #" .. factionID .. " was renamed to " .. factionName .. ".", thePlayer, 0, 255, 0)
+				else
+					outputChatBox("Invalid Faction ID.", thePlayer, 255, 0, 0)
+				end
 			else
 				outputChatBox("Invalid Faction ID.", thePlayer, 255, 0, 0)
 			end
@@ -696,20 +701,25 @@ function adminDeleteFaction(thePlayer, commandName, factionID)
 		if not (factionID)  then
 			outputChatBox("SYNTAX: /" .. commandName .. " [Faction ID]", thePlayer, 255, 194, 14)
 		else
-			theTeam = nil
-			for key, value in ipairs(exports.pool:getPoolElementsByType("team")) do
-				local id = tonumber(getElementData(value, "id"))
-				
-				if (id==tonumber(factionID)) then
-					theTeam = value
+			factionID = tonumber(factionID)
+			if factionID then
+				theTeam = nil
+				for key, value in ipairs(exports.pool:getPoolElementsByType("team")) do
+					local id = getElementData(value, "id")
+					
+					if id == factionID then
+						theTeam = value
+					end
 				end
-			end
-			
-			if (theTeam) then
-				local deleted = mysql_query(handler, "DELETE FROM factions WHERE id='" .. tonumber(factionID) .. "'")
 				
-				mysql_free_result(deleted)
-				outputChatBox("Faction #" .. factionID .. " was deleted.", thePlayer, 0, 255, 0)
+				if (theTeam) then
+					local deleted = mysql_query(handler, "DELETE FROM factions WHERE id='" .. factionID .. "'")
+					
+					mysql_free_result(deleted)
+					outputChatBox("Faction #" .. factionID .. " was deleted.", thePlayer, 0, 255, 0)
+				else
+					outputChatBox("Invalid Faction ID.", thePlayer, 255, 0, 0)
+				end
 			else
 				outputChatBox("Invalid Faction ID.", thePlayer, 255, 0, 0)
 			end
@@ -757,21 +767,26 @@ function setFactionMoney(thePlayer, commandName, factionID, amount)
 		if not (factionID) or not (amount)  then
 			outputChatBox("SYNTAX: /" .. commandName .. " [Faction ID] [Money]", thePlayer, 255, 194, 14)
 		else
-			theTeam = nil
-			amount = tonumber(amount)
-			for key, value in ipairs(exports.pool:getPoolElementsByType("team")) do
-				local id = tonumber(getElementData(value, "id"))
-				
-				if (id==tonumber(factionID)) then
-					theTeam = value
+			factionID = tonumber(factionID)
+			if factionID then
+				theTeam = nil
+				amount = tonumber(amount)
+				for key, value in ipairs(exports.pool:getPoolElementsByType("team")) do
+					local id = getElementData(value, "id")
+					
+					if id == factionID then
+						theTeam = value
+					end
 				end
-			end
-			
-			if (theTeam) then
-				setElementData(theTeam, "money", amount)
-				local result = mysql_query(handler, "UPDATE factions SET bankbalance='" .. amount .. "' WHERE id='" .. tonumber(factionID) .. "'")
-				mysql_free_result(result)
-				outputChatBox("Set faction '" .. getTeamName(theTeam) .. "'s money to " .. amount .. " $.", thePlayer, 255, 194, 14)
+				
+				if (theTeam) then
+					setElementData(theTeam, "money", amount)
+					local result = mysql_query(handler, "UPDATE factions SET bankbalance='" .. amount .. "' WHERE id='" .. tonumber(factionID) .. "'")
+					mysql_free_result(result)
+					outputChatBox("Set faction '" .. getTeamName(theTeam) .. "'s money to " .. amount .. " $.", thePlayer, 255, 194, 14)
+				else
+					outputChatBox("Invalid faction ID.", thePlayer, 255, 194, 14)
+				end
 			else
 				outputChatBox("Invalid faction ID.", thePlayer, 255, 194, 14)
 			end
@@ -858,7 +873,7 @@ function payWage(player, pay, faction, tax)
 		if pay >= 0 then
 			outputChatBox("    Wage Paid: " .. pay .. "$", player, 255, 194, 14)			
 
-			local teamid = tonumber( getElementData(getPlayerTeam(player), "id" ) )
+			local teamid = getElementData(player, "faction")
 			if teamid <= 0 then
 				teamid = 0
 			else
@@ -1017,23 +1032,26 @@ addCommandHandler("timesaved", timeSaved)
 
 
 function addToFactionMoney(factionID, amount)
-	theTeam = nil
-	for key, value in ipairs(exports.pool:getPoolElementsByType("team")) do
-		local id = tonumber(getElementData(value, "id"))
-	
-		if (id==tonumber(factionID)) then
-			theTeam = value
+	factionID = tonumber(factionID)
+	if factionID then
+		theTeam = nil
+		for key, value in ipairs(exports.pool:getPoolElementsByType("team")) do
+			local id = getElementData(value, "id")
+		
+			if id == factionID then
+				theTeam = value
+			end
 		end
-	end
-	
-	if (theTeam) then
-		local gresult = mysql_query(handler, "SELECT bankbalance FROM factions WHERE id='" .. factionID .."'")
-		local amount = tonumber(mysql_result(gresult, 1, 1)) + amount
-		mysql_free_result(gresult)
-		setElementData(theTeam, "money", amount)
-		local result = mysql_query(handler, "UPDATE factions SET bankbalance='" .. amount .. "' WHERE id='" .. tonumber(factionID) .. "'")
-		mysql_free_result(result)
-		return true
+		
+		if (theTeam) then
+			local gresult = mysql_query(handler, "SELECT bankbalance FROM factions WHERE id='" .. factionID .."'")
+			local amount = tonumber(mysql_result(gresult, 1, 1)) + amount
+			mysql_free_result(gresult)
+			setElementData(theTeam, "money", amount)
+			local result = mysql_query(handler, "UPDATE factions SET bankbalance='" .. amount .. "' WHERE id='" .. tonumber(factionID) .. "'")
+			mysql_free_result(result)
+			return true
+		end
 	end
 	return false
 end

@@ -57,7 +57,7 @@ function giveTicket(aPlayer)
 		mysql_free_result(mysql_query(handler, "UPDATE lotteryjackpot SET ammount='" .. jackpot .. "'"))	
 		mysql_free_result(result)
 		return tonumber(ticketNumber)
-	elseif (mysql_num_rows(mysql_query(handler, "SELECT ticketnumber FROM lottery") >= 8999 then
+	elseif (mysql_num_rows(mysql_query(handler, "SELECT ticketnumber FROM lottery"))) >= 8999 then
 		return false
 	else
 		giveTicket(aPlayer)

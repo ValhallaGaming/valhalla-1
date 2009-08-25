@@ -312,6 +312,7 @@ function givePlayerBoughtItem(itemID, itemValue, theCost, isWeapon, name, supply
 					outputChatBox("You have $"..getElementData(source, "money").." left in your wallet.", source, 255, 194, 14)
 				else
 					outputChatBox("I'm sorry, the lottery is already closed. Wait for the next round.", source, 255, 194, 14)
+				end
 			elseif (isWeapon==false) and (itemID==67) then
 				local ticketNumber = exports.lottery:giveTicket(source)
 				exports.global:takePlayerSafeMoney(source, tonumber(theCost))

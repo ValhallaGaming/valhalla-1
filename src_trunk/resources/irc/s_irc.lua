@@ -12,7 +12,7 @@ conn = nil
 conn2 = nil
 timer = nil
 useSecond = false
-
+--[[
 function initIRC()
 	ircInit()
 	conn = ircOpen(server, port, username, channel, password)
@@ -39,8 +39,9 @@ function stopIRC()
 	conn = nil
 end
 addEventHandler("onResourceStop", getResourceRootElement(getThisResource()), stopIRC)
-
+]]--
 function sendMessage(message)
+	--[[
 	local time = getRealTime()
 	local hour = time.hour
 	local mins = time.minute
@@ -70,20 +71,22 @@ function sendMessage(message)
 		useSecond = false
 		ircMessage(conn2, channel, "[" .. hour .. ":" .. mins .. "] " .. tostring(message))
 	end
+	]]--
 end
 
 function sendAdminMessage(message)
-	outputDebugString(tostring(message))
+	--outputDebugString(tostring(message))
 	
-	if not (useSecond) then
-		useSecond = true
-		ircMessage(conn, channeladmins, tostring(message))
-	else
-		useSecond = false
-		ircMessage(conn2, channeladmins, tostring(message))
-	end
+	--if not (useSecond) then
+	--	useSecond = true
+	--	ircMessage(conn, channeladmins, tostring(message))
+	--else
+	--	useSecond = false
+	--	ircMessage(conn2, channeladmins, tostring(message))
+	--end
 end
 
+--[[
 function displayStatus()
 	local playerCount = getPlayerCount()
 	local maxPlayers = getMaxPlayers()
@@ -113,3 +116,4 @@ function displayStatus()
 		ircMessage(conn, pubchannel2, output)
 	end
 end
+]]--

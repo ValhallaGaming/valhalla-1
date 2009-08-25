@@ -1,3 +1,31 @@
+-- ////////////////////////////////////
+-- //			MYSQL				 //
+-- ////////////////////////////////////		
+sqlUsername = exports.mysql:getMySQLUsername()
+sqlPassword = exports.mysql:getMySQLPassword()
+sqlDB = exports.mysql:getMySQLDBName()
+sqlHost = exports.mysql:getMySQLHost()
+sqlPort = exports.mysql:getMySQLPort()
+
+handler = mysql_connect(sqlHost, sqlUsername, sqlPassword, sqlDB, sqlPort)
+
+function checkMySQL()
+	if not (mysql_ping(handler)) then
+		handler = mysql_connect(sqlHost, sqlUsername, sqlPassword, sqlDB, sqlPort)
+	end
+end
+setTimer(checkMySQL, 300000, 0)
+
+function closeMySQL()
+	if (handler) then
+		mysql_close(handler)
+	end
+end
+addEventHandler("onResourceStop", getResourceRootElement(getThisResource()), closeMySQL)
+-- ////////////////////////////////////
+-- //			MYSQL END			 //
+-- ////////////////////////////////////
+
 function doesPlayerHaveSpaceForItem(thePlayer)
 	local items = getElementData(thePlayer, "items")
 	

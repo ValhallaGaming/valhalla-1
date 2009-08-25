@@ -95,23 +95,38 @@ end
 addEvent("friskTakePlayerWeapon", true)
 addEventHandler("friskTakePlayerWeapon", getRootElement(), friskTakePlayerWeapon)
 
+function toggleCuffs(cuffed, player)
+	if (cuffed) then
+		toggleControl(player, "fire", false)
+		toggleControl(player, "sprint", false)
+		toggleControl(player, "jump", false)
+		toggleControl(player, "next_weapon", false)
+		toggleControl(player, "previous_weapon", false)
+		toggleControl(player, "accelerate", false)
+		toggleControl(player, "brake_reverse", false)
+		toggleControl(player, "aim_weapon", false)
+	else
+		toggleControl(player, "fire", true)
+		toggleControl(player, "sprint", true)
+		toggleControl(player, "jump", true)
+		toggleControl(player, "next_weapon", true)
+		toggleControl(player, "previous_weapon", true)
+		toggleControl(player, "accelerate", true)
+		toggleControl(player, "brake_reverse", true)
+		toggleControl(player, "aim_weapon", true)
+	end
+end
+
 -- RESTRAINING
 function restrainPlayer(player, restrainedObj)
 	local username = getPlayerName(source)
 	local targetPlayerName = getPlayerName(player)
 	local dbid = getElementData(source, "dbid")
 	
+	setTimer(toggleCuffs, 200, 1, true, player)
 	
 	outputChatBox("You have been restrained by " .. username .. ".", player)
 	outputChatBox("You are restraining " .. targetPlayerName .. ".", source)
-	toggleControl(player, "sprint", false)
-	toggleControl(player, "fire", false)
-	toggleControl(player, "jump", false)
-	toggleControl(player, "next_weapon", false)
-	toggleControl(player, "previous_weapon", false)
-	toggleControl(player, "accelerate", false)
-	toggleControl(player, "brake_reverse", false)
-	toggleControl(player, "aim_weapon", false)
 	setElementData(player, "restrain", 1)
 	setElementData(player, "restrainedObj", restrainedObj)
 	setElementData(player, "restrainedBy", dbid, false)
@@ -132,14 +147,9 @@ function unrestrainPlayer(player, restrainedObj)
 	
 	outputChatBox("You have been unrestrained by " .. username .. ".", player)
 	outputChatBox("You are unrestraining " .. targetPlayerName .. ".", source)
-	toggleControl(player, "sprint", true)
-	toggleControl(player, "fire", true)
-	toggleControl(player, "jump", true)
-	toggleControl(player, "next_weapon", true)
-	toggleControl(player, "previous_weapon", true)
-	toggleControl(player, "accelerate", true)
-	toggleControl(player, "brake_reverse", true)
-	toggleControl(player, "aim_weapon", true)
+	
+	setTimer(toggleCuffs, 200, 1, false, player)
+	
 	setElementData(player, "restrain", 0)
 	removeElementData(player, "restrainedBy")
 	removeElementData(player, "restrainedObj")

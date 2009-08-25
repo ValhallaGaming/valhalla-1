@@ -39,7 +39,7 @@ function getNearbyRoadblocks(thePlayer, commandName)
 	for k, theObject in ipairs(exports.pool:getPoolElementsByType("object")) do
 		local model = getElementModel(theObject)
 		
-		if (model==981) or (model==1422) then
+		if (model==981) or (model==978) then
 			local x, y, z = getElementPosition(theObject)
 			local distance = getDistanceBetweenPoints3D(posX, posY, posZ, x, y, z)
 			if (distance<=10) then
@@ -142,7 +142,7 @@ function createSmallRoadblock(thePlayer, commandName)
 				rbcount = rbcount + 1
 				local rotation = getPedRotation(thePlayer)
 				local x, y, z = getElementPosition(thePlayer)
-				local object = createObject(1422, x, y, z-0.7, 0, 0, rotation)
+				local object = createObject(978, x, y, z-0.7, 0, 0, rotation)
 				
 				exports.pool:allocateElement(object)
 				

@@ -29,6 +29,7 @@ addEventHandler("onResourceStop", getResourceRootElement(getThisResource()), clo
 
 --[[
 x loadItems(obj) -- loads all items (caching)
+x sendItems(obj, to) -- sends the items to the player
 
 x giveItem(obj, itemID, itemValue, nosqlupdate) -- gives an item
 x takeItem(obj, itemID, itemValue = nil) -- takes the item, or if nil/false, the first one with the same item ID
@@ -43,14 +44,61 @@ x getItems(obj) -- returns an array of all items in { slot = { itemID, itemValue
 x getInventorySlots(obj) -- returns the number of available inventory slots
 ]]--
 
-saveditems = {}
+local saveditems = {}
+local subscribers = {}
 
 -- Free Items Table as neccessary
-addEventHandler( "onElementDestroy", getRootElement(), function() saveditems[source] = nil end )
-addEventHandler( "onPlayerQuit", getRootElement(), function() saveditems[source] = nil end )
+local function destroyInventory( )
+	saveditems[source] = nil
+	subscribers[source] = nil
+	
+	-- clear subscriptions
+	for key, value in pairs( subscribers ) do
+		if value[ source ] then
+			value[ source ] = nil
+		end
+	end
+end
+
+addEventHandler( "onElementDestroy", getRootElement(), destroyInventory )
+addEventHandler( "onPlayerQuit", getRootElement(), destroyInventory )
+
+-- send items to a player
+local function sendItems( element, to )
+	loadItems( element )
+	triggerClientEvent( to, "recieveItems", element, saveditems[ element ] )
+end
+
+-- subscribe/remove from inventory changes
+local function subscribeChanges( element )
+	sendItems( element, source )
+	subscribers[ element ][ source ] = true
+end
+
+addEvent( "subscribeToInventoryChanges", true )
+addEventHandler( "subscribeToInventoryChanges", getRootElement(), subscribeChanges )
+
+--
+
+local function unsubscribeChanges( element )
+	subscribers[ element ][ source ] = nil
+	triggerClientEvent( source, "recieveItems", element, nil )
+end
+
+addEvent( "unsubscribeFromInventoryChanges", true )
+addEventHandler( "unsubscribeFromInventoryChanges", getRootElement(), subscribeChanges )
+
+-- notify all subscribers on inventory change
+local function notify( element )
+	if subscribers[ element ] then
+		for subscriber in pairs( subscribers[ element ] ) do
+			sendItems( element, subscriber )
+		end
+	end
+end
 
 -- returns the 'owner' column content
-function getID(element)
+local function getID(element)
 	if getElementType(element) == "player" then -- Player
 		return getElementData(element, "dbid")
 	elseif getElementType(element) == "vehicle" then -- Vehicle
@@ -63,7 +111,7 @@ function getID(element)
 end
 
 -- returns the 'type' column content
-function getType(element)
+local function getType(element)
 	if getElementType(element) == "player" then -- Player
 		return 1
 	elseif getElementType(element) == "vehicle" then -- Vehicle
@@ -81,6 +129,7 @@ function loadItems( element )
 		local result = mysql_query( handler, "SELECT * FROM items WHERE type = " .. getType( element ) .. " AND owner = " .. getID( element ) )
 		if result then
 			saveditems[ element ] = {}
+			
 			local count = 0
 			repeat
 				row = mysql_fetch_assoc(result)
@@ -89,6 +138,13 @@ function loadItems( element )
 					saveditems[element][count] = { tonumber( row.itemID ), tonumber( row.itemValue ) or row.itemValue, tonumber( row.index ) }
 				end
 			until not row
+			
+			subscribers[ element ] = {}
+			if getElementType( element ) == "player" then
+				subscribers[ element ][ element ] = true
+				notify( element )
+			end
+			
 			return true
 		else
 			outputDebugString( mysql_error( handler ) )
@@ -98,6 +154,15 @@ function loadItems( element )
 		return true
 	end
 end
+
+-- load items for all logged in players on resource start
+function itemResourceStarted( )
+	if getID( source ) then
+		loadItems( source )
+	end
+end
+addEvent( "itemResourceStarted", true )
+addEventHandler( "itemResourceStarted", getRootElement( ), itemResourceStarted )
 
 -- gives an item to an element
 function giveItem( element, itemID, itemValue, itemIndex )
@@ -118,12 +183,9 @@ function giveItem( element, itemID, itemValue, itemIndex )
 		end
 	end
 	
-	if result then
-		saveditems[element][ #saveditems[element] + 1 ] = { itemID, itemValue, itemIndex }
-		return true
-	else
-		return false, ""
-	end
+	saveditems[element][ #saveditems[element] + 1 ] = { itemID, itemValue, itemIndex }
+	notify( element )
+	return true
 end
 
 -- takes an item from the element
@@ -166,14 +228,8 @@ function takeItemFromSlot(element, slot, nosqlupdate)
 		
 		if success then
 			-- shift following items from id to id-1 items
-			for i = slot, getInventorySlots(element) do
-				if saveditems[element][i+1] then
-					saveditems[element][i] = saveditems[element][i+1]
-					saveditems[element][i+1] = nil
-				else
-					saveditems[element][i] = nil
-				end
-			end
+			table.remove( saveditems[element], slot )
+			notify( element )
 			return true
 		end
 	end
@@ -220,7 +276,7 @@ function hasItem(element, itemID, itemValue)
 	loadItems( element )
 
 	for key, value in pairs(saveditems[element]) do
-		if value[1] == itemID and ( itemValue == -1 or itemValue == value[2] ) then
+		if value[1] == itemID and ( not itemValue or itemValue == value[2] ) then
 			return true, key, value[2], value[3]
 		end
 	end

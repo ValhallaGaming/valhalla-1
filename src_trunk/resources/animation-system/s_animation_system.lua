@@ -28,10 +28,11 @@ addCommandHandler("stopanim", stopAnimation, false, false)
 addCommandHandler("stopani", stopAnimation, false, false)
 
 function animationList(thePlayer)
-	outputChatBox("/piss /wank /slapass /fixcar /handsup /hailtaxi /scratch /fu /carchat", thePlayer, 255, 194, 14)
+	outputChatBox("/piss /wank /slapass /fixcar /handsup /hailtaxi /scratch /fu /carchat /tired", thePlayer, 255, 194, 14)
 	outputChatBox("/strip 1-2 /lightup /drink /beg /mourn /cheer 1-3 /dance 1-3 /crack 1-2", thePlayer, 255, 194, 14)
 	outputChatBox("/gsign 1-5 /puke /rap 1-3 /sit 1-3 /smoke 1-3 /smokelean /laugh /startrace", thePlayer, 255, 194, 14)
-	outputChatBox("/daps 1-2 /shove /bitchslap /shocked /dive /what /fall /fallfront", thePlayer, 255, 194, 14)
+	outputChatBox("/daps 1-2 /shove /bitchslap /shocked /dive /what /fall /fallfront /cpr /copaway", thePlayer, 255, 194, 14)
+	outputChatBox("/copcome /copleft /copstop /wait /think /shake /idle /lay /cry /aim /drag", thePlayer, 255, 194, 14)
 	outputChatBox("/stopanim or press the space bar to cancel animations.", thePlayer, 255, 194, 14)
 end
 addCommandHandler("animlist", animationList, false, false)
@@ -59,7 +60,6 @@ function cprAnimation(thePlayer)
 	
 	if (logged==1) then
 		exports.global:applyAnimation(thePlayer, "medic", "cpr", 8000, false, true, false)
-		setTimer(resetAnimation, 8000, 1, thePlayer)
 	end
 end
 addCommandHandler("cpr", cprAnimation, false, false)
@@ -70,7 +70,6 @@ function copawayAnimation(thePlayer)
 	
 	if (logged==1) then
 		exports.global:applyAnimation(thePlayer, "police", "coptraf_away", 1300, true, false, false)
-		setTimer(resetAnimation, 1300, 1, thePlayer)
 	end
 end
 addCommandHandler("copaway", copawayAnimation, false, false)
@@ -110,7 +109,7 @@ function pedWait(thePlayer)
 	local logged = getElementData(thePlayer, "loggedin")
 	
 	if (logged==1) then
-		exports.global:applyAnimation( thePlayer, "COP_AMBIENT", "Coplook_loop", 999999, true, false, false)
+		exports.global:applyAnimation( thePlayer, "COP_AMBIENT", "Coplook_loop", -1, true, false, false)
 	end
 end
 addCommandHandler ( "wait", pedWait, false, false )
@@ -120,7 +119,7 @@ function pedThink(thePlayer)
 	local logged = getElementData(thePlayer, "loggedin")
 	
 	if (logged==1) then
-		exports.global:applyAnimation( thePlayer, "COP_AMBIENT", "Coplook_think", 999999, true, false, false)
+		exports.global:applyAnimation( thePlayer, "COP_AMBIENT", "Coplook_think", -1, true, false, false)
 	end
 end
 addCommandHandler ( "think", pedThink, false, false )
@@ -140,7 +139,7 @@ function pedLean(thePlayer)
 	local logged = getElementData(thePlayer, "loggedin")
 	
 	if (logged==1) then
-		exports.global:applyAnimation( thePlayer, "GANGS", "leanIDLE", 999999, true, false, false)
+		exports.global:applyAnimation( thePlayer, "GANGS", "leanIDLE", -1, true, false, false)
 	end
 end
 addCommandHandler ( "lean", pedLean, false, false )
@@ -150,7 +149,7 @@ function idleAnimation(thePlayer)
 	local logged = getElementData(thePlayer, "loggedin")
 	
 	if (logged==1) then
-		exports.global:applyAnimation(thePlayer, "DEALER", "DEALER_IDLE_01", 999999, true, false, false)
+		exports.global:applyAnimation(thePlayer, "DEALER", "DEALER_IDLE_01", -1, true, false, false)
 	end
 end
 addCommandHandler("idle", idleAnimation, false, false)
@@ -160,7 +159,7 @@ function pedPiss(thePlayer)
 	local logged = getElementData(thePlayer, "loggedin")
 	
 	if (logged==1) then
-		exports.global:applyAnimation( thePlayer, "PAULNMAC", "Piss_loop", 99999, true, false, false)
+		exports.global:applyAnimation( thePlayer, "PAULNMAC", "Piss_loop", -1, true, false, false)
 	end
 end
 addCommandHandler ( "piss", pedPiss, false, false )
@@ -170,7 +169,7 @@ function pedWank(thePlayer)
 	local logged = getElementData(thePlayer, "loggedin")
 	
 	if (logged==1) then
-		exports.global:applyAnimation( thePlayer, "PAULNMAC", "wank_loop", 999999, true, false, false)
+		exports.global:applyAnimation( thePlayer, "PAULNMAC", "wank_loop", -1, true, false, false)
 	end
 end
 addCommandHandler ( "wank", pedWank, false, false )
@@ -181,7 +180,6 @@ function pedSlapAss(thePlayer)
 	
 	if (logged==1) then
 		exports.global:applyAnimation( thePlayer, "SWEET", "sweet_ass_slap", 2000, true, false, false)
-		setTimer(resetAnimation, 2000, 1, thePlayer)
 	end
 end
 addCommandHandler ( "slapass", pedSlapAss, false, false )
@@ -192,7 +190,6 @@ function pedCarFix(thePlayer)
 	
 	if (logged==1) then
 		exports.global:applyAnimation( thePlayer, "CAR", "Fixn_Car_loop", 8000, true, false, false)
-		setTimer(resetAnimation, 8000, 1, thePlayer)
 	end
 end
 addCommandHandler ( "fixcar", pedCarFix, false, false )
@@ -212,7 +209,7 @@ function pedTaxiHail(thePlayer)
 	local logged = getElementData(thePlayer, "loggedin")
 	
 	if (logged==1) then
-		exports.global:applyAnimation( thePlayer, "MISC", "Hiker_Pose", 999999, false, true, false)
+		exports.global:applyAnimation( thePlayer, "MISC", "Hiker_Pose", -1, false, true, false)
 	end
 end
 addCommandHandler ("hailtaxi", pedTaxiHail, false, false )
@@ -233,7 +230,6 @@ function pedFU(thePlayer)
 	
 	if (logged==1) then
 		exports.global:applyAnimation( thePlayer, "RIOT", "RIOT_FUKU", 800, false, true, false)
-		setTimer(resetAnimation, 800, 1, thePlayer)
 	end
 end
 addCommandHandler ( "fu", pedFU, false, false )
@@ -244,12 +240,10 @@ function pedStrip( thePlayer, cmd, arg )
 	arg = tonumber(arg)
 	
 	if (logged==1) then
-		if arg == 1 then
-			exports.global:applyAnimation( thePlayer, "STRIP", "strip_D", 999999, false, true, false)
-		elseif arg == 2 then
-			exports.global:applyAnimation( thePlayer, "STRIP", "STR_Loop_C", 999999, false, true, false)
+		if arg == 2 then
+			exports.global:applyAnimation( thePlayer, "STRIP", "STR_Loop_C", -1, false, true, false)
 		else
-			exports.global:applyAnimation( thePlayer, "STRIP", "strip_D", 999999, false, true, false)
+			exports.global:applyAnimation( thePlayer, "STRIP", "strip_D", -1, false, true, false)
 		end
 	end
 end
@@ -261,7 +255,6 @@ function pedLightup (thePlayer)
 	
 	if (logged==1) then
 		exports.global:applyAnimation( thePlayer, "SMOKING", "M_smk_in", 4000, true, true, false)
-		setTimer(resetAnimation, 4000, 1, thePlayer)
 	end
 end
 addCommandHandler ( "lightup", pedLightup, false, false )
@@ -272,7 +265,6 @@ function pedDrink( thePlayer )
 	
 	if (logged==1) then
 		exports.global:applyAnimation( thePlayer, "BAR", "dnk_stndM_loop", 2300, false, false, false)
-		setTimer(resetAnimation, 2300, 1, thePlayer)
 	end
 end
 addCommandHandler ( "drink", pedDrink, false, false )
@@ -283,12 +275,10 @@ function pedLay( thePlayer, cmd, arg )
 	arg = tonumber(arg)
 	
 	if (logged==1) then
-		if arg == 1 then
-			exports.global:applyAnimation( thePlayer, "BEACH", "Lay_Bac_Loop", 999999, true, false, false)
-		elseif arg == 2 then
-			exports.global:applyAnimation( thePlayer, "BEACH", "sitnwait_Loop_W", 999999, true, false, false)
+		if arg == 2 then
+			exports.global:applyAnimation( thePlayer, "BEACH", "sitnwait_Loop_W", -1, true, false, false)
 		else
-			exports.global:applyAnimation( thePlayer, "BEACH", "Lay_Bac_Loop", 999999, true, false, false)
+			exports.global:applyAnimation( thePlayer, "BEACH", "Lay_Bac_Loop", -1, true, false, false)
 		end
 	end
 end
@@ -300,7 +290,6 @@ function begAnimation( thePlayer )
 	
 	if (logged==1) then
 		exports.global:applyAnimation( thePlayer, "SHOP", "SHP_Rob_React", 4000, true, false, false)
-		setTimer(resetAnimation, 4000, 1, thePlayer)
 	end
 end
 addCommandHandler ( "beg", begAnimation, false, false )
@@ -310,7 +299,7 @@ function pedMourn( thePlayer )
 	local logged = getElementData(thePlayer, "loggedin")
 	
 	if (logged==1) then
-		exports.global:applyAnimation( thePlayer, "GRAVEYARD", "mrnM_loop", 999999, true, false, false)
+		exports.global:applyAnimation( thePlayer, "GRAVEYARD", "mrnM_loop", -1, true, false, false)
 	end
 end
 addCommandHandler ( "mourn", pedMourn, false, false )
@@ -320,7 +309,7 @@ function pedCry( thePlayer )
 	local logged = getElementData(thePlayer, "loggedin")
 	
 	if (logged==1) then
-		exports.global:applyAnimation( thePlayer, "GRAVEYARD", "mrnF_loop", 999999, true, false, false)
+		exports.global:applyAnimation( thePlayer, "GRAVEYARD", "mrnF_loop", -1, true, false, false)
 	end
 end
 addCommandHandler ( "cry", pedCry, false, false )
@@ -331,14 +320,12 @@ function pedCheer(thePlayer, cmd, arg)
 	arg = tonumber(arg)
 	
 	if (logged==1) then
-		if arg == 1 then
-			exports.global:applyAnimation( thePlayer, "STRIP", "PUN_HOLLER", 999999, true, false, false)
-		elseif arg == 2 then
-			exports.global:applyAnimation( thePlayer, "OTB", "wtchrace_win", 999999, true, false, false)
+		if arg == 2 then
+			exports.global:applyAnimation( thePlayer, "OTB", "wtchrace_win", -1, true, false, false)
 		elseif arg == 3 then
-			exports.global:applyAnimation( thePlayer, "RIOT", "RIOT_shout", 999999, true, false, false)
+			exports.global:applyAnimation( thePlayer, "RIOT", "RIOT_shout", -1, true, false, false)
 		else
-			exports.global:applyAnimation( thePlayer, "STRIP", "PUN_HOLLER", 999999, true, false, false)
+			exports.global:applyAnimation( thePlayer, "STRIP", "PUN_HOLLER", -1, true, false, false)
 		end
 	end
 end
@@ -350,14 +337,12 @@ function danceAnimation(thePlayer, cmd, arg)
 	arg = tonumber(arg)
 	
 	if (logged==1) then
-		if arg == 1 then
-			exports.global:applyAnimation( thePlayer, "DANCING", "DAN_Right_A", 999999, true, false, false)
-		elseif arg == 2 then
-			exports.global:applyAnimation( thePlayer, "DANCING", "DAN_Down_A", 999999, true, false, false)
+		if arg == 2 then
+			exports.global:applyAnimation( thePlayer, "DANCING", "DAN_Down_A", -1, true, false, false)
 		elseif arg == 3 then
-			exports.global:applyAnimation( thePlayer, "DANCING", "dnce_M_d", 999999, true, false, false)
+			exports.global:applyAnimation( thePlayer, "DANCING", "dnce_M_d", -1, true, false, false)
 		else
-			exports.global:applyAnimation( thePlayer, "DANCING", "DAN_Right_A", 999999, true, false, false)
+			exports.global:applyAnimation( thePlayer, "DANCING", "DAN_Right_A", -1, true, false, false)
 		end
 	end
 end
@@ -368,7 +353,7 @@ function crackAnimation(thePlayer)
 	local logged = getElementData(thePlayer, "loggedin")
 	
 	if (logged==1) then
-		exports.global:applyAnimation( thePlayer, "CRACK", "crckidle2", 999999, true, false, false)
+		exports.global:applyAnimation( thePlayer, "CRACK", "crckidle2", -1, true, false, false)
 	end
 end
 addCommandHandler ( "crack", crackAnimation, false, false )
@@ -379,9 +364,7 @@ function gsignAnimation(thePlayer, cmd, arg)
 	arg = tonumber(arg)
 	
 	if (logged==1) then
-		if arg == 1 then
-			exports.global:applyAnimation(thePlayer, "GHANDS", "gsign1", 4000, true, false, false)
-		elseif arg == 2 then
+		if arg == 2 then
 			exports.global:applyAnimation(thePlayer, "GHANDS", "gsign2", 4000, true, false, false)
 		elseif arg == 3 then
 			exports.global:applyAnimation(thePlayer, "GHANDS", "gsign3", 4000, true, false, false)
@@ -392,7 +375,6 @@ function gsignAnimation(thePlayer, cmd, arg)
 		else
 			exports.global:applyAnimation(thePlayer, "GHANDS", "gsign1", 4000, true, false, false)
 		end
-		setTimer(resetAnimation, 4000, 1, thePlayer)
 	end
 end
 addCommandHandler("gsign", gsignAnimation, false, false)
@@ -403,7 +385,6 @@ function pukeAnimation(thePlayer)
 	
 	if (logged==1) then
 		exports.global:applyAnimation(thePlayer, "FOOD", "EAT_Vomit_P", 8000, true, false, false)
-		setTimer(resetAnimation, 8000, 1, thePlayer)
 	end
 end
 addCommandHandler("puke", pukeAnimation, false, false)
@@ -414,14 +395,12 @@ function rapAnimation(thePlayer, cmd, arg)
 	arg = tonumber(arg)
 	
 	if (logged==1) then
-		if arg == 1 then
-			exports.global:applyAnimation( thePlayer, "LOWRIDER", "RAP_A_Loop", 999999, true, false, false)
-		elseif arg == 2 then
-			exports.global:applyAnimation( thePlayer, "LOWRIDER", "RAP_B_Loop", 999999, true, false, false)
+		if arg == 2 then
+			exports.global:applyAnimation( thePlayer, "LOWRIDER", "RAP_B_Loop", -1, true, false, false)
 		elseif arg == 3 then
-			exports.global:applyAnimation( thePlayer, "LOWRIDER", "RAP_C_Loop", 999999, true, false, false)
+			exports.global:applyAnimation( thePlayer, "LOWRIDER", "RAP_C_Loop", -1, true, false, false)
 		else
-			exports.global:applyAnimation( thePlayer, "LOWRIDER", "RAP_A_Loop", 999999, true, false, false)
+			exports.global:applyAnimation( thePlayer, "LOWRIDER", "RAP_A_Loop", -1, true, false, false)
 		end
 	end
 end
@@ -432,7 +411,7 @@ function aimAnimation(thePlayer)
 	local logged = getElementData(thePlayer, "loggedin")
 	
 	if (logged==1) then
-		exports.global:applyAnimation(thePlayer, "SHOP", "ROB_Loop_Threat", 999999, false, true, false)
+		exports.global:applyAnimation(thePlayer, "SHOP", "ROB_Loop_Threat", -1, false, true, false)
 	end
 end
 addCommandHandler("aim", aimAnimation, false, false)
@@ -443,14 +422,12 @@ function sitAnimation(thePlayer, cmd, arg)
 	arg = tonumber(arg)
 	
 	if (logged==1) then
-		if arg == 1 then
-			exports.global:applyAnimation( thePlayer, "ped", "SEAT_idle", 999999, true, false, false)
-		elseif arg == 2 then
-			exports.global:applyAnimation( thePlayer, "FOOD", "FF_Sit_Look", 999999, true, false, false)
+		if arg == 2 then
+			exports.global:applyAnimation( thePlayer, "FOOD", "FF_Sit_Look", -1, true, false, false)
 		elseif arg == 3 then
-			exports.global:applyAnimation( thePlayer, "Attractors", "Stepsit_loop", 999999, true, false, false)
+			exports.global:applyAnimation( thePlayer, "Attractors", "Stepsit_loop", -1, true, false, false)
 		else
-			exports.global:applyAnimation( thePlayer, "ped", "SEAT_idle", 999999, true, false, false)
+			exports.global:applyAnimation( thePlayer, "ped", "SEAT_idle", -1, true, false, false)
 		end
 	end
 end
@@ -462,14 +439,12 @@ function smokeAnimation(thePlayer, cmd, arg)
 	arg = tonumber(arg)
 	
 	if (logged==1) then
-		if arg == 1 then
-			exports.global:applyAnimation( thePlayer, "GANGS", "smkcig_prtl", 999999, true, false, false)
-		elseif arg == 2 then
-			exports.global:applyAnimation( thePlayer, "SMOKING", "M_smkstnd_loop", 999999, true, false, false)
+		if arg == 2 then
+			exports.global:applyAnimation( thePlayer, "SMOKING", "M_smkstnd_loop", -1, true, false, false)
 		elseif arg == 3 then
-			exports.global:applyAnimation( thePlayer, "LOWRIDER", "M_smkstnd_loop", 999999, true, false, false)
+			exports.global:applyAnimation( thePlayer, "LOWRIDER", "M_smkstnd_loop", -1, true, false, false)
 		else
-			exports.global:applyAnimation( thePlayer, "GANGS", "smkcig_prtl", 999999, true, false, false)
+			exports.global:applyAnimation( thePlayer, "GANGS", "smkcig_prtl", -1, true, false, false)
 		end
 	end
 end
@@ -480,7 +455,7 @@ function smokeleanAnimation(thePlayer)
 	local logged = getElementData(thePlayer, "loggedin")
 	
 	if (logged==1) then
-		exports.global:applyAnimation(thePlayer, "LOWRIDER", "M_smklean_loop", 999999, true, false, false)
+		exports.global:applyAnimation(thePlayer, "LOWRIDER", "M_smklean_loop", -1, true, false, false)
 	end
 end
 addCommandHandler("smokelean", smokeleanAnimation, false, false)
@@ -491,7 +466,6 @@ function smokedragAnimation(thePlayer)
 	
 	if (logged==1) then
 		exports.global:applyAnimation(thePlayer, "SMOKING", "M_smk_drag", 4000, true, false, false)
-		setTimer(resetAnimation, 4000, 1, thePlayer)
 	end
 end
 addCommandHandler("drag", smokedragAnimation, false, false)
@@ -501,7 +475,7 @@ function laughAnimation(thePlayer)
 	local logged = getElementData(thePlayer, "loggedin")
 	
 	if (logged==1) then
-		exports.global:applyAnimation(thePlayer, "RAPPING", "Laugh_01", 999999, true, false, false)
+		exports.global:applyAnimation(thePlayer, "RAPPING", "Laugh_01", -1, true, false, false)
 	end
 end
 addCommandHandler("laugh", laughAnimation, false, false)
@@ -511,8 +485,7 @@ function startraceAnimation(thePlayer)
 	local logged = getElementData(thePlayer, "loggedin")
 	
 	if (logged==1) then
-		exports.global:applyAnimation(thePlayer, "CAR", "flag_drop", 999999, true, false, false)
-		setTimer(resetAnimation, 4200, 1, thePlayer)
+		exports.global:applyAnimation(thePlayer, "CAR", "flag_drop", 4200, true, false, false)
 	end
 end
 addCommandHandler("startrace", startraceAnimation, false, false)
@@ -522,7 +495,7 @@ function carchatAnimation(thePlayer)
 	local logged = getElementData(thePlayer, "loggedin")
 	
 	if (logged==1) then
-		exports.global:applyAnimation(thePlayer, "CAR_CHAT", "car_talkm_loop", 999999, true, false, false)
+		exports.global:applyAnimation(thePlayer, "CAR_CHAT", "car_talkm_loop", -1, true, false, false)
 	end
 end
 addCommandHandler("carchat", carchatAnimation, false, false)
@@ -532,7 +505,7 @@ function tiredAnimation(thePlayer)
 	local logged = getElementData(thePlayer, "loggedin")
 	
 	if (logged==1) then
-		exports.global:applyAnimation(thePlayer, "FAT", "idle_tired", false, 999999, true, false, false)
+		exports.global:applyAnimation(thePlayer, "FAT", "idle_tired", false, -1, true, false, false)
 	end
 end
 addCommandHandler("tired", tiredAnimation, false, false)
@@ -543,12 +516,10 @@ function handshakeAnimation(thePlayer, cmd, arg)
 	arg = tonumber(arg)
 	
 	if (logged==1) then
-		if arg == 1 then
-			exports.global:applyAnimation( thePlayer, "GANGS", "hndshkfa", 999999, true, false, false)
-		elseif arg == 2 then
-			exports.global:applyAnimation( thePlayer, "GANGS", "hndshkca", 999999, true, false, false)
+		if arg == 2 then
+			exports.global:applyAnimation( thePlayer, "GANGS", "hndshkca", -1, true, false, false)
 		else
-			exports.global:applyAnimation( thePlayer, "GANGS", "hndshkfa", 999999, true, false, false)
+			exports.global:applyAnimation( thePlayer, "GANGS", "hndshkfa", -1, true, false, false)
 		end
 	end
 end
@@ -559,7 +530,7 @@ function shoveAnimation(thePlayer)
 	local logged = getElementData(thePlayer, "loggedin")
 	
 	if (logged==1) then
-		exports.global:applyAnimation(thePlayer, "GANGS", "shake_carSH", 999999, true, false, false)
+		exports.global:applyAnimation(thePlayer, "GANGS", "shake_carSH", -1, true, false, false)
 	end
 end
 addCommandHandler("shove", shoveAnimation, false, false)
@@ -569,7 +540,7 @@ function bitchslapAnimation(thePlayer)
 	local logged = getElementData(thePlayer, "loggedin")
 	
 	if (logged==1) then
-		exports.global:applyAnimation(thePlayer, "MISC", "bitchslap", 999999, true, false, false)
+		exports.global:applyAnimation(thePlayer, "MISC", "bitchslap", -1, true, false, false)
 	end
 end
 addCommandHandler("bitchslap", bitchslapAnimation, false, false)
@@ -579,7 +550,7 @@ function shockedAnimation(thePlayer)
 	local logged = getElementData(thePlayer, "loggedin")
 	
 	if (logged==1) then
-		exports.global:applyAnimation(thePlayer, "ON_LOOKERS", "panic_loop", 999999, true, false, false)
+		exports.global:applyAnimation(thePlayer, "ON_LOOKERS", "panic_loop", -1, true, false, false)
 	end
 end
 addCommandHandler("shocked", shockedAnimation, false, false)
@@ -589,7 +560,7 @@ function diveAnimation(thePlayer)
 	local logged = getElementData(thePlayer, "loggedin")
 	
 	if (logged==1) then
-		exports.global:applyAnimation(thePlayer, "ped", "EV_dive", 999999, false, true, false)
+		exports.global:applyAnimation(thePlayer, "ped", "EV_dive", -1, false, true, false)
 	end
 end
 addCommandHandler("dive", diveAnimation, false, false)
@@ -599,7 +570,7 @@ function whatAnimation(thePlayer)
 	local logged = getElementData(thePlayer, "loggedin")
 	
 	if (logged==1) then
-		exports.global:applyAnimation( thePlayer, "RIOT", "RIOT_ANGRY", 999999, true, false, false)
+		exports.global:applyAnimation( thePlayer, "RIOT", "RIOT_ANGRY", -1, true, false, false)
 	end
 end
 addCommandHandler ( "what", whatAnimation, false, false )
@@ -609,7 +580,7 @@ function fallfrontAnimation(thePlayer)
 	local logged = getElementData(thePlayer, "loggedin")
 	
 	if (logged==1) then
-		exports.global:applyAnimation( thePlayer, "ped", "FLOOR_hit_f", 999999, false, false, false)
+		exports.global:applyAnimation( thePlayer, "ped", "FLOOR_hit_f", -1, false, false, false)
 	end
 end
 addCommandHandler ( "fallfront", fallfrontAnimation, false, false )
@@ -619,7 +590,7 @@ function fallAnimation(thePlayer)
 	local logged = getElementData(thePlayer, "loggedin")
 	
 	if (logged==1) then
-		exports.global:applyAnimation( thePlayer, "ped", "FLOOR_hit", 999999, false, false, false)
+		exports.global:applyAnimation( thePlayer, "ped", "FLOOR_hit", -1, false, false, false)
 	end
 end
 addCommandHandler ( "fall", fallAnimation, false, false )

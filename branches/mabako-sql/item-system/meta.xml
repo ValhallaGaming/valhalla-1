@@ -30,8 +30,6 @@
 	<script src="c_drug_system.lua" type="client" />
 	<script src="s_drug_system.lua" type="server" />
 	
-	<script src="c_world_text.lua" type="client" />
-
 	<script src="c_books.lua" type="client" />
 	
 	<script src="c_safes_system.lua" type="client" />

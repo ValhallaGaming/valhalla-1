@@ -306,6 +306,7 @@ end
 function resetDrug6Effect()
 	drug6effect = false
 	setGameSpeed(1)
+	removeEventHandler("onClientPlayerDamage", getLocalPlayer(), cancelEvent)
 end
 
 function resetAllDrugs()

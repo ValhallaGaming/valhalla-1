@@ -95,7 +95,7 @@ local function onRender ( )
 		else
 			if velZ >= FALL_VELOCITY then --they're going to have to fall down at this speed
 				removeParachute(localPlayer,"land")
-				exports.global:applyAnimation(localPlayer, "PARACHUTE", "FALL_skyDive_DIE", true, 1.0, 1.0, 0.0, false, true)
+				exports.global:applyAnimation(localPlayer, "PARACHUTE", "FALL_skyDive_DIE", t(3000), false, true, true)
 			else
 				removeParachute(localPlayer,"land")
 				setPedNewAnimation ( localPlayer, nil, "PARACHUTE", "PARA_Land", t(3000), false, true, false )
@@ -160,7 +160,7 @@ end
 function onWasted()
 	removeParachute(localPlayer,"water")
 	exports.global:removeAnimation(localPlayer)
-	exports.global:applyAnimation(localPlayer, "PARACHUTE", "FALL_skyDive_DIE", true, 1.0, 2.0, 0.0, false, true)
+	exports.global:applyAnimation(localPlayer, "PARACHUTE", "FALL_skyDive_DIE", t(3000), false, true, true)
 	removeEventHandler ( "onClientPlayerWasted", localPlayer, onWasted )
 end
 
@@ -253,7 +253,7 @@ function setPedNewAnimation ( ped, elementData, animgroup, animname, time, ... )
 		if elementData ~= nil then
 			setElementData ( ped, elementData, animname )
 		end
-		return exports.global:applyAnimation ( ped, animgroup, animname, true, 1.0, 1.0, 0.0, ...)
+		return exports.global:applyAnimation ( ped, animgroup, animname, time, ...)
 	end
 	return true
 end

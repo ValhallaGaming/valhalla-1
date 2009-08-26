@@ -14,18 +14,23 @@ local fadeBackFrames = 50
 local executeCounter = 0
 local recentlyMoved = false
 local Xdiff,Ydiff
+local radar = true
 
 function toggleCockpitView ()
-    if (not isEnabled) then
-        isEnabled = true
-        addEventHandler ("onClientPreRender", root, updateCamera)
-        addEventHandler ("onClientCursorMove",root, freecamMouse)
-    else --reset view
-        isEnabled = false
-        setCameraTarget (localPlayer, localPlayer)
-        removeEventHandler ("onClientPreRender", root, updateCamera)
-        removeEventHandler ("onClientCursorMove", root, freecamMouse)
-    end
+	if (not isEnabled) then
+		isEnabled = true
+		addEventHandler ("onClientPreRender", root, updateCamera)
+		addEventHandler ("onClientCursorMove",root, freecamMouse)
+		showPlayerHudComponent("radar", false)
+		radar = false
+	else --reset view
+		isEnabled = false
+		setCameraTarget (localPlayer, localPlayer)
+		removeEventHandler ("onClientPreRender", root, updateCamera)
+		removeEventHandler ("onClientCursorMove", root, freecamMouse)
+		showPlayerHudComponent("radar", true)
+		radar = true
+	end
 end
 
 addCommandHandler("fp", toggleCockpitView)
@@ -257,3 +262,9 @@ addEventHandler ("onClientRender", getRootElement(),
  end
 )
 ]]
+
+function toggleRadar()
+	radar = not radar
+	showPlayerHudComponent("radar", radar)
+end
+addCommandHandler( "toggleradar", toggleRadar)

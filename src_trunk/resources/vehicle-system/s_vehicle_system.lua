@@ -555,10 +555,6 @@ function vehicleRespawn(exploded)
 	local job = getElementData(source, "job")
 	local owner = getElementData(source, "owner")
 	
-	if (owner>0) and (faction==-1) then -- an owned vehicle
-		setVehicleLocked(source, true)
-	end
-	
 	if (job>0) then
 		toggleVehicleRespawn(source, true)
 		setVehicleRespawnDelay(source, 60000)

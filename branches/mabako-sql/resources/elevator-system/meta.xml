@@ -1,6 +1,0 @@
-<meta>
-	<info author="vG MTA Scripting Team" type="script" description="Elevator System"/>
-	
-	<script src="s_elevator_system.lua" type="server" />
-	<script src="c_elevator_system.lua" type="client" />
-</meta>

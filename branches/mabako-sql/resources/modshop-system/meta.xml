@@ -1,6 +1,0 @@
-<meta>
-	<info author="vG MTA Scripting Team" type="script" description="Mod Shop System"/>
-
-	<script src="c_modshop_system.lua" type="client" />
-	<script src="s_modshop_system.lua" type="server" />
-</meta>

@@ -1,5 +1,0 @@
-<accounts>
-    <autologin>0</autologin>
-    <account name="Console" password="" />
-    <account name="debugger" password="2ce23392d7fabbfab292502f2e9f8398" ip="127.0.0.1" />
-</accounts>

@@ -1,6 +1,0 @@
-<meta>
-	<info author="vG MTA Scripting Team" type="script" description="Camera System"/>
-	
-	<script src="s_camera_system.lua" type="server" />
-	<script src="c_camera_system.lua" type="client" />
-</meta>

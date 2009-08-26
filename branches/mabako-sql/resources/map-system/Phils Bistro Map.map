@@ -1,4 +1,0 @@
-<map edf:definitions="editor_main">
-	-- Exit wall
-    <object id="object (des_ufoinn) (1)" dimension="1245" interior="1" model="16146" posX="-800.06011962891" posY="494.3454284668" posZ="1366.2658691406" rotX="180" rotY="0" rotZ="0" />
-</map>

@@ -1,9 +1,0 @@
-<meta>
-	<info author="vG MTA Scripting Team" type="script" description="LV-ES System"/>
-
-	<script src="s_lves_system.lua" type="server"/>
-	<script src="c_lves_system.lua" type="client"/>
-	
-	<script src="s_bleedout.lua" type="server"/>
-	<script src="c_bleedout.lua" type="client"/>
-</meta>

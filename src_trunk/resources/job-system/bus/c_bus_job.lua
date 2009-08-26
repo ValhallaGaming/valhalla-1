@@ -2,6 +2,7 @@ local line, route, m_number, curCpType = nil
 
 local busMarker, busNextMarker = nil
 local busBlip, busNextBlip = nil
+local busStopColShape = nil
 
 local bus = { [431]=true, [437]=true }
 
@@ -62,9 +63,17 @@ function startBusJob()
 				local x, y, z = 1732, -1855, 13 -- Depot start point
 				busBlip = createBlip(x, y, z, 0, 3, 255, 200, 0, 255)
 				busMarker = createMarker(x, y, z, "checkpoint", 4, 255, 200, 0, 150) -- start marker.
+				busStopColShape = createColSphere(0, 0, 0, 5)
 				
 				addEventHandler("onClientMarkerHit", busMarker, updateBusCheckpointCheck)
 				addEventHandler("onClientMarkerLeave", busMarker, checkWaitAtStop)
+				addEventHandler("onClientColShapeLeave", busStopColShape,
+					function(element)
+						if getElementType(element) == "vehicle" and bus[getElementModel(element)] then
+							setVehicleLocked(vehicle, true)
+						end
+					end
+				)
 				
 				local nx, ny, nz = route.points[1][1], route.points[1][2], route.points[1][3]
 				if (route.points[1][4]==true) then
@@ -77,6 +86,8 @@ function startBusJob()
 				
 				m_number = 0
 				triggerServerEvent("payBusDriver", getLocalPlayer(), line, 0)
+				
+				setVehicleLocked(vehicle, true)
 				
 				outputChatBox("#FF9933Drive around the bus #FFCC00route #FF9933stopping at the #A00101stops #FF9933along the way.", 255, 194, 14, true)
 				outputChatBox("#FF9933You will be paid for each stop you make and for people you pick up.", 255, 194, 14, true)
@@ -131,6 +142,7 @@ function updateBusCheckpoint()
 			curCpType = 3
 			setMarkerColor(busMarker, 255, 0, 0, 150)
 			setBlipColor(busBlip, 255, 0, 0, 255)
+			setElementPosition(busStopColShape, x, y, z)
 		else -- it is just a route.
 			curCpType = 2
 			setMarkerColor(busMarker, 255, 200, 0, 150)
@@ -158,7 +170,7 @@ function updateBusCheckpoint()
 			curCpType = 1
 			setMarkerColor(busMarker, 255, 0, 0, 150)
 			setBlipColor(busBlip, 255, 0, 0, 255)
-			
+			setElementPosition(busStopColShape, x, y, z)
 		else -- it is just a route.
 			curCpType = 0
 			setMarkerColor(busMarker, 255, 200, 0, 150)
@@ -209,6 +221,11 @@ function endOfTheLine()
 		busNextBlip = nil
 		busNextMarker = nil
 		
+		if busStopColShape then
+			destroyElement(busStopColShape)
+			busStopColShape = nil
+		end
+		
 		local x, y, z = 1732, -1855, 13 -- Depot start point
 		setElementPosition(busMarker, x, y, z)
 		setElementPosition(busBlip, x, y, z)
@@ -225,6 +242,7 @@ function endOfTheLine()
 			busMarker = nil
 		end
 		triggerServerEvent("payBusDriver", getLocalPlayer(), line, -2)
+		setVehicleLocked(vehicle, false)
 		outputChatBox("#FF9933End of the Line. Use /startbus to begin the route again.", 0, 255, 0, true )
 	end
 end
@@ -252,3 +270,39 @@ function enterBus ( thePlayer, seat, jacked )
 	end
 end
 addEventHandler("onClientVehicleEnter", getRootElement(), enterBus)
+
+function startEnterBus(thePlayer, seat)
+	if thePlayer == getLocalPlayer() then
+		if bus[getElementModel(source)] then
+			local driver = getVehicleOccupant(source)
+			if seat ~= 0 and driver then --check if its a passenger and theres a driver
+				if busStopColShape and isElementWithinColShape(driver, busStopColShape) and getElementVelocity(source) < 0.01 then -- check if the bus is at the busstop and stand
+					setVehicleLocked(source, false)
+				end
+			else
+				if driver then -- if someone try to jack the driver stop him
+					setVehicleLocked(source, true)
+				else
+					setVehicleLocked(source, false)
+				end
+			end
+		end
+	end
+end
+addEventHandler("onClientVehicleStartEnter", getRootElement(), startEnterBus)
+
+function startExitBus(thePlayer)
+	if thePlayer == getLocalPlayer() then
+		if bus[getElementModel(source)] then
+			local driver = getVehicleOccupant(source)
+			if seat ~= 0 then --check if its a passenger
+				if busStopColShape and isElementWithinColShape(driver, busStopColShape) and getElementVelocity(source) < 0.01 then -- check if the bus is at the busstop and stand
+					setVehicleLocked(source, false)
+				end
+			elseif getElementVelocity(source) < 0.01 then
+				setVehicleLocked(source, false)
+			end
+		end
+	end
+end
+addEventHandler("onClientVehicleStartExit", getRootElement(), startExitBus)

@@ -1,3 +1,5 @@
+local lockTimer = nil
+
 function giveTruckingMoney(wage)
 	exports.global:givePlayerSafeMoney(source, wage)
 end
@@ -21,6 +23,18 @@ function checkTruckingEnterVehicle(thePlayer, seat)
 	end
 end
 addEventHandler("onVehicleEnter", getRootElement(), checkTruckingEnterVehicle)
+
+function startEnterTruck(thePlayer, seat, jacked)
+	if seat == 0 and truck[getElementModel(source)] and getElementData(thePlayer,"job") == 1 and jacked then -- if someone try to jack the driver stop him
+		if isTimer(lockTimer) then
+			killTimer(lockTimer)
+			lockTimer = nil
+		end
+		setVehicleLocked(source, true)
+		lockTimer = setTimer(setVehicleLocked, 5000, 1, source, false)
+	end
+end
+addEventHandler("onVehicleStartEnter", getRootElement(), startEnterTruck)
 
 function saveDeliveryProgress(runs, wage)
 	mysql_free_result(mysql_query(handler, "UPDATE characters SET truckingruns=" .. tonumber(runs) .. ", truckingwage=" .. tonumber(wage) .. "  WHERE id=" .. getElementData(source, "dbid")))

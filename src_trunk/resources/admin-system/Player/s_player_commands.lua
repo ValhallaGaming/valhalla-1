@@ -2173,3 +2173,40 @@ function findAltChars(thePlayer, commandName, targetPlayerName)
 	end
 end
 addCommandHandler( "findalts", findAltChars )
+
+--give player license
+function givePlayerLicense(thePlayer, commandName, targetPlayerName, licenseType)
+	if exports.global:isPlayerAdmin(thePlayer) then
+		if not targetPlayerName or not (licenseType and (licenseType == "1" or licenseType == "2")) then
+			outputChatBox("SYNTAX: /" .. commandName .. " [Partial Player Nick] [Type]", thePlayer, 255, 194, 14)
+			outputChatBox("Type 1 = Driver", thePlayer, 255, 194, 14)
+			outputChatBox("Type 2 = Weapon", thePlayer, 255, 194, 14)
+		else
+			local targetPlayer = exports.global:findPlayerByPartialNick(targetPlayerName)
+			
+			if not targetPlayer then
+				outputChatBox("Player not found or multiple were found.", thePlayer, 255, 0, 0)
+			else
+				targetPlayerName = getPlayerName(targetPlayer)
+				local logged = getElementData(targetPlayer, "loggedin")
+				
+				if (logged==0) then
+					outputChatBox("Player is not logged in.", thePlayer, 255, 0, 0)
+				elseif (logged==1) then
+					local licenseTypeOutput = licenseType == "1" and "driver" or "weapon"
+					licenseType = licenseType == "1" and "car" or "gun"
+					if getElementData(targetPlayer, "license."..licenseType) == 1 then
+						outputChatBox(getPlayerName(thePlayer).." has already a "..licenseTypeOutput.." license.", thePlayer, 255, 255, 0)
+					else
+						setElementData(targetPlayer, "license."..licenseType, 1)
+						local query = mysql_query(handler, "UPDATE characters SET "..licenseType.."_license='1' WHERE charactername='"..mysql_escape_string(handler, targetPlayerName).."' LIMIT 1")
+						mysql_free_result(query)
+						outputChatBox("Player "..targetPlayerName.." now has a "..licenseTypeOutput.." license.", thePlayer, 0, 255, 0)
+						outputChatBox("Admin "..getPlayerName(thePlayer):gsub("_"," ").." gives you a "..licenseTypeOutput.." license.", targetPlayer, 0, 255, 0)
+					end
+				end
+			end
+		end
+	end
+end
+addCommandHandler("givelicense", givePlayerLicense)

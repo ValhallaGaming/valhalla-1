@@ -573,7 +573,7 @@ function adminRenameFaction(thePlayer, commandName, factionID, ...)
 				for key, value in ipairs(exports.pool:getPoolElementsByType("team")) do
 					local id = getElementData(value, "id")
 					
-					if id== tonumber(factionID)) then
+					if id== tonumber(factionID) then
 						theTeam = value
 					end
 				end

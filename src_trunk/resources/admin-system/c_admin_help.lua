@@ -60,6 +60,7 @@ function adminhelp (sourcePlayer, commandName)
 					{ "/togmytag", "/togmytag", "toggles your nametag on and off" },
 					{ "/dropme", "/dropme", "drops you off at the current freecam position" },
 					{ "/disappear", "/disappear", "toggles invisibility" },
+					{ "/findalts", "/findalts [player]", "shows all characters the player has" },
 					
 					-- vehicle/*
 					{ "/unflip", "/unflip", "unflips the car" },

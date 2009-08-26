@@ -2135,3 +2135,41 @@ function resetCharacter(thePlayer, commandName, character)
     end
 end
 --addCommandHandler("resetcharacter", resetCharacter)
+
+-- FIND ALT CHARS
+function findAltChars(thePlayer, commandName, targetPlayerName)
+	if exports.global:isPlayerAdmin( thePlayer ) then
+		if not targetPlayerName then
+			outputChatBox("SYNTAX: /" .. commandName .. " [Partial Player Nick]", thePlayer, 255, 194, 14)
+		else
+			local targetPlayer = exports.global:findPlayerByPartialNick(targetPlayerName)
+			
+			if not targetPlayer then
+				outputChatBox("Player not found or multiple were found.", thePlayer, 255, 0, 0)
+			else
+				local id = getElementData( targetPlayer, "gameaccountid" )
+				if id then
+					result = mysql_query( handler, "SELECT charactername FROM characters WHERE account = " .. id )
+					if result then
+						local count = 0
+						for result, row in mysql_rows( result ) do
+							count = count + 1
+							local r = 255
+							if row[1] == getPlayerName(targetPlayer) then
+								r = 0
+							end
+							outputChatBox( "#" .. count .. ": " .. row[1]:gsub("_", " "), thePlayer, r, 255, 0)
+						end
+						mysql_free_result( result )
+					else
+						outputChatBox( "Error #9100 - Report on Forums", thePlayer, 255, 0, 0)
+						outputDebugString( mysql_error( handler ) )
+					end
+				else
+					outputChatBox("Game Account is unknown.", thePlayer, 255, 0, 0)
+				end
+			end
+		end
+	end
+end
+addCommandHandler( "findalts", findAltChars )

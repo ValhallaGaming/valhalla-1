@@ -214,9 +214,29 @@ function spawnCharacter(charname)
 		
 		setElementData(source, "timeinserver", timeinserver)
 		
+		setElementData(source, "dbid", tonumber(id))
 		if (items~=tostring(mysql_null())) and (itemvalues~=tostring(mysql_null())) then
-			setElementData(source, "items", items)
-			setElementData(source, "itemvalues", itemvalues)
+			-- load traditional items
+			if #items > 0 and #itemvalues > 0 then
+				for i = 1, 20 do
+					local token = tonumber(gettok(items, i, string.byte(',')))
+					local vtoken = tonumber(gettok(itemvalues, i, string.byte(',')))
+					
+					if token and vtoken then
+						exports.global:giveItem( source, tonumber(token), tonumber(vtoken) )
+					end
+				end
+				local result = mysql_query(handler, "SET items=NULL, itemvalues=NULL WHERE charactername = '" .. charname .. "' AND account = " .. id )
+				if result then
+					mysql_free_result( result )
+				else
+					outputDebugString( mysql_error( handler ) )
+				end
+			else
+				call( getResourceFromName( "item-system" ), "loadItems", source )
+			end
+		else
+			call( getResourceFromName( "item-system" ), "loadItems", source )
 		end
 		
 		setElementData(source, "loggedin", 1)
@@ -433,7 +453,6 @@ function spawnCharacter(charname)
 		setElementData(source, "adminlevel", tonumber(adminlevel))
 		setElementData(source, "loggedin", 1)
 		setElementData(source, "businessprofit", 0, false)
-		setElementData(source, "dbid", tonumber(id))
 		setElementData(source, "hiddenadmin", tonumber(hiddenAdmin), false)
 		setElementData(source, "legitnamechange", 0, false)
 		setElementData(source, "muted", tonumber(muted))
@@ -1228,11 +1247,17 @@ function createCharacter(name, gender, skincolour, weight, height, fatness, musc
 		local salt = "fingerprintscotland"
 		local fingerprint = md5(salt .. safecharname)
 		
-		local query = mysql_query(handler, "INSERT INTO characters SET charactername='" .. safecharname .. "', x='" .. x .. "', y='" .. y .. "', z='" .. z .. "', rotation='" .. r .. "', faction_id='-1', transport='" .. transport .. "', gender='" .. gender .. "', skincolor='" .. skincolour .. "', weight='" .. weight .. "', height='" .. height .. "', muscles='" .. muscles .. "', fat='" .. fatness .. "', description='" .. description .. "', account='" .. accountID .. "', skin='" .. skin .. "', lastarea='" .. lastarea .. "', age='" .. age .. "', fingerprint='" .. fingerprint .. "', items='16,17,18,', itemvalues='" .. skin .. ",1,1,'")
+		local query = mysql_query(handler, "INSERT INTO characters SET charactername='" .. safecharname .. "', x='" .. x .. "', y='" .. y .. "', z='" .. z .. "', rotation='" .. r .. "', faction_id='-1', transport='" .. transport .. "', gender='" .. gender .. "', skincolor='" .. skincolour .. "', weight='" .. weight .. "', height='" .. height .. "', muscles='" .. muscles .. "', fat='" .. fatness .. "', description='" .. description .. "', account='" .. accountID .. "', skin='" .. skin .. "', lastarea='" .. lastarea .. "', age='" .. age .. "', fingerprint='" .. fingerprint .. "'")
 		
 		if (query) then
 			local id = mysql_insert_id(handler)
 			mysql_free_result(query)
+			
+			setElementData(source, "dbid", id, false)
+			exports.global:giveItem( source, 16, skin )
+			exports.global:giveItem( source, 17, 1 )
+			exports.global:giveItem( source, 18, 1 )
+			removeElementData(source, "dbid")
 			--if (clothes) then -- Store CJ's clothes!
 				--local update = mysql_query(handler, "UPDATE characters SET head='" .. clothes[1] .. "', hat='" .. clothes[2] .. "', neck='" .. clothes[3] .. "', glasses='" .. clothes[4] .. "', shirt='" .. clothes[5] .. "', watch='" .. clothes[6] .. "', trousers='" .. clothes[7] .. "', shoes='" .. clothes[8] .. "', extra='" .. clothes[9] .. "', tattoo_lu='" .. clothes[10] .. "', tattoo_ll='" .. clothes[11] .. "', tattoo_ru='" .. clothes[12] .. "', tattoo_rl='" .. clothes[13] .. "', tattoo_back='" .. clothes[14] .. "', tattoo_lc='" ..clothes[15] .. "', tattoo_rc='" .. clothes[16] .. "', tattoo_stomach='" .. clothes[17] .. "', tattoo_lb='" .. clothes[18] .. "' WHERE charactername='" .. safecharname .. "'")
 				--if (update) then

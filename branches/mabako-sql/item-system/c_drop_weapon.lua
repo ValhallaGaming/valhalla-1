@@ -28,9 +28,9 @@ local function dropWeaponFromGUI(ammo)
 	x = x + math.sin( math.rad( rot ) ) * 1
 	y = y + math.cos( math.rad( rot ) ) * 1
 	
-	local gz = getGroundPosition(x, y, z)
+	local z = getGroundPosition( x, y, z + 2 )
 	
-	triggerServerEvent("dropItem", getLocalPlayer(), _weapon, ammo, getWeaponNameFromID(_weapon), x, y, z, gz, true, keepammo)
+	triggerServerEvent("dropItem", getLocalPlayer(), _weapon, x, y, z, _ammo, keepammo)
 
 	hideDropWeaponGUI()
 end

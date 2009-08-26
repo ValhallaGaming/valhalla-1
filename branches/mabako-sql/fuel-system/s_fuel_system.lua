@@ -230,7 +230,7 @@ end
 addCommandHandler("fill", fillVehicle)
 
 function fillCan(thePlayer, commandName)
-	if not (exports.global:doesPlayerHaveItem(thePlayer, 57, -1)) then
+	if not (exports.global:hasItem(thePlayer, 57)) then
 		outputChatBox("You do not have a fuel can.", thePlayer, 255, 0, 0)
 	else
 		local colShape = nil
@@ -247,7 +247,7 @@ function fillCan(thePlayer, commandName)
 		end
 		
 		if (colShape) then
-			local hasItem, slot, currFuel = exports.global:doesPlayerHaveItem(thePlayer, 57, -1)
+			local hasItem, slot, currFuel = exports.global:hasItem(thePlayer, 57)
 
 			if (math.ceil(currFuel)==25) then
 				outputChatBox("This fuel can is already full.", thePlayer)
@@ -277,8 +277,8 @@ function fillCan(thePlayer, commandName)
 						outputChatBox("Gas Station Receipt:", thePlayer)
 						outputChatBox("    " .. math.ceil(litresAffordable) .. " Litres of petrol    -    " .. fuelCost .. "$", thePlayer)
 						exports.global:takePlayerSafeMoney(thePlayer, fuelCost)
-						exports.global:takePlayerItem(thePlayer, 57, currFuel)
-						exports.global:givePlayerItem(thePlayer, 57, litresAffordable+currFuel)
+						exports.global:takeItem(thePlayer, 57, currFuel)
+						exports.global:giveItem(thePlayer, 57, litresAffordable+currFuel)
 					end
 				else
 					litresAffordable = 25
@@ -289,8 +289,8 @@ function fillCan(thePlayer, commandName)
 					fuelCost = 0
 					outputChatBox("Gas Station Receipt:", thePlayer)
 					outputChatBox("    " .. math.ceil(litresAffordable) .. " Litres of petrol    -    " .. fuelCost .. "$", thePlayer)
-					exports.global:takePlayerItem(thePlayer, 57, tonumber(currFuel))
-					exports.global:givePlayerItem(thePlayer, 57, math.ceil(litresAffordable+currFuel))
+					exports.global:takeItem(thePlayer, 57, tonumber(currFuel))
+					exports.global:giveItem(thePlayer, 57, math.ceil(litresAffordable+currFuel))
 				end
 			end
 		end

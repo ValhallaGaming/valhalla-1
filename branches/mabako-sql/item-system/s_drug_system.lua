@@ -54,17 +54,17 @@ function mixDrugs(drug1, drug2, drug1name, drug2name)
 		return
 	end
 	
-	exports.global:takePlayerItem(source, drug1, -1)
-	exports.global:takePlayerItem(source, drug2, -1)
-	local given = exports.global:givePlayerItem(source, drugID, 1)
+	exports.global:takeItem(source, drug1)
+	exports.global:takeItem(source, drug2)
+	local given = exports.global:giveItem(source, drugID, 1)
 	
 	if (given) then
 		outputChatBox("You mixed '" .. drug1name .. "' and '" .. drug2name .. "' to form '" .. drugName .. "'", source)
 		exports.global:sendLocalMeAction(source, "mixes some chemicals together.")
 	else
 		outputChatBox("You do not have enough space to mix these chemicals.", source, 255, 0, 0)
-		exports.global:givePlayerItem(source, drug1, 1)
-		exports.global:givePlayerItem(source, drug2, 1)
+		exports.global:giveItem(source, drug1, 1)
+		exports.global:giveItem(source, drug2, 1)
 	end
 end
 addEvent("mixDrugs", true)
@@ -96,8 +96,8 @@ function raidForChemicals(thePlayer)
 						setTimer(setElementData, 300000, 1, thePlayer, "raided", 0)
 						local rand1 = math.random(30, 33)
 						local rand2 = math.random(30, 33)
-						local given1 = exports.global:givePlayerItem(thePlayer, rand1, 1)
-						local given2 = exports.global:givePlayerItem(thePlayer, rand2, 1)
+						local given1 = exports.global:giveItem(thePlayer, rand1, 1)
+						local given2 = exports.global:giveItem(thePlayer, rand2, 1)
 						
 						if (given1) or (given2) then
 							outputChatBox("You broke into the back of the ambulance and stole some chemicals.", thePlayer, 0, 255, 0)

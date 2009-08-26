@@ -5,7 +5,7 @@ function bindKeys(res)
 	for key, value in ipairs(getElementsByType("vehicle")) do
 		if (isElementStreamedIn(value)) then
 			local modelid = getElementModel(value)
-			if (governmentVehicle[modelid]) or exports.global:cdoesVehicleHaveItem(value, 61) then
+			if (governmentVehicle[modelid]) or exports.global:hasItem(value, 61) then
 				for i = 1, #policevehicles+1 do
 					if (policevehicles[i]==nil) then
 						policevehicles[i] = value
@@ -23,7 +23,7 @@ function toggleFlashers()
 	
 	if (veh) then
 		local modelid = getElementModel(veh)
-		if (governmentVehicle[modelid]) or exports.global:cdoesVehicleHaveItem(veh, 61) then -- Emergency Light Becon
+		if (governmentVehicle[modelid]) or exports.global:hasItem(veh, 61) then -- Emergency Light Becon
 			local lights = getVehicleOverrideLights(veh)
 			local state = getElementData(veh, "flashers")
 			
@@ -53,7 +53,7 @@ policevehicleids = { }
 function streamIn()
 	if (getElementType(source)=="vehicle") then
 		local modelid = getElementModel(source)
-		if (governmentVehicle[modelid]) or exports.global:cdoesVehicleHaveItem(source, 61) then
+		if (governmentVehicle[modelid]) or exports.global:hasItem(source, 61) then
 			for i = 1, #policevehicles+1 do
 				if (policevehicles[i]==nil) then
 					policevehicles[i] = source

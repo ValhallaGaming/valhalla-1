@@ -143,7 +143,7 @@ function createPermVehicle(thePlayer, commandName, ...)
 						mysql_free_result(query)
 							
 						if (factionVehicle==-1) then
-							exports.global:givePlayerItem(targetPlayer, 3, tonumber(insertid))
+							exports.global:giveItem(targetPlayer, 3, tonumber(insertid))
 						end
 						
 						setElementData(veh, "dbid", tonumber(insertid))
@@ -486,8 +486,6 @@ function loadAllVehicles(res)
 			setElementData(veh, "faction", faction)
 			setElementData(veh, "owner", owner, false)
 			setElementData(veh, "job", tonumber(job), false)
-			setElementData(veh, "items", items)
-			setElementData(veh, "itemvalues", itemvalues)
 
 			-- Impounded
 			setElementData(veh, "Impounded", tonumber(Impounded))
@@ -531,6 +529,30 @@ function loadAllVehicles(res)
 				setVehicleDamageProof(veh, true)
 				setVehicleEngineState(veh, false)
 				setElementData(veh, "enginebroke", 1, false)
+			end
+
+			if items ~= mysql_null() and itemvalues ~= mysql_null() then
+				if #items > 0 and #itemvalues > 0 then
+					for i = 1, 20 do
+						local token = tonumber(gettok(items, i, string.byte(',')))
+						local vtoken = tonumber(gettok(itemvalues, i, string.byte(',')))
+						
+						if token and vtoken then
+							local itemID = tonumber(token)
+							if itemID >= 9000 then
+								itemID = - ( itemID - 9000 )
+							end
+							exports.global:giveItem( veh, itemID, tonumber(vtoken) )
+						end
+					end
+
+					local query = mysql_query( handler, "UPDATE vehicles SET items=NULL, itemvalues=NULL WHERE id=" .. id )
+					if query then
+						mysql_free_result( query )
+					else
+						outputDebugString( mysql_error( handler ) )
+					end
+				end
 			end
 		end
 	end
@@ -783,7 +805,7 @@ function toggleLock(source, key, keystate)
 		for i, veh in ipairs(nearbyVehicles) do
 			local dbid = tonumber(getElementData(veh, "dbid"))
 			local distanceToVehicle = getDistanceBetweenPoints3D(x, y, z, getElementPosition(veh))
-			if shortest > distanceToVehicle and ( exports.global:doesPlayerHaveItem(source, 3, dbid) or (getElementData(source, "faction") > 0 and getElementData(source, "faction") == getElementData(veh, "faction")) ) then
+			if shortest > distanceToVehicle and ( exports.global:hasItem(source, 3, dbid) or (getElementData(source, "faction") > 0 and getElementData(source, "faction") == getElementData(veh, "faction")) ) then
 				shortest = distanceToVehicle
 				found = veh
 			end
@@ -987,15 +1009,15 @@ function sellVehicle(thePlayer, commandName, targetPlayerName)
 						local vehicleID = getElementData(theVehicle, "dbid")
 						if getElementData(theVehicle, "owner") == getElementData(thePlayer, "dbid") or exports.global:isPlayerAdmin(thePlayer) then
 							if getElementData(targetPlayer, "dbid") ~= getElementData(theVehicle, "owner") then
-								if exports.global:doesPlayerHaveSpaceForItem(targetPlayer) then
+								if exports.global:hasSpaceForItem(targetPlayer) then
 									local query = mysql_query(handler, "UPDATE vehicles SET owner = '" .. getElementData(targetPlayer, "dbid") .. "' WHERE id='" .. vehicleID .. "'")
 									if query then
 										mysql_free_result(query)
 										setElementData(theVehicle, "owner", getElementData(targetPlayer, "dbid"))
 										
 										-- FIXME: remove all keys for that vehicle from all people
-										exports.global:takePlayerItem(thePlayer, 3, vehicleID)
-										exports.global:givePlayerItem(targetPlayer, 3, vehicleID)
+										exports.global:takeItem(thePlayer, 3, vehicleID)
+										exports.global:giveItem(targetPlayer, 3, vehicleID)
 										
 										outputChatBox("You've successfully sold your " .. getVehicleName(theVehicle) .. " to " .. targetPlayerName .. ".", thePlayer, 0, 255, 0)
 										outputChatBox((getPlayerName(thePlayer):gsub("_", " ")) .. " sold you a " .. getVehicleName(theVehicle) .. ".", targetPlayer, 0, 255, 0)
@@ -1024,47 +1046,6 @@ function sellVehicle(thePlayer, commandName, targetPlayerName)
 	end
 end
 addCommandHandler("sell", sellVehicle)
-
-------------------------------------------------
--- CLIENT CALLS FROM VEHICLE RIGHT CLICK
-------------------------------------------------
-function moveItemToVehicle(vehicle, itemID, itemValue, itemName)
-	exports.global:takePlayerItem(source, itemID, itemValue)
-	exports.global:giveVehicleItem(vehicle, itemID, itemValue)
-	exports.global:sendLocalMeAction(source, "puts a " .. itemName .. " inside the " .. getVehicleName(vehicle) .. ".")
-end
-addEvent("moveItemToVehicle", true)
-addEventHandler("moveItemToVehicle", getRootElement(), moveItemToVehicle)
-
-function moveWeaponToVehicle(vehicle, weaponID, weaponAmmo)
-	if weaponID == 16 or weaponID == 18 or ( weaponID >= 35 and weaponID <= 40 ) then
-		outputChatBox("You can't put this weapon in a vehicle.", source, 255, 0, 0)
-	else
-		exports.global:takeWeapon(source, weaponID)
-
-		exports.global:giveVehicleItem(vehicle, 9000+weaponID, weaponAmmo)
-		exports.global:sendLocalMeAction(source, "puts a " .. getWeaponNameFromID(weaponID) .. " inside the " .. getVehicleName(vehicle) .. ".")
-	end
-end
-addEvent("moveWeaponToVehicle", true)
-addEventHandler("moveWeaponToVehicle", getRootElement(), moveWeaponToVehicle)
-
-function moveItemToPlayer(vehicle, itemID, itemValue, itemName)
-	exports.global:takeVehicleItem(vehicle, itemID, itemValue)
-	exports.global:givePlayerItem(source, itemID, itemValue)
-	exports.global:sendLocalMeAction(source, "takes a " .. itemName .. " from the " .. getVehicleName(vehicle) .. ".")
-end
-addEvent("moveItemToPlayer", true)
-addEventHandler("moveItemToPlayer", getRootElement(), moveItemToPlayer)
-
-function moveWeaponToPlayer(vehicle, weaponID, weaponAmmo)
-	exports.global:giveWeapon(source, weaponID, weaponAmmo, true)
-
-	exports.global:takeVehicleItem(vehicle, 9000+weaponID, weaponAmmo)
-	exports.global:sendLocalMeAction(source, "takes a " .. getWeaponNameFromID(weaponID) .. " from the " .. getVehicleName(vehicle) .. ".")
-end
-addEvent("moveWeaponToPlayer", true)
-addEventHandler("moveWeaponToPlayer", getRootElement(), moveWeaponToPlayer)
 
 function lockUnlockInside(vehicle)
 	local model = getElementModel(vehicle)
@@ -1134,8 +1115,8 @@ function fillFuelTank(veh, fuel)
 		outputChatBox("You added " .. math.ceil(fuelAdded) .. " litres of petrol to your car from your fuel can.", source, 0, 255, 0 )
 		exports.global:sendLocalMeAction(source, "fills up his vehicle from a small petrol canister.")
 		
-		exports.global:takePlayerItem(source, 57, fuel)
-		exports.global:givePlayerItem(source, 57, math.ceil(fuel-fuelAdded))
+		exports.global:takeItem(source, 57, fuel)
+		exports.global:giveItem(source, 57, math.ceil(fuel-fuelAdded))
 		
 		setElementData(veh, "fuel", currFuel+fuelAdded)
 		triggerClientEvent(source, "setClientFuel", source, currFuel+fuelAdded)
@@ -1208,7 +1189,7 @@ function setVehiclePosition(thePlayer, commandName)
 			local owner = getElementData(veh, "owner")
 			local dbid = getElementData(veh, "dbid")
 			local TowingReturn = call(getResourceFromName("tow-system"), "CanTowTruckDriverVehPos", thePlayer) -- 2 == in towing and in col shape, 1 == colshape only, 0 == not in col shape
-			if (exports.global:isPlayerAdmin(thePlayer)) or (owner==playerid and TowingReturn == 0) or (exports.global:doesPlayerHaveItem(thePlayer, 3, dbid)) or (TowingReturn == 2) then
+			if (exports.global:isPlayerAdmin(thePlayer)) or (owner==playerid and TowingReturn == 0) or (exports.global:hasItem(thePlayer, 3, dbid)) or (TowingReturn == 2) then
 				if (dbid<0) then
 					outputChatBox("This vehicle is not permanently spawned.", thePlayer, 255, 0, 0)
 				else

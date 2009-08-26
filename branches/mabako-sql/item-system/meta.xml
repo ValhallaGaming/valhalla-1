@@ -1,6 +1,24 @@
 <meta>
 	<info author="vG MTA Scripting Team" type="script" description="Item System"/>
 
+	<script src="s_item_management.lua" type="server"/>
+	<export function="loadItems" type="server"/>
+	<export function="sendItems" type="server"/>
+	<export function="giveItem" type="server"/>
+	<export function="takeItem" type="server"/>
+	<export function="takeItemFromSlot" type="server"/>
+	<export function="moveItem" type="server"/>
+	<export function="hasItem" type="server"/>
+	<export function="hasSpaceForItem" type="server"/>
+	<export function="getItems" type="server"/>
+	<export function="getInventorySlots" type="server"/>
+
+	<script src="c_item_management.lua" type="client"/>
+	<export function="hasItem" type="client"/>
+	<export function="hasSpaceForItem" type="client"/>
+	<export function="getItems" type="client"/>
+	<export function="getInventorySlots" type="client"/>
+	
 	<script src="g_items.lua" type="client" />
 	<script src="g_items.lua" type="server" />
 	<export function="getItemName" type="client"/>
@@ -17,7 +35,6 @@
 	<script src="c_books.lua" type="client" />
 	
 	<script src="c_safes_system.lua" type="client" />
-	<script src="s_safes_system.lua" type="server" />
 	<export function="updateSafeItems" type="server" />
 
 	<file src="books/PDmanual.xml" />
@@ -39,4 +56,7 @@
 	<file src="ghettoblaster/right_round_loop.wav" />
 	
 	<script src="c_drop_weapon.lua" type="client" />
+	
+	<script src="s_move_items.lua" type="server" />
+	<script src="c_move_items.lua" type="client" />
 </meta>

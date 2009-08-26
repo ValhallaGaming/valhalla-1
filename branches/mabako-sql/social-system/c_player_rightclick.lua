@@ -120,7 +120,7 @@ end
 -------------------
 function cBlindfold(button, state, x, y)
 	if (button=="left") then
-		if (exports.global:cdoesPlayerHaveItem(getLocalPlayer(), 66, -1)) then -- Has blindfold?
+		if (exports.global:hasItem(getLocalPlayer(), 66)) then -- Has blindfold?
 			local blindfolded = getElementData(player, "blindfold")
 			local restrained = getElementData(player, "restrain")
 			
@@ -158,7 +158,7 @@ end
 --------------------
 function crestrainPlayer(button, state, x, y)
 	if (button=="left") then
-		if (exports.global:cdoesPlayerHaveItem(getLocalPlayer(), 45, -1) or exports.global:cdoesPlayerHaveItem(getLocalPlayer(), 46, -1)) then
+		if (exports.global:hasItem(getLocalPlayer(), 45) or exports.global:hasItem(getLocalPlayer(), 46)) then
 			local restrained = getElementData(player, "restrain")
 			
 			if (restrained==1) then
@@ -167,9 +167,9 @@ function crestrainPlayer(button, state, x, y)
 			else
 				local restrainedObj
 				
-				if (exports.global:cdoesPlayerHaveItem(getLocalPlayer(), 45, -1)) then
+				if (exports.global:hasItem(getLocalPlayer(), 45)) then
 					restrainedObj = 45
-				elseif (exports.global:cdoesPlayerHaveItem(getLocalPlayer(), 46, -1)) then
+				elseif (exports.global:hasItem(getLocalPlayer(), 46)) then
 					restrainedObj = 46
 				end
 					
@@ -194,7 +194,7 @@ function cunrestrainPlayer(button, state, x, y)
 			local restrainedObj = getElementData(player, "restrainedObj")
 			local dbid = getElementData(getLocalPlayer(), "dbid")
 			
-			if (exports.global:cdoesPlayerHaveItem(getLocalPlayer(), 47, dbid)) or (restrainedObj==46) then -- has the keys, or its a rope
+			if (exports.global:hasItem(getLocalPlayer(), 47, dbid)) or (restrainedObj==46) then -- has the keys, or its a rope
 				triggerServerEvent("unrestrainPlayer", getLocalPlayer(), player, restrainedObj)
 				hidePlayerMenu()
 			else
@@ -241,7 +241,7 @@ function cfriskPlayer(button, state, x, y)
 				local items = getElementData(player, "items")
 				
 				local slots = 10
-				if (exports.global:cdoesPlayerHaveItem(player, 48, -1)) then
+				if (exports.global:hasItem(player, 48, -1)) then
 					slots = 20
 				end
 				
@@ -269,8 +269,8 @@ function cfriskPlayer(button, state, x, y)
 					end
 				end
 				
-				bFriskTakeItem = guiCreateButton(0.05, 0.85, 0.45, 0.1, "Take Item", true, wFriskItems)
-				addEventHandler("onClientGUIClick", bFriskTakeItem, takePlayerItem, false)
+				--bFriskTakeItem = guiCreateButton(0.05, 0.85, 0.45, 0.1, "Take Item", true, wFriskItems)
+				--addEventHandler("onClientGUIClick", bFriskTakeItem, takePlayerItem, false)
 				
 				bFriskClose = guiCreateButton(0.5, 0.85, 0.45, 0.1, "Close", true, wFriskItems)
 				addEventHandler("onClientGUIClick", bFriskClose, hidePlayerMenu, false)
@@ -304,7 +304,7 @@ function takePlayerItem(button, state, x, y)
 			end
 			
 			if (itemName) then -- ITEM
-				if not (exports.global:cdoesPlayerHaveSpaceForItem(getLocalPlayer())) then
+				if not (exports.global:hasSpaceForItem(getLocalPlayer())) then
 					outputChatBox("You do not have space for this item.", 255, 0, 0)
 				else
 					guiGridListRemoveRow(gFriskItems, row)

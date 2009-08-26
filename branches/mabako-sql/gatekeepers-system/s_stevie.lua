@@ -318,7 +318,7 @@ function stevieSuccess_S()
 	exports.global:sendLocalMeAction( source,"takes Stevie's business card.")
 	
 	-- Give the player an item. Name = "Business card"  Description = "Steven Pullman, L.V. Freight Depot, Tel: 081016"  !NEEDS NEW ITEM!
-	exports.global:givePlayerItem(source, 55, 1) -- change the ID.
+	exports.global:giveItem(source, 55, 1) -- change the ID.
 	
 	-- set the players "stevie" stat to "1" meaning they have met him and successfully made it through the conversation.
 	local query = mysql_query(handler, "UPDATE characters SET stevie='1' WHERE charactername='" .. mysql_escape_string(handler, getPlayerName(source)) .. "' LIMIT 1") -- NOT WORKING
@@ -369,7 +369,7 @@ end
 ------------------------------------------------------------------------------------
 
 function startPhoneCall(thePlayer)
-	if not(exports.global:doesPlayerHaveItem(thePlayer, 2)) then -- does the player have a cell phone?
+	if not(exports.global:hasItem(thePlayer, 2)) then -- does the player have a cell phone?
 		outputChatBox("You need a cellphone to call someone.", thePlayer, 255, 0, 0)
 	else
 		local calling = getElementData(thePlayer, "calling")
@@ -585,7 +585,7 @@ function givePlayerStevieItems(thePlayer, veh, deal)
 		destroyElement(stevieMarker)
 		stevieMarker = nil
 	else
-		if not(exports.global:doesVehicleHaveSpaceForItem(veh))then
+		if not(exports.global:hasSpaceForItem(veh))then
 			outputChatBox("The vehicle is full.", thePlayer, 255, 0, 0)
 			destroyElement(collectionCol)
 			collectionCol = nil
@@ -607,9 +607,9 @@ function givePlayerStevieItems(thePlayer, veh, deal)
 			local itemID = deal[rand][2]
 			local value = deal[rand][3]
 			if(isWeapon==true)then
-				exports.global:giveVehicleItem(veh, 9000+itemID, value)
+				exports.global:giveItem(veh, -itemID, value)
 			else
-				exports.global:giveVehicleItem(veh, itemID, value)
+				exports.global:giveItem(veh, itemID, value)
 			end
 		end
 	end

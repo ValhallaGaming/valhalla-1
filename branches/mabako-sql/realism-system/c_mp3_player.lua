@@ -4,7 +4,7 @@ local currMP3 = 0
 function toggleMP3(key, state)
 	if getElementData(getLocalPlayer(), "fishing") or getElementData(getLocalPlayer(), "jammed") then
 		-- fishing and weapon jams need +/= keys already
-	elseif (exports.global:cdoesPlayerHaveItem(getLocalPlayer(), 19) and not (isPedInVehicle(getLocalPlayer()))) then
+	elseif (exports.global:hasItem(getLocalPlayer(), 19) and not (isPedInVehicle(getLocalPlayer()))) then
 		if (key=="-") then -- lower the channel
 			if (currMP3==0) then
 				currMP3 = 12

@@ -18,6 +18,8 @@
 	<script src="Yakuza HQ.lua" type="client"/>
 	<script src="Idlewood Gas.lua" type="client"/>
 	<script src="seville.lua" type="client"/>
-	<script src="Busstops_LS_LineAB.lua" />
-	<script src="littleitaly.lua" />
+	<script src="Busstops_LS_LineAB.lua" type="client"/>
+	<script src="littleitaly.lua" type="client"/>
+	<script src="Prison Int Cells.lua" type="client"/>
+	<script src="Prison Int Rec.lua" type="client"/>
 </meta>

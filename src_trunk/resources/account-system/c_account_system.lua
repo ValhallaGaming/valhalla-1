@@ -1659,17 +1659,17 @@ function selectedCharacter(button, state)
 					
 					local rand = math.random(1,6)
 					if (rand==1) then
-						exports.global:applyAnimation(getLocalPlayer(), "PLAYIDLES", "shift", 1.0, 2.0, 0.0, true, false, true)
+						exports.global:applyAnimation(getLocalPlayer(), "PLAYIDLES", "shift", -1, true, false, true)
 					elseif (rand==2) then
-						exports.global:applyAnimation(getLocalPlayer(), "PLAYIDLES", "shldr", 1.0, 2.0, 0.0, true, false, true)
+						exports.global:applyAnimation(getLocalPlayer(), "PLAYIDLES", "shldr", -1, true, false, true)
 					elseif (rand==3) then
-						exports.global:applyAnimation(getLocalPlayer(), "PLAYIDLES", "stretch", 1.0, 2.0, 0.0, true, false, true)
+						exports.global:applyAnimation(getLocalPlayer(), "PLAYIDLES", "stretch", -1, true, false, true)
 					elseif (rand==4) then
-						exports.global:applyAnimation(getLocalPlayer(), "PLAYIDLES", "strleg", 1.0, 2.0, 0.0, true, false, true)
+						exports.global:applyAnimation(getLocalPlayer(), "PLAYIDLES", "strleg", -1, true, false, true)
 					elseif (rand==5) then
-						exports.global:applyAnimation(getLocalPlayer(), "PLAYIDLES", "time", 1.0, 2.0, 0.0, true, false, true)
+						exports.global:applyAnimation(getLocalPlayer(), "PLAYIDLES", "time", -1, true, false, true)
 					elseif (rand==6) then
-						exports.global:applyAnimation(getLocalPlayer(), "ON_LOOKERS", "wave_loop", 1.0, 2.0, 0.0, true, false, true)
+						exports.global:applyAnimation(getLocalPlayer(), "ON_LOOKERS", "wave_loop", -1, true, false, true)
 					end
 					
 					setElementAlpha(getLocalPlayer(), 0)
@@ -1687,7 +1687,7 @@ function selectedCharacter(button, state)
 						local x, y, z = getElementPosition(getLocalPlayer())
 						setElementAlpha(getLocalPlayer(), 0)
 						tmrFadeIn = setTimer(fadePlayerIn, 50, 10)
-						exports.global:applyAnimation(getLocalPlayer(), "WUZI", "CS_Dead_Guy", true, 1.0, 2.0, 0.0, true, false)
+						exports.global:applyAnimation(getLocalPlayer(), "WUZI", "CS_Dead_Guy", -1, true, false, true)
 					end
 				end
 			end
@@ -1709,17 +1709,17 @@ function selectedCharacter(button, state)
 				
 				local rand = math.random(1,6)
 					if (rand==1) then
-						exports.global:applyAnimation(getLocalPlayer(), "PLAYIDLES", "shift", true, 1.0, 2.0, 0.0, true, false)
+						exports.global:applyAnimation(getLocalPlayer(), "PLAYIDLES", "shift", -1, true, false, true)
 					elseif (rand==2) then
-						exports.global:applyAnimation(getLocalPlayer(), "PLAYIDLES", "shldr", true, 1.0, 2.0, 0.0, true, false)
+						exports.global:applyAnimation(getLocalPlayer(), "PLAYIDLES", "shldr", -1, true, false, true)
 					elseif (rand==3) then
-						exports.global:applyAnimation(getLocalPlayer(), "PLAYIDLES", "stretch", true, 1.0, 2.0, 0.0, true, false)
+						exports.global:applyAnimation(getLocalPlayer(), "PLAYIDLES", "stretch", -1, true, false, true)
 					elseif (rand==4) then
-						exports.global:applyAnimation(getLocalPlayer(), "PLAYIDLES", "strleg", true, 1.0, 2.0, 0.0, true, false)
+						exports.global:applyAnimation(getLocalPlayer(), "PLAYIDLES", "strleg", -1, true, false, true)
 					elseif (rand==5) then
-						exports.global:applyAnimation(getLocalPlayer(), "PLAYIDLES", "time", true, 1.0, 2.0, 0.0, true, false)
+						exports.global:applyAnimation(getLocalPlayer(), "PLAYIDLES", "time", -1, true, false, true)
 					elseif (rand==6) then
-						exports.global:applyAnimation(getLocalPlayer(), "ON_LOOKERS", "wave_loop", true, 1.0, 2.0, 0.0, true, false)
+						exports.global:applyAnimation(getLocalPlayer(), "ON_LOOKERS", "wave_loop", -1, true, false, true)
 					end
 				
 				-- optomize this

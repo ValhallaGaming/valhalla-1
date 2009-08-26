@@ -389,9 +389,9 @@ function startPhoneCall(thePlayer)
 						phoneState = 1
 						setElementData(thePlayer, "calling", "stevie")
 						exports.global:sendLocalMeAction(thePlayer, "takes out a cell phone.")
-						exports.global:applyAnimation(thePlayer, "ped", "phone_in", 1.0, 1.0, 0.0, false, false, true)
+						exports.global:applyAnimation(thePlayer, "ped", "phone_in", 3000, false)
 						toggleAllControls(thePlayer, true, true, true)
-						setTimer(startPhoneAnim, 1000, 2, thePlayer)
+						setTimer(startPhoneAnim, 3050, 2, thePlayer)
 						-- are they a friend?
 						local query = mysql_query(handler, "SELECT stevie FROM characters WHERE charactername='" .. mysql_escape_string(handler, getPlayerName(thePlayer)) .."'")
 						local steviesFriend = tonumber(mysql_result(query, 1, 1))
@@ -424,7 +424,7 @@ end
 addCommandHandler ( "081016", startPhoneCall )
 
 function startPhoneAnim() -- taken from phone res.
-	exports.global:applyAnimation(source, "ped", "phone_talk", 1.0, 1.0, 0.0, true, true, true)
+	exports.global:applyAnimation(source, "ped", "phone_talk", -1, true, true, true)
 end
 
 -------------------------

@@ -147,7 +147,7 @@ addEvent("remoteCall", true)
 addEventHandler("remoteCall", getRootElement(), callSomeone)
 
 function startPhoneAnim(thePlayer)
-	exports.global:applyAnimation(thePlayer, "ped", "phone_talk", 1.0, 1.0, 0.0, true, true, true)
+	exports.global:applyAnimation(thePlayer, "ped", "phone_talk", -1, true, true, true)
 	toggleAllControls(thePlayer, true, true, true)
 end
 	

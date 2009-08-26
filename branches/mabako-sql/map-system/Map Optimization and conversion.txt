@@ -1,0 +1,17 @@
+These steps require a free piece of software called editpad pro, to run this code just open the map click search at the top and show search panel then tick Regular expression in the right hand side of the panel that shows up.
+
+Converting from map file:
+
+Replace:
+<object id="([a-zA-Z0-9 \(\)_]*)" dimension="([0-9]*)" interior="([0-9]*)" model="([0-9]*)" posX="([0-9-.]*)" posY="([0-9-.]*)" posZ="([0-9-.]*)" rotX="([0-9-.]*)" rotY="([0-9-.]*)" rotZ="([0-9-.]*)" />
+with:
+createObject($4,$5,$6,$7,$8,$9,$10,$3,$2)
+
+Creating maps from scratch starting with Lua:
+
+we have wrapped createObject to use this syntax in this resource only:
+createObject(x,y,z,rx,ry,rz,interior,dimension)
+
+rule #1
+Don't use anything you don't need to including whitespace
+createObject(0, 0, 0, 0, 0, 0, 1, 9001) might look good but it still has to be downloaded.

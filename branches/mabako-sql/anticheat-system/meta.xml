@@ -1,0 +1,11 @@
+<meta>
+	<info author="vG MTA Scripting Team" type="script" description="Anticheat System"/>
+	
+	<script src="c_anticheat.lua" type="client"/>
+	<script src="s_anticheat.lua" type="server"/>
+
+	<export function="giveSafeWeapon" type="server"/>
+	<export function="setSafeWeaponAmmo" type="server"/>
+	<export function="takeAllWeaponsSafe" type="server"/>
+	<export function="takeWeaponSafe" type="server"/>
+</meta>

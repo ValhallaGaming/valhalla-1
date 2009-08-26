@@ -1,0 +1,33 @@
+<meta>
+	<info author="vG MTA Scripting Team" type="script" description="mods System"/>
+
+	<script src="c_mods_system.lua" type="client"/>
+	<script src="c_show_fps.lua" type="client"/>
+	
+	<file src="lv/lee_stripclub.txd"/>
+	<file src="lv/lee_stripclub1.txd"/>	
+	<file src="lv/vgsn_billboard.txd"/>
+	<file src="lv/vgs_stadium.txd"/>
+	<file src="lv/vgndwntwn21.txd"/>
+	<file src="lv/bustopm.txd"/>
+	<file src="lv/gen_pol_vegas.txd"/>
+	<file src="lv/vegasdwntwn1.txd"/>	
+	<file src="lv/melrose03_lawn.txd"/>
+	
+	<file src="skins/lvpd/lapd1.txd"/>
+	<file src="skins/lvpd/sfpd1.txd"/>
+	<file src="skins/lvpd/swat.txd"/>
+	<file src="skins/lvpd/wmysgrd.txd"/>	
+	
+	<file src="skins/gangs/sfr1.txd"/>
+	<file src="skins/gangs/sfr2.txd"/>
+	<file src="skins/gangs/sfr3.txd"/>
+
+
+	<file src="tags/tags_lafront.txd"/>
+	<file src="tags/tags_lakilo.txd"/>
+	<file src="tags/tags_larifa.txd"/>
+	<file src="tags/tags_laseville.txd"/>
+	<file src="tags/tags_latemple.txd"/>
+	<file src="tags/tags_laazteca.txd"/>
+</meta>

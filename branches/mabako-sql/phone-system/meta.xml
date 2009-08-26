@@ -1,0 +1,15 @@
+<meta>
+	<info author="vG MTA Scripting Team" type="script" description="Phone System"/>
+	
+	<script src="s_phone_system.lua" type="server" />
+	
+	<script src="ringtones.lua" type="client" />
+	<script src="c_phone_system.lua" type="client" />
+	
+	<file src="old_phone.mp3" />
+	<file src="funny.mp3" />
+	<file src="sms.mp3" />
+	<file src="Ringer1.wav" />
+	<file src="Ringer2.wav" />
+	<file src="T-jingle.mp3" />
+</meta>

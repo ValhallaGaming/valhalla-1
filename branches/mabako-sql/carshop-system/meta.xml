@@ -1,0 +1,11 @@
+<meta>
+	<info author="vG MTA Scripting Team" type="script" description="Car Shop System"/>
+	
+	<script src="g_shops.lua" type="server" />
+	<script src="g_shops.lua" type="client" />
+	
+	<script src="s_carshop_system.lua" type="server" />
+	<script src="c_carshop_system.lua" type="client" />
+	
+	<script src="s_crusher.lua" type="server" />
+</meta>

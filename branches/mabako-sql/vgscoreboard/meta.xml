@@ -1,0 +1,4 @@
+<meta>
+	<info author="jbeta, mabako" type="script" name="Valhalla Scoreboard" showInResourceBrowser="true" version="1.0.0" />
+	<script src="scoreboard_client.lua" type="client"/>
+</meta>

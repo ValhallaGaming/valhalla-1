@@ -1,0 +1,9 @@
+<meta>
+    <info author="vG MTA Scripting Team" type="script" description="Vehicle System"/>
+
+	<script src="s_vehicle_system.lua" type="server"/>
+	
+	<script src="c_vehicle_rightclick.lua" type="client"/>
+
+	<export function="createShopVehicle" type="server"/>
+</meta>

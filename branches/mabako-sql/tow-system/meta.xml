@@ -1,0 +1,10 @@
+<meta>
+	<info author="Mr.Hankey, mabako, Cazomino05" />
+	<map src="tow.map" />
+	<script src="tow_system.lua" />
+	<export function="CanTowTruckDriverVehPos" type="server" />
+	<export function="CanTowTruckDriverGetPaid" type="server" />
+	<export function="cannotVehpos" type="server" />
+	<script src="s_backup.lua" />
+	<script src="c_towing_system.lua" type="client" />
+</meta>

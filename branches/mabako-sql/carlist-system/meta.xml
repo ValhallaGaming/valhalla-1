@@ -1,0 +1,22 @@
+<meta>
+    <info author="vG MTA Scripting Team" type="script" description="Carlist System"/>
+	<script src="menu.lua" type="client" />
+	<config src="SUV.xml" type="client" />
+	<config src="twodoor.xml" type="client" />
+	<config src="fourdoor.xml" type="client" />
+	<config src="muscle.xml" type="client" />
+	<config src="street.xml" type="client" />
+	<config src="highper.xml" type="client" />
+	<config src="heavy.xml" type="client" />
+	<config src="light.xml" type="client" />
+	<config src="lowrider.xml" type="client" />
+	<config src="recreational.xml" type="client" />
+	<config src="bikes.xml" type="client" />
+	<config src="civil.xml" type="client" />
+	<config src="commercial.xml" type="client" />
+	<config src="air.xml" type="client" />
+	<config src="boat.xml" type="client" />
+	<config src="trailer.xml" type="client" />
+	<file src="banner.png" />
+	<file src="colors.png" />
+</meta>

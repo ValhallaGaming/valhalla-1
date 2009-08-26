@@ -88,7 +88,7 @@ function playerQuit()
 		local theAdmin = reports[report][5]
 		
 		if (isElement(theAdmin)) then
-			outputChatBox("Player " .. getPlayerName(source) .. " left the game. Report #" .. report .. " has been closed.", theAdmin, 0, 255, 255)
+			outputChatBox(" [-ADMIN REPORT-] Player " .. getPlayerName(source) .. " left the game. Report #" .. report .. " has been closed.", theAdmin, 0, 255, 255)
 		end
 		
 		local alertTimer = reports[report][6]
@@ -107,13 +107,41 @@ function playerQuit()
 	
 	-- check for reports assigned to him, unassigned if neccessary	
 	for i = 1, 128 do -- Support 128 reports at any one time, since each player can only have one report
-		if reports[i] and reports[i][5] == source then
-			reports[i][5] = nil
-			for key, value in ipairs(exports.global:getAdmins()) do
-				local adminduty = getElementData(value, "adminduty")
-				if adminduty == 1 then
-					outputChatBox(" [-ADMIN REPORT-] Report #" .. i .. " is unassigned (" .. getPlayerName(source) .. " left the game)", value, 0, 255, 255)
+		if reports[i] then
+			if reports[i][5] == source then
+				reports[i][5] = nil
+				for key, value in ipairs(exports.global:getAdmins()) do
+					local adminduty = getElementData(value, "adminduty")
+					if adminduty == 1 then
+						outputChatBox(" [-ADMIN REPORT-] Report #" .. i .. " is unassigned (" .. getPlayerName(source) .. " left the game)", value, 0, 255, 255)
+					end
 				end
+			end
+			if reports[i][2] == source then
+				for key, value in ipairs(exports.global:getAdmins()) do
+					local adminduty = getElementData(value, "adminduty")
+					if adminduty == 1 then
+						outputChatBox(" [-ADMIN REPORT-] Reported Player " .. getPlayerName(source) .. " left the game. Report #" .. i .. " has been closed.", value, 0, 255, 255)
+					end
+				end
+				
+				local reporter = reports[i][1]
+				if reporter ~= source then
+					outputChatBox("Your report #" .. i .. " has been closed (" .. getPlayerName(source) .. " left the game)", reporter, 255, 194, 14)
+				end
+				
+				local alertTimer = reports[i][6]
+				local timeoutTimer = reports[i][7]
+
+				if isTimer(alertTimer) then
+					killTimer(alertTimer)
+				end
+
+				if isTimer(timeoutTimer) then
+					killTimer(timeoutTimer)
+				end
+
+				reports[i] = nil -- Destroy any reports made by the player
 			end
 		end
 	end

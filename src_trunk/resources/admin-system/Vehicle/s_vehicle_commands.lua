@@ -323,6 +323,7 @@ function respawnAllVehicles(thePlayer, commandName, timeToRespawn)
 	if (exports.global:isPlayerAdmin(thePlayer)) then
 		if commandName then
 			timeToRespawn = tonumber(timeToRespawn) or 30
+			timeToRespawn = timeToRespawn < 10 and 10 or timeToRespawn
 			outputChatBox("All vehicles will be respawned in "..timeToRespawn.." seconds!")
 			outputChatBox("You can stop it by typing /respawnstop!", thePlayer)
 			respawnTimer = setTimer(respawnAllVehicles, timeToRespawn*1000, 1, thePlayer)

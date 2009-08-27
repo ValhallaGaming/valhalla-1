@@ -1617,6 +1617,7 @@ function selectedCharacter(button, state)
 	if (button=="left") and (state=="up") then
 		playSoundFrontEnd(32)
 		if (source~=lCreateFakepane) and (source~=lCreateBG) and (source~=lCreateName) and (source~=lCreateImage) then
+			
 			local found = false
 			local key = 0
 			for i, j in pairs(paneChars) do
@@ -1647,50 +1648,49 @@ function selectedCharacter(button, state)
 
 			if (found) then
 				guiStaticImageLoadImage(paneChars[key][1], "img/charbg1.png")
-				
 				selectedChar = key
 				guiStaticImageLoadImage(lCreateBG, "img/charbg0.png")
+
+				local skinID = tonumber(tableAccounts[key][9])
+				local cked = tonumber(tableAccounts[key][3])
+				setElementModel(getLocalPlayer(), skinID)
+					
+				local rand = math.random(1,6)
+				if (rand==1) then
+					exports.global:applyAnimation(getLocalPlayer(), "PLAYIDLES", "shift", -1, true, false, true)
+				elseif (rand==2) then
+					exports.global:applyAnimation(getLocalPlayer(), "PLAYIDLES", "shldr", -1, true, false, true)
+				elseif (rand==3) then
+					exports.global:applyAnimation(getLocalPlayer(), "PLAYIDLES", "stretch", -1, true, false, true)
+				elseif (rand==4) then
+					exports.global:applyAnimation(getLocalPlayer(), "PLAYIDLES", "strleg", -1, true, false, true)
+				elseif (rand==5) then
+					exports.global:applyAnimation(getLocalPlayer(), "PLAYIDLES", "time", -1, true, false, true)
+				elseif (rand==6) then
+					exports.global:applyAnimation(getLocalPlayer(), "ON_LOOKERS", "wave_loop", -1, true, false, true)
+				end
 				
-				if not (fading) then
+				setElementAlpha(getLocalPlayer(), 0)
 					
-					local skinID = tonumber(tableAccounts[key][9])
-					local cked = tonumber(tableAccounts[key][3])
-					setElementModel(getLocalPlayer(), skinID)
-					
-					local rand = math.random(1,6)
-					if (rand==1) then
-						exports.global:applyAnimation(getLocalPlayer(), "PLAYIDLES", "shift", -1, true, false, true)
-					elseif (rand==2) then
-						exports.global:applyAnimation(getLocalPlayer(), "PLAYIDLES", "shldr", -1, true, false, true)
-					elseif (rand==3) then
-						exports.global:applyAnimation(getLocalPlayer(), "PLAYIDLES", "stretch", -1, true, false, true)
-					elseif (rand==4) then
-						exports.global:applyAnimation(getLocalPlayer(), "PLAYIDLES", "strleg", -1, true, false, true)
-					elseif (rand==5) then
-						exports.global:applyAnimation(getLocalPlayer(), "PLAYIDLES", "time", -1, true, false, true)
-					elseif (rand==6) then
-						exports.global:applyAnimation(getLocalPlayer(), "ON_LOOKERS", "wave_loop", -1, true, false, true)
-					end
-					
-					setElementAlpha(getLocalPlayer(), 0)
-					
-					if (cked==0) then
-						--if (skinID==0) then -- Load CJ's clothes etc.
-						--	local charname = tableAccounts[key][2]
-						--	triggerServerEvent("spawnClothes", getLocalPlayer(), charname)
-						--end
-						fading = true
+				if (cked==0) then
+					--if (skinID==0) then -- Load CJ's clothes etc.
+					--	local charname = tableAccounts[key][2]
+					--	triggerServerEvent("spawnClothes", getLocalPlayer(), charname)
+					--end
+					fading = true
 						
-						tmrHideMouse = setTimer(unhideCursor, 200, 1)
-						tmrFadeIn = setTimer(fadePlayerIn, 50, 10)
-					else
-						local x, y, z = getElementPosition(getLocalPlayer())
-						setElementAlpha(getLocalPlayer(), 0)
-						tmrFadeIn = setTimer(fadePlayerIn, 50, 10)
-						exports.global:applyAnimation(getLocalPlayer(), "WUZI", "CS_Dead_Guy", -1, true, false, true)
-					end
+					if (isTimer(tmrFadeIn)) then killTimer(tmrFadeIn) end
+					
+					tmrHideMouse = setTimer(unhideCursor, 200, 1)
+					tmrFadeIn = setTimer(fadePlayerIn, 50, 10)
+				else
+					local x, y, z = getElementPosition(getLocalPlayer())
+					setElementAlpha(getLocalPlayer(), 0)
+					tmrFadeIn = setTimer(fadePlayerIn, 50, 10)
+					exports.global:applyAnimation(getLocalPlayer(), "WUZI", "CS_Dead_Guy", -1, true, false, true)
 				end
 			end
+			
 		else
 			for key, value in ipairs(paneChars) do
 				guiStaticImageLoadImage(paneChars[key][1], "img/charbg0.png")

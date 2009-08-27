@@ -138,7 +138,7 @@ end
 -- loads all items for that element
 function loadItems( element )
 	if not saveditems[ element ] then
-		local result = mysql_query( handler, "SELECT * FROM items WHERE type = " .. getType( element ) .. " AND owner = " .. getID( element ) )
+		local result = mysql_query( handler, "SELECT * FROM items WHERE type = " .. getType( element ) .. " AND owner = " .. getID( element ) .. " LIMIT " .. getInventorySlots( element ) )
 		if result then
 			saveditems[ element ] = {}
 			
@@ -180,18 +180,15 @@ addEventHandler( "itemResourceStarted", getRootElement( ), itemResourceStarted )
 
 -- clear all items for an element
 function clearItems( element )
-	local result = mysql_query( handler, "DELETE FROM items WHERE type = " .. getType( element ) .. " AND owner = " .. getID( element ) )
-	if result then
-		mysql_free_result( result )
-		
-		saveditems[ element ] = nil
-		notify( element )
-		
-		source = element
-		destroyInventory()
-	else
-		outputDebugString( mysql_error( handler ) )
+	while #saveditems[ element ] > 0 do
+		takeItemFromSlot( element, 1 )
 	end
+	
+	saveditems[ element ] = nil
+	notify( element )
+
+	source = element
+	destroyInventory()
 end
 
 -- gives an item to an element

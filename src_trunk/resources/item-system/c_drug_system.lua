@@ -305,32 +305,51 @@ function resetDrug6Effect()
 end
 
 function resetAllDrugs()
-	resetDrug1Effect()
-	resetDrug2Effect()
-	resetDrug3Effect()
-	resetDrug4Effect()
-	resetDrug5Effect()
-	resetDrug6Effect()
+	if isTimer(drug1Timer)
+		killTimer(drug1Timer)
+		drug1Timer = nil
+		
+		resetDrug1Effect()
+	end
 	
-	killTimer(drug1Timer)
-	drug1Timer = nil
+	if isTimer(drug2Timer) then
+		killTimer(drug2Timer)
+		drug2Timer = nil
 	
-	killTimer(drug2Timer)
-	drug2Timer = nil
+		resetDrug2Effect()
+	end
 	
-	killTimer(drug3Timer)
-	drug3Timer = nil
+	if isTimer(drug3Timer) then
+		killTimer(drug3Timer)
+		drug3Timer = nil
+		
+		resetDrug3Effect()
+	end
 	
-	killTimer(drug4Timer)
-	drug4Timer = nil
+	if isTimer(drug4Timer) then
+		killTimer(drug4Timer)
+		drug4Timer = nil
+		
+		resetDrug4Effect()
+	end
 	
-	killTimer(drug5Timer)
-	drug5Timer = nil
+	if isTimer(drug5Timer) then
+		killTimer(drug5Timer)
+		drug5Timer = nil
+		
+		resetDrug5Effect()
+	end
 	
-	killTimer(drug6Timer)
-	drug6Timer = nil
+	if isTimer(drug6Timer) then
+		killTimer(drug6Timer)
+		drug6Timer = nil
+		
+		resetDrug6Effect()
+	end
 	
-	killTimer(drug6Timer2)
-	drug6Timer2 = nil
+	if isTimer(drug6Timer2)
+		killTimer(drug6Timer2)
+		drug6Timer2 = nil
+	end
 end
 addEventHandler("onClientChangeChar", getRootElement(), resetAllDrugs)

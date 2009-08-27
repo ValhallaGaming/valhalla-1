@@ -138,7 +138,7 @@ end
 -- loads all items for that element
 function loadItems( element )
 	if not saveditems[ element ] then
-		local result = mysql_query( handler, "SELECT * FROM items WHERE type = " .. getType( element ) .. " AND owner = " .. getID( element ) .. " LIMIT " .. getInventorySlots( element ) )
+		local result = mysql_query( handler, "SELECT * FROM items WHERE type = " .. getType( element ) .. " AND owner = " .. getID( element ) .. " LIMIT 20" )
 		if result then
 			saveditems[ element ] = {}
 			

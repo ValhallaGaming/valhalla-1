@@ -506,8 +506,16 @@ function endReport(thePlayer, commandName)
 					
 		local timestring = hours .. ":" .. minutes
 		local reportHandler = reports[report][5]
-		local alertTimer = reports[id][6]
-		local timeoutTimer = reports[id][7]
+		local alertTimer = reports[report][6]
+		local timeoutTimer = reports[report][7]
+		
+		if isTimer(alertTimer) then
+			killTimer(alertTimer)
+		end
+		
+		if isTimer(timeoutTimer) then
+			killTimer(timeoutTimer)
+		end
 
 		reports[report] = nil
 		removeElementData(thePlayer, "report")

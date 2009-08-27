@@ -1692,6 +1692,8 @@ function selectedCharacter(button, state)
 			end
 			
 		else
+			if (isTimer(tmrFadeIn)) then killTimer(tmrFadeIn) end
+			
 			for key, value in ipairs(paneChars) do
 				guiStaticImageLoadImage(paneChars[key][1], "img/charbg0.png")
 			end
@@ -1704,34 +1706,32 @@ function selectedCharacter(button, state)
 			guiStaticImageLoadImage(lCreateBG, "img/charbg1.png")
 			
 			-- Player effect
-			if not (fading) then
-				setElementModel(getLocalPlayer(), 264)
+			setElementModel(getLocalPlayer(), 264)
+			
+			local rand = math.random(1,6)
+				if (rand==1) then
+					exports.global:applyAnimation(getLocalPlayer(), "PLAYIDLES", "shift", -1, true, false, true)
+				elseif (rand==2) then
+					exports.global:applyAnimation(getLocalPlayer(), "PLAYIDLES", "shldr", -1, true, false, true)
+				elseif (rand==3) then
+					exports.global:applyAnimation(getLocalPlayer(), "PLAYIDLES", "stretch", -1, true, false, true)
+				elseif (rand==4) then
+					exports.global:applyAnimation(getLocalPlayer(), "PLAYIDLES", "strleg", -1, true, false, true)
+				elseif (rand==5) then
+					exports.global:applyAnimation(getLocalPlayer(), "PLAYIDLES", "time", -1, true, false, true)
+				elseif (rand==6) then
+					exports.global:applyAnimation(getLocalPlayer(), "ON_LOOKERS", "wave_loop", -1, true, false, true)
+				end
 				
-				local rand = math.random(1,6)
-					if (rand==1) then
-						exports.global:applyAnimation(getLocalPlayer(), "PLAYIDLES", "shift", -1, true, false, true)
-					elseif (rand==2) then
-						exports.global:applyAnimation(getLocalPlayer(), "PLAYIDLES", "shldr", -1, true, false, true)
-					elseif (rand==3) then
-						exports.global:applyAnimation(getLocalPlayer(), "PLAYIDLES", "stretch", -1, true, false, true)
-					elseif (rand==4) then
-						exports.global:applyAnimation(getLocalPlayer(), "PLAYIDLES", "strleg", -1, true, false, true)
-					elseif (rand==5) then
-						exports.global:applyAnimation(getLocalPlayer(), "PLAYIDLES", "time", -1, true, false, true)
-					elseif (rand==6) then
-						exports.global:applyAnimation(getLocalPlayer(), "ON_LOOKERS", "wave_loop", -1, true, false, true)
-					end
-				
-				-- optomize this
-				--triggerServerEvent("stripPlayer", getLocalPlayer())
-				setElementAlpha(getLocalPlayer(), 0)
+			-- optomize this
+			--triggerServerEvent("stripPlayer", getLocalPlayer())
+			setElementAlpha(getLocalPlayer(), 0)
 				
 				
-				fading = true
-				
-				tmrHideMouse = setTimer(unhideCursor, 200, 1)
-				tmrFadeIn = setTimer(fadePlayerIn, 50, 10)
-			end
+			fading = true
+			
+			tmrHideMouse = setTimer(unhideCursor, 200, 1)
+			tmrFadeIn = setTimer(fadePlayerIn, 50, 10)
 		end
 	end
 end

@@ -1,0 +1,12 @@
+<meta>
+	<info name="Helicopter Grabbing" author="Remp" type="misc" version="1.0.0"/>
+
+	<script src="heli_c.lua" type="client"/>
+	<script src="heli_s.lua"/>
+
+	<!-- ToggleHangingWeightLimit(true/false)  SetPlayerGrabbedHeli(player, true/false, [ heli , side = "right", line_percent = 0.5]) -->
+	<export function="ToggleHangingWeightLimit" type="server" />
+	<export function="SetPlayerGrabbedHeli" type="server"/>
+	
+	<config src="help.xml" type="client"/>
+</meta>

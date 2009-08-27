@@ -1,0 +1,5 @@
+<help>
+To grab a helicopter use the command /grab
+To drop off use the command /drop
+You can bind these to keys using /bind key state command (eg: "/bind lshift down grab")
+</help>

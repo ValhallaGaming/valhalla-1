@@ -1,6 +1,6 @@
 username = "root"
 password = "rewt"
-db = "rp"
+db = "mta"
 host = "localhost"
 port = 3306
 

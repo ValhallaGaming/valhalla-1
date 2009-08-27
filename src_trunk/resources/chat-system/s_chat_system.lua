@@ -85,6 +85,7 @@ function advertMessage(thePlayer, commandName, showNumber, ...)
 					local name = string.gsub(getPlayerName(thePlayer), "_", " ")
 					local phoneNumber = getElementData(thePlayer, "cellnumber")
 					
+					exports.logs:logMessage("ADVERT: " .. message .. ". ((" .. name .. "))", 2)
 					for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
 						if (getElementData(value, "loggedin")==1) then
 							outputChatBox("   ADVERT: " .. message .. ". ((" .. name .. "))", value, 0, 255, 64)
@@ -128,6 +129,7 @@ function chatMain(message, messageType)
 			
 			-- Show chat to console, for admins + log
 			exports.irc:sendMessage("[IC: Local Chat] " .. playerName .. ": " .. message)
+			exports.logs:logMessage("[IC: Local Chat] " .. playerName .. ": " .. message, 1)
 			
 			for index, nearbyPlayer in ipairs(nearbyPlayers) do
 				local nearbyPlayerDimension = getElementDimension(nearbyPlayer)
@@ -171,6 +173,7 @@ function chatMain(message, messageType)
 				destroyElement(chatSphere)
 				
 				exports.irc:sendMessage("[IC OOC: ME ACTION] *" .. playerName .. " " .. message)
+				exports.logs:logMessage("[IC OOC: ME ACTION] *" .. playerName .. " " .. message, 7)
 				
 				for index, nearbyPlayer in ipairs(nearbyPlayers) do
 					local nearbyPlayerDimension = getElementDimension(nearbyPlayer)
@@ -373,6 +376,7 @@ function globalOOC(thePlayer, commandName, ...)
 				local playerID = getElementData(thePlayer, "playerid")
 					
 				exports.irc:sendMessage("[OOC: Global Chat] " .. playerName .. ": " .. message)
+				exports.logs:logMessage("[OOC: Global Chat] " .. playerName .. ": " .. message, 1)
 				for k, arrayPlayer in ipairs(players) do
 					local logged = tonumber(getElementData(arrayPlayer, "loggedin"))
 					local targetOOCEnabled = getElementData(arrayPlayer, "globalooc")
@@ -406,7 +410,7 @@ end
 addCommandHandler("toggleooc", playerToggleOOC, false, false)
 
 
-local advertisementMessages = { "sincityrp", "ls-rp", "sincity", "eg", "tri0n3", "www.", ".com", ".net", ".co.uk", ".org", "Bryan", "Danny", "everlast", "neverlast", "www.everlastgaming.com"}
+local advertisementMessages = { "sincityrp", "ls-rp", "sincity", "samp", "sa-mp", "eg", "tri0n3", "www.", ".com", ".net", ".co.uk", ".org", "Bryan", "Danny", "everlast", "neverlast", "www.everlastgaming.com"}
 
 function pmPlayer(thePlayer, commandName, who, ...)
 
@@ -446,6 +450,8 @@ function pmPlayer(thePlayer, commandName, who, ...)
 					local targetid = getElementData(targetPlayer, "playerid")
 					outputChatBox("PM From (" .. playerid .. ") " .. playerName .. ": " .. message, targetPlayer, 255, 255, 0)
 					outputChatBox("PM Sent to (" .. targetid .. ") " .. targetPlayerName .. ": " .. message, thePlayer, 255, 255, 0)
+					
+					exports.logs:logMessage("[PM From " ..playerName .. " TO " .. targetPlayerName .. "]" .. message, 8)
 				elseif (logged==0) then
 					outputChatBox("Player is not logged in yet.", thePlayer, 255, 255, 0)
 				elseif (pmblocked==1) then
@@ -477,6 +483,7 @@ function localOOC(thePlayer, commandName, ...)
 			destroyElement(chatSphere)
 			
 			exports.irc:sendMessage("[OOC: Local Chat] " .. playerName .. ": " .. message)
+			exports.logs:logMessage("[OOC: Local Chat] " .. playerName .. ": " .. message, 1)
 			for index, nearbyPlayer in ipairs(nearbyPlayers) do
 				local nearbyPlayerDimension = getElementDimension(nearbyPlayer)
 				local nearbyPlayerInterior = getElementInterior(nearbyPlayer)
@@ -580,6 +587,7 @@ function localShout(thePlayer, commandName, ...)
 			destroyElement(chatSphere)
 			
 			exports.irc:sendMessage("[IC: Local Shout] " .. playerName .. ": " .. message)
+			exports.logs:logMessage("[IC: Local Shout] " .. playerName .. ": " .. message, 1)
 			for index, nearbyPlayer in ipairs(nearbyPlayers) do
 				local nearbyPlayerDimension = getElementDimension(nearbyPlayer)
 				local nearbyPlayerInterior = getElementInterior(nearbyPlayer)
@@ -659,6 +667,10 @@ function factionOOC(thePlayer, commandName, ...)
 			if not(theTeam) or (theTeamName=="Citizen") then
 				outputChatBox("You are not in a faction.", thePlayer)
 			else
+				if (theTeamName=="Los Santos Police Department") then
+					exports.logs:logMessage("[OOC: Faction Chat] " .. playerName .. ": " .. message, 6)
+				end
+			
 				local message = table.concat({...}, " ")
 				local factionPlayers = getPlayersInTeam(theTeam)
 				
@@ -734,7 +746,8 @@ function adminChat(thePlayer, commandName, ...)
 			local players = exports.pool:getPoolElementsByType("player")
 			local username = string.gsub(getPlayerName(thePlayer), "_", " ")
 			local adminTitle = exports.global:getPlayerAdminTitle(thePlayer)
-
+			exports.logs:logMessage("[Admin Chat] " .. username .. ": " .. message, 3)
+			
 			for k, arrayPlayer in ipairs(players) do
 				local logged = getElementData(arrayPlayer, "loggedin")
 				
@@ -864,7 +877,7 @@ function playerChangeChatbubbleMode(thePlayer, commandName, mode)
 	if logged == 1 then
 		mode = tonumber(mode)
 		if not mode or mode < 0 or mode > 2 then
-			outputChatBox("SYNTAX: /" .. commandName .. " [chatbubblesMode]", thePlayer, 255, 194, 14)
+			outputChatBox("SYNTAX: /" .. commandName .. " [Mode]", thePlayer, 255, 194, 14)
 			outputChatBox("0 = hide all  1 = hide own  2 = show all", thePlayer, 255, 194, 14)
 		else
 			if (mode == 0) then
@@ -965,6 +978,7 @@ function payPlayer(thePlayer, commandName, targetPlayerNick, amount)
 					else
 						exports.global:setPlayerSafeMoney(thePlayer, money-amount)
 						
+						exports.logs:logMessage("[Money Transfer From " .. getPlayerName(thePlayer) .. " To: " .. getPlayerName(targetPlayer) .. "] Value: " .. amount .. "$", 5)
 						if (hoursplayed<5) then
 							exports.global:sendMessageToAdmins("AdmWarn: New Player '" .. getPlayerName(thePlayer) .. "' transferred " .. amount .. "$ to '" .. getPlayerName(targetPlayer) .. "'.")
 						end

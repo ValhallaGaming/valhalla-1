@@ -211,7 +211,7 @@ function useItem(itemSlot, additional)
 				local fixedName = "(" .. tostring(pid) .. ") Unknown Person"
 				setPlayerNametagText(source, tostring(fixedName))
 
-				setElementData(source, "gasmask", 1, false)
+				setElementData(source, "gasmask", 1, true)
 			elseif (gasmask==1) then
 				exports.global:sendLocalMeAction(source, "slips a black gas mask off their face.")
 				
@@ -221,7 +221,7 @@ function useItem(itemSlot, additional)
 				local fixedName = "(" .. tostring(pid) .. ") " .. name
 				setPlayerNametagText(source, tostring(fixedName))
 
-				setElementData(source, "gasmask", 0, false)
+				removeElementData(source, "gasmask")
 			end
 		elseif (itemID==27) then -- FLASHBANG
 			takeItemFromSlot(source, itemSlot)

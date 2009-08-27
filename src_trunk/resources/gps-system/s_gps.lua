@@ -1,0 +1,25 @@
+-- Bind Keys required
+function bindKeys()
+	local players = exports.pool:getPoolElementsByType("player")
+	for k, arrayPlayer in ipairs(players) do
+		if not(isKeyBound(arrayPlayer, "F5", "down", showGPS)) then
+			bindKey(arrayPlayer, "F5", "down", showGPS)
+		end
+	end
+end
+
+function bindKeysOnJoin()
+	bindKey(source, "F5", "down", showGPS)
+end
+addEventHandler("onResourceStart", getResourceRootElement(), bindKeys)
+addEventHandler("onPlayerJoin", getRootElement(), bindKeysOnJoin)
+
+function showGPS(player)
+	local vehicle = getPedOccupiedVehicle(player)
+
+	if (vehicle) then -- In vehicle
+		if (exports.global:hasItem(vehicle, 67, nil)) then -- has GPS?
+			triggerClientEvent(player, "displayGPS", player)
+		end
+	end
+end

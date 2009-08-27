@@ -1,0 +1,13 @@
+<meta>
+    <info type="utility" version="1.0.0" />
+    <script src="pathfind.lua"  type="client"/>
+    <script src="vehiclenodes_.lua"  type="client"/>
+	<script src="MinHeap.lua"  type="client"/>
+	
+	<script src="drawroute.lua" type="client" />
+	<script src="getRadarRadius.lua" type="client" />
+	
+	<script src="c_gps.lua" type="client" />
+	<script src="s_gps.lua" type="server" />
+	<file src="map.jpg"/>
+</meta>

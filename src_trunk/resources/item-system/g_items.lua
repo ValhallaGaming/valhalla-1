@@ -35,7 +35,7 @@ g_items = {
 	{ "Grab Kick Fighting for Dummies", "A book on how to do elbow fighting.", 5, 1271 },
 	{ "Elbow Fighting for Dummies", "A book on how to do elbow fighting.", 5, 1271 },
 	{ "Gas Mask", "A black gas mask, blocks out the effects of gas and flashbangs.", 6, 1271 },
-	{ "Flashbank", "A small grenade canister with FB written on the side.", 4, 1271 },
+	{ "Flashbang", "A small grenade canister with FB written on the side.", 4, 1271 },
 	{ "Glowstick", "A green glowstick.", 4, 1271 },
 	{ "Door Ram", "A red metal door ram.", 4, 1271 },
 	{ "Cannabis Sativa", "Cannabis Sativa, when mixed can create some strong drugs.", 3, 1271 },

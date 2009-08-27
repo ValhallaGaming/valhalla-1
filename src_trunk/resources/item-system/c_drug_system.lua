@@ -305,7 +305,7 @@ function resetDrug6Effect()
 end
 
 function resetAllDrugs()
-	if isTimer(drug1Timer)
+	if isTimer(drug1Timer) then
 		killTimer(drug1Timer)
 		drug1Timer = nil
 		
@@ -347,7 +347,7 @@ function resetAllDrugs()
 		resetDrug6Effect()
 	end
 	
-	if isTimer(drug6Timer2)
+	if isTimer(drug6Timer2) then
 		killTimer(drug6Timer2)
 		drug6Timer2 = nil
 	end

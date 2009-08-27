@@ -74,7 +74,8 @@ g_items = {
 	{ "Scottish Whiskey", "The Best Scottish Whiskey, now exclusively made from Haggis.", 1, 1271 },
 	{ "LSPD Badge", "A Los Santos Police Department badge.", 4, 1271 },
 	{ "LSES Identification", "An Los Santos Emergency Service Identification.", 4, 1271 },
-	{ "Blindfold", "A black blindfold.", 6, 1271 }
+	{ "Blindfold", "A black blindfold.", 6, 1271 },
+	{ "GPS", "A GPS Satnav for a car.", 6, 1271 }
 }
 
 function getItemName(id)
@@ -98,5 +99,9 @@ function getItemType(id)
 end
 
 function getItemModel(id)
-	return g_items[id][4] or nil
+	if not (g_items[id]) then
+		return 1271
+	else
+		return g_items[id][4]
+	end
 end

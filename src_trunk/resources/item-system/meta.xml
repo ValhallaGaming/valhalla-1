@@ -3,6 +3,7 @@
 
 	<script src="s_item_management.lua" type="server"/>
 	<export function="loadItems" type="server"/>
+	<export function="clearItems" type="server"/>
 	<export function="sendItems" type="server"/>
 	<export function="giveItem" type="server"/>
 	<export function="takeItem" type="server"/>

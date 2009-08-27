@@ -69,7 +69,7 @@ function advertMessage(thePlayer, commandName, showNumber, ...)
 		elseif getElementData(thePlayer, "alcohollevel") and getElementData(thePlayer, "alcohollevel") ~= 0 then
 			outputChatBox("You are too drunk to advertise!", thePlayer, 255, 0, 0)
 		else
-			if (exports.global:doesPlayerHaveItem(thePlayer, 2)) then
+			if (exports.global:hasItem(thePlayer, 2)) then
 				message = table.concat({...}, " ")
 				if showNumber ~= "0" and showNumber ~= "1" then
 					message = showNumber .. " " .. message
@@ -186,7 +186,7 @@ function chatMain(message, messageType)
 			end
 		end
 	elseif (messageType==2) and (logged==1) then -- Radio
-		if (exports.global:doesPlayerHaveItem(source, 6)) then
+		if (exports.global:hasItem(source, 6)) then
 			local theChannel = getElementData(source, "radiochannel")
 			if theChannel > 0 then
 				local username = string.gsub(getPlayerName(source), "_", " ")
@@ -195,7 +195,7 @@ function chatMain(message, messageType)
 					local targetChannel = getElementData(value, "radiochannel")
 					local logged = getElementData(source, "loggedin")
 					
-					if (logged==1) and (targetChannel) and (exports.global:doesPlayerHaveItem(value, 6)) then
+					if (logged==1) and (targetChannel) and (exports.global:hasItem(value, 6)) then
 						if (targetChannel==theChannel) then
 							playSoundFrontEnd(value, 47)
 							
@@ -680,7 +680,7 @@ function setRadioChannel(thePlayer, commandName, channel)
 	if not (channel) then
 		outputChatBox("SYNTAX: /" .. commandName .. " [Channel Number]", thePlayer, 255, 194, 14)
 	else
-		if (exports.global:doesPlayerHaveItem(thePlayer, 6)) then
+		if (exports.global:hasItem(thePlayer, 6)) then
 			if getElementData(thePlayer, "radiochannel") > 0 then
 				local channel = tonumber(channel)
 				if channel > 0 then
@@ -701,7 +701,7 @@ end
 addCommandHandler("tuneradio", setRadioChannel, false, false)
 
 function toggleRadio(thePlayer, commandName)
-	if (exports.global:doesPlayerHaveItem(thePlayer, 6)) then
+	if (exports.global:hasItem(thePlayer, 6)) then
 		local channel = getElementData(thePlayer, "radiochannel")
 		if not channel or channel == 0 then
 			channel = 1
@@ -1312,7 +1312,7 @@ function newsHotline(thePlayer, commandName, ...)
 			local teamMembers = getPlayersInTeam(theTeam)
 			
 			for key, value in ipairs(teamMembers) do
-				if(exports.global:doesPlayerHaveItem(value,2))then
+				if(exports.global:hasItem(value,2))then
 					local x, y, z = getElementPosition(value)
 					local phoneSphere = createColSphere(x, y, z, 10)
 					for _,nearbyPlayer in ipairs(getElementsWithinColShape(phoneSphere)) do

@@ -85,9 +85,9 @@ function arrestPlayer(thePlayer, commandName, targetPlayerNick, fine, jailtime, 
 									removeElementData(targetPlayer, "restrainedObj")
 									if restrainedObj == 45 then -- If handcuffs.. take the key
 										local dbid = getElementData(targetPlayer, "dbid")
-										exports.global:takePlayerItem(thePlayer, 47, dbid)
+										exports.global:takeItem(thePlayer, 47, dbid)
 									end
-									exports.global:givePlayerItem(thePlayer, restrainedObj, 1)
+									exports.global:giveItem(thePlayer, restrainedObj, 1)
 								end
 	
 								setPedWeaponSlot(targetPlayer,0)

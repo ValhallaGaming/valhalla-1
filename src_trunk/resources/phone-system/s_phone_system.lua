@@ -31,7 +31,7 @@ function callSomeone(thePlayer, commandName, phoneNumber, ...)
 	local logged = getElementData(thePlayer, "loggedin")
 	
 	if (logged==1) then
-		if (exports.global:doesPlayerHaveItem(thePlayer, 2)) then -- 2 = Cell phone item
+		if (exports.global:hasItem(thePlayer, 2)) then -- 2 = Cell phone item
 			if not (phoneNumber) then
 				outputChatBox("SYNTAX: /call [Phone Number]", thePlayer, 255, 194, 14)
 			else
@@ -82,7 +82,7 @@ function callSomeone(thePlayer, commandName, phoneNumber, ...)
 							
 							if (found) then
 								local find = false
-								find,_,foundPhoneItemValue = exports.global:doesPlayerHaveItem(foundElement, 2)
+								find,_,foundPhoneItemValue = exports.global:hasItem(foundElement, 2)
 								if not find then -- Check the target has a phone, if not, they weren't found
 									found, foundElement = false
 								end
@@ -165,7 +165,7 @@ function answerPhone(thePlayer, commandName)
 	local logged = getElementData(thePlayer, "loggedin")
 	
 	if (logged==1) then
-		if (exports.global:doesPlayerHaveItem(thePlayer, 2)) then -- 2 = Cell phone item
+		if (exports.global:hasItem(thePlayer, 2)) then -- 2 = Cell phone item
 			local phoneState = getElementData(thePlayer, "phonestate")
 			local calling = getElementData(thePlayer, "calling")
 			
@@ -207,7 +207,7 @@ function hangupPhone(thePlayer, commandName)
 	local logged = getElementData(thePlayer, "loggedin")
 	
 	if (logged==1) then
-		if (exports.global:doesPlayerHaveItem(thePlayer, 2)) then -- 71 = Cell phone item
+		if (exports.global:hasItem(thePlayer, 2)) then -- 2 = Cell phone item
 			local calling = getElementData(thePlayer, "calling")
 			
 			if (calling) then
@@ -257,7 +257,7 @@ function loudSpeaker(thePlayer, commandName)
 	local logged = getElementData(thePlayer, "loggedin")
 	
 	if (logged==1) then
-		if (exports.global:doesPlayerHaveItem(thePlayer, 2)) then -- 2 = Cell phone item
+		if (exports.global:hasItem(thePlayer, 2)) then -- 2 = Cell phone item
 			local phoneState = getElementData(thePlayer, "phonestate")
 			
 			if (phoneState==1) then
@@ -282,7 +282,7 @@ function talkPhone(thePlayer, commandName, ...)
 	local logged = getElementData(thePlayer, "loggedin")
 	
 	if (logged==1) then
-		if (exports.global:doesPlayerHaveItem(thePlayer, 2)) then -- 71 = Cell phone item
+		if (exports.global:hasItem(thePlayer, 2)) then -- 71 = Cell phone item
 			if not (...) then
 				outputChatBox("SYNTAX: /p [Message]", thePlayer, 255, 194, 14)
 			else
@@ -431,7 +431,7 @@ function phoneBook(thePlayer, commandName, partialNick)
 	local logged = getElementData(thePlayer, "loggedin")
 	
 	if (logged==1) then
-		if (exports.global:doesPlayerHaveItem(thePlayer, 7)) then -- 7 = Phonebook item
+		if (exports.global:hasItem(thePlayer, 7)) then -- 7 = Phonebook item
 			if not (partialNick) then
 				outputChatBox("SYNTAX: /phonebook [Partial Name]", thePlayer, 255, 194, 14)
 			else
@@ -481,8 +481,8 @@ addCommandHandler("togglephone", togglePhone)
 
 function saveCurrentRingtone(itemValue)
 	if itemValue then
-		exports.global:takePlayerItem(source, 2, -1)
-		exports.global:givePlayerItem(source, 2, itemValue)
+		exports.global:takeItem(source, 2)
+		exports.global:giveItem(source, 2, itemValue)
 	end
 end
 addEvent("saveRingtone", true)

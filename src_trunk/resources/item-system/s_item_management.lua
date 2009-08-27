@@ -30,6 +30,7 @@ addEventHandler("onResourceStop", getResourceRootElement(getThisResource()), clo
 --[[
 x loadItems(obj) -- loads all items (caching)
 x sendItems(obj, to) -- sends the items to the player
+x clearItems(obj) -- clears all items from the player
 
 x giveItem(obj, itemID, itemValue, nosqlupdate) -- gives an item
 x takeItem(obj, itemID, itemValue = nil) -- takes the item, or if nil/false, the first one with the same item ID
@@ -62,6 +63,13 @@ end
 
 addEventHandler( "onElementDestroy", getRootElement(), destroyInventory )
 addEventHandler( "onPlayerQuit", getRootElement(), destroyInventory )
+addEventHandler( "savePlayer", getRootElement(),
+	function( reason )
+		if reason == "Change Character" then
+			destroyInventory()
+		end
+	end
+)
 
 -- send items to a player
 local function sendItems( element, to )
@@ -103,6 +111,8 @@ local function getID(element)
 		return getElementData(element, "dbid")
 	elseif getElementType(element) == "vehicle" then -- Vehicle
 		return getElementData(element, "dbid")
+	elseif getElementData(element, "type") == "worlditem" then -- World Item
+		return getElementData(element, "id")
 	elseif getElementType(element) == "object" then -- Safe
 		return getElementDimension(element)
 	else
@@ -116,8 +126,10 @@ local function getType(element)
 		return 1
 	elseif getElementType(element) == "vehicle" then -- Vehicle
 		return 2
-	elseif getElementType(element) == "object" then -- Safe
+	elseif getElementData(element, "type") == "worlditem" then -- World Item
 		return 3
+	elseif getElementType(element) == "object" then -- Safe
+		return 4
 	else
 		return 255
 	end
@@ -139,10 +151,12 @@ function loadItems( element )
 				end
 			until not row
 			
-			subscribers[ element ] = {}
-			if getElementType( element ) == "player" then
-				subscribers[ element ][ element ] = true
-				notify( element )
+			if not subscribers[ element ] then
+				subscribers[ element ] = {}
+				if getElementType( element ) == "player" then
+					subscribers[ element ][ element ] = true
+					notify( element )
+				end
 			end
 			
 			return true
@@ -163,6 +177,22 @@ function itemResourceStarted( )
 end
 addEvent( "itemResourceStarted", true )
 addEventHandler( "itemResourceStarted", getRootElement( ), itemResourceStarted )
+
+-- clear all items for an element
+function clearItems( element )
+	local result = mysql_query( handler, "DELETE FROM items WHERE type = " .. getType( element ) .. " AND owner = " .. getID( element ) )
+	if result then
+		mysql_free_result( result )
+		
+		saveditems[ element ] = nil
+		notify( element )
+		
+		source = element
+		destroyInventory()
+	else
+		outputDebugString( mysql_error( handler ) )
+	end
+end
 
 -- gives an item to an element
 function giveItem( element, itemID, itemValue, itemIndex )
@@ -206,8 +236,9 @@ function takeItemFromSlot(element, slot, nosqlupdate)
 	loadItems( element )
 
 	if saveditems[element][slot] then
-		id = saveditems[element][slot][1]
-		value = saveditems[element][slot][2]
+		local id = saveditems[element][slot][1]
+		local value = saveditems[element][slot][2]
+		local index = saveditems[element][slot][3]
 		
 		-- special case backpack
 		if id == 48 then -- backpack
@@ -218,11 +249,12 @@ function takeItemFromSlot(element, slot, nosqlupdate)
 
 		local success = true
 		if not nosqlupdate then
-			local result = mysql_query( handler, "DELETE FROM items WHERE type = " .. getType(element) .. " AND owner = " .. getID(element) .. " AND itemID = " .. id .. " AND itemValue = '" .. mysql_escape_string(handler, value) .. "' LIMIT 1" )
+			local result = mysql_query( handler, "DELETE FROM items WHERE `index` = " .. index .. " LIMIT 1" )
 			if result then
 				mysql_free_result( result )
 			else
 				success = false
+				outputDebugString( mysql_error( handler ) )
 			end
 		end
 		
@@ -245,20 +277,24 @@ function moveItem(from, to, slot)
 		if hasSpaceForItem(to) then
 			local itemIndex = saveditems[from][slot][3]
 			if itemIndex then
-				local query = mysql_query( handler, "UPDATE items SET type = " .. getType(to) .. ", owner = " .. getID(to) .. " WHERE index = " .. itemIndex )
-				if query then
-					mysql_free_result( query )
-					
-					local itemID = saveditems[from][slot][1]
-					local itemValue = saveditems[from][slot][2]
-					
-					takeItemFromSlot(from, slot, false)
-					giveItem(to, itemID, itemValue, itemIndex)
-
-					return true
+				local itemID = saveditems[from][slot][1]
+				if itemID == 48 or itemID == 60 then
+					return false, "This Item cannot be moved"
 				else
-					outputDebugString( mysql_error( handler ) )
-					return false, "MySQL-Query failed."
+					local query = mysql_query( handler, "UPDATE items SET type = " .. getType(to) .. ", owner = " .. getID(to) .. " WHERE `index` = " .. itemIndex )
+					if query then
+						mysql_free_result( query )
+						
+						local itemValue = saveditems[from][slot][2]
+						
+						takeItemFromSlot(from, slot, true)
+						giveItem(to, itemID, itemValue, itemIndex)
+						
+						return true
+					else
+						outputDebugString( mysql_error( handler ) )
+						return false, "MySQL-Query failed."
+					end
 				end
 			else
 				return false, "Item does not exist."

@@ -11,24 +11,17 @@ function showChemistrySet()
 			wChemistrySet = guiCreateWindow(x, y, width, height, "Chemistry Set", false)
 			guiWindowSetSizable(wChemistrySet, false)
 			
-			local itemstring = getElementData(getLocalPlayer(), "items")
+			local items = getItems(getLocalPlayer())
 					
 			chemItems = { }
 			
-			if (itemstring) then
-				local slots = 10
-				if (exports.global:cdoesPlayerHaveItem(getLocalPlayer(), 48, -1)) then
-					slots = 20
-				end
-			
-				for i = 1, slots do
-					local token = tonumber(gettok(itemstring, i, string.byte(',')))
-					
-					if (token) and (token>=30) and (token<=33) then
+			if items then
+				for slot, item in ipairs(items) do
+					if item and item[1] >= 30 and item[1] <= 33 then
 						chemItems[i] = { }
-						chemItems[i][1] = getItemName(token)
-						chemItems[i][2] = token
-						chemItems[i][3] = i
+						chemItems[i][1] = getItemName(item[1])
+						chemItems[i][2] = item[1]
+						chemItems[i][3] = slot
 					end
 				end
 			end

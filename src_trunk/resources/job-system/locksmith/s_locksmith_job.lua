@@ -21,9 +21,9 @@ function makeKey(thePlayer, commandName, keyType, keyID)
 						itemID = 5 -- Business Key
 						keyname = "business key"
 					end
-					local success = exports.global:doesPlayerHaveItem(thePlayer, tonumber(itemID), tonumber(keyID))
+					local success = exports.global:hasItem(thePlayer, tonumber(itemID), tonumber(keyID))
 					if(success)then -- does the player have the key?
-						exports.global:givePlayerItem(thePlayer, tonumber(itemID), tonumber(keyID)) -- create a ket for the locksmith.
+						exports.global:giveItem(thePlayer, tonumber(itemID), tonumber(keyID)) -- create a ket for the locksmith.
 						exports.global:takePlayerSafeMoney(thePlayer, 15) -- take the cost of making the key from the locksmith.
 						outputChatBox("You have duplicated ".. keyname .." ".. keyID .." at a cost of $15.", thePlayer)
 						exports.global:sendLocalMeAction(thePlayer,"duplicates a key.")

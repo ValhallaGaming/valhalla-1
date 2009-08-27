@@ -81,8 +81,8 @@ addEventHandler("addFriend", getRootElement(), addFriend)
 -- FRISKING
 function friskTakePlayerItem(player, itemID, itemValue, itemName)
 	exports.global:sendLocalMeAction(source, "takes a " .. itemName .. " from " .. getPlayerName(player) .. ".")
-	exports.global:takePlayerItem(player, itemID, itemValue)
-	exports.global:givePlayerItem(source, itemID, itemValue)
+	exports.global:takeItem(player, itemID, itemValue)
+	exports.global:giveItem(source, itemID, itemValue)
 end
 addEvent("friskTakePlayerItem", true)
 addEventHandler("friskTakePlayerItem", getRootElement(), friskTakePlayerItem)
@@ -131,10 +131,10 @@ function restrainPlayer(player, restrainedObj)
 	setElementData(player, "restrainedObj", restrainedObj)
 	setElementData(player, "restrainedBy", dbid, false)
 
-	exports.global:takePlayerItem(source, restrainedObj, -1)
+	exports.global:takeItem(source, restrainedObj)
 
 	if (restrainedObj==45) then -- If handcuffs.. give the key
-		exports.global:givePlayerItem(source, 47, dbid)
+		exports.global:giveItem(source, 47, dbid)
 	end
 	exports.global:removeAnimation(player)
 end
@@ -156,9 +156,9 @@ function unrestrainPlayer(player, restrainedObj)
 	
 	if (restrainedObj==45) then -- If handcuffs.. take the key
 		local dbid = getElementData(source, "dbid")
-		exports.global:takePlayerItem(source, 47, dbid)
+		exports.global:takeItem(source, 47, dbid)
 	end
-	exports.global:givePlayerItem(source, restrainedObj, 1)
+	exports.global:giveItem(source, restrainedObj, 1)
 	
 	exports.global:removeAnimation(player)
 end
@@ -173,7 +173,7 @@ function blindfoldPlayer(player)
 	outputChatBox("You have been blindfolded by " .. username .. ".", player)
 	outputChatBox("You blindfolded " .. targetPlayerName .. ".", source)
 	
-	exports.global:takePlayerItem(source, 66, -1) -- take their blindfold
+	exports.global:takeItem(source, 66) -- take their blindfold
 	setElementData(player, "blindfold", 1)
 	fadeCamera(player, false)
 end
@@ -187,7 +187,7 @@ function removeblindfoldPlayer(player)
 	outputChatBox("You have had your blindfold removed by " .. username .. ".", player)
 	outputChatBox("You removed " .. targetPlayerName .. "'s blindfold.", source)
 	
-	exports.global:givePlayerItem(source, 66, -1) -- give the remove the blindfold
+	exports.global:giveItem(source, 66, -1) -- give the remove the blindfold
 	removeElementData(player, "blindfold")
 	fadeCamera(player, true)
 end

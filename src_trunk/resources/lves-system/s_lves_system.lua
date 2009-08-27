@@ -90,8 +90,8 @@ function respawnPlayer(thePlayer)
 			-- take all drugs
 			local count = 0
 			for i = 30, 43 do
-				while exports.global:doesPlayerHaveItem(thePlayer, i, -1) do
-					exports.global:takePlayerItem(thePlayer, i, -1)
+				while exports.global:hasItem(thePlayer, i) do
+					exports.global:takeItem(thePlayer, i)
 					count = count + 1
 				end
 			end

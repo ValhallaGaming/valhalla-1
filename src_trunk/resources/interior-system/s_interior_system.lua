@@ -189,9 +189,7 @@ function publicSellProperty(thePlayer, dbid, showmessages)
 
 		if safeTable[dbid] then
 			local safe = safeTable[dbid]
-			setElementData(safe, "items", "")
-			setElementData(safe, "itemvalues", "")
-			call(getResourceFromName("item-system"), "updateSafeItems", safe)
+			call( getResourceFromName( "item-system" ), "clearItems", safe )
 			destroyElement(safe)
 		end
 		
@@ -208,7 +206,7 @@ function publicSellProperty(thePlayer, dbid, showmessages)
 				if interiorType == 1 then
 					keytype = 5
 				end
-				exports.global:takePlayerItem(thePlayer, keytype, dbid)
+				exports.global:takeItem(thePlayer, keytype, dbid)
 				
 				triggerClientEvent(thePlayer, "removeBlipAtXY", thePlayer, interiorType, getElementPosition(entrance))
 			else
@@ -220,7 +218,7 @@ function publicSellProperty(thePlayer, dbid, showmessages)
 			if showmessages then
 				outputChatBox("You are no longer renting this property.", thePlayer, 0, 255, 0)
 			end
-			exports.global:takePlayerItem(thePlayer, 4, dbid)
+			exports.global:takeItem(thePlayer, 4, dbid)
 			triggerClientEvent(thePlayer, "removeBlipAtXY", thePlayer, interiorType, getElementPosition(entrance))
 		end
 
@@ -252,7 +250,7 @@ function sellTo(thePlayer, commandName, targetPlayerName)
 				if getDistanceBetweenPoints3D(px, py, pz, tx, ty, tz) < 20 and getElementDimension(targetPlayer) == getElementDimension(thePlayer) then
 					if getElementData(entrance, "owner") == getElementData(thePlayer, "dbid") or exports.global:isPlayerAdmin(thePlayer) then
 						if getElementData(targetPlayer, "dbid") ~= getElementData(entrance, "owner") then
-							if exports.global:doesPlayerHaveSpaceForItem(targetPlayer) then
+							if exports.global:hasSpaceForItem(targetPlayer) then
 								local query = mysql_query(handler, "UPDATE interiors SET owner = '" .. getElementData(targetPlayer, "dbid") .. "' WHERE id='" .. dbid .. "'")
 								if query then
 									mysql_free_result(query)
@@ -264,8 +262,8 @@ function sellTo(thePlayer, commandName, targetPlayerName)
 									if interiorType == 1 then
 										keytype = 5
 									end
-									exports.global:takePlayerItem(thePlayer, keytype, dbid)
-									exports.global:givePlayerItem(targetPlayer, keytype, dbid)
+									exports.global:takeItem(thePlayer, keytype, dbid)
+									exports.global:giveItem(targetPlayer, keytype, dbid)
 									
 									triggerClientEvent(thePlayer, "removeBlipAtXY", thePlayer, interiorType, getElementPosition(entrance))
 									triggerClientEvent(targetPlayer, "createBlipAtXY", targetPlayer, interiorType, getElementPosition(entrance))
@@ -325,9 +323,7 @@ function deleteInterior(thePlayer, commandName)
 						dimension = getElementDimension(thePickup)
 						local safe = safeTable[dbid]
 						if (safe) then
-							setElementData(safe, "items", "")
-							setElementData(safe, "itemvalues", "")
-							call(getResourceFromName("item-system"), "updateSafeItems", safe)
+							call( getResourceFromName( "item-system" ), "clearItems", safe )
 							destroyElement(safe)
 						end
 						destroyElement(thePickup)
@@ -445,7 +441,7 @@ function reloadOneInterior(id, hasCoroutine, displayircmessage)
 				if (hasCoroutine) then
 					coroutine.yield()
 				end
-				setPickupElementData(pickup, id, ix, iy, iz, optAngle, interior, locked, owner, inttype, cost, name, items, items_values, max_items, tennant, rentable, rent, interiorwithin, x, y, z, dimension, money)
+				setPickupElementData(pickup, id, ix, iy, iz, optAngle, interior, locked, owner, inttype, cost, name, max_items, tennant, rentable, rent, interiorwithin, x, y, z, dimension, money)
 				setIntPickupElementData(intpickup, id, x, y, z, rot, locked, owner, inttype, interiorwithin, dimension, interior, ix, iy, iz)
 			-- if it is a business
 			elseif (inttype==1) then -- Business
@@ -462,7 +458,7 @@ function reloadOneInterior(id, hasCoroutine, displayircmessage)
 				local intpickup = createPickup(ix, iy, iz, 3, 1318)
 				exports.pool:allocateElement(intpickup)
 				coroutine.yield()
-				setPickupElementData(pickup, id, ix, iy, iz, optAngle, interior, locked, owner, inttype, cost, name, items, items_values, max_items, tennant, rentable, rent, interiorwithin, x, y, z, dimension, money)
+				setPickupElementData(pickup, id, ix, iy, iz, optAngle, interior, locked, owner, inttype, cost, name, max_items, tennant, rentable, rent, interiorwithin, x, y, z, dimension, money)
 				setIntPickupElementData(intpickup, id, x, y, z, rot, locked, owner, inttype, interiorwithin, dimension, interior, ix, iy, iz)
 			-- if it is a gov building
 			elseif (inttype==2) then -- Interior Owned
@@ -473,7 +469,7 @@ function reloadOneInterior(id, hasCoroutine, displayircmessage)
 				if (hasCoroutine) then
 					coroutine.yield()
 				end
-				setPickupElementData(pickup, id, ix, iy, iz, optAngle, interior, locked, owner, inttype, cost, name, items, items_values, max_items, tennant, rentable, rent, interiorwithin, x, y, z, dimension, money)
+				setPickupElementData(pickup, id, ix, iy, iz, optAngle, interior, locked, owner, inttype, cost, name, max_items, tennant, rentable, rent, interiorwithin, x, y, z, dimension, money)
 				setIntPickupElementData(intpickup, id, x, y, z, rot, locked, owner, inttype, interiorwithin, dimension, interior, ix, iy, iz)
 			-- If the is rentable
 			elseif (inttype==3) then -- Rentable
@@ -492,7 +488,7 @@ function reloadOneInterior(id, hasCoroutine, displayircmessage)
 				if (hasCoroutine) then
 					coroutine.yield()
 				end
-				setPickupElementData(pickup, id, ix, iy, iz, optAngle, interior, locked, owner, inttype, cost, name, items, items_values, max_items, tennant, rentable, rent, interiorwithin, x, y, z, dimension, money)
+				setPickupElementData(pickup, id, ix, iy, iz, optAngle, interior, locked, owner, inttype, cost, name, max_items, tennant, rentable, rent, interiorwithin, x, y, z, dimension, money)
 				setIntPickupElementData(intpickup, id, x, y, z, rot, locked, owner, inttype, interiorwithin, dimension, interior, ix, iy, iz)
 			end
 			
@@ -501,9 +497,30 @@ function reloadOneInterior(id, hasCoroutine, displayircmessage)
 				setElementInterior(tempobject, interior)
 				setElementDimension(tempobject, id)
 				safeTable[id] = tempobject
-				setElementData(tempobject, "items", items)
-				setElementData(tempobject, "itemvalues", items_values)
 				
+				if items ~= mysql_null() and items_values ~= mysql_null() then
+					if #items > 0 and #items_values > 0 then
+						for i = 1, 20 do
+							local token = tonumber(gettok(items, i, string.byte(',')))
+							local vtoken = tonumber(gettok(items_values, i, string.byte(',')))
+							
+							if token and vtoken then
+								local itemID = tonumber(token)
+								if itemID >= 9000 then
+									itemID = - ( itemID - 9000 )
+								end
+								exports.global:giveItem( tempobject, itemID, tonumber(vtoken) )
+							end
+						end
+
+						local query = mysql_query( handler, "UPDATE interiors SET items=NULL, items_values=NULL WHERE id=" .. id )
+						if query then
+							mysql_free_result( query )
+						else
+							outputDebugString( mysql_error( handler ) )
+						end
+					end
+				end
 			end
 		end
 		if displayircmessage then
@@ -544,7 +561,7 @@ function loadAllInteriors()
 end
 addEventHandler("onResourceStart", getResourceRootElement(getThisResource()), loadAllInteriors)
 
-function setPickupElementData(pickup, id, ix, iy, iz, optAngle, interior, locked, owner, inttype, cost, name, items, items_values, max_items, tennant, rentable, rent, interiorwithin, x, y, z, dimension, money)
+function setPickupElementData(pickup, id, ix, iy, iz, optAngle, interior, locked, owner, inttype, cost, name, max_items, tennant, rentable, rent, interiorwithin, x, y, z, dimension, money)
 	if(pickup) then
 		setElementData(pickup, "dbid", id, false)
 		setElementData(pickup, "x", ix, false)
@@ -557,8 +574,6 @@ function setPickupElementData(pickup, id, ix, iy, iz, optAngle, interior, locked
 		setElementData(pickup, "inttype", inttype, false)
 		setElementData(pickup, "cost", cost, false)
 		setElementData(pickup, "name", name, false)
-		setElementData(pickup, "items", items, false)
-		setElementData(pickup, "item_values", items_values, false)
 		setElementData(pickup, "max_items", max_items, false)
 		setElementData(pickup, "tennant", tennant, false)
 		setElementData(pickup, "rentable", rentable, false)
@@ -735,13 +750,13 @@ function buyInterior(player, pickup, cost, isHouse, isRentable)
 		if (isHouse) then
 			-- Achievement
 			exports.global:givePlayerAchievement(player, 9)
-			exports.global:givePlayerItem(player, 4, id)
+			exports.global:giveItem(player, 4, id)
 		elseif isRentable then
-			exports.global:givePlayerItem(player, 4, id)
+			exports.global:giveItem(player, 4, id)
 		else
 			-- Achievement
 			exports.global:givePlayerAchievement(player, 10)
-			exports.global:givePlayerItem(player, 5, id)
+			exports.global:giveItem(player, 5, id)
 		end
 		
 		local pickup = createPickup(x, y, z, 3, 1318)
@@ -970,7 +985,7 @@ function addSafeAtPosition( thePlayer, x, y, z, rotz )
 		outputChatBox("There is already a safe in this property. Type movesafe to move it.", thePlayer, 255, 0, 0)
 		return 1
 	end
-	if ((exports.global:doesPlayerHaveItem( thePlayer, 5, dbid ) or exports.global:doesPlayerHaveItem( thePlayer, 4, dbid))) then
+	if ((exports.global:hasItem( thePlayer, 5, dbid ) or exports.global:hasItem( thePlayer, 4, dbid))) then
 		z = z - 0.5
 		rotz = rotz + 180
 		local query = mysql_query(handler, "UPDATE interiors SET safepositionX='" .. x .. "', safepositionY='" .. y .. "', safepositionZ='" .. z .. "', safepositionRZ='" .. rotz .. "' WHERE id='" .. dbid .. "'") -- Update the name in the sql.
@@ -988,7 +1003,7 @@ function moveSafe ( thePlayer, commandName )
 	local rotz = getPedRotation( thePlayer )
 	local dbid = getElementDimension( thePlayer )
 	local interior = getElementInterior( thePlayer )
-	if ((exports.global:doesPlayerHaveItem( thePlayer, 5, dbid ) or exports.global:doesPlayerHaveItem( thePlayer, 4, dbid))) then
+	if ((exports.global:hasItem( thePlayer, 5, dbid ) or exports.global:hasItem( thePlayer, 4, dbid))) then
 		if (safeTable[dbid]) then
 			local oldsafe = safeTable[dbid]
 			z = z - 0.5

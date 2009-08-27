@@ -251,7 +251,7 @@ function givePlayerBoughtItem(itemID, itemValue, theCost, isWeapon, name, supply
 	local money = tonumber(getElementData(source, "money"))
 	
 	if (itemID==48) then -- BACKPACK = UNIQUE
-		if (exports.global:doesPlayerHaveItem(source, itemID, -1)) then
+		if (exports.global:hasItem(source, itemID, -1)) then
 			outputChatBox("You already have one of this item, this item is unique.", source, 255, 0, 0)
 			return
 		end
@@ -299,7 +299,7 @@ function givePlayerBoughtItem(itemID, itemValue, theCost, isWeapon, name, supply
 		else
 			if (isWeapon==nil) then
 				exports.global:takePlayerSafeMoney(source, tonumber(theCost))
-				exports.global:givePlayerItem(source, 16, tonumber(itemValue))
+				exports.global:giveItem(source, 16, tonumber(itemValue))
 				setPedSkin(source, tonumber(itemValue))
 				setElementData(source, "casualskin", tonumber(itemValue), false)
 				exports.global:givePlayerAchievement(source, 21)
@@ -320,7 +320,7 @@ function givePlayerBoughtItem(itemID, itemValue, theCost, isWeapon, name, supply
 				outputChatBox("The money will be transfered to your account if you win.", source, 255, 194, 14)
 				outputChatBox("You have $"..getElementData(source, "money").." left in your wallet.", source, 255, 194, 14)
 			elseif (isWeapon==false) then
-				if(exports.global:givePlayerItem(source, itemID, itemValue)) then
+				if(exports.global:giveItem(source, itemID, itemValue)) then
 					exports.global:takePlayerSafeMoney(source, tonumber(theCost))
 					
 					if (itemID~=30) and (itemID~=31) and (itemID~=32) and (itemID~=33) then
@@ -341,22 +341,22 @@ function givePlayerBoughtItem(itemID, itemValue, theCost, isWeapon, name, supply
 				
 				if (itemID==4) then
 					setPedFightingStyle(source, itemID)
-					exports.global:givePlayerItem(source, 20, 1)
+					exports.global:giveItem(source, 20, 1)
 				elseif (itemID==5) then
 					setPedFightingStyle(source, itemID)
-					exports.global:givePlayerItem(source, 21, 1)
+					exports.global:giveItem(source, 21, 1)
 				elseif (itemID==6) then
 					setPedFightingStyle(source, itemID)
-					exports.global:givePlayerItem(source, 22, 1)
+					exports.global:giveItem(source, 22, 1)
 				elseif (itemID==7) then
 					setPedFightingStyle(source, itemID)
-					exports.global:givePlayerItem(source, 23, 1)
+					exports.global:giveItem(source, 23, 1)
 				elseif (itemID==15) then
 					setPedFightingStyle(source, itemID)
-					exports.global:givePlayerItem(source, 24, 1)
+					exports.global:giveItem(source, 24, 1)
 				elseif (itemID==16) then
 					setPedFightingStyle(source, itemID)
-					exports.global:givePlayerItem(source, 25, 1)
+					exports.global:giveItem(source, 25, 1)
 				end
 				
 				exports.global:givePlayerAchievement(source, 20)

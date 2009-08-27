@@ -494,7 +494,7 @@ function givePlayerItem(thePlayer, commandName, targetPlayer, itemID, itemValue)
 					
 					if name then
 						outputChatBox("Player " .. targetPlayerName .. " now has a " .. name .. " with value " .. itemValue .. ".", thePlayer, 0, 255, 0)
-						exports.global:givePlayerItem(targetPlayer, itemID, itemValue)
+						exports.global:giveItem(targetPlayer, itemID, itemValue)
 					else
 						outputChatBox("Invalid Item ID.", thePlayer, 255, 0, 0)
 					end
@@ -525,9 +525,9 @@ function takePlayerItem(thePlayer, commandName, targetPlayer, itemID, itemValue)
 				if (logged==0) then
 					outputChatBox("Player is not logged in.", thePlayer, 255, 0, 0)
 				elseif (logged==1) then
-					if exports.global:doesPlayerHaveItem(thePlayer, itemID, itemValue) then
+					if exports.global:hasItem(thePlayer, itemID, itemValue) then
 						outputChatBox("You took that Item " .. itemID .. " from " .. targetPlayerName .. ".", thePlayer, 0, 255, 0)
-						exports.global:takePlayerItem(targetPlayer, itemID, itemValue)
+						exports.global:takeItem(targetPlayer, itemID, itemValue)
 					else
 						outputChatBox("Player doesn't have that item", thePlayer, 255, 0, 0)
 					end
@@ -2115,7 +2115,9 @@ function resetCharacter(thePlayer, commandName, character)
             if (targetid == nil) then
                 outputChatBox(character .. " is not a valid character name.", thePlayer, 255, 0, 0)
             else
-                query = mysql_query(handler, "UPDATE characters SET money='0', weapons=NULL, ammo=NULL, items='', itemvalues='', car_license='0', gun_license='0', bankmoney='0' WHERE id='" .. targetid .. "'")
+                query = mysql_query(handler, "UPDATE characters SET money='0', weapons=NULL, ammo=NULL, items=NULL, itemvalues=NULL, car_license='0', gun_license='0', bankmoney='0' WHERE id='" .. targetid .. "'")
+                mysql_free_result(query)
+				query = mysql_query(handler, "DELETE FROM items WHERE type=1 AND owner=" .. targetid)
                 mysql_free_result(query)
                 query = mysql_query(handler, "DELETE FROM vehicles WHERE owner='" .. targetid .. "'")
                 mysql_free_result(query)

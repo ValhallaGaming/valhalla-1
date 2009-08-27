@@ -45,7 +45,7 @@ function selectPlayer()
 					end
 				else				
 					count = 0
-					if(exports.global:doesPlayerHaveItem(theChosenOne,2))then
+					if(exports.global:hasItem(theChosenOne,2))then
 						exports.global:sendLocalMeAction(theChosenOne,"receives a text message.")
 						triggerClientEvent(theChosenOne, "createHunterMarkers", theChosenOne)
 					end	

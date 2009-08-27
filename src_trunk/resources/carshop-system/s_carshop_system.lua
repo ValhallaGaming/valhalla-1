@@ -100,7 +100,7 @@ function makeCar(thePlayer, id, cost, col1, col2, x, y, z, rz, px, py, pz, prz)
 		setVehicleEngineState(veh, false)
 		setVehicleFuelTankExplodable(veh, false)
 		
-		exports.global:givePlayerItem(thePlayer, 3, tonumber(insertid))
+		exports.global:giveItem(thePlayer, 3, tonumber(insertid))
 		setElementData(veh, "fuel", 100)
 		setElementData(veh, "engine", 0, false)
 		setElementData(veh, "oldx", x, false)

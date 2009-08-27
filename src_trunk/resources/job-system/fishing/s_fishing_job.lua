@@ -3,7 +3,7 @@ function startFishing(thePlayer)
 	if not (thePlayer) then
 		thePlayer = source
 	end
-	if not(exports.global:doesPlayerHaveItem(thePlayer, 49)) then -- does the player have the fishing rod item?
+	if not(exports.global:hasItem(thePlayer, 49)) then -- does the player have the fishing rod item?
 		outputChatBox("You need a fishing rod to fish.", thePlayer, 255, 0, 0)
 	else
 		triggerClientEvent(thePlayer, "castLine", getRootElement())
@@ -27,7 +27,7 @@ addEventHandler("fishOnLine", getRootElement(), theyHaveABite)
 
 
 function lineSnap() ----- Snapped line.
-	exports.global:takePlayerItem(source, 49, 1) -- fishing rod
+	exports.global:takeItem(source, 49) -- fishing rod
 	exports.global:sendLocalMeAction(source,"snaps their fishing line.")
 end
 addEvent("lineSnap",true)

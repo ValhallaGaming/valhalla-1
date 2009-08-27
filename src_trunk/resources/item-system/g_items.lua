@@ -78,8 +78,12 @@ g_items = {
 }
 
 function getItemName(id)
-	if (g_items[id] == nil) then
-		return nil
+	if id == -100 then
+		return "Body Armor"
+	elseif id < 0 then
+		return getWeaponNameFromID( -id )
+	elseif not g_items[id] then
+		return "?"
 	else
 		return g_items[id][1]
 	end

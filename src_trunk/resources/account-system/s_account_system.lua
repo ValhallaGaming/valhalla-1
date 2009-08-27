@@ -226,7 +226,7 @@ function spawnCharacter(charname)
 						exports.global:giveItem( source, tonumber(token), tonumber(vtoken) )
 					end
 				end
-				local result = mysql_query(handler, "SET items=NULL, itemvalues=NULL WHERE charactername = '" .. charname .. "' AND account = " .. id )
+				local result = mysql_query(handler, "UPDATE characters SET items=NULL, itemvalues=NULL WHERE charactername = '" .. charname .. "' AND account = " .. id )
 				if result then
 					mysql_free_result( result )
 				else

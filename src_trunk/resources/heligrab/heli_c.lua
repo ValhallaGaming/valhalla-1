@@ -142,15 +142,15 @@ addEventHandler("onClientResourceStart",getResourceRootElement(getThisResource()
 				if isPlayerDead(local_player) or getElementHealth(local_player) <= 0.2 then
 					return
 				end
-			
+				
 				-- dont want people grabbing whilst inside the helicopter (or another vehicle if they can get close enough)
 				if isPedInVehicle(local_player) then
 					outputChatBox("You are already inside a vehicle!")
 					return
 				end
-			
+				
 				target.vehiclename = getVehicleName(target.vehicle)
-
+				
 				-- trace a line from the grab point down ground_drop_distance+0.2 (slightly below the height level at which you'd automatically be dropped)
 				local collision,_,_,_,element = processLineOfSight(target.point[1],target.point[2],target.point[3],target.point[1],target.point[2],target.point[3]-(ground_drop_distance+0.2),true,true,false,true,false,true,false,false,target.vehicle)
 				
@@ -162,7 +162,7 @@ addEventHandler("onClientResourceStart",getResourceRootElement(getThisResource()
 					outputChatBox("That helicopter has barely left the ground yet!")
 					return
 				end
-					
+				
 				if hanging_weight_limits then
 					-- limit the number of people hanging per helicopter
 					local count = 0
@@ -172,14 +172,63 @@ addEventHandler("onClientResourceStart",getResourceRootElement(getThisResource()
 							count = count + 1
 						end
 					end
-								
+					
 					if count >= helicopter_offsets[target.vehiclename].limit then 
 						outputChatBox("That helicopter can't take any more weight!")
 						return
-					end		
+					end
 				end
-								
-						
+				
+				
+			--	outputChatBox("Grab ["..target.side.."] (heli)")
+			
+				triggerEvent("MakePlayerGrabHeli",local_player,target.vehicle,target.side,target.line_percent)
+			end
+		end
+	end)
+	
+	addEventHandler("onClientRender", getRootElement(), function()
+		if not getElementData(local_player,"hanging") and getControlState('jump') and getPedSimplestTask(local_player) == 'TASK_SIMPLE_IN_AIR' then
+			if target.vehicle and target.distance <= grab_distance and not cooldown then
+				cooldown = setTimer(function() cooldown = nil end, 400, 1)
+				if isPlayerDead(local_player) or getElementHealth(local_player) <= 0.2 then
+					return
+				end
+				
+				-- dont want people grabbing whilst inside the helicopter (or another vehicle if they can get close enough)
+				if isPedInVehicle(local_player) then
+					return
+				end
+			
+				target.vehiclename = getVehicleName(target.vehicle)
+				
+				-- trace a line from the grab point down ground_drop_distance+0.2 (slightly below the height level at which you'd automatically be dropped)
+				local collision,_,_,_,element = processLineOfSight(target.point[1],target.point[2],target.point[3],target.point[1],target.point[2],target.point[3]-(ground_drop_distance+0.2),true,true,false,true,false,true,false,false,target.vehicle)
+				
+				-- if it collides with the player then ignore it
+				if collision and element == local_player then collision = false end
+				
+				-- the grab point is too close to the ground (or an element) and we dont want people hanging onto grounded helicopters
+				if collision then
+					return
+				end
+				
+				if hanging_weight_limits then
+					-- limit the number of people hanging per helicopter
+					local count = 0
+					for i,v in ipairs(getElementsByType("player")) do
+						local player_hanging = getElementData(v,"hanging")
+						if player_hanging and player_hanging.heli == target.vehicle then
+							count = count + 1
+						end
+					end
+					
+					if count >= helicopter_offsets[target.vehiclename].limit then 
+						return
+					end	
+				end
+				
+				
 			--	outputChatBox("Grab ["..target.side.."] (heli)")
 			
 				triggerEvent("MakePlayerGrabHeli",local_player,target.vehicle,target.side,target.line_percent)

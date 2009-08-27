@@ -75,11 +75,9 @@ end
 local scripterAccounts = {
 	Daniels = true,
 	Chamberlain = true,
-	Konstantine = true,
 	mabako = true,
 	Cazomino09 = true,
 	Serizzim = true,
-	CCC = true,
 	Flobu = true,
 	ryden = true,
 	['Mr.Hankey'] = true

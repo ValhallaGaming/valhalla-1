@@ -1,5 +1,6 @@
 local localPlayer = getLocalPlayer()
 local iMap = nil
+local helpLabel = nil
 
 function displayGPS()
 	if (iMap) then
@@ -17,10 +18,15 @@ function hideGUI()
 	destroyElement(iMap)
 	iMap = nil
 	
+	destroyElement(helpLabel)
+	helpLabel = nil
+	
 	call(getResourceFromName("realism-system"), "showSpeedo")
 end
 
 function showGUI()
+	resetRoute()
+	
 	local width, height = 700, 700
 	local scrWidth, scrHeight = guiGetScreenSize()
 	local x = scrWidth/2 - (width/2)
@@ -28,40 +34,45 @@ function showGUI()
 
 	iMap = guiCreateStaticImage(x, y, width, height, "map.jpg", false) -- Map
 	
+	local height = 50
+	local y = scrHeight - (height/1.5)
+	helpLabel = guiCreateLabel(x, y, width, height, "Left click to set GPS Target - Right click to disable GPS", false)
+	guiLabelSetHorizontalAlign(helpLabel, "center")
+	guiSetFont(helpLabel, "default-bold-small")
+	
 	call(getResourceFromName("realism-system"), "hideSpeedo")
 	
 	addEventHandler("onClientGUIClick", iMap, calculateRouteOnClick, false)
 	showCursor(true)
 end
 
+function resetRoute()
+	triggerEvent("drawGPS", localPlayer, nil, nil, nil, nil)
+end
+
+
+function resetRouteOnExit(player)
+	if (player==localPlayer) then
+		resetRoute()
+	end
+end
+addEventHandler("onClientVehicleExit", getRootElement(), resetRouteOnExit)
+
 function calculateRouteOnClick(button, state, absx, absy)
-	tx, ty, tz = convert2DMapCoordToWorld(absx, absy)
-	
-	local x, y, z = getElementPosition(getLocalPlayer())
-	local route = calculatePathByCoords(tx, ty, tz, x, y, z)
-	
-	if (route) then
-		triggerEvent("drawGPS", getLocalPlayer(), route, tx, ty, tz)
-	end
-	
-	hideGUI()
-end
-
-function updateRoute()
-	local x, y, z = getElementPosition(getLocalPlayer())
-
-	if (tx) and (ty) and (tz) then
-		local node = findNodeClosestToPoint(vehicleNodes, x, y, z)
-		if (node~=startnode) then
-			local route = calculatePathByCoords(tx, ty, tz, x, y, z)
-			
-			if (route) then
-				triggerEvent("drawGPS", getLocalPlayer(), route)
-			end
-		end
+	if (button=="left")  then
+		tx, ty, tz = convert2DMapCoordToWorld(absx, absy)
+		
+		local x, y, z = getElementPosition(localPlayer)
+		local route = calculatePathByCoords(tx, ty, tz, x, y, z)
+		
+		triggerEvent("drawGPS", localPlayer, route, tx, ty, tz)
+		
+		hideGUI()
+	else
+		resetRoute()
+		hideGUI()
 	end
 end
---setTimer(updateRoute, 1000, 0)
 
 function convert2DMapCoordToWorld(relX, relY)
 	local scrWidth, scrHeight = guiGetScreenSize()

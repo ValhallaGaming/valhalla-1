@@ -1423,9 +1423,9 @@ function showCharacterUI(accounts, firstTime)
 	guiSetFont(lCreateName, "default-bold-small")
 	
 	addEventHandler("onClientGUIClick", lCreateFakepane, selectedCharacter)
-	addEventHandler("onClientGUIClick", lCreateBG, selectedCharacter)
-	addEventHandler("onClientGUIClick", lCreateName, selectedCharacter)
-	addEventHandler("onClientGUIClick", lCreateImage, selectedCharacter)
+	--addEventHandler("onClientGUIClick", lCreateBG, selectedCharacter)
+	--addEventHandler("onClientGUIClick", lCreateName, selectedCharacter)
+	--addEventHandler("onClientGUIClick", lCreateImage, selectedCharacter)
 	
 	addEventHandler("onClientGUIDoubleClick", lCreateFakepane, dcselectedCharacter)
 	addEventHandler("onClientGUIDoubleClick", lCreateBG, dcselectedCharacter)

@@ -1960,6 +1960,10 @@ function warnPlayer(thePlayer, commandName, targetPlayer)
 				if (warns>=3) then
 					banPlayer(targetPlayer, true, false, false, thePlayer, "Received 3 admin warnings.", 0)
 					outputChatBox("AdmWarn: " .. targetPlayerName .. " was banned for several admin warnings.", getRootElement(), 255, 0, 51)
+					
+					local accountID = getElementData(targetPlayer, "gameaccountid")
+					local query = mysql_query(handler, "UPDATE accounts SET banned='1', banned_reason='3 Admin Warnings', banned_by='Warn System' WHERE id='" .. accountID .. "'")
+					mysql_free_result(query)
 				end
 			end
 		end

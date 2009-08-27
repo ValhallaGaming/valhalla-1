@@ -106,7 +106,7 @@ function useItem(itemSlot, additional)
 			exports.global:sendLocalMeAction(source, "eats a sandwich.")
 			takeItemFromSlot(source, itemSlot)
 		elseif (itemID==9) then -- sprunk
-			giveHealth(player, 30)
+			giveHealth(source, 30)
 			exports.global:applyAnimation(source, "VENDING", "VEND_Drink_P", 4000, false, true, true)
 			toggleAllControls(source, true, true, true)
 			exports.global:sendLocalMeAction(source, "drinks a sprunk.")

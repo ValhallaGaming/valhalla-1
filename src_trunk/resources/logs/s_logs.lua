@@ -17,7 +17,7 @@ function logMessage(message, type)
 	
 	if (partialname == nil) then return end
 	
-	filename = "/logs/" .. partialname .. "-" .. time.monthday .. "-" .. time.month+1 .. "-" .. time.year+1900 .. ".log"
+	filename = "/logs/" .. partialname .. ".log"
 	local file = createFileIfNotExists(filename)
 	local size = fileGetSize(file)
 	fileSetPos(file, size)

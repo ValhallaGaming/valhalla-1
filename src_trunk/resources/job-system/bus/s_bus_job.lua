@@ -115,7 +115,7 @@ function createBusBlips( )
 		for pointID, point in ipairs( route.points ) do
 			if point[4] and #route.points ~= pointID then
 				local stop = #blips[routeID]+1
-				blips[routeID][stop] = createBlip( point[1], point[2], point[3], 0, 2, 255, 63, 63, 127, -5, 65 )
+				blips[routeID][stop] = createBlip( point[1], point[2], point[3], 0, 1, 255, 63, 63, 127, -5, 65 )
 				drivers[routeID][stop] = {}
 			end
 		end

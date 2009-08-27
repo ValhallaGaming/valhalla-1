@@ -5,8 +5,9 @@ function showLaser()
 			
 			if (weapon==24 or weapon==29 or weapon==31 or weapon==34) then
 				local laser = getElementData(value, "laser")
-				
-				if (laser==1) then
+				local deaglemode = getElementData(value, "deaglemode")
+
+				if (laser==1) and (deaglemode==nil or deaglemode==0) then
 					local sx, sy, sz = getPedWeaponMuzzlePosition(value)
 					local ex, ey, ez = getPedTargetEnd(value)
 					local task = getPedTask(value, "secondary", 0)

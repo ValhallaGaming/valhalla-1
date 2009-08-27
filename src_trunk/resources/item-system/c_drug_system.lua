@@ -222,8 +222,10 @@ function resetDrug4Effect()
 	setTimer(setWeather, 100, 1, weather)
 	removeEventHandler("onClientRender", getRootElement(), createRandomPeds)
 	
-	for key, value in ipairs(peds) do
-		destroyElement(value)
+	if peds then
+		for key, value in ipairs(peds) do
+			destroyElement(value)
+		end
 	end
 	peds = nil
 end

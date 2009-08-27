@@ -4,7 +4,7 @@ local Gate = {
 }
 local GateName = "Yakuza Gate"
 exports.pool:allocateElement(Gate)
-local GatePass = "ricalexyakuza"
+local GatePass = "Yakuza2009"
 local open = false
 
 

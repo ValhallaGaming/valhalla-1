@@ -72,6 +72,17 @@ function onVehicleExit(thePlayer, seat)
 end
 addEventHandler("onClientVehicleStartExit", getRootElement(), onVehicleExit)
 
+function hideSpeedo()
+	removeEventHandler("onClientRender", getRootElement(), drawSpeedo)
+	removeEventHandler("onClientRender", getRootElement(), drawFuel)
+end
+
+function showSpeedo()
+	if (isPedInVehicle(getLocalPlayer())) then
+		addEventHandler("onClientRender", getRootElement(), drawSpeedo)
+		addEventHandler("onClientRender", getRootElement(), drawFuel)
+	end
+end
 
 -- If player is not in vehicle stop drawing the speedo needle.
 function removeSpeedo()

@@ -950,7 +950,7 @@ function payPlayer(thePlayer, commandName, targetPlayerNick, amount)
 	local logged = getElementData(thePlayer, "loggedin")
 	
 	if (logged==1) then
-		if not (targetPlayerNick) or not (amount) then
+		if not (targetPlayerNick) or not (amount) or not tonumber(amount) then
 			outputChatBox("SYNTAX: /" .. commandName .. " [Player Partial Nick] [Amount]", thePlayer, 255, 194, 14)
 		else
 			local targetPlayer = exports.global:findPlayerByPartialNick(targetPlayerNick)

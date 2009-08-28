@@ -318,6 +318,7 @@ function getItemsForSale(shop_type, race, gender)
 			{"MP3 Player", "A white, sleek looking MP3 Player. The brand reads EyePod.", "120", 19, 1,1,false,7},
 			{"Chemistry Set", "A small chemistry set.", "2000", 44, 1,1,false,15},
 			{"Safe", "A Safe to store your items in.", "300", 60, 1,1,false,0}
+			{"GPS", "A GPS Satnav for a car.", "300", 20, 1,1,false,0}
 		}
 	-- alcohol shop
 	elseif(shop_type == 9) then

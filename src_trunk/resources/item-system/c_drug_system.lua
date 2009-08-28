@@ -18,10 +18,10 @@ function showChemistrySet()
 			if items then
 				for slot, item in ipairs(items) do
 					if item and item[1] >= 30 and item[1] <= 33 then
-						chemItems[i] = { }
-						chemItems[i][1] = getItemName(item[1])
-						chemItems[i][2] = item[1]
-						chemItems[i][3] = slot
+						chemItems[slot] = { }
+						chemItems[slot][1] = getItemName(item[1])
+						chemItems[slot][2] = item[1]
+						chemItems[slot][3] = slot
 					end
 				end
 			end

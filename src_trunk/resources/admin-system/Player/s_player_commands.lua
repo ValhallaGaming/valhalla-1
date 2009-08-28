@@ -184,6 +184,18 @@ function adminUncuff(thePlayer, commandName, targetPlayer)
 end
 addCommandHandler("auncuff", adminUncuff, false, false)
 
+function infoDisplay(thePlayer)
+	outputDebugString("HIT")
+	if (exports.global:isPlayerAdmin(thePlayer)) then
+		outputDebugString("HIT")
+		outputChatBox("---[        Useful Information        ]---", getRootElement(), 255, 194, 15)
+		outputChatBox("---[ Ventrilo: 72.37.247.172 Port 3797", getRootElement(), 255, 194, 15)
+		outputChatBox("---[ Forums: www.ValhallaGaming.net/forums", getRootElement(), 255, 194, 15)
+		outputChatBox("---[ IRC: irc.multitheftauto.com #Valhalla", getRootElement(), 255, 194, 15)
+	end
+end
+addCommandHandler("vginfo", infoDisplay)
+
 function adminUnblindfold(thePlayer, commandName, targetPlayer)
 	if (exports.global:isPlayerAdmin(thePlayer)) then
 		if not (targetPlayer) then

@@ -158,7 +158,7 @@ function spawnCharacter(charname)
 	
 	local safecharname = mysql_escape_string(handler, charname)
 	
-	local result = mysql_query(handler, "SELECT id, x, y, z, rotation, interior_id, dimension_id, health, armor, skin, money, faction_id, cuffed, radiochannel, masked, duty, cellnumber, fightstyle, pdjail, pdjail_time, job, casualskin, weapons, ammo, items, itemvalues, car_license, gun_license, bankmoney, fingerprint, tag, hoursplayed, pdjail_station, timeinserver, restrainedobj, restrainedby, faction_rank, dutyskin, phoneoff, blindfold FROM characters WHERE charactername='" .. charname .. "' AND account='" .. id .. "'")
+	local result = mysql_query(handler, "SELECT id, x, y, z, rotation, interior_id, dimension_id, health, armor, skin, money, faction_id, cuffed, radiochannel, masked, duty, cellnumber, fightstyle, pdjail, pdjail_time, job, casualskin, weapons, ammo, items, itemvalues, car_license, gun_license, bankmoney, fingerprint, tag, hoursplayed, pdjail_station, timeinserver, restrainedobj, restrainedby, faction_rank, dutyskin, phoneoff, blindfold, lang1, lang1skill, lang2, lang2skill, lang3, lang3skill FROM characters WHERE charactername='" .. charname .. "' AND account='" .. id .. "'")
 	
 	if (result) then
 		local id = mysql_result(result, 1, 1)
@@ -212,6 +212,30 @@ function spawnCharacter(charname)
 		local dutyskin = tonumber(mysql_result(result, 1, 38))
 		local phoneoff = tonumber(mysql_result(result, 1, 39))
 		local blindfold = tonumber(mysql_result(result, 1, 40))
+		
+		-- LANGUAGES
+		local lang1 = tonumber(mysql_result(result, 1, 41))
+		local lang1skill = tonumber(mysql_result(result, 1, 42))
+		local lang2 = tonumber(mysql_result(result, 1, 43))
+		local lang2skill = tonumber(mysql_result(result, 1, 44))
+		local lang3 = tonumber(mysql_result(result, 1, 45))
+		local lang3skill = tonumber(mysql_result(result, 1, 46))
+		
+		if ( lang1 > 0 ) then
+			setElementData(source, "languages.lang1", lang1)
+			setElementData(source, "languages.lang1skill", lang1skill)
+		end
+		
+		if ( lang2 > 0 ) then
+			setElementData(source, "languages.lang2", lang1)
+			setElementData(source, "languages.lang2skill", lang1skill)
+		end
+		
+		if ( lang3 > 0 ) then
+			setElementData(source, "languages.lang3", lang1)
+			setElementData(source, "languages.lang3skill", lang1skill)
+		end
+		-- END OF LANGUAGES
 		
 		setElementData(source, "timeinserver", timeinserver)
 		

@@ -19,6 +19,7 @@ function useItem(itemSlot, additional)
 	local items = getItems(source)
 	local itemID = items[itemSlot][1]
 	local itemValue = items[itemSlot][2]
+	local itemName = getItemName( itemID )
 	if isPedDead(source) then return end
 	if itemID then
 		if (itemID==1) then -- haggis

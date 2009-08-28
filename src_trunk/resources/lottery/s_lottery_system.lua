@@ -65,22 +65,34 @@ function giveTicket(aPlayer)
 end
 
 function drawLottery()
-	local drawNumbers = tostring(math.random(1000, 9999))
-	local result = mysql_query(handler, "SELECT characterid FROM lottery WHERE ticketnumber ='" .. drawNumbers .. "'")
+	local drawNumbers =  12345 -- tostring(math.random(1000, 9999))
+	local result = mysql_query(handler, "SELECT characterid, c.charactername FROM lottery l LEFT JOIN characters c ON l.characterid = c.id  WHERE ticketnumber = " .. drawNumbers)
 	if (mysql_num_rows(result) ~= 0) then
-		local playername = mysql_result(mysql_query(handler, "SELECT charactername FROM characters WHERE id='" .. mysql_result(result,1,1) .. "'"),1,1)
-		local bankmoney = getElementData(getPlayerFromName(playername), "bankmoney")
-		local jackpot = mysql_query(handler, "SELECT ammount FROM lotteryjackpot")
-		setElementData(getPlayerFromName(playername), "bankmoney", bankmoney+ tonumber(mysql_result(jackpot,1,1)))
-		mysql_query(handler, "TRUNCATE TABLE lottery")
-		mysql_free_result(mysql_query(handler, "INSERT INTO wiretransfers (`from`, `to`, `amount`, `reason`, `type`) VALUES (0, " .. mysql_result(result,1,1) .. ", " .. mysql_result(jackpot,1,1) .. ", 'Won lottery', 3)"))
+		local query = mysql_query(handler, "SELECT ammount FROM lotteryjackpot")
+		local jackpot = tonumber(mysql_result(query, 1, 1))
+		mysql_free_result(query)
+		
+		local charid = tonumber(mysql_result(result, 1, 1))
+		local charname = mysql_result(result, 1, 2)
+		
+		local player = getPlayerFromName(charname)
+		if player then
+			local bankmoney = getElementData(player, "bankmoney")
+			setElementData(player, "bankmoney", bankmoney+jackpot)
+		else
+			local query = mysql_query(handler, "UPDATE characters SET bankmoney=bankmoney+" .. jackpot .. " WHERE id=" .. charid)
+			mysql_free_result(query)
+		end
+		mysql_free_result(mysql_query(handler, "INSERT INTO wiretransfers (`from`, `to`, `amount`, `reason`, `type`) VALUES (0, " .. charid .. ", " .. jackpot .. ", 'Won lottery', 3)"))
 		mysql_free_result(mysql_query(handler, "UPDATE lotteryjackpot SET ammount='0'"))
-		mysql_free_result(jackpot)
-		outputChatBox("The winner of the lottery is: " .. playername .. "! Congratulations, the money will be transfered to your account.")
+		outputChatBox("* [LOTTERY] The winner of the lottery is: " .. charname:gsub("_", " ") .. "! The Jackpot of $" .. jackpot .. " will be transfered to his/her account.", getRootElement(), 0, 255, 0)
 	else
-		mysql_query(handler, "TRUNCATE TABLE lottery")
-		outputChatBox("Nobody wins. The jackpot has been accumulated.")
+		outputChatBox("* [LOTTERY] Nobody wins. The jackpot has been accumulated.", getRootElement(), 255, 255, 0)
 	end
 	drawTimer2 = setTimer ( drawLottery, 86400000, 1 )
 	mysql_free_result(result)
+	
+	mysql_free_result( mysql_query(handler, "TRUNCATE TABLE lottery") )
 end
+
+addCommandHandler( "forcedrawlottery", function( thePlayer ) if exports.global:isPlayerLeadAdmin( thePlayer ) then drawLottery() end end )

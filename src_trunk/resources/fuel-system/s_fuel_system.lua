@@ -165,6 +165,7 @@ function loadFuelPoints(res)
 end
 addEventHandler("onResourceStart", getResourceRootElement(), loadFuelPoints)
 
+local vehiclesFueling = { }
 function fillVehicle(thePlayer, commandName)
 	if not (isPedInVehicle(thePlayer)) then
 		outputChatBox("You are not in a vehicle.", thePlayer, 255, 0, 0)
@@ -185,9 +186,11 @@ function fillVehicle(thePlayer, commandName)
 		if (colShape) then
 			local veh = getPedOccupiedVehicle(thePlayer)
 			local currFuel = tonumber(getElementData(veh, "fuel"))
-
+			outputDebugString(tostring(vehiclesFueling[veh]))
 			if (math.ceil(currFuel)==MAX_FUEL) then
-				outputChatBox("This vehicle is already full.", thePlayer)
+				outputChatBox("This vehicle is already full.", thePlayer, 255, 0, 0)
+			elseif (vehiclesFueling[veh] ~= nil) then
+				outputChatBox("You are already filling this vehicle.", thePlayer, 255, 0, 0)
 			else
 				local faction = getPlayerTeam(thePlayer)
 				local ftype = getElementData(faction, "type")
@@ -210,10 +213,12 @@ function fillVehicle(thePlayer, commandName)
 					if (litresAffordable==0) then
 						outputChatBox("You cannot afford any fuel.", thePlayer, 255, 0, 0)
 					else
+						vehiclesFueling[veh] = true
 						outputChatBox("Refilling Vehicle...", thePlayer)
 						setTimer(fuelTheVehicle, 5000, 1, thePlayer, veh, colShape, litresAffordable, false)
 					end
 				else
+					vehiclesFueling[veh] = true
 					outputChatBox("Refilling Vehicle...", thePlayer)
 					
 					litresAffordable = 100
@@ -300,7 +305,7 @@ addCommandHandler("fillcan", fillCan)
 
 function fuelTheVehicle(thePlayer, theVehicle, theShape, theLitres, free)
 	local colShape = nil
-		
+	
 	for key, value in ipairs(exports.pool:getPoolElementsByType("colshape")) do
 		local shapeType = getElementData(value, "type")
 		if (shapeType) then
@@ -311,6 +316,7 @@ function fuelTheVehicle(thePlayer, theVehicle, theShape, theLitres, free)
 			end
 		end
 	end
+	
 	
 	-- Check the player didn't move
 	if (colShape) then
@@ -327,7 +333,7 @@ function fuelTheVehicle(thePlayer, theVehicle, theShape, theLitres, free)
 			local oldFuel = getElementData(theVehicle, "fuel")
 			local newFuel = oldFuel+theLitres
 			setElementData(theVehicle, "fuel", newFuel)
-			triggerClientEvent(thePlayer, "setClientFuel", thePlayer, newFuel)
+			--triggerClientEvent(thePlayer, "setClientFuel", thePlayer, newFuel)
 			
 			outputChatBox("Gas Station Receipt:", thePlayer)
 			outputChatBox("    " .. math.ceil(theLitres) .. " Litres of petrol    -    " .. fuelCost .. "$", thePlayer)
@@ -337,6 +343,7 @@ function fuelTheVehicle(thePlayer, theVehicle, theShape, theLitres, free)
 	else
 		outputChatBox("Don't want my fuel?", thePlayer)
 	end
+	vehiclesFueling[theVehicle] = nil
 end
 
 function delFuelPoint(thePlayer, commandName)

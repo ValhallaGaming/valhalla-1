@@ -456,19 +456,19 @@ function useItem(button)
 				outputChatBox("Use the - and = keys to use the MP3 Player.", 255, 194, 14)
 				return
 			elseif (itemID==27) then -- Flashbang
-				local x, y, z = getElementPosition(source)
-				local rot = getPedRotation(source)
+				local x, y, z = getElementPosition(getLocalPlayer( ))
+				local rot = getPedRotation(getLocalPlayer( ))
 				x = x + math.sin(math.rad(-rot)) * 10
 				y = y + math.cos(math.rad(-rot)) * 10
 				z = getGroundPosition(x, y, z + 2)
 				additional = { x, y, z }
 			elseif (itemID==28 or itemID==54) then -- Glowstick or Ghettoblaster
-				local x, y, z = getElementPosition(source)
-				local rot = getPedRotation(source)
-				x = x + math.sin(math.rad(-rot)) * 10
-				y = y + math.cos(math.rad(-rot)) * 10
-				z = getGroundPosition(x, y, z + 2)
-				additional = { x, y, z }
+				local x, y, z = getElementPosition(getLocalPlayer( ))
+				local rot = getPedRotation(getLocalPlayer( ))
+				x = x + math.sin(math.rad(-rot)) * 2
+				y = y + math.cos(math.rad(-rot)) * 2
+				z = getGroundPosition(x, y, z)
+				additional = { x, y, z - 0.5 }
 			elseif (itemID==30) or (itemID==31) or (itemID==32) or (itemID==33) then
 				outputChatBox("Use the chemistry set purchasable from 24/7 to use this item.", 255, 0, 0)
 				return
@@ -514,7 +514,7 @@ function useItem(button)
 			elseif (itemID==50) or (itemID==51) or (itemID==52) then
 				hideInventory()
 			elseif (itemID==53) then -- Breathalizer
-				outputChatBox("Use /breathtest to use this item.", source, 255, 194, 15)
+				outputChatBox("Use /breathtest to use this item.", 255, 194, 15)
 				return
 			elseif (itemID==57) then -- FUEL CAN
 				hideInventory()

@@ -269,8 +269,8 @@ function cfriskPlayer(button, state, x, y)
 					end
 				end
 				
-				--bFriskTakeItem = guiCreateButton(0.05, 0.85, 0.45, 0.1, "Take Item", true, wFriskItems)
-				--addEventHandler("onClientGUIClick", bFriskTakeItem, takePlayerItem, false)
+				bFriskTakeItem = guiCreateButton(0.05, 0.85, 0.45, 0.1, "Take Item", true, wFriskItems)
+				addEventHandler("onClientGUIClick", bFriskTakeItem, takePlayerItem, false)
 				
 				bFriskClose = guiCreateButton(0.5, 0.85, 0.45, 0.1, "Close", true, wFriskItems)
 				addEventHandler("onClientGUIClick", bFriskClose, hidePlayerMenu, false)
@@ -317,6 +317,7 @@ function takePlayerItem(button, state, x, y)
 					outputChatBox("You already have one of this item, this item is Unique.", 255, 0, 0)
 				else
 					local weaponAmmo = getPedAmmoInClip(player, getSlotFromWeapon(weaponID)) * 5
+
 					guiGridListRemoveRow(gFriskItems, row)
 					triggerServerEvent("friskTakePlayerWeapon", getLocalPlayer(), player, weaponID, weaponAmmo)
 				end

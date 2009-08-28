@@ -74,7 +74,7 @@ function createInterior(thePlayer, commandName, interiorId, inttype, cost, ...)
 				if (query) then
 					local id = mysql_insert_id(handler) -- Get the ID of the latest insert
 					mysql_free_result(query)
-					reloadOneInterior(id, false)
+					reloadOneInterior(id, false, false)
 				else
 					outputChatBox("Failed to create interior - Invalid characters used in name of the interior.", thePlayer, 255, 0, 0)
 				end
@@ -457,7 +457,9 @@ function reloadOneInterior(id, hasCoroutine, displayircmessage)
 				
 				local intpickup = createPickup(ix, iy, iz, 3, 1318)
 				exports.pool:allocateElement(intpickup)
-				coroutine.yield()
+				if (hasCoroutine) then
+					coroutine.yield()
+				end
 				setPickupElementData(pickup, id, ix, iy, iz, optAngle, interior, locked, owner, inttype, cost, name, max_items, tennant, rentable, rent, interiorwithin, x, y, z, dimension, money)
 				setIntPickupElementData(intpickup, id, x, y, z, rot, locked, owner, inttype, interiorwithin, dimension, interior, ix, iy, iz)
 			-- if it is a gov building
@@ -633,7 +635,6 @@ addEventHandler("onResourceStart", getResourceRootElement(), bindKeys)
 addEventHandler("onPlayerJoin", getRootElement(), bindKeysOnJoin)
 
 function hitInteriorPickup(thePlayer)
-
 	local pickuptype = getElementData(source, "type")
 
 	if (pickuptype=="interior") or (pickuptype=="interiorexit") then

@@ -553,8 +553,13 @@ function dropItem(itemID, x, y, z, ammo, keepammo)
 			
 			-- Dropped his backpack
 			if itemID == 48 then
-				while #getItems(source) > 10 do
-					moveItem( source, obj, 11 )
+				local count = #getItems(source)
+				while count > 10 do
+					local moved = moveItem( source, obj, 11 )
+					
+					if not moved then
+						count = count - 1
+					end
 				end
 			end
 			takeItemFromSlot( source, itemSlot )

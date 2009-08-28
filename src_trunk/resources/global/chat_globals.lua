@@ -74,7 +74,6 @@ function sendLocalMeAction(thePlayer, message)
 	
 	destroyElement(chatSphere)
 	
-	outputDebugString("[IC OOC: ME ACTION] *" .. playerName .. " " .. message)
 
 	for index, nearbyPlayer in ipairs(nearbyPlayers) do
 		local logged = getElementData(nearbyPlayer, "loggedin")

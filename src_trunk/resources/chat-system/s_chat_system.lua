@@ -28,7 +28,6 @@ addEventHandler("onResourceStop", getResourceRootElement(getThisResource()), clo
 function trunklateText(thePlayer, text, factor)
 	if getElementData(thePlayer,"alcohollevel") and getElementData(thePlayer,"alcohollevel") > 0 then
 		local level = math.ceil( getElementData(thePlayer,"alcohollevel") * #text / ( factor or 5.5 ) )
-		outputDebugString( tostring( level ) )
 		for i = 1, level do
 			x = math.random( 1, #text )
 			-- dont replace spaces

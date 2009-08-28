@@ -22,23 +22,56 @@ local minBound = 0.1*g_screenY
 addEvent ( "drawGPS", true )
 route = {}
 targetx, targety, targetz = nil
+vehicle = nil
+vehiclerot = nil
+vehicleoffset = nil
 
-function drawGPS ( newroute, tx, ty, tz )
+function drawGPS ( newroute, tx, ty, tz, nvehicle )
 	route = newroute
 	
-	if (tx) then	targetx = tx	end
-	if (ty) then	targety = ty	end
-	if (tz) then	targetz = tz	end
+	targetx = tx
+	targety = ty
+	targetz = tz
+	
+	soundPlayed = false
+	
+	vehicle = nvehicle
 end
 addEventHandler ( "drawGPS", getRootElement(), drawGPS )
 
+function getVehicleOffset(pos)
+	local m = getElementMatrix ( vehicle )
+	
+	-- Substract the vehicle position from the player position
+	pos[1] = pos[1]-m[4][1]
+	pos[2] = pos[2]-m[4][2]
+	pos[3] = pos[3]-m[4][3]
+	
+	-- Multiply the offsetted player position by the inverse vehicle rotation matrix
+	local newPos = {}
+	newPos[1] = pos[1] * m[1][1] + pos[2] * m[1][2] + pos[3] * m[1][3]
+	--newPos[2] = pos[1] * m[2][1] + pos[2] * m[2][2] + pos[3] * m[2][3] We don't need the Y component (remove the comment to use for in front - in back
+	--newPos[3] = pos[1] * m[3][1] + pos[2] * m[3][2] + pos[3] * m[3][3] We don't need the Z component
+	
+	if ( newPos[1] > 0 ) then
+		return 0 -- right
+	elseif ( newPos[1] < 0 ) then
+		return 1 -- left
+	else
+		return 0 -- aligned
+	end
+end
+local soundPlayer = false
+
 function recalcRoute()
 	local x, y, z = getElementPosition(localPlayer)
-
+	
+	--soundPlayed = false
+	
 	local newroute = calculatePathByCoords(targetx, targety, targetz, x, y, z)
 	
 	if ( newroute ) then
-		drawGPS ( newroute )
+		drawGPS ( newroute, targetx, targety, targetz, vehicle )
 	end
 end
 
@@ -48,6 +81,17 @@ addEventHandler ( "onClientRender", getRootElement(),
 			for k,node in ipairs(route) do
 				local bDraw = true
 				
+				if (#route==1) then -- reached our destination
+					drawGPS(nil, nil, nil, nil, nil)
+					
+					if (vehicleoffset==0) then
+						outputChatBox("GPS: Arriving at destination on Right", 255, 194, 15)
+					else
+						outputChatBox("GPS: Arriving at destination on Right", 255, 194, 15)
+					end
+					return
+				end
+				
 				if (k==#route) then
 					local px, py, pz = getElementPosition(getLocalPlayer())
 					distance = getDistanceBetweenPoints2D(px, py, node.x, node.y)
@@ -55,9 +99,41 @@ addEventHandler ( "onClientRender", getRootElement(),
 					if (distance<10) then
 						bDraw = false
 						table.remove(route, k) -- pop this one off the route
+						--soundPlayed = false
 					elseif (distance>50) then
 						bDraw = false
 						recalcRoute()
+						--soundPlayed = false
+					end
+				end
+			
+				vx, vy, vz = getVehicleRotation(vehicle)
+				local x = node.x
+				local y =  node.y
+				local pos = { x, y, 0 }
+				vehicleoffset = getVehicleOffset(pos)
+				
+				
+				if (vehiclerot) then
+					if ( vz >= vehiclerot + 80  and vehicleoffset==0) then
+						soundPlayed = false
+						vehiclerot = vz
+					elseif ( vz <= vehiclerot - 80  and vehicleoffset==1) then
+						soudPlayed = false
+						vehiclerot = vz
+					end
+				end
+			
+				if not (soundPlayed) then
+					soundPlayed = true
+					
+					vehiclerot = vz
+					if (vehicleoffset==0) then -- RIGHT
+						playSound("Right.wav")
+					elseif (vehicleoffset==1) then
+						playSound("Left.wav")
+					else
+						soundPlayed = false
 					end
 				end
 			

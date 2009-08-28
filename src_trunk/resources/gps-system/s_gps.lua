@@ -19,7 +19,7 @@ function showGPS(player)
 
 	if (vehicle) then -- In vehicle
 		if (exports.global:hasItem(vehicle, 67, nil)) then -- has GPS?
-			triggerClientEvent(player, "displayGPS", player)
+			triggerClientEvent(player, "displayGPS", vehicle)
 		end
 	end
 end

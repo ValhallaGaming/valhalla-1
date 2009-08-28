@@ -1,8 +1,11 @@
 local localPlayer = getLocalPlayer()
 local iMap = nil
 local helpLabel = nil
+local vehicle = nil
+local seat = nil
 
 function displayGPS()
+	vehicle = source
 	if (iMap) then
 		hideGUI()
 	else
@@ -15,14 +18,28 @@ addEventHandler("displayGPS", getRootElement(), displayGPS)
 function hideGUI()
 	showCursor(false)
 	
-	destroyElement(iMap)
+	if (isElement(iMap)) then
+		destroyElement(iMap)
+	end
 	iMap = nil
 	
-	destroyElement(helpLabel)
+	if (isElement(helpLabel)) then
+		destroyElement(helpLabel)
+	end
 	helpLabel = nil
+	
+	vehicle = nil
 	
 	call(getResourceFromName("realism-system"), "showSpeedo")
 end
+
+function onVehicleEnter(player, nseat)
+	if (player==localPlayer) then
+		vehicle = source
+		seat = nseat
+	end
+end
+addEventHandler("onClientVehicleEnter", getRootElement(), onVehicleEnter)
 
 function showGUI()
 	resetRoute()
@@ -47,13 +64,14 @@ function showGUI()
 end
 
 function resetRoute()
-	triggerEvent("drawGPS", localPlayer, nil, nil, nil, nil)
+	triggerEvent("drawGPS", localPlayer, nil, nil, nil, nil, nil)
 end
 
 
 function resetRouteOnExit(player)
 	if (player==localPlayer) then
 		resetRoute()
+		hideGUI()
 	end
 end
 addEventHandler("onClientVehicleExit", getRootElement(), resetRouteOnExit)
@@ -65,7 +83,7 @@ function calculateRouteOnClick(button, state, absx, absy)
 		local x, y, z = getElementPosition(localPlayer)
 		local route = calculatePathByCoords(tx, ty, tz, x, y, z)
 		
-		triggerEvent("drawGPS", localPlayer, route, tx, ty, tz)
+		triggerEvent("drawGPS", localPlayer, route, tx, ty, tz, vehicle)
 		
 		hideGUI()
 	else

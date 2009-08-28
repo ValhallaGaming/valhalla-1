@@ -10,4 +10,7 @@
 	<script src="c_gps.lua" type="client" />
 	<script src="s_gps.lua" type="server" />
 	<file src="map.jpg"/>
+	
+	<file src="Left.wav"/>
+	<file src="Right.wav"/>
 </meta>

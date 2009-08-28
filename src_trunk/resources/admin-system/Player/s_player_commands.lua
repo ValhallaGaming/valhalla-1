@@ -185,9 +185,7 @@ end
 addCommandHandler("auncuff", adminUncuff, false, false)
 
 function infoDisplay(thePlayer)
-	outputDebugString("HIT")
 	if (exports.global:isPlayerAdmin(thePlayer)) then
-		outputDebugString("HIT")
 		outputChatBox("---[        Useful Information        ]---", getRootElement(), 255, 194, 15)
 		outputChatBox("---[ Ventrilo: 72.37.247.172 Port 3797", getRootElement(), 255, 194, 15)
 		outputChatBox("---[ Forums: www.ValhallaGaming.net/forums", getRootElement(), 255, 194, 15)

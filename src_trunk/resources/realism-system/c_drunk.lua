@@ -7,7 +7,7 @@ local delayedKeys = {
 
 function delayedKeyPress( key, state )
 	local time = math.max( 50, math.floor( alcohollevel * 2500 ) )
-	outputDebugString("Drunk: " .. tostring(time) .. " " .. key .. " " .. state)
+	--outputDebugString("Drunk: " .. tostring(time) .. " " .. key .. " " .. state)
 
 	setTimer( setControlState, time, 1, key, ( state == "down" ))
 end

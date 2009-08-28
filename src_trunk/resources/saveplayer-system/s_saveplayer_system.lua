@@ -148,7 +148,7 @@ function savePlayer(reason, player)
 			mysql_free_result(update2)
 		end
 		
-		outputDebugString("Saved player '" .. getPlayerName(source) .. "' [" .. reason .. "].")
+		--outputDebugString("Saved player '" .. getPlayerName(source) .. "' [" .. reason .. "].")
 	end
 end
 addEventHandler("onPlayerQuit", getRootElement(), savePlayer)

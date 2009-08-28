@@ -64,7 +64,7 @@ function acceptLicense(button, state)
 			
 			if (license>0) then
 				local money = getElementData(getLocalPlayer(), "money")
-				outputDebugString(tostring(licensecost))
+
 				if (money<licensecost) then
 					outputChatBox("You cannot afford this license.", 255, 0, 0)
 				else

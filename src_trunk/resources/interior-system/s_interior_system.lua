@@ -636,7 +636,7 @@ addEventHandler("onPlayerJoin", getRootElement(), bindKeysOnJoin)
 
 function hitInteriorPickup(thePlayer)
 	local pickuptype = getElementData(source, "type")
-
+	
 	if (pickuptype=="interior") or (pickuptype=="interiorexit") then
 		local pdimension = getElementDimension(thePlayer)
 		local idimension = getElementDimension(source)
@@ -745,7 +745,6 @@ function buyInterior(player, pickup, cost, isHouse, isRentable)
 		local money = tonumber(mysql_result(result, 1, 24))
 			
 		mysql_free_result(result)
-		
 		exports.global:takePlayerSafeMoney(player, cost)
 		
 		if (isHouse) then
@@ -759,15 +758,19 @@ function buyInterior(player, pickup, cost, isHouse, isRentable)
 			exports.global:givePlayerAchievement(player, 10)
 			exports.global:giveItem(player, 5, id)
 		end
-		
-		local pickup = createPickup(x, y, z, 3, 1318)
+		--[[
+		local pickup = createPickup(x+50, y+50, z, 3, 1318)
+		setElementData(pickup, "type", "interior")
+		setElementPosition(pickup, x, y, z)
 		local intpickup = createPickup(ix, iy, iz, 3, 1318)
 		exports.pool:allocateElement(pickup)
 		exports.pool:allocateElement(intpickup)
 
 		setPickupElementData(pickup, id, ix, iy, iz, optAngle, interior, locked, owner, inttype, cost, name, items, items_values, max_items, tennant, rentable, rent, interiorwithin, x, y, z, dimension, money)
 		setIntPickupElementData(intpickup, id, x, y, z, rot, locked, owner, inttype, interiorwithin, dimension, interior, ix, iy, iz)
-			
+		reloadOneInterior(tonumber(pickupid), false, false)
+		]]--
+		reloadOneInterior(tonumber(pickupid), false, false)
 		triggerClientEvent(player, "createBlipAtXY", player, inttype, ix, iy)
 			
 		playSoundFrontEnd(player, 20)

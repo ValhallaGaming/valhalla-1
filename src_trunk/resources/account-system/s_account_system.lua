@@ -152,6 +152,7 @@ addEventHandler("attemptRegister", getRootElement(), registerPlayer)
 addEvent("restoreJob", false)
 function spawnCharacter(charname)
 	exports.global:takeAllWeapons(source)
+	call(getResourceFromName("item-system"), "clearItems", source)
 	local id = getElementData(source, "gameaccountid")
 	charname = string.gsub(tostring(charname), " ", "_")
 	

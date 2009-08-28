@@ -180,15 +180,17 @@ addEventHandler( "itemResourceStarted", getRootElement( ), itemResourceStarted )
 
 -- clear all items for an element
 function clearItems( element )
-	while #saveditems[ element ] > 0 do
-		takeItemFromSlot( element, 1 )
-	end
-	
-	saveditems[ element ] = nil
-	notify( element )
+	if (saveditems[element] ~= nil) then
+		while #saveditems[ element ] > 0 do
+			takeItemFromSlot( element, 1 )
+		end
+		
+		saveditems[ element ] = nil
+		notify( element )
 
-	source = element
-	destroyInventory()
+		source = element
+		destroyInventory()
+	end
 end
 
 -- gives an item to an element

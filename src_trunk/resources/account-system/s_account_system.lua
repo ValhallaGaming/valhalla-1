@@ -234,10 +234,10 @@ function spawnCharacter(charname)
 					outputDebugString( mysql_error( handler ) )
 				end
 			else
-				call( getResourceFromName( "item-system" ), "loadItems", source )
+				call( getResourceFromName( "item-system" ), "loadItems", source, true )
 			end
 		else
-			call( getResourceFromName( "item-system" ), "loadItems", source )
+			call( getResourceFromName( "item-system" ), "loadItems", source, true )
 		end
 		
 		setElementData(source, "loggedin", 1)

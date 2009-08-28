@@ -521,6 +521,9 @@ function useItem(button)
 			elseif (itemID==61) then -- Emergency Light Becon
 				outputChatBox("Put it in your car inventory and press 'P' to toggle it.", 255, 194, 14)
 				return
+			elseif (itemID==67) then -- GPS
+				outputChatBox("Put it in your car inventory and Press 'F5'.", 255, 194, 14)
+				return
 			end
 			
 			triggerServerEvent("useItem", getLocalPlayer(), itemSlot, additional)

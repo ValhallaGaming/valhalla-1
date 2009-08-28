@@ -16,6 +16,7 @@ end
 
 local function dropWeaponFromGUI(ammo)
 	local ammo = math.min( _ammo, ammo )
+	
 	local keepammo = _ammo - ammo
 	if keepammo == 0 then
 		guiGridListRemoveRow(gWeapons, _row)
@@ -30,7 +31,7 @@ local function dropWeaponFromGUI(ammo)
 	
 	local z = getGroundPosition( x, y, z + 2 )
 	
-	triggerServerEvent("dropItem", getLocalPlayer(), _weapon, x, y, z, _ammo, keepammo)
+	triggerServerEvent("dropItem", getLocalPlayer(), _weapon, x, y, z, ammo, keepammo)
 
 	hideDropWeaponGUI()
 end

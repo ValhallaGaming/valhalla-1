@@ -131,6 +131,7 @@ function chatMain(message, messageType)
 			exports.irc:sendMessage("[IC: Local Chat] " .. playerName .. ": " .. message)
 			exports.logs:logMessage("[IC: Local Chat] " .. playerName .. ": " .. message, 1)
 			outputChatBox( "#EEEEEE" .. playerName .. " Says: " .. message, source, 255, 255, 255, true)
+			call(getResourceFromName("language-system"), "increaseLanguageSkill", source, language)
 			
 			for index, nearbyPlayer in ipairs(nearbyPlayers) do
 				local nearbyPlayerDimension = getElementDimension(nearbyPlayer)

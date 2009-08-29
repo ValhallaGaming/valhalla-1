@@ -212,14 +212,13 @@ function handleReport(reportedPlayer, reportedReason)
 	for key, value in ipairs(admins) do
 		local adminduty = getElementData(value, "adminduty")
 		if (adminduty==1) then
-			outputChatBox(" [-ADMIN REPORT-] (" .. playerID .. ") " .. tostring(getPlayerName(source)) .. " reported (" .. reportedID .. ") " .. tostring(getPlayerName(reportedPlayer)) .. " at " .. timestring .. ".", value, 0, 255, 255)
+			outputChatBox(" [-ADMIN REPORT-] (" .. playerID .. ") " .. tostring(getPlayerName(source)) .. " reported (" .. reportedID .. ") " .. tostring(getPlayerName(reportedPlayer)) .. " at " .. timestring .. ". (Report #" .. slot .. ")", value, 0, 255, 255)
 			local reason1 = reportedReason:sub( 0, 70 )
 			local reason2 = reportedReason:sub( 71 )
 			outputChatBox(" [-ADMIN REPORT-] Reason: " .. reason1, value, 0, 255, 255)
 			if reason2 and #reason2 > 0 then
 				outputChatBox(" [-ADMIN REPORT-] " .. reason2, value, 0, 255, 255)
 			end
-			outputChatBox(" [-ADMIN REPORT-] Type /ar " .. slot .. " to accept this report.", value, 0, 255, 255)
 		end
 		if getElementData(value, "hiddenadmin") ~= 1 then
 			count = count + 1
@@ -252,7 +251,6 @@ function alertPendingReport(id)
 				outputChatBox(" [-ADMIN REPORT-] - REPORT #" .. id .. " has still not been answered! -", value, 0, 255, 255)
 				outputChatBox(" [-ADMIN REPORT-] (" .. playerID .. ") " .. tostring(getPlayerName(reportingPlayer)) .. " reported (" .. reportedID .. ") " .. tostring(getPlayerName(reportedPlayer)) .. " at " .. timestring .. ".", value, 0, 255, 255)
 				outputChatBox(" [-ADMIN REPORT-] " .. "Reason: " .. tostring(reportedReason), value, 0, 255, 255)
-				outputChatBox(" [-ADMIN REPORT-] Type /ar " .. id .. " to accept this report.", value, 0, 255, 255)
 			end
 		end
 	end

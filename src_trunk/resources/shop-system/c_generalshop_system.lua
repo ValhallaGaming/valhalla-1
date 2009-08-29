@@ -244,8 +244,8 @@ function getItemsForSale(shop_type, race, gender)
 			{"Lottery Ticket", "A lottery ticket.","50", 68, 1,1, false,40},
 
 			-- Consumable
-			{"Sandwich", "A yummy sandwich with cheese.", "8", 8, 1,2,false,4},
-			{"Softdrink", "A can of coca cola.", "7", 9, 1,2,false,3}
+			{"Sandwich", "A yummy sandwich with cheese.", "6", 8, 1,2,false,2},
+			{"Softdrink", "A can of Sprunk.", "3", 9, 1,2,false,1}
 		}
 	-- gun shop
 	elseif(shop_type == 2) then
@@ -271,7 +271,7 @@ function getItemsForSale(shop_type, race, gender)
 			{"Haggis", "Freshly imported from Scotland", "5", 1, 1, 1, false,1},
 			
 			-- drinks
-			{"Softdrink", "A cold can of coca cola.", "2", 9, 1, 2, false,3},
+			{"Softdrink", "A cold can of Sprunk.", "3", 9, 1, 2, false,1},
 			{"Water", "A bottle of mineral water.", "1", 15, 1, 2, false,1}
 		}
 	-- sex shop
@@ -326,6 +326,7 @@ function getItemsForSale(shop_type, race, gender)
 			{"Ziebrand Beer","The finest beer, imported from Holland.", "10", 58, 1, 1, false, 2},		
 			{ "Bastradov Vodka", "For your best friends - Bastradov Vodka.", "25", 62, 1, 1, false, 5},
 			{ "Scottish Whiskey", "The Best Scottish Whiskey, now exclusively made from Haggis.", "15", 63, 1, 1, false, 4 }
+			{"Softdrink", "A cold can of Sprunk.", "3", 9, 1, 1, false,1}
 		}
 	end
 		

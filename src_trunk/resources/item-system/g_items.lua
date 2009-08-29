@@ -17,7 +17,7 @@ g_items = {
 	{ "Radio", "A black radio.", 7, 2351 },
 	{ "Phonebook", "A torn phonebook.", 5, 1271 },
 	{ "Sandwich", "A yummy sandwich with cheese.", 1, 1271 },
-	{ "Softdrink", "A can of sprunk.", 1, 2647 },
+	{ "Softdrink", "A can of Sprunk.", 1, 2647 },
 	{ "Dice", "A red dice with white dots.", 4, 1271 }, 
 	{ "Taco", "A greasy mexican taco.", 1, 1271 },
 	{ "Burger", "A double cheeseburger with bacon.", 1, 2663 },

@@ -125,12 +125,13 @@ function chatMain(message, messageType)
 			destroyElement(chatSphere)
 			message = string.gsub(message, "#%x%x%x%x%x%x", "") -- Remove colour codes
 			local language = getElementData(source, "languages.current")
+			local languagename = call(getResourceFromName("language-system"), "getLanguageName", language)
 			message = trunklateText( source, message )
 			
 			-- Show chat to console, for admins + log
 			exports.irc:sendMessage("[IC: Local Chat] " .. playerName .. ": " .. message)
 			exports.logs:logMessage("[IC: Local Chat] " .. playerName .. ": " .. message, 1)
-			outputChatBox( "#EEEEEE" .. playerName .. " Says: " .. message, source, 255, 255, 255, true)
+			outputChatBox( "#EEEEEE [" .. languagename .. "] " .. playerName .. " Says: " .. message, source, 255, 255, 255, true)
 			call(getResourceFromName("language-system"), "increaseLanguageSkill", source, language)
 			
 			for index, nearbyPlayer in ipairs(nearbyPlayers) do
@@ -150,15 +151,15 @@ function chatMain(message, messageType)
 						local nx, ny, nz = getElementPosition(nearbyPlayer)
 						local distance = getDistanceBetweenPoints3D(x, y, z, nx, ny, nz)
 						if distance < 4 then
-							outputChatBox( "#EEEEEE" .. playerName .. " Says: " .. message2, nearbyPlayer, 255, 255, 255, true)
+							outputChatBox( "#EEEEEE [" .. languagename .. "] " .. playerName .. " Says: " .. message2, nearbyPlayer, 255, 255, 255, true)
 						elseif distance < 8 then
-							outputChatBox( "#DDDDDD" .. playerName .. " Says: " .. message2, nearbyPlayer, 255, 255, 255, true)
+							outputChatBox( "#DDDDDD [" .. languagename .. "] " .. playerName .. " Says: " .. message2, nearbyPlayer, 255, 255, 255, true)
 						elseif distance < 12 then
-							outputChatBox( "#CCCCCC" .. playerName .. " Says: " .. message2, nearbyPlayer, 255, 255, 255, true)
+							outputChatBox( "#CCCCCC [" .. languagename .. "] " .. playerName .. " Says: " .. message2, nearbyPlayer, 255, 255, 255, true)
 						elseif distance < 16 then
-							outputChatBox( "#BBBBBB" .. playerName .. " Says: " .. message2, nearbyPlayer, 255, 255, 255, true)
+							outputChatBox( "#BBBBBB [" .. languagename .. "] " .. playerName .. " Says: " .. message2, nearbyPlayer, 255, 255, 255, true)
 						else
-							outputChatBox( "#AAAAAA" .. playerName .. " Says: " .. message2, nearbyPlayer, 255, 255, 255, true)
+							outputChatBox( "#AAAAAA [" .. languagename .. "] " .. playerName .. " Says: " .. message2, nearbyPlayer, 255, 255, 255, true)
 						end
 					end
 				end
@@ -197,30 +198,39 @@ function chatMain(message, messageType)
 			local theChannel = getElementData(source, "radiochannel")
 			if theChannel > 0 then
 				local username = string.gsub(getPlayerName(source), "_", " ")
+				local language = getElementData(source, "languages.current")
+				
+				-- get faction rank title
+				local result = mysql_query(handler, "SELECT faction_id, faction_rank FROM characters WHERE charactername='" .. getPlayerName(source) .. "' LIMIT 1")
+									
+				local factionID = tonumber(mysql_result(result, 1, 1))
+				local factionRank = tonumber(mysql_result(result, 1, 2))
+				mysql_free_result(result)
+									
+				local titleresult = mysql_query(handler, "SELECT rank_" .. factionRank .. " FROM factions WHERE id='" .. factionID .. "' LIMIT 1")
+				if not mysql_result(titleresult, 1, 1) then
+					factionRankTitle = ""
+				else
+					factionRankTitle = tostring(mysql_result(titleresult, 1, 1)) .. " - "
+				end
+				mysql_free_result(titleresult)
+				
+				
+				outputChatBox("[RADIO #" .. theChannel .. "] " .. factionRankTitle .. username .. " says: " .. message, source, 0, 102, 255)
+				message = call(getResourceFromName("language-system"), "applyLanguage", source, message, language)
+				call(getResourceFromName("language-system"), "increaseLanguageSkill", source, language)
 				message = trunklateText( source, message )
+				
+				
+				
 				for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
 					local targetChannel = getElementData(value, "radiochannel")
 					local logged = getElementData(source, "loggedin")
 					
-					if (logged==1) and (targetChannel) and (exports.global:hasItem(value, 6)) then
+					if (logged==1) and (targetChannel) and (exports.global:hasItem(value, 6)) and (value~=source) then
 						if (targetChannel==theChannel) then
 							playSoundFrontEnd(value, 47)
 							
-							-- get faction rank title
-							local result = mysql_query(handler, "SELECT faction_id, faction_rank FROM characters WHERE charactername='" .. getPlayerName(source) .. "' LIMIT 1")
-									
-							local factionID = tonumber(mysql_result(result, 1, 1))
-							local factionRank = tonumber(mysql_result(result, 1, 2))
-									
-							mysql_free_result(result)
-									
-							local titleresult = mysql_query(handler, "SELECT rank_" .. factionRank .. " FROM factions WHERE id='" .. factionID .. "' LIMIT 1")
-							if not mysql_result(titleresult, 1, 1) then
-								factionRankTitle = ""
-							else
-								factionRankTitle = tostring(mysql_result(titleresult, 1, 1)) .. " - "
-							end
-							mysql_free_result(titleresult)
 							
 							outputChatBox("[RADIO #" .. theChannel .. "] " .. factionRankTitle .. username .. " says: " .. trunklateText( value, message ), value, 0, 102, 255)
 							

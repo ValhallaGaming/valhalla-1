@@ -140,6 +140,8 @@ function savePlayer(reason, player)
 		local lang3 = getElementData(source, "languages.lang3")
 		local lang3skill = getElementData(source, "languages.lang3skill")
 		
+		local currentLanguage = getElementData(source, "languages.current")
+		
 		if not (lang1) then lang1 = 0 lang1skill = 0 end
 		if not (lang2) then lang2 = 0 lang2skill = 0 end
 		if not (lang3) then lang3 = 0 lang3skill = 0 end
@@ -151,7 +153,7 @@ function savePlayer(reason, player)
 			job = 0
 		end
 		
-		local update = mysql_query(handler, "UPDATE characters SET casualskin='" .. casualskin .. "', x='" .. x .. "', y='" .. y .. "', z='" .. z .. "', rotation='" .. rot .. "', health='" .. health .. "', armor='" .. armor .. "', skin='" .. skin .. "', dimension_id='" .. dimension .. "', interior_id='" .. interior .. "', money='" .. money .. "', cuffed='" .. cuffed .. "', radiochannel='" .. radiochannel .. "', duty='" .. duty .. "', fightstyle='" .. fightstyle .. "', yearday='" .. yearday .. "', year='" .. year .. "', lastarea='" .. zone .. "', bankmoney='" .. bankmoney .. "', tag='" .. tag .. "', hoursplayed='" .. hoursplayed .. "', timeinserver='" .. timeinserver .. "', restrainedobj='" .. restrainedobj .. "', restrainedby='" .. restrainedby .. "', dutyskin='" .. dutyskin .. "', job='" .. job .. "', blindfold='" .. blindfold .. "' WHERE charactername='" .. username .. "'")
+		local update = mysql_query(handler, "UPDATE characters SET casualskin='" .. casualskin .. "', x='" .. x .. "', y='" .. y .. "', z='" .. z .. "', rotation='" .. rot .. "', health='" .. health .. "', armor='" .. armor .. "', skin='" .. skin .. "', dimension_id='" .. dimension .. "', interior_id='" .. interior .. "', money='" .. money .. "', cuffed='" .. cuffed .. "', radiochannel='" .. radiochannel .. "', duty='" .. duty .. "', fightstyle='" .. fightstyle .. "', yearday='" .. yearday .. "', year='" .. year .. "', lastarea='" .. zone .. "', bankmoney='" .. bankmoney .. "', tag='" .. tag .. "', hoursplayed='" .. hoursplayed .. "', timeinserver='" .. timeinserver .. "', restrainedobj='" .. restrainedobj .. "', restrainedby='" .. restrainedby .. "', dutyskin='" .. dutyskin .. "', job='" .. job .. "', blindfold='" .. blindfold .. "', lang1='" .. lang1 .. "', lang1skill='" .. lang1skill .. "', lang2='" .. lang2 .. "', lang2skill='" .. lang2skill .. "', lang3='" .. lang3 .. "', lang3skill='" .. lang3skill .. "', currLang='" .. currentLanguage .. "' WHERE charactername='" .. username .. "'")
 		local update2 = mysql_query(handler, "UPDATE accounts SET muted='" .. muted .. "', hiddenadmin='" .. hiddenAdmin .. "', adminduty='" .. adminduty .. "', globalooc='" .. globalooc .. "', blur='" .. blur .. "', adminreports='" .. adminreports .. "', pmblocked='" .. pmblocked .. "', warns='" .. warns .. "', chatbubbles='" .. chatbubbles .. "' WHERE username='" .. tostring(safegameAccountUsername) .. "'")
 		
 		if (update) then

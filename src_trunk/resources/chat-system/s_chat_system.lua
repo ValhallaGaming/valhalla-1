@@ -124,11 +124,13 @@ function chatMain(message, messageType)
 			
 			destroyElement(chatSphere)
 			message = string.gsub(message, "#%x%x%x%x%x%x", "") -- Remove colour codes
+			local language = getElementData(source, "languages.current")
 			message = trunklateText( source, message )
 			
 			-- Show chat to console, for admins + log
 			exports.irc:sendMessage("[IC: Local Chat] " .. playerName .. ": " .. message)
 			exports.logs:logMessage("[IC: Local Chat] " .. playerName .. ": " .. message, 1)
+			outputChatBox( "#EEEEEE" .. playerName .. " Says: " .. message, source, 255, 255, 255, true)
 			
 			for index, nearbyPlayer in ipairs(nearbyPlayers) do
 				local nearbyPlayerDimension = getElementDimension(nearbyPlayer)
@@ -136,8 +138,10 @@ function chatMain(message, messageType)
 
 				if (nearbyPlayerDimension==dimension) and (nearbyPlayerInterior==interior) then
 					local logged = tonumber(getElementData(nearbyPlayer, "loggedin"))
-					if not (isPedDead(nearbyPlayer)) and (logged==1) then
-						local message2 = trunklateText( nearbyPlayer, message )
+					if not (isPedDead(nearbyPlayer)) and (logged==1) and (nearbyPlayer~=source) then
+						local message2 = call(getResourceFromName("language-system"), "applyLanguage", nearbyPlayer, message, language)
+						message2 = trunklateText( nearbyPlayer, message2 )
+						
 						local mode = tonumber(getElementData(nearbyPlayer, "chatbubbles"))
 						if mode > 0 then
 							triggerClientEvent(nearbyPlayer, "onMessageIncome", source, message2, mode)

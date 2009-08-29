@@ -58,47 +58,56 @@ function lvesHeal(thePlayer, commandName, targetPartialNick, price)
 					outputChatBox("You have no basic medic skills, contact the ES.", thePlayer, 255, 0, 0)
 				else
 					price = tonumber(price)
-				
-					local targetPlayerName = getPlayerName(targetPlayer)
-					local x, y, z = getElementPosition(thePlayer)
-					local tx, ty, tz = getElementPosition(targetPlayer)
-				
-					if (getDistanceBetweenPoints3D(x, y, z, tx, ty, tz)>5) then -- Are they standing next to each other?
-						outputChatBox("You are too far away to heal '"..getPlayerName(targetPlayerName).."'.", thePlayer, 255, 0, 0)
+					if price > 600 then
+						outputChatBox("This is too much to ask him for.", thePlayer, 255, 0, 0)
 					else
-						local money = getElementData(targetPlayer, "money")
-							
-						if (price>money) then
-							outputChatBox("The player cannot afford the heal.", thePlayer, 255, 0, 0)
+						local targetPlayerName = getPlayerName(targetPlayer)
+						local x, y, z = getElementPosition(thePlayer)
+						local tx, ty, tz = getElementPosition(targetPlayer)
+						
+						if (getDistanceBetweenPoints3D(x, y, z, tx, ty, tz)>5) then -- Are they standing next to each other?
+							outputChatBox("You are too far away to heal '"..getPlayerName(targetPlayerName).."'.", thePlayer, 255, 0, 0)
 						else
-							exports.global:takePlayerSafeMoney(targetPlayer, price)
+							local money = getElementData(targetPlayer, "money")
+							local bankmoney = getElementData(targetPlayer, "bankmoney")
 							
-							local result = mysql_query(handler, "SELECT bankbalance FROM factions WHERE id='2' OR id='3' LIMIT 2")
-							if (mysql_num_rows(result)>0) then
-								local tax = exports.global:getTaxAmount()
-								local currentESBalance = mysql_result(result, 1, 1)
-								local currentGOVBalance = mysql_result(result, 2, 1)
+							if money + bankmoney < price then
+								outputChatBox("The player cannot afford the heal.", thePlayer, 255, 0, 0)
+							else
+								local takeFromCash = math.min( money, price )
+								local takeFromBank = price - takeFromCash
+								exports.global:takePlayerSafeMoney(targetPlayer, takeFromCash)
+								if takeFromBank > 0 then
+									setElementData(targetPlayer, "bankmoney", bankmoney - takeFromBank)
+								end
 								
-								local ESMoney = math.ceil((1-tax)*price)
-								local GOVMoney = math.ceil(tax*price)
+								local result = mysql_query(handler, "SELECT bankbalance FROM factions WHERE id='2' OR id='3' LIMIT 2")
+								if (mysql_num_rows(result)>0) then
+									local tax = exports.global:getTaxAmount()
+									local currentESBalance = mysql_result(result, 1, 1)
+									local currentGOVBalance = mysql_result(result, 2, 1)
+									
+									local ESMoney = math.ceil((1-tax)*price)
+									local GOVMoney = math.ceil(tax*price)
+									
+									local theTeamES = getTeamFromName("Los Santos Emergency Services")
+									local theTeamGov = getTeamFromName("Government of Los Santos")
+									
+									setElementData(theTeamES, "money", (currentESBalance+ESMoney))
+									setElementData(theTeamGov, "money", (currentGOVBalance+GOVMoney+money))
+									
+									local update = mysql_query(handler, "UPDATE factions SET bankbalance='" .. (currentESBalance+ESMoney) .. "' WHERE id='2'")
+									local update2 = mysql_query(handler, "UPDATE factions SET bankbalance='" .. (currentGOVBalance+GOVMoney+money) .. "' WHERE id='3'")
+									mysql_free_result(update)
+									mysql_free_result(update2)
+								end
+								mysql_free_result(result)
 								
-								local theTeamES = getTeamFromName("Los Santos Emergency Services")
-								local theTeamGov = getTeamFromName("Government of Los Santos")
-								
-								setElementData(theTeamES, "money", (currentESBalance+ESMoney))
-								setElementData(theTeamGov, "money", (currentGOVBalance+GOVMoney+money))
-								
-								local update = mysql_query(handler, "UPDATE factions SET bankbalance='" .. (currentESBalance+ESMoney) .. "' WHERE id='2'")
-								local update2 = mysql_query(handler, "UPDATE factions SET bankbalance='" .. (currentGOVBalance+GOVMoney+money) .. "' WHERE id='3'")
-								mysql_free_result(update)
-								mysql_free_result(update2)
+								setElementHealth(targetPlayer, 100)
+								triggerEvent("onPlayerHeal", targetPlayer, true)
+								outputChatBox("You healed '" ..getPlayerName(targetPlayer).. "'.", thePlayer, 0, 255, 0)
+								outputChatBox("You have been healed by '" ..getPlayerName(thePlayer).. "' for $" .. price .. ".", targetPlayer, 0, 255, 0)
 							end
-							mysql_free_result(result)
-							
-							setElementHealth(targetPlayer, 100)
-							triggerEvent("onPlayerHeal", targetPlayer, true)
-							outputChatBox("You healed '" ..getPlayerName(targetPlayer).. "'.", thePlayer, 0, 255, 0)
-							outputChatBox("You have been healed by '" ..getPlayerName(thePlayer).. "'.", targetPlayer, 0, 255, 0)
 						end
 					end
 				end

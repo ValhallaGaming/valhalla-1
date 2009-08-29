@@ -108,9 +108,7 @@ function setTag(commandName, newTag)
 			local theTeam = getPlayerTeam(getLocalPlayer())
 			local teamName = getTeamName(theTeam)
 			
-			if (teamName~="Rollin Heights Idlewood Crips") and (newTag==3) then -- Tatum Creek Crips
-				outputChatBox("You are not a member of Rollin Heights Idlewood Crips.", 255, 0, 0)
-			elseif (teamName~="Grove Street OGs") and (newTag==5) then -- Grove Street OGs
+			if (teamName~="Grove Street OGs") and (newTag==5) then -- Grove Street OGs
 				outputChatBox("You are not a member of the Grove Street OGs.", 255, 0, 0)
 			elseif (teamName~="Blood State Villains") and (newTag==6) then -- Blood State Villains
 				outputChatBox("You are not a member of the Blood State Villains.", 255, 0, 0)

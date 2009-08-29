@@ -109,8 +109,8 @@ function applyMods()
 	tag2 = engineLoadTXD("tags/tags_lakilo.txd") -- MTA 
 	engineImportTXD(tag2, 1525)
 
-	tag3 = engineLoadTXD ( "tags/tags_larifa.txd" ) -- Tatum Creek Crips
-	engineImportTXD ( tag3, 1526 )
+	-- tag3 = engineLoadTXD ( "tags/tags_larifa.txd" )
+	-- engineImportTXD ( tag3, 1526 )
 
 	-- tag4 = engineLoadTXD ( "tags/tags_larollin.txd" )
 	-- engineImportTXD ( tag4, 1527 )
@@ -118,13 +118,13 @@ function applyMods()
 	tag5 = engineLoadTXD ( "tags/tags_laseville.txd" ) -- Hampton OGs
 	engineImportTXD ( tag5, 1528 )
 
-	tag6 = engineLoadTXD ( "tags/tags_latemple.txd" ) -- Pomerelle St. Vice Lords
+	tag6 = engineLoadTXD ( "tags/tags_latemple.txd" ) -- Blood State Villains
 	engineImportTXD ( tag6, 1529 )
 
 	-- tag7 = engineLoadTXD ( "tags/tags_lavagos.txd" )
 	-- engineImportTXD ( tag7, 1530 )
 
-	tag8 = engineLoadTXD ( "tags/tags_laazteca.txd" )
+	tag8 = engineLoadTXD ( "tags/tags_laazteca.txd" ) -- Los Malvados
 	engineImportTXD ( tag8, 1531 )
 end
 addEventHandler("onClientResourceStart", getResourceRootElement(), applyMods)

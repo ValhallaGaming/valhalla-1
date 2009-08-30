@@ -337,7 +337,17 @@ function spawnCharacter(charname)
 		local motd = mysql_result(motdresult, 1, 1)
 		mysql_free_result(motdresult)
 		outputChatBox("MOTD: " .. motd, source, 255, 255, 0)
-			
+		
+		local timer = getElementData(source, "pd.jailtimer")
+		if isTimer(timer) then
+			killTimer(timer)
+		end
+		
+		removeElementData(source, "pd.jailserved")
+		removeElementData(source, "pd.jailtime")
+		removeElementData(source, "pd.jailtimer")
+		removeElementData(source, "pd.jailstation")
+		
 		-- ADMIN JAIL
 		local jailed = tonumber(getElementData(source, "adminjail"))
 		local jailed_time = getElementData(source, "adminjail_time")
@@ -357,18 +367,19 @@ function spawnCharacter(charname)
 			setCameraInterior(source, 6)
 			setElementPosition(source, 263.821807, 77.848365, 1001.0390625)
 			setPedRotation(source, 267.438446)
-				
-			local theTimer = setTimer(timerUnjailPlayer, 60000, jailed_time, source)
+			
+			if jailed_time ~= 999 then
+				local theTimer = setTimer(timerUnjailPlayer, 60000, jailed_time, source)
+				setElementData(source, "jailtime", jailed_time, false)
+				setElementData(source, "jailtimer", theTimer)
+			else
+				setElementData(source, "jailtime", "Unlimited", false)
+			end
 			setElementData(source, "jailserved", 0, false)
-			setElementData(source, "jailtime", jailed_time, false, false)
-			setElementData(source, "jailtimer", theTimer)
 			
 			setElementInterior(source, 6)
 			setCameraInterior(source, 6)
-		end
-		
-		-- PD JAIL
-		if (pdjail==1) then
+		elseif pdjail == 1 then -- PD JAIL
 			outputChatBox("You still have " .. pdjail_time .. " minute(s) to serve of your state jail sentance.", source, 255, 0, 0)
 			
 			local theTimer = setTimer(timerPDUnjailPlayer, 60000, pdjail_time, source)
@@ -376,16 +387,6 @@ function spawnCharacter(charname)
 			setElementData(source, "pd.jailtime", pdjail_time, false)
 			setElementData(source, "pd.jailtimer", theTimer, false)
 			setElementData(source, "pd.jailstation", pdjail_station, false)
-		else
-			local timer = getElementData(source, "pd.jailtimer")
-			if isTimer(timer) then
-				killTimer(timer)
-			end
-			
-			removeElementData(source, "pd.jailserved")
-			removeElementData(source, "pd.jailtime")
-			removeElementData(source, "pd.jailtimer")
-			removeElementData(source, "pd.jailstation")
 		end
 		
 		-- FACTIONS
@@ -601,6 +602,8 @@ function spawnCharacter(charname)
 		
 		triggerEvent("onCharacterLogin", source, charname, factionID)
 		mysql_free_result(result)
+	else
+		outputDebugString( "Spawning Char failed: " .. mysql_error( handler ) )
 	end
 end
 addEvent("onCharacterLogin", false)

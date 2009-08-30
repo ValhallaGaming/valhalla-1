@@ -152,7 +152,6 @@ addEventHandler("attemptRegister", getRootElement(), registerPlayer)
 addEvent("restoreJob", false)
 function spawnCharacter(charname)
 	exports.global:takeAllWeapons(source)
-	call(getResourceFromName("item-system"), "clearItems", source)
 	local id = getElementData(source, "gameaccountid")
 	charname = string.gsub(tostring(charname), " ", "_")
 	
@@ -246,22 +245,26 @@ function spawnCharacter(charname)
 		if (items~=tostring(mysql_null())) and (itemvalues~=tostring(mysql_null())) then
 			-- load traditional items
 			if #items > 0 and #itemvalues > 0 then
-				for i = 1, 20 do
-					local token = tonumber(gettok(items, i, string.byte(',')))
-					local vtoken = tonumber(gettok(itemvalues, i, string.byte(',')))
-					
-					if token and vtoken then
-						exports.global:giveItem( source, tonumber(token), tonumber(vtoken) )
+				-- very old items
+				if call( getResourceFromName( "item-system" ), "clearItems", source, true ) then
+					for i = 1, 20 do
+						local token = tonumber(gettok(items, i, string.byte(',')))
+						local vtoken = tonumber(gettok(itemvalues, i, string.byte(',')))
+						
+						if token and vtoken then
+							exports.global:giveItem( source, tonumber(token), tonumber(vtoken) )
+						end
 					end
-				end
-				local result = mysql_query(handler, "UPDATE characters SET items=NULL, itemvalues=NULL WHERE charactername = '" .. charname .. "' AND account = " .. id )
-				if result then
-					mysql_free_result( result )
-				else
-					outputDebugString( mysql_error( handler ) )
 				end
 			else
 				call( getResourceFromName( "item-system" ), "loadItems", source, true )
+			end
+			
+			local result = mysql_query(handler, "UPDATE characters SET items=NULL, itemvalues=NULL WHERE id = " .. id )
+			if result then
+				mysql_free_result( result )
+			else
+				outputDebugString( mysql_error( handler ) )
 			end
 		else
 			call( getResourceFromName( "item-system" ), "loadItems", source, true )

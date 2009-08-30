@@ -48,9 +48,25 @@ x getInventorySlots(obj) -- returns the number of available inventory slots
 local saveditems = {}
 local subscribers = {}
 
+-- send items to a player
+local function sendItems( element, to )
+	loadItems( element )
+	triggerClientEvent( to, "recieveItems", element, saveditems[ element ] )
+end
+
+-- notify all subscribers on inventory change
+local function notify( element )
+	if subscribers[ element ] then
+		for subscriber in pairs( subscribers[ element ] ) do
+			sendItems( element, subscriber )
+		end
+	end
+end
+
 -- Free Items Table as neccessary
 local function destroyInventory( )
 	saveditems[source] = nil
+	notify( source )
 	subscribers[source] = nil
 	
 	-- clear subscriptions
@@ -71,12 +87,6 @@ addEventHandler( "savePlayer", getRootElement(),
 	end
 )
 
--- send items to a player
-local function sendItems( element, to )
-	loadItems( element )
-	triggerClientEvent( to, "recieveItems", element, saveditems[ element ] )
-end
-
 -- subscribe/remove from inventory changes
 local function subscribeChanges( element )
 	sendItems( element, source )
@@ -95,15 +105,6 @@ end
 
 addEvent( "unsubscribeFromInventoryChanges", true )
 addEventHandler( "unsubscribeFromInventoryChanges", getRootElement(), subscribeChanges )
-
--- notify all subscribers on inventory change
-local function notify( element )
-	if subscribers[ element ] then
-		for subscriber in pairs( subscribers[ element ] ) do
-			sendItems( element, subscriber )
-		end
-	end
-end
 
 -- returns the 'owner' column content
 local function getID(element)
@@ -138,10 +139,9 @@ end
 -- loads all items for that element
 function loadItems( element, force )
 	if force or not saveditems[ element ] then
+		saveditems[ element ] = {}
 		local result = mysql_query( handler, "SELECT * FROM items WHERE type = " .. getType( element ) .. " AND owner = " .. getID( element ) .. " LIMIT 20" )
 		if result then
-			saveditems[ element ] = {}
-			
 			local count = 0
 			repeat
 				row = mysql_fetch_assoc(result)
@@ -179,18 +179,23 @@ addEvent( "itemResourceStarted", true )
 addEventHandler( "itemResourceStarted", getRootElement( ), itemResourceStarted )
 
 -- clear all items for an element
-function clearItems( element )
-	if (saveditems[element] ~= nil) then
-		while #saveditems[ element ] > 0 do
-			takeItemFromSlot( element, 1 )
-		end
-		
-		saveditems[ element ] = nil
-		notify( element )
+function clearItems( element, onlyifnosqlones )
+	if saveditems[element] then
+		if onlyifnosqlones and #saveditems[element] > 0 then
+			return false
+		else
+			while #saveditems[ element ] > 0 do
+				takeItemFromSlot( element, 1 )
+			end
+			
+			saveditems[ element ] = nil
+			notify( element )
 
-		source = element
-		destroyInventory()
+			source = element
+			destroyInventory()
+		end
 	end
+	return true
 end
 
 -- gives an item to an element

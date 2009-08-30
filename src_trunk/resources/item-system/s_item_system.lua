@@ -463,40 +463,42 @@ function destroyItem(itemID, isWeapon)
 	if not isWeapon then
 		local itemSlot = itemID
 		local item = getItems( source )[itemSlot]
-		local itemID = item[1]
-		local itemValue = item[2]
-		itemName = getItemName( itemID )
-		takeItemFromSlot(source, itemSlot)
-		
-		if tonumber(itemID) == 16 and tonumber(itemValue) == getPedSkin(source) and not exports.global:hasItem(source, 16, tonumber(itemValue)) then
-			local result = mysql_query(handler, "SELECT skincolor, gender FROM characters WHERE charactername='" .. getPlayerName(source) .. "' LIMIT 1")
-			local skincolor = tonumber(mysql_result(result, 1, 1))
-			local gender = tonumber(mysql_result(result, 1, 2))
+		if item then
+			local itemID = item[1]
+			local itemValue = item[2]
+			itemName = getItemName( itemID )
+			takeItemFromSlot(source, itemSlot)
 			
-			if (gender==0) then -- MALE
-				if (skincolor==0) then -- BLACK
-					setPedSkin(source, 80)
-				elseif (skincolor==1 or skincolor==2) then -- WHITE
-					setPedSkin(source, 252)
+			if tonumber(itemID) == 16 and tonumber(itemValue) == getPedSkin(source) and not exports.global:hasItem(source, 16, tonumber(itemValue)) then
+				local result = mysql_query(handler, "SELECT skincolor, gender FROM characters WHERE charactername='" .. getPlayerName(source) .. "' LIMIT 1")
+				local skincolor = tonumber(mysql_result(result, 1, 1))
+				local gender = tonumber(mysql_result(result, 1, 2))
+				
+				if (gender==0) then -- MALE
+					if (skincolor==0) then -- BLACK
+						setPedSkin(source, 80)
+					elseif (skincolor==1 or skincolor==2) then -- WHITE
+						setPedSkin(source, 252)
+					end
+				elseif (gender==1) then -- FEMALE
+					if (skincolor==0) then -- BLACK
+						setPedSkin(source, 139)
+					elseif (skincolor==1) then -- WHITE
+						setPedSkin(source, 138)
+					elseif (skincolor==2) then -- ASIAN
+						setPedSkin(source, 140)
+					end
 				end
-			elseif (gender==1) then -- FEMALE
-				if (skincolor==0) then -- BLACK
-					setPedSkin(source, 139)
-				elseif (skincolor==1) then -- WHITE
-					setPedSkin(source, 138)
-				elseif (skincolor==2) then -- ASIAN
-					setPedSkin(source, 140)
-				end
+				mysql_free_result(result)
+			elseif tonumber(itemID) == 64 and not exports.global:hasItem(source, 64) then
+				removeElementData(source,"PDbadge")
+				exports.global:sendLocalMeAction(source, "removes a Police Badge.")
+				exports.global:updateNametagColor(source)
+			elseif  tonumber(itemID) == 65 and not exports.global:hasItem(source, 65)then
+				removeElementData(source,"ESbadge")
+				exports.global:sendLocalMeAction(source, "removes an Emergency Services ID.")
+				exports.global:updateNametagColor(source)
 			end
-			mysql_free_result(result)
-		elseif tonumber(itemID) == 64 and not exports.global:hasItem(source, 64) then
-			removeElementData(source,"PDbadge")
-			exports.global:sendLocalMeAction(source, "removes a Police Badge.")
-			exports.global:updateNametagColor(source)
-		elseif  tonumber(itemID) == 65 and not exports.global:hasItem(source, 65)then
-			removeElementData(source,"ESbadge")
-			exports.global:sendLocalMeAction(source, "removes an Emergency Services ID.")
-			exports.global:updateNametagColor(source)
 		end
 	else
 		if not itemID then

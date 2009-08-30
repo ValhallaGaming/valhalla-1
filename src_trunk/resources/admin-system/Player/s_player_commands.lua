@@ -503,8 +503,12 @@ function givePlayerItem(thePlayer, commandName, targetPlayer, itemID, itemValue)
 					local name = call( getResourceFromName( "item-system" ), "getItemName", itemID )
 					
 					if name then
-						outputChatBox("Player " .. targetPlayerName .. " now has a " .. name .. " with value " .. itemValue .. ".", thePlayer, 0, 255, 0)
-						exports.global:giveItem(targetPlayer, itemID, itemValue)
+						local success, reason = exports.global:giveItem(targetPlayer, itemID, itemValue)
+						if success then
+							outputChatBox("Player " .. targetPlayerName .. " now has a " .. name .. " with value " .. itemValue .. ".", thePlayer, 0, 255, 0)
+						else
+							outputChatBox("Couldn't give " .. targetPlayerName .. " a " .. name .. ": " .. tostring(reason), thePlayer, 255, 0, 0)
+						end
 					else
 						outputChatBox("Invalid Item ID.", thePlayer, 255, 0, 0)
 					end
@@ -1396,7 +1400,9 @@ function unjailPlayer(thePlayer, commandName, who)
 				else
 					local query = mysql_query(handler, "UPDATE accounts SET adminjail_time='0', adminjail='0' WHERE id='" .. accountID .. "'")
 					mysql_free_result(query)
-					killTimer(jailed)
+					if isTimer(jailed) then
+						killTimer(jailed)
+					end
 					removeElementData(targetPlayer, "jailtimer")
 					removeElementData(targetPlayer, "adminjailed")
 					removeElementData(targetPlayer, "jailreason")

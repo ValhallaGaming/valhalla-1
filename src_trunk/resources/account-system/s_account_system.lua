@@ -374,6 +374,7 @@ function spawnCharacter(charname)
 				setElementData(source, "jailtimer", theTimer)
 			else
 				setElementData(source, "jailtime", "Unlimited", false)
+				setElementData(source, "jailtimer", true, false)
 			end
 			setElementData(source, "jailserved", 0, false)
 			

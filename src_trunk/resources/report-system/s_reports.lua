@@ -8,6 +8,32 @@ function resourceStart(res)
 end
 addEventHandler("onResourceStart", getResourceRootElement(), resourceStart)
 
+function updateReportCount()
+	local open = 0
+	local handled = 0
+	
+	local unanswered = {}
+	local byadmin = {}
+	
+	for key, value in pairs(reports) do
+		open = open + 1
+		if value[5] then
+			handled = handled + 1
+			if not byadmin[value[5]] then
+				byadmin[value[5]] = { key }
+			else
+				table.insert(byadmin[value[5]], key)
+			end
+		else
+			table.insert(unanswered, key) 
+		end
+	end
+	
+	for key, value in ipairs(exports.global:getAdmins()) do
+		triggerClientEvent( value, "updateReportsCount", value, open, handled, unanswered, byadmin[value] )
+	end
+end
+
 function showReports(thePlayer)
 	if (exports.global:isPlayerAdmin(thePlayer)) then
 		outputChatBox("~~~~~~~~~ Reports ~~~~~~~~~", thePlayer, 255, 194, 15)
@@ -83,6 +109,7 @@ addCommandHandler("reportinfo", reportInfo, false, false)
 
 function playerQuit()
 	local report = getElementData(source, "report")
+	local update = false
 	
 	if (report) then
 		local theAdmin = reports[report][5]
@@ -103,6 +130,7 @@ function playerQuit()
 		end
 		
 		reports[report] = nil -- Destroy any reports made by the player
+		update = true
 	end
 	
 	-- check for reports assigned to him, unassigned if neccessary	
@@ -114,6 +142,7 @@ function playerQuit()
 					local adminduty = getElementData(value, "adminduty")
 					if adminduty == 1 then
 						outputChatBox(" [-ADMIN REPORT-] Report #" .. i .. " is unassigned (" .. getPlayerName(source) .. " left the game)", value, 0, 255, 255)
+						update = true
 					end
 				end
 			end
@@ -122,6 +151,7 @@ function playerQuit()
 					local adminduty = getElementData(value, "adminduty")
 					if adminduty == 1 then
 						outputChatBox(" [-ADMIN REPORT-] Reported Player " .. getPlayerName(source) .. " left the game. Report #" .. i .. " has been closed.", value, 0, 255, 255)
+						update = true
 					end
 				end
 				
@@ -144,6 +174,10 @@ function playerQuit()
 				reports[i] = nil -- Destroy any reports made by the player
 			end
 		end
+	end
+	
+	if update then
+		updateReportCount()
 	end
 end
 addEventHandler("onPlayerQuit", getRootElement(), playerQuit)
@@ -228,6 +262,8 @@ function handleReport(reportedPlayer, reportedReason)
 	outputChatBox("[" .. timestring .. "] Thank you for submitting your admin report, Your report reference number is #" .. tostring(slot) .. ".", source, 255, 194, 14)
 	outputChatBox("[" .. timestring .. "] An admin will respond to your report ASAP. Currently there are " .. count .. " admin(s) available.", source, 255, 194, 14)
 	outputChatBox("[" .. timestring .. "] You can close this report at any time by typing /endreport.", source, 255, 194, 14)
+	
+	updateReportCount()
 end
 
 addEvent("clientSendReport", true)
@@ -305,6 +341,8 @@ function pendingReportTimeout(id)
 		
 		outputChatBox("[" .. timestring .. "] Your report (#" .. id .. ") has expired.", reportingPlayer, 255, 194, 14)
 		outputChatBox("[" .. timestring .. "] If you still require assistance, please resubmit your report or visit our forums (http://forums.valhallagaming.net).", reportingPlayer, 255, 194, 14)
+
+		updateReportCount()
 	end
 end
 
@@ -363,6 +401,8 @@ function falseReport(thePlayer, commandName, id)
 							outputChatBox(" [-ADMIN REPORT-] - " .. getPlayerName(thePlayer) .. " has marked report #" .. id .. " as false. -", value, 0, 255, 255)
 						end
 					end
+					
+					updateReportCount()
 				end
 			end
 		end
@@ -431,6 +471,8 @@ function acceptReport(thePlayer, commandName, id)
 							outputChatBox(" [-ADMIN REPORT-] - " .. getPlayerName(thePlayer) .. " has accepted report #" .. id .. " -", value, 0, 255, 255)
 						end
 					end
+					
+					updateReportCount()
 				end
 			end
 		end
@@ -475,6 +517,8 @@ function closeReport(thePlayer, commandName, id)
 						outputChatBox(" [-ADMIN REPORT-] - " .. getPlayerName(thePlayer) .. " has closed the report #" .. id .. ". -", value, 0, 255, 255)
 					end
 				end
+				
+				updateReportCount()
 			end
 		end
 	end
@@ -524,6 +568,8 @@ function endReport(thePlayer, commandName)
 		if (isElement(reportHandler)) then
 			outputChatBox(getPlayerName(thePlayer) .. " has closed the report (#" .. report .. "). Thank you for dealing with this report.", reportHandler, 0, 255, 255)
 		end
+		
+		updateReportCount()
 	end
 end
 addCommandHandler("endreport", endReport, false, false)

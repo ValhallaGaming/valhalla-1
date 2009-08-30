@@ -1241,9 +1241,9 @@ function makePlayerAdmin(thePlayer, commandName, who, rank)
 				-- Fix for scoreboard & nametags
 				local targetAdminTitle = exports.global:getPlayerAdminTitle(targetPlayer)
 				if (rank>0) or (rank==-999999999) then
-					setElementData(targetPlayer, "adminduty", 1, false)
+					setElementData(targetPlayer, "adminduty", 1)
 				else
-					setElementData(targetPlayer, "adminduty", 0, false)
+					setElementData(targetPlayer, "adminduty", 0)
 				end
 				exports.global:updateNametagColor(targetPlayer)
 				
@@ -1852,11 +1852,11 @@ function adminDuty(thePlayer, commandName)
 		local username = getPlayerName(thePlayer)
 		
 		if (adminduty==0) then
-			setElementData(thePlayer, "adminduty", 1, false)
+			setElementData(thePlayer, "adminduty", 1)
 			outputChatBox("You went on admin duty.", thePlayer, 0, 255, 0)
 			exports.global:sendMessageToAdmins("AdmDuty: " .. username .. " came on duty.")
 		elseif (adminduty==1) then
-			setElementData(thePlayer, "adminduty", 0, false)
+			setElementData(thePlayer, "adminduty", 0)
 			outputChatBox("You went off admin duty.", thePlayer, 255, 0, 0)
 			exports.global:sendMessageToAdmins("AdmDuty: " .. username .. " went off duty.")
 		end

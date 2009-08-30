@@ -19,8 +19,5 @@
 	<script src="seville.lua" type="client"/>
 	<script src="Busstops_LS_LineAB.lua" type="client"/>
 	<script src="Prison Int Cells.lua" type="client"/>
-	<script src="Prison Int Rec.lua" type="client"/>
-
-	<script src="tempPartyMap.lua" type="client"/>
-	
+	<script src="Prison Int Rec.lua" type="client"/>	
 </meta>

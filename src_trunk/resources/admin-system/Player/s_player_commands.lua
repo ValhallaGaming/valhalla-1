@@ -216,8 +216,9 @@ function adminUnblindfold(thePlayer, commandName, targetPlayer)
 					if (blindfolded==0) then
 						outputChatBox("Player is not blindfolded", thePlayer, 255, 0, 0)
 					else
-						removeElementData(thePlayer, "blindfold")
-						fadeCamera(thePlayer, true)
+						removeElementData(targetPlayer, "blindfold")
+						fadeCamera(targetPlayer, true)
+						outputChatBox("You have unblindfolded " .. targetPlayerName .. ".", thePlayer)
 					end
 				end
 			end

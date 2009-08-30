@@ -195,8 +195,8 @@ function publicSellProperty(thePlayer, dbid, showmessages)
 		
 		if interiorType == 0 or interiorType == 1 then
 			if getElementData(entrance, "owner") == getElementData(thePlayer, "dbid") then
-				--local money = math.ceil(getElementData(entrance, "cost") * 2/3)
-				local money = getElementData(entrance, "cost")
+				local money = math.ceil(getElementData(entrance, "cost") * 2/3)
+				--local money = getElementData(entrance, "cost")
 				exports.global:givePlayerSafeMoney(thePlayer, money)
 				if showmessages then
 					outputChatBox("You sold your property for " .. money .. "$.", thePlayer, 0, 255, 0)

@@ -341,11 +341,11 @@ function swatduty(thePlayer, commandName)
 					exports.global:giveWeapon(thePlayer, 34, 400) -- Sniper
 					exports.global:giveWeapon(thePlayer, 17, 10) -- Tear gas
 					
-					exports.global:givePlayerItem(thePlayer, 26, 999)
-					exports.global:givePlayerItem(thePlayer, 27, 999)
-					exports.global:givePlayerItem(thePlayer, 28, 999)
-					exports.global:givePlayerItem(thePlayer, 29, 999)
-					exports.global:givePlayerItem(thePlayer, 45, 999)
+					exports.global:giveItem(thePlayer, 26, 999)
+					exports.global:giveItem(thePlayer, 27, 999)
+					exports.global:giveItem(thePlayer, 28, 999)
+					exports.global:giveItem(thePlayer, 29, 999)
+					exports.global:giveItem(thePlayer, 45, 999)
 					
 					setPedSkin(thePlayer, 285)
 					

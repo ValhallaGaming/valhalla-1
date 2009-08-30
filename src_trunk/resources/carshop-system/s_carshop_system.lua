@@ -92,6 +92,7 @@ function makeCar(thePlayer, id, cost, col1, col2, x, y, z, rz, px, py, pz, prz)
 		setElementData(veh, "Impounded", 0)
 		
 		setVehicleRespawnPosition(veh, x, y, z, 0, 0, rz)
+		setElementData(veh, "respawnposition", {x, y, z, 0, 0, rz}, false)
 		setVehicleLocked(veh, false)
 		
 		setVehicleColor(veh, col1, col2, col1, col2)

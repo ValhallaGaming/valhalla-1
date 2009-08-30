@@ -166,6 +166,7 @@ function updateVehPos(veh)
 	local query = mysql_query(handler, "UPDATE vehicles SET x='" .. x .. "', y='" .. y .."', z='" .. z .. "', rotx='" .. rx .. "', roty='" .. ry .. "', rotz='" .. rz .. "', currx='" .. x .. "', curry='" .. y .. "', currz='" .. z .. "', currrx='" .. rx .. "', currry='" .. ry .. "', currrz='" .. rz .. "', interior='" .. interior .. "', currinterior='" .. interior .. "', dimension='" .. dimension .. "', currdimension='" .. dimension .. "' WHERE id='" .. dbid .. "'")
 	mysql_free_result(query)	
 	setVehicleRespawnPosition(veh, x, y, z, rx, ry, rz)
+	setElementData(veh, "respawnposition", {x, y, z, rx, ry, rz}, false)
 end
 
 function updateTowingVehicle(theTruck)

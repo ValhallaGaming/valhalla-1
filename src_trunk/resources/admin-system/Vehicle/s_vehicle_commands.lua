@@ -294,14 +294,8 @@ function respawnCmdVehicle(thePlayer, commandName, id)
 						setVehicleWheelStates(theVehicle, 0, 0, 0, 0)
 						setElementData(theVehicle, "enginebroke", 0, false)
 					else
-						local dbid = getElementData(theVehicle, "dbid")
-						local x, y, z = getElementPosition(theVehicle)
-						local faction = getElementData(theVehicle, "faction")
-						local owner = getElementData(theVehicle, "owner")
-						
 						respawnVehicle(theVehicle)
-						
-						if owner == -2 and getElementData(theVehicle,"Impounded") == 0  then
+						if getElementData(theVehicle, "owner") == -2 and getElementData(theVehicle,"Impounded") == 0  then
 							setVehicleLocked(theVehicle, false)
 						end
 					end
@@ -322,17 +316,22 @@ addCommandHandler("respawnveh", respawnCmdVehicle, false, false)
 function respawnAllVehicles(thePlayer, commandName, timeToRespawn)
 	if (exports.global:isPlayerAdmin(thePlayer)) then
 		if commandName then
-			timeToRespawn = tonumber(timeToRespawn) or 30
-			timeToRespawn = timeToRespawn < 10 and 10 or timeToRespawn
-			outputChatBox("All vehicles will be respawned in "..timeToRespawn.." seconds!")
-			outputChatBox("You can stop it by typing /respawnstop!", thePlayer)
-			respawnTimer = setTimer(respawnAllVehicles, timeToRespawn*1000, 1, thePlayer)
+			if isTimer(respawnTimer) then
+				outputChatBox("There is already a Vehicle Respawn active, /respawnstop to stop it first.", thePlayer, 255, 0, 0)
+			else
+				timeToRespawn = tonumber(timeToRespawn) or 30
+				timeToRespawn = timeToRespawn < 10 and 10 or timeToRespawn
+				outputChatBox("*** All vehicles will be respawned in "..timeToRespawn.." seconds! ***", getRootElement(), 255, 194, 14)
+				outputChatBox("You can stop it by typing /respawnstop!", thePlayer)
+				respawnTimer = setTimer(respawnAllVehicles, timeToRespawn*1000, 1, thePlayer)
+			end
 			return
 		end
 		local vehicles = exports.pool:getPoolElementsByType("vehicle")
 		local counter = 0
 		local tempcounter = 0
 		local occupiedcounter = 0
+		local unlockedcivs = 0
 		
 		-- Remove all players from vehicles
 		--for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
@@ -355,20 +354,30 @@ function respawnAllVehicles(thePlayer, commandName, timeToRespawn)
 				if (pass1) or (pass2) or (pass3) or (driver) or (getVehicleTowingVehicle(theVehicle)) then
 					occupiedcounter = occupiedcounter + 1
 				else
-					respawnVehicle(theVehicle)
+					local x, y, z, rx, ry, rz = unpack(getElementData(theVehicle, "respawnposition"))
+					setElementPosition(theVehicle, x, y, z)
+					setVehicleRotation(theVehicle, rx, ry, rz)
+					
 					-- unlock Civ vehicles
-					local owner = getElementData(theVehicle, "owner")
-					if owner == -2 and getElementData(theVehicle,"Impounded") == 0 then
+					if getElementData(theVehicle, "owner") == -2 and getElementData(theVehicle,"Impounded") == 0 then
+						respawnVehicle(theVehicle)
 						setVehicleLocked(theVehicle, false)
+						
+						unlockedcivs = unlockedcivs + 1
 					end
 					counter = counter + 1
+					
+					-- fix faction vehicles
+					if getElementData(theVehicle, "faction") ~= -1 then
+						fixVehicle(theVehicle)
+					end
 				end
 			end
 		end
 		outputChatBox(" =-=-=-=-=-=- All Vehicles Respawned =-=-=-=-=-=-=")
 		outputChatBox("Respawned " .. counter .. " vehicles. (" .. occupiedcounter .. " Occupied).", thePlayer)
 		outputChatBox("Deleted " .. tempcounter .. " temporary vehicles.", thePlayer)
-		unlockAllCivilianCars(thePlayer, "unlockcivcars")
+		outputChatBox("Unlocked and Respawned " .. unlockedcivs .. " civilian vehicles.", thePlayer)
 		exports.irc:sendMessage("[ADMIN] " .. getPlayerName(thePlayer) .. " respawned all vehicles.")
 	end
 end
@@ -379,7 +388,11 @@ function respawnVehiclesStop(thePlayer, commandName)
 		killTimer(respawnTimer)
 		respawnTimer = nil
 		if commandName then
-			outputChatBox(getPlayerName(thePlayer) .. " stops the timer to respawn all vehicles!")
+			local name = getPlayerName(thePlayer):gsub("_", " ")
+			if getElementData(thePlayer, "hiddenadmin") == 1 then
+				name = "Hidden Admin"
+			end
+			outputChatBox( "*** " .. name .. " cancelled the vehicle respawn ***", getRootElement(), 255, 194, 14)
 		end
 	end
 end

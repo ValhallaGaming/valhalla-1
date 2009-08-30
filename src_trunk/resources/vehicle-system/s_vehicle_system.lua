@@ -121,6 +121,8 @@ function createPermVehicle(thePlayer, commandName, ...)
 						
 					local rx, ry, rz = getVehicleRotation(veh)
 					setVehicleRespawnPosition(veh, x, y, z, rx, ry, rz)
+					setElementData(veh, "respawnposition", {x, y, z, rx, ry, rz}, false)
+					
 					setVehicleLocked(veh, true)
 							
 					setVehicleColor(veh, col1, col2, col1, col2)
@@ -234,6 +236,8 @@ function createCivilianPermVehicle(thePlayer, commandName, ...)
 					
 				local rx, ry, rz = getVehicleRotation(veh)
 				setVehicleRespawnPosition(veh, x, y, z, rx, ry, rz)
+				setElementData(veh, "respawnposition", {x, y, z, rx, ry, rz}, false)
+				
 				setVehicleLocked(veh, false)
 					
 				setVehicleColor(veh, col1, col2, col1, col2)
@@ -475,6 +479,7 @@ function loadAllVehicles(res)
 			
 			-- Where the vehicle will respawn on explode/idle
 			setVehicleRespawnPosition(veh, respawnx, respawny, respawnz, respawnrx, respawnry, respawnrz)
+			setElementData(veh, "respawnposition", {respawnx, respawny, respawnz, respawnrx, respawnry, respawnrz}, false)
 			
 			-- Vehicles element data
 			setElementData(veh, "dbid", id)
@@ -1207,6 +1212,7 @@ function setVehiclePosition(thePlayer, commandName)
 					local query = mysql_query(handler, "UPDATE vehicles SET x='" .. x .. "', y='" .. y .."', z='" .. z .. "', rotx='" .. rx .. "', roty='" .. ry .. "', rotz='" .. rz .. "', currx='" .. x .. "', curry='" .. y .. "', currz='" .. z .. "', currrx='" .. rx .. "', currry='" .. ry .. "', currrz='" .. rz .. "', interior='" .. interior .. "', currinterior='" .. interior .. "', dimension='" .. dimension .. "', currdimension='" .. dimension .. "' WHERE id='" .. dbid .. "'")
 					mysql_free_result(query)
 					setVehicleRespawnPosition(veh, x, y, z, rx, ry, rz)
+					setElementData(veh, "respawnposition", {x, y, z, rx, ry, rz}, false)
 					outputChatBox("Vehicle spawn position set.", thePlayer)
 					
 					for key, value in ipairs(destroyTimers) do

@@ -688,7 +688,11 @@ function buyInterior(player, pickup, cost, isHouse, isRentable)
 			end
 			mysql_free_result(result)
 		end
+	elseif not exports.global:hasSpaceForItem(player) then
+		outputChatBox("You do not have the space for the keys.", player, 255, 0, 0)
+		return
 	end
+	
 	local money = tonumber(getElementData(player, "money"))
 	cost = tonumber(cost)
 	if (money>=cost) then

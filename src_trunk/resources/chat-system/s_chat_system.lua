@@ -983,7 +983,7 @@ function payPlayer(thePlayer, commandName, targetPlayerNick, amount)
 					local money = getElementData(thePlayer, "money")
 					local hoursplayed = getElementData(thePlayer, "hoursplayed")
 					
-					if (targetPlayer==thePlayer) then
+					if (targetPlayer~=thePlayer) then
 						outputChatBox("You cannot pay money to yourself.", thePlayer, 255, 0, 0)
 					elseif (money<amount) then
 						outputChatBox("You do not have enough money.", thePlayer, 255, 0, 0)
@@ -1005,8 +1005,7 @@ function payPlayer(thePlayer, commandName, targetPlayerNick, amount)
 						outputChatBox(getPlayerName(thePlayer) .. " gave you $" .. amount .. ".", targetPlayer)
 						exports.irc:sendMessage("[MONEY TRANSFER] From '" .. getPlayerName(thePlayer) .. "' to " .. getPlayerName(targetPlayer) .. "' Amount: $" .. amount .. ".")
 						
-						exports.global:applyAnimation(thePlayer, "DEALER", "shop_pay", -1, false, false, true)
-						setTimer(removeAnimation, 4000, 1, thePlayer)
+						exports.global:applyAnimation(thePlayer, "DEALER", "shop_pay", 4000, false, true, true)
 					end
 				else
 					outputChatBox("You are too far away from " .. getPlayerName(targetPlayer) .. ".", thePlayer, 255, 0, 0)

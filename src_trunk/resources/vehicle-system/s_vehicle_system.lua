@@ -36,7 +36,7 @@ addEvent("onVehicleSpawn", false)
 
 -- /makeveh
 function createPermVehicle(thePlayer, commandName, ...)
-	if (exports.global:isPlayerLeadAdmin(thePlayer)) then
+	if (exports.global:isPlayerSuperAdmin(thePlayer)) then
 		local args = {...}
 		if (#args < 6) then
 			outputChatBox("SYNTAX: /" .. commandName .. " [id/name] [color1 (-1 for random)] [color2 (-1 for random)] [Owner Partial Username] [Faction Vehicle (1/0)] [Cost] [Tinted Windows] ", thePlayer, 255, 194, 14)

@@ -880,13 +880,13 @@ function setRealInVehicle(thePlayer)
 		local faction = getElementData(source, "faction")
 		local carName = getVehicleName(source)
 		
-		if (owner<0) then
+		if owner < 0 and faction == -1 then
 			outputChatBox("(( This " .. carName .. " is a civilian vehicle. ))", thePlayer, 255, 195, 14)
 		elseif (faction==-1) and (owner>0) then
 			local query = mysql_query(handler, "SELECT charactername FROM characters WHERE id='" .. owner .. "' LIMIT 1")
 			
 			if (mysql_num_rows(query)>0) then
-				local ownerName = mysql_result(query, 1, 1)
+				local ownerName = mysql_result(query, 1, 1):gsub("_", " ")
 				outputChatBox("(( This " .. carName .. " belongs to " .. ownerName .. ". ))", thePlayer, 255, 195, 14)
 				if (getElementData(source, "Impounded") > 0) then
 					local output = getRealTime().yearday-getElementData(source, "Impounded")
@@ -915,15 +915,15 @@ function removeFromFactionVehicle(thePlayer)
 	local CanTowDriverEnter = (call(getResourceFromName("tow-system"), "CanTowTruckDriverVehPos", thePlayer) == 2)
 	if (vfaction~=-1) then
 		local seat = getPedOccupiedVehicleSeat(thePlayer)
-		if (faction~=vfaction) and (seat==0) then
-			local factionName = "this faction"
-			for key, value in ipairs(exports.pool:getPoolElementsByType("team")) do
-				local id = tonumber(getElementData(value, "id"))
-				if (id==vfaction) then
-					factionName = getTeamName(value)
-					break
-				end
+		local factionName = "this faction"
+		for key, value in ipairs(exports.pool:getPoolElementsByType("team")) do
+			local id = tonumber(getElementData(value, "id"))
+			if (id==vfaction) then
+				factionName = getTeamName(value)
+				break
 			end
+		end
+		if (faction~=vfaction) and (seat==0) then
 			if (CanTowDriverEnter) then
 				outputChatBox("(( This Vehicle belongs to '" .. factionName .. "'. ))", thePlayer, 255, 194, 14)
 				setElementData(source, "enginebroke", 1, false)
@@ -935,6 +935,8 @@ function removeFromFactionVehicle(thePlayer)
 			removePedFromVehicle(thePlayer)
 			local x, y, z = getElementPosition(thePlayer)
 			setElementPosition(thePlayer, x, y, z)
+		elseif faction == vfaction or seat ~= 0 then
+			outputChatBox("(( This Vehicle belongs to '" .. factionName .. "'. ))", thePlayer, 255, 194, 14)
 		end
 	end
 	local Impounded = getElementData(source,"Impounded")

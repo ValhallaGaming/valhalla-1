@@ -49,7 +49,8 @@ function payBusDriver(line, stop)
 		removeDriver()
 		exports.global:givePlayerSafeMoney(source, 36)
 	elseif stop == -1 then
-		removeDriver()
+		removeDriverOnAllLines()
+		return
 	elseif stop == 0 then
 		table.insert( drivers[line][1], source )
 	else

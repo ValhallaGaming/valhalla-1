@@ -148,7 +148,7 @@ function stabilize()
 				toggleControl(source, 'right', true)
 				toggleControl(source, 'backwards', true)
 				toggleControl(source, 'enter_passenger', true)
-				setElementHealth(source, math.min( 20, getElementHealth(source) ) )
+				setElementHealth(source, math.max( 20, getElementHealth(source) ) )
 			end
 		else
 			if playerInjuries[source][7] and playerInjuries[source][8] then

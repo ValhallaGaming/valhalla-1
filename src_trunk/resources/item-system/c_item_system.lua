@@ -133,6 +133,8 @@ function pickupItem(button, state)
 		
 		if (restrain) and (restrain==1) then
 			outputChatBox("You are cuffed.", 255, 0, 0)
+		elseif not hasSpaceForItem(getLocalPlayer())
+			outputChatBox("Your Inventory is full.", 255, 0, 0)
 		else
 			setElementData(item, "pickedup", true, true)
 			showCursor(false)

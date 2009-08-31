@@ -419,6 +419,14 @@ function useItem(itemSlot, additional)
 				exports.global:sendLocalMeAction(source, "puts on an Emergency Services ID.")
 			end
 			exports.global:updateNametagColor(source)
+		elseif (itemID==69) then -- Dictionary
+			local learned = call(getResourceFromName("language-system"), "learnLanguage", source, itemValue)
+			local lang = call(getResourceFromName("language-system"), "getLanguageName", itemValue)
+			
+			if (learned) then
+				exports.global:takeItem(source, itemID, itemValue)
+				outputChatBox("You have learnt basic " .. lang .. ".", source, 0, 255, 0)
+			end
 		else
 			outputChatBox("Error 800001 - Report on http://bugs.valhallagaming.net", source, 255, 0, 0)
 		end

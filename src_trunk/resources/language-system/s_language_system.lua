@@ -219,13 +219,13 @@ function learnLanguage(player, lang)
 	local hasLanguage, slot = doesPlayerHaveLanguage(player, lang)
 
 	if (hasLanguage) then
-		outputChatBox("You already know " .. languages[lang] .. ".", source, 255, 0, 0)
+		outputChatBox("You already know " .. languages[lang] .. ".", player, 255, 0, 0)
 		return false
 	else
 		local freeslot = getNextEmptyLanguageSlot(player)
 
 		if (freeslot==0) then
-			outputChatBox("You do not have enough space to learn this language.", source, 255, 0, 0)
+			outputChatBox("You do not have enough space to learn this language.", player, 255, 0, 0)
 			return false
 		else
 			

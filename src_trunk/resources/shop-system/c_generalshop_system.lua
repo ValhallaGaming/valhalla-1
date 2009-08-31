@@ -387,6 +387,8 @@ function getImageName(shop_type)
 		return "general.png"
 	elseif(shop_type == 9) then
 		return "general.png"
+	elseif(shop_type == 10) then
+		return "general.png"
 	else
 		return "This isn't a shop. Go Away."
 	end
@@ -414,6 +416,8 @@ function getIntroMessage(shop_type)
 		return "We've got the latest technology just for you."
 	elseif(shop_type == 9) then
 		return "We got everything from Buckfast to Moet."
+	elseif(shop_type == 10) then
+		return "You wanna speak Ruski?."
 	else
 		return "This isn't a shop. Go Away."
 	end

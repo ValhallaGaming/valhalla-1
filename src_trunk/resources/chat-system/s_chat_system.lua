@@ -124,7 +124,8 @@ function chatMain(message, messageType)
 			
 			destroyElement(chatSphere)
 			message = string.gsub(message, "#%x%x%x%x%x%x", "") -- Remove colour codes
-			local language = getElementData(source, "languages.current")
+			local languageslot = getElementData(source, "languages.current")
+			local language = getElementData(source, "languages.lang" .. languageslot)
 			local languagename = call(getResourceFromName("language-system"), "getLanguageName", language)
 			message = trunklateText( source, message )
 			
@@ -198,7 +199,8 @@ function chatMain(message, messageType)
 			local theChannel = getElementData(source, "radiochannel")
 			if theChannel > 0 then
 				local username = string.gsub(getPlayerName(source), "_", " ")
-				local language = getElementData(source, "languages.current")
+				local languageslot = getElementData(source, "languages.current")
+				local language = getElementData(source, "languages.lang" .. languageslot)
 				local languagename = call(getResourceFromName("language-system"), "getLanguageName", language)
 				
 				-- get faction rank title
@@ -595,7 +597,8 @@ function localShout(thePlayer, commandName, ...)
 			local nearbyPlayers = getElementsWithinColShape(chatSphere, "player")
 			local playerName = string.gsub(getPlayerName(thePlayer), "_", " ")
 			
-			local language = getElementData(thePlayer, "languages.current")
+			local languageslot = getElementData(source, "languages.current")
+			local language = getElementData(source, "languages.lang" .. languageslot)
 			local languagename = call(getResourceFromName("language-system"), "getLanguageName", language)
 			
 			local message = trunklateText(thePlayer, table.concat({...}, " "))
@@ -1046,7 +1049,8 @@ function localWhisper(thePlayer, commandName, targetPlayerNick, ...)
 					local message = table.concat({...}, " ")
 					local message2 = call(getResourceFromName("language-system"), "applyLanguage", targetPlayer, message, language)
 					
-					local language = getElementData(thePlayer, "languages.current")
+					local languageslot = getElementData(source, "languages.current")
+			local language = getElementData(source, "languages.lang" .. languageslot)
 					local languagename = call(getResourceFromName("language-system"), "getLanguageName", language)
 						
 					local name = string.gsub(getPlayerName(thePlayer), "_", " ")
@@ -1113,7 +1117,8 @@ function localCarWhisper(thePlayer, commandName, ...)
 				else
 					exports.global:sendLocalDoAction(thePlayer, "Strangers whisper in the car." )
 					
-					local language = getElementData(thePlayer, "languages.current")
+					local languageslot = getElementData(source, "languages.current")
+					local language = getElementData(source, "languages.lang" .. languageslot)
 					local languagename = call(getResourceFromName("language-system"), "getLanguageName", language)
 					
 					message = table.concat({...}, " ")

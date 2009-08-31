@@ -29,7 +29,7 @@ local languages = {
 local flags = {
 	"gb",
 	"ru",
-	"de"
+	"de",
 	"fr",
 	"nl",
 	"it",

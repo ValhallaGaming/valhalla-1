@@ -425,7 +425,7 @@ function useItem(itemSlot, additional)
 			
 			if (learned) then
 				exports.global:takeItem(source, itemID, itemValue)
-				outputChatBox("You have learnt basic " .. lang .. ".", source, 0, 255, 0)
+				outputChatBox("You have learnt basic " .. lang .. ", Press F6 to manage your languages.", source, 0, 255, 0)
 			end
 		else
 			outputChatBox("Error 800001 - Report on http://bugs.valhallagaming.net", source, 255, 0, 0)

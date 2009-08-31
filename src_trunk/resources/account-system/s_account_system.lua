@@ -229,13 +229,13 @@ function spawnCharacter(charname)
 		end
 		
 		if ( lang2 > 0 ) then
-			setElementData(source, "languages.lang2", lang1, false)
-			setElementData(source, "languages.lang2skill", lang1skill, false)
+			setElementData(source, "languages.lang2", lang2, false)
+			setElementData(source, "languages.lang2skill", lang2skill, false)
 		end
 		
 		if ( lang3 > 0 ) then
-			setElementData(source, "languages.lang3", lang1, false)
-			setElementData(source, "languages.lang3skill", lang1skill, false)
+			setElementData(source, "languages.lang3", lang3, false)
+			setElementData(source, "languages.lang3skill", lang3skill, false)
 		end
 		-- END OF LANGUAGES
 		

@@ -22,19 +22,21 @@ end
 function getAdminCount()
 	local online, duty, lead, leadduty = 0, 0, 0, 0
 	for key, value in ipairs(getElementsByType("player")) do
-		local level = getElementData( value, "adminlevel" )
-		if level >= 1 then
-			online = online + 1
-			
-			local aod = getElementData( value, "adminduty" )
-			if aod == 1 then
-				duty = duty + 1
-			end
-			
-			if level >= 4 then
-				lead = lead + 1
+		if (isElement(value)) then
+			local level = getElementData( value, "adminlevel" )
+			if level >= 1 then
+				online = online + 1
+				
+				local aod = getElementData( value, "adminduty" )
 				if aod == 1 then
-					leadduty = leadduty + 1
+					duty = duty + 1
+				end
+				
+				if level >= 4 then
+					lead = lead + 1
+					if aod == 1 then
+						leadduty = leadduty + 1
+					end
 				end
 			end
 		end

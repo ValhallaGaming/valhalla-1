@@ -17,14 +17,16 @@ local columns = {
 
 function addToScoreboard(player)
 	local player = player or source
-	local id = getElementData(player, "ID #")
-	
-	if not id then
-		setTimer(addToScoreboard, 100, 1, player)
-	else
-		players[id] = player
+	if (isElement(player)) then
+		local id = getElementData(player, "ID #")
 		
-		updatePlayers()
+		if not id then
+			setTimer(addToScoreboard, 100, 1, player)
+		else
+			players[id] = player
+			
+			updatePlayers()
+		end
 	end
 end
 
@@ -68,15 +70,17 @@ end
 
 function refreshScoreboardPings()
 	for i,player in ipairs(getElementsByType("player")) do
-		guiGridListSetItemText(scoreboardGrid, scoreboardRows[player], 3, tostring(getPlayerPing(player)), false, false)
+		if (isElement(player)) then
+			guiGridListSetItemText(scoreboardGrid, scoreboardRows[player], 3, tostring(getPlayerPing(player)), false, false)
+		end
 	end
-	guiSetText(playerCount, guiGridListGetRowCount(scoreboardGrid))
+	guiSetText(playerCount, #getElementsByType("player"))
 end
 
 function updateScoreboard()
 	refreshScoreboardPings()
 	
-	guiSetText(playerCount, "Players: " .. guiGridListGetRowCount(scoreboardGrid))
+	guiSetText(playerCount, "Players: " .. #getElementsByType("player"))
 	guiGridListSetSelectedItem(scoreboardGrid, 0, 1)
 end
 

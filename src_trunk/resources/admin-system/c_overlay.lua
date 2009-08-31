@@ -68,7 +68,9 @@ local function createGUI()
 		statusLabel = nil
 	end
 	
-	if getElementData( localPlayer, "adminlevel" ) > 0 then
+	local adminlevel = getElementData( localPlayer, "adminlevel" )
+	
+	if adminlevel > 0 then
 		statusLabel = guiCreateLabel( 5, sy - 20, sx - 10, 15, "", false )
 		updateGUI()
 	--guiCreateLabel ( float x, float y, float width, float height, string text, bool relative, [element parent = nil] )

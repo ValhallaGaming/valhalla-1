@@ -325,7 +325,7 @@ function getItemsForSale(shop_type, race, gender)
 		item = {
 			{"Ziebrand Beer","The finest beer, imported from Holland.", "10", 58, 1, 1, false, 2},		
 			{ "Bastradov Vodka", "For your best friends - Bastradov Vodka.", "25", 62, 1, 1, false, 5},
-			{ "Scottish Whiskey", "The Best Scottish Whiskey, now exclusively made from Haggis.", "15", 63, 1, 1, false, 4 }
+			{ "Scottish Whiskey", "The Best Scottish Whiskey, now exclusively made from Haggis.", "15", 63, 1, 1, false, 4 },
 			{"Softdrink", "A cold can of Sprunk.", "3", 9, 1, 1, false,1}
 		}
 	end

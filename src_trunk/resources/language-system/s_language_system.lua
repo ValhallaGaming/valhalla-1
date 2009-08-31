@@ -59,7 +59,7 @@ function getLanguageName(language)
 end
 
 function increaseLanguageSkill(player, language)
-	local chance = math.random(1, 1)
+	local chance = math.random(1, 8)
 
 	if ( chance == 1 ) then
 		local hasLanguage, slot = doesPlayerHaveLanguage(player, language)

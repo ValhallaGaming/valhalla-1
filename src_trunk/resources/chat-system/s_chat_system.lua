@@ -597,8 +597,8 @@ function localShout(thePlayer, commandName, ...)
 			local nearbyPlayers = getElementsWithinColShape(chatSphere, "player")
 			local playerName = string.gsub(getPlayerName(thePlayer), "_", " ")
 			
-			local languageslot = getElementData(source, "languages.current")
-			local language = getElementData(source, "languages.lang" .. languageslot)
+			local languageslot = getElementData(thePlayer, "languages.current")
+			local language = getElementData(thePlayer, "languages.lang" .. languageslot)
 			local languagename = call(getResourceFromName("language-system"), "getLanguageName", language)
 			
 			local message = trunklateText(thePlayer, table.concat({...}, " "))
@@ -1049,8 +1049,8 @@ function localWhisper(thePlayer, commandName, targetPlayerNick, ...)
 					local message = table.concat({...}, " ")
 					local message2 = call(getResourceFromName("language-system"), "applyLanguage", targetPlayer, message, language)
 					
-					local languageslot = getElementData(source, "languages.current")
-			local language = getElementData(source, "languages.lang" .. languageslot)
+					local languageslot = getElementData(thePlayer, "languages.current")
+					local language = getElementData(thePlayer, "languages.lang" .. languageslot)
 					local languagename = call(getResourceFromName("language-system"), "getLanguageName", language)
 						
 					local name = string.gsub(getPlayerName(thePlayer), "_", " ")
@@ -1117,8 +1117,8 @@ function localCarWhisper(thePlayer, commandName, ...)
 				else
 					exports.global:sendLocalDoAction(thePlayer, "Strangers whisper in the car." )
 					
-					local languageslot = getElementData(source, "languages.current")
-					local language = getElementData(source, "languages.lang" .. languageslot)
+					local languageslot = getElementData(thePlayer, "languages.current")
+					local language = getElementData(thePlayer, "languages.lang" .. languageslot)
 					local languagename = call(getResourceFromName("language-system"), "getLanguageName", language)
 					
 					message = table.concat({...}, " ")

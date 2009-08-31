@@ -293,8 +293,8 @@ function talkPhone(thePlayer, commandName, ...)
 					local username = getPlayerName(thePlayer)
 					local phoneNumber = getElementData(thePlayer, "cellnumber")
 					
-					local languageslot = getElementData(source, "languages.current")
-					local language = getElementData(source, "languages.lang" .. languageslot)
+					local languageslot = getElementData(thePlayer, "languages.current")
+					local language = getElementData(thePlayer, "languages.lang" .. languageslot)
 					local languagename = call(getResourceFromName("language-system"), "getLanguageName", language)
 					
 					local target = getElementData(thePlayer, "calling")

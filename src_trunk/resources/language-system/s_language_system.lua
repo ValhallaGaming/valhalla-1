@@ -32,7 +32,7 @@ local languages = {
 	"Georgian",
 	"Greek",
 	"Polish",
-	"Portugeese",
+	"Portugese",
 	"Turkish",
 	"Estonian"
 	}

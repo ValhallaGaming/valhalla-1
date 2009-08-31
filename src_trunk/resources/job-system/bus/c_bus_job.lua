@@ -270,7 +270,7 @@ function enterBus ( thePlayer, seat, jacked )
 						outputChatBox("You have paid $5 to ride the bus", 0, 255, 0)
 					end
 				end
-			elseif not busMarker then
+			elseif not busMarker and getElementData(getLocalPlayer(), "job") == 3 then
 				outputChatBox("#FF9933Use /startbus to begin the bus route.", 255, 0, 0, true)
 			end
 		end

@@ -14,7 +14,7 @@ wPaintjob, bPaintjob1, bPaintjob2, bPaintjob3, bPaintjob4, bPaintjobClose = nil
 wUpgrades, gUpgrades, bUpgradesClose = nil
 
 currentVehicle = nil
-vehicleWithPaintjob = { [535] = true, [558] = true, [559] = true, [560] = true, [561] = true, [562] = true, [565] = true }
+vehicleWithPaintjob = { [534] = true, [535] = true, [558] = true, [559] = true, [560] = true, [561] = true, [562] = true, [565] = true }
 
 function displayMechanicJob()
 	outputChatBox("#FF9933Use the #FF0000right-click menu#FF9933 to view the services you can provide.", 255, 194, 15, true)

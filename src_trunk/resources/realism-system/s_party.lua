@@ -14,7 +14,7 @@ addEventHandler( "onPlayerDamage", getRootElement(),
 
 addEventHandler( "onPlayerWasted", getRootElement(),
 	function( ammo, attacker, weapon )
-		if attacker then
+		if isElementWithinColShape( source, PershingSquareCol ) and attacker then
 			if getElementType( attacker ) == "vehicle" then
 				attacker = getVehicleOccupant( attacker )
 				if not attacker then return end
@@ -82,6 +82,16 @@ addEventHandler( "onResourceStart", getResourceRootElement(),
 			elseif v[4] == 2 then
 				createMarker( v[1], v[2], v[3] - 1.3, 'corona', 3, math.random( 0, 1 ) * 255, math.random( 0, 1 ) * 255, math.random( 0, 1 ) * 255, 127 )
 			end
+		end
+	end
+)
+
+--
+
+addEventHandler( "onColShapeHit", PershingSquareCol,
+	function( element, matching )
+		if isElement( element ) and getElementType( element ) == "player" and matching then
+			exports.global:givePlayerAchievement( element, 39 ) -- Party Time
 		end
 	end
 )

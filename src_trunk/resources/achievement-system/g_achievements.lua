@@ -36,7 +36,8 @@ local g_achievements = {
 	{ "Whale Hunter", "Catch a fish weighing 100lbs or more.", 50 },
 	{ "Quality Assurance", "Took part in the MTA 1.0 2nd Beta Test.", 100 },
 	{ "The Good Samaritan", "Donate $1000 or more to charity", 100 },
-	{ "Welcome to Los Santos", "Arrive in Los Santos.", 10 }
+	{ "Welcome to Los Santos", "Arrive in Los Santos.", 10 },
+	{ "Party Time", "Join the 2.1 Relaunch Party", 100 }
 }
 
 function getAchievementInfo(id)

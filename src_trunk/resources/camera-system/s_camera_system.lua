@@ -24,15 +24,23 @@ addEventHandler("onResourceStart", getResourceRootElement(), resourceStart)
 function monitorSpeed(element, matchingDimension)
 	if (matchingDimension) and (getElementType(element)=="vehicle")then
 		local thePlayer = getVehicleOccupant(element)
-		local timer = setTimer(checkSpeed, 200, 40, element, thePlayer, source)
-		setElementData(thePlayer, "cameratimer", timer, false)
+		if thePlayer then
+			local timer = setTimer(checkSpeed, 200, 40, element, thePlayer, source)
+			setElementData(thePlayer, "cameratimer", timer, false)
+		end
 	end
 end
 
 function stopMonitorSpeed(element, matchingDimension)
 	if (matchingDimension) and (getElementType(element)=="vehicle") then
 		local thePlayer = getVehicleOccupant(element)
-		local timer = getElementData(thePlayer, "cameratimer")
+		if thePlayer then
+			local timer = getElementData(thePlayer, "cameratimer")
+			if isTimer( timer ) then
+				killTimer( timer )
+			end
+			removeElementData( thePlayer, "cameratimer" )
+		end
 	end
 end
 

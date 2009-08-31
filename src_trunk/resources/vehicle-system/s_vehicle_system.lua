@@ -925,7 +925,7 @@ function removeFromFactionVehicle(thePlayer)
 		end
 		if (faction~=vfaction) and (seat==0) then
 			if (CanTowDriverEnter) then
-				outputChatBox("(( This Vehicle belongs to '" .. factionName .. "'. ))", thePlayer, 255, 194, 14)
+				outputChatBox("(( This " .. getVehicleName(source) .. " belongs to '" .. factionName .. "'. ))", thePlayer, 255, 194, 14)
 				setElementData(source, "enginebroke", 1, false)
 				setVehicleDamageProof(source, true)
 				setVehicleEngineState(source, false)
@@ -936,7 +936,7 @@ function removeFromFactionVehicle(thePlayer)
 			local x, y, z = getElementPosition(thePlayer)
 			setElementPosition(thePlayer, x, y, z)
 		elseif faction == vfaction or seat ~= 0 then
-			outputChatBox("(( This Vehicle belongs to '" .. factionName .. "'. ))", thePlayer, 255, 194, 14)
+			outputChatBox("(( This " .. getVehicleName(source) .. " belongs to '" .. factionName .. "'. ))", thePlayer, 255, 194, 14)
 		end
 	end
 	local Impounded = getElementData(source,"Impounded")

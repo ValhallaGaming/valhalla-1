@@ -9,4 +9,5 @@
 	<file src="chat.png"/>
 	
 	<export function="trunklateText" type="server"/>
+	<export function="localIC" type="server"/>
 </meta>

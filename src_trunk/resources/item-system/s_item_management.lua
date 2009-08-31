@@ -140,6 +140,7 @@ end
 function loadItems( element, force )
 	if force or not saveditems[ element ] then
 		saveditems[ element ] = {}
+		notify( element )
 		local result = mysql_query( handler, "SELECT * FROM items WHERE type = " .. getType( element ) .. " AND owner = " .. getID( element ) .. " LIMIT 20" )
 		if result then
 			local count = 0
@@ -155,9 +156,9 @@ function loadItems( element, force )
 				subscribers[ element ] = {}
 				if getElementType( element ) == "player" then
 					subscribers[ element ][ element ] = true
-					notify( element )
 				end
 			end
+			notify( element )
 			
 			return true
 		else

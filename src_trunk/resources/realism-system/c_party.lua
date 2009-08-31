@@ -1,6 +1,17 @@
 local localPlayer = getLocalPlayer()
 local PershingSquareCol = createColCuboid( 1410, -1795, -50, 150, 237, 200 )
 local PershingRadar = createRadarArea( 1410, -1795, 150, 237, 0, 255, 0, 63 )
+local keysTimer = nil
+
+function toggleKeys( state )
+	toggleControl( 'fire', state )
+	toggleControl( 'aim_weapon', state )
+	toggleControl( 'next_weapon', state )
+	toggleControl( 'previous_weapon', state )
+	toggleControl( 'vehicle_fire', state )
+	toggleControl( 'vehicle_secondary_fire', state )
+	setPedWeaponSlot( localPlayer, 0 )
+end
 
 -- toggle keys as they enter pershing square
 addEventHandler( "onClientColShapeHit", PershingSquareCol,
@@ -8,13 +19,8 @@ addEventHandler( "onClientColShapeHit", PershingSquareCol,
 		if getElementData( localPlayer, "adminlevel" ) == 0 then
 			if element == localPlayer then
 				if getElementData( localPlayer, 'faction' ) ~= 1 then
-					toggleControl( 'fire', false )
-					toggleControl( 'aim_weapon', false )
-					toggleControl( 'next_weapon', false )
-					toggleControl( 'previous_weapon', false )
-					toggleControl( 'vehicle_fire', false )
-					toggleControl( 'vehicle_secondary_fire', false )
-					setPedWeaponSlot( localPlayer, 0 )
+					toggleKeys( false )
+					keysTimer = setTimer( toggleKeys, 500, 0, false )
 				end
 				
 				local vehicle = getPedOccupiedVehicle( localPlayer )
@@ -35,12 +41,12 @@ addEventHandler( "onClientColShapeLeave", PershingSquareCol,
 	function( element )
 		if element == localPlayer then
 			if getElementData( localPlayer, 'faction' ) ~= 1 then
-				toggleControl( 'fire', true )
-				toggleControl( 'aim_weapon', true )
-				toggleControl( 'next_weapon', true )
-				toggleControl( 'previous_weapon', true )
-				toggleControl( 'vehicle_fire', true )
-				toggleControl( 'vehicle_secondary_fire', true )
+				toggleKeys( true )
+			end
+			
+			if isTimer( keysTimer ) then
+				killTimer( keysTimer )
+				keysTimer = nil
 			end
 		end
 	end

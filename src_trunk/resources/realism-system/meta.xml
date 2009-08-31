@@ -70,5 +70,5 @@
 	<export function="showSpeedo" type="client"/>
 	
 	<script src="c_party.lua" type="client"/>
-	<script src="s_party.lua" type="client"/>
+	<script src="s_party.lua" type="server"/>
 </meta>

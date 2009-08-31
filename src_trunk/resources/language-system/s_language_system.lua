@@ -10,7 +10,8 @@ sqlPort = exports.mysql:getMySQLPort()
 handler = mysql_connect(sqlHost, sqlUsername, sqlPassword, sqlDB, sqlPort)
 
 local languages = {
-	"English"
+	"English",
+	"Russian"
 	}
 
 function checkMySQL()

@@ -1,5 +1,6 @@
 local languages = {
-	"English"
+	"English",
+	"Russian"
 	}
 
 -- Displaying the increase in skill

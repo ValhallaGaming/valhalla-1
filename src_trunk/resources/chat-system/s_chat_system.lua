@@ -199,6 +199,7 @@ function chatMain(message, messageType)
 			if theChannel > 0 then
 				local username = string.gsub(getPlayerName(source), "_", " ")
 				local language = getElementData(source, "languages.current")
+				local languagename = call(getResourceFromName("language-system"), "getLanguageName", language)
 				
 				-- get faction rank title
 				local result = mysql_query(handler, "SELECT faction_id, faction_rank FROM characters WHERE charactername='" .. getPlayerName(source) .. "' LIMIT 1")
@@ -215,13 +216,9 @@ function chatMain(message, messageType)
 				end
 				mysql_free_result(titleresult)
 				
-				
-				outputChatBox("[RADIO #" .. theChannel .. "] " .. factionRankTitle .. username .. " says: " .. message, source, 0, 102, 255)
-				message = call(getResourceFromName("language-system"), "applyLanguage", source, message, language)
-				call(getResourceFromName("language-system"), "increaseLanguageSkill", source, language)
 				message = trunklateText( source, message )
-				
-				
+				outputChatBox("[" .. languagename .. "] [RADIO #" .. theChannel .. "] " .. factionRankTitle .. username .. " says: " .. message, source, 0, 102, 255)
+				call(getResourceFromName("language-system"), "increaseLanguageSkill", source, language)
 				
 				for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
 					local targetChannel = getElementData(value, "radiochannel")
@@ -231,8 +228,8 @@ function chatMain(message, messageType)
 						if (targetChannel==theChannel) then
 							playSoundFrontEnd(value, 47)
 							
-							
-							outputChatBox("[RADIO #" .. theChannel .. "] " .. factionRankTitle .. username .. " says: " .. trunklateText( value, message ), value, 0, 102, 255)
+							local message2 = call(getResourceFromName("language-system"), "applyLanguage", value, message, language)
+							outputChatBox("[" .. languagename .. "] [RADIO #" .. theChannel .. "] " .. factionRankTitle .. username .. " says: " .. trunklateText( value, message2 ), value, 0, 102, 255)
 							
 							-- Show it to people near who can hear his radio
 							local x, y, z = getElementPosition(value)
@@ -245,7 +242,8 @@ function chatMain(message, messageType)
 							for k, v in ipairs(nearbyPlayers) do
 								local channel = getElementData(v, "radiochannel")
 								if (v~=source) and (channel~=targetChannel) then
-									outputChatBox(getPlayerName(value) .. "'s Radio: " .. trunklateText( v, message ), v, 255, 255, 255)
+									local message2 = call(getResourceFromName("language-system"), "applyLanguage", v, message, language)
+									outputChatBox("[" .. languagename .. "] " .. getPlayerName(value) .. "'s Radio: " .. trunklateText( v, message2 ), v, 255, 255, 255)
 								end
 							end
 							setTimer(playSoundFrontEnd, 700, 1, value, 48)
@@ -596,7 +594,13 @@ function localShout(thePlayer, commandName, ...)
 			exports.pool:allocateElement(chatSphere)
 			local nearbyPlayers = getElementsWithinColShape(chatSphere, "player")
 			local playerName = string.gsub(getPlayerName(thePlayer), "_", " ")
+			
+			local language = getElementData(thePlayer, "languages.current")
+			local languagename = call(getResourceFromName("language-system"), "getLanguageName", language)
+			
 			local message = trunklateText(thePlayer, table.concat({...}, " "))
+			outputChatBox("[" .. languagename .. "] " .. playerName .. " shouts: " .. message .. "!!", thePlayer, 255, 255, 255)
+			call(getResourceFromName("language-system"), "increaseLanguageSkill", thePlayer, language)
 			
 			destroyElement(chatSphere)
 			
@@ -606,16 +610,18 @@ function localShout(thePlayer, commandName, ...)
 				local nearbyPlayerDimension = getElementDimension(nearbyPlayer)
 				local nearbyPlayerInterior = getElementInterior(nearbyPlayer)
 				
-				if (nearbyPlayerDimension==dimension) and (nearbyPlayerInterior==interior) then
+				if (nearbyPlayerDimension==dimension) and (nearbyPlayerInterior==interior) and (nearbyPlayer~=thePlayer) then
 					local logged = getElementData(nearbyPlayer, "loggedin")
 					
 					if (logged==1) and not (isPedDead(nearbyPlayer)) then
 						local mode = tonumber(getElementData(nearbyPlayer, "chatbubbles"))
-						local message2 = trunklateText(nearbyPlayer, message)
+						local message2 = call(getResourceFromName("language-system"), "applyLanguage", nearbyPlayer, message, language)
+						message2 = trunklateText(nearbyPlayer, message2)
 						if mode > 0 then
 							triggerClientEvent(nearbyPlayer, "onMessageIncome", thePlayer, message2, mode)
 						end
-						outputChatBox(playerName .. " shouts: " .. message2 .. "!!", nearbyPlayer, 255, 255, 255)
+						outputChatBox("[" .. languagename .. "] " .. playerName .. " shouts: " .. message2 .. "!!", nearbyPlayer, 255, 255, 255)
+						call(getResourceFromName("language-system"), "increaseLanguageSkill", nearbyPlayer, language)
 					end
 				end
 			end
@@ -1100,13 +1106,22 @@ function localCarWhisper(thePlayer, commandName, ...)
 				else
 					exports.global:sendLocalDoAction(thePlayer, "Strangers whisper in the car." )
 					
+					local language = getElementData(thePlayer, "languages.current")
+					local languagename = call(getResourceFromName("language-system"), "getLanguageName", language)
+					
+					message = table.concat({...}, " ")
+					local name = string.gsub(getPlayerName(thePlayer), "_", " ")
+					
 					for i = 0, 3 do
 						player = getVehicleOccupant(vehicle, i)
 						
-						if (player) then
-							message = table.concat({...}, " ")
-							local name = string.gsub(getPlayerName(thePlayer), "_", " ")
-							outputChatBox("((In Car)) " .. name .. " whispers: " .. message, player, 255, 255, 255)
+						if (player) and (player~=thePlayer) then
+							call(getResourceFromName("language-system"), "increaseLanguageSkill", player, language)
+							local message2 = call(getResourceFromName("language-system"), "applyLanguage", player, message, language)
+							outputChatBox("[" .. languagename .. "] ((In Car)) " .. name .. " whispers: " .. message2, player, 255, 255, 255)
+						elseif (player) then
+							call(getResourceFromName("language-system"), "increaseLanguageSkill", player, language)
+							outputChatBox("[" .. languagename .. "] ((In Car)) " .. name .. " whispers: " .. message, player, 255, 255, 255)
 						end
 					end
 				end

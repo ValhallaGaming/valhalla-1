@@ -1043,14 +1043,21 @@ function localWhisper(thePlayer, commandName, targetPlayerNick, ...)
 				local tx, ty, tz = getElementPosition(targetPlayer)
 				
 				if (getDistanceBetweenPoints3D(x, y, z, tx, ty, tz)<3) then
-					message = table.concat({...}, " ")
+					local message = table.concat({...}, " ")
+					local message2 = call(getResourceFromName("language-system"), "applyLanguage", targetPlayer, message, language)
+					
+					local language = getElementData(thePlayer, "languages.current")
+					local languagename = call(getResourceFromName("language-system"), "getLanguageName", language)
 						
 					local name = string.gsub(getPlayerName(thePlayer), "_", " ")
 					local targetName = string.gsub(getPlayerName(targetPlayer), "_", " ")
 					
 					exports.global:sendLocalMeAction(thePlayer, "whispers to " .. targetName .. ".")
-					outputChatBox(name .. " whispers: " .. message, thePlayer, 255, 255, 255)
-					outputChatBox(name .. " whispers: " .. message, targetPlayer, 255, 255, 255)
+					outputChatBox("[" .. languagename .. "] " .. name .. " whispers: " .. message, thePlayer, 255, 255, 255)
+					outputChatBox("[" .. languagename .. "] " .. name .. " whispers: " .. message, targetPlayer, 255, 255, 255)
+					
+					call(getResourceFromName("language-system"), "increaseLanguageSkill", thePlayer, language)
+					call(getResourceFromName("language-system"), "increaseLanguageSkill", targetPlayer, language)
 				else
 					outputChatBox("You are too far away from " .. getPlayerName(targetPlayer) .. ".", thePlayer, 255, 0, 0)
 				end

@@ -59,3 +59,41 @@ addEventHandler( "onClientPlayerDamage", getLocalPlayer(),
 		end
 	end
 )
+
+-- fireworks
+
+local fireworks = { }
+
+addEvent( "fireworks", true )
+addEventHandler( "fireworks", getRootElement(), 
+	function( movex, movey, movez, size )
+		local x, y, z = getElementPosition( source )
+		fireworks[ source ] = { fromx=x, fromy=y, fromz=z, movex=movex, movey=movey, movez=movez, time=getTickCount(), size=size }
+	end
+)
+
+addEventHandler( "onClientPreRender", getRootElement(),
+	function()
+		local time = getTickCount()
+		for key, value in pairs( fireworks ) do
+			if isElement( key ) then
+				if time - value.time > 5000 then
+					if not value.downx then
+						value.downx, value.downy, value.downz = getElementPosition( key )
+						value.movex = 1/3 * value.movex
+						value.movey = 1/3 * value.movey
+						value.movez = 1/15 * value.movez
+					end
+					local rel = ( time - value.time - 5000 ) / 5000
+					setElementPosition( key, value.downx + rel * value.movex, value.downy + rel * value.movey, value.downz + rel * rel * value.movez )
+				else
+					local rel = ( time - value.time ) / 5000
+					setElementPosition( key, value.fromx + rel * value.movex, value.fromy + rel * value.movey, value.fromz + rel * value.movez )
+					setMarkerSize( key, rel * value.size )
+				end
+			else
+				fireworks[ key ] = nil
+			end
+		end
+	end
+)

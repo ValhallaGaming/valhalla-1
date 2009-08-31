@@ -68,23 +68,23 @@ local coronas =
 	{ 1526.12890625, -1721.5390625, 21.594753265381, 2 }
 }
 
-addEventHandler( "onResourceStart", getResourceRootElement(),
-	function()
-		for k, v in ipairs( coronas ) do
-			if not v[4] then
-				createMarker( v[1], v[2], v[3] + 2.65, 'corona', 3, math.random( 0, 1 ) * 255, math.random( 0, 1 ) * 255, math.random( 0, 1 ) * 255, 127 )
-			elseif v[4] == 0 then
-				createMarker( v[1], v[2] + 0.75, v[3] + 2.65, 'corona', 3, math.random( 0, 1 ) * 255, math.random( 0, 1 ) * 255, math.random( 0, 1 ) * 255, 127 )
-				createMarker( v[1], v[2] - 0.75, v[3] + 2.65, 'corona', 3, math.random( 0, 1 ) * 255, math.random( 0, 1 ) * 255, math.random( 0, 1 ) * 255, 127 )
-			elseif v[4] == 1 then
-				createMarker( v[1] + 0.75, v[2], v[3] + 2.65, 'corona', 3, math.random( 0, 1 ) * 255, math.random( 0, 1 ) * 255, math.random( 0, 1 ) * 255, 127 )
-				createMarker( v[1] - 0.75, v[2], v[3] + 2.65, 'corona', 3, math.random( 0, 1 ) * 255, math.random( 0, 1 ) * 255, math.random( 0, 1 ) * 255, 127 )
-			elseif v[4] == 2 then
-				createMarker( v[1], v[2], v[3] - 1.3, 'corona', 3, math.random( 0, 1 ) * 255, math.random( 0, 1 ) * 255, math.random( 0, 1 ) * 255, 127 )
-			end
+local lamps = {}
+function createStreetLamps()
+	for k, v in ipairs( coronas ) do
+		if not v[4] then
+			lamps[ #lamps + 1 ] = createMarker( v[1], v[2], v[3] + 2.65, 'corona', 3, math.random( 0, 1 ) * 255, math.random( 0, 1 ) * 255, math.random( 0, 1 ) * 255, 127 )
+		elseif v[4] == 0 then
+			lamps[ #lamps + 1 ] = createMarker( v[1], v[2] + 0.75, v[3] + 2.65, 'corona', 3, math.random( 0, 1 ) * 255, math.random( 0, 1 ) * 255, math.random( 0, 1 ) * 255, 127 )
+			lamps[ #lamps + 1 ] = createMarker( v[1], v[2] - 0.75, v[3] + 2.65, 'corona', 3, math.random( 0, 1 ) * 255, math.random( 0, 1 ) * 255, math.random( 0, 1 ) * 255, 127 )
+		elseif v[4] == 1 then
+			lamps[ #lamps + 1 ] = createMarker( v[1] + 0.75, v[2], v[3] + 2.65, 'corona', 3, math.random( 0, 1 ) * 255, math.random( 0, 1 ) * 255, math.random( 0, 1 ) * 255, 127 )
+			lamps[ #lamps + 1 ] = createMarker( v[1] - 0.75, v[2], v[3] + 2.65, 'corona', 3, math.random( 0, 1 ) * 255, math.random( 0, 1 ) * 255, math.random( 0, 1 ) * 255, 127 )
+		elseif v[4] == 2 then
+			lamps[ #lamps + 1 ] = createMarker( v[1], v[2], v[3] - 1.3, 'corona', 3, math.random( 0, 1 ) * 255, math.random( 0, 1 ) * 255, math.random( 0, 1 ) * 255, 127 )
 		end
 	end
-)
+end
+addEventHandler( "onResourceStart", getResourceRootElement(), createStreetLamps )
 
 --
 
@@ -92,6 +92,43 @@ addEventHandler( "onColShapeHit", PershingSquareCol,
 	function( element, matching )
 		if isElement( element ) and getElementType( element ) == "player" and matching then
 			exports.global:givePlayerAchievement( element, 39 ) -- Party Time
+		end
+	end
+)
+
+-- fireworks
+local fwTimer = nil
+
+function launchFW()
+	local marker = createMarker( 1498.0234375, -1664.6025390625, 34.046875, 'corona', 1, math.random( 0, 255 ), math.random( 0, 255 ), math.random( 0, 255 ) )
+	triggerClientEvent( "fireworks", marker, math.random( -60, 60 ), math.random( -80, 80 ), math.random( 40, 70 ), math.random( 5, 15 ) )
+	setTimer( destroyElement, 10000, 1, marker )
+end
+
+addCommandHandler( "fireworks", 
+	function( thePlayer, commandName )
+		if exports.global:isPlayerAdmin( thePlayer ) then
+			if not fwTimer then
+				launchFW()
+				fwTimer = setTimer( launchFW, 300, 0 )
+				
+				-- disable street lamps
+				for key, value in pairs( lamps ) do 
+					destroyElement( value )
+					lamps = {}
+				end
+				
+				setWeather( 4 )
+
+				outputChatBox("You started the fireworks!", thePlayer, 0, 255, 0)
+			else
+				killTimer( fwTimer )
+				fwTimer = nil
+				outputChatBox("You stopped the fireworks!", thePlayer, 255, 0, 0)
+
+				-- re-enable street lamps
+				createStreetLamps()
+			end
 		end
 	end
 )

@@ -223,20 +223,26 @@ function spawnCharacter(charname)
 		local currentLanguage = tonumber(mysql_result(result, 1, 47))
 		setElementData(source, "languages.current", currentLanguage, false)
 		
-		if ( lang1 > 0 ) then
-			setElementData(source, "languages.lang1", lang1, false)
-			setElementData(source, "languages.lang1skill", lang1skill, false)
+		if lang1 == 0 then
+			lang1skill = 0
 		end
 		
-		if ( lang2 > 0 ) then
-			setElementData(source, "languages.lang2", lang2, false)
-			setElementData(source, "languages.lang2skill", lang2skill, false)
+		if lang2 == 0 then
+			lang2skill = 0
 		end
 		
-		if ( lang3 > 0 ) then
-			setElementData(source, "languages.lang3", lang3, false)
-			setElementData(source, "languages.lang3skill", lang3skill, false)
+		if lang3 == 0 then
+			lang3skill = 0
 		end
+		
+		setElementData(source, "languages.lang1", lang1, false)
+		setElementData(source, "languages.lang1skill", lang1skill, false)
+		
+		setElementData(source, "languages.lang2", lang2, false)
+		setElementData(source, "languages.lang2skill", lang2skill, false)
+		
+		setElementData(source, "languages.lang3", lang3, false)
+		setElementData(source, "languages.lang3skill", lang3skill, false)
 		-- END OF LANGUAGES
 		
 		setElementData(source, "timeinserver", timeinserver)

@@ -19,17 +19,23 @@ function killknockedout(source)
 end
 
 function knockout()
-	outputChatBox("You've been knocked out!", source, 255, 0, 0)
-	toggleAllControls(source, false, true, false)
-	
-	fadeCamera(source, false, 120)
-	playerInjuries[source]['knockout'] = setTimer(killknockedout, 120000, 1, source)
-	
-	exports.global:applyAnimation( source, "CRACK", "crckidle2", 999999, true, false, true)
-	setElementData(source, "injuriedanimation", true)
+	if playerInjuries[source] and not isTimer( playerInjuries[source]['knockout'] ) then
+		outputChatBox("You've been knocked out!", source, 255, 0, 0)
+		toggleAllControls(source, false, true, false)
+		
+		fadeCamera(source, false, 120)
+		playerInjuries[source]['knockout'] = setTimer(killknockedout, 120000, 1, source)
+		
+		exports.global:applyAnimation( source, "CRACK", "crckidle2", -1, true, false, true)
+		setElementData(source, "injuriedanimation", true)
+	end
 end
 
 function injuries(attacker, weapon, bodypart, loss)
+	if loss < 0.5 then
+		return
+	end
+	
 	-- source = player who was hit
 	if not bodypart and getPedOccupiedVehicle(source) then
 		bodypart = 3
@@ -142,6 +148,7 @@ function stabilize()
 				toggleControl(source, 'right', true)
 				toggleControl(source, 'backwards', true)
 				toggleControl(source, 'enter_passenger', true)
+				setElementHealth(source, math.min( 20, getElementHealth(source) ) )
 			end
 		else
 			if playerInjuries[source][7] and playerInjuries[source][8] then

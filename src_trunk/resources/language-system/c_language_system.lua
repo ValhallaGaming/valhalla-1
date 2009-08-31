@@ -84,6 +84,7 @@ function displayGUI(remotelanguages, rcurrslot)
 			
 			bUse1 = guiCreateButton(0.83, 0.08+offset, 0.2, 0.05, "Use", true, wLanguages)
 			bUnlearnLang1 = guiCreateButton(0.83, 0.14+offset, 0.2, 0.05, "Un-learn", true, wLanguages)
+			addEventHandler("onClientGUIClick", bUnlearnLang1, unlearnLanguage, false)
 			addEventHandler("onClientGUIClick", bUse1, useLanguage, false)
 			offset = offset + 0.3
 			
@@ -109,6 +110,7 @@ function displayGUI(remotelanguages, rcurrslot)
 			
 			bUse2 = guiCreateButton(0.83, 0.08+offset, 0.2, 0.05, "Use", true, wLanguages)
 			bUnlearnLang2 = guiCreateButton(0.83, 0.14+offset, 0.2, 0.05, "Un-learn", true, wLanguages)
+			addEventHandler("onClientGUIClick", bUnlearnLang2, unlearnLanguage, false)
 			addEventHandler("onClientGUIClick", bUse2, useLanguage, false)
 			offset = offset + 0.3
 			
@@ -134,6 +136,7 @@ function displayGUI(remotelanguages, rcurrslot)
 			
 			bUse3 = guiCreateButton(0.83, 0.08+offset, 0.2, 0.05, "Use", true, wLanguages)
 			bUnlearnLang3 = guiCreateButton(0.83, 0.14+offset, 0.2, 0.05, "Un-learn", true, wLanguages)
+			addEventHandler("onClientGUIClick", bUnlearnLang3, unlearnLanguage, false)
 			addEventHandler("onClientGUIClick", bUse3, useLanguage, false)
 			
 			if (currslot==3) then
@@ -166,11 +169,41 @@ function useLanguage(button, state)
 	end
 end
 
+function unlearnLanguage(button, state)
+	if (button=="left") then
+		local lang = 0
+		
+		if (source==bUnlearnLang1) then lang = tlanguages[1][1] end
+		if (source==bUnlearnLang2) then lang = tlanguages[2][1] end
+		if (source==bUnlearnLang3) then lang = tlanguages[3][1] end
+
+		if (source==bUnlearnLang1 and bUnlearnLang2==nil and  bUnlearnLang3==nil) then
+			outputChatBox("You must know atleast one language.", 255, 0, 0)
+			return
+		elseif (source==bUnlearnLang2 and bUnlearnLang1==nil and  bUnlearnLang3==nil) then
+			outputChatBox("You must know atleast one language.", 255, 0, 0)
+			return
+		elseif (source==bUnlearnLang3 and bUnlearnLang1==nil and  bUnlearnLang2==nil) then
+			outputChatBox("You must know atleast one language.", 255, 0, 0)
+			return
+		end
+		
+		if (lang>0) then
+			hideGUI()
+			triggerServerEvent("unlearnLanguage", localPlayer, lang)
+		end
+	end
+end
+
 function hideGUI()
 	if (wLanguages) then
 		destroyElement(wLanguages)
 	end
 	wLanguages = nil
+	
+	bUnlearnLang1 = nil
+	bUnlearnLang2 = nil
+	bUnlearnLang3 = nil
 	
 	showCursor(false)
 end

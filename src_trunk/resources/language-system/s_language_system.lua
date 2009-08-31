@@ -70,7 +70,7 @@ function doesPlayerHaveLanguage(player, language)
 	end
 end
 
-function removeLanguages(player, language)
+function removeLanguage(player, language)
 	local hasLanguage, slot = doesPlayerHaveLanguage(player, language)
 	
 	if (hasLanguage) then
@@ -181,6 +181,18 @@ function showLanguages(player)
 	triggerClientEvent(player, "showLanguages", player, langs, currLang)
 end
 
+function getNextLanguageSlot(player)
+	local lang1 = getElementData(player, "languages.lang1")
+	local lang2 = getElementData(player, "languages.lang2")
+	local lang3 = getElementData(player, "languages.lang3")
+	
+	if lang1>0 then return 1
+	elseif lang2>0 then return 1
+	elseif lang3>0 then return 1
+	else return 0
+	end
+end
+
 function useLanguage(lang)
 	local hasLanguage, slot = doesPlayerHaveLanguage(source, lang)
 	
@@ -192,3 +204,18 @@ function useLanguage(lang)
 end
 addEvent("useLanguage", true)
 addEventHandler("useLanguage", getRootElement(), useLanguage)
+
+function unlearnLanguage(lang)
+	local hasLanguage, slot = doesPlayerHaveLanguage(source, lang)
+	
+	if (hasLanguage) then
+		removeLanguage(source, lang)
+		outputChatBox("You have unlearned " .. languages[lang] .. ".", source, 255, 194, 14)
+		
+		local nextSlot = getNextLanguageSlot(source)
+		setElementData(source, "languages.current", nextSlot, false)
+		showLanguages(source)
+	end
+end
+addEvent("unlearnLanguage", true)
+addEventHandler("unlearnLanguage", getRootElement(), unlearnLanguage)

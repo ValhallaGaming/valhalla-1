@@ -989,7 +989,9 @@ addCommandHandler("setinteriorname", changeInteriorName, false, false) -- the co
 function addSafeAtPosition( thePlayer, x, y, z, rotz )
 	local dbid = getElementDimension( thePlayer )
 	local interior = getElementInterior( thePlayer )
-	if (safeTable[dbid]) then
+	if dbid == 0 then
+		return 2
+	elseif safeTable[dbid] then
 		outputChatBox("There is already a safe in this property. Type movesafe to move it.", thePlayer, 255, 0, 0)
 		return 1
 	end
@@ -1012,7 +1014,7 @@ function moveSafe ( thePlayer, commandName )
 	local dbid = getElementDimension( thePlayer )
 	local interior = getElementInterior( thePlayer )
 	if ((exports.global:hasItem( thePlayer, 5, dbid ) or exports.global:hasItem( thePlayer, 4, dbid))) then
-		if (safeTable[dbid]) then
+		if dbid > 0 and safeTable[dbid] then
 			local oldsafe = safeTable[dbid]
 			z = z - 0.5
 			rotz = rotz + 180

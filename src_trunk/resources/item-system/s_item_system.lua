@@ -466,6 +466,11 @@ function destroyItem(itemID, isWeapon)
 		if item then
 			local itemID = item[1]
 			local itemValue = item[2]
+			
+			if itemID == 60 then
+				outputChatBox("Press 'Use Item' to place a safe.", source, 255, 0, 0)
+				return
+			end
 			itemName = getItemName( itemID )
 			takeItemFromSlot(source, itemSlot)
 			

@@ -380,6 +380,9 @@ function spawnCharacter(charname)
 				setElementData(source, "jailtimer", true, false)
 			end
 			setElementData(source, "jailserved", 0, false)
+			setElementData(source, "adminjailed", true)
+			setElementData(source, "jailreason", jailed_reason, false)
+			setElementData(source, "jailadmin", jailed_by, false)
 			
 			setElementInterior(source, 6)
 			setCameraInterior(source, 6)

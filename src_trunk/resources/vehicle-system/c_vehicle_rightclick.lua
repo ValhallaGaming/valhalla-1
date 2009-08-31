@@ -41,7 +41,7 @@ function showVehicleMenu()
 	lPlate = guiCreateLabel(0.05, 0.13, 0.87, 0.1, "Plate: " .. getVehiclePlateText(vehicle), true, wRightClick)
 	guiSetFont(lPlate, "default-bold-small")
 
-	lPlate = guiCreateLabel(0.05, 0.23, 0.87, 0.1, "Impounded: " .. (getElementData(vehicle, "Impounded") > 0 and "Yes" or "No"), true, wRightClick)
+	lPlate = guiCreateLabel(0.05, 0.23, 0.87, 0.1, "Impounded: " .. (type(getElementData(vehicle, "Impounded")) == "number" and getElementData(vehicle, "Impounded") > 0 and "Yes" or "No"), true, wRightClick)
 	guiSetFont(lPlate, "default-bold-small")
 
 	bInventory = guiCreateButton(0.05, 0.33, 0.87, 0.1, "Inventory", true, wRightClick)

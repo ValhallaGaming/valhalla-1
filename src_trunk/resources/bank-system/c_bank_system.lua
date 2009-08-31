@@ -44,7 +44,7 @@ function showBankUI(isInFaction, isFactionLeader, factionBalance)
 		}
 		
 		wBank = guiCreateWindow(x, y, width, height, "Bank of Los Santos", false)
-		guiWindowSetSizable(wCars, false)
+		guiWindowSetSizable(wBank, false)
 		
 		tabPanel = guiCreateTabPanel(0.05, 0.05, 0.9, 0.85, true, wBank)
 		addEventHandler( "onClientGUITabSwitched", tabPanel, updateTabStuff )

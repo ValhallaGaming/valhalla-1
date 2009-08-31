@@ -391,11 +391,17 @@ function showDescription(button, state)
 					guiSetEnabled(bShowItem, false)
 					guiSetEnabled(bDestroyItem, false)
 				else
-					local desc = tostring( getItemName( items[slot][1] ) )
+					local desc = tostring( getItemDescription( items[slot][1] ) )
 					local value = items[slot][2]
 					
 					-- percent operators
 					desc = string.gsub((desc), "#v", tostring(value))
+					
+					if (desc=="A Dictionary.") then
+						local res = getResourceFromName("language-system")
+						local lang = call(res, "getLanguageName", tonumber(value))
+						desc = "A " .. lang .. " dictionary."
+					end
 					
 					guiSetText(lDescription, desc)
 					guiSetEnabled(bUseItem, true)

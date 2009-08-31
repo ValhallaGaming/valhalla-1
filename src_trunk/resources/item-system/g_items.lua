@@ -75,7 +75,9 @@ g_items = {
 	{ "LSPD Badge", "A Los Santos Police Department badge.", 4, 1271 },
 	{ "LSES Identification", "An Los Santos Emergency Service Identification.", 4, 1271 },
 	{ "Blindfold", "A black blindfold.", 6, 1271 },
-	{ "GPS", "A GPS Satnav for a car.", 6, 1271 }
+	{ "GPS", "A GPS Satnav for a car.", 6, 1271 },
+	{ "Lottery Ticket", "A Los Santos Lottery ticket.", 6, 1271 },
+	{ "Dictionary", "A Dictionary.", 5, 1271 }
 }
 
 function getItemName(id)

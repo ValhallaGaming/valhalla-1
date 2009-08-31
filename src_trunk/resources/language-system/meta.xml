@@ -9,4 +9,6 @@
 	<export function="getSkillFromLanguage" type="server"/>
 	<export function="applyLanguage" type="server"/>
 	<export function="getLanguageName" type="server"/>
+	<export function="getLanguageName" type="client"/>
+	<export function="learnLanguage" type="server"/>
 </meta>

@@ -2,6 +2,28 @@ local languages = {
 	"English",
 	"Russian",
 	"German",
+	"French",
+	"Dutch",
+	"Italian",
+	"Spanish",
+	"Gaelic",
+	"Japanese",
+	"Chinese",
+	"Arabic",
+	"Norwegian",
+	"Swedish",
+	"Danish",
+	"Welsh",
+	"Hungarian",
+	"Bosnian",
+	"Somalian",
+	"Finnish",
+	"Georgian",
+	"Greek",
+	"Polish",
+	"Portugeese",
+	"Turkish",
+	"Estonian"
 	}
 	
 local flags = {
@@ -13,6 +35,10 @@ local flags = {
 -- Displaying the increase in skill
 local sx, sy, text, count, addedEvent, alpha
 local langInc = 0
+
+function getLanguageName(language)
+	return languages[language]
+end
 
 function increaseInSkill(language)
 	local localPlayer = getLocalPlayer()

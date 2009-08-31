@@ -12,7 +12,29 @@ handler = mysql_connect(sqlHost, sqlUsername, sqlPassword, sqlDB, sqlPort)
 local languages = {
 	"English",
 	"Russian",
-	"German"
+	"German",
+	"French",
+	"Dutch",
+	"Italian",
+	"Spanish",
+	"Gaelic",
+	"Japanese",
+	"Chinese",
+	"Arabic",
+	"Norwegian",
+	"Swedish",
+	"Danish",
+	"Welsh",
+	"Hungarian",
+	"Bosnian",
+	"Somalian",
+	"Finnish",
+	"Georgian",
+	"Greek",
+	"Polish",
+	"Portugeese",
+	"Turkish",
+	"Estonian"
 	}
 
 function checkMySQL()
@@ -190,6 +212,39 @@ function getNextLanguageSlot(player)
 	elseif lang2>0 then return 1
 	elseif lang3>0 then return 1
 	else return 0
+	end
+end
+
+function learnLanguage(player, lang)
+	local hasLanguage, slot = doesPlayerHaveLanguage(player, lang)
+	
+	if (hasLanguage) then
+		outputChatBox("You already know " .. languages[lang] .. ".", source, 255, 0, 0)
+	else
+		local freeslot = getNextEmptyLanguageSlot(player)
+		
+		if (freeslot==0) then
+			outputChatBox("You do not have enough space to learn this language.", source, 255, 0, 0)
+		else
+			setElementData(player, "languages.lang" .. freeslot, lang)
+			setElementData(player, "languages.lang" .. freeslot .. "skill", 0)
+		end
+	end
+end
+
+function getNextEmptyLanguageSlot(player)
+	local lang1 = getElementData(player, "languages.lang1")
+	local lang2 = getElementData(player, "languages.lang2")
+	local lang3 = getElementData(player, "languages.lang3")
+	
+	if (lang1 == nil or lang1 <= 0) then
+		return 1
+	elseif (lang1 == nil or lang1 <= 0) then
+		return 2
+	elseif (lang1 == nil or lang1 <= 0) then
+		return 3
+	else
+		return 0
 	end
 end
 

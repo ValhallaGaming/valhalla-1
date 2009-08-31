@@ -178,6 +178,8 @@ function  getShopTypeName(shop_type)
 		return "Electronics Store"
 	elseif(shop_type == 9) then
 		return "Alcohol Store"
+	elseif(shop_type == 10) then
+		return "Book Store"
 	else
 		return "This isn't a shop. Go Away."
 	end
@@ -204,6 +206,8 @@ function getShopTabTitles(shop_type)
 		return {"Electronics"}
 	elseif(shop_type == 9) then
 		return { "Alcohol" }
+	elseif(shop_type == 10) then
+		return { "Books" }
 	else
 		return "This isn't a shop. Go Away."
 	end
@@ -328,16 +332,40 @@ function getItemsForSale(shop_type, race, gender)
 			{ "Scottish Whiskey", "The Best Scottish Whiskey, now exclusively made from Haggis.", "15", 63, 1, 1, false, 4 },
 			{"Softdrink", "A cold can of Sprunk.", "3", 9, 1, 1, false,1}
 		}
+	-- book shop
+	elseif(shop_type == 10) then
+		item = {
+			{"English Dictionary","A Dictionary, useful for learning lingo.", "25", 69, 1, 1, false, 2},		
+			{"Russian Dictionary","A Dictionary, useful for learning lingo.", "25", 69, 2, 1, false, 2},		
+			{"German Dictionary","A Dictionary, useful for learning lingo.", "25", 69, 3, 1, false, 2},	
+			{"French Dictionary","A Dictionary, useful for learning lingo.", "25", 69, 4, 1, false, 2},	
+			{"Dutch Dictionary","A Dictionary, useful for learning lingo.", "25", 69, 5, 1, false, 2},	
+			{"Italian Dictionary","A Dictionary, useful for learning lingo.", "25", 69, 6, 1, false, 2},
+			{"Spanish Dictionary","A Dictionary, useful for learning lingo.", "25", 69, 7, 1, false, 2},
+			{"Gaelic Dictionary","A Dictionary, useful for learning lingo.", "25", 69, 8, 1, false, 2},		
+			{"Japanese Dictionary","A Dictionary, useful for learning lingo.", "25", 69, 9, 1, false, 2},		
+			{"Chinese Dictionary","A Dictionary, useful for learning lingo.", "25", 69, 10, 1, false, 2},
+			{"Arabic Dictionary","A Dictionary, useful for learning lingo.", "25", 69, 11, 1, false, 2},	
+			{"Norwegian Dictionary","A Dictionary, useful for learning lingo.", "25", 69, 12, 1, false, 2},		
+			{"Swedish Dictionary","A Dictionary, useful for learning lingo.", "25", 69, 13, 1, false, 2},	
+			{"Danish Dictionary","A Dictionary, useful for learning lingo.", "25", 69, 14, 1, false, 2},		
+			{"Welsh Dictionary","A Dictionary, useful for learning lingo.", "25", 69, 15, 1, false, 2},	
+			{"Hungarian Dictionary","A Dictionary, useful for learning lingo.", "25", 69, 16, 1, false, 2},			
+			{"Bosnian Dictionary","A Dictionary, useful for learning lingo.", "25", 69, 17, 1, false, 2},	
+			{"Somalian Dictionary","A Dictionary, useful for learning lingo.", "25", 69, 18, 1, false, 2},	
+			{"Finnish Dictionary","A Dictionary, useful for learning lingo.", "25", 69, 19, 1, false, 2},	
+			{"Georgian Dictionary","A Dictionary, useful for learning lingo.", "25", 69, 20, 1, false, 2},
+			{"Greek Dictionary","A Dictionary, useful for learning lingo.", "25", 69, 21, 1, false, 2},	
+			{"Polish Dictionary","A Dictionary, useful for learning lingo.", "25", 69, 22, 1, false, 2},			
+			{"Portugeese Dictionary","A Dictionary, useful for learning lingo.", "25", 69, 23, 1, false, 2},			
+			{"Turkish Dictionary","A Dictionary, useful for learning lingo.", "25", 69, 24, 1, false, 2},
+			{"Estonian Dictionary","A Dictionary, useful for learning lingo.", "25", 69, 25, 1, false, 2},				
+		}
 	end
 		
 	return item
 
 end
-
-
-
-
-
 
 function getImageName(shop_type)
 	

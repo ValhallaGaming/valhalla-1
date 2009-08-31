@@ -13,9 +13,16 @@ addEventHandler( "onPlayerDamage", getRootElement(),
 )
 
 addEventHandler( "onPlayerWasted", getRootElement(),
-	function( attacker, weapon )
-		if attacker and getElementData( attacker, "adminlevel" ) == 0 and getElementData( attacker, "faction" ) ~= 1 and weapon and weapon > 1 then
-			kickPlayer( attacker, getRootElement(), "Deathmatch" )
+	function( ammo, attacker, weapon )
+		if attacker then
+			if getElementType( attacker ) == "vehicle" then
+				attacker = getVehicleOccupant( attacker )
+				if not attacker then return end
+			end
+		
+			if getElementType( attacker ) == "player" and getElementData( attacker, "adminlevel" ) == 0 and getElementData( attacker, "faction" ) ~= 1 and weapon and weapon > 1 then
+				kickPlayer( attacker, getRootElement(), "Deathmatch" )
+			end
 		end
 	end
 )

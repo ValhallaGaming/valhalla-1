@@ -553,10 +553,21 @@ function destroyItem(button)
 		if (guiGetSelectedTab(tabPanel)==tabItems) then -- ITEMS
 			local row, col = guiGridListGetSelectedItem(gItems)
 			local itemSlot = tonumber(guiGridListGetItemText(gItems, row, 1))
-			
-			guiGridListSetSelectedItem(gItems, 0, 0)
-			
-			triggerServerEvent("destroyItem", getLocalPlayer(), itemSlot)
+			if itemSlot and getItems(getLocalPlayer())[itemSlot] then
+				guiGridListRemoveRow(gItems, row)
+				
+				local row = guiGridListAddRow(gItems)
+				guiGridListSetItemText(gItems, row, colName, "Empty", false, false)
+				guiGridListSetItemText(gItems, row, colValue, "None", false, false)
+				
+				for i = 0, getInventorySlots( getLocalPlayer() ) - 1 do
+					guiGridListSetItemText(gItems, i, colSlot, tostring(i + 1), false, true)
+				end
+				
+				guiGridListSetSelectedItem(gItems, 0, 0)
+				
+				triggerServerEvent("destroyItem", getLocalPlayer(), itemSlot)
+			end
 		elseif (guiGetSelectedTab(tabPanel)==tabWeapons) then -- WEAPONS
 			local row, col = guiGridListGetSelectedItem(gWeapons)
 			local itemSlot = tonumber(guiGridListGetItemText(gWeapons, row, 1))
@@ -591,21 +602,34 @@ function dropItem(button)
 			if (guiGetSelectedTab(tabPanel)==tabItems) then -- ITEMS
 				local row, col = guiGridListGetSelectedItem(gItems)
 				local itemSlot = tonumber(guiGridListGetItemText(gItems, row, 1))
-				if (tonumber(itemID) == 60) then
-					outputChatBox("This item cannot be dropped.", 255, 0, 0)
-					return
+				local item = getItems(getLocalPlayer())[itemSlot]
+				if item then
+					local itemID = item[1]
+					if itemID == 60 then
+						outputChatBox("This item cannot be dropped.", 255, 0, 0)
+						return
+					end
+					
+					guiGridListRemoveRow(gItems, row)
+					
+					local row = guiGridListAddRow(gItems)
+					guiGridListSetItemText(gItems, row, colName, "Empty", false, false)
+					guiGridListSetItemText(gItems, row, colValue, "None", false, false)
+					
+					for i = 0, getInventorySlots( getLocalPlayer() ) - 1 do
+						guiGridListSetItemText(gItems, i, colSlot, tostring(i + 1), false, true)
+					end
+
+					guiGridListSetSelectedItem(gItems, 0, 0)
+					
+					local x, y, z = getElementPosition(getLocalPlayer())
+					local rot = getPedRotation(getLocalPlayer())
+					x = x - math.sin( math.rad( rot ) ) * 1
+					y = y - math.cos( math.rad( rot ) ) * 1
+					
+					local z = getGroundPosition( x, y, z + 2 )
+					triggerServerEvent("dropItem", getLocalPlayer(), itemSlot, x, y, z)
 				end
-				
-				guiGridListSetSelectedItem(gItems, 0, 0)
-				guiGridListRemoveRow(gItems, col)
-				
-			local x, y, z = getElementPosition(getLocalPlayer())
-				local rot = getPedRotation(getLocalPlayer())
-				x = x - math.sin( math.rad( rot ) ) * 1
-				y = y - math.cos( math.rad( rot ) ) * 1
-				
-				local z = getGroundPosition( x, y, z + 2 )
-				triggerServerEvent("dropItem", getLocalPlayer(), itemSlot, x, y, z)
 			elseif (guiGetSelectedTab(tabPanel)==tabWeapons) then -- WEAPONS
 				local row, col = guiGridListGetSelectedItem(gWeapons)
 				local itemSlot = tonumber(guiGridListGetItemText(gWeapons, row, 1))

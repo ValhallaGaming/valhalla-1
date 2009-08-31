@@ -30,6 +30,28 @@ local flags = {
 	"gb",
 	"ru",
 	"de"
+	"fr",
+	"nl",
+	"it",
+	"es",
+	"sc",
+	"ja",
+	"cn",
+	"af",
+	"no",
+	"se",
+	"dk",
+	"gb",
+	"hu",
+	"bo",
+	"so",
+	"fi",
+	"gy",
+	"eu",
+	"pl",
+	"pr",
+	"eu",
+	"ee"
 	}
 	
 -- Displaying the increase in skill

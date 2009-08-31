@@ -11,7 +11,8 @@ handler = mysql_connect(sqlHost, sqlUsername, sqlPassword, sqlDB, sqlPort)
 
 local languages = {
 	"English",
-	"Russian"
+	"Russian",
+	"German"
 	}
 
 function checkMySQL()
@@ -175,5 +176,19 @@ function showLanguages(player)
 		count = count + 1
 	end
 	
-	triggerClientEvent(player, "showLanguages", player, langs)
+	local currLang = getElementData(player, "languages.current")
+	
+	triggerClientEvent(player, "showLanguages", player, langs, currLang)
 end
+
+function useLanguage(lang)
+	local hasLanguage, slot = doesPlayerHaveLanguage(source, lang)
+	
+	if (hasLanguage) then
+		outputChatBox("You are now using " .. languages[lang] .. " as your language.", source, 255, 194, 14)
+		setElementData(source, "languages.current", slot, false)
+		showLanguages(source)
+	end
+end
+addEvent("useLanguage", true)
+addEventHandler("useLanguage", getRootElement(), useLanguage)

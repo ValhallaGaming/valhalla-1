@@ -51,9 +51,11 @@ function renderText()
 end
 
 tlanguages = nil
+currslot = nil
 wLanguages = nil
+bUnlearnLang1, bUse1, bUnlearnLang2, bUse2, bUnlearnLang3, bUse3 = nil
 localPlayer = getLocalPlayer()
-function displayGUI(remotelanguages)
+function displayGUI(remotelanguages, rcurrslot)
 	if not (wLanguages) then
 		local width, height = 600, 400
 		local scrWidth, scrHeight = guiGetScreenSize()
@@ -63,14 +65,15 @@ function displayGUI(remotelanguages)
 		wLanguages = guiCreateWindow(x, y, width, height, "Languages: " .. string.gsub(getPlayerName(localPlayer), "_", " "), false)
 		
 		tlanguages = remotelanguages
-		
+		currslot = tonumber(rcurrslot)
+
 		local offset = 0.06
 		-- LANGUAGE 1
 		if (tlanguages[1]~=nil) then
 			local lang1 = tlanguages[1][1]
 			local lang1skill = tlanguages[1][2]
-			local imgLang1 = guiCreateStaticImage(0.05, 0.12+offset, 0.025, 0.025, ":social-system/images/flags/" .. flags[lang1] .. ".png", true, wLanguages)
-			local lLang1Name = guiCreateLabel(0.1, 0.092+offset, 0.5, 0.1, languages[lang1], true, wLanguages)
+			local imgLang1 = guiCreateStaticImage(0.05, 0.1+offset, 0.025, 0.025, ":social-system/images/flags/" .. flags[lang1] .. ".png", true, wLanguages)
+			local lLang1Name = guiCreateLabel(0.1, 0.092+offset, 0.9, 0.1, languages[lang1], true, wLanguages)
 			guiSetFont(lLang1Name, "default-bold-small")
 			
 			local pLang1Skill = guiCreateProgressBar(0.1, 0.14+offset, 0.6, 0.05, true, wLanguages)
@@ -79,8 +82,15 @@ function displayGUI(remotelanguages)
 			local lLang1Skill = guiCreateLabel(0.73, 0.14+offset, 0.2, 0.1, lang1skill .. "/100", true, wLanguages)
 			guiSetFont(lLang1Skill, "default-bold-small")
 			
-			local bUnlearnLang1 = guiCreateButton(0.83, 0.14+offset, 0.2, 0.05, "Un-learn", true, wLanguages)
+			bUse1 = guiCreateButton(0.83, 0.08+offset, 0.2, 0.05, "Use", true, wLanguages)
+			bUnlearnLang1 = guiCreateButton(0.83, 0.14+offset, 0.2, 0.05, "Un-learn", true, wLanguages)
+			addEventHandler("onClientGUIClick", bUse1, useLanguage, false)
 			offset = offset + 0.3
+			
+			if (currslot==1) then
+				guiSetText(lLang1Name, languages[lang1] .. " (Current)")
+				guiSetVisible(bUse1, false)
+			end
 		end
 		
 		-- LANGUAGE 2
@@ -88,7 +98,7 @@ function displayGUI(remotelanguages)
 			local lang2 = tlanguages[2][1]
 			local lang2skill = tlanguages[2][2]
 			local imgLang2 = guiCreateStaticImage(0.05, 0.1+offset, 0.025, 0.025, ":social-system/images/flags/" .. flags[lang2] .. ".png", true, wLanguages)
-			local lLang2Name = guiCreateLabel(0.1, 0.092+offset, 0.5, 0.1, languages[lang2], true, wLanguages)
+			local lLang2Name = guiCreateLabel(0.1, 0.092+offset, 0.9, 0.1, languages[lang2], true, wLanguages)
 			guiSetFont(lLang2Name, "default-bold-small")
 			
 			local pLang2Skill = guiCreateProgressBar(0.1, 0.14+offset, 0.6, 0.05, true, wLanguages)
@@ -97,8 +107,15 @@ function displayGUI(remotelanguages)
 			local lLang2Skill = guiCreateLabel(0.73, 0.14+offset, 0.2, 0.1, lang2skill .. "/100", true, wLanguages)
 			guiSetFont(lLang2Skill, "default-bold-small")
 			
-			local bUnlearnLang2 = guiCreateButton(0.83, 0.14+offset, 0.2, 0.05, "Un-learn", true, wLanguages)
+			bUse2 = guiCreateButton(0.83, 0.08+offset, 0.2, 0.05, "Use", true, wLanguages)
+			bUnlearnLang2 = guiCreateButton(0.83, 0.14+offset, 0.2, 0.05, "Un-learn", true, wLanguages)
+			addEventHandler("onClientGUIClick", bUse2, useLanguage, false)
 			offset = offset + 0.3
+			
+			if (currslot==2) then
+				guiSetText(lLang2Name, languages[lang2] .. " (Current)")
+				guiSetVisible(bUse2, false)
+			end
 		end
 		
 		-- LANGUAGE 3
@@ -106,7 +123,7 @@ function displayGUI(remotelanguages)
 			local lang3 = tlanguages[3][1]
 			local lang3skill = tlanguages[3][2] or 0
 			local imgLang3 = guiCreateStaticImage(0.05, 0.1+offset, 0.025, 0.025, ":social-system/images/flags/" .. flags[lang3] .. ".png", true, wLanguages)
-			local lLang3Name = guiCreateLabel(0.1, 0.092+offset, 0.5, 0.1, languages[lang3], true, wLanguages)
+			local lLang3Name = guiCreateLabel(0.1, 0.092+offset, 0.9, 0.1, languages[lang3], true, wLanguages)
 			guiSetFont(lLang3Name, "default-bold-small")
 			
 			local pLang3Skill = guiCreateProgressBar(0.1, 0.14+offset, 0.6, 0.05, true, wLanguages)
@@ -115,10 +132,18 @@ function displayGUI(remotelanguages)
 			local lLang3Skill = guiCreateLabel(0.73, 0.14+offset, 0.2, 0.1, lang3skill .. "/100", true, wLanguages)
 			guiSetFont(lLang3Skill, "default-bold-small")
 			
-			local bUnlearnLang3 = guiCreateButton(0.83, 0.14+offset, 0.2, 0.05, "Un-learn", true, wLanguages)
+			bUse3 = guiCreateButton(0.83, 0.08+offset, 0.2, 0.05, "Use", true, wLanguages)
+			bUnlearnLang3 = guiCreateButton(0.83, 0.14+offset, 0.2, 0.05, "Un-learn", true, wLanguages)
+			addEventHandler("onClientGUIClick", bUse3, useLanguage, false)
+			
+			if (currslot==3) then
+				guiSetText(lLang3Name, languages[lang3] .. " (Current)")
+				guiSetVisible(bUse3, false)
+			end
 		end
 		
 		local bClose = guiCreateButton(0.05, 0.92, 0.9, 0.07, "Close", true, wLanguages)
+		addEventHandler("onClientGUIClick", bClose, hideGUI, false)
 	else
 		hideGUI()
 	end
@@ -126,9 +151,26 @@ end
 addEvent("showLanguages", true)
 addEventHandler("showLanguages", getLocalPlayer(), displayGUI)
 
+function useLanguage(button, state)
+	if (button=="left") then
+		local lang = 0
+		
+		if (source==bUse1) then lang = tlanguages[1][1] end
+		if (source==bUse2) then lang = tlanguages[2][1] end
+		if (source==bUse3) then lang = tlanguages[3][1] end
+
+		if (lang>0) then
+			hideGUI()
+			triggerServerEvent("useLanguage", localPlayer, lang)
+		end
+	end
+end
+
 function hideGUI()
 	if (wLanguages) then
 		destroyElement(wLanguages)
 	end
 	wLanguages = nil
+	
+	showCursor(false)
 end

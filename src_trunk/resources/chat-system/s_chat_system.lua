@@ -208,7 +208,7 @@ function chatMain(message, messageType)
 				mysql_free_result(result)
 									
 				local titleresult = mysql_query(handler, "SELECT rank_" .. factionRank .. " FROM factions WHERE id='" .. factionID .. "' LIMIT 1")
-				if not mysql_result(titleresult, 1, 1) then
+				if mysql_num_rows(titleresult) == 0 then
 					factionRankTitle = ""
 				else
 					factionRankTitle = tostring(mysql_result(titleresult, 1, 1)) .. " - "

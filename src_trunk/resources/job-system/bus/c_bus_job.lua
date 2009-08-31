@@ -67,6 +67,13 @@ function startBusJob()
 				
 				addEventHandler("onClientMarkerHit", busMarker, updateBusCheckpointCheck)
 				addEventHandler("onClientMarkerLeave", busMarker, checkWaitAtStop)
+				addEventHandler("onClientColShapeHit", busStopColShape,
+					function(element)
+						if getElementType(element) == "vehicle" and bus[getElementModel(element)] then
+							setVehicleLocked(vehicle, false)
+						end
+					end
+				)
 				addEventHandler("onClientColShapeLeave", busStopColShape,
 					function(element)
 						if getElementType(element) == "vehicle" and bus[getElementModel(element)] then
@@ -272,37 +279,23 @@ end
 addEventHandler("onClientVehicleEnter", getRootElement(), enterBus)
 
 function startEnterBus(thePlayer, seat)
-	if thePlayer == getLocalPlayer() then
-		if bus[getElementModel(source)] then
-			local driver = getVehicleOccupant(source)
-			if seat ~= 0 and driver then --check if its a passenger and theres a driver
-				if busStopColShape and isElementWithinColShape(driver, busStopColShape) and getElementVelocity(source) < 0.01 then -- check if the bus is at the busstop and stand
-					setVehicleLocked(source, false)
-				end
-			else
-				if driver then -- if someone try to jack the driver stop him
-					setVehicleLocked(source, true)
-				else
-					setVehicleLocked(source, false)
-				end
-			end
+	if seat == 0 and bus[getElementModel(source)] then
+		if getVehicleController(source) then -- if someone try to jack the driver stop him
+			cancelEvent()
+			outputChatBox("The drivers door is locked.", 255, 0, 0)
+		else
+			setVehicleLocked(source, false)
 		end
 	end
 end
-addEventHandler("onClientVehicleStartEnter", getRootElement(), startEnterBus)
+addEventHandler("onClientVehicleStartEnter", getLocalPlayer(), startEnterBus)
 
-function startExitBus(thePlayer)
-	if thePlayer == getLocalPlayer() then
-		if bus[getElementModel(source)] then
-			local driver = getVehicleOccupant(source)
-			if seat ~= 0 then --check if its a passenger
-				if busStopColShape and isElementWithinColShape(driver, busStopColShape) and getElementVelocity(source) < 0.01 then -- check if the bus is at the busstop and stand
-					setVehicleLocked(source, false)
-				end
-			elseif getElementVelocity(source) < 0.01 then
-				setVehicleLocked(source, false)
-			end
+function onPlayerQuit()
+	if getElementData(source, "job") == 3 then
+		vehicle = getPedOccupiedVehicle(source)
+		if bus[getElementModel(vehicle)] and getPedOccupiedVehicleSeat(source) == 0 then
+			setVehicleLocked(vehicle, false)
 		end
 	end
 end
-addEventHandler("onClientVehicleStartExit", getRootElement(), startExitBus)
+addEventHandler("onClientPlayerQuit", getLocalPlayer(), onPlayerQuit)

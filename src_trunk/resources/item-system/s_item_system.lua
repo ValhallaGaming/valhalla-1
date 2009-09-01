@@ -610,6 +610,7 @@ function dropItem(itemID, x, y, z, ammo, keepammo)
 				exports.global:sendLocalMeAction(source, "removes an Emergency Services ID.")
 				exports.global:updateNametagColor(source)
 			end
+			exports.global:sendLocalMeAction(source, "dropped a " .. getItemName( itemID ) .. ".")
 		else
 			outputDebugString( mysql_error( handler ) )
 		end
@@ -665,6 +666,8 @@ function dropItem(itemID, x, y, z, ammo, keepammo)
 				setElementData(obj, "itemID", -itemID)
 				setElementData(obj, "itemValue", ammo)
 				setElementData(obj, "type", "worlditem")
+				
+				exports.global:sendLocalMeAction(source, "dropped a " .. getItemName( -itemID ) .. ".")
 			else
 				outputDebugString( mysql_error( handler ) )
 			end

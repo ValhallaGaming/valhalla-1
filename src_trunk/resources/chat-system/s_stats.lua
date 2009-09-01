@@ -7,9 +7,11 @@ function showStats(thePlayer, commandName, targetPlayerName)
 				thePlayer = targetPlayer
 			else
 				outputChatBox("Player is not logged in.", showPlayer, 255, 0, 0)
+				return
 			end
 		else
 			outputChatBox("Player not found", showPlayer, 255, 0, 0)
+			return
 		end
 	end
 	local carlicense = getElementData(thePlayer, "license.car")

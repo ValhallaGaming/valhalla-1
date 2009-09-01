@@ -9,34 +9,6 @@ sqlPort = exports.mysql:getMySQLPort()
 
 handler = mysql_connect(sqlHost, sqlUsername, sqlPassword, sqlDB, sqlPort)
 
-local languages = {
-	"English",
-	"Russian",
-	"German",
-	"French",
-	"Dutch",
-	"Italian",
-	"Spanish",
-	"Gaelic",
-	"Japanese",
-	"Chinese",
-	"Arabic",
-	"Norwegian",
-	"Swedish",
-	"Danish",
-	"Welsh",
-	"Hungarian",
-	"Bosnian",
-	"Somalian",
-	"Finnish",
-	"Georgian",
-	"Greek",
-	"Polish",
-	"Portugese",
-	"Turkish",
-	"Estonian"
-	}
-
 function checkMySQL()
 	if not (mysql_ping(handler)) then
 		handler = mysql_connect(sqlHost, sqlUsername, sqlPassword, sqlDB, sqlPort)
@@ -96,6 +68,7 @@ function removeLanguage(player, language)
 	local hasLanguage, slot = doesPlayerHaveLanguage(player, language)
 	
 	if (hasLanguage) then
+		-- unbindKey(player, tostring(slot), "down", "chatbox")
 		setElementData(player, "languages.lang" .. slot, 0)
 		setElementData(player, "languages.lang" .. slot .. "skill", 0)
 	end
@@ -231,6 +204,10 @@ function learnLanguage(player, lang)
 			
 			setElementData(player, "languages.lang" .. freeslot, lang, false)
 			setElementData(player, "languages.lang" .. freeslot .. "skill", 0, false)
+			
+			
+			-- bindKey(player, tostring( freeslot ), "down", "chatbox", getLanguageName( lang ))
+
 			return true
 		end
 	end
@@ -278,3 +255,62 @@ function unlearnLanguage(lang)
 end
 addEvent("unlearnLanguage", true)
 addEventHandler("unlearnLanguage", getRootElement(), unlearnLanguage)
+
+-- ////////////////////////////////////
+-- //		CHATBOX BINDS			 //
+-- ////////////////////////////////////
+for key, value in pairs( languages ) do
+	function speakLang( thePlayer, commandName, ... )
+		if doesPlayerHaveLanguage( thePlayer, key ) then
+			call( getResourceFromName( "chat-system" ), "localIC", thePlayer, table.concat({...}, " "), key )
+		else
+			outputChatBox( "You do not speak " .. value .. ".", thePlayer, 255, 0, 0 )
+		end
+	end
+	
+	addCommandHandler( value, speakLang )
+	
+	if key == 1 then
+		addCommandHandler( "en", speakLang ) -- English
+	elseif key == 15 then
+		addCommandHandler( "ws", speakLang ) -- Welsh
+	else
+		addCommandHandler( flags[key], speakLang )
+	end
+end
+
+--[[
+-- requires fix for http://bugs.mtasa.com/view.php?id=4927, otherwise the keys wouldn't unbind on character change
+addEventHandler( "savePlayer", getRootElement(),
+	function( reason )
+		if reason == "Change Character" then
+			for i = 1, 3 do
+				unbindKey(source, tostring(i), "down", "chatbox")
+			end
+		end
+	end
+)
+
+--
+
+function loadBinds(source)
+	for i = 1, 3 do
+		if tonumber( getElementData( source, "languages.lang" .. i ) ) ~= 0 then
+			local name = getLanguageName( tonumber( getElementData( source, "languages.lang" .. i ) ) )
+			if name then
+				bindKey(source, tostring(i), "down", "chatbox", name)
+			end
+		end
+	end
+end
+
+addEventHandler( "onCharacterLogin", getRootElement(), function() loadBinds( source ) end )
+addEventHandler( "onResourceStart", getResourceRootElement(),
+	function( )
+		for k, v in pairs(getElementsByType("player")) do
+			if getElementData(v, "logged") == 1 then
+				loadBinds(v)
+			end
+		end
+	end
+)]]

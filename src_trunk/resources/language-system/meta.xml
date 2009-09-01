@@ -1,6 +1,9 @@
 <meta>
 	<info author="vG MTA Scripting Team" type="script" description="Language System"/>
 	
+	<script src="g_language_system.lua" type="server" />
+	<script src="g_language_system.lua" type="client" />
+
 	<script src="s_language_system.lua" type="server" />
 	<script src="c_language_system.lua" type="client" />
 	

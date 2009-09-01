@@ -31,17 +31,13 @@ function getLanguageName(language)
 end
 
 function increaseLanguageSkill(player, language)
-	local chance = math.random(1, 8)
-
-	if ( chance == 1 ) then
-		local hasLanguage, slot = doesPlayerHaveLanguage(player, language)
-
-		if (hasLanguage) then
-			local currSkill = tonumber(getElementData(player, "languages.lang" .. slot .. "skill"))
-
-			if (currSkill<100) then
+	local hasLanguage, slot = doesPlayerHaveLanguage(player, language)
+	if (hasLanguage) then
+		local currSkill = tonumber(getElementData(player, "languages.lang" .. slot .. "skill"))
+		if currSkill < 100 then
+			local chance = math.random(1, math.max( math.ceil( currSkill / 3 ), 8 ) )
+			if chance == 1 then
 				triggerClientEvent(player, "increaseInSkill", player, language)
-				
 				setElementData(player, "languages.lang" .. slot .. "skill", currSkill+1, false)
 			end
 		end

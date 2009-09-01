@@ -153,7 +153,7 @@ a:active {
 	      </div></td>
 		</tr>
 		<tr>
-			<td width="1089" height="0" valign="middle" bgcolor="#333333" class="style9" style="height: 20px; font-family: Verdana, Geneva, sans-serif; font-size: 12px;" border="3"><strong>Home</strong></td>
+			<td width="1089" height="0" valign="middle" bgcolor="#333333" class="style9" style="height: 20px; font-family: Verdana, Geneva, sans-serif; font-size: 12px;" border="3"><strong><a href="index.php">Home</a></strong></td>
 		</tr>
 		<tr>
 			<td height="274" class="style14" style="height: 40px">
@@ -247,7 +247,7 @@ a:active {
 					$query = mysql_query("UPDATE accounts SET password='" . md5($salt . $password) . "' WHERE username='" . $username . "'", $conn);
 					
 					mysql_close($conn);
-					echo "<stong><span class='style5'>Your username is <i>" . $username . "</i> and your new password is <i>" . $password . ".</i></strong></span>"; 
+					echo "<br><stong><span class='style5'>Your username is <i>" . $username . "</i> and your new password is <i>" . $password . ".</i></strong></span><br>"; 
 				}
 			}
 			?>

@@ -120,8 +120,9 @@
 				
 				if (!$page)
 				{
-					echo "Account Summary<br>
 					
+				}
+			?>
 		<table style="width: 100%">
 			<tr>
 				<td class="style22" style="width: 254px">&nbsp;</td>

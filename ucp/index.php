@@ -7,7 +7,7 @@
 
 <html>
 	<head>
-		<title>ValhallaGaming MTA :: User Control Panel</title>
+	<title>ValhallaGaming MTA :: User Control Panel</title>
 		<style type="text/css">
 .style1 {
 	text-align: center;
@@ -59,6 +59,7 @@
 }
 .style19 {
 	color: #FAFAFA;
+	font-family: Verdana;
 }
 .style20 {
 	text-align: center;
@@ -68,16 +69,54 @@
 }
 body {
 	background-image: url(img/bg.png);
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+}
+.style14 table tr .style1 form div .style4 .style16 .style8 .style19 strong {
+	font-size: 10pt;
+	color: #FFF;
+}
+        .style14 table tr .style1 form div .style8 .style19 strong {
+	font-size: 12px;
+}
+        .style14 table tr .style1 form div .style4 .style16 strong {
+	color: #900;
+}
+        .style14 table tr .style1 form div p .style4 .style16 .style19 strong {
+	color: #900;
+}
+        .Seperator {
+	color: #900;
+}
+        .Seperator {
+	font-size: 14px;
+}
+        .Text {
+	color: #FFF;
+}
+        a:link {
+	text-decoration: none;
+}
+a:visited {
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: none;
+}
+a:active {
+	text-decoration: none;
 }
 </style>
-		<meta name="keywords" content="valhalla, gaming, mta, ucp">
+<meta name="keywords" content="valhalla, gaming, mta, ucp">
 		<meta name="description" content="Valhalla Gaming MTA UCP">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></head>
 	
 	<body text="#FFFFFF" link="#FFFFFF" vlink="#FFFFFF" alink="#FFFFFF" style="background-image: url('img/bg.png')">
-<table align="center">
+<table width="1099" align="center">
 		<tr>
-			<td width="1121"><div id="banner">
+			<td width="1089"><div id="banner">
 			  <table width="1092" border="0" cellpadding="0" cellspacing="0">
 			    <tbody>
 			      <tr>
@@ -114,25 +153,25 @@ body {
 	      </div></td>
 		</tr>
 		<tr>
-			<td width="0" height="0" valign="middle" bgcolor="#333333" class="style9" style="height: 20px; font-family: Verdana, Geneva, sans-serif; font-size: 12px;" border="3"><strong>Home</strong></td>
+			<td width="1089" height="0" valign="middle" bgcolor="#333333" class="style9" style="height: 20px; font-family: Verdana, Geneva, sans-serif; font-size: 12px;" border="3"><strong>Home</strong></td>
 		</tr>
 		<tr>
-			<td class="style14" style="height: 40px">
+			<td height="274" class="style14" style="height: 40px">
 	<table style="width: 70%; height: 100%;" align="center">
 			<tr>
-				<td class="style1" valign="top" style="height: 246px">
+				<td class="style1" valign="top" style="height: 246px; font-family: Verdana, Geneva, sans-serif; font-size: 12px; color: #900;">
 			
 		
 	
 		<form action="login.php" method="post">
-		<span class="style15"><strong>Please login using your vG MTA account 
-		details to continue.<br>
-		<?php
+		  <div align="center"><span class="style15"><strong>Please login using your vG MTA account 
+		    details to continue.<br>
+		    <?php
 			$errno = $_GET["errno"];
 			$loggedout = $_GET["loggedout"];
 			
 			if ($errno==2)
-				echo "<strong><span class='style5'>UCP is currently unavailable!</span></strong>";
+				echo "<br><strong><span class='style5'>UCP is currently unavailable!</span></strong><br>";
 			elseif ($errno==3)
 			{
 				// allow 3 tries				
@@ -141,15 +180,15 @@ body {
 				//else
 					//setcookie("loginattempts", $_COOKIE["loginattempts"]+1, time()+900);
 
-					echo "<strong><span class='style5'>Invalid Username / Password!</span></strong>";
+					echo "<br><strong><span class='style5'>Invalid Username / Password!</span></strong><br>";
 			}	
 			else if ($errno==4)
-				echo "<strong><span class='style5'>You have used up your 3 login attempts. You are now locked out for 15 minutes.</span></strong>";
+				echo "<br><strong><span class='style5'>You have used up your 3 login attempts. You are now locked out for 15 minutes.</span></strong><br>";
 			elseif ($loggedout==1)
-				echo "<strong><span class='style5'>You are now logged out.</span></strong>";
+				echo "<br><strong><span class='style5'>You are now logged out.</span></strong><br>";
 		?>
-		
-		<?php
+		    
+		    <?php
 			function generatePassword($length=9, $strength=0) {
 				$vowels = 'aeuy';
 				$consonants = 'bdghjmnpqrstvz';
@@ -212,49 +251,49 @@ body {
 				}
 			}
 			?>
-					
-		</strong></span>
-		<br>
-		<table>
-			<tr>
-				<td style="width: 33%" class="style15">&nbsp;</td>
-				<td style="width: 80px" class="style6">
-		<strong><span class="style15">Username:</span></strong></td>
-				<td style="width: 135px" class="style17">
-		<font size="3"><span class="style19">
-		<!--webbot bot="Validation" b-value-required="TRUE" i-minimum-length="3" i-maximum-length="32" -->
-		<input type="text" name="username" style="height: 20px; width: 128px;" maxlength="32" /></span></font></td>
-				<td style="width: 33%" class="style15">&nbsp;</td>
-			</tr>
-			<tr>
-				<td style="width: 33%" class="style15">&nbsp;</td>
-				<td style="width: 80px" class="style6"><strong>
-				<span class="style15">Password: </span></strong>
+		    
+		    </strong></span><br>
+		    <table>
+		      <tr>
+		        <td style="width: 33%" class="style15">&nbsp;</td>
+		        <td style="width: 80px" class="style6">
+		          <strong><span class="style15">Username:</span></strong></td>
+		        <td style="width: 135px" class="style17">
+		          <font size="3"><span class="style19">
+		            <!--webbot bot="Validation" b-value-required="TRUE" i-minimum-length="3" i-maximum-length="32" -->
+		            <input type="text" name="username" style="height: 20px; width: 128px;" maxlength="32" /></span></font></td>
+		        <td style="width: 33%" class="style15">&nbsp;</td>
+		        </tr>
+		      <tr>
+		        <td style="width: 33%" class="style15">&nbsp;</td>
+		        <td style="width: 80px" class="style6"><strong>
+		          <span class="style15">Password: </span></strong>
+		          </td>
+		        <td style="width: 135px" class="style17"> 
+		          <font size="3"><span class="style19">
+		            <!--webbot bot="Validation" b-value-required="TRUE" i-minimum-length="3" i-maximum-length="32" --> 
+		            <input type="password" name="password" style="height: 20px; width: 128px;" maxlength="32" /></span></font></td>
+		        <td style="width: 33%" class="style15">&nbsp;</td>
+		        </tr>
+		      </table>
+		    <p><span class="Text"><a href="resetpassword.php">Forgot Password</a></span> <strong>|</strong> <span class="Text"><a href="register.php">Register</a><br>
+		      </span><span class="style4"><span class="style16"><span class="style19"><br>
+		      </span></span>
+		      </span>
+		      <span class="style16"><font size="3"><span class="style19">
+		        <input type="submit" value="Login" style="width: 116px; height: 25px" />
+		        </span></font></span><br>
+		      </p>
+          </div>
+        </form>
 				</td>
-				<td style="width: 135px" class="style17"> 
-		<font size="3"><span class="style19">
-		<!--webbot bot="Validation" b-value-required="TRUE" i-minimum-length="3" i-maximum-length="32" --> 
-		<input type="password" name="password" style="height: 20px; width: 128px;" maxlength="32" /></span></font></td>
-				<td style="width: 33%" class="style15">&nbsp;</td>
-			</tr>
-		</table>
-		<span class="style4"><span class="style16"><a href="resetpassword.php" class="style8">
-		<span class="style19">Forgotten Password?</span></a><span class="style19"><br>
-		</span></span>
-		</span>
-		<span class="style16"><font size="3"><span class="style19">
-		<input type="submit" value="Login" style="width: 116px; height: 25px" /></span></font></span><br>
-		</form>
-				</td>
 			</tr>
 			<tr>
-				<td class="style20" valign="top">
-			
-	
+				<td height="14" valign="top" class="style20">
 		<strong>Copyright © 2009 Valhalla Gaming.</strong></td>
 			</tr>
 		</table>
 			</td>
 		</tr>
-	</table>	</body>
+</table>	</body>
 </html>

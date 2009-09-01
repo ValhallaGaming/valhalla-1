@@ -1,4 +1,4 @@
-local localPlayer = getLocalPlayer()
+--[[local localPlayer = getLocalPlayer()
 local PershingSquareCol = createColCuboid( 1410, -1795, -50, 150, 237, 200 )
 local PershingRadar = createRadarArea( 1410, -1795, 150, 237, 0, 255, 0, 63 )
 local keysTimer = nil
@@ -58,7 +58,7 @@ addEventHandler( "onClientPlayerDamage", getLocalPlayer(),
 			cancelEvent()
 		end
 	end
-)
+)]]
 
 -- fireworks
 

@@ -1,4 +1,4 @@
-local PershingSquareCol = createColCuboid( 1410, -1795, -50, 150, 237, 200 )
+--[[local PershingSquareCol = createColCuboid( 1410, -1795, -50, 150, 237, 200 )
 
 addEventHandler( "onPlayerDamage", getRootElement(),
 	function( attacker, weapon )
@@ -25,7 +25,7 @@ addEventHandler( "onPlayerWasted", getRootElement(),
 			end
 		end
 	end
-)
+)]]
 
 --
 
@@ -88,13 +88,13 @@ addEventHandler( "onResourceStart", getResourceRootElement(), createStreetLamps 
 
 --
 
-addEventHandler( "onColShapeHit", PershingSquareCol,
+--[[addEventHandler( "onColShapeHit", PershingSquareCol,
 	function( element, matching )
 		if isElement( element ) and getElementType( element ) == "player" and matching then
 			exports.global:givePlayerAchievement( element, 39 ) -- Party Time
 		end
 	end
-)
+)]]
 
 -- fireworks
 local fwTimer = nil

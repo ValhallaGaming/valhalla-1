@@ -3,6 +3,7 @@
 		header('Location: main.php');
 ?>
 
+<?php include("config.php"); ?>
 
 <html>
 	<head>
@@ -16,7 +17,7 @@
 		$salt = "vgrpkeyscotland";
 		$hashpassword = md5($salt . $password);
 		
-		$conn = mysql_connect("67.210.235.106", "phil", "mta1884ac");
+		$conn = mysql_pconnect($mysql_host, $mysql_user, $mysql_pass);
 		
 		if (!$conn)
 		{
@@ -44,7 +45,7 @@
 			$escUsername = mysql_real_escape_string($username, $conn);
 			$escPassword = mysql_real_escape_string($hashpassword, $conn);
 
-			mysql_select_db("mta",$conn);
+			mysql_select_db("mta", $conn);
 			$result = mysql_query("SELECT id FROM accounts WHERE username='" . $escUsername . "' AND password='" . $escPassword . "' LIMIT 1", $conn);
 			mysql_close($conn);
 

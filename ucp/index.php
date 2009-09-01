@@ -1,11 +1,13 @@
 ﻿<?php
-	if (isset($_COOKIE["username"]) &&isset($_COOKIE["password"]) && isset($_COOKIE["uid"]))
-		header('Location: main.php');
+	//if (isset($_COOKIE["username"]) &&isset($_COOKIE["password"]) && isset($_COOKIE["uid"]))
+		//header('Location: main.php');
 ?>
+
+<?php include("config.php"); ?>
 
 <html>
 	<head>
-		<title>ValhallaGaming :: User Control Panel</title>
+		<title>ValhallaGaming MTA :: User Control Panel</title>
 		<style type="text/css">
 .style1 {
 	text-align: center;
@@ -20,7 +22,7 @@
 	text-decoration: none;
 }
 .style9 {
-	background-image: url('img/navbarBG.png');
+	background-image: url('img/bg.png');
 }
 .style10 {
 	font-family: Verdana;
@@ -41,7 +43,7 @@
 	color: #FFFFFF;
 }
 .style14 {
-	background-image: url('img/mainBG.jpg');
+	background-color: #313131;
 }
 .style15 {
 	font-family: "Arial Narrow";
@@ -64,34 +66,55 @@
 	font-size: 10pt;
 	color: #FAFAFA;
 }
+body {
+	background-image: url(img/bg.png);
+}
 </style>
 		<meta name="keywords" content="valhalla, gaming, mta, ucp">
 		<meta name="description" content="Valhalla Gaming MTA UCP">
-	</head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></head>
 	
-	<body style="background-image: url('img/FORUMBG.gif')">
-	<table align="center">
+	<body text="#FFFFFF" link="#FFFFFF" vlink="#FFFFFF" alink="#FFFFFF" style="background-image: url('img/bg.png')">
+<table align="center">
 		<tr>
-			<td>
-			<img alt="UCP Banner" src="img/ucpBanner.jpg" width="791" height="272"></td>
+			<td width="1121"><div id="banner">
+			  <table width="1092" border="0" cellpadding="0" cellspacing="0">
+			    <tbody>
+			      <tr>
+			        <td><img src="img/header/spacer.gif" alt="" width="128" height="1"></td>
+			        <td><img src="img/header/spacer.gif" alt="" width="165" height="1"></td>
+			        <td><img src="img/header/spacer.gif" alt="" width="114" height="1"></td>
+			        <td><img src="img/header/spacer.gif" alt="" width="83" height="1"></td>
+			        <td><img src="img/header/spacer.gif" alt="" width="86" height="1"></td>
+			        <td><img src="img/header/spacer.gif" alt="" width="92" height="1"></td>
+			        <td><img src="img/header/spacer.gif" alt="" width="117" height="1"></td>
+			        <td><img src="img/header/spacer.gif" alt="" width="51" height="1"></td>
+			        <td><img src="img/header/spacer.gif" alt="" width="112" height="1"></td>
+			        <td><img src="img/header/spacer.gif" alt="" width="144" height="1"></td>
+			        <td><img src="img/header/spacer.gif" alt="" width="1" height="1"></td>
+		          </tr>
+			      <tr>
+			        <td bgcolor="#990099"><a href="http://www.valhallagaming.net/"><img src="img/header/vgBanner_r1_c1.jpg" alt="" name="vgBanner_r1_c1" width="128" height="37" hspace="0" vspace="0" border="0" id="vgBanner_r1_c1"></a></td>
+			        <td><a href="http://www.valhallagaming.net/forums/forumdisplay.php?f=110"><img src="img/header/vgBanner_r1_c2.jpg" alt="" name="vgBanner_r1_c2" width="165" height="37" hspace="0" vspace="0" border="0" id="vgBanner_r1_c2"></a></td>
+			        <td><a href="http://www.valhallagaming.net/forums/forumdisplay.php?f=446"><img src="img/header/vgBanner_r1_c3.jpg" alt="" name="vgBanner_r1_c3" width="114" height="37" hspace="0" vspace="0" border="0" id="vgBanner_r1_c3"></a></td>
+			        <td><a href="http://www.valhallagaming.net/forums/forumdisplay.php?f=339"><img src="img/header/vgBanner_r1_c4.jpg" alt="" name="vgBanner_r1_c4" width="83" height="37" hspace="0" vspace="0" border="0" id="vgBanner_r1_c4"></a></td>
+			        <td><a href="http://www.valhallagaming.net/forums/forumdisplay.php?f=216"><img src="img/header/vgBanner_r1_c5.jpg" alt="" name="vgBanner_r1_c5" width="86" height="37" hspace="0" vspace="0" border="0" id="vgBanner_r1_c5"></a></td>
+			        <td><a href="http://www.valhallagaming.net/forums/forumdisplay.php?f=503"><img src="img/header/vgBanner_r1_c6.jpg" alt="" name="vgBanner_r1_c6" width="92" height="37" hspace="0" vspace="0" border="0" id="vgBanner_r1_c6"></a></td>
+			        <td><a href="http://www.valhallagaming.net/forums/forumdisplay.php?f=408"><img src="img/header/vgBanner_r1_c7.jpg" alt="" name="vgBanner_r1_c7" width="117" height="37" hspace="0" vspace="0" border="0" id="vgBanner_r1_c7"></a></td>
+			        <td><a href="http://forum.iv-multiplayer.com/index.php"><img src="img/header/vgBanner_r1_c8.jpg" alt="" name="vgBanner_r1_c8" width="51" height="37" hspace="0" vspace="0" border="0" id="vgBanner_r1_c8"></a></td>
+			        <td colspan="2"><img src="img/header/vgBanner_r1_c9.jpg" alt="" name="vgBanner_r1_c9" width="256" height="37" id="vgBanner_r1_c9"></td>
+			        <td><img src="img/header/spacer.gif" alt="" width="1" height="37"></td>
+		          </tr><tr>
+			        <td colspan="9"><img src="img/header/vgBanner_r2_c1.jpg" alt="" name="vgBanner_r2_c1" width="948" height="103" hspace="0" vspace="0" border="0" id="vgBanner_r2_c1"></td>
+			        <td><img src="img/header/vgBanner_r2_c10.jpg" alt="" name="vgBanner_r2_c10" width="144" height="103" hspace="0" vspace="0" border="0" id="vgBanner_r2_c10"></td>
+			        <td><img src="img/header/spacer.gif" alt="" width="1" height="103"></td>
+		          </tr>
+		        </tbody>
+		      </table>
+	      </div></td>
 		</tr>
 		<tr>
-			<td class="style9" style="height: 40px">
-			<table style="width: 100%; height: 29px">
-				<tr>
-					<td class="style12"><strong>
-					<a href="index.php" class="style8"><span class="style13">
-					Home</span></a></strong></td>
-					<td class="style10">&nbsp;</td>
-					<td class="style10">&nbsp;</td>
-					<td class="style10">&nbsp;</td>
-					<td class="style10">&nbsp;</td>
-					<td class="style11"><strong>
-					<a href="http://www.valhallagaming.net/forums" class="style8">
-					<span class="style13">Forums</span></a></strong></td>
-				</tr>
-			</table>
-			</td>
+			<td width="0" height="0" valign="middle" bgcolor="#333333" class="style9" style="height: 20px; font-family: Verdana, Geneva, sans-serif; font-size: 12px;" border="3"><strong>Home</strong></td>
 		</tr>
 		<tr>
 			<td class="style14" style="height: 40px">
@@ -102,7 +125,7 @@
 		
 	
 		<form action="login.php" method="post">
-		<span class="style15"><strong>Please login using your vG.MTA account 
+		<span class="style15"><strong>Please login using your vG MTA account 
 		details to continue.<br>
 		<?php
 			$errno = $_GET["errno"];
@@ -113,10 +136,10 @@
 			elseif ($errno==3)
 			{
 				// allow 3 tries				
-				if (!isset($_COOKIE["loginattempts"]))
-					setcookie("loginattempts", "1", time()+900);
-				else
-					setcookie("loginattempts", $_COOKIE["loginattempts"]+1, time()+900);
+				//if (!isset($_COOKIE["loginattempts"]))
+					//setcookie("loginattempts", "1", time()+900);
+				//else
+					//setcookie("loginattempts", $_COOKIE["loginattempts"]+1, time()+900);
 
 					echo "<strong><span class='style5'>Invalid Username / Password!</span></strong>";
 			}	
@@ -162,10 +185,10 @@
 
 			if ($securitykey) // was reset password
 			{
-				$conn = mysql_connect("67.210.235.106", "phil", "mta1884ac");
+				$conn = mysql_pconnect($mysql_host, $mysql_user, $mysql_pass);
 				
 				if (!$conn)
-					header('Location: resetpassword.php?errno=1');
+					header('Location: resetpassword.php?errno=2');
 
 				mysql_select_db("mta",$conn);
 				$result = mysql_query("SELECT username FROM accounts WHERE securitykey='" . $securitykey . "'", $conn);

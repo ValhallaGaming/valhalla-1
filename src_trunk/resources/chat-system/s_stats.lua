@@ -1,4 +1,17 @@
-function showStats(thePlayer)
+function showStats(thePlayer, commandName, targetPlayerName)
+	local showPlayer = thePlayer
+	if exports.global:isPlayerAdmin(thePlayer) and targetPlayerName then
+		targetPlayer = exports.global:findPlayerByPartialNick(targetPlayerName)
+		if targetPlayer then
+			if getElementData(targetPlayer, "loggedin") == 1 then
+				thePlayer = targetPlayer
+			else
+				outputChatBox("Player is not logged in.", showPlayer, 255, 0, 0)
+			end
+		else
+			outputChatBox("Player not found", showPlayer, 255, 0, 0)
+		end
+	end
 	local carlicense = getElementData(thePlayer, "license.car")
 	local gunlicense = getElementData(thePlayer, "license.gun")
 	
@@ -49,13 +62,13 @@ function showStats(thePlayer)
 	
 	local hoursplayed = getElementData(thePlayer, "hoursplayed")
 	
-	outputChatBox("~-~-~-~-~-~ " .. getPlayerName(thePlayer) .. " ~-~-~-~-~", thePlayer, 255, 194, 14)
-	outputChatBox("Cell Number: " .. getElementData(thePlayer, "cellnumber"), thePlayer, 255, 194, 14)
-	outputChatBox("Drivers License: " .. carlicense, thePlayer, 255, 194, 14)
-	outputChatBox("Gun License: " .. gunlicense, thePlayer, 255, 194, 14)
-	outputChatBox("Vehicles (" .. numcars .. "): " .. string.sub(carids, 1, string.len(carids)-2), thePlayer, 255, 194, 14)
-	outputChatBox("Properties (" .. numproperties .. "): " .. string.sub(properties, 1, string.len(properties)-2), thePlayer, 255, 194, 14)
-	outputChatBox("Time spent on this character: " .. hoursplayed .. " hours.", thePlayer, 255, 194, 14)
-	outputChatBox("~-~-~-~-~-~-~-~-~-~-~-~-~-~-~~-~-~-~-~-~-~-~-~-~-~-~-~-~-~", thePlayer, 255, 194, 14)
+	outputChatBox("~-~-~-~-~-~ " .. getPlayerName(thePlayer) .. " ~-~-~-~-~", showPlayer, 255, 194, 14)
+	outputChatBox("Cell Number: " .. getElementData(thePlayer, "cellnumber"), showPlayer, 255, 194, 14)
+	outputChatBox("Drivers License: " .. carlicense, showPlayer, 255, 194, 14)
+	outputChatBox("Gun License: " .. gunlicense, showPlayer, 255, 194, 14)
+	outputChatBox("Vehicles (" .. numcars .. "): " .. string.sub(carids, 1, string.len(carids)-2), showPlayer, 255, 194, 14)
+	outputChatBox("Properties (" .. numproperties .. "): " .. string.sub(properties, 1, string.len(properties)-2), showPlayer, 255, 194, 14)
+	outputChatBox("Time spent on this character: " .. hoursplayed .. " hours.", showPlayer, 255, 194, 14)
+	outputChatBox("~-~-~-~-~-~-~-~-~-~-~-~-~-~-~~-~-~-~-~-~-~-~-~-~-~-~-~-~-~", showPlayer, 255, 194, 14)
 end
 addCommandHandler("stats", showStats, false, false)

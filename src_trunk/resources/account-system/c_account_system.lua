@@ -1657,17 +1657,17 @@ function selectedCharacter(button, state)
 					
 				local rand = math.random(1,6)
 				if (rand==1) then
-					exports.global:applyAnimation(getLocalPlayer(), "PLAYIDLES", "shift", -1, true, false, true)
+					exports.global:applyAnimation(getLocalPlayer(), "PLAYIDLES", "shift", -1, true, true, true)
 				elseif (rand==2) then
-					exports.global:applyAnimation(getLocalPlayer(), "PLAYIDLES", "shldr", -1, true, false, true)
+					exports.global:applyAnimation(getLocalPlayer(), "PLAYIDLES", "shldr", -1, true, true, true)
 				elseif (rand==3) then
-					exports.global:applyAnimation(getLocalPlayer(), "PLAYIDLES", "stretch", -1, true, false, true)
+					exports.global:applyAnimation(getLocalPlayer(), "PLAYIDLES", "stretch", -1, true, true, true)
 				elseif (rand==4) then
-					exports.global:applyAnimation(getLocalPlayer(), "PLAYIDLES", "strleg", -1, true, false, true)
+					exports.global:applyAnimation(getLocalPlayer(), "PLAYIDLES", "strleg", -1, true, true, true)
 				elseif (rand==5) then
-					exports.global:applyAnimation(getLocalPlayer(), "PLAYIDLES", "time", -1, true, false, true)
+					exports.global:applyAnimation(getLocalPlayer(), "PLAYIDLES", "time", -1, true, true, true)
 				elseif (rand==6) then
-					exports.global:applyAnimation(getLocalPlayer(), "ON_LOOKERS", "wave_loop", -1, true, false, true)
+					exports.global:applyAnimation(getLocalPlayer(), "ON_LOOKERS", "wave_loop", -1, true, true, true)
 				end
 				
 				setElementAlpha(getLocalPlayer(), 0)
@@ -1986,7 +1986,7 @@ function characterCreationStep2Normal()
 	rBlack =  guiCreateRadioButton(0.4, 0.385, 0.15, 0.15, "Black", true, tempPane)
 	rWhite =  guiCreateRadioButton(0.6, 0.385, 0.15, 0.15, "White", true, tempPane)
 	rAsian =  guiCreateRadioButton(0.8, 0.385, 0.15, 0.15, "Asian", true, tempPane)
-	guiRadioButtonSetSelected(rBlack, true)
+	guiRadioButtonSetSelected(rWhite, true)
 	addEventHandler("onClientGUIClick", rBlack, normalSetBlack, true, false, false)
 	addEventHandler("onClientGUIClick", rWhite, normalSetWhite, false, true, false)
 	addEventHandler("onClientGUIClick", rAsian, normalSetAsian, false, false, true)
@@ -3208,6 +3208,7 @@ function checkInput()
 end
 
 tabCreationFive, lTransport, rTrain, rBus, rAeroplane, rBoat, transObject, transVehicle, lastSelected, anim = nil
+language = 1
 function characterCreationStep6(button, state)
 	if (button=="left") and (state=="up") and (source==bNext) then
 		if (heightvalid) and (weightvalid) and (descvalid) and (agevalid) then
@@ -3247,6 +3248,42 @@ function characterCreationStep6(button, state)
 			addEventHandler("onClientGUIClick", rBus, busEffect, false)
 			addEventHandler("onClientGUIClick", rAeroplane, aeroplaneEffect, false)
 			
+			lLanguage = guiCreateLabel(0.1, 0.45, 0.8, 0.15, "What is your Character's mother tongue?", true, tabCreationSix)
+			guiSetFont(lLanguage, "default-bold-small")
+			
+			lCharLanguage = guiCreateLabel(0.3, 0.52, 0.2, 0.05, "English", true, tabCreationSix)
+			guiLabelSetHorizontalAlign( lCharLanguage, "center" )
+			language = 1
+			
+			lLangPrevious = guiCreateButton(0.23, 0.51, 0.07, 0.07, "<-", true, tabCreationSix)
+			lLangNext = guiCreateButton(0.5, 0.51, 0.07, 0.07, "->", true, tabCreationSix)
+			
+			addEventHandler("onClientGUIClick", lLangPrevious,
+				function( button, state )
+					if button == "left" and state == "up" then
+						if language == 1 then
+							language = call( getResourceFromName( "language-system" ), "getLanguageCount" )
+						else
+							language = language - 1
+						end
+						guiSetText(lCharLanguage, call( getResourceFromName( "language-system" ), "getLanguageName", language ))
+					end
+				end, false
+			)
+			
+			addEventHandler("onClientGUIClick", lLangNext,
+				function( button, state )
+					if button == "left" and state == "up" then
+						if language == call( getResourceFromName( "language-system" ), "getLanguageCount" ) then
+							language = 1
+						else
+							language = language + 1
+						end
+						guiSetText(lCharLanguage, call( getResourceFromName( "language-system" ), "getLanguageName", language ))
+					end
+				end, false
+			)
+
 			--/////////////
 			-- NEXT/BACK
 			--/////////////
@@ -3322,6 +3359,7 @@ function characterCreationFinal(button, state)
 			local skin = getElementModel(getLocalPlayer())
 			creation = false
 			destroyElement(tabPanelCreation)
+			tabPanelCreation = nil
 			
 			-- cleanup
 			removeEventHandler("onClientRender", getRootElement(), moveCameraToCreation)
@@ -3335,11 +3373,6 @@ function characterCreationFinal(button, state)
 			setElementPosition(getLocalPlayer(), 258.43417358398, -41.489139556885, 1002.0234375)
 			setPedRotation(getLocalPlayer(), 268.19247436523)
 			
-			creation = false
-			destroyElement(tabPanelCreation)
-			tabPanelCreation = nil
-			
-			
 			setCameraMatrix(257.20394897461, -40.330944824219, 1002.5234375, 260.32162475586, -41.565814971924, 1002.0234375)
 			setCameraInterior(14)
 			fadeCamera(true)
@@ -3348,9 +3381,9 @@ function characterCreationFinal(button, state)
 			
 			if (skin==0) then -- CJ
 				local clothes = { curhair, curhat, curneck, curface, curupper, curwrist, curlower, curfeet, curcostume, luTattoo, llTattoo, ruTattoo, rlTattoo, bTattoo, lcTattoo, rcTattoo, sTattoo, lbTattoo }
-				triggerServerEvent("createCharacter", getLocalPlayer(), name, gender, skincolour, weight, height, fatness, muscles, transport, description, age, skin, clothes)
+				triggerServerEvent("createCharacter", getLocalPlayer(), name, gender, skincolour, weight, height, fatness, muscles, transport, description, age, skin, language, clothes)
 			else
-				triggerServerEvent("createCharacter", getLocalPlayer(), name, gender, skincolour, weight, height, fatness, muscles, transport, description, age, skin)
+				triggerServerEvent("createCharacter", getLocalPlayer(), name, gender, skincolour, weight, height, fatness, muscles, transport, description, age, skin, language)
 			end
 		end
 	end

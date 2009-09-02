@@ -6,6 +6,10 @@ function getLanguageName(language)
 	return languages[language]
 end
 
+function getLanguageCount()
+	return #languages
+end
+
 function increaseInSkill(language)
 	local localPlayer = getLocalPlayer()
 	

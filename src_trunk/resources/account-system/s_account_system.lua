@@ -1258,7 +1258,7 @@ addEvent("spawnClothes", true)
 addEventHandler("spawnClothes", getRootElement(), spawnClothes)
 ]]--
 
-function createCharacter(name, gender, skincolour, weight, height, fatness, muscles, transport, description, age, skin)
+function createCharacter(name, gender, skincolour, weight, height, fatness, muscles, transport, description, age, skin, language)
 	-- Fix the name and check if its already taken...
 	local charname = string.gsub(tostring(name), " ", "_")
 	local safecharname = mysql_escape_string(handler, charname)
@@ -1270,7 +1270,7 @@ function createCharacter(name, gender, skincolour, weight, height, fatness, musc
 	local accountUsername = getElementData(source, "gameaccountusername")
 	
 	if (mysql_num_rows(result)>0) then -- Name is already taken
-		triggerEvent("onPlayerCreateCharacter", source, charname, gender, skincolour, weight, height, fatness, muscles, transport, description, age, skin, false)
+		triggerEvent("onPlayerCreateCharacter", source, charname, gender, skincolour, weight, height, fatness, muscles, transport, description, age, skin, language, false)
 	else
 	
 		-- /////////////////////////////////////
@@ -1291,7 +1291,7 @@ function createCharacter(name, gender, skincolour, weight, height, fatness, musc
 		local salt = "fingerprintscotland"
 		local fingerprint = md5(salt .. safecharname)
 		
-		local query = mysql_query(handler, "INSERT INTO characters SET charactername='" .. safecharname .. "', x='" .. x .. "', y='" .. y .. "', z='" .. z .. "', rotation='" .. r .. "', faction_id='-1', transport='" .. transport .. "', gender='" .. gender .. "', skincolor='" .. skincolour .. "', weight='" .. weight .. "', height='" .. height .. "', muscles='" .. muscles .. "', fat='" .. fatness .. "', description='" .. description .. "', account='" .. accountID .. "', skin='" .. skin .. "', lastarea='" .. lastarea .. "', age='" .. age .. "', fingerprint='" .. fingerprint .. "'")
+		local query = mysql_query(handler, "INSERT INTO characters SET charactername='" .. safecharname .. "', x='" .. x .. "', y='" .. y .. "', z='" .. z .. "', rotation='" .. r .. "', faction_id='-1', transport='" .. transport .. "', gender='" .. gender .. "', skincolor='" .. skincolour .. "', weight='" .. weight .. "', height='" .. height .. "', muscles='" .. muscles .. "', fat='" .. fatness .. "', description='" .. description .. "', account='" .. accountID .. "', skin='" .. skin .. "', lastarea='" .. lastarea .. "', age='" .. age .. "', fingerprint='" .. fingerprint .. "', lang1=" .. language .. ", lang1skill=100" )
 		
 		if (query) then
 			local id = mysql_insert_id(handler)
@@ -1316,12 +1316,12 @@ function createCharacter(name, gender, skincolour, weight, height, fatness, musc
 			
 			if (update) then
 				mysql_free_result(update)
-				triggerEvent("onPlayerCreateCharacter", source, charname, gender, skincolour, weight, height, fatness, muscles, transport, description, age, skin, true)
+				triggerEvent("onPlayerCreateCharacter", source, charname, gender, skincolour, weight, height, fatness, muscles, transport, description, age, skin, language, true)
 			else
 				outputChatBox("Error 100003 - Report on forums.", source, 255, 0, 0)
 			end
 		else
-			triggerEvent("onPlayerCreateCharacter", source, charname, gender, skincolour, weight, height, fatness, muscles, transport, description, age, skin, false)
+			triggerEvent("onPlayerCreateCharacter", source, charname, gender, skincolour, weight, height, fatness, muscles, transport, description, age, skin, language, false)
 		end
 	end
 	exports.irc:sendMessage("[ACCOUNT] Character '" ..  charname .. "' was registered to account '" .. accountUsername .. "'")

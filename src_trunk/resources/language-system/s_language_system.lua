@@ -87,33 +87,36 @@ function getSkillFromLanguage(player, language)
 end
 
 function applyLanguage(player, message, language)
-	local skill =  getSkillFromLanguage(player, language)
-
-	local length = string.len(message)
-	local percent = 100 - skill
-	local replace = (percent/100) * length
-	
-	local i = 1
-
-	while ( i < replace ) do
-		local char = string.sub(message, i, i)
-		if (char~="") and (char~=" ") then
-			local replacechar
-
-			if (string.byte(char)>=65 and string.byte(char)<=90) then -- upper char
-				replacechar = string.char(math.random(65, 90))
-			elseif (string.byte(char)>=97 and string.byte(char)<=122) then -- lower char
-				replacechar = string.char(math.random(97, 122))
+	local level, duty = getElementData( player, "adminlevel" ), getElementData( player, "adminduty" )
+	if not level or level == 0 or not duty or duty == 0 then
+		local skill =  getSkillFromLanguage(player, language)
+		
+		local length = string.len(message)
+		local percent = 100 - skill
+		local replace = (percent/100) * length
+		
+		local i = 1
+		
+		while ( i < replace ) do
+			local char = string.sub(message, i, i)
+			if (char~="") and (char~=" ") then
+				local replacechar
+				
+				if (string.byte(char)>=65 and string.byte(char)<=90) then -- upper char
+					replacechar = string.char(math.random(65, 90))
+				elseif (string.byte(char)>=97 and string.byte(char)<=122) then -- lower char
+					replacechar = string.char(math.random(97, 122))
+				end
+				
+				if (string.byte(char)>=65 and string.byte(char)<=90) or (string.byte(char)>=97 and string.byte(char)<=122) then
+					message = string.gsub(message, tostring(char), replacechar, 1)
+				end
 			end
-			
-			if (string.byte(char)>=65 and string.byte(char)<=90) or (string.byte(char)>=97 and string.byte(char)<=122) then
-				message = string.gsub(message, tostring(char), replacechar, 1)
-			end
+			i = i + 1
 		end
-		i = i + 1
+		
+		increaseLanguageSkill(player, language)
 	end
-	
-	increaseLanguageSkill(player, language)
 	return message
 end
 

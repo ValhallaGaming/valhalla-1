@@ -242,8 +242,6 @@ function getItemsForSale(shop_type, race, gender)
 			{"Fishing Rod", "A 7 foot carbon steel fishing rod.", "300", 49, 1,1,false, 175},
 			{"Mask", "A comical mask.", "20", 56, 1, 1, false, 5},
 			{"Fuel Can", "A small metal fuel canister.", "35", 57, 1, 1, false, 5},
-			{"Los Santos Highway Code", "A paperback book.", "10", 50, 1, 1, false, 5},
-			{"Chemistry 101", "A hardback academic book.", "20", 51, 1, 1, false, 10},
 			{"Blindfold", "A black blindfold.", "15", 66, 1,1, false,2},
 			{"Lottery Ticket", "A lottery ticket.","50", 68, 1,1, false,40},
 
@@ -335,6 +333,9 @@ function getItemsForSale(shop_type, race, gender)
 	-- book shop
 	elseif(shop_type == 10) then
 		item = {
+			{"City Guide", "A small city guide booklet.", "15", 18, 1,1,false,7},
+			{"Los Santos Highway Code", "A paperback book.", "10", 50, 1, 1, false, 5},
+			{"Chemistry 101", "A hardback academic book.", "20", 51, 1, 1, false, 10},
 			{"English Dictionary","A Dictionary, useful for learning lingo.", "25", 69, 1, 1, false, 2},		
 			{"Russian Dictionary","A Dictionary, useful for learning lingo.", "25", 69, 2, 1, false, 2},		
 			{"German Dictionary","A Dictionary, useful for learning lingo.", "25", 69, 3, 1, false, 2},	

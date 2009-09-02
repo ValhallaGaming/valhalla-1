@@ -1,9 +1,19 @@
 ﻿<?php
-	//if (isset($_COOKIE["username"]) &&isset($_COOKIE["password"]) && isset($_COOKIE["uid"]))
-		//header('Location: main.php');
+	if (!isset($_COOKIE["username"]) || !isset($_COOKIE["password"]) || !isset($_COOKIE["uid"]))
+		header('Location: index.php');
 ?>
 
 <?php include("config.php"); ?>
+
+<?php 
+	$conn = mysql_pconnect($mysql_host, $mysql_user, $mysql_pass);
+	$userid = mysql_real_escape_string($_COOKIE["uid"], $conn);
+	
+	mysql_select_db("mta", $conn);
+	$result = mysql_query("SELECT username FROM accounts WHERE id='" . $userid . "' LIMIT 1", $conn);
+
+	$username = mysql_result($result, 0);
+?>
 
 <html>
 	<head>
@@ -153,147 +163,18 @@ a:active {
 	      </div></td>
 		</tr>
 		<tr>
-			<td width="1089" height="0" valign="middle" bgcolor="#333333" class="style9" style="height: 20px; font-family: Verdana, Geneva, sans-serif; font-size: 12px;" border="3"><strong><a href="index.php">Home</a></strong></td>
+			<td width="1089" height="0" valign="middle" bgcolor="#333333" class="style9" style="height: 20px; font-family: Verdana, Geneva, sans-serif; font-size: 12px;" border="3"><strong><a href="index.php">Home</a> <center>
+			  Logged in as <?php echo $username ?>
+			</center></strong></div></td>
 		</tr>
 		<tr>
-			<td height="274" class="style14" style="height: 40px">
-	<table style="width: 70%; height: 100%;" align="center">
-			<tr>
-				<td class="style1" valign="top" style="height: 246px; font-family: Verdana, Geneva, sans-serif; font-size: 12px; color: #900;">
-			
-		
-	
-		<form action="login.php" method="post">
-		  <div align="center"><span class="style15"><strong>Please login using your vG MTA account 
-		    details to continue.<br>
-		    <?php
-			$errno = $_GET["errno"];
-			$loggedout = $_GET["loggedout"];
-			
-			if ($errno==2)
-				echo "<br><strong><span class='style5'>UCP is currently unavailable!</span></strong><br>";
-			elseif ($errno==3)
-			{
-				// allow 3 tries				
-				//if (!isset($_COOKIE["loginattempts"]))
-					//setcookie("loginattempts", "1", time()+900);
-				//else
-					//setcookie("loginattempts", $_COOKIE["loginattempts"]+1, time()+900);
-
-					echo "<br><strong><span class='style5'>Invalid Username / Password!</span></strong><br>";
-			}	
-			else if ($errno==4)
-				echo "<br><strong><span class='style5'>You have used up your 3 login attempts. You are now locked out for 15 minutes.</span></strong><br>";
-			elseif ($loggedout==1)
-				echo "<br><strong><span class='style5'>You are now logged out.</span></strong><br>";
-		?>
-		    
-		    <?php
-			function generatePassword($length=9, $strength=0) {
-				$vowels = 'aeuy';
-				$consonants = 'bdghjmnpqrstvz';
-				if ($strength & 1) {
-					$consonants .= 'BDGHJLMNPQRSTVWXZ';
-				}
-				if ($strength & 2) {
-					$vowels .= "AEUY";
-				}
-				if ($strength & 4) {
-					$consonants .= '23456789';
-				}
-				if ($strength & 8) {
-					$consonants .= '@#$%';
-				}
-			 
-				$password = '';
-				$alt = time() % 2;
-				for ($i = 0; $i < $length; $i++) {
-					if ($alt == 1) {
-						$password .= $consonants[(rand() % strlen($consonants))];
-						$alt = 0;
-					} else {
-						$password .= $vowels[(rand() % strlen($vowels))];
-						$alt = 1;
-					}
-				}
-				return $password;
-			}
-
-		
-			$securitykey = $_POST["securitykey"];
-
-			if ($securitykey) // was reset password
-			{
-				$conn = mysql_pconnect($mysql_host, $mysql_user, $mysql_pass);
-				
-				if (!$conn)
-					header('Location: resetpassword.php?errno=2');
-
-				mysql_select_db("mta",$conn);
-				$result = mysql_query("SELECT username FROM accounts WHERE securitykey='" . $securitykey . "'", $conn);
-				
-				
-				if (!$result || mysql_num_rows($result)==0)
-				{
-					mysql_close($conn);
-					header('Location: resetpassword.php?errno=2');
-				}
-				else
-				{
-					$username = mysql_result($result, 0);
-					$password = generatePassword(9, 4);
-					$salt = "vgrpkeyscotland";
-						
-					$query = mysql_query("UPDATE accounts SET password='" . md5($salt . $password) . "' WHERE username='" . $username . "'", $conn);
-					
-					mysql_close($conn);
-					echo "<br><stong><span class='style5'>Your username is <i>" . $username . "</i> and your new password is <i>" . $password . ".</i></strong></span><br>"; 
-				}
-			}
-			?>
-		    
-		    </strong></span><br>
-		    <table>
-		      <tr>
-		        <td style="width: 33%" class="style15">&nbsp;</td>
-		        <td style="width: 80px" class="style6">
-		          <strong><span class="style15">Username:</span></strong></td>
-		        <td style="width: 135px" class="style17">
-		          <font size="3"><span class="style19">
-		            <!--webbot bot="Validation" b-value-required="TRUE" i-minimum-length="3" i-maximum-length="32" -->
-		            <input type="text" name="username" style="height: 20px; width: 128px;" maxlength="32" /></span></font></td>
-		        <td style="width: 33%" class="style15">&nbsp;</td>
-		        </tr>
-		      <tr>
-		        <td style="width: 33%" class="style15">&nbsp;</td>
-		        <td style="width: 80px" class="style6"><strong>
-		          <span class="style15">Password: </span></strong>
-		          </td>
-		        <td style="width: 135px" class="style17"> 
-		          <font size="3"><span class="style19">
-		            <!--webbot bot="Validation" b-value-required="TRUE" i-minimum-length="3" i-maximum-length="32" --> 
-		            <input type="password" name="password" style="height: 20px; width: 128px;" maxlength="32" /></span></font></td>
-		        <td style="width: 33%" class="style15">&nbsp;</td>
-		        </tr>
-		      </table>
-		    <p><span class="Text"><a href="resetpassword.php">Forgot Password</a></span> <strong>|</strong> <span class="Text"><a href="register.php">Register</a><br>
-		      </span><span class="style4"><span class="style16"><span class="style19"><br>
-		      </span></span>
-		      </span>
-		      <span class="style16"><font size="3"><span class="style19">
-		        <input type="submit" value="Login" style="width: 116px; height: 25px" />
-		        </span></font></span><br>
-		      </p>
-          </div>
-        </form>
-				</td>
-			</tr>
-			<tr>
-				<td height="14" valign="top" class="style20">
-		<strong>Copyright © 2009 Valhalla Gaming.</strong></td>
-			</tr>
-		</table>
-			</td>
+			<td height="274" class="style14" style="height: 40px"><table width="1095" height="154" border="1">
+			  <tr>
+			    <td width="15%">&nbsp;</td>
+			    <td width="70%">&nbsp;</td>
+			    <td width="15%">&nbsp;</td>
+		      </tr>
+		    </table></td>
 		</tr>
 </table>	</body>
 </html>

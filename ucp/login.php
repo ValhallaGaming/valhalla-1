@@ -47,7 +47,6 @@
 
 			mysql_select_db("mta", $conn);
 			$result = mysql_query("SELECT id FROM accounts WHERE username='" . $escUsername . "' AND password='" . $escPassword . "' LIMIT 1", $conn);
-			mysql_close($conn);
 
 			if (!$result || mysql_num_rows($result)==0)
 			{

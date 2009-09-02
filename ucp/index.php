@@ -1,6 +1,6 @@
 ﻿<?php
-	//if (isset($_COOKIE["username"]) &&isset($_COOKIE["password"]) && isset($_COOKIE["uid"]))
-		//header('Location: main.php');
+	if (isset($_COOKIE["username"]) &&isset($_COOKIE["password"]) && isset($_COOKIE["uid"]))
+		header('Location: main.php');
 ?>
 
 <?php include("config.php"); ?>
@@ -175,10 +175,10 @@ a:active {
 			elseif ($errno==3)
 			{
 				// allow 3 tries				
-				//if (!isset($_COOKIE["loginattempts"]))
-					//setcookie("loginattempts", "1", time()+900);
-				//else
-					//setcookie("loginattempts", $_COOKIE["loginattempts"]+1, time()+900);
+				if (!isset($_COOKIE["loginattempts"]))
+					setcookie("loginattempts", "1", time()+900);
+				else
+					setcookie("loginattempts", $_COOKIE["loginattempts"]+1, time()+900);
 
 					echo "<br><strong><span class='style5'>Invalid Username / Password!</span></strong><br>";
 			}	
@@ -235,7 +235,6 @@ a:active {
 				
 				if (!$result || mysql_num_rows($result)==0)
 				{
-					mysql_close($conn);
 					header('Location: resetpassword.php?errno=2');
 				}
 				else
@@ -246,7 +245,6 @@ a:active {
 						
 					$query = mysql_query("UPDATE accounts SET password='" . md5($salt . $password) . "' WHERE username='" . $username . "'", $conn);
 					
-					mysql_close($conn);
 					echo "<br><stong><span class='style5'>Your username is <i>" . $username . "</i> and your new password is <i>" . $password . ".</i></strong></span><br>"; 
 				}
 			}

@@ -148,7 +148,7 @@ end
 addCommandHandler("thiscar", getCarID, false, false)
 
 -- /gotocar
-function gotoCar(thePlayer, commandNAme, id)
+function gotoCar(thePlayer, commandName, id)
 	if (exports.global:isPlayerAdmin(thePlayer)) then
 		if not (id) then
 			ooutputChatBox("SYNTAX: /" .. commandName .. " [id]", thePlayer, 255, 194, 14)

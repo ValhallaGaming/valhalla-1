@@ -18,64 +18,11 @@
 <html>
 	<head>
 	<title>ValhallaGaming MTA :: User Control Panel</title>
-		<style type="text/css">
-.style1 {
-	text-align: center;
-}
-.style4 {
-	font-size: 12pt;
-}
-.style6 {
-	text-align: right;
-}
-.style8 {
-	text-decoration: none;
-}
-.style9 {
+		<style type="text/css">.style9 {
 	background-image: url('img/bg.png');
-}
-.style10 {
-	font-family: Verdana;
-	font-size: 10pt;
-}
-.style11 {
-	font-family: Verdana;
-	font-size: 10pt;
-	text-align: right;
-	color: #FFFFFF;
-}
-.style12 {
-	font-family: Verdana;
-	font-size: 10pt;
-	color: #FFFFFF;
-}
-.style13 {
-	color: #FFFFFF;
 }
 .style14 {
 	background-color: #313131;
-}
-.style15 {
-	font-family: "Arial Narrow";
-	font-size: 12pt;
-	color: #FAFAFA;
-}
-.style16 {
-	font-family: "Arial Narrow";
-}
-.style17 {
-	font-size: x-small;
-	font-family: "Arial Narrow";
-}
-.style19 {
-	color: #FAFAFA;
-	font-family: Verdana;
-}
-.style20 {
-	text-align: center;
-	font-family: "Arial Narrow";
-	font-size: 10pt;
-	color: #FAFAFA;
 }
 body {
 	background-image: url(img/bg.png);
@@ -124,7 +71,7 @@ a:active {
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></head>
 	
 	<body text="#FFFFFF" link="#FFFFFF" vlink="#FFFFFF" alink="#FFFFFF" style="background-image: url('img/bg.png')">
-<table width="1099" align="center">
+<table align="center">
 		<tr>
 			<td width="1089"><div id="banner">
 			  <table width="1092" border="0" cellpadding="0" cellspacing="0">
@@ -163,18 +110,26 @@ a:active {
 	      </div></td>
 		</tr>
 		<tr>
-			<td width="1089" height="0" valign="middle" bgcolor="#333333" class="style9" style="height: 20px; font-family: Verdana, Geneva, sans-serif; font-size: 12px;" border="3"><strong><a href="index.php">Home</a> <center>
-			  Logged in as <?php echo $username ?>
-			</center></strong></div></td>
-		</tr>
+			<td width="1089" height="23" valign="middle" bgcolor="#333333" class="style9" style="height: 20px; font-family: Verdana, Geneva, sans-serif; font-size: 12px;" border="3"><table width="1094" border="0">
+		      <tr>
+			      <td width="160"><span class="style9" style="height: 20px; font-family: Verdana, Geneva, sans-serif; font-size: 12px;"><strong><a href="index.php">Home</a></strong>
+			          </div>
+			      </span></td>
+			      <td width="760"><span class="style9" style="height: 20px; font-family: Verdana, Geneva, sans-serif; font-size: 12px;"><strong>
+		          <div align="center">Logged in as <?php echo $username ?></div></td>
+			      <td width="160"><div align="right"><span class="style9" style="height: 20px; font-family: Verdana, Geneva, sans-serif; font-size: 12px;"><strong><a href="logout.php">Logout</a></strong>
+		          </span></div></td>
+	          </tr>
+          </table></td>
+  </tr>
 		<tr>
-			<td height="274" class="style14" style="height: 40px"><table width="1095" height="154" border="1">
+			<td height="274" class="style14" style="height: 40px"><table width="1094" height="154" border="1">
 			  <tr>
 			    <td width="15%">&nbsp;</td>
 			    <td width="70%">&nbsp;</td>
 			    <td width="15%">&nbsp;</td>
 		      </tr>
-		    </table></td>
+	      </table></td>
 		</tr>
 </table>	</body>
 </html>

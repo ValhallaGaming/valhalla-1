@@ -72,6 +72,10 @@ function savePlayer(reason, player)
 		cuffed = getElementData(source, "restrain")
 		skin = getElementModel(source)
 		
+		if getElementData(source, "help") then
+			dimension, interior, x, y, z = unpack( getElementData(source, "help") )
+		end
+		
 		-- Fix for #0000984
 		local businessprofit = tonumber(getElementData(source, "businessprofit"))
 		if (businessprofit) then

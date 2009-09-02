@@ -1,0 +1,73 @@
+function toggleHelp( thePlayer, commandName )
+	if getElementData( thePlayer, "dbid" ) then
+		if getElementData( thePlayer, "help" ) then
+			-- hide the window
+			if commandName then
+				triggerClientEvent( thePlayer, "showHelp", thePlayer, false )
+			end
+			
+			-- unfreeze and show the own player
+			setPedFrozen( thePlayer, false )
+			setElementAlpha( thePlayer, 255 )
+			
+			-- set the camera target back
+			setCameraTarget( thePlayer, thePlayer )
+			
+			-- reset his position
+			local dimension, interior, x, y, z = unpack( getElementData( thePlayer, "help" ) )
+			
+			setElementPosition( thePlayer, x, y, z )
+			setElementDimension( thePlayer, dimension )
+			
+			-- make sure int is loaded
+			setElementInterior( thePlayer, interior + 1 )
+			setElementInterior( thePlayer, interior )
+			setCameraInterior( thePlayer, interior + 1 )
+			setCameraInterior( thePlayer, interior )
+			
+			removeElementData( thePlayer, "help" )
+			
+			-- show the radar and chat again
+			showPlayerHudComponent( thePlayer, "radar", true )
+			showChat( thePlayer, true )
+			
+			-- hide the cursor
+			showCursor( thePlayer, false )
+		else
+			-- save the old position
+			setElementData( thePlayer, "help", { getElementDimension( thePlayer ), getElementInterior( thePlayer ), getElementPosition( thePlayer ) }, false )
+			
+			setElementDimension( thePlayer, 20 )
+			
+			-- freeze the player and hide him
+			setElementAlpha( thePlayer, 0 )
+			setPedFrozen( thePlayer, true )
+			
+			-- hide the chat and radar
+			showPlayerHudComponent( thePlayer, "radar", false )
+			showChat( thePlayer, false )
+			
+			-- show the cursor to navigate
+			showCursor( thePlayer, true )
+			
+			-- open the window
+			triggerClientEvent( thePlayer, "showHelp", thePlayer, true )
+		end
+	end
+end
+addCommandHandler( "?", toggleHelp )
+
+-- make sure we close all help windows on exit
+addEventHandler( "onResourceStop", getResourceRootElement( ),
+	function( )
+		for key, value in pairs( getElementsByType( "player" ) ) do
+			if isElement( value ) and getElementData( value, "help" ) then
+				toggleHelp( value )
+			end
+		end
+	end
+)
+
+-- allow the client's exit button to close the menu
+addEvent( "exitHelp", true )
+addEventHandler( "exitHelp", getRootElement( ), function( ) toggleHelp( source, "" ) end )

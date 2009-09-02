@@ -27,8 +27,9 @@ function toggleHelp( thePlayer, commandName )
 			
 			removeElementData( thePlayer, "help" )
 			
-			-- show the radar and chat again
+			-- show the radar, zone name and chat again
 			showPlayerHudComponent( thePlayer, "radar", true )
+			showPlayerHudComponent( thePlayer, "area_name", true )
 			showChat( thePlayer, true )
 			
 			-- hide the cursor
@@ -43,8 +44,9 @@ function toggleHelp( thePlayer, commandName )
 			setElementAlpha( thePlayer, 0 )
 			setPedFrozen( thePlayer, true )
 			
-			-- hide the chat and radar
+			-- hide the chat, zone name and radar
 			showPlayerHudComponent( thePlayer, "radar", false )
+			showPlayerHudComponent( thePlayer, "area_name", false )
 			showChat( thePlayer, false )
 			
 			-- show the cursor to navigate
@@ -56,6 +58,24 @@ function toggleHelp( thePlayer, commandName )
 	end
 end
 addCommandHandler( "?", toggleHelp )
+
+--[[
+-- bind keys for the player
+addEventHandler( "onResourceStop", getResourceRootElement( ),
+	function( )
+		for key, value in pairs( getElementsByType( "player" ) ) do
+			if isElement( value ) then
+				bindKey( value, "F1", "down", "?" )
+			end
+		end
+	end
+)
+
+addEventHandler( "onPlayerJoin", getRootElement( ),
+	function( )
+		bindKey( source, "F1", "down", "?" )
+	end
+)]]
 
 -- make sure we close all help windows on exit
 addEventHandler( "onResourceStop", getResourceRootElement( ),

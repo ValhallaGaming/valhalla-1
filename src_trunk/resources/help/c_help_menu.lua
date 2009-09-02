@@ -1,7 +1,8 @@
 local sx, sy = guiGetScreenSize( )
-local guielements = { }
-local camera, cameraview = {}, 0
-cameraupdatetimer = nil
+local guielements = { } -- list of elements that should be deleted when leaving the current menu
+local camera, cameraview = {}, 0 -- camera table and the current view id
+cameraupdatetimer = nil -- timer when the camera view should be switched to the next one
+local exitMenuFunc -- function called when exiting the menu
 
 local function setCameraView( view )
 	if view then
@@ -21,6 +22,7 @@ local function setCameraView( view )
 		local x, y, z = unpack( activeCam.matrix )
 		setElementPosition( localPlayer, x, y, z - 2 )
 		setElementInterior( localPlayer, activeCam.interior )
+		setElementDimension( localPlayer, activeCam.dimension )
 		
 		setCameraMatrix( unpack( activeCam.matrix ) )
 		setCameraInterior( activeCam.interior )
@@ -40,15 +42,23 @@ local function setCameraView( view )
 	end
 end
 
-local function findParent( start, node )
+local function findParent( start, node, usemultipage )
 	if type( start ) == "table" then
 		if start == node then
 			return true
 		else
 			for key, value in pairs( start ) do
-				local found = findParent( value, node )
+				local found = findParent( value, node, usemultipage )
 				if found == true then
-					return start
+					if start.multi then
+						if not usemultipage then
+							return true
+						else
+							return start
+						end
+					else
+						return start
+					end
 				elseif type( found ) == "table" then
 					return found
 				end
@@ -66,12 +76,22 @@ function createMenu( node )
 			if node.window then
 				local width = node.window.width or 350
 				local height = node.window.height or 160
+				local y = sy / 2 - height
+				if node.window.bottom then
+					y = sy - height - 20
+				end
 				
-				local window = guiCreateWindow( ( sx - width - 160 ) / 2, sy / 2 - height, width, height, node.name, false )
+				local window = guiCreateWindow( ( sx - width + 160 ) / 2, y, width, height, node.name, false )
 				guiWindowSetMovable( window, false )
 				guiWindowSetSizable( window, false )
 				
-				node.window.func( window )
+				if node.window.func then
+					node.window.func( window )
+				end
+				if node.window.text then
+					local label = guiCreateLabel( 0.1, 0.15, 0.8, 0.75, node.window.text, true, window )
+					guiLabelSetHorizontalAlign( label, "center", true )
+				end
 				
 				-- add it to the gui elements list
 				table.insert( guielements, window )
@@ -89,6 +109,19 @@ function createMenu( node )
 					size = size + 1
 				end
 			end
+			
+			-- check to see if we got a multi-page help
+			local parent = findParent( help_menu, node, true )
+			if type( parent ) == "table" and parent.multi then
+				if parent[1] ~= node then
+					size = size + 1
+				end
+				
+				if parent[#parent] ~= node then
+					size = size + 1
+				end
+			end
+			
 			local y = ( sy - ( size + 1 ) * height - size * spacer ) / 2
 			
 			for key, value in ipairs( node ) do
@@ -117,7 +150,12 @@ function createMenu( node )
 							function( button, state )
 								if button == "left" and state == "up" then
 									destroyMenu( )
-									createMenu( value )
+									
+									if value.multi then
+										createMenu( value[1] )
+									else
+										createMenu( value )
+									end
 								end
 							end
 						)
@@ -128,7 +166,65 @@ function createMenu( node )
 				end
 			end
 			
-			local parent = findParent( help_menu, node )
+			-- previous/next buttons
+			if type( parent ) == "table" and parent.multi then
+				-- find the id
+				local id = 0
+				for key, value in ipairs( parent ) do
+					if value == node then
+						id = key
+						break
+					end
+				end
+				
+				if id > 0 then
+					if id ~= 1 then
+						local button = guiCreateButton( x, y, width, height, "Previous", false )
+						
+						-- modify text color and alpha
+						guiSetProperty( button, "NormalTextColour", "FFFFFFFF" )
+						guiSetAlpha( button, 0.85 )
+						
+						-- add it to the gui elements list
+						table.insert( guielements, button )
+						
+						-- event handler to go back
+						addEventHandler( "onClientGUIClick", button,
+							function( button, state )
+								if button == "left" and state == "up" then
+									destroyMenu( )
+									createMenu( parent[ id - 1 ] )
+								end
+							end
+						)
+						y = y + height + spacer
+					end
+					
+					if id ~= #parent then
+						local button = guiCreateButton( x, y, width, height, "Next", false )
+						
+						-- modify text color and alpha
+						guiSetProperty( button, "NormalTextColour", "FFFFFFFF" )
+						guiSetAlpha( button, 0.85 )
+						
+						-- add it to the gui elements list
+						table.insert( guielements, button )
+						
+						-- event handler to go back
+						addEventHandler( "onClientGUIClick", button,
+							function( button, state )
+								if button == "left" and state == "up" then
+									destroyMenu( )
+									createMenu( parent[ id + 1 ] )
+								end
+							end
+						)
+						y = y + height + spacer
+					end
+				end
+			end
+			
+			local parent = findParent( help_menu, node, false )
 			if parent == true then -- we're in the main menu
 				local button = guiCreateButton( x, y, width, height, "Exit", false )
 				
@@ -148,7 +244,7 @@ function createMenu( node )
 					end
 				)
 			else
-				local button = guiCreateButton( x, y, width, height, "Back", false )
+				local button = guiCreateButton( x, y, width, height, "< Back\n" .. parent.name, false )
 				
 				-- modify text color and alpha
 				guiSetProperty( button, "NormalTextColour", "FFFFFFFF" )
@@ -184,6 +280,18 @@ function createMenu( node )
 			if #camera > 1 then
 				cameraupdatetimer = setTimer( setCameraView, 10000, 0 )
 			end
+			
+			-- call the function that'd be called when the menu is created
+			if node.onInit then
+				node.onInit( )
+			end
+			
+			-- save the function that should be triggered when you leave *this* menu
+			if node.onExit then
+				exitMenuFunc = node.onExit
+			else
+				exitMenuFunc = nil
+			end
 		end
 	else
 		ouputDebugString( "Unexpected Node" )
@@ -191,6 +299,11 @@ function createMenu( node )
 end
 
 function destroyMenu( )
+	if exitMenuFunc then
+		exitMenuFunc( )
+		exitMenuFunc = nil
+	end
+	
 	for key, value in pairs( guielements ) do
 		destroyElement( value )
 	end

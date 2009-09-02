@@ -32,7 +32,7 @@ function knockout()
 end
 
 function injuries(attacker, weapon, bodypart, loss)
-	if loss < 0.5 then
+	if not loss or loss < 0.5 then
 		return
 	end
 	

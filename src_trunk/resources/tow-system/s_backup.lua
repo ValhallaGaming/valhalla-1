@@ -31,7 +31,7 @@ function backup(thePlayer, commandName)
 		elseif (backupBlip == false) then -- make backup blip
 			backupBlip = true
 			backupPlayer = thePlayer
-			for k,v in ipairs(getPlayersInTeam (theTeam)) do
+			for k,v in ipairs(getPlayersInTeam(getTeamFromName("McJones Towing"))) do
 				triggerClientEvent(v, "createBackupBlip", thePlayer)
 				outputChatBox("A player requires a Tow Truck. Please respond ASAP!", v, 255, 194, 14)
 			end
@@ -40,7 +40,7 @@ function backup(thePlayer, commandName)
 			addEventHandler("savePlayer", thePlayer, destroyBlip)
 			
 		elseif (backupBlip == true) and (backupPlayer==thePlayer) then -- in use by this player
-			for key, v in ipairs(getPlayersInTeam(theTeam)) do
+			for key, v in ipairs(getPlayersInTeam(getTeamFromName("McJones Towing"))) do
 				triggerClientEvent(v, "destroyBackupBlip", getRootElement())
 				outputChatBox("The player no longer requires a Tow Truck. Resume normal patrol", v, 255, 194, 14)
 			end
@@ -56,7 +56,7 @@ addCommandHandler("towtruck", backup, false, false)
 
 function destroyBlip()
 	local theTeam = getPlayerTeam(source)
-	for key, value in ipairs(getPlayersInTeam(theTeam)) do
+	for key, value in ipairs(getPlayersInTeam(getTeamFromName("McJones Towing"))) do
 		outputChatBox("The unit no longer requires assistance. Resume normal patrol", value, 255, 194, 14)
 	end
 	for k,v in ipairs(getPlayersInTeam ( getTeamFromName("McJones Towing") )) do

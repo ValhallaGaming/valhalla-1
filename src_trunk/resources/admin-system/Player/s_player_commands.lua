@@ -1280,7 +1280,7 @@ function jailPlayer(thePlayer, commandName, who, minutes, ...)
 				local jailTimer = getElementData(targetPlayer, "jailtimer")
 				local accountID = getElementData(targetPlayer, "gameaccountid")
 				
-				if (jailTimer) then
+				if isTimer(jailTimer) then
 					killTimer(jailTimer)
 				end
 				

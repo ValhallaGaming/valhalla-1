@@ -21,15 +21,15 @@ function CreateCheckWindow()
 		guiCreateLabel(0.03,0.27,0.66,0.0806,"Ping: N/A",true,Window),
 		guiCreateLabel(0.03,0.56,0.66,0.0806,"Vehicle: N/A",true,Window),
 		false,
-		guiCreateLabel(0.6,0.36,0.4031,0.0766,"Location: N/A",true,Window),
-		guiCreateLabel(0.6,0.07,0.4031,0.0766,"X:",true,Window),
-		guiCreateLabel(0.6,0.12,0.4031,0.0766,"Y: N/A",true,Window),
-		guiCreateLabel(0.6,0.17,0.4031,0.0766,"Z: N/A",true,Window),
-		guiCreateLabel(0.6,0.24,0.2907,0.0806,"Interior: N/A",true,Window),
-		guiCreateLabel(0.6,0.29,0.2907,0.0806,"Dimension: N/A",true,Window),
+		guiCreateLabel(0.6,0.43,0.4031,0.0766,"Location: N/A",true,Window),
+		guiCreateLabel(0.6,0.12,0.4031,0.0766,"X:",true,Window),
+		guiCreateLabel(0.6,0.17,0.4031,0.0766,"Y: N/A",true,Window),
+		guiCreateLabel(0.6,0.24,0.4031,0.0766,"Z: N/A",true,Window),
+		guiCreateLabel(0.6,0.31,0.2907,0.0806,"Interior: N/A",true,Window),
+		guiCreateLabel(0.6,0.36,0.2907,0.0806,"Dimension: N/A",true,Window),
 		guiCreateLabel(0.03,0.17,0.66,0.0887,"Admin Level: N/A", true,Window),
 		guiCreateLabel(0.03,0.22,0.66,0.0887,"Donator Level: N/A",true,Window),
-		guiCreateLabel(0.6,0.43,0.4093,0.0806,"Hours Ingame: N/A",true,Window),
+		guiCreateLabel(0.6,0.5,0.4093,0.0806,"Hours Ingame: N/A",true,Window),
 	}
 	
 	-- player notes

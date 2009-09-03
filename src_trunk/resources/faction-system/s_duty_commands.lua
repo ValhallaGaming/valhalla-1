@@ -210,7 +210,7 @@ function lvesduty(thePlayer, commandName)
 						saveWeaponsOnDuty(thePlayer)
 						setElementHealth(thePlayer, 100)
 						
-						exports.global:giveWeapon(thePlayer, 41, 5000) -- Pepperspray
+						exports.global:giveWeapon(thePlayer, 41, 1500) -- Pepperspray
 						setPedSkin(thePlayer, dutyskin)
 						
 						setElementData(thePlayer, "duty", 4, false)
@@ -264,7 +264,7 @@ function lvfdduty(thePlayer, commandName)
 						saveWeaponsOnDuty(thePlayer)
 						setElementHealth(thePlayer, 100)
 						
-						exports.global:giveWeapon(thePlayer, 42, 5000) -- Fire Extinguisher
+						exports.global:giveWeapon(thePlayer, 42, 1500) -- Fire Extinguisher
 						exports.global:giveWeapon(thePlayer, 9, 1) -- Chainsaw
 						setPedSkin(thePlayer, dutyskin)
 						
@@ -334,11 +334,11 @@ function swatduty(thePlayer, commandName)
 					setPedArmor(thePlayer, 100)
 					setElementHealth(thePlayer, 100)
 					
-					exports.global:giveWeapon(thePlayer, 24, 1000) -- Deagle / MP Handgun
-					exports.global:giveWeapon(thePlayer, 27, 400) -- Shotgun
-					exports.global:giveWeapon(thePlayer, 29, 1000) -- MP5
-					exports.global:giveWeapon(thePlayer, 31, 5000) -- M4
-					exports.global:giveWeapon(thePlayer, 34, 400) -- Sniper
+					exports.global:giveWeapon(thePlayer, 24, 250) -- Deagle / MP Handgun
+					exports.global:giveWeapon(thePlayer, 27, 200) -- Shotgun
+					exports.global:giveWeapon(thePlayer, 29, 800) -- MP5
+					exports.global:giveWeapon(thePlayer, 31, 1200) -- M4
+					exports.global:giveWeapon(thePlayer, 34, 200) -- Sniper
 					exports.global:giveWeapon(thePlayer, 17, 10) -- Tear gas
 					
 					exports.global:giveItem(thePlayer, 26, 999)
@@ -422,10 +422,10 @@ function policeduty(thePlayer, commandName)
 						setElementHealth(thePlayer, 100)
 						
 						exports.global:giveWeapon(thePlayer, 3, 1) -- Nightstick
-						exports.global:giveWeapon(thePlayer, 24, 1000) -- Deagle / MP Handgun
-						exports.global:giveWeapon(thePlayer, 25, 400) -- Shotgun
+						exports.global:giveWeapon(thePlayer, 24, 200) -- Deagle / MP Handgun
+						exports.global:giveWeapon(thePlayer, 25, 200) -- Shotgun
 						exports.global:giveWeapon(thePlayer, 29, 1000) -- MP5
-						exports.global:giveWeapon(thePlayer, 41, 5000) -- Pepperspray
+						exports.global:giveWeapon(thePlayer, 41, 1500) -- Pepperspray
 						
 						exports.global:givePlayerItem(thePlayer, 45, 999)
 						
@@ -505,8 +505,8 @@ function cadetduty(thePlayer, commandName)
 						setElementHealth(thePlayer, 100)
 						
 						exports.global:giveWeapon(thePlayer, 3, 1) -- Nightstick
-						exports.global:giveWeapon(thePlayer, 24, 1000) -- Deagle / MP Handgun
-						exports.global:giveWeapon(thePlayer, 41, 5000) -- Pepperspray
+						exports.global:giveWeapon(thePlayer, 24, 200) -- Deagle / MP Handgun
+						exports.global:giveWeapon(thePlayer, 41, 1000) -- Pepperspray
 						
 						exports.global:givePlayerItem(thePlayer, 45, 999)
 						
@@ -585,7 +585,7 @@ function fbiduty(thePlayer, commandName)
 						setPedArmor(thePlayer, 100)
 						setElementHealth(thePlayer, 100)
 						
-						exports.global:giveWeapon(thePlayer, 22, 1000) -- Colt 45
+						exports.global:giveWeapon(thePlayer, 22, 200) -- Colt 45
 						exports.global:givePlayerItem(thePlayer, 45, 999) -- Cuffs
 						
 						setPedSkin(thePlayer, dutyskin)

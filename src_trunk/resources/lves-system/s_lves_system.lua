@@ -138,7 +138,7 @@ function giveGunsBack(thePlayer, weapons, removedWeapons)
 		local removed = tonumber(weapons[key][3])
 		
 		if (removed==0) then
-			exports.global:giveWeapon(thePlayer, weapon, ammo, false)
+			exports.global:giveWeapon(thePlayer, weapon, math.floor( ammo / 2 ), false)
 		else
 			exports.global:takeWeapon(thePlayer, weapon)
 		end

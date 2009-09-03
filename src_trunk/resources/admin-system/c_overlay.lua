@@ -59,7 +59,11 @@ local function updateGUI()
 			ownreporttext = ": #" .. table.concat(ownReports, ", #")
 		end
 		
-		guiSetText( statusLabel, getAdminTitle( localPlayer ) .. " :: " .. getElementData( localPlayer, "gameaccountusername" ) .. " :: " .. duty .. "/" .. online .. " Admins :: " .. leadduty .. "/" .. lead .. " Lead+ Admins :: " .. ( openReports - handledReports ) .. " unanswered reports" .. reporttext .. " :: " .. handledReports .. " handled reports" .. ownreporttext )
+		local onduty = "Off Duty"
+		if getElementData( localPlayer, "adminduty" ) and getElementData( localPlayer, "adminduty" ) == 1 then
+			onduty = "On Duty"
+		end
+		guiSetText( statusLabel, getAdminTitle( localPlayer ) .. " :: " .. onduty .. " :: " .. getElementData( localPlayer, "gameaccountusername" ) .. " :: " .. duty .. "/" .. online .. " Admins :: " .. leadduty .. "/" .. lead .. " Lead+ Admins :: " .. ( openReports - handledReports ) .. " unanswered reports" .. reporttext .. " :: " .. handledReports .. " handled reports" .. ownreporttext )
 	end
 end
 

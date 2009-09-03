@@ -756,7 +756,7 @@ function deleteVehicle(thePlayer, commandName, id)
 					if (dbid<0) then -- TEMP vehicle
 						destroyElement(theVehicle)
 					else
-						if (exports.global:isPlayerLeadAdmin(thePlayer)) then
+						if (exports.global:isPlayerSuperAdmin(thePlayer)) then
 							local query = mysql_query(handler, "DELETE FROM vehicles WHERE id='" .. dbid .. "'")
 							mysql_free_result(query)
 							destroyElement(theVehicle)
@@ -786,7 +786,7 @@ function deleteThisVehicle(thePlayer, commandName)
 	local veh = getPedOccupiedVehicle(thePlayer)
 	local dbid = getElementData(veh, "dbid")
 	if (exports.global:isPlayerAdmin(thePlayer)) then
-		if dbid < 0 or exports.global:isPlayerLeadAdmin(thePlayer) then
+		if dbid < 0 or exports.global:isPlayerSuperAdmin(thePlayer) then
 			if not (isPedInVehicle(thePlayer)) then
 				outputChatBox("You are not in a vehicle.", thePlayer, 255, 0, 0)
 			else

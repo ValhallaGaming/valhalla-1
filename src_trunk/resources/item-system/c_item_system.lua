@@ -133,13 +133,36 @@ function pickupItem(button, state)
 		
 		if (restrain) and (restrain==1) then
 			outputChatBox("You are cuffed.", 255, 0, 0)
-		elseif not hasSpaceForItem(getLocalPlayer()) then
+		elseif not hasSpaceForItem(getLocalPlayer()) and getElementData(item, "itemID") > 0 then
 			outputChatBox("Your Inventory is full.", 255, 0, 0)
 		else
-			setElementData(item, "pickedup", true, true)
 			showCursor(false)
 			triggerEvent("cursorHide", getLocalPlayer())
-			triggerServerEvent("pickupItem", getLocalPlayer(), item)
+			
+			local itemID = getElementData(item, "itemID")
+			if itemID < 0 then
+				local free, totalfree = exports.weaponcap:getFreeAmmo( -itemID )
+				local cap = exports.weaponcap:getAmmoCap( -itemID )
+				if totalfree == 0 then
+					outputChatBox( "You've got all weapons you can carry.", 255, 0, 0 )
+				elseif free == 0 and cap == 0 then
+					local weaponName = "other weapon"
+					local slot = getSlotFromWeapon( -itemID )
+					if slot and slot ~= 0 and getPedTotalAmmo( getLocalPlayer(), slot ) > 0 then
+						local weapon = getPedWeapon( getLocalPlayer(), slot )
+						weaponName = getWeaponNameFromID( weapon )
+					end
+					outputChatBox( "You don't carry that weapon, please drop your " .. weaponName .. " first.", 255, 0, 0 )
+				elseif free == 0 then
+					outputChatBox( "You can't carry any more of that weapon.", 255, 0, 0 )
+				else
+					setElementData(item, "pickedup", true, true)
+					triggerServerEvent("pickupItem", getLocalPlayer(), item, free )
+				end
+			else
+				setElementData(item, "pickedup", true, true)
+				triggerServerEvent("pickupItem", getLocalPlayer(), item)
+			end
 			hideItemMenu()
 		end
 	end

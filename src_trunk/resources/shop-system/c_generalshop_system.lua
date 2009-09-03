@@ -453,6 +453,33 @@ function getShopSelectedItem(button, state)
 						local name = items[i][1]
 						local supplyCost = items[i][8]
 						
+						if isWeapon then
+							price = tonumber(price)
+							id = tonumber(id)
+							value = tonumber(value)
+							local free, totalfree = exports.weaponcap:getFreeAmmo( id )
+							local cap = exports.weaponcap:getAmmoCap( id )
+							if totalfree == 0 then
+								outputChatBox( "You've got all weapons you can carry.", 255, 0, 0 )
+								return
+							elseif free == 0 and cap == 0 then
+								local weaponName = "other weapon"
+								local slot = getSlotFromWeapon( id )
+								if slot and slot ~= 0 and getPedTotalAmmo( getLocalPlayer(), slot ) > 0 then
+									local weapon = getPedWeapon( getLocalPlayer(), slot )
+									weaponName = getWeaponNameFromID( weapon )
+								end
+								outputChatBox( "You don't carry that weapon, please drop your " .. weaponName .. " first.", 255, 0, 0 )
+								return
+							elseif free == 0 then
+								outputChatBox( "You can't carry any more of that weapon.", 255, 0, 0 )
+								return
+							elseif value > free then -- aint got enough free stuff on that slot, so we reduce the value and price
+								price = math.ceil( price * free / value )
+								value = free
+							end
+						end
+						
 						triggerServerEvent("ItemBought", getLocalPlayer(), id, value, price, isWeapon, name, supplyCost)
 					end
 				end

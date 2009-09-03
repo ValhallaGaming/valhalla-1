@@ -757,7 +757,7 @@ function resetAnim(thePlayer)
 	exports.global:removeAnimation(thePlayer)
 end
 
-function pickupItem(object)
+function pickupItem(object, leftammo)
 	local x, y, z = getElementPosition(source)
 	local ox, oy, oz = getElementPosition(object)
 
@@ -768,12 +768,12 @@ function pickupItem(object)
 		
 		local id = getElementData(object, "id")
 		
-		local query = mysql_query(handler, "DELETE FROM worlditems WHERE id='" .. id .. "'")
-		mysql_free_result(query)
-		
 		local itemID = getElementData(object, "itemID")
 		local itemValue = getElementData(object, "itemValue")
 		if itemID > 0 then
+			mysql_free_result( mysql_query(handler, "DELETE FROM worlditems WHERE id='" .. id .. "'") )
+			destroyElement(object)
+			
 			giveItem(source, itemID, itemValue)
 			
 			if itemID == 48 then -- BACKPACK, give the items inside it
@@ -782,13 +782,28 @@ function pickupItem(object)
 				end
 			end
 		elseif itemID == -100 then
+			mysql_free_result( mysql_query(handler, "DELETE FROM worlditems WHERE id='" .. id .. "'") )
+			destroyElement(object)
+			
 			setPedArmor(source, itemValue)
 		else
+			outputChatBox( "" .. leftammo )
+			if leftammo and itemValue > leftammo then
+				itemValue = itemValue - leftammo
+				setElementData(object, "itemValue", itemValue)
+				setElementData(object, "pickedup", false)
+				
+				mysql_free_result( mysql_query(handler, "UPDATE worlditems SET itemvalue=" .. itemValue .. " WHERE id=" .. id) )
+				
+				itemValue = leftammo
+			else
+				mysql_free_result( mysql_query(handler, "DELETE FROM worlditems WHERE id='" .. id .. "'") )
+				destroyElement(object)
+			end
 			exports.global:giveWeapon(source, -itemID, itemValue, true)
 		end
 		outputChatBox("You picked up a " .. getItemName( itemID ) .. ".", source, 255, 194, 14)
 		exports.global:sendLocalMeAction(source, "bends over and picks up a " .. getItemName( itemID ) .. ".")
-		destroyElement(object)
 	else
 		outputDebugString("Distance between Player and Pickup too large")
 		setElementData(object, "pickedup", false)

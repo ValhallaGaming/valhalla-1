@@ -311,7 +311,7 @@ function talkPhone(thePlayer, commandName, ...)
 						destroyElement(chatSphere)
 						
 						for index, nearbyPlayer in ipairs(nearbyPlayers) do
-							if (nearbyPlayer~=thePlayer) then
+							if nearbyPlayer ~= thePlayer and getElementDimension(nearbyPlayer) == getElementDimension(thePlayer) then
 								outputChatBox(username .. " [Cellphone]: " .. message, nearbyPlayer)
 							end
 						end
@@ -398,7 +398,7 @@ function talkPhone(thePlayer, commandName, ...)
 					destroyElement(chatSphere)
 					
 					for index, nearbyPlayer in ipairs(nearbyPlayers) do
-						if (nearbyPlayer~=thePlayer) then
+						if nearbyPlayer ~= thePlayer and getElementDimension(nearbyPlayer) == getElementDimension(thePlayer) then
 							outputChatBox(username .. " [Cellphone]: " .. message, nearbyPlayer)
 						end
 					end
@@ -415,7 +415,7 @@ function talkPhone(thePlayer, commandName, ...)
 						destroyElement(chatSphere)
 						
 						for index, nearbyPlayer in ipairs(nearbyPlayers) do
-							if (nearbyPlayer~=target) then
+							if nearbyPlayer ~= target and getElementDimension(nearbyPlayer) == getElementDimension(target) then
 								local message2 = call(getResourceFromName("language-system"), "applyLanguage", nearbyPlayer, message, language)
 								outputChatBox("[" .. languagename .. "] " .. username .. "'s Cellphone Loudspeaker: " .. message2, nearbyPlayer)
 							end

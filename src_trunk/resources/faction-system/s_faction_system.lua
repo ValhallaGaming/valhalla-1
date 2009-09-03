@@ -227,7 +227,7 @@ function callbackUpdateRanks(ranks, wages)
 	
 	if (wages) then
 		for key, value in ipairs(wages) do
-			wages[key] = mysql_escape_string(handler, wages[key])
+			wages[key] = tonumber(wages[key]) or 0
 		end
 		
 		local update = mysql_query(handler, "UPDATE factions SET wage_1='" .. wages[1] .. "', wage_2='" .. wages[2] .. "', wage_3='" .. wages[3] .. "', wage_4='" .. wages[4] .. "', wage_5='" .. wages[5] .. "', wage_6='" .. wages[6] .. "', wage_7='" .. wages[7] .. "', wage_8='" .. wages[8] .. "', wage_9='" .. wages[9] .. "', wage_10='" .. wages[10] .. "', wage_11='" .. wages[11] .. "', wage_12='" .. wages[12] .. "', wage_13='" .. wages[13] .. "', wage_14='" .. wages[14] .. "', wage_15='" .. wages[15] .. "' WHERE id='" .. factionID .. "'")

@@ -138,12 +138,11 @@ function showATMInterface()
 		local isInFaction = false
 		local isFactionLeader = false
 		
-		if (faction_id>0) then
+		if faction_id and faction_id > 0 then
 			isInFaction = true
-		end
-		
-		if (faction_leader==1) then
-			isFactionLeader = true
+			if faction_leader == 1 then
+				isFactionLeader = true
+			end
 		end
 		
 		local faction = getPlayerTeam(source)

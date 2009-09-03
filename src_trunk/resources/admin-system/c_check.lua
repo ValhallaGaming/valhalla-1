@@ -2,35 +2,52 @@ function CreateCheckWindow()
 	triggerEvent("cursorShow", getLocalPlayer())
 	Button = {}
 	--Image = {}
-	Window = guiCreateWindow(28,271,454,248,"Player check.",false)
+	Window = guiCreateWindow(28,271,400,285,"Player check.",false)
 	--Button[1] = guiCreateButton(0.3524,0.8387,0.2026,0.0968,"Recon player.",true,Window)
 	--addEventHandler( "onClientGUIClick", Button[1], ReconPlayer)
 	--Button[2] = guiCreateButton(0.5705,0.8387,0.2026,0.0968,"Freeze player.",true,Window)
 	--addEventHandler( "onClientGUIClick", Button[2], FreezePlayer)
-	Button[3] = guiCreateButton(0.7885,0.8387,0.1894,0.0968,"Close window.",true,Window)
+	Button[3] = guiCreateButton(0.85,0.86,0.12, 0.125,"Close",true,Window)
 	addEventHandler( "onClientGUIClick", Button[3], CloseCheck )
 	Label = {
-		guiCreateLabel(0.0529,0.1331,0.9524,0.0887,"Name: N/A",true,Window),
-		guiCreateLabel(0.0529,0.2056,0.3524,0.0887,"IP: N/A",true,Window),
-		guiCreateLabel(0.0529,0.3823,0.9524,0.0887,"Money: N/A",true,Window),
-		guiCreateLabel(0.0529,0.4556,0.2093,0.0806,"Health: N/A",true,Window),
-		guiCreateLabel(0.2621,0.4516,0.2093,0.0806,"Armour: N/A",true,Window),
-		guiCreateLabel(0.0529,0.5323,0.2093,0.0806,"Skin: N/A",true,Window),
-		guiCreateLabel(0.2621,0.5242,0.2093,0.0806,"Weapon: N/A",true,Window),
-		guiCreateLabel(0.0529,0.6048,0.4531,0.0806,"Faction: N/A",true,Window),
-		guiCreateLabel(0.0529,0.6773,0.2093,0.0806,"Ping: N/A",true,Window),
-		guiCreateLabel(0.0529,0.804,0.2093,0.0806,"Vehicle: N/A",true,Window),
-		guiCreateLabel(0.0529,0.8806,0.2093,0.0806,"Vehicle ID: N/A",true,Window),
-		guiCreateLabel(0.5441,0.4435,0.4031,0.0766,"Location: N/A",true,Window),
-		guiCreateLabel(0.5441,0.5323,0.4031,0.0766,"X:",true,Window),
-		guiCreateLabel(0.5441,0.6169,0.4031,0.0766,"Y: N/A",true,Window),
-		guiCreateLabel(0.5441,0.7056,0.4031,0.0766,"Z: N/A",true,Window),
-		guiCreateLabel(0.6674,0.129,0.2907,0.0806,"Interior: N/A",true,Window),
-		guiCreateLabel(0.6674,0.1935,0.2907,0.0806,"Dimension: N/A",true,Window),
-		guiCreateLabel(0.5441,0.36035,0.4031,0.0766,"Admin Reports: N/A",true,Window),
-		guiCreateLabel(0.0529,0.2850,0.9524,0.0887,"Donator Level: N/A",true,Window),
-		guiCreateLabel(0.6674,0.2625,0.4093,0.0806,"Hours Ingame: N/A",true,Window)
+		guiCreateLabel(0.03,0.07,0.66,0.0887,"Name: N/A",true,Window),
+		guiCreateLabel(0.03,0.12,0.66,0.0887,"IP: N/A",true,Window),
+		guiCreateLabel(0.03,0.34,0.66,0.0887,"Money: N/A",true,Window),
+		guiCreateLabel(0.03,0.39,0.17,0.0806,"Health: N/A",true,Window),
+		guiCreateLabel(0.20,0.39,0.30,0.0806,"Armour: N/A",true,Window),
+		guiCreateLabel(0.03,0.44,0.17,0.0806,"Skin: N/A",true,Window),
+		guiCreateLabel(0.20,0.44,0.30,0.0806,"Weapon: N/A",true,Window),
+		guiCreateLabel(0.03,0.49,0.66,0.0806,"Faction: N/A",true,Window),
+		guiCreateLabel(0.03,0.27,0.66,0.0806,"Ping: N/A",true,Window),
+		guiCreateLabel(0.03,0.56,0.66,0.0806,"Vehicle: N/A",true,Window),
+		false,
+		guiCreateLabel(0.6,0.36,0.4031,0.0766,"Location: N/A",true,Window),
+		guiCreateLabel(0.6,0.07,0.4031,0.0766,"X:",true,Window),
+		guiCreateLabel(0.6,0.12,0.4031,0.0766,"Y: N/A",true,Window),
+		guiCreateLabel(0.6,0.17,0.4031,0.0766,"Z: N/A",true,Window),
+		guiCreateLabel(0.6,0.24,0.2907,0.0806,"Interior: N/A",true,Window),
+		guiCreateLabel(0.6,0.29,0.2907,0.0806,"Dimension: N/A",true,Window),
+		guiCreateLabel(0.03,0.17,0.66,0.0887,"Admin Level: N/A", true,Window),
+		guiCreateLabel(0.03,0.22,0.66,0.0887,"Donator Level: N/A",true,Window),
+		guiCreateLabel(0.6,0.43,0.4093,0.0806,"Hours Ingame: N/A",true,Window),
 	}
+	
+	-- player notes
+	memo = guiCreateMemo(0.03, 0.7, 0.8, 0.27, "", true, Window)
+	addEventHandler( "onClientGUIClick", getRootElement(),
+		function( button, state )
+			if button == "left" and state == "up" then
+				if source == memo then
+					guiSetInputEnabled( true )
+				else
+					guiSetInputEnabled( false )
+				end
+			end
+		end
+	)
+	Button[4] = guiCreateButton(0.85,0.7,0.12, 0.14,"Save\nNote",true,Window)
+	addEventHandler( "onClientGUIClick", Button[4], SaveNote )
+
 	--Image[1] = guiCreateStaticImage(0.4758,0.1089,0.1278,0.2177,"search.png",true,Window)
 	guiSetVisible(Window, false)
 end
@@ -41,13 +58,14 @@ addEventHandler("onClientResourceStart", getResourceRootElement(getThisResource(
 	end
 )
 
-
-function OpenCheck( ip, adminreports, donatorlevel )
+local levels = { "Trial Admin", "Admin", "Super Admin", "Lead Admin", "Head Admin", "Owner" }
+function OpenCheck( ip, adminreports, donatorlevel, note )
 	player = source
 
 	guiSetText ( Label[2], "IP: " .. ip )
-	guiSetText ( Label[18], "Admin Reports: " .. adminreports )
+	guiSetText ( Label[18], "Admin Level: " .. ( levels[getElementData(player, "adminlevel") or 0] or "Player" ) .. " (" .. adminreports .. " Reports)" )
 	guiSetText ( Label[19], "Donator Level: " .. donatorlevel )
+	guiSetText ( memo, note )
 
 	if not guiGetVisible( Window ) then
 		guiSetVisible(Window, true)
@@ -90,11 +108,9 @@ addEventHandler( "onClientRender", getRootElement(),
 			
 			local vehicle = getPedOccupiedVehicle( player )
 			if vehicle then
-				guiSetText ( Label[10], "Vehicle: " .. getVehicleName( vehicle ) )
-				guiSetText ( Label[11], "Vehicle ID: " .. getElementData( vehicle, "dbid" ) )
+				guiSetText ( Label[10], "Vehicle: " .. getVehicleName( vehicle ) .. " (" ..getElementData( vehicle, "dbid" ) .. ")" )
 			else
 				guiSetText ( Label[10], "Vehicle: N/A")
-				guiSetText ( Label[11], "Vehicle ID: N/A")
 			end
 			guiSetText ( Label[12], "Location: " .. getZoneName( x, y, z ) )
 			guiSetText ( Label[16], "Interior: " .. getElementInterior( player ) )
@@ -104,9 +120,21 @@ addEventHandler( "onClientRender", getRootElement(),
 	end
 )
 
-function CloseCheck(sourcePlayer, command)
-	triggerEvent("cursorHide", getLocalPlayer())
-	guiSetVisible( Window, false )
-	player = nil
+function CloseCheck( button, state )
+	if source == Button[3] and button == "left" and state == "up" then
+		triggerEvent("cursorHide", getLocalPlayer())
+		guiSetVisible( Window, false )
+		guiSetInputEnabled( false )
+		player = nil
+	end
+end
+
+function SaveNote( button, state )
+	if source == Button[4] and button == "left" and state == "up" then
+		local text = guiGetText(memo)
+		if text then
+			triggerServerEvent("savePlayerNote", getLocalPlayer(), player, text)
+		end
+	end
 end
 

@@ -1,4 +1,9 @@
 ---
+(per account) Player Notes
+---
+ALTER TABLE `accounts` ADD COLUMN `adminnote` TEXT;
+
+---
 Updates for SVN Merge of /branches/mabako-sql into trunk (r1476)
 ---
 

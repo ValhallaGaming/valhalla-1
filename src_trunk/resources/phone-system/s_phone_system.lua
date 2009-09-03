@@ -383,7 +383,7 @@ function talkPhone(thePlayer, commandName, ...)
 					end
 					
 					message = call( getResourceFromName( "chat-system" ), "trunklateText", thePlayer, call( getResourceFromName( "chat-system" ), "trunklateText", target, message ) )
-					local message2 = call(getResourceFromName("language-system"), "applyLanguage", targetPlayer, message, language)
+					local message2 = call(getResourceFromName("language-system"), "applyLanguage", target, message, language)
 					
 					-- Send the message to the person on the other end of the line
 					outputChatBox("[" .. languagename .. "] ((" .. username .. ")) #" .. phoneNumber .. " [Cellphone]: " .. message2, target)

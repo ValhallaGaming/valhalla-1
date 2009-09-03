@@ -365,7 +365,7 @@ function showInventory(player)
 			guiSetEnabled(bDestroyItem, false)
 		else
 			bClose = guiCreateButton(0.375, 0.91, 0.2, 0.15, "Close Inventory", true, wItems)
-			addEventHandler("onClientGUIClick", bClose, hideInventory)
+			addEventHandler("onClientGUIClick", bClose, hideInventory, false)
 		end
 		showCursor(true)
 	end

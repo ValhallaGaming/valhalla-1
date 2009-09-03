@@ -787,7 +787,6 @@ function pickupItem(object, leftammo)
 			
 			setPedArmor(source, itemValue)
 		else
-			outputChatBox( "" .. leftammo )
 			if leftammo and itemValue > leftammo then
 				itemValue = itemValue - leftammo
 				setElementData(object, "itemValue", itemValue)

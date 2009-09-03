@@ -89,7 +89,32 @@ local function moveFromElement( button )
 	if button == "left" and col ~= -1 and row ~= -1 then
 		local slot = tonumber( guiGridListGetItemData(gElementItems, row, col) )
 		if slot then
-			triggerServerEvent( "moveFromElement", localPlayer, element, slot )
+			local item = getItems( element )[ slot ]
+			if item then
+				local itemID, itemValue = item[1], item[2]
+				
+				if itemID < 0 then -- weapon
+					local free, totalfree = exports.weaponcap:getFreeAmmo( -itemID )
+					local cap = exports.weaponcap:getAmmoCap( -itemID )
+					if totalfree == 0 then
+						outputChatBox( "You've got all weapons you can carry.", 255, 0, 0 )
+					elseif free == 0 and cap == 0 then
+						local weaponName = "other weapon"
+						local slot = getSlotFromWeapon( -itemID )
+						if slot and slot ~= 0 and getPedTotalAmmo( getLocalPlayer(), slot ) > 0 then
+							local weapon = getPedWeapon( getLocalPlayer(), slot )
+							weaponName = getWeaponNameFromID( weapon )
+						end
+						outputChatBox( "You don't carry that weapon, please drop your " .. weaponName .. " first.", 255, 0, 0 )
+					elseif free == 0 then
+						outputChatBox( "You can't carry any more of that weapon.", 255, 0, 0 )
+					else
+						triggerServerEvent( "moveFromElement", localPlayer, element, slot, free )
+					end
+				else
+					triggerServerEvent( "moveFromElement", localPlayer, element, slot )
+				end
+			end
 		end
 	end
 end

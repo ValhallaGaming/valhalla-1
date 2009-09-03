@@ -36,14 +36,19 @@ end
 addEvent( "moveToElement", true )
 addEventHandler( "moveToElement", getRootElement(), moveToElement )
 
-local function moveFromElement( element, slot )
+local function moveFromElement( element, slot, ammo )
 	local item = getItems( element )[slot]
 	if item then
 		if item[1] > 0 then
 			moveItem( element, source, slot )
 		else
 			takeItemFromSlot( element, slot )
-			exports.global:giveWeapon( source, -item[1], item[2] )
+			if ammo < item[2] then
+				exports.global:giveWeapon( source, -item[1], ammo )
+				giveItem( element, item[1], item[2] - ammo )
+			else
+				exports.global:giveWeapon( source, -item[1], item[2] )
+			end
 			triggerClientEvent( source, "forceElementMoveUpdate", source )
 		end
 	end

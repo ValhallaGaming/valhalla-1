@@ -34,7 +34,7 @@ function renderNametags()
 		local lx, ly, lz = getElementPosition(localPlayer)
 	
 		for key, player in ipairs(getElementsByType("player")) do
-			if (isElement(player)) then
+			if (isElement(player)) and isElementStreamedIn(player) then
 				local lx, ly, lz = getElementPosition(localPlayer)
 				local rx, ry, rz = getElementPosition(player)
 				local distance = getDistanceBetweenPoints3D(lx, ly, lz, rx, ry, rz)

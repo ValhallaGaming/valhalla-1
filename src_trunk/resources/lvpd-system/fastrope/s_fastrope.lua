@@ -1,14 +1,3 @@
-function warpheli(thePlayer)
-	for key, value in ipairs(getElementsByType("vehicle")) do
-		local id = getElementData(value, "dbid")
-		
-		if (id==-1) then
-			warpPedIntoVehicle(thePlayer, value, 2)
-		end
-	end
-end
-addCommandHandler("warp", warpheli)
-
 function startRappel(x, y, z, gz)
 	local r = getPedRotation(source)
 	

@@ -31,7 +31,6 @@ function resourceStart()
 	for key, value in ipairs(players) do
 		ids[key] = value
 		setElementData(value, "playerid", key)
-		setElementData(value, "ID #", key)
 	end
 	exports.irc:sendMessage("[SCRIPT] Assigned " .. #players .. " Player IDs.")
 end

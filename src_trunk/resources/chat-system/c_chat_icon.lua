@@ -13,7 +13,7 @@ setElementData(getLocalPlayer(), "chatting", 0, true)
 function render()
 	local x, y, z = getElementPosition(getLocalPlayer())
 	for key, value in ipairs(getElementsByType("player")) do
-		if (isElement(value)) then
+		if (isElement(value)) and (isElementStreamedIn(value)) then
 			if (value~=getLocalPlayer()) then
 				local chatting = getElementData(value, "chatting")
 				

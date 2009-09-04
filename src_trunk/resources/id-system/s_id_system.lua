@@ -11,7 +11,6 @@ function playerJoin()
 	
 	ids[slot] = source
 	setElementData(source, "playerid", slot)
-	setElementData(source, "ID #", slot)
 	exports.irc:sendMessage("[SCRIPT] Player " .. getPlayerName(source) .. " was assigned ID #" .. slot .. ".")
 end
 addEventHandler("onPlayerJoin", getRootElement(), playerJoin)

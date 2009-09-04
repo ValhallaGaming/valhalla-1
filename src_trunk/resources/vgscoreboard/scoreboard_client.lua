@@ -18,7 +18,7 @@ local columns = {
 function addToScoreboard(player)
 	local player = player or source
 	if (isElement(player)) then
-		local id = getElementData(player, "ID #")
+		local id = getElementData(player, "playerid")
 		
 		if not id then
 			setTimer(addToScoreboard, 100, 1, player)

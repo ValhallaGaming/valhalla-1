@@ -11,7 +11,7 @@ function doVision()
 	local px, py, pz = getElementPosition(localPlayer)
 	-- vehicles
 	for key, value in ipairs(getElementsByType("vehicle")) do
-		if (isElementOnScreen(value)) and (getPedOccupiedVehicle(localPlayer)~=value) then
+		if isElementStreamedIn(value) and (isElementOnScreen(value)) and (getPedOccupiedVehicle(localPlayer)~=value) then
 			local x, y, z = getElementPosition(value)
 			
 			if (isLineOfSightClear(px, py, pz, x, y, z, true, false, false, true, false, false, true, true, getPedOccupiedVehicle(localPlayer))) then
@@ -28,7 +28,7 @@ function doVision()
 	
 	-- players
 	for key, value in ipairs(getElementsByType("player")) do
-		if (isElementOnScreen(value)) and (localPlayer~=value) and getPedOccupiedVehicle(localPlayer) ~= getPedOccupiedVehicle(value) then
+		if isElementStreamedIn(value) and (isElementOnScreen(value)) and (localPlayer~=value) and getPedOccupiedVehicle(localPlayer) ~= getPedOccupiedVehicle(value) then
 			local x, y, z = getPedBonePosition(value, 6)
 			local skin = getElementModel(value)
 			

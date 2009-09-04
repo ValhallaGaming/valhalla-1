@@ -7,7 +7,7 @@ function bobHead()
         local sx = scrWidth/2
         local sy = scrHeight/2
         local x, y, z = getWorldFromScreenPosition(sx, sy, 10)
-        setPedLookAt(value, x, y, z, 3000)
+        setPedLookAt(getLocalPlayer(), x, y, z, 3000)
 	end
 end
 addEventHandler("onClientRender", getRootElement(), bobHead)

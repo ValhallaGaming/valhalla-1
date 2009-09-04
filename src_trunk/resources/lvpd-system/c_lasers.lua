@@ -1,6 +1,6 @@
 function showLaser()
 	for key, value in ipairs(getElementsByType("player")) do
-		if (isElement(value)) then
+		if (isElement(value)) and (isElementStreamedIn(value)) then
 			local weapon = getPedWeapon(value)
 			
 			if (weapon==24 or weapon==29 or weapon==31 or weapon==34) then

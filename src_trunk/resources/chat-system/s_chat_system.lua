@@ -123,7 +123,6 @@ function localIC(source, message, language)
 	exports.irc:sendMessage("[IC: Local Chat] " .. playerName .. ": " .. message)
 	exports.logs:logMessage("[IC: Local Chat] " .. playerName .. ": " .. message, 1)
 	outputChatBox( "#EEEEEE [" .. languagename .. "] " .. playerName .. " Says: " .. message, source, 255, 255, 255, true)
-	call(getResourceFromName("language-system"), "increaseLanguageSkill", source, language)
 	
 	local dimension = getElementDimension(source)
 	local interior = getElementInterior(source)
@@ -237,7 +236,6 @@ function chatMain(message, messageType)
 				
 				message = trunklateText( source, message )
 				outputChatBox("[" .. languagename .. "] [RADIO #" .. theChannel .. "] " .. factionRankTitle .. username .. " says: " .. message, source, 0, 102, 255)
-				call(getResourceFromName("language-system"), "increaseLanguageSkill", source, language)
 				
 				for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
 					local targetChannel = getElementData(value, "radiochannel")
@@ -620,7 +618,6 @@ function localShout(thePlayer, commandName, ...)
 			
 			local message = trunklateText(thePlayer, table.concat({...}, " "))
 			outputChatBox("[" .. languagename .. "] " .. playerName .. " shouts: " .. message .. "!!", thePlayer, 255, 255, 255)
-			call(getResourceFromName("language-system"), "increaseLanguageSkill", thePlayer, language)
 			
 			destroyElement(chatSphere)
 			
@@ -641,7 +638,6 @@ function localShout(thePlayer, commandName, ...)
 							triggerClientEvent(nearbyPlayer, "onMessageIncome", thePlayer, message2, mode)
 						end
 						outputChatBox("[" .. languagename .. "] " .. playerName .. " shouts: " .. message2 .. "!!", nearbyPlayer, 255, 255, 255)
-						call(getResourceFromName("language-system"), "increaseLanguageSkill", nearbyPlayer, language)
 					end
 				end
 			end
@@ -1085,8 +1081,6 @@ function localWhisper(thePlayer, commandName, targetPlayerNick, ...)
 					exports.global:sendLocalMeAction(thePlayer, "whispers to " .. targetName .. ".")
 					outputChatBox("[" .. languagename .. "] " .. name .. " whispers: " .. message, thePlayer, 255, 255, 255)
 					outputChatBox("[" .. languagename .. "] " .. name .. " whispers: " .. message2, targetPlayer, 255, 255, 255)
-					
-					call(getResourceFromName("language-system"), "increaseLanguageSkill", thePlayer, language)
 				else
 					outputChatBox("You are too far away from " .. getPlayerName(targetPlayer) .. ".", thePlayer, 255, 0, 0)
 				end
@@ -1161,11 +1155,9 @@ function localCarWhisper(thePlayer, commandName, ...)
 						player = getVehicleOccupant(vehicle, i)
 						
 						if (player) and (player~=thePlayer) then
-							call(getResourceFromName("language-system"), "increaseLanguageSkill", player, language)
 							local message2 = call(getResourceFromName("language-system"), "applyLanguage", player, message, language)
 							outputChatBox("[" .. languagename .. "] ((In Car)) " .. name .. " whispers: " .. message2, player, 255, 255, 255)
 						elseif (player) then
-							call(getResourceFromName("language-system"), "increaseLanguageSkill", player, language)
 							outputChatBox("[" .. languagename .. "] ((In Car)) " .. name .. " whispers: " .. message, player, 255, 255, 255)
 						end
 					end

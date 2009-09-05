@@ -1111,12 +1111,20 @@ function localClose(thePlayer, commandName, ...)
 			exports.pool:allocateElement(chatSphere)
 			local targetPlayers = getElementsWithinColShape( chatSphere, "player" )
 			destroyElement( chatSphere )
+			
+			local message = table.concat({...}, " ")
+			local name = string.gsub(getPlayerName(thePlayer), "_", " ")
+			
+			local languageslot = getElementData(thePlayer, "languages.current")
+			local language = getElementData(thePlayer, "languages.lang" .. languageslot)
+			local languagename = call(getResourceFromName("language-system"), "getLanguageName", language)
+			
 			for index, targetPlayers in ipairs( targetPlayers ) do
-										
-				message = table.concat({...}, " ")
-				local name = string.gsub(getPlayerName(thePlayer), "_", " ")
-								
-				outputChatBox(name .. " whispers: " .. message, targetPlayers, 255, 255, 255)
+				local message2 = message
+				if targetPlayers ~= thePlayer then
+					message2 = call(getResourceFromName("language-system"), "applyLanguage", targetPlayers, message, language)
+				end
+				outputChatBox( " [" .. languagename .. "] " .. name .. " whispers: " .. message2, targetPlayers, 255, 255, 255)
 			end
 		end
 	end
@@ -1150,7 +1158,7 @@ function localCarWhisper(thePlayer, commandName, ...)
 					message = table.concat({...}, " ")
 					local name = string.gsub(getPlayerName(thePlayer), "_", " ")
 					
-					for i = 0, 3 do
+					for i = 0, getVehicleMaxPassengers(vehicle) do
 						player = getVehicleOccupant(vehicle, i)
 						
 						if (player) and (player~=thePlayer) then

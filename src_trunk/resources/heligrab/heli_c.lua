@@ -516,7 +516,7 @@ addEventHandler("onClientRender",root,function()
 	
 	-- check attachments, animations and rotations for all players
 	for _,p in ipairs(getElementsByType("player")) do
-		if isElementStreamedIn(p) then
+		if isElement(p) and isElementStreamedIn(p) then
 			local player_hanging = getElementData(p,"hanging") 
 			if player_hanging then			
 				-- attach to heli

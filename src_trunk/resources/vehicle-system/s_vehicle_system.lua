@@ -1093,9 +1093,6 @@ function lockUnlockOutside(vehicle)
 		exports.global:sendLocalMeAction(source, "presses on the key to unlock the vehicle. ((" .. getVehicleName(vehicle) .. "))")
 	else
 		setVehicleLocked(vehicle, true)
-		for i = 0, 5 do
-			setVehicleDoorState(vehicle, i, 0)
-		end
 		
 		local query = mysql_query(handler, "UPDATE vehicles SET locked='1' WHERE id='" .. dbid .. "' LIMIT 1")
 		mysql_free_result(query)

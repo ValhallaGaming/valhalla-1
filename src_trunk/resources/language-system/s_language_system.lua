@@ -86,10 +86,10 @@ function getSkillFromLanguage(player, language)
 	end
 end
 
-function applyLanguage(player, message, language)
+function applyLanguage(from, player, message, language)
 	local level, duty = getElementData( player, "adminlevel" ), getElementData( player, "adminduty" )
 	if not level or level == 0 or not duty or duty == 0 then
-		local skill =  getSkillFromLanguage(player, language)
+		local skill = getSkillFromLanguage(player, language)
 		
 		local length = string.len(message)
 		local percent = 100 - skill
@@ -115,7 +115,10 @@ function applyLanguage(player, message, language)
 			i = i + 1
 		end
 		
-		increaseLanguageSkill(player, language)
+		local fromskill = getSkillFromLanguage(from, language)
+		if fromskill > skill or skill < 85 then
+			increaseLanguageSkill(player, language)
+		end
 	end
 	return message
 end

@@ -134,7 +134,7 @@ function localIC(source, message, language)
 		if (nearbyPlayerDimension==dimension) and (nearbyPlayerInterior==interior) then
 			local logged = tonumber(getElementData(nearbyPlayer, "loggedin"))
 			if not (isPedDead(nearbyPlayer)) and (logged==1) and (nearbyPlayer~=source) then
-				local message2 = call(getResourceFromName("language-system"), "applyLanguage", nearbyPlayer, message, language)
+				local message2 = call(getResourceFromName("language-system"), "applyLanguage", source, nearbyPlayer, message, language)
 				message2 = trunklateText( nearbyPlayer, message2 )
 				
 				local mode = tonumber(getElementData(nearbyPlayer, "chatbubbles"))
@@ -245,7 +245,7 @@ function chatMain(message, messageType)
 						if (targetChannel==theChannel) then
 							playSoundFrontEnd(value, 47)
 							
-							local message2 = call(getResourceFromName("language-system"), "applyLanguage", value, message, language)
+							local message2 = call(getResourceFromName("language-system"), "applyLanguage", source, value, message, language)
 							outputChatBox("[" .. languagename .. "] [RADIO #" .. theChannel .. "] " .. factionRankTitle .. username .. " says: " .. trunklateText( value, message2 ), value, 0, 102, 255)
 							
 							-- Show it to people near who can hear his radio
@@ -259,7 +259,7 @@ function chatMain(message, messageType)
 							for k, v in ipairs(nearbyPlayers) do
 								local channel = getElementData(v, "radiochannel")
 								if (v~=source) and (channel~=targetChannel) then
-									local message2 = call(getResourceFromName("language-system"), "applyLanguage", v, message, language)
+									local message2 = call(getResourceFromName("language-system"), "applyLanguage", source, v, message, language)
 									outputChatBox("[" .. languagename .. "] " .. getPlayerName(value) .. "'s Radio: " .. trunklateText( v, message2 ), v, 255, 255, 255)
 								end
 							end
@@ -632,7 +632,7 @@ function localShout(thePlayer, commandName, ...)
 					
 					if (logged==1) and not (isPedDead(nearbyPlayer)) then
 						local mode = tonumber(getElementData(nearbyPlayer, "chatbubbles"))
-						local message2 = call(getResourceFromName("language-system"), "applyLanguage", nearbyPlayer, message, language)
+						local message2 = call(getResourceFromName("language-system"), "applyLanguage", thePlayer, nearbyPlayer, message, language)
 						message2 = trunklateText(nearbyPlayer, message2)
 						if mode > 0 then
 							triggerClientEvent(nearbyPlayer, "onMessageIncome", thePlayer, message2, mode)
@@ -684,7 +684,7 @@ function megaphoneShout(thePlayer, commandName, ...)
 						if (logged==1) and not (isPedDead(nearbyPlayer)) then
 							local message2 = message
 							if nearbyPlayer ~= thePlayer then
-								message2 = call(getResourceFromName("language-system"), "applyLanguage", nearbyPlayer, message, language)
+								message2 = call(getResourceFromName("language-system"), "applyLanguage", thePlayer, nearbyPlayer, message, language)
 							end
 							outputChatBox(" [" .. langname .. "] ((" .. playerName .. ")) Megaphone <O: " .. trunklateText(nearbyPlayer, message2), nearbyPlayer, 255, 255, 0)
 						end
@@ -1069,7 +1069,7 @@ function localWhisper(thePlayer, commandName, targetPlayerNick, ...)
 				
 				if (getDistanceBetweenPoints3D(x, y, z, tx, ty, tz)<3) then
 					local message = table.concat({...}, " ")
-					local message2 = call(getResourceFromName("language-system"), "applyLanguage", targetPlayer, message, language)
+					local message2 = call(getResourceFromName("language-system"), "applyLanguage", thePlayer, targetPlayer, message, language)
 					
 					local languageslot = getElementData(thePlayer, "languages.current")
 					local language = getElementData(thePlayer, "languages.lang" .. languageslot)
@@ -1115,7 +1115,7 @@ function localClose(thePlayer, commandName, ...)
 			for index, targetPlayers in ipairs( targetPlayers ) do
 				local message2 = message
 				if targetPlayers ~= thePlayer then
-					message2 = call(getResourceFromName("language-system"), "applyLanguage", targetPlayers, message, language)
+					message2 = call(getResourceFromName("language-system"), "applyLanguage", thePlayer, targetPlayers, message, language)
 				end
 				outputChatBox( " [" .. languagename .. "] " .. name .. " whispers: " .. message2, targetPlayers, 255, 255, 255)
 			end
@@ -1155,7 +1155,7 @@ function localCarWhisper(thePlayer, commandName, ...)
 						player = getVehicleOccupant(vehicle, i)
 						
 						if (player) and (player~=thePlayer) then
-							local message2 = call(getResourceFromName("language-system"), "applyLanguage", player, message, language)
+							local message2 = call(getResourceFromName("language-system"), "applyLanguage", thePlayer, player, message, language)
 							outputChatBox("[" .. languagename .. "] ((In Car)) " .. name .. " whispers: " .. message2, player, 255, 255, 255)
 						elseif (player) then
 							outputChatBox("[" .. languagename .. "] ((In Car)) " .. name .. " whispers: " .. message, player, 255, 255, 255)

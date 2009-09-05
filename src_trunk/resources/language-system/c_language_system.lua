@@ -184,9 +184,27 @@ function unlearnLanguage(button, state)
 			return
 		end
 		
-		if (lang>0) then
-			hideGUI()
-			triggerServerEvent("unlearnLanguage", localPlayer, lang)
+		if lang > 0 then
+			local sx, sy = guiGetScreenSize() 
+			wConfirmUnlearn = guiCreateWindow(sx/2 - 125,sy/2 - 50,250,100,"Leaving Confirmation", false)
+			local lQuestion = guiCreateLabel(0.05,0.25,0.9,0.3,"Do you really want to forget all your knowledge of " .. getLanguageName( lang ) .. "?",true,wConfirmUnlearn)
+			guiLabelSetHorizontalAlign (lQuestion,"center",true)
+			local bYes = guiCreateButton(0.1,0.65,0.37,0.23,"Yes",true,wConfirmUnlearn)
+			local bNo = guiCreateButton(0.53,0.65,0.37,0.23,"No",true,wConfirmUnlearn)
+			addEventHandler("onClientGUIClick", getRootElement(), 
+				function(button)
+					if button=="left" and ( source == bYes or source == bNo ) then
+						if source == bYes then
+							hideGUI()
+							triggerServerEvent("unlearnLanguage", localPlayer, lang)
+						end
+						if wConfirmUnlearn then
+							destroyElement(wConfirmUnlearn)
+							wConfirmUnlearn = nil
+						end
+					end
+				end
+			)
 		end
 	end
 end
@@ -196,6 +214,11 @@ function hideGUI()
 		destroyElement(wLanguages)
 	end
 	wLanguages = nil
+	
+	if wConfirmUnlearn then
+		destroyElement(wConfirmUnlearn)
+	end
+	wConfirmUnlearn = nil
 	
 	bUnlearnLang1 = nil
 	bUnlearnLang2 = nil

@@ -282,9 +282,9 @@ function spawnCharacter(charname)
 		local playerWithNick = getPlayerFromName(tostring(charname))
 		if (playerWithNick) and (playerWithNick~=source) then
 			local newname = "Temp_" .. tostring(math.random(10000, 99999))
-			setElementData(playerWithNick, "legitnamechange", 1, false)
+			setElementData(playerWithNick, "legitnamechange", 1)
 			setPlayerName(playerWithNick, tostring(newname))
-			setElementData(playerWithNick, "legitnamechange", 0, false)
+			setElementData(playerWithNick, "legitnamechange", 0)
 		end
 		
 		-- casual skin
@@ -294,13 +294,13 @@ function spawnCharacter(charname)
 		setElementData(source, "bleeding", 0, false)
 		
 		-- Set their name to the characters
-		setElementData(source, "legitnamechange", 1, false)
+		setElementData(source, "legitnamechange", 1)
 		setPlayerName(source, tostring(charname))
 		local pid = getElementData(source, "playerid")
 		local fixedName = "(" .. tostring(pid) .. ") " .. string.gsub(tostring(charname), "_", " ")
 
 		setPlayerNametagText(source, tostring(fixedName))
-		setElementData(source, "legitnamechange", 0, false)
+		setElementData(source, "legitnamechange", 0)
 		
 		-- If their an admin change their nametag colour
 		local adminlevel = getElementData(source, "adminlevel")
@@ -496,7 +496,7 @@ function spawnCharacter(charname)
 		setElementData(source, "loggedin", 1)
 		setElementData(source, "businessprofit", 0, false)
 		setElementData(source, "hiddenadmin", tonumber(hiddenAdmin), false)
-		setElementData(source, "legitnamechange", 0, false)
+		setElementData(source, "legitnamechange", 0)
 		setElementData(source, "muted", tonumber(muted))
 		setElementData(source, "hoursplayed", hoursplayed)
 		exports.global:setPlayerSafeMoney(source, money)
@@ -1085,9 +1085,9 @@ addEvent("doesCharacterExist", true)
 addEventHandler("doesCharacterExist", getRootElement(), doesCharacterExist)
 
 function resetNick(oldNick, newNick)
-	setElementData(source, "legitnamechange", 1, false)
+	setElementData(source, "legitnamechange", 1)
 	setPlayerName(source, oldNick)
-	setElementData(source, "legitnamechange", 0, false)
+	setElementData(source, "legitnamechange", 0)
 	exports.global:sendMessageToAdmins("AdmWrn: " .. tostring(oldNick) .. " tried to change name to " .. tostring(newNick) .. ".")
 end
 

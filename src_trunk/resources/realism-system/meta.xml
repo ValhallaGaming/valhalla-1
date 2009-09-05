@@ -43,7 +43,6 @@
 	<file src="guide/7.png"/>
 	<file src="guide/8.png"/>
 	
-	<script src="s_weapons_back.lua" type="server"/>
 	<script src="c_weapons_back.lua" type="client"/>
 	
 	<script src="c_weapon_jams.lua" type="client"/>

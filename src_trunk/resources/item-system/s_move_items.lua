@@ -27,8 +27,21 @@ local function moveToElement( element, slot, ammo )
 				moveItem( source, element, slot )
 			end
 		else
-			exports.global:takeWeapon( source, slot )
-			giveItem( element, -slot, ammo )
+			local name = "Safe"
+			if getElementType( element ) == "vehicle" then
+				name = "Vehicle"
+			end
+			
+			if slot == 16 or slot == 18 or ( slot >= 35 and slot <= 40 ) then
+				outputChatBox("You can't put those weapons into a " .. name .. ".", source, 255, 0, 0)
+			elseif tonumber(getElementData(source, "duty")) > 0 then
+				outputChatBox("You can't put your weapons in a " .. name .. " while being on duty.", source, 255, 0, 0)
+			elseif tonumber(getElementData(source, "job")) == 4 and slot == 41 then
+				outputChatBox("You can't put this spray can into a " .. name .. ".", source, 255, 0, 0)
+			else
+				exports.global:takeWeapon( source, slot )
+				giveItem( element, -slot, ammo )
+			end
 		end
 	end
 end

@@ -11,6 +11,7 @@
 	
 	<script src="admin_globals.lua" type="server"/>
 	<export function="isPlayerAdmin" type="server"/>
+	<export function="isPlayerFullAdmin" type="server"/>
 	<export function="isPlayerSuperAdmin" type="server"/>
 	<export function="isPlayerHeadAdmin" type="server"/>
 	<export function="isPlayerLeadAdmin" type="server"/>

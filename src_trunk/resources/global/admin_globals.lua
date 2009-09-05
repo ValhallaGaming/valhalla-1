@@ -25,12 +25,22 @@ function isPlayerAdmin(thePlayer)
 	end
 end
 
+function isPlayerFullAdmin(thePlayer)
+	local adminLevel = tonumber(getElementData(thePlayer, "adminlevel"))
+
+	if(adminLevel==0) then
+		return false
+	elseif(adminLevel>=2) then
+		return true
+	end
+end
+
 function isPlayerSuperAdmin(thePlayer)
 	local adminLevel = tonumber(getElementData(thePlayer, "adminlevel"))
 
 	if(adminLevel==0) then
 		return false
-	elseif(adminLevel>=1) then
+	elseif(adminLevel>=3) then
 		return true
 	end
 end

@@ -8,7 +8,7 @@ function retrievePlayerInfo(targetPlayer)
 		local friends = { }
 		local count = 1
 		
-		if (sfriends) then
+		if sfriends and sfriends ~= mysql_null() and type(sfriends) == "string" then
 			if (#sfriends>0) then
 				for i=1, 100 do
 					local fid = gettok(sfriends, i, 59)

@@ -67,7 +67,4 @@
 	
 	<export function="hideSpeedo" type="client"/>
 	<export function="showSpeedo" type="client"/>
-	
-	<script src="c_party.lua" type="client"/>
-	<script src="s_party.lua" type="server"/>
 </meta>

@@ -31,7 +31,7 @@ function addToScoreboard(player)
 end
 
 function removeFromScoreboard()
-	local id = getElementData(source, "ID #")
+	local id = getElementData(source, "playerid")
 
 	players[id] = nil
 	
@@ -46,7 +46,7 @@ function updatePlayers()
 	local row = guiGridListAddRow(scoreboardGrid)
 	scoreboardRows[localPlayer] = row
 
-	guiGridListSetItemText(scoreboardGrid, row, 1, tostring(getElementData(localPlayer, "ID #")), false, true)
+	guiGridListSetItemText(scoreboardGrid, row, 1, tostring(getElementData(localPlayer, "playerid")), false, true)
 	guiGridListSetItemText(scoreboardGrid, row, 2, getPlayerName(localPlayer), false, false)
 	guiGridListSetItemText(scoreboardGrid, row, 3, tostring(getPlayerPing(localPlayer)), false, true)
 

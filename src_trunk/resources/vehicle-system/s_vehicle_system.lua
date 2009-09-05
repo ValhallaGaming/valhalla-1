@@ -1187,9 +1187,9 @@ function setVehiclePosition(thePlayer, commandName)
 	else
 		if call( getResourceFromName("tow-system"), "cannotVehpos", thePlayer ) then
 			outputChatBox("Only McJones Towing is allowed to park their vehicles on the Impound Lot.", thePlayer, 255, 0, 0)
-		elseif isElementWithinColShape( thePlayer, HospitalCol ) and getElementData( thePlayer, "faction" ) ~= 2 then
+		elseif isElementWithinColShape( thePlayer, HospitalCol ) and getElementData( thePlayer, "faction" ) ~= 2 and not exports.global:isPlayerAdmin(thePlayer) then
 			outputChatBox("Only Los Santos Emergency Service is allowed to park their vehicles in front of the Hospital.", thePlayer, 255, 0, 0)
-		elseif isElementWithinColShape( thePlayer, PershingSquareCol ) and getElementData( thePlayer, "faction" ) ~= 1 then
+		elseif isElementWithinColShape( thePlayer, PershingSquareCol ) and getElementData( thePlayer, "faction" ) ~= 1  and not exports.global:isPlayerAdmin(thePlayer) then
 			outputChatBox("Only Los Santos Police Department is allowed to park their vehicles on Pershing Square.", thePlayer, 255, 0, 0)
 		else
 			local playerid = getElementData(thePlayer, "dbid")

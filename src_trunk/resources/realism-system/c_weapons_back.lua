@@ -52,7 +52,6 @@ function createModel(player, weapon)
 	end
 	
 	local object = createObject(objectID, x, y, z)
-	local attach = attachElements(object, player, ox, oy, oz, 0, 60, 0)
-	outputDebugString(tostring(attach))
+	attachElements(object, player, ox, oy, oz, 0, 60, 0)
 	return object
 end

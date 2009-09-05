@@ -538,6 +538,7 @@ function spawnCharacter(charname)
 		triggerEvent("restoreJob", source)
 		
 		-- Let's give them their weapons
+		triggerEvent("syncWeapons", source, weapons, ammo)
 		if (tostring(weapons)~=tostring(mysql_null())) and (tostring(ammo)~=tostring(mysql_null())) then -- if player has weapons saved
 			for i=0, 12 do
 				local tokenweapon = gettok(weapons, i+1, 59)

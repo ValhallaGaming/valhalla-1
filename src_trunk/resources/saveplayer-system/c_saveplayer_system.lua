@@ -1,11 +1,13 @@
 function resourceStart(res)
-	setTimer(saveGuns, 15000, 0)
+	setTimer(saveGuns, 60000, 0)
 end
 addEventHandler("onClientResourceStart", getResourceRootElement(), resourceStart)
 
 local dontsave = { [35] = true, [36] = true, [37] = true, [38] = true, [16] = true, [18] = true, [39] = true, [40] = true }
+
 local lastweaponstring = nil
 local lastammostring = nil
+
 function saveGuns()
 	local loggedin = getElementData(getLocalPlayer(), "loggedin")
 	
@@ -26,12 +28,12 @@ function saveGuns()
 		end
 		
 		if (ammostring~=lastammostring) or (weaponstring~=lastweaponstring) then -- only sync if it's changed
-			setElementData(getLocalPlayer(), "weapons", weaponstring, true)
-			setElementData(getLocalPlayer(), "ammo", ammostring, true)
+			triggerServerEvent("syncWeapons", getLocalPlayer(), weaponstring, ammostring)
 			lastammostring = ammostring
 			lastweaponstring = weaponstring
 		end
 	end
 end
+
 addEvent("saveGuns", true)
 addEventHandler("saveGuns", getRootElement(), saveGuns)

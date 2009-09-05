@@ -29,15 +29,46 @@ addEventHandler("onResourceStop", getResourceRootElement(getThisResource()), clo
 -- //			MYSQL END			 //
 -- ////////////////////////////////////
 
-function saveWeapons(thePlayer)
-	local weapons = getElementData(thePlayer, "weapons")
-	local ammo = getElementData(thePlayer, "ammo")
+tweapons = { }
 
+function initWeapons()
+	tweapons[source] = { }
+	tweapons[source][1] = ""
+	tweapons[source][2] = ""
+end
+addEventHandler("onPlayerJoin", getRootElement(), initWeapons)
+
+function cleanWeapons(thePlayer)
+	tweapons[thePlayer] = nil
+end
+
+function saveWeapons(thePlayer)
+	local weapons = tweapons[thePlayer][1]
+	local ammo = tweapons[thePlayer][2]
+
+	cleanWeapons(thePlayer)
+	
 	if (weapons~=false) and (ammo~=false) then
 		local query = mysql_query(handler, "UPDATE characters SET weapons='" .. weapons .. "', ammo='" .. ammo .. "' WHERE charactername='" .. getPlayerName(source) .. "'")
 		mysql_free_result(query)
 	end
 end
+
+local count = 1
+function syncWeapons(weapons, ammo)
+	outputDebugString("Got weapon sync packet #" .. count .. " FROM: " .. getPlayerName(source))
+	count = count + 1
+	
+	if (tweapons[source] == nil) then
+		tweapons[source] = { }
+	end
+	
+	tweapons[source][1] = weapons
+	tweapons[source][2] = ammo
+end
+addEvent("syncWeapons", true)
+addEventHandler("syncWeapons", getRootElement(), syncWeapons)
+
 
 function saveAllPlayers()
 	for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do

@@ -149,7 +149,7 @@ addCommandHandler("thiscar", getCarID, false, false)
 
 -- /gotocar
 function gotoCar(thePlayer, commandName, id)
-	if (exports.global:isPlayerAdmin(thePlayer)) then
+	if (exports.global:isPlayerFullAdmin(thePlayer)) then
 		if not (id) then
 			ooutputChatBox("SYNTAX: /" .. commandName .. " [id]", thePlayer, 255, 194, 14)
 		else
@@ -185,7 +185,7 @@ addCommandHandler("gotocar", gotoCar, false, false)
 
 -- /getcar
 function getCar(thePlayer, commandName, id)
-	if (exports.global:isPlayerAdmin(thePlayer)) then
+	if (exports.global:isPlayerSuperAdmin(thePlayer)) then
 		if not (id) then
 			outputChatBox("SYNTAX: /" .. commandName .. " [id]", thePlayer, 255, 194, 14)
 		else

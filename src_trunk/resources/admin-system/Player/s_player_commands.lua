@@ -229,7 +229,7 @@ addCommandHandler("aunblindfold", adminUnblindfold, false, false)
 
 -- /MUTE
 function mutePlayer(thePlayer, commandName, targetPlayer)
-	if (exports.global:isPlayerAdmin(thePlayer)) then
+	if (exports.global:isPlayerFullAdmin(thePlayer)) then
 		if not (targetPlayer) then
 			outputChatBox("SYNTAX: /" .. commandName .. " [Player Partial Nick / ID]", thePlayer, 255, 194, 14)
 		else
@@ -939,7 +939,7 @@ addCommandHandler("recon", reconPlayer, false, false)
 
 -- Kick
 function kickAPlayer(thePlayer, commandName, targetPlayer, ...)
-	if (exports.global:isPlayerAdmin(thePlayer)) then
+	if (exports.global:isPlayerFullAdmin(thePlayer)) then
 		if not (targetPlayer) or not (...) then
 			outputChatBox("SYNTAX: /" .. commandName .. " [Partial Player Nick] [Reason]", thePlayer, 255, 194, 14)
 		else
@@ -980,7 +980,7 @@ addCommandHandler("pkick", kickAPlayer, false, false)
 
 -- BAN
 function banAPlayer(thePlayer, commandName, targetPlayer, hours, ...)
-	if (exports.global:isPlayerAdmin(thePlayer)) then
+	if (exports.global:isPlayerSuperAdmin(thePlayer)) then
 		if not (targetPlayer) or not (hours) or (tonumber(hours)<0) or not (...) then
 			outputChatBox("SYNTAX: /" .. commandName .. " [Player Partial Nick / ID] [Time in Hours, 0 = Infinite] [Reason]", thePlayer, 255, 194, 14)
 		else
@@ -1509,7 +1509,7 @@ addCommandHandler("goto", gotoPlayer, false, false)
 
 ----------------------------[GET PLAYER HERE]---------------------------------------
 function getPlayer(thePlayer, commandName, target)
-	if (exports.global:isPlayerAdmin(thePlayer)) then
+	if (exports.global:isPlayerSuperAdmin(thePlayer)) then
 	
 		if not (target) then
 			outputChatBox("SYNTAX: /" .. commandName .. " /gethere [Partial Player Nick]", thePlayer, 255, 194, 14)
@@ -1605,7 +1605,7 @@ addCommandHandler("givemoney", giveMoney, false, false)
 
 -----------------------------------[FREEZE]----------------------------------
 function freezePlayer(thePlayer, commandName, target)
-	if (exports.global:isPlayerAdmin(thePlayer)) then
+	if (exports.global:isPlayerFullAdmin(thePlayer)) then
 		if not (target) then
 			outputChatBox("SYNTAX: /" .. commandName .. " [Partial Player Nick]", thePlayer, 255, 194, 14)
 		else
@@ -1641,7 +1641,7 @@ addEventHandler("remoteFreezePlayer", getRootElement(), freezePlayer)
 
 -----------------------------------[UNFREEZE]----------------------------------
 function unfreezePlayer(thePlayer, commandName, target)
-	if (exports.global:isPlayerAdmin(thePlayer)) then
+	if (exports.global:isPlayerFullAdmin(thePlayer)) then
 		if not (target) then
 			outputChatBox("SYNTAX: /" .. commandName .. " /unfreeze [Partial Player Nick]", thePlayer, 255, 194, 14)
 		else
@@ -1691,7 +1691,7 @@ function markPosition(thePlayer, command)
 	
 	local logged = getElementData ( thePlayer, "loggedin" )
 	if ( logged == 1) then
-		if (exports.global:isPlayerAdmin(thePlayer)) then
+		if (exports.global:isPlayerSuperAdmin(thePlayer)) then
 		
 			local x, y, z = getElementPosition(thePlayer)
 			local interior = getElementInterior(thePlayer)
@@ -1717,7 +1717,7 @@ function gotoMark(thePlayer, command)
 
 	local logged = getElementData ( thePlayer, "loggedin" )
 	if ( logged == 1) then
-		if (exports.global:isPlayerAdmin(thePlayer)) then
+		if (exports.global:isPlayerSuperAdmin(thePlayer)) then
 		
 			if(getElementData(thePlayer, "tempMark.x") )then
 			
@@ -1952,7 +1952,7 @@ addCommandHandler("eject", ejectPlayer, false, false)
 
 -- WARNINGS
 function warnPlayer(thePlayer, commandName, targetPlayer)
-	if (exports.global:isPlayerAdmin(thePlayer)) then
+	if (exports.global:isPlayerSuperAdmin(thePlayer)) then
 		if not (targetPlayer) then
 			outputChatBox("SYNTAX: /" .. commandName .. " [Partial Player Nick]", thePlayer, 255, 194, 14)
 		else

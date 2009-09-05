@@ -7,7 +7,7 @@ function saveRadio(station)
 	if (vehicle) then
 		if not (lawVehicles[getElementModel(vehicle)]) then
 			radio = station
-			triggerServerEvent("sendRadioSync", getLocalPlayer(), station, getRadioChannelName(station))
+			--triggerServerEvent("sendRadioSync", getLocalPlayer(), station, getRadioChannelName(station))
 		else
 			cancelEvent()
 			radio = 0

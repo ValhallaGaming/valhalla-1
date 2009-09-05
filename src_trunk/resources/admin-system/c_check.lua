@@ -34,7 +34,7 @@ function CreateCheckWindow()
 	
 	-- player notes
 	memo = guiCreateMemo(0.03, 0.7, 0.8, 0.27, "", true, Window)
-	addEventHandler( "onClientGUIClick", getRootElement(),
+	addEventHandler( "onClientGUIClick", Window,
 		function( button, state )
 			if button == "left" and state == "up" then
 				if source == memo then

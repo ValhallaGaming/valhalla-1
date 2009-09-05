@@ -758,9 +758,13 @@ function resetAnim(thePlayer)
 end
 
 function pickupItem(object, leftammo)
+	if not isElement(object) then
+		return
+	end
+	
 	local x, y, z = getElementPosition(source)
 	local ox, oy, oz = getElementPosition(object)
-
+	
 	if (getDistanceBetweenPoints3D(x, y, z, ox, oy, oz)<3) then	
 		
 		-- Animation
@@ -790,7 +794,6 @@ function pickupItem(object, leftammo)
 			if leftammo and itemValue > leftammo then
 				itemValue = itemValue - leftammo
 				setElementData(object, "itemValue", itemValue)
-				setElementData(object, "pickedup", false)
 				
 				mysql_free_result( mysql_query(handler, "UPDATE worlditems SET itemvalue=" .. itemValue .. " WHERE id=" .. id) )
 				
@@ -805,7 +808,6 @@ function pickupItem(object, leftammo)
 		exports.global:sendLocalMeAction(source, "bends over and picks up a " .. getItemName( itemID ) .. ".")
 	else
 		outputDebugString("Distance between Player and Pickup too large")
-		setElementData(object, "pickedup", false)
 	end
 end
 addEvent("pickupItem", true)

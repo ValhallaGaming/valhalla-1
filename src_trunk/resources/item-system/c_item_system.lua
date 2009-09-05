@@ -19,21 +19,18 @@ showEmpty = true
 
 function clickItem(button, state, absX, absY, wx, wy, wz, element)
 	if (element) and (getElementType(element)=="object") and (button=="right") and (state=="down") and getElementParent(getElementParent(element)) == getResourceRootElement() and getElementData(element, "type") == "worlditem" then
-		if not getElementData(element, "pickedup") then
-			local x, y, z = getElementPosition(getLocalPlayer())
-			
-			if getDistanceBetweenPoints3D(x, y, z, wx, wy, wz) < 3 then
-				if (wRightClick) then
-					hideItemMenu()
-				end
-				showCursor(true)
-				ax = absX
-				ay = absY
-				item = element
-				showItemMenu()
-			else
-				outputChatBox("You are too far away from that item.", 255, 0, 0)
+		local x, y, z = getElementPosition(getLocalPlayer())
+		if getDistanceBetweenPoints3D(x, y, z, wx, wy, wz) < 3 then
+			if (wRightClick) then
+				hideItemMenu()
 			end
+			showCursor(true)
+			ax = absX
+			ay = absY
+			item = element
+			showItemMenu()
+		else
+			outputChatBox("You are too far away from that item.", 255, 0, 0)
 		end
 	end
 end
@@ -135,11 +132,12 @@ function pickupItem(button, state)
 			outputChatBox("You are cuffed.", 255, 0, 0)
 		elseif not hasSpaceForItem(getLocalPlayer()) and getElementData(item, "itemID") > 0 then
 			outputChatBox("Your Inventory is full.", 255, 0, 0)
-		else
+		elseif isElement(item) then
 			showCursor(false)
 			triggerEvent("cursorHide", getLocalPlayer())
 			
-			local itemID = getElementData(item, "itemID")
+			local itemID = tonumber(getElementData(item, "itemID")) or 0
+			local itemValue = tonumber(getElementData(item, "itemValue")) or 0
 			if itemID < 0 then
 				local free, totalfree = exports.weaponcap:getFreeAmmo( -itemID )
 				local cap = exports.weaponcap:getAmmoCap( -itemID )
@@ -156,11 +154,9 @@ function pickupItem(button, state)
 				elseif free == 0 then
 					outputChatBox( "You can't carry any more of that weapon.", 255, 0, 0 )
 				else
-					setElementData(item, "pickedup", true, true)
 					triggerServerEvent("pickupItem", getLocalPlayer(), item, free )
 				end
 			else
-				setElementData(item, "pickedup", true, true)
 				triggerServerEvent("pickupItem", getLocalPlayer(), item)
 			end
 			hideItemMenu()

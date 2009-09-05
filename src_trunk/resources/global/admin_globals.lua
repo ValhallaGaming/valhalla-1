@@ -18,7 +18,7 @@ end
 function isPlayerAdmin(thePlayer)
 	local adminLevel = tonumber(getElementData(thePlayer, "adminlevel"))
 
-	if(adminLevel==0) then
+	if(adminLevel==0) or not (adminLevel) then
 		return false
 	elseif(adminLevel>=1) then
 		return true
@@ -28,7 +28,7 @@ end
 function isPlayerFullAdmin(thePlayer)
 	local adminLevel = tonumber(getElementData(thePlayer, "adminlevel"))
 
-	if(adminLevel==0) then
+	if(adminLevel==0) or not (adminLevel) then
 		return false
 	elseif(adminLevel>=2) then
 		return true
@@ -38,7 +38,7 @@ end
 function isPlayerSuperAdmin(thePlayer)
 	local adminLevel = tonumber(getElementData(thePlayer, "adminlevel"))
 
-	if(adminLevel==0) then
+	if(adminLevel==0) or not (adminLevel) then
 		return false
 	elseif(adminLevel>=3) then
 		return true
@@ -48,7 +48,7 @@ end
 function isPlayerHeadAdmin(thePlayer)
 	local adminLevel = tonumber(getElementData(thePlayer, "adminlevel"))
 
-	if(adminLevel==0) then
+	if(adminLevel==0) or not (adminLevel) then
 		return false
 	elseif(adminLevel>=5) then
 		return true
@@ -58,7 +58,7 @@ end
 function isPlayerLeadAdmin(thePlayer)
 	local adminLevel = tonumber(getElementData(thePlayer, "adminlevel"))
 
-	if(adminLevel==0) then
+	if(adminLevel==0) or not (adminLevel) then
 		return false
 	elseif(adminLevel>=4) then
 		return true

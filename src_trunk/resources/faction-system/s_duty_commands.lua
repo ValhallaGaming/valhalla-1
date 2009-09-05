@@ -341,11 +341,11 @@ function swatduty(thePlayer, commandName)
 					exports.global:giveWeapon(thePlayer, 34, 200) -- Sniper
 					exports.global:giveWeapon(thePlayer, 17, 10) -- Tear gas
 					
-					exports.global:giveItem(thePlayer, 26, 999)
-					exports.global:giveItem(thePlayer, 27, 999)
-					exports.global:giveItem(thePlayer, 28, 999)
-					exports.global:giveItem(thePlayer, 29, 999)
-					exports.global:giveItem(thePlayer, 45, 999)
+					exports.global:giveItem(thePlayer, 26, 1)
+					exports.global:giveItem(thePlayer, 27, 1)
+					exports.global:giveItem(thePlayer, 28, 1)
+					exports.global:giveItem(thePlayer, 29, 1)
+					exports.global:giveItem(thePlayer, 45, 1)
 					
 					setPedSkin(thePlayer, 285)
 					
@@ -427,7 +427,7 @@ function policeduty(thePlayer, commandName)
 						exports.global:giveWeapon(thePlayer, 29, 1000) -- MP5
 						exports.global:giveWeapon(thePlayer, 41, 1500) -- Pepperspray
 						
-						exports.global:givePlayerItem(thePlayer, 45, 999)
+						exports.global:giveItem(thePlayer, 45, 1)
 						
 						setPedSkin(thePlayer, dutyskin)
 						
@@ -508,7 +508,7 @@ function cadetduty(thePlayer, commandName)
 						exports.global:giveWeapon(thePlayer, 24, 200) -- Deagle / MP Handgun
 						exports.global:giveWeapon(thePlayer, 41, 1000) -- Pepperspray
 						
-						exports.global:givePlayerItem(thePlayer, 45, 999)
+						exports.global:giveItem(thePlayer, 45, 1)
 						
 						setPedSkin(thePlayer, dutyskin)
 						
@@ -586,7 +586,7 @@ function fbiduty(thePlayer, commandName)
 						setElementHealth(thePlayer, 100)
 						
 						exports.global:giveWeapon(thePlayer, 22, 200) -- Colt 45
-						exports.global:givePlayerItem(thePlayer, 45, 999) -- Cuffs
+						exports.global:giveItem(thePlayer, 45, 1) -- Cuffs
 						
 						setPedSkin(thePlayer, dutyskin)
 						

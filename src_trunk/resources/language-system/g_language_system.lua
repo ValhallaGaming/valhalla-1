@@ -23,7 +23,7 @@ languages = {
 	"Polish",
 	"Portugese",
 	"Turkish",
-	"Estonian"
+	"Estonian",
 	"Korean"
 }
 	
@@ -52,6 +52,6 @@ flags = {
 	"pl",
 	"pr",
 	"eu",
-	"ee"
+	"ee",
 	"kr"
 }

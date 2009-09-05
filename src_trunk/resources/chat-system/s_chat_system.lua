@@ -125,6 +125,9 @@ function localIC(source, message, language)
 	outputChatBox( "#EEEEEE [" .. languagename .. "] " .. playerName .. " Says: " .. message, source, 255, 255, 255, true)
 	call(getResourceFromName("language-system"), "increaseLanguageSkill", source, language)
 	
+	local dimension = getElementDimension(source)
+	local interior = getElementInterior(source)
+	
 	for index, nearbyPlayer in ipairs(nearbyPlayers) do
 		local nearbyPlayerDimension = getElementDimension(nearbyPlayer)
 		local nearbyPlayerInterior = getElementInterior(nearbyPlayer)

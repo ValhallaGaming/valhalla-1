@@ -1084,10 +1084,9 @@ function localWhisper(thePlayer, commandName, targetPlayerNick, ...)
 					
 					exports.global:sendLocalMeAction(thePlayer, "whispers to " .. targetName .. ".")
 					outputChatBox("[" .. languagename .. "] " .. name .. " whispers: " .. message, thePlayer, 255, 255, 255)
-					outputChatBox("[" .. languagename .. "] " .. name .. " whispers: " .. message, targetPlayer, 255, 255, 255)
+					outputChatBox("[" .. languagename .. "] " .. name .. " whispers: " .. message2, targetPlayer, 255, 255, 255)
 					
 					call(getResourceFromName("language-system"), "increaseLanguageSkill", thePlayer, language)
-					call(getResourceFromName("language-system"), "increaseLanguageSkill", targetPlayer, language)
 				else
 					outputChatBox("You are too far away from " .. getPlayerName(targetPlayer) .. ".", thePlayer, 255, 0, 0)
 				end

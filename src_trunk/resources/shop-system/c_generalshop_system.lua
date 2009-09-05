@@ -360,7 +360,8 @@ function getItemsForSale(shop_type, race, gender)
 			{"Polish Dictionary","A Dictionary, useful for learning lingo.", "25", 69, 22, 1, false, 2},			
 			{"Portugeese Dictionary","A Dictionary, useful for learning lingo.", "25", 69, 23, 1, false, 2},			
 			{"Turkish Dictionary","A Dictionary, useful for learning lingo.", "25", 69, 24, 1, false, 2},
-			{"Estonian Dictionary","A Dictionary, useful for learning lingo.", "25", 69, 25, 1, false, 2},				
+			{"Estonian Dictionary","A Dictionary, useful for learning lingo.", "25", 69, 25, 1, false, 2},		
+			{"Korean Dictionary","A Dictionary, useful for learning lingo.", "25", 69, 25, 1, false, 2}			
 		}
 	end
 		

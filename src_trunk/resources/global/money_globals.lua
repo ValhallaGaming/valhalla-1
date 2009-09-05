@@ -29,6 +29,7 @@ end
 
 function givePlayerSafeMoney(thePlayer, amount)
 	if (tonumber(amount)>0) then
+		amount = math.floor( amount )
 		local money = getElementData(thePlayer, "money")
 		checkMoneyHacks(thePlayer)
 		setElementData(thePlayer, "money", money+tonumber(amount))
@@ -38,20 +39,22 @@ end
 
 function takePlayerSafeMoney(thePlayer, amount)
 	if (tonumber(amount)>0) then
+		amount = math.ceil( amount )
 		local money = getElementData(thePlayer, "money")
 		
 		if (amount>=money) then
-            amount = money
-        end
-        
-        checkMoneyHacks(thePlayer)
-        setElementData(thePlayer, "money", money-amount)
-        takePlayerMoney(thePlayer, tonumber(amount))
+			amount = money
+		end
+		
+		checkMoneyHacks(thePlayer)
+		setElementData(thePlayer, "money", money-amount)
+		takePlayerMoney(thePlayer, tonumber(amount))
 	end
 end
 
 function setPlayerSafeMoney(thePlayer, amount)
 	if (tonumber(amount)>=0) then
+		amount = math.ceil( amount )
 		local money = getElementData(thePlayer, "money")
 		checkMoneyHacks(thePlayer)
 		setElementData(thePlayer, "money", tonumber(amount))

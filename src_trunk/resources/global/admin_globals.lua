@@ -5,9 +5,7 @@ function getAdmins()
 	local count = 1
 	
 	for key, value in ipairs(players) do
-		local adminLevel = getElementData(value, "adminlevel")
-		
-		if (adminLevel>0) then
+		if isPlayerAdmin(value) then
 			admins[count] = value
 			count = count + 1
 		end
@@ -16,64 +14,32 @@ function getAdmins()
 end
 
 function isPlayerAdmin(thePlayer)
-	local adminLevel = tonumber(getElementData(thePlayer, "adminlevel"))
-
-	if(adminLevel==0) or not (adminLevel) then
-		return false
-	elseif(adminLevel>=1) then
-		return true
-	end
+	return getPlayerAdminLevel(thePlayer) >= 1
 end
 
 function isPlayerFullAdmin(thePlayer)
-	local adminLevel = tonumber(getElementData(thePlayer, "adminlevel"))
-
-	if(adminLevel==0) or not (adminLevel) then
-		return false
-	elseif(adminLevel>=2) then
-		return true
-	end
+	return getPlayerAdminLevel(thePlayer) >= 2
 end
 
 function isPlayerSuperAdmin(thePlayer)
-	local adminLevel = tonumber(getElementData(thePlayer, "adminlevel"))
-
-	if(adminLevel==0) or not (adminLevel) then
-		return false
-	elseif(adminLevel>=3) then
-		return true
-	end
+	return getPlayerAdminLevel(thePlayer) >= 3
 end
 
 function isPlayerHeadAdmin(thePlayer)
-	local adminLevel = tonumber(getElementData(thePlayer, "adminlevel"))
-
-	if(adminLevel==0) or not (adminLevel) then
-		return false
-	elseif(adminLevel>=5) then
-		return true
-	end
+	return getPlayerAdminLevel(thePlayer) >= 5
 end
 
 function isPlayerLeadAdmin(thePlayer)
-	local adminLevel = tonumber(getElementData(thePlayer, "adminlevel"))
-
-	if(adminLevel==0) or not (adminLevel) then
-		return false
-	elseif(adminLevel>=4) then
-		return true
-	end
+	return getPlayerAdminLevel(thePlayer) >= 4
 end
 
 function getPlayerAdminLevel(thePlayer)
-	local adminLevel = tonumber(getElementData(thePlayer, "adminlevel"))
-	return adminLevel
+	return tonumber(getElementData(thePlayer, "adminlevel")) or 0
 end
 
 local titles = { "Trial Admin", "Admin", "Super Admin", "Lead Admin", "Head Admin", "Owner" }
 function getPlayerAdminTitle(thePlayer)
-	local adminLevel = tonumber(getElementData(thePlayer, "adminlevel")) or 0
-	local text = titles[adminLevel] or "Player"
+	local text = titles[getPlayerAdminLevel(thePlayer)] or "Player"
 	
 	local hiddenAdmin = getElementData(thePlayer, "hiddenadmin") or 0
 	if (hiddenAdmin==1) then
@@ -93,9 +59,5 @@ local scripterAccounts = {
 	['Mr.Hankey'] = true
 }
 function isPlayerScripter(thePlayer)
-	if getElementType(thePlayer) == "console" or isPlayerHeadAdmin(thePlayer) or scripterAccounts[getElementData(thePlayer, "gameaccountusername")] then
-		return true
-	else
-		return false
-	end
+	return getElementType(thePlayer) == "console" or isPlayerHeadAdmin(thePlayer) or scripterAccounts[getElementData(thePlayer, "gameaccountusername")]
 end

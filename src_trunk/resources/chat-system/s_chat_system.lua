@@ -673,6 +673,11 @@ function megaphoneShout(thePlayer, commandName, ...)
 				destroyElement(chatSphere)
 				
 				exports.irc:sendMessage("[IC: Megaphone] " .. playerName .. ": " .. message)
+				
+				local languageslot = getElementData(thePlayer, "languages.current")
+				local language = getElementData(thePlayer, "languages.lang" .. languageslot)
+				local langname = call(getResourceFromName("language-system"), "getLanguageName", language)
+				
 				for index, nearbyPlayer in ipairs(nearbyPlayers) do
 					local nearbyPlayerDimension = getElementDimension(nearbyPlayer)
 					local nearbyPlayerInterior = getElementInterior(nearbyPlayer)
@@ -681,7 +686,11 @@ function megaphoneShout(thePlayer, commandName, ...)
 						local logged = getElementData(nearbyPlayer, "loggedin")
 					
 						if (logged==1) and not (isPedDead(nearbyPlayer)) then
-							outputChatBox("((" .. playerName .. ")) Megaphone <O: " .. trunklateText(nearbyPlayer, message), nearbyPlayer, 255, 255, 0)
+							local message2 = message
+							if nearbyPlayer ~= thePlayer then
+								message2 = call(getResourceFromName("language-system"), "applyLanguage", nearbyPlayer, message, language)
+							end
+							outputChatBox(" [" .. langname .. "] ((" .. playerName .. ")) Megaphone <O: " .. trunklateText(nearbyPlayer, message2), nearbyPlayer, 255, 255, 0)
 						end
 					end
 				end

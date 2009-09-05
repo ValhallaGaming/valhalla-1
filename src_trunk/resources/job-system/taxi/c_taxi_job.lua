@@ -24,3 +24,24 @@ function startTaxiJob(thePlayer)
 		end
 	end
 end
+
+-- taxi drivers occupied light
+local keytime = 0
+local function checkTaxiLights( key, state )
+	local vehicle = getPedOccupiedVehicle( getLocalPlayer( ) )
+	if getVehicleOccupant( vehicle ) == getLocalPlayer( ) and ( getElementModel( vehicle ) == 438 or getElementModel( vehicle ) == 420 ) then
+		if state == "down" then
+			keytime = getTickCount()
+		elseif state == "up" and keytime ~= 0 then
+			local delay = getTickCount() - keytime
+			keytime = 0
+			
+			if delay < 200 then
+				triggerServerEvent("toggleTaxiLights", getLocalPlayer( ), vehicle )
+			end
+		end
+	else
+		keytime = 0
+	end
+end
+bindKey("horn", "both", checkTaxiLights)

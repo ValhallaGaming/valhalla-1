@@ -24,6 +24,7 @@
 	<script src="mechanic/c_mechanic_job.lua" type="client"/>	
 	<file src="mechanic/colourChart.png" />	
 	
+	<script src="taxi/s_taxi_job.lua" type="server"/>
 	<script src="taxi/c_taxi_job.lua" type="client"/>
 
 	<script src="bus/g_bus_routes.lua" type="client"/>

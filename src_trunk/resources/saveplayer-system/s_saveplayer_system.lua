@@ -43,14 +43,16 @@ function cleanWeapons(thePlayer)
 end
 
 function saveWeapons(thePlayer)
-	local weapons = tweapons[thePlayer][1]
-	local ammo = tweapons[thePlayer][2]
+	if tweapons[thePlayer] then
+		local weapons = tweapons[thePlayer][1]
+		local ammo = tweapons[thePlayer][2]
 
-	cleanWeapons(thePlayer)
-	
-	if (weapons~=false) and (ammo~=false) then
-		local query = mysql_query(handler, "UPDATE characters SET weapons='" .. weapons .. "', ammo='" .. ammo .. "' WHERE charactername='" .. getPlayerName(source) .. "'")
-		mysql_free_result(query)
+		cleanWeapons(thePlayer)
+		
+		if (weapons~=false) and (ammo~=false) then
+			local query = mysql_query(handler, "UPDATE characters SET weapons='" .. weapons .. "', ammo='" .. ammo .. "' WHERE charactername='" .. getPlayerName(source) .. "'")
+			mysql_free_result(query)
+		end
 	end
 end
 

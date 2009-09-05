@@ -229,7 +229,7 @@ function getItemsForSale(shop_type, race, gender)
 			{"Phonebook", "A large phonebook of everyones phone numbers.", "30", 7, 1,1,false,20},
 			{"Dice", "A black dice with white dots, perfect for gambling.", "2", 10, 1,1,false,1},
 			{"Golf Club", "Perfect golf club for hitting that hole-in-one.", "60", 2, 1,1,true,30},
-			{"Knife", "You're only going to use this in the kitchen, right?", "50", 4,  1,1,true,40},
+			--{"Knife", "You're only going to use this in the kitchen, right?", "50", 4,  1,1,true,40},
 			{"Baseball Bat", "Hit a home run with this.", "60", 5, 1,1,true,40},
 			{"Shovel", "Perfect tool to dig a hole.", "40", 6, 1,1,true,20},
 			{"Pool Cue", "For that game of pub pool.", "35", 7, 1,1,true,15},

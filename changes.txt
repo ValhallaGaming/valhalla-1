@@ -1,4 +1,9 @@
 ---
+Notes Item
+---
+ALTER TABLE `worlditems` MODIFY COLUMN `itemvalue` TEXT;
+
+---
 (per account) Player Notes
 ---
 ALTER TABLE `accounts` ADD COLUMN `adminnote` TEXT;

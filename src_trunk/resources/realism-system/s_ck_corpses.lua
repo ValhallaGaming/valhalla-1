@@ -36,7 +36,7 @@ function addCharacterKillBody( x, y, z, rotation, skin, id, name )
 end
 
 function loadAllCorpses(res)
-	local result = mysql_query(handler, "SELECT x, y, z, skin, rotation, id, charactername FROM characters WHERE cked=1 AND y < 0")
+	local result = mysql_query(handler, "SELECT x, y, z, skin, rotation, id, charactername FROM characters WHERE cked = 1")
 	
 	local counter = 0
 	local rowc = 1
@@ -82,3 +82,35 @@ function getNearbyCKs(thePlayer, commandName)
 	end
 end
 addCommandHandler("nearbycks", getNearbyCKs, false, false)
+
+-- in remembrance of
+local function showCKList( thePlayer, data )
+	local result = mysql_query(handler, "SELECT charactername FROM characters WHERE cked = " .. data .. " ORDER BY charactername")
+	if result then
+		local names = {}
+		for result, row in mysql_rows(result) do
+			local name = row[1]
+			if name ~= mysql_null() then
+				names[ #names + 1 ] = name
+			end
+		end
+		triggerClientEvent( thePlayer, "showCKList", thePlayer, names, data )
+		mysql_free_result(result)
+	end
+end
+
+local ckBuried = createPickup( 815, -1100, 25.8, 3, 1254 )
+addEventHandler( "onPickupHit", ckBuried,
+	function( thePlayer )
+		cancelEvent()
+		showCKList( thePlayer, 2 )
+	end
+)
+
+local ckMissing = createPickup( 819, -1100, 25.8, 3, 1314 )
+addEventHandler( "onPickupHit", ckMissing,
+	function( thePlayer )
+		cancelEvent()
+		showCKList( thePlayer, 1 )
+	end
+)

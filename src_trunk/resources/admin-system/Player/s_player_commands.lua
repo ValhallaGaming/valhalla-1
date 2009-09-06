@@ -419,7 +419,7 @@ function buryPlayer(thePlayer, commandName, ...)
 				outputChatBox("Player does not exist.", thePlayer, 255, 0, 0)
 			else
 				local dbid = tonumber(mysql_result(result, 1, 1)) or 0
-				local cked = tonumber(mysql_result(result, 1, 1)) or 0
+				local cked = tonumber(mysql_result(result, 1, 2)) or 0
 				if cked == 0 then
 					outputChatBox("Player is not CK'ed.", thePlayer, 255, 0, 0)
 				elseif cked == 2 then

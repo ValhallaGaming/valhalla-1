@@ -173,11 +173,13 @@ function fillVehicle(thePlayer, commandName)
 		local colShape = nil
 		
 		for key, value in ipairs(exports.pool:getPoolElementsByType("colshape")) do
-			local shapeType = getElementData(value, "type")
-			if (shapeType) then
-				if (shapeType=="fuel") then
-					if (isElementWithinColShape(thePlayer, value)) then
-						colShape = value
+			if isElement(value) then
+				local shapeType = getElementData(value, "type")
+				if (shapeType) then
+					if (shapeType=="fuel") then
+						if (isElementWithinColShape(thePlayer, value)) then
+							colShape = value
+						end
 					end
 				end
 			end

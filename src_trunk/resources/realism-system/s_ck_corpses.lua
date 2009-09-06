@@ -26,8 +26,17 @@ addEventHandler("onResourceStop", getResourceRootElement(getThisResource()), clo
 -- //			MYSQL END			 //
 -- ////////////////////////////////////
 
+function addCharacterKillBody( x, y, z, rotation, skin, id, name )
+	local ped = createPed(skin, x, y, z)
+	setPedRotation(ped, rotation)
+	setElementData(ped, "ckid", id, false)
+	setElementData(ped, "name", name:gsub("_", " "), false)
+	--setTimer(setPedAnimation, 100, 1, ped, "WUZI", "CS_Dead_Guy", -1, false, false, false)
+	killPed(ped)
+end
+
 function loadAllCorpses(res)
-	local result = mysql_query(handler, "SELECT x, y, z, skin, rotation FROM characters WHERE cked=1")
+	local result = mysql_query(handler, "SELECT x, y, z, skin, rotation, id, charactername FROM characters WHERE cked=1 AND y < 0")
 	
 	local counter = 0
 	local rowc = 1
@@ -39,13 +48,37 @@ function loadAllCorpses(res)
 			local z = tonumber(row[3])
 			local skin = tonumber(row[4])
 			local rotation = tonumber(row[5])
+			local id = tonumber(row[6])
+			local name = row[7]
+			if name == mysql_null() then
+				name = ""
+			end
 			
-			local ped = createPed(skin, x, y, z)
-			setPedRotation(ped, rotation)
-			--setTimer(setPedAnimation, 100, 1, ped, "WUZI", "CS_Dead_Guy", -1, false, false, false)
-			killPed(ped)
+			addCharacterKillBody(x, y, z, rotation, skin, id, name)
 		end
 		mysql_free_result(result)
 	end
 end
---addEventHandler("onResourceStart", getResourceRootElement(), loadAllCorpses)
+addEventHandler("onResourceStart", getResourceRootElement(), loadAllCorpses)
+
+function getNearbyCKs(thePlayer, commandName)
+	if (exports.global:isPlayerAdmin(thePlayer)) then
+		local posX, posY, posZ = getElementPosition(thePlayer)
+		outputChatBox("Nearby Character Kill Bodies:", thePlayer, 255, 126, 0)
+		local count = 0
+		
+		for k, v in ipairs(getElementsByType("ped", getResourceRootElement())) do
+			local x, y, z = getElementPosition(v)
+			local distance = getDistanceBetweenPoints3D(posX, posY, posZ, x, y, z)
+			if (distance<=20) then
+				outputChatBox("   " .. getElementData(v, "name"), thePlayer, 255, 126, 0)
+				count = count + 1
+			end
+		end
+		
+		if (count==0) then
+			outputChatBox("   None.", thePlayer, 255, 126, 0)
+		end
+	end
+end
+addCommandHandler("nearbycks", getNearbyCKs, false, false)

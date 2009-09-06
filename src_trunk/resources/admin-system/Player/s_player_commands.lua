@@ -351,9 +351,7 @@ function ckPlayer(thePlayer, commandName, targetPlayer)
 					local skin = getPedSkin(targetPlayer)
 					local rotation = getPedRotation(targetPlayer)
 					
-					local ped = createPed(skin, x, y, z)
-					setPedRotation(ped, rotation)
-					exports.global:applyAnimation(ped, "WUZI", "CS_Dead_Guy", true, 1.0, 2.0, 0.0, true, true)
+					call( getResourceFromName( "realism-system" ), "addCharacterKillBody", x, y, z, rotation, skin, getElementData(targetPlayer, "dbid"), targetPlayerName )
 					
 					-- send back to change char screen
 					local id = getElementData(targetPlayer, "gameaccountid")
@@ -377,15 +375,26 @@ function unckPlayer(thePlayer, commandName, targetPlayer)
 		if not (targetPlayer) then
 			outputChatBox("SYNTAX: /" .. commandName .. " [Full Player Name]", thePlayer, 255, 194, 14)
 		else
-			local result = mysql_query(handler, "SELECT cked FROM characters WHERE charactername='" .. tostring(targetPlayer) .. "' AND cked='1'")
+			local result = mysql_query(handler, "SELECT id FROM characters WHERE charactername='" .. tostring(targetPlayer) .. "' AND cked > 0")
 			
 			if (mysql_num_rows(result)>1) then
 				outputChatBox("Too many results - Please enter a more exact name.", thePlayer, 255, 0, 0)
 			elseif (mysql_num_rows(result)==0) then
 				outputChatBox("Player does not exist or is not CK'ed.", thePlayer, 255, 0, 0)
 			else
+				local dbid = tonumber(mysql_result(result, 1, 1)) or 0
 				local query = mysql_query(handler, "UPDATE characters SET cked='0' WHERE charactername='" .. tostring(targetPlayer) .. "' LIMIT 1")
 				mysql_free_result(query)
+				
+				-- delete all peds for him
+				for key, value in pairs( getElementsByType( "ped" ) ) do
+					if isElement( value ) and getElementData( value, "ckid" ) then
+						if getElementData( value, "ckid" ) == dbid then
+							destroyElement( value )
+						end
+					end
+				end
+				
 				outputChatBox(targetPlayer .. " is no longer CK'ed.", thePlayer, 0, 255, 0)
 			end
 			mysql_free_result(result)

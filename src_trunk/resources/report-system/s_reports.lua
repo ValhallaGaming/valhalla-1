@@ -111,7 +111,7 @@ function playerQuit()
 	local report = getElementData(source, "report")
 	local update = false
 	
-	if (report) then
+	if report and reports[report] then
 		local theAdmin = reports[report][5]
 		
 		if (isElement(theAdmin)) then

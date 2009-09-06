@@ -191,13 +191,18 @@ function timerPDUnjailPlayer(jailedPlayer)
 end
 
 function showJailtime(thePlayer)
-	local isJailed = getElementData(thePlayer, "pd.jailtimer")
-	
-	if not (isJailed) then
-		outputChatBox("You are not jailed.", thePlayer, 255, 0, 0)
+	local ajailtime = getElementData(thePlayer, "jailtime")
+	if ajailtime then
+		outputChatBox("You have " .. ajailtime .. " minutes remaining on your admin jail.", thePlayer, 255, 194, 14)
 	else
-		local jailtime = getElementData(thePlayer, "pd.jailtime")
-		outputChatBox("You have " .. jailtime .. " minutes remaining of your jail sentance.", thePlayer, 255, 194, 14)
+		local isJailed = getElementData(thePlayer, "pd.jailtimer")
+		
+		if not (isJailed) then
+			outputChatBox("You are not jailed.", thePlayer, 255, 0, 0)
+		else
+			local jailtime = getElementData(thePlayer, "pd.jailtime")
+			outputChatBox("You have " .. jailtime .. " minutes remaining of your jail sentance.", thePlayer, 255, 194, 14)
+		end
 	end
 end
 addCommandHandler("jailtime", showJailtime)

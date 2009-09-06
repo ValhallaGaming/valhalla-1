@@ -1,11 +1,12 @@
 blasters = { }
 
 function startGB()
-	if getElementData(source, "itemValue") > 0 then
+	local itemValue = tonumber( getElementData(source, "itemValue") ) or 0
+	if itemValue > 0 then
 		local x, y, z = getElementPosition(source)
 		local px, py, pz = getElementPosition(getLocalPlayer())
 		if (getDistanceBetweenPoints3D(x, y, z, px, py, pz)<300) then
-			local sound = playSound3D("ghettoblaster/" .. tracks[getElementData(source, "itemValue")].file, x, y, z, true)
+			local sound = playSound3D("ghettoblaster/" .. tracks[itemValue].file, x, y, z, true)
 			blasters[source] = sound
 			setSoundMaxDistance(sound, 20)
 			

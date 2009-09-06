@@ -534,9 +534,9 @@ end
 addCommandHandler("givegun", givePlayerGun, false, false)
 
 -- /GIVEITEM
-function givePlayerItem(thePlayer, commandName, targetPlayer, itemID, itemValue)
+function givePlayerItem(thePlayer, commandName, targetPlayer, itemID, ...)
 	if (exports.global:isPlayerAdmin(thePlayer)) then
-		if not (itemID) or not (itemValue) or not (targetPlayer) then
+		if not (itemID) or not (...) or not (targetPlayer) then
 			outputChatBox("SYNTAX: /" .. commandName .. " [Player Partial Nick / ID] [Item ID] [Item Value]", thePlayer, 255, 194, 14)
 		else
 			local targetPlayer = exports.global:findPlayerByPartialNick(targetPlayer)
@@ -548,7 +548,8 @@ function givePlayerItem(thePlayer, commandName, targetPlayer, itemID, itemValue)
 				local logged = getElementData(targetPlayer, "loggedin")
 				
 				itemID = tonumber(itemID)
-				itemValue = tonumber(itemValue)
+				local itemValue = table.concat({...}, " ")
+				itemValue = tonumber(itemValue) or itemValue
 				
 				if (logged==0) then
 					outputChatBox("Player is not logged in.", thePlayer, 255, 0, 0)
@@ -573,9 +574,9 @@ end
 addCommandHandler("giveitem", givePlayerItem, false, false)
 
 -- /TAKEITEM
-function takePlayerItem(thePlayer, commandName, targetPlayer, itemID, itemValue)
+function takePlayerItem(thePlayer, commandName, targetPlayer, itemID, ...)
 	if (exports.global:isPlayerAdmin(thePlayer)) then
-		if not (itemID) or not (itemValue) or not (targetPlayer) then
+		if not (itemID) or not (...) or not (targetPlayer) then
 			outputChatBox("SYNTAX: /" .. commandName .. " [Player Partial Nick / ID] [Item ID] [Item Value]", thePlayer, 255, 194, 14)
 		else
 			local targetPlayer = exports.global:findPlayerByPartialNick(targetPlayer)
@@ -587,12 +588,13 @@ function takePlayerItem(thePlayer, commandName, targetPlayer, itemID, itemValue)
 				local logged = getElementData(targetPlayer, "loggedin")
 				
 				itemID = tonumber(itemID)
-				itemValue = tonumber(itemValue)
+				local itemValue = table.concat({...}, " ")
+				itemValue = tonumber(itemValue) or itemValue
 				
 				if (logged==0) then
 					outputChatBox("Player is not logged in.", thePlayer, 255, 0, 0)
 				elseif (logged==1) then
-					if exports.global:hasItem(thePlayer, itemID, itemValue) then
+					if exports.global:hasItem(targetPlayer, itemID, itemValue) then
 						outputChatBox("You took that Item " .. itemID .. " from " .. targetPlayerName .. ".", thePlayer, 0, 255, 0)
 						exports.global:takeItem(targetPlayer, itemID, itemValue)
 					else

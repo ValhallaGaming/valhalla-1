@@ -427,6 +427,8 @@ function useItem(itemSlot, additional)
 				exports.global:takeItem(source, itemID, itemValue)
 				outputChatBox("You have learnt basic " .. lang .. ", Press F6 to manage your languages.", source, 0, 255, 0)
 			end
+		elseif (itemID==72) then -- Note
+			exports.global:sendLocalMeAction(source, "reads a note.")
 		else
 			outputChatBox("Error 800001 - Report on http://bugs.valhallagaming.net", source, 255, 0, 0)
 		end
@@ -969,3 +971,27 @@ function givePlayerBadge(thePlayer, commandName, targetPlayer, badgeNumber )
 	end
 end
 addCommandHandler("issuebadge", givePlayerBadge, false, false)
+
+function writeNote(thePlayer, commandName, ...)
+	if not (...) then
+		outputChatBox("SYNTAX: /" .. commandName .. " [Text]", thePlayer, 255, 194, 14)
+	elseif not hasSpaceForItem( thePlayer ) then
+		outputChatBox("You can't carry more notes around.", thePlayer, 255, 0, 0)
+	else
+		local found, slot, itemValue = hasItem( thePlayer, 71 )
+		if found then
+			takeItem( thePlayer, 71, itemValue )
+			
+			giveItem( thePlayer, 72, table.concat({...}, " ") )
+			exports.global:sendLocalMeAction(thePlayer, "writes a note on a piece of paper.")
+			
+			itemValue = itemValue - 1
+			if itemValue > 0 then
+				giveItem( thePlayer, 71, itemValue )
+			end
+		else
+			outputChatBox("You don't have any empty paper.", thePlayer, 255, 0, 0)
+		end
+	end
+end
+addCommandHandler("writenote", writeNote, false, false)

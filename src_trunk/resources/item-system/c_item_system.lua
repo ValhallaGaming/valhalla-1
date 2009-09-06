@@ -552,8 +552,13 @@ function useItem(button)
 				outputChatBox("Put it in your car inventory and Press 'F5'.", 255, 194, 14)
 				return
 			elseif (itemID==70) then -- First Aid Kit
-				outputChatBox("Right click on a player who's knocked out to stabilize him.", 255, 294, 14)
+				outputChatBox("Right click on a player who's knocked out to stabilize him.", 255, 194, 14)
 				return
+			elseif (itemID==71) then -- Notebook
+				outputChatBox("Use /writenote [text] to write a note. There are " .. itemValue .. " pages left.", 255, 194, 14)
+				return
+			elseif (itemID==72) then -- Note
+				outputChatBox("The Note reads: " .. itemValue, 255, 194, 14)
 			end
 			
 			triggerServerEvent("useItem", getLocalPlayer(), itemSlot, additional)

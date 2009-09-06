@@ -245,6 +245,7 @@ function getItemsForSale(shop_type, race, gender)
 			{"Blindfold", "A black blindfold.", "15", 66, 1,1, false,2},
 			{"Lottery Ticket", "A lottery ticket.","50", 68, 1,1, false,40},
 			{"First Aid Kit", "A small First Aid Kit", "15", 70, 3, 1, false, 5},
+			{"Notebook", "An empty Notebook, enough to write 5 notes.", "40", 71, 5, 1, false, 15},
 
 			-- Consumable
 			{"Sandwich", "A yummy sandwich with cheese.", "6", 8, 1,2,false,2},

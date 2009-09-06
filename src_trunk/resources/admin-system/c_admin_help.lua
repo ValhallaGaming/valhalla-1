@@ -107,6 +107,7 @@ function adminhelp (sourcePlayer, commandName)
 					{ "/reskick", "/reskick [amount]", "kicks the given amount of players from the server" },
 					{ "/ck", "/ck [player]", "permanently kills the character; spawns a corpse at the location the player is at" },
 					{ "/unck", "/unck [player]", "reverts a character kill" },
+					{ "/bury", "/bury [player]", "buries the player; removes the ck corpse" },
 					{ "/givegun", "/givegun [player] [weapon id] [ammo]", "gives the player the specified weapon" },
 					{ "/setmoney", "/setmoney [player] [money]", "sets the players money to that value" },
 					{ "/givemoney", "/givemoney [player] [money]", "gives the player money in addition to his current cash" },

@@ -370,11 +370,12 @@ end
 addCommandHandler("ck", ckPlayer)
 
 -- /UNCK
-function unckPlayer(thePlayer, commandName, targetPlayer)
+function unckPlayer(thePlayer, commandName, ...)
 	if (exports.global:isPlayerLeadAdmin(thePlayer)) then
-		if not (targetPlayer) then
+		if not (...) then
 			outputChatBox("SYNTAX: /" .. commandName .. " [Full Player Name]", thePlayer, 255, 194, 14)
 		else
+			local targetPlayer = table.concat({...}, "_")
 			local result = mysql_query(handler, "SELECT id FROM characters WHERE charactername='" .. tostring(targetPlayer) .. "' AND cked > 0")
 			
 			if (mysql_num_rows(result)>1) then
@@ -402,6 +403,48 @@ function unckPlayer(thePlayer, commandName, targetPlayer)
 	end
 end
 addCommandHandler("unck", unckPlayer)
+
+-- /BURY
+function buryPlayer(thePlayer, commandName, ...)
+	if (exports.global:isPlayerLeadAdmin(thePlayer)) then
+		if not (...) then
+			outputChatBox("SYNTAX: /" .. commandName .. " [Full Player Name]", thePlayer, 255, 194, 14)
+		else
+			local targetPlayer = table.concat({...}, "_")
+			local result = mysql_query(handler, "SELECT id, cked FROM characters WHERE charactername='" .. tostring(targetPlayer) .. "'")
+			
+			if (mysql_num_rows(result)>1) then
+				outputChatBox("Too many results - Please enter a more exact name.", thePlayer, 255, 0, 0)
+			elseif (mysql_num_rows(result)==0) then
+				outputChatBox("Player does not exist.", thePlayer, 255, 0, 0)
+			else
+				local dbid = tonumber(mysql_result(result, 1, 1)) or 0
+				local cked = tonumber(mysql_result(result, 1, 1)) or 0
+				if cked == 0 then
+					outputChatBox("Player is not CK'ed.", thePlayer, 255, 0, 0)
+				elseif cked == 2 then
+					outputChatBox("Player is already buried.", thePlayer, 255, 0, 0)
+				else
+					local query = mysql_query(handler, "UPDATE characters SET cked='2' WHERE charactername='" .. tostring(targetPlayer) .. "' LIMIT 1")
+					mysql_free_result(query)
+					
+					-- delete all peds for him
+					for key, value in pairs( getElementsByType( "ped" ) ) do
+						if isElement( value ) and getElementData( value, "ckid" ) then
+							if getElementData( value, "ckid" ) == dbid then
+								destroyElement( value )
+							end
+						end
+					end
+					
+					outputChatBox(targetPlayer .. " was buried.", thePlayer, 0, 255, 0)
+				end
+			end
+			mysql_free_result(result)
+		end
+	end
+end
+addCommandHandler("bury", buryPlayer)
 
 -- /FRECONNECT
 function forceReconnect(thePlayer, commandName, targetPlayer)
@@ -664,11 +707,12 @@ end
 addCommandHandler("setskin", setPlayerSkinCmd, false, false)
 
 -- /CHANGENAME
-function asetPlayerName(thePlayer, commandName, targetPlayer, newName)
+function asetPlayerName(thePlayer, commandName, targetPlayer, ...)
 	if (exports.global:isPlayerAdmin(thePlayer)) then
-		if not (newName) or not (targetPlayer) then
+		if not (...) or not (targetPlayer) then
 			outputChatBox("SYNTAX: /" .. commandName .. " [Player Partial Nick / ID] [Player New Nick]", thePlayer, 255, 194, 14)
 		else
+			local newName = table.concat({...}, "_")
 			local targetPlayer = exports.global:findPlayerByPartialNick(targetPlayer)
 			
 			if not (targetPlayer) then

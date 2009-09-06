@@ -64,6 +64,7 @@ function withdrawMoneyPersonal(amount)
 	
 	local money = getElementData(source, "bankmoney")
 	setElementData(source, "bankmoney", money-amount)
+	saveBank(source)
 	
 	mysql_free_result( mysql_query( handler, "INSERT INTO wiretransfers (`from`, `to`, `amount`, `reason`, `type`) VALUES (0, " .. getElementData(source, "dbid") .. ", " .. -amount .. ", '', 0)" ) )
 
@@ -77,6 +78,7 @@ function depositMoneyPersonal(amount)
 	
 	local money = getElementData(source, "bankmoney")
 	setElementData(source, "bankmoney", money+amount)
+	saveBank(source)
 	
 	mysql_free_result( mysql_query( handler, "INSERT INTO wiretransfers (`from`, `to`, `amount`, `reason`, `type`) VALUES (" .. getElementData(source, "dbid") .. ", 0, " .. amount .. ", '', 1)" ) )
 
@@ -157,12 +159,15 @@ function transferMoneyToPersonal(business, name, amount, reason)
 		
 		if reciever then
 			setElementData(reciever, "bankmoney", getElementData(reciever, "bankmoney") + amount)
+			saveBank(reciever)
 		else
 			local query = mysql_query(handler, "UPDATE characters SET bankmoney=bankmoney+" .. amount .. " WHERE id=" .. dbid)
 			mysql_free_result(query)
 		end
 		triggerClientEvent(source, "hideBankUI", source)
 		outputChatBox("You transfered " .. amount .. "$ from your "..(business and "business" or "personal").." account to "..name..(string.sub(name,-1) == "s" and "'" or "'s").." account.", source, 255, 194, 14)
+		
+		saveBank(source)
 	end
 end
 addEvent("transferMoneyToPersonal", true)
@@ -261,3 +266,11 @@ addEventHandler("tellTransfersPersonal", getRootElement(), tellTransfersPersonal
 
 addEvent("tellTransfersBusiness", true)
 addEventHandler("tellTransfersBusiness", getRootElement(), tellTransfersBusiness)
+
+--
+
+function saveBank( thePlayer )
+	if getElementData( thePlayer, "loggedin" ) == 1 then
+		mysql_free_result(mysql_query(handler, "UPDATE characters SET bankmoney=" .. (tonumber(getElementData( thePlayer, "bankmoney" )) or 0) .. " WHERE id=" .. getElementData( thePlayer, "dbid" )))
+	end
+end

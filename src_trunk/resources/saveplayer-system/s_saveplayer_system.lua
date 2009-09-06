@@ -168,20 +168,20 @@ function savePlayer(reason, player)
 		local year = (1900+time.year)	
 		
 		-- LANGUAGES
-		local lang1 = getElementData(source, "languages.lang1")
-		local lang1skill = getElementData(source, "languages.lang1skill")
+		local lang1 = getElementData(source, "languages.lang1") or 0
+		local lang1skill = getElementData(source, "languages.lang1skill") or 0
 		
-		local lang2 = getElementData(source, "languages.lang2")
-		local lang2skill = getElementData(source, "languages.lang2skill")
+		local lang2 = getElementData(source, "languages.lang2") or 0
+		local lang2skill = getElementData(source, "languages.lang2skill") or 0
 		
-		local lang3 = getElementData(source, "languages.lang3")
-		local lang3skill = getElementData(source, "languages.lang3skill")
+		local lang3 = getElementData(source, "languages.lang3") or 0
+		local lang3skill = getElementData(source, "languages.lang3skill") or 0
 		
 		local currentLanguage = getElementData(source, "languages.current")
 		
-		if not (lang1) then lang1 = 0 lang1skill = 0 end
-		if not (lang2) then lang2 = 0 lang2skill = 0 end
-		if not (lang3) then lang3 = 0 lang3skill = 0 end
+		if lang1 == 0 then lang1skill = 0 end
+		if lang2 == 0 then lang2skill = 0 end
+		if lang3 == 0 then lang3skill = 0 end
 		
 		-- LAST AREA
 		local zone = getElementZoneName(source)
@@ -195,10 +195,14 @@ function savePlayer(reason, player)
 		
 		if (update) then
 			mysql_free_result(update)
+		else
+			outputDebugString( "Saveplayer Update: " .. mysql_error( handler ) )
 		end
 		
 		if (update2) then
 			mysql_free_result(update2)
+		else
+			outputDebugString( "Saveplayer Update 2: " .. mysql_error( handler ) )
 		end
 		
 		--outputDebugString("Saved player '" .. getPlayerName(source) .. "' [" .. reason .. "].")

@@ -659,24 +659,28 @@ function dropItem(button)
 				local itemID = 0
 				if itemSlot == 13 then
 					itemID = 100
+					itemValue = getPedArmor(getLocalPlayer())
 				else
 					itemID = tonumber(getPedWeapon(getLocalPlayer(), itemSlot))
+					itemValue = math.min( getPedTotalAmmo(getLocalPlayer(), itemSlot), getElementData(getLocalPlayer(), "ACweapon" .. itemID) or 0 )
 				end
 				
-				guiGridListSetSelectedItem(gWeapons, 0, 0)
-				if itemSlot >= 2 and itemSlot <= 9 then
-					openWeaponDropGUI(itemID, itemValue, row)
-				else
-					guiGridListRemoveRow(gWeapons, row)
-				
-					local x, y, z = getElementPosition(getLocalPlayer())
-					local rot = getPedRotation(getLocalPlayer())
-					x = x + math.sin( math.rad( rot ) ) * 1
-					y = y + math.cos( math.rad( rot ) ) * 1
+				if itemValue > 0 then
+					guiGridListSetSelectedItem(gWeapons, 0, 0)
+					if itemSlot >= 2 and itemSlot <= 9 then
+						openWeaponDropGUI(itemID, itemValue, row)
+					else
+						guiGridListRemoveRow(gWeapons, row)
 					
-					local z = getGroundPosition( x, y, z + 2 )
-					
-					triggerServerEvent("dropItem", getLocalPlayer(), itemID, x, y, z, itemValue)
+						local x, y, z = getElementPosition(getLocalPlayer())
+						local rot = getPedRotation(getLocalPlayer())
+						x = x + math.sin( math.rad( rot ) ) * 1
+						y = y + math.cos( math.rad( rot ) ) * 1
+						
+						local z = getGroundPosition( x, y, z + 2 )
+						
+						triggerServerEvent("dropItem", getLocalPlayer(), itemID, x, y, z, itemValue)
+					end
 				end
 			end
 		end

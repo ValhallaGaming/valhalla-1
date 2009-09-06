@@ -36,6 +36,11 @@ function injuries(attacker, weapon, bodypart, loss)
 		return
 	end
 	
+	-- drowning
+	if weapon == 53 then
+		return
+	end
+	
 	-- source = player who was hit
 	if not bodypart and getPedOccupiedVehicle(source) then
 		bodypart = 3

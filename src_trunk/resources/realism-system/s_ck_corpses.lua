@@ -85,6 +85,7 @@ addCommandHandler("nearbycks", getNearbyCKs, false, false)
 
 -- in remembrance of
 local function showCKList( thePlayer, data )
+	exports.global:givePlayerAchievement( thePlayer, 40 )
 	local result = mysql_query(handler, "SELECT charactername FROM characters WHERE cked = " .. data .. " ORDER BY charactername")
 	if result then
 		local names = {}

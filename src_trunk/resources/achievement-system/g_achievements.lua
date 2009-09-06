@@ -37,7 +37,8 @@ local g_achievements = {
 	{ "Quality Assurance", "Took part in the MTA 1.0 2nd Beta Test.", 100 },
 	{ "The Good Samaritan", "Donate $1000 or more to charity", 100 },
 	{ "Welcome to Los Santos", "Arrive in Los Santos.", 10 },
-	{ "Party Time", "Join the 2.1 Relaunch Party", 100 }
+	{ "Party Time", "Join the 2.1 Relaunch Party.", 100 },
+	{ "Where the Past Lies", "Which bones are those in the grave?", 25 }
 }
 
 function getAchievementInfo(id)

@@ -29,7 +29,7 @@ addEventHandler( "showCKList", getLocalPlayer(),
 						
 						showCursor( false )
 					end
-				end
+				end, false
 			)
 			
 			showCursor( true )

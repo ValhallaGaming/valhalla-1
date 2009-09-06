@@ -640,7 +640,7 @@ function timerUnjailPlayer(jailedPlayer)
 			local timeLeft = timeLeft - 1
 			setElementData(jailedPlayer, "jailtime", timeLeft)
 			local result
-			if (timeLeft==0) then
+			if (timeLeft<=0) then
 				result = mysql_query(handler, "UPDATE accounts SET adminjail_time='0', adminjail='0' WHERE id='" .. accountID .. "'")
 				removeElementData(jailedPlayer, "jailtimer")
 				setElementPosition(jailedPlayer, 1519.7177734375, -1697.8154296875, 13.546875)
@@ -1400,7 +1400,7 @@ function timerPDUnjailPlayer(jailedPlayer)
 		local timeLeft = timeLeft - 1
 		setElementData(jailedPlayer, "pd.jailtime", timeLeft, false)
 
-		if (timeLeft==0) then
+		if (timeLeft<=0) then
 			fadeCamera(jailedPlayer, false)
 			local query = mysql_query(handler, "UPDATE characters SET pdjail_time='0', pdjail='0', pdjail_station='0' WHERE charactername='" .. username .. "'")
 			mysql_free_result(query)

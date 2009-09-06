@@ -1408,7 +1408,7 @@ function timerUnjailPlayer(jailedPlayer)
 			local timeLeft = timeLeft - 1
 			setElementData(jailedPlayer, "jailtime", timeLeft, false)
 		
-			if (timeLeft==0) then
+			if (timeLeft<=0) then
 				local query = mysql_query(handler, "UPDATE accounts SET adminjail_time='0', adminjail='0' WHERE id='" .. accountID .. "'")
 				mysql_free_result(query)
 				removeElementData(jailedPlayer, "jailtimer")

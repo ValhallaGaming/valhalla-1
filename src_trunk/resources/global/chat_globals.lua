@@ -27,30 +27,32 @@ function findPlayerByPartialNick(partialNick)
 	local count = 0
 	
 	-- IDS
-	if ((tostring(type(tonumber(partialNick)))) == "number") then
+	if tonumber(partialNick) then
 		for key, value in ipairs(players) do
-			local id = getElementData(value, "playerid")
-			
-			if (id) then
-				if (id==tonumber(partialNick)) then
+			if isElement(value) then
+				local id = getElementData(value, "playerid")
+				
+				if id and id == tonumber(partialNick) then
 					matchNick = getPlayerName(value)
 					break
 				end
 			end
 		end
-	elseif not ((tostring(type(tonumber(partialNick)))) == "number") or not (matchNick) then -- Look for player nicks
+	else -- Look for player nicks
 		for playerKey, arrayPlayer in ipairs(players) do
-			local playerName = string.lower(getPlayerName(arrayPlayer))
-
-			if(string.find(playerName, tostring(partialNick))) then
-				local posStart, posEnd = string.find(playerName, tostring(partialNick))
-				if posEnd - posStart > matchNickAccuracy then
-					-- better match
-					matchNickAccuracy = posEnd-posStart
-					matchNick = playerName
-				elseif posEnd - posStart == matchNickAccuracy then
-					-- found someone who matches up the same way, so pretend we didnt find any
-					matchNick = nil
+			if isElement(arrayPlayer) then
+				local playerName = string.lower(getPlayerName(arrayPlayer))
+				
+				if(string.find(playerName, tostring(partialNick))) then
+					local posStart, posEnd = string.find(playerName, tostring(partialNick))
+					if posEnd - posStart > matchNickAccuracy then
+						-- better match
+						matchNickAccuracy = posEnd-posStart
+						matchNick = playerName
+					elseif posEnd - posStart == matchNickAccuracy then
+						-- found someone who matches up the same way, so pretend we didnt find any
+						matchNick = nil
+					end
 				end
 			end
 		end

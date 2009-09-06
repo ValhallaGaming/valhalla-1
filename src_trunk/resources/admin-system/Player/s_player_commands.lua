@@ -2213,34 +2213,79 @@ end
 --addCommandHandler("resetcharacter", resetCharacter)
 
 -- FIND ALT CHARS
-function findAltChars(thePlayer, commandName, targetPlayerName)
+local function showAlts(thePlayer, id)
+	result = mysql_query( handler, "SELECT charactername, cked, faction_id FROM characters WHERE account = " .. id )
+	if result then
+		outputChatBox( " ", thePlayer )
+		local count = 0
+		for result, row in mysql_rows( result ) do
+			count = count + 1
+			local r = 255
+			if getPlayerFromName( row[1] ) then
+				r = 0
+			end
+			
+			local text = "#" .. count .. ": " .. row[1]:gsub("_", " ")
+			if tonumber( row[2] ) == 1 then
+				text = text .. " (Missing)"
+			elseif tonumber( row[2] ) == 2 then
+				text = text .. " (Buried)"
+			end
+			
+			local faction = tonumber( row[3] ) or 0
+			if faction > 0 then
+				for key, value in pairs( getElementsByType( "team" ) ) do
+					if getElementData( value, "id" ) == faction then
+						text = text .. " - " .. getTeamName( value )
+						break
+					end
+				end
+			end
+			
+			outputChatBox( text, thePlayer, r, 255, 0)
+		end
+		mysql_free_result( result )
+	else
+		outputChatBox( "Error #9100 - Report on Forums", thePlayer, 255, 0, 0)
+		outputDebugString( mysql_error( handler ) )
+	end
+end
+
+function findAltChars(thePlayer, commandName, ...)
 	if exports.global:isPlayerAdmin( thePlayer ) then
-		if not targetPlayerName then
+		if not (...) then
 			outputChatBox("SYNTAX: /" .. commandName .. " [Partial Player Nick]", thePlayer, 255, 194, 14)
 		else
+			local targetPlayerName = table.concat({...}, "_")
 			local targetPlayer = exports.global:findPlayerByPartialNick(targetPlayerName)
 			
 			if not targetPlayer then
+				-- select by character name
+				local result = mysql_query( handler, "SELECT account FROM characters WHERE charactername = '" .. mysql_escape_string( handler, targetPlayerName ) .. "'" )
+				if result then
+					if mysql_num_rows( result ) == 1 then
+						local id = tonumber( mysql_result( result, 1, 1 ) ) or 0
+						showAlts( thePlayer, id )
+						return
+					else
+						-- select by account name
+						local result2 = mysql_query( handler, "SELECT id FROM accounts WHERE username = '" .. mysql_escape_string( handler, targetPlayerName ) .. "'" )
+						if result2 then
+							if mysql_num_rows( result2 ) == 1 then
+								local id = tonumber( mysql_result( result2, 1, 1 ) ) or 0
+								showAlts( thePlayer, id )
+								return
+							end
+							mysql_free_result( result2 )
+						end
+					end
+					mysql_free_result( result )
+				end
 				outputChatBox("Player not found or multiple were found.", thePlayer, 255, 0, 0)
 			else
 				local id = getElementData( targetPlayer, "gameaccountid" )
 				if id then
-					result = mysql_query( handler, "SELECT charactername FROM characters WHERE account = " .. id )
-					if result then
-						local count = 0
-						for result, row in mysql_rows( result ) do
-							count = count + 1
-							local r = 255
-							if row[1] == getPlayerName(targetPlayer) then
-								r = 0
-							end
-							outputChatBox( "#" .. count .. ": " .. row[1]:gsub("_", " "), thePlayer, r, 255, 0)
-						end
-						mysql_free_result( result )
-					else
-						outputChatBox( "Error #9100 - Report on Forums", thePlayer, 255, 0, 0)
-						outputDebugString( mysql_error( handler ) )
-					end
+					showAlts( thePlayer, id )
 				else
 					outputChatBox("Game Account is unknown.", thePlayer, 255, 0, 0)
 				end

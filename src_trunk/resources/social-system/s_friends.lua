@@ -102,7 +102,7 @@ function toggleFriends(source)
 							
 							local found, player = false
 							for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
-								if (tonumber(getElementData(value, "gameaccountid"))==friends[count][1]) then
+								if isElement(value) and (tonumber(getElementData(value, "gameaccountid"))==friends[count][1]) then
 									found = true
 									player = value
 								end

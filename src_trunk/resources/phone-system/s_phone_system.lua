@@ -34,6 +34,8 @@ function callSomeone(thePlayer, commandName, phoneNumber, ...)
 		if (exports.global:hasItem(thePlayer, 2)) then -- 2 = Cell phone item
 			if not (phoneNumber) then
 				outputChatBox("SYNTAX: /call [Phone Number]", thePlayer, 255, 194, 14)
+			elseif getElementData(thePlayer, "phoneoff") == 1 then
+				outputChatBox("Your phone is off.", thePlayer, 255, 0, 0)
 			else
 				local calling = getElementData(thePlayer, "calling")
 				

@@ -1367,6 +1367,7 @@ function showCharacterUI(accounts, firstTime)
 		paneChars[key] = {}
 		paneChars[key][7] = guiCreateScrollPane(0.0, y, 1.0, 0.35, true, paneCharacters)
 		paneChars[key][1] = guiCreateStaticImage(0.0, 0.1, 0.95, 0.5, "img/charbg0.png", true, paneChars[key][7])
+		paneChars[key][8] = cked
 		
 		if (cked==0) then
 			paneChars[key][2] = guiCreateLabel(0.3, 0.1, 0.5, 0.2, tostring(charname), true, paneChars[key][7])
@@ -1439,6 +1440,9 @@ function showCharacterUI(accounts, firstTime)
 	-- Delete char button
 	bDeleteChar = guiCreateButton(0.05, 0.925, 0.9, 0.05, "Delete Character", true, tabCharacter)
 	addEventHandler("onClientGUIClick", bDeleteChar, deleteSelectedCharacter, false)
+	
+	guiSetVisible(bEditChar, false)
+	guiSetVisible(bDeleteChar, false)
 	
 	guiSetAlpha(tabPanelCharacter, 0.75)
 	showCursor(true)
@@ -1683,11 +1687,17 @@ function selectedCharacter(button, state)
 					
 					tmrHideMouse = setTimer(unhideCursor, 200, 1)
 					tmrFadeIn = setTimer(fadePlayerIn, 50, 10)
+					
+					guiSetVisible(bEditChar, true)
+					guiSetVisible(bDeleteChar, true)
 				else
 					local x, y, z = getElementPosition(getLocalPlayer())
 					setElementAlpha(getLocalPlayer(), 0)
 					tmrFadeIn = setTimer(fadePlayerIn, 50, 10)
 					exports.global:applyAnimation(getLocalPlayer(), "WUZI", "CS_Dead_Guy", -1, true, false, true)
+
+					guiSetVisible(bEditChar, false)
+					guiSetVisible(bDeleteChar, false)
 				end
 			end
 			
@@ -1732,6 +1742,9 @@ function selectedCharacter(button, state)
 			
 			tmrHideMouse = setTimer(unhideCursor, 200, 1)
 			tmrFadeIn = setTimer(fadePlayerIn, 50, 10)
+			
+			guiSetVisible(bEditChar, false)
+			guiSetVisible(bDeleteChar, false)
 		end
 	end
 end

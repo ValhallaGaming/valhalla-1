@@ -78,7 +78,7 @@ local function moveToElement( button )
 				triggerServerEvent( "moveToElement", localPlayer, element, slot )
 			else
 				slot = -slot
-				triggerServerEvent( "moveToElement", localPlayer, element, getPedWeapon( localPlayer, slot ), getPedTotalAmmo( localPlayer, slot ) )
+				triggerServerEvent( "moveToElement", localPlayer, element, getPedWeapon( localPlayer, slot ), math.min( getPedTotalAmmo( localPlayer, slot ), getElementData( localPlayer, "ACweapon" .. getPedWeapon( localPlayer, slot ) ) or 0 ) )
 			end
 		end
 	end

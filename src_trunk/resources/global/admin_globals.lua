@@ -34,7 +34,7 @@ function isPlayerLeadAdmin(thePlayer)
 end
 
 function getPlayerAdminLevel(thePlayer)
-	return tonumber(getElementData(thePlayer, "adminlevel")) or 0
+	return isElement( thePlayer ) and tonumber(getElementData(thePlayer, "adminlevel")) or 0
 end
 
 local titles = { "Trial Admin", "Admin", "Super Admin", "Lead Admin", "Head Admin", "Owner" }

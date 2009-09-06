@@ -254,7 +254,7 @@ function givePlayerBoughtItem(itemID, itemValue, theCost, isWeapon, name, supply
 	local money = tonumber(getElementData(source, "money"))
 	
 	if (itemID==48) then -- BACKPACK = UNIQUE
-		if (exports.global:hasItem(source, itemID, -1)) then
+		if (exports.global:hasItem(source, itemID)) then
 			outputChatBox("You already have one of this item, this item is unique.", source, 255, 0, 0)
 			return
 		end

@@ -77,7 +77,8 @@ g_items = {
 	{ "Blindfold", "A black blindfold.", 6, 1271 },
 	{ "GPS", "A GPS Satnav for a car.", 6, 1271 },
 	{ "Lottery Ticket", "A Los Santos Lottery ticket.", 6, 1271 },
-	{ "Dictionary", "A Dictionary.", 5, 1271 }
+	{ "Dictionary", "A Dictionary.", 5, 1271 },
+	{ "First Aid Kit", "Saves a Life. Can be used #v times.", 4, 1271 }
 }
 
 function getItemName(id)

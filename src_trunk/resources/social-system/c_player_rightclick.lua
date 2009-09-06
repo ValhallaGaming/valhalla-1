@@ -1,5 +1,5 @@
 wRightClick = nil
-bAddAsFriend, bFrisk, bRestrain, bCloseMenu, bInformation, bBlindfold = nil
+bAddAsFriend, bFrisk, bRestrain, bCloseMenu, bInformation, bBlindfold, bStabilize = nil
 sent = false
 ax, ay = nil
 player = nil
@@ -66,10 +66,6 @@ function showPlayerMenu(targetPlayer, friends, sdescription, sage, sweight, shei
 		addEventHandler("onClientGUIClick", bAddAsFriend, cremoveFriend, false)
 	end
 	
-	bCloseMenu = guiCreateButton(0.05, 0.64, 0.87, 0.1, "Close Menu", true, wRightClick)
-	addEventHandler("onClientGUIClick", bCloseMenu, hidePlayerMenu, false)
-	sent = false
-	
 	-- FRISK
 	if getElementData(getLocalPlayer(), "hoursplayed") >= 12 then
 		bFrisk = guiCreateButton(0.05, 0.25, 0.45, 0.1, "Frisk", true, wRightClick)
@@ -79,7 +75,7 @@ function showPlayerMenu(targetPlayer, friends, sdescription, sage, sweight, shei
 	-- RESTRAIN
 	local cuffed = getElementData(player, "restrain")
 	
-	if (cuffed==0) then
+	if cuffed == 0 then
 		bRestrain = guiCreateButton(0.555, 0.25, 0.45, 0.1, "Restrain", true, wRightClick)
 		addEventHandler("onClientGUIClick", bRestrain, crestrainPlayer, false)
 	else
@@ -98,6 +94,18 @@ function showPlayerMenu(targetPlayer, friends, sdescription, sage, sweight, shei
 		addEventHandler("onClientGUIClick", bBlindfold, cBlindfold, false)
 	end
 	
+	-- STABILIZE
+	y = 0.64
+	if exports.global:hasItem(getLocalPlayer(), 70) and getElementData(player, "injuriedanimation") then
+		bStabilize = guiCreateButton(0.05, y, 0.87, 0.1, "Stabilize", true, wRightClick)
+		addEventHandler("onClientGUIClick", bStabilize, cStabilize, false)
+		y = y + 0.13
+	end
+	
+	bCloseMenu = guiCreateButton(0.05, y, 0.87, 0.1, "Close Menu", true, wRightClick)
+	addEventHandler("onClientGUIClick", bCloseMenu, hidePlayerMenu, false)
+	sent = false
+	
 	bInformation = guiCreateButton(0.05, 0.38, 0.87, 0.1, "Information", true, wRightClick)
 	addEventHandler("onClientGUIClick", bInformation, showPlayerInfo, false)
 end
@@ -112,6 +120,29 @@ function showPlayerInfo(button, state)
 		outputChatBox("Weight: " .. weight .. "kg", 255, 194, 14)
 		outputChatBox("Height: " .. height .. "cm", 255, 194, 14)
 		outputChatBox("Description: " .. description, 255, 194, 14)
+	end
+end
+
+
+--------------------
+--   STABILIZING  --
+--------------------
+
+function cStabilize(button, state)
+	if button == "left" and state == "up" then
+		if (exports.global:hasItem(getLocalPlayer(), 70)) then -- Has First Aid Kit?
+			local knockedout = getElementData(player, "injuriedanimation")
+			
+			if not knockedout then
+				outputChatBox("This player is not knocked out.", 255, 0, 0)
+				hidePlayerMenu()
+			else
+				triggerServerEvent("stabilizePlayer", getLocalPlayer(), player)
+				hidePlayerMenu()
+			end
+		else
+			outputChatBox("You do not have a First Aid Kit.", 255, 0, 0)
+		end
 	end
 end
 
@@ -328,7 +359,6 @@ end
 --------------------
 --  END FRISKING  --
 --------------------
-
 
 function caddFriend()
 	triggerServerEvent("addFriend", getLocalPlayer(), player)

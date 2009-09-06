@@ -195,3 +195,26 @@ function removeblindfoldPlayer(player)
 end
 addEvent("removeBlindfold", true)
 addEventHandler("removeBlindfold", getRootElement(), removeblindfoldPlayer)
+
+
+-- STABILIZE
+function stabilizePlayer(player)
+	local found, slot, itemValue = exports.global:hasItem(source, 70)
+	if found then
+		exports.global:takeItem(source, 70, itemValue)
+		itemValue = itemValue - 1
+		if itemValue > 0 then
+			exports.global:giveItem(source, 70, itemValue)
+		end
+		
+		local username = getPlayerName(source)
+		local targetPlayerName = getPlayerName(player)
+	
+	
+		outputChatBox("You have been stabilized by " .. username .. ".", player)
+		outputChatBox("You stabilized " .. targetPlayerName .. ".", source)
+		triggerEvent("onPlayerStabilize", player)
+	end
+end
+addEvent("stabilizePlayer", true)
+addEventHandler("stabilizePlayer", getRootElement(), stabilizePlayer)

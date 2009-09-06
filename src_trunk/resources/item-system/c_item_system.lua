@@ -551,6 +551,9 @@ function useItem(button)
 			elseif (itemID==67) then -- GPS
 				outputChatBox("Put it in your car inventory and Press 'F5'.", 255, 194, 14)
 				return
+			elseif (itemID==70) then -- First Aid Kit
+				outputChatBox("Right click on a player who's knocked out to stabilize him.", 255, 294, 14)
+				return
 			end
 			
 			triggerServerEvent("useItem", getLocalPlayer(), itemSlot, additional)

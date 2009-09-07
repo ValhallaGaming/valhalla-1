@@ -155,14 +155,14 @@ function stabilize()
 				toggleControl(source, 'enter_passenger', true)
 				setElementHealth(source, math.max( 20, getElementHealth(source) ) )
 			end
-		else
-			if playerInjuries[source][7] and playerInjuries[source][8] then
-				toggleControl(source, 'forwards', true)
-				toggleControl(source, 'left', true)
-				toggleControl(source, 'right', true)
-				toggleControl(source, 'backwards', true)
-				toggleControl(source, 'enter_passenger', true)
-			end
+		end
+		
+		if playerInjuries[source][7] and playerInjuries[source][8] then
+			toggleControl(source, 'forwards', true)
+			toggleControl(source, 'left', true)
+			toggleControl(source, 'right', true)
+			toggleControl(source, 'backwards', true)
+			toggleControl(source, 'enter_passenger', true)
 		end
 	end
 end
@@ -239,6 +239,7 @@ function healInjuries(healed)
 				toggleControl(source, 'jump', true)
 			end
 		end
+		playerInjuries[source] = nil
 	end
 end
 
@@ -277,8 +278,6 @@ function resetInjuries() -- it actually has some parameters, but we only need so
 	if playerInjuries[source] then
 		-- reset injuries
 		healInjuries()
-		
-		playerInjuries[source] = nil -- reset the table (non-existant anymore)
 	end
 end
 

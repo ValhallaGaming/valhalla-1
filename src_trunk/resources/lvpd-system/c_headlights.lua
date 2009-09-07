@@ -1,3 +1,6 @@
+policevehicles = { }
+policevehicleids = { }
+
 -- Bind Keys required
 function bindKeys(res)
 	bindKey("p", "down", toggleFlashers)
@@ -6,12 +9,7 @@ function bindKeys(res)
 		if (isElementStreamedIn(value)) then
 			local modelid = getElementModel(value)
 			if (governmentVehicle[modelid]) or exports.global:hasItem(value, 61) then
-				for i = 1, #policevehicles+1 do
-					if (policevehicles[i]==nil) then
-						policevehicles[i] = value
-						policevehicleids[value] = i
-					end
-				end
+				policevehicles[value] = true
 			end
 		end
 	end
@@ -24,6 +22,9 @@ function toggleFlashers()
 	if (veh) then
 		local modelid = getElementModel(veh)
 		if (governmentVehicle[modelid]) or exports.global:hasItem(veh, 61) then -- Emergency Light Becon
+			if not policevehicles[veh] then
+				policevehicles[veh] = true
+			end
 			local lights = getVehicleOverrideLights(veh)
 			local state = getElementData(veh, "flashers")
 			
@@ -46,21 +47,12 @@ end
 
 governmentVehicle = { [416]=true, [427]=true, [490]=true, [528]=true, [407]=true, [544]=true, [523]=true, [596]=true, [597]=true, [598]=true, [599]=true, [601]=true, [428]=true }
 
-policevehicles = { }
-policevehicleids = { }
-
 
 function streamIn()
 	if (getElementType(source)=="vehicle") then
 		local modelid = getElementModel(source)
 		if (governmentVehicle[modelid]) or exports.global:hasItem(source, 61) then
-			for i = 1, #policevehicles+1 do
-				if (policevehicles[i]==nil) then
-					policevehicles[i] = source
-					policevehicleids[source] = i
-					break
-				end
-			end
+			policevehicles[source] = true
 		end
 	end
 end
@@ -70,24 +62,18 @@ addEventHandler("onClientElementStreamIn", getRootElement(), streamIn)
 
 function streamOut()
 	if (getElementType(source)=="vehicle") then
-		if (policevehicleids[source]~=nil) then
-			local id = policevehicleids[source]
+		if policevehicles[source] then
+			policevehicles[source] = nil
 			setVehicleHeadLightColor(source, 255, 255, 255)
-			policevehicleids[source] = nil
-			policevehicles[id] = nil
 		end
 	end
 end
 addEventHandler("onClientElementStreamOut", getRootElement(), streamOut)
 
 function doFlashes()
-	if (#policevehicles==0) then return end
-	
-	for key, veh in ipairs(policevehicles) do
+	for veh in pairs(policevehicles) do
 		if not (isElement(veh)) then
-			local id = policevehicleids[veh]
-			policevehicleids[veh] = nil
-			policevehicles[id] = nil
+			policevehicles[veh] = nil
 		elseif (getElementData(veh, "flashers")) then
 			local state1 = getVehicleLightState(veh, 0)
 			local state2 = getVehicleLightState(veh, 1)
@@ -106,6 +92,6 @@ end
 setTimer(doFlashes, 250, 0)
 
 function vehicleBlown()
-	setElementData(source, "flashers", nil, true)
+	setVehicleHeadLightColor(source, 255, 255, 255)
 end
-addEventHandler("onVehicleRespawn", getRootElement(), vehicleBlown)
+addEventHandler("onClientVehicleRespawn", getRootElement(), vehicleBlown)

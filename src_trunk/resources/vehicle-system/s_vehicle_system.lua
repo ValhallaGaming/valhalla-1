@@ -798,26 +798,28 @@ function toggleLock(source, key, keystate)
 	if (veh) and (inVehicle==1) then
 		triggerEvent("lockUnlockInsideVehicle", source, veh)
 	else
-		local x, y, z = getElementPosition(source)
-		local checkSphere = createColSphere(x, y, z, 30)
-		local nearbyVehicles = getElementsWithinColShape(checkSphere, "vehicle")
-		destroyElement(checkSphere)
-		
-		if #nearbyVehicles < 1 then return end
-		
-		local found = nil
-		local shortest = 31
-		for i, veh in ipairs(nearbyVehicles) do
-			local dbid = tonumber(getElementData(veh, "dbid"))
-			local distanceToVehicle = getDistanceBetweenPoints3D(x, y, z, getElementPosition(veh))
-			if shortest > distanceToVehicle and ( exports.global:hasItem(source, 3, dbid) or (getElementData(source, "faction") > 0 and getElementData(source, "faction") == getElementData(veh, "faction")) ) then
-				shortest = distanceToVehicle
-				found = veh
+		if not triggerEvent("lockUnlockHouse", source) then
+			local x, y, z = getElementPosition(source)
+			local checkSphere = createColSphere(x, y, z, 30)
+			local nearbyVehicles = getElementsWithinColShape(checkSphere, "vehicle")
+			destroyElement(checkSphere)
+			
+			if #nearbyVehicles < 1 then return end
+			
+			local found = nil
+			local shortest = 31
+			for i, veh in ipairs(nearbyVehicles) do
+				local dbid = tonumber(getElementData(veh, "dbid"))
+				local distanceToVehicle = getDistanceBetweenPoints3D(x, y, z, getElementPosition(veh))
+				if shortest > distanceToVehicle and ( exports.global:hasItem(source, 3, dbid) or (getElementData(source, "faction") > 0 and getElementData(source, "faction") == getElementData(veh, "faction")) ) then
+					shortest = distanceToVehicle
+					found = veh
+				end
 			end
-		end
-		
-		if found then
-			triggerEvent("lockUnlockOutsideVehicle", source, found)
+			
+			if found then
+				triggerEvent("lockUnlockOutsideVehicle", source, found)
+			end
 		end
 	end
 end

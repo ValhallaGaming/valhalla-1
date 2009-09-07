@@ -1029,3 +1029,64 @@ function moveSafe ( thePlayer, commandName )
 end
 
 addCommandHandler("movesafe", moveSafe)
+
+local function hasKey( source, key )
+	return exports.global:hasItem(source, 4, key) or exports.global:hasItem(source, 5,key)
+end
+addEvent( "lockUnlockHouse",false )
+addEventHandler( "lockUnlockHouse", getRootElement(),
+	function( )
+		local itemValue = nil
+		local found = nil
+		local elevatorres = getResourceRootElement(getResourceFromName("elevator-system"))
+		for key, value in ipairs(exports.pool:getPoolElementsByType("pickup")) do
+			local vx, vy, vz = getElementPosition(value)
+			local x, y, z = getElementPosition(source)
+
+			if getDistanceBetweenPoints3D(x, y, z, vx, vy, vz) <= 5 then
+				local dbid = getElementData(value, "dbid")
+				if hasKey(source, dbid)then -- house found
+					found = value
+					itemValue = dbid
+					break
+				elseif getElementData( value, "other" ) and getElementParent( getElementParent( value ) ) == elevatorres then
+					-- it's an elevator
+					if hasKey(source, getElementDimension( value ) ) then
+						found = value
+						itemValue = getElementDimension( value )
+						break
+					elseif hasKey(source, getElementDimension( getElementData( value, "other" ) ) ) then
+						found = value
+						itemValue = getElementDimension( getElementData( value, "other" ) )
+						break
+					end
+				end
+			end
+		end
+		
+		if found then
+			local result = mysql_query(handler, "SELECT 1-locked FROM interiors WHERE id = " .. itemValue)
+			local locked = 0
+			if result then
+				locked = tonumber(mysql_result(result, 1, 1))
+				mysql_free_result(result)
+			end
+			
+			mysql_free_result( mysql_query(handler, "UPDATE interiors SET locked='" .. locked .. "' WHERE id='" .. itemValue .. "' LIMIT 1") )
+			if locked == 0 then
+				exports.global:sendLocalMeAction(source, "puts the key in the door to unlock it.")
+			else
+				exports.global:sendLocalMeAction(source, "puts the key in the door to lock it.")
+			end
+			
+			for key, value in ipairs(exports.pool:getPoolElementsByType("pickup")) do
+				local dbid = getElementData(value, "dbid")
+				if dbid == itemValue then
+					setElementData(value, "locked", locked, false)
+				end
+			end
+		else
+			cancelEvent( )
+		end	
+	end
+)

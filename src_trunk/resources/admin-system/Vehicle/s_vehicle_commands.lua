@@ -406,6 +406,36 @@ function respawnVehiclesStop(thePlayer, commandName)
 end
 addCommandHandler("respawnstop", respawnVehiclesStop, false, false)
 
+function respawnAllVehicles(thePlayer, commandName, timeToRespawn)
+	if (exports.global:isPlayerAdmin(thePlayer)) then
+		local vehicles = exports.pool:getPoolElementsByType("vehicle")
+		local counter = 0
+		
+		for k, theVehicle in ipairs(vehicles) do
+			local dbid = getElementData(theVehicle, "dbid")
+			if dbid and dbid > 0 then
+				local driver = getVehicleOccupant(theVehicle)
+				local pass1 = getVehicleOccupant(theVehicle, 1)
+				local pass2 = getVehicleOccupant(theVehicle, 2)
+				local pass3 = getVehicleOccupant(theVehicle, 3)
+
+				if not pass1 and not pass2 and not pass3 and not driver and not getVehicleTowingVehicle(theVehicle) then
+					-- civ vehicles
+					if getElementData(theVehicle, "owner") == -2 then
+						respawnVehicle(theVehicle)
+						setVehicleLocked(theVehicle, false)
+						counter = counter + 1
+					end
+				end
+			end
+		end
+		outputChatBox(" =-=-=-=-=-=- All Civilian Vehicles Respawned =-=-=-=-=-=-=")
+		outputChatBox("Respawned " .. counter .. " civilian vehicles.", thePlayer)
+		exports.irc:sendMessage("[ADMIN] " .. getPlayerName(thePlayer) .. " respawned all civilian vehicles.")
+	end
+end
+addCommandHandler("respawnciv", respawnAllVehicles, false, false)
+
 function addUpgrade(thePlayer, commandName, target, upgradeID)
 	if (exports.global:isPlayerAdmin(thePlayer)) then
 		if not (target) or not (upgradeID) then

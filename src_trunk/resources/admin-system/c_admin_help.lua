@@ -75,6 +75,7 @@ function adminhelp (sourcePlayer, commandName)
 					{ "/nearbyvehicles", "/nearbyvehicles", "shows all vehicles within a radius of 20" },
 					{ "/respawnveh", "/respawnveh [id]", "respawns the vehicle with that id" },
 					{ "/respawnall", "/respawnall", "respawns all vehicles" },
+					{ "/respawnciv", "/respawnciv", "respawns all civilian (job) vehicles" },
 					{ "/addupgrade", "/addupgrade [player] [upgrade id]", "upgrades a players car" },
 					{ "/resetupgrades", "/resetupgrades [player]", "removes all upgrades on the player's car" },
 					{ "/findveh", "/findveh [name]", "retrieves the model for that vehicle name" },

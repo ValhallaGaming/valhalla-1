@@ -26,10 +26,6 @@ addEventHandler("onResourceStop", getResourceRootElement(getThisResource()), clo
 -- //			MYSQL END			 //
 -- ////////////////////////////////////
 
-function getLanguageName(language)
-	return languages[language]
-end
-
 function increaseLanguageSkill(player, language)
 	local hasLanguage, slot = doesPlayerHaveLanguage(player, language)
 	if (hasLanguage) then
@@ -67,6 +63,10 @@ function removeLanguage(player, language)
 		-- unbindKey(player, tostring(slot), "down", "chatbox")
 		setElementData(player, "languages.lang" .. slot, 0)
 		setElementData(player, "languages.lang" .. slot .. "skill", 0)
+		
+		return true
+	else
+		return false
 	end
 end
 
@@ -190,22 +190,31 @@ function getNextLanguageSlot(player)
 	end
 end
 
-function learnLanguage(player, lang)
+function learnLanguage(player, lang, showmessages, skill)
 	local hasLanguage, slot = doesPlayerHaveLanguage(player, lang)
 
 	if (hasLanguage) then
-		outputChatBox("You already know " .. languages[lang] .. ".", player, 255, 0, 0)
-		return false
+		if showmessages then
+			outputChatBox("You already know " .. languages[lang] .. ".", player, 255, 0, 0)
+		end
+		
+		if skill then
+			setElementData(player, "languages.lang" .. slot .. "skill", skill, false)
+			return true
+		end
+		return false, "Already knows " .. languages[lang]
 	else
 		local freeslot = getNextEmptyLanguageSlot(player)
 
 		if (freeslot==0) then
-			outputChatBox("You do not have enough space to learn this language.", player, 255, 0, 0)
-			return false
+			if showmessages then
+				outputChatBox("You do not have enough space to learn this language.", player, 255, 0, 0)
+			end
+			return false, "Not enough Space"
 		else
 			
 			setElementData(player, "languages.lang" .. freeslot, lang, false)
-			setElementData(player, "languages.lang" .. freeslot .. "skill", 0, false)
+			setElementData(player, "languages.lang" .. freeslot .. "skill", skill or 0, false)
 			
 			
 			-- bindKey(player, tostring( freeslot ), "down", "chatbox", getLanguageName( lang ))
@@ -213,6 +222,7 @@ function learnLanguage(player, lang)
 			return true
 		end
 	end
+	return false, "?"
 end
 
 function getNextEmptyLanguageSlot(player)

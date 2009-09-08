@@ -61,6 +61,8 @@ function adminhelp (sourcePlayer, commandName)
 					{ "/dropme", "/dropme", "drops you off at the current freecam position" },
 					{ "/disappear", "/disappear", "toggles invisibility" },
 					{ "/findalts", "/findalts [player]", "shows all characters the player has" },
+					{ "/setlanguage", "/setlanguage [player] [language] [skill]", "adjusts the skill of a player's language, or learns it to him" },
+					{ "/dellanguage", "/dellanguage [player] [language]", "deletes a language from the player's knowledge" },
 					
 					-- vehicle/*
 					{ "/unflip", "/unflip", "unflips the car" },

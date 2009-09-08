@@ -14,5 +14,7 @@
 	<export function="getLanguageName" type="server"/>
 	<export function="getLanguageName" type="client"/>
 	<export function="getLanguageCount" type="client"/>
+	<export function="getLanguageCount" type="server"/>
 	<export function="learnLanguage" type="server"/>
+	<export function="removeLanguage" type="server"/>
 </meta>

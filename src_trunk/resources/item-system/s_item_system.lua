@@ -420,7 +420,7 @@ function useItem(itemSlot, additional)
 			end
 			exports.global:updateNametagColor(source)
 		elseif (itemID==69) then -- Dictionary
-			local learned = call(getResourceFromName("language-system"), "learnLanguage", source, itemValue)
+			local learned = call(getResourceFromName("language-system"), "learnLanguage", source, itemValue, true)
 			local lang = call(getResourceFromName("language-system"), "getLanguageName", itemValue)
 			
 			if (learned) then

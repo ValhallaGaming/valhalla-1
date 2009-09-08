@@ -2,14 +2,6 @@
 local sx, sy, text, count, addedEvent, alpha
 local langInc = 0
 
-function getLanguageName(language)
-	return languages[language]
-end
-
-function getLanguageCount()
-	return #languages
-end
-
 function increaseInSkill(language)
 	local localPlayer = getLocalPlayer()
 	

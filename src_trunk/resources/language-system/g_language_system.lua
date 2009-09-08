@@ -55,3 +55,12 @@ flags = {
 	"ee",
 	"kr"
 }
+
+
+function getLanguageName(language)
+	return languages[language]
+end
+
+function getLanguageCount()
+	return #languages
+end

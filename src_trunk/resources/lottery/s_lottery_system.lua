@@ -43,35 +43,48 @@ function correctTime(res)
 		outputDebugString("Lottery will be drawn in "..drawTime.." minutes.")		
 		drawTime = 0
 	end
+	
+	-- check for lottery setting
+	local result = mysql_query( handler, "SELECT COUNT(*) FROM settings WHERE name = 'lotteryjackpot'" )
+	if result then
+		if tonumber( mysql_result( result, 1, 1 ) ) == 0 then
+			mysql_free_result( mysql_query( handler, "INSERT INTO settings (name, value) VALUES ('lotteryjackpot', 0)" ) )
+		end
+		mysql_free_result( result )
+	end
 end
 addEventHandler("onResourceStart", getResourceRootElement(), correctTime)
 
 function giveTicket(aPlayer)
 	local PlayerID = getElementData(aPlayer, "dbid")
 	local ticketNumber = tostring(math.random(1000, 9999))
-	local result = mysql_query(handler, "SELECT characterid FROM lottery WHERE ticketnumber ='" .. ticketNumber .. "'")
+	local result = mysql_query(handler, "SELECT characterid FROM lottery WHERE ticketnumber = " .. ticketNumber )
 	if (mysql_num_rows(result) == 0) then
-		mysql_free_result(mysql_query(handler, "INSERT INTO lottery (characterid, ticketnumber) VALUES (" .. PlayerID .. ", " .. ticketNumber .. " )"))
-		local result = mysql_query(handler, "SELECT ammount FROM lotteryjackpot")
-		local jackpot = mysql_result(result,1,1) + 40
-		mysql_free_result(mysql_query(handler, "UPDATE lotteryjackpot SET ammount='" .. jackpot .. "'"))	
-		mysql_free_result(result)
+		mysql_free_result( mysql_query( handler, "INSERT INTO lottery (characterid, ticketnumber) VALUES (" .. PlayerID .. ", " .. ticketNumber .. " )" ) )
+		mysql_free_result( mysql_query( handler, "UPDATE settings SET value = value + 40 WHERE name = 'lotteryjackpot'" ) )	
 		return tonumber(ticketNumber)
-	elseif (mysql_num_rows(mysql_query(handler, "SELECT ticketnumber FROM lottery"))) >= 8999 then
-		return false
 	else
-		giveTicket(aPlayer)
+		local result = mysql_query( handler, "SELECT COUNT(*) FROM lottery" )
+		if result then
+			if tonumber( mysql_result( result, 1, 1 ) or 0 ) >= 8999 then
+				mysql_free_result( result )
+				return false
+			end
+			mysql_free_result( result )
+		else
+			giveTicket(aPlayer)
+		end
 	end
 end
 
 function drawLottery()
-	local drawNumbers =  12345 -- tostring(math.random(1000, 9999))
+	local query = mysql_query(handler, "SELECT value FROM settings WHERE name = 'lotteryjackpot'")
+	local jackpot = tonumber(mysql_result(query, 1, 1))
+	mysql_free_result(query)
+	
+	local drawNumbers = tostring(math.random(1000, 9999))
 	local result = mysql_query(handler, "SELECT characterid, c.charactername FROM lottery l LEFT JOIN characters c ON l.characterid = c.id  WHERE ticketnumber = " .. drawNumbers)
 	if (mysql_num_rows(result) ~= 0) then
-		local query = mysql_query(handler, "SELECT ammount FROM lotteryjackpot")
-		local jackpot = tonumber(mysql_result(query, 1, 1))
-		mysql_free_result(query)
-		
 		local charid = tonumber(mysql_result(result, 1, 1))
 		local charname = mysql_result(result, 1, 2)
 		
@@ -83,11 +96,11 @@ function drawLottery()
 			local query = mysql_query(handler, "UPDATE characters SET bankmoney=bankmoney+" .. jackpot .. " WHERE id=" .. charid)
 			mysql_free_result(query)
 		end
-		mysql_free_result(mysql_query(handler, "INSERT INTO wiretransfers (`from`, `to`, `amount`, `reason`, `type`) VALUES (0, " .. charid .. ", " .. jackpot .. ", 'Won lottery', 3)"))
-		mysql_free_result(mysql_query(handler, "UPDATE lotteryjackpot SET ammount='0'"))
+		mysql_free_result( mysql_query( handler, "INSERT INTO wiretransfers (`from`, `to`, `amount`, `reason`, `type`) VALUES (0, " .. charid .. ", " .. jackpot .. ", 'Won lottery', 3)" ) )
+		mysql_free_result( mysql_query( handler, "UPDATE settings SET value = 0 WHERE name = 'lotteryjackpot'" ) )
 		outputChatBox("* [LOTTERY] The winner of the lottery is: " .. charname:gsub("_", " ") .. "! The Jackpot of $" .. jackpot .. " will be transfered to his/her account.", getRootElement(), 0, 255, 0)
 	else
-		outputChatBox("* [LOTTERY] Nobody wins. The jackpot has been accumulated.", getRootElement(), 255, 255, 0)
+		outputChatBox("* [LOTTERY] Nobody wins. The jackpot of $" .. jackpot .. " has been accumulated.", getRootElement(), 255, 255, 0)
 	end
 	drawTimer2 = setTimer ( drawLottery, 86400000, 1 )
 	mysql_free_result(result)

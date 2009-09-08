@@ -202,11 +202,9 @@ function publicSellProperty(thePlayer, dbid, showmessages)
 					outputChatBox("You sold your property for " .. money .. "$.", thePlayer, 0, 255, 0)
 				end
 				
-				local keytype = 4
-				if interiorType == 1 then
-					keytype = 5
-				end
-				exports.global:takeItem(thePlayer, keytype, dbid)
+				-- take all keys
+				call( getResourceFromName( "item-system" ), "deleteAll", 4, dbid )
+				call( getResourceFromName( "item-system" ), "deleteAll", 5, dbid )
 				
 				triggerClientEvent(thePlayer, "removeBlipAtXY", thePlayer, interiorType, getElementPosition(entrance))
 			else
@@ -218,7 +216,8 @@ function publicSellProperty(thePlayer, dbid, showmessages)
 			if showmessages then
 				outputChatBox("You are no longer renting this property.", thePlayer, 0, 255, 0)
 			end
-			exports.global:takeItem(thePlayer, 4, dbid)
+			call( getResourceFromName( "item-system" ), "deleteAll", 4, dbid )
+			call( getResourceFromName( "item-system" ), "deleteAll", 5, dbid )
 			triggerClientEvent(thePlayer, "removeBlipAtXY", thePlayer, interiorType, getElementPosition(entrance))
 		end
 
@@ -257,12 +256,13 @@ function sellTo(thePlayer, commandName, targetPlayerName)
 									setElementData(entrance, "owner", getElementData(targetPlayer, "dbid"))
 									setElementData(exit, "owner", getElementData(targetPlayer, "dbid"))
 									
-									-- FIXME: remove all keys for that Property from all people
 									local keytype = 4
 									if interiorType == 1 then
 										keytype = 5
 									end
-									exports.global:takeItem(thePlayer, keytype, dbid)
+									
+									call( getResourceFromName( "item-system" ), "deleteAll", 4, dbid )
+									call( getResourceFromName( "item-system" ), "deleteAll", 5, dbid )
 									exports.global:giveItem(targetPlayer, keytype, dbid)
 									
 									triggerClientEvent(thePlayer, "removeBlipAtXY", thePlayer, interiorType, getElementPosition(entrance))
@@ -750,6 +750,10 @@ function buyInterior(player, pickup, cost, isHouse, isRentable)
 			
 		mysql_free_result(result)
 		exports.global:takePlayerSafeMoney(player, cost)
+		
+		-- make sure it's an unqiue key
+		call( getResourceFromName( "item-system" ), "deleteAll", 4, dbid )
+		call( getResourceFromName( "item-system" ), "deleteAll", 5, dbid )
 		
 		if (isHouse) then
 			-- Achievement

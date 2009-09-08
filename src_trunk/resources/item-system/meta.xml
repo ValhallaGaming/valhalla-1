@@ -13,6 +13,7 @@
 	<export function="hasSpaceForItem" type="server"/>
 	<export function="getItems" type="server"/>
 	<export function="getInventorySlots" type="server"/>
+	<export function="deleteAll" type="server"/>
 
 	<script src="c_item_management.lua" type="client"/>
 	<export function="hasItem" type="client"/>

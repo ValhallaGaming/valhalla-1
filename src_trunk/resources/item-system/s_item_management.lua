@@ -43,6 +43,8 @@ x hasSpaceForItem(obj) -- returns true if you can put more stuff in
 
 x getItems(obj) -- returns an array of all items in { slot = { itemID, itemValue } } table
 x getInventorySlots(obj) -- returns the number of available inventory slots
+
+x deleteAll(itemID, itemValue) -- deletes all instances of that item
 ]]--
 
 local saveditems = {}
@@ -352,5 +354,50 @@ function getInventorySlots(element)
 		end
 	else
 		return 20
+	end
+end
+
+-- delete all instances of an item
+function deleteAll( itemID, itemValue )
+	if itemID then
+		-- make sure it's erased from the db
+		if itemValue then
+			mysql_free_result( mysql_query( handler, "DELETE FROM items WHERE itemID = " .. itemID .. " AND itemValue = " .. itemValue ) )
+			mysql_free_result( mysql_query( handler, "DELETE FROM worlditems WHERE itemid = " .. itemID .. " AND itemvalue = '" .. itemValue .. "'" ) )
+			
+			-- delete from all items
+			for key, value in pairs( getElementsByType( "object", getResourceRootElement( ) ) ) do
+				if isElement( value ) then
+					if getElementData( value, "itemID" ) == itemID and getElementData( value, "itemValue" ) == itemValue then
+						destroyElement( value )
+					end
+				end
+			end
+		else
+			mysql_free_result( mysql_query( handler, "DELETE FROM items WHERE itemID = " .. itemID ) )
+			mysql_free_result( mysql_query( handler, "DELETE FROM worlditems WHERE itemid = " .. itemID ) )
+			
+			-- delete from all items
+			for key, value in pairs( getElementsByType( "object", getResourceRootElement( ) ) ) do
+				if isElement( value ) then
+					if getElementData( value, "itemID" ) == itemID then
+						destroyElement( value )
+					end
+				end
+			end
+		end
+		
+		-- delete from all storages
+		for value in pairs( saveditems ) do
+			if isElement( value ) then
+				while exports.global:hasItem( value, itemID, itemValue ) do
+					exports.global:takeItem( value, itemID, itemValue )
+				end
+			end
+		end
+		
+		return true
+	else
+		return false
 	end
 end

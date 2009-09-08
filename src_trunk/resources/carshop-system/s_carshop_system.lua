@@ -79,7 +79,7 @@ function makeCar(thePlayer, id, cost, col1, col2, x, y, z, rz, px, py, pz, prz)
 	local locked = 0
 		
 	local query = mysql_query(handler, "INSERT INTO vehicles SET model='" .. id .. "', x='" .. x .. "', y='" .. y .. "', z='" .. z .. "', rotx='" .. rx .. "', roty='" .. ry .. "', rotz='" .. rz .. "', color1='" .. col1 .. "', color2='" .. col2 .. "', faction='-1', owner='" .. dbid .. "', plate='" .. plate .. "', currx='" .. x .. "', curry='" .. y .. "', currz='" .. z .. "', currrx='0', currry='0', currrz='" .. rz .. "', locked='" .. locked .. "'")
-	local insertid = mysql_insert_id ( handler )
+	local insertid = tonumber( mysql_insert_id ( handler ) )
 	if (query) then
 		mysql_free_result(query)
 		
@@ -101,7 +101,10 @@ function makeCar(thePlayer, id, cost, col1, col2, x, y, z, rz, px, py, pz, prz)
 		setVehicleEngineState(veh, false)
 		setVehicleFuelTankExplodable(veh, false)
 		
-		exports.global:giveItem(thePlayer, 3, tonumber(insertid))
+		-- make sure it's an unique key
+		call( getResourceFromName( "item-system" ), "deleteAll", 3, insertid )
+		exports.global:giveItem( thePlayer, 3, insertid )
+		
 		setElementData(veh, "fuel", 100)
 		setElementData(veh, "engine", 0, false)
 		setElementData(veh, "oldx", x, false)

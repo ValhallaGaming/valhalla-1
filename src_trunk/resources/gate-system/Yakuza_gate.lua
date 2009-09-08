@@ -3,7 +3,8 @@ local Gate = {
 	[2] = createObject(971, 281.03247070313, -1321.0693359375, 56.31640625, 0, 358.74755859375, 34.376220703125),
 }
 local GateName = "Yakuza Gate"
-exports.pool:allocateElement(Gate)
+exports.pool:allocateElement(Gate[1])
+exports.pool:allocateElement(Gate[2])
 local GatePass = "Yakuza2009"
 local open = false
 

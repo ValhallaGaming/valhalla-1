@@ -354,6 +354,14 @@ function respawnAllVehicles(thePlayer, commandName, timeToRespawn)
 				if (pass1) or (pass2) or (pass3) or (driver) or (getVehicleTowingVehicle(theVehicle)) then
 					occupiedcounter = occupiedcounter + 1
 				else
+					if isVehicleBlown(theVehicle) or isElementInWater(theVehicle) then
+						fixVehicle(theVehicle)
+						for i = 0, 5 do
+							setVehicleDoorState(theVehicle, 4) -- all kind of stuff missing
+						end
+						setElementHealth(theVehicle, 300) -- lowest possible health
+					end
+					
 					local x, y, z, rx, ry, rz = unpack(getElementData(theVehicle, "respawnposition"))
 					setElementPosition(theVehicle, x, y, z)
 					setVehicleRotation(theVehicle, rx, ry, rz)

@@ -759,10 +759,10 @@ function hideAdmin(thePlayer, commandName)
 		local hiddenAdmin = getElementData(thePlayer, "hiddenadmin")
 		
 		if (hiddenAdmin==0) then
-			setElementData(thePlayer, "hiddenadmin", 1, false)
+			setElementData(thePlayer, "hiddenadmin", 1)
 			outputChatBox("You are now a hidden admin.", thePlayer, 255, 194, 14)
 		elseif (hiddenAdmin==1) then
-			setElementData(thePlayer, "hiddenadmin", 0, false)
+			setElementData(thePlayer, "hiddenadmin", 0)
 			outputChatBox("You are no longer a hidden admin.", thePlayer, 255, 194, 14)
 		end
 		exports.global:updateNametagColor(thePlayer)

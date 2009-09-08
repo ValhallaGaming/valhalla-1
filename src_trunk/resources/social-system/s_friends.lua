@@ -48,93 +48,76 @@ addEventHandler("onPlayerJoin", getRootElement(), bindKeysOnJoin)
 function toggleFriends(source)
 	local logged = getElementData(source, "gameaccountloggedin")
 	
-	if (logged==1) then
+	if logged == 1 then
 		local visible = getElementData(source, "friends.visible")
 		
-		if (visible==0) then -- not already showing
+		if visible == 0 then -- not already showing
 			local accid = tonumber(getElementData(source, "gameaccountid"))
-			local result = mysql_query(handler, "SELECT friends, friendsmessage FROM accounts WHERE id='" .. accid .. "' LIMIT 1")
 			
-			if (result) then
-				local sfriends = mysql_result(result, 1, 1)
-				local fmessage = mysql_result(result, 1, 2)
-				
-				if (tostring(sfriends)==tostring(mysql_null())) then
-					sfriends = ""
-				end
-				
-				if (tostring(fmessage)==tostring(mysql_null())) then
-					fmessage = ""
-				end
-				
+			-- load friends list
+			local result = mysql_query( handler, "SELECT f.friend, a.username, a.friendsmessage, a.yearday, a.year, a.country, a.os, ( SELECT COUNT(*) FROM achievements b WHERE b.account = a.id ) FROM friends f LEFT JOIN accounts a ON f.friend = a.id WHERE f.id = " .. accid )
+			if result then
 				local friends = { }
-				local count = 1
-				
-				for i=1, 100 do
-					local fid = gettok(sfriends, i, 59)
+				for result, row in mysql_rows(result) do
+					local id = tonumber( row[1] )
+					local account = row[2]
 					
-					if (fid) then
-						local fresult = mysql_query(handler, "SELECT username, friendsmessage, yearday, year, country, os FROM accounts WHERE id='" .. fid .. "' LIMIT 1")
+					if account == mysql_null( ) then -- account doesn't exist any longer, drop friends
+						mysql_free_result( mysql_query( handler, "DELETE FROM friends WHERE id = " .. id .. " OR friend = " .. id ) )
+					else
+						-- Last online
+						local time = getRealTime()
+						local years = (1900+time.year)
+						local yearday = time.yearday
+
+						local fyearday = tonumber( row[4] ) -- YEAR DAY
+						local fyear = tonumber( row[5] ) -- YEAR
 						
-						local aresult = mysql_query(handler, "SELECT id FROM achievements WHERE account='" .. fid .. "'")
-						local numachievements = mysql_num_rows(aresult)
-						mysql_free_result(aresult)
-						--outputDebugString(mysql_result(fresult, 1, 1))
-						if (mysql_result(fresult, 1, 1)~=nil) then -- we should make it auto delete in future...
-							friends[count] = { }
-							friends[count][1] = tonumber(fid) -- USER ID
-							friends[count][2] = mysql_result(fresult, 1, 1) -- USERNAME
-							friends[count][3] = mysql_result(fresult, 1, 2) -- MESSAGE
-							friends[count][4] = mysql_result(fresult, 1, 5) -- COUNTRY
-							friends[count][7] = tostring(mysql_result(fresult, 1, 6)) -- OPERATING SYSTEM
-							friends[count][8] = tostring(numachievements) -- NUM ACHIEVEMENTS
-						
-						
-							-- Last online
-							local time = getRealTime()
-							local days = time.monthday
-							local months = (time.month+1)
-							local years = (1900+time.year)
-							
-							local yearday = time.yearday
-							local fyearday = tonumber(mysql_result(fresult, 1, 3)) -- YEAR DAY
-							local fyear = tonumber(mysql_result(fresult, 1, 4)) -- YEAR
-							
-							local found, player = false
-							for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
-								if isElement(value) and (tonumber(getElementData(value, "gameaccountid"))==friends[count][1]) then
-									found = true
-									player = value
-								end
+						local player = nil
+						for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
+							if isElement(value) and getElementData(value, "gameaccountid") == id then
+								player = value
+								break
 							end
-							
-							if (found) then
-								friends[count][5] = "Online"
-								friends[count][6] = getPlayerName(player)
-							elseif (years~=fyear) then
-								friends[count][5] = "Last Seen: Last Year"
-							elseif (yearday==fyearday) then
-								friends[count][5] = "Last Seen: Today"
-							else
-								local diff = yearday - fyearday
-								if diff == 1 then
-									friends[count][5] = "Last Seen: Yesterday"
-								else
-									friends[count][5] = "Last Seen: " .. tostring(diff) .. " days ago"
-								end
-							end
-							count = count + 1
+						end
+						
+						local state = "Offline"
+						local name = nil
+						
+						if player then
+							state = "Online"
+							name = getPlayerName( player ):gsub("_", " ")
+						elseif years ~= fyear then
+							state = "Last Seen: Last Year"
+						elseif yearday == fyearday then
+							state = "Last Seen: Today"
+						elseif yearday - fyearday == 1 then
+							state = "Last Seen: Yesterday"
+						else
+							state = "Last Seen: " .. yearday - fyearday .. " days ago"
 						end
 							
-						mysql_free_result(fresult)
-					else
-						break
+						friends[ #friends + 1 ] = { id, account, row[3], row[6], state, name, row[7], tonumber( row[8] ) }
 					end
 				end
-				mysql_free_result(result)
+				
+				mysql_free_result( result )
+				
+				local friendsmessage = ""
+				local result = mysql_query( handler, "SELECT friendsmessage FROM accounts WHERE id = " .. accid )
+				if result then
+					friendsmessage = mysql_result( result, 1, 1 )
+					if friendsmessage == mysql_null( ) then
+						friendsmessage = ""
+					end
+					mysql_free_result( result )
+				else
+					outputDebugString( "Friendmessage load failed: " .. mysql_error( handler ) )
+				end
+				triggerClientEvent( source, "showFriendsList", source, friends, friendsmessage )
 				setElementData(source, "friends.visible", 1)
-				triggerClientEvent(source, "showFriendsList", source, friends)
 			else
+				outputDebugScript( "Friends load failed: " .. mysql_error(handler) )
 				outputChatBox("Error 600000 - Could not retrieve friends list.", source, 255, 0, 0)
 			end
 		end
@@ -150,7 +133,6 @@ function updateFriendsMessage(message)
 	local query = mysql_query(handler, "UPDATE accounts SET friendsmessage='" .. safemessage .. "' WHERE id='" .. accid .. "'")
 	if (query) then
 		setElementData(source, "friends.visible", 0, false)
-		setElementData(source, "friends.message", tostring(safemessage))
 		mysql_free_result(query)
 		toggleFriends(source)
 	else
@@ -162,27 +144,9 @@ addEventHandler("updateFriendsMessage", getRootElement(), updateFriendsMessage)
 
 function removeFriend(id, username, dontShowFriends)
 	local accid = tonumber(getElementData(source, "gameaccountid"))
-	local result = mysql_query(handler, "SELECT friends, friendsmessage FROM accounts WHERE id='" .. accid .. "' LIMIT 1")
-	
-	if (result) then
-		local sfriends = mysql_result(result, 1, 1)
-		local fmessage = mysql_result(result, 1, 2)
-				
-		local friendstring = ""
-		local count = 1
-				
-		for i=1, 100 do
-			local fid = gettok(sfriends, i, 59)
-					
-			if (fid) then 
-				if not (tonumber(fid)==id) then
-					friendstring = friendstring .. fid .. ";"
-				end
-			end
-		end
-		local query = mysql_query(handler, "UPDATE accounts SET friends='" .. friendstring .. "' WHERE id='" .. accid .. "'")
-		mysql_free_result(query)
-		mysql_free_result(result)
+	local result = mysql_query( handler, "DELETE FROM friends WHERE id = " .. accid .. " AND friend = " .. id )
+	if result then
+		mysql_free_result( result )
 		outputChatBox("You removed '" .. username .. "' from your friends list.", source, 255, 194, 14)
 		
 		setElementData(source, "friends.visible", 0, false)

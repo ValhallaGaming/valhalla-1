@@ -7,7 +7,7 @@ local scrWidth, scrHeight = guiGetScreenSize()
 x = scrWidth/2 - (width/2)
 y = scrHeight/2 - (height/2)
 	
-function showFriendsUI(friends)
+function showFriendsUI(friends, fmess)
 	wFriends = guiCreateWindow(x, y, width, height, "Friends List", false)
 	guiWindowSetSizable(wFriends, false)
 	addEventHandler("onClientGUIMove", wFriends, storeCoords)
@@ -29,8 +29,6 @@ function showFriendsUI(friends)
 	if (country==nil) then country = "ru" end
 	imgFlag = guiCreateStaticImage(0.0875, 0.0875, 0.025806*3, 0.021154, "images/flags/" .. string.lower(country) .. ".png", true, wFriends)
 	
-	local fmess = getElementData(getLocalPlayer(), "friends.message")
-	
 	tMessage = guiCreateEdit(0.08, 0.12, 0.6, 0.04, tostring(fmess), true, wFriends)
 	
 	bSendMessage = guiCreateButton(0.68, 0.12, 0.25, 0.04, "Update", true, wFriends)
@@ -41,23 +39,13 @@ function showFriendsUI(friends)
 	local dy = 0.0
 	local dheight = 0.2
 	for key, value in ipairs(friends) do
-		local id = friends[key][1]
-		local username = friends[key][2]
-		local message = friends[key][3]
-		local country = friends[key][4]
-		local status = friends[key][5]
-		local operatingsystem = friends[key][7]
-		local name = nil
+		local id, username, message, country, status, name, operatingsystem = unpack( value )
 		
 		-- Fix for blank messages
-		if (tostring(message)=="nil") then
+		if not message then
 			message = "No Message"
 		else
 			message = "'" .. message .. "'"
-		end
-		
-		if (status=="Online") then
-			name = string.gsub(friends[key][6], "_", " ")
 		end
 	
 		-- STANDARD UI
@@ -66,17 +54,14 @@ function showFriendsUI(friends)
 		paneFriend[key][1] = guiCreateStaticImage(0.0, 0.1, 0.9, 0.5, ":account-system/img/charbg0.png", true, paneFriend[key][7])
 			
 			
-		if (name~=nil) then
-			paneFriend[key][2] = guiCreateLabel(0.12, 0.1, 0.8, 0.2, username .. " as " .. name, true, paneFriend[key][7])
-		else
-			paneFriend[key][2] = guiCreateLabel(0.12, 0.1, 0.8, 0.2, username, true, paneFriend[key][7])
-		end
+		paneFriend[key][2] = guiCreateLabel(0.12, 0.1, 0.8, 0.2, username, true, paneFriend[key][7])
 		guiSetFont(paneFriend[key][2], "default-bold-small")
 
-		if (country==nil) then country = "ru" end
+		paneFriend[key][3] = guiCreateStaticImage(0.0175, 0.125, 0.09, 0.08, "images/flags/" .. string.lower(country or "ru") .. ".png", true, paneFriend[key][7])
 		
-		paneFriend[key][3] = guiCreateStaticImage(0.0175, 0.125, 0.09, 0.08, "images/flags/" .. string.lower(country) .. ".png", true, paneFriend[key][7])
-		
+		if name then
+			status = status .. " as " .. name
+		end
 		paneFriend[key][4] = guiCreateLabel(0.12, 0.2, 0.8, 0.2, tostring(status), true, paneFriend[key][7])
 		guiSetFont(paneFriend[key][4], "default-bold-small")
 		
@@ -139,7 +124,7 @@ function removeFriend(button)
 			local id = tFriends[targetvalue][1]
 			local username = tFriends[targetvalue][2]
 			hideFriendsUI()
-			triggerServerEvent("removeFriend", getLocalPlayer(), id, username)
+			triggerServerEvent("removeFriend", getLocalPlayer(), id, username, false)
 		end
 	end
 end

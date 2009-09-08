@@ -672,7 +672,7 @@ end
 
 function loginPlayer(username, password, operatingsystem)
 	local safeusername = mysql_escape_string(handler, username)
-	local result = mysql_query(handler, "SELECT id, admin, hiddenadmin, adminduty, donator, adminjail, adminjail_time, adminjail_by, adminjail_reason, banned, banned_by, banned_reason, muted, globalooc, blur, friendsmessage, friends, adminreports, pmblocked, warns, chatbubbles FROM accounts WHERE username='" .. safeusername .. "' AND password='" .. password .. "'")
+	local result = mysql_query(handler, "SELECT id, admin, hiddenadmin, adminduty, donator, adminjail, adminjail_time, adminjail_by, adminjail_reason, banned, banned_by, banned_reason, muted, globalooc, blur, adminreports, pmblocked, warns, chatbubbles FROM accounts WHERE username='" .. safeusername .. "' AND password='" .. password .. "'")
 	
 	if (mysql_num_rows(result)>0) then
 		triggerEvent("onPlayerLogin", source, username, password)
@@ -709,12 +709,10 @@ function loginPlayer(username, password, operatingsystem)
 			local muted = tonumber(mysql_result(result, 1, 13))
 			local globalooc = tonumber(mysql_result(result, 1, 14))
 			local blur = tonumber(mysql_result(result, 1, 15))
-			local fmessage = mysql_result(result, 1, 16)
-			local friends = mysql_result(result, 1, 17)
-			local adminreports = tonumber(mysql_result(result, 1, 18))
-			local pmblocked = tonumber(mysql_result(result, 1, 19))
-			local warns = tonumber(mysql_result(result, 1, 20))
-			local chatbubbles = tonumber(mysql_result(result, 1, 21))
+			local adminreports = tonumber(mysql_result(result, 1, 16))
+			local pmblocked = tonumber(mysql_result(result, 1, 17))
+			local warns = tonumber(mysql_result(result, 1, 18))
+			local chatbubbles = tonumber(mysql_result(result, 1, 19))
 			
 			local country = exports.global:getPlayerCountry(source)
 			if (username=="Daniels") then
@@ -722,18 +720,6 @@ function loginPlayer(username, password, operatingsystem)
 			else
 				setElementData(source, "country", tostring(country))
 			end
-			
-			-- Fix for blank messages
-			if (mysql_result(result, 1, 16)==mysql_null()) then
-				fmessage = "No Message"
-			end
-			setElementData(source, "friends.message", fmessage)
-			
-			-- Fix for blank friends
-			if (mysql_result(result, 1, 17)==mysql_null()) then
-				friends = ""
-			end
-			setElementData(source, "friends.list", friends)
 			
 			setElementData(source, "donatorlevel", tonumber(donator))
 			setElementData(source, "adminlevel", tonumber(admin))

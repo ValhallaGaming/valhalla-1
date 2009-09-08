@@ -1,6 +1,6 @@
-username = "root"
-password = "rewt"
-db = "mta"
+username = "valhalla"
+password = "dqIm6+xoF"
+db = "valhalla"
 host = "localhost"
 port = 3306
 

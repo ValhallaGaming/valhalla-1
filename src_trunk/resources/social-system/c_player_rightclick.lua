@@ -31,16 +31,8 @@ function clickPlayer(button, state, absX, absY, wx, wy, wz, element)
 end
 addEventHandler("onClientClick", getRootElement(), clickPlayer, true)
 
-function showPlayerMenu(targetPlayer, friends, sdescription, sage, sweight, sheight, srace)
+function showPlayerMenu(targetPlayer, friend, sdescription, sage, sweight, sheight, srace)
 	wRightClick = guiCreateWindow(ax, ay, 150, 200, string.gsub(getPlayerName(targetPlayer), "_", " "), false)
-	
-	local targetid = tonumber(getElementData(targetPlayer, "gameaccountid"))
-	local found = false
-	for key, value in ipairs(friends) do
-		if (friends[key]==targetid) then
-			found = true
-		end
-	end
 	
 	age = sage
 	weight = sweight
@@ -58,7 +50,7 @@ function showPlayerMenu(targetPlayer, friends, sdescription, sage, sweight, shei
 	end
 
 	
-	if (found==false) then
+	if not friend then
 		bAddAsFriend = guiCreateButton(0.05, 0.13, 0.87, 0.1, "Add as friend", true, wRightClick)
 		addEventHandler("onClientGUIClick", bAddAsFriend, caddFriend, false)
 	else

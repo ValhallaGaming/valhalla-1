@@ -13,6 +13,8 @@ addEventHandler( "onResourceStart", getResourceRootElement( ),
 					
 					if friend then
 						mysql_free_result( mysql_query( handler, "INSERT INTO friends VALUES (" .. id .. ", " .. friend .. ")" ) )
+					else
+						break
 					end
 				end
 				mysql_free_result( mysql_query( handler, "UPDATE accounts SET friends = '' WHERE id = " .. id ) )

@@ -103,7 +103,7 @@ g_bus_routes =
 			{1622.8982,-1729.7705,13.2578,false,0}, -- Line B - Checkpoint
 			{1463.0024,-1728.8948,13.2578,true,2}, -- Line B - City Hall
 			{1386.1307,-1790.0061,13.2578,false,0}, -- Line B - Checkpoint
-			{1315.9840,-1818.5928,13.2578,true,3}, -- Line B - DMV Parking lot
+			{1315.9840,-1813.5928,13.2578,true,3}, -- Line B - DMV Parking lot
 			{1314.8202,-1612.5717,13.2578,false,0}, -- Line B - Checkpoint
 			{1311.2075,-1393.3401,13.1649,false,0}, -- Line B - Checkpoint
 			{1172.6312,-1391.6152,13.2680,true,4}, -- Line B - Verona Mall & All Saints Hospital
@@ -122,7 +122,7 @@ g_bus_routes =
 			{430.0234,-1340.8903,14.7877,false,0}, -- Line B - Checkpoint
 			{566.9686,-1243.5836,17.1045,true,7}, -- Line B - LS Bank & Grotti Cars
 			{694.3098,-1159.7479,15.2229,false,0}, -- Line B - Checkpoint
-			{793.1010,-1072.7249,24.2165,false,0}, -- Line B - Checkpoint
+			{793.1010,-1087.7249,24.2165,false,0}, -- Line B - Checkpoint
 			{914.3346,-1150.2599,23.6295,false,0}, -- Line B - Checkpoint
 			{966.4662,-1109.5269,23.5672,true,8}, -- Line B - Cemetery, Chinatown
 			{1014.1530,-1041.9336,31.3178,false,0}, -- Line B - Checkpoint

@@ -433,22 +433,25 @@ function spawnCharacter(charname)
 		local percent = math.ceil((playercount/maxplayers)*100)
 		
 		local friendsonline = 0
-		local friends = tostring(getElementData(source, "friends.list"))
-		
-		local factiononline = 0
-		
-		for i=1, 100 do
-			local fid = gettok(friends, i, 59)
-			if (fid) then
-				for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
-					local id = tonumber(getElementData(value, "gameaccountid"))
-					if (id==tonumber(fid)) then
-						friendsonline = friendsonline + 1
-					end
-				end
-			else
-				break
+		local friends = mysql_query( handler, "SELECT friend FROM friends WHERE id = " .. getElementData( source, "gameaccountid" ) )
+		if friends then
+			local ids = {}
+			for result, row in mysql_rows( friends ) do
+				ids[ tonumber( row[1] ) ] = true
 			end
+			mysql_free_result( friends )
+			
+			for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
+				if isElement( value ) and ids[ getElementData( value, "gameaccountid" ) ] then
+					friendsonline = friendsonline + 1
+				end
+			end
+		end
+		
+		if friendsonline == 1 then
+			friendsonline = "1 Friend"
+		else
+			friendsonline = friendsonline .. " Friends"
 		end
 		
 		local factiononline = 0
@@ -456,11 +459,17 @@ function spawnCharacter(charname)
 			factiononline = #getPlayersInTeam(theTeam)
 		end
 		
+		if factiononline == 1 then
+			factiononline = "1 Faction Member"
+		else
+			factiononline = factiononline .. " Faction Members"
+		end
+		
 		
 		if (factionName~="Citizen") then
-			outputChatBox("Players Online: " .. playercount .. "/" .. maxplayers .. " (" .. percent .. "%)  -   " .. factiononline .. " Faction Member(s) - " .. friendsonline .. " Friend(s).", source, 255, 194, 14)
+			outputChatBox("Players Online: " .. playercount .. "/" .. maxplayers .. " (" .. percent .. "%)  -   " .. factiononline .. " - " .. friendsonline .. ".", source, 255, 194, 14)
 		else
-			outputChatBox("Players Online: " .. playercount .. "/" .. maxplayers .. " (" .. percent .. "%) - " .. friendsonline .. " Friend(s).", source, 255, 194, 14)
+			outputChatBox("Players Online: " .. playercount .. "/" .. maxplayers .. " (" .. percent .. "%) - " .. friendsonline .. ".", source, 255, 194, 14)
 		end
 		
 		-- LAST LOGIN

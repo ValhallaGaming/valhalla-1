@@ -7,6 +7,8 @@
 	<script src="s_player_rightclick.lua" type="server"/>
 	<script src="c_player_rightclick.lua" type="client"/>
 	
+	<script src="s_upgrade.lua" type="server"/>
+	
 	<file src="images/friendsme.png" />
 	
 	<file src="images/Linux.png" />

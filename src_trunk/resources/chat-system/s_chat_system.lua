@@ -1069,12 +1069,12 @@ function localWhisper(thePlayer, commandName, targetPlayerNick, ...)
 				
 				if (getDistanceBetweenPoints3D(x, y, z, tx, ty, tz)<3) then
 					local message = table.concat({...}, " ")
-					local message2 = call(getResourceFromName("language-system"), "applyLanguage", thePlayer, targetPlayer, message, language)
 					
 					local languageslot = getElementData(thePlayer, "languages.current")
 					local language = getElementData(thePlayer, "languages.lang" .. languageslot)
 					local languagename = call(getResourceFromName("language-system"), "getLanguageName", language)
-						
+					local message2 = call(getResourceFromName("language-system"), "applyLanguage", thePlayer, targetPlayer, message, language)
+					
 					local name = string.gsub(getPlayerName(thePlayer), "_", " ")
 					local targetName = string.gsub(getPlayerName(targetPlayer), "_", " ")
 					

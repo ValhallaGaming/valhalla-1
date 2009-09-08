@@ -857,7 +857,7 @@ function payWage(player, pay, faction, tax)
 				id = tonumber(mysql_result(result, 1, 1))
 				mysql_free_result(result)
 				
-				call( getResourceFromName( "interior-system" ), "publicSellProperty", player, id, false )
+				call( getResourceFromName( "interior-system" ), "publicSellProperty", player, id, false, true )
 			else
 				setElementData(player, "bankmoney", bankmoney - rent)
 			end

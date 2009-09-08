@@ -1146,6 +1146,9 @@ function checkVehpos(veh, dbid)
 				destroyElement(veh)
 				local query = mysql_query(handler, "DELETE FROM vehicles WHERE id='" .. id .. "' LIMIT 1")
 				mysql_free_result(query)
+				
+				call( getResourceFromName( "item-system" ), "clearItems", veh )
+				call( getResourceFromName( "item-system" ), "deleteAll", 3, id )
 			end
 		end
 	end

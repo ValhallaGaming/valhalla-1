@@ -161,7 +161,7 @@ function sellProperty(thePlayer, commandName)
 			outputChatBox("You cannot sell a government property.", thePlayer, 255, 0, 0)
 		else
 			if exports.global:isPlayerAdmin(thePlayer) or getElementData(entrance, "owner") == getElementData(thePlayer, "dbid") then
-				publicSellProperty(thePlayer, dbid, true)
+				publicSellProperty(thePlayer, dbid, true, true)
 			else
 				outputChatBox("You do not own this property.", thePlayer, 255, 0, 0)
 			end
@@ -172,7 +172,7 @@ function sellProperty(thePlayer, commandName)
 end
 addCommandHandler("sellproperty", sellProperty, false, false)
 
-function publicSellProperty(thePlayer, dbid, showmessages)
+function publicSellProperty(thePlayer, dbid, showmessages, givemoney)
 	local dbid, entrance, exit, interiorType = findProperty( thePlayer, dbid )
 	local query = mysql_query(handler, "UPDATE interiors SET owner=-1, locked=1, safepositionX=NULL, safepositionY=NULL, safepositionZ=NULL, safepositionRZ=NULL WHERE id='" .. dbid .. "'")
 	if query then
@@ -196,8 +196,10 @@ function publicSellProperty(thePlayer, dbid, showmessages)
 		if interiorType == 0 or interiorType == 1 then
 			if getElementData(entrance, "owner") == getElementData(thePlayer, "dbid") then
 				local money = math.ceil(getElementData(entrance, "cost") * 2/3)
-				--local money = getElementData(entrance, "cost")
-				exports.global:givePlayerSafeMoney(thePlayer, money)
+				if givemoney then
+					exports.global:givePlayerSafeMoney(thePlayer, money)
+				end
+				
 				if showmessages then
 					outputChatBox("You sold your property for " .. money .. "$.", thePlayer, 0, 255, 0)
 				end

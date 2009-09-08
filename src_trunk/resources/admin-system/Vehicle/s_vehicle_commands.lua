@@ -758,6 +758,8 @@ function deleteVehicle(thePlayer, commandName, id)
 					else
 						if (exports.global:isPlayerSuperAdmin(thePlayer)) then
 							local query = mysql_query(handler, "DELETE FROM vehicles WHERE id='" .. dbid .. "'")
+							call( getResourceFromName( "item-system" ), "deleteAll", 3, dbid )
+							call( getResourceFromName( "item-system" ), "clearItems", theVehicle )
 							mysql_free_result(query)
 							destroyElement(theVehicle)
 							exports.irc:sendMessage("[ADMIN] " .. getPlayerName(thePlayer) .. " deleted vehicle #" .. dbid .. ".")
@@ -793,6 +795,8 @@ function deleteThisVehicle(thePlayer, commandName)
 				if dbid > 0 then
 					local query = mysql_query(handler, "DELETE FROM vehicles WHERE id='" .. dbid .. "'")
 					mysql_free_result(query)
+					call( getResourceFromName( "item-system" ), "deleteAll", 3, dbid )
+					call( getResourceFromName( "item-system" ), "clearItems", veh )
 					exports.irc:sendMessage("[ADMIN] " .. getPlayerName(thePlayer) .. " deleted vehicle #" .. dbid .. ".")
 				end
 				destroyElement(veh)

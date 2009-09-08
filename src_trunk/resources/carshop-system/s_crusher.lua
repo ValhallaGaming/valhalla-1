@@ -96,6 +96,7 @@ local function crushCar(thePlayer, matching)
 					if result then
 						exports.global:givePlayerSafeMoney(thePlayer, price)
 						call( getResourceFromName( "item-system" ), "deleteAll", 3, dbid )
+						call( getResourceFromName( "item-system" ), "clearItems", theVehicle )
 						outputChatBox("You crushed your " .. getVehicleName(theVehicle) .. " for $" .. price .. ".", thePlayer, 0, 255, 0)
 						
 						-- just make sure admins/irc are informed (just in case, so he can't reclaim the vehicle)

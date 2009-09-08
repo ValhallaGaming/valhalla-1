@@ -376,7 +376,7 @@ function reloadOneInterior(id, hasCoroutine, displayircmessage)
 	if displayircmessage == nil then
 		displayircmessage = false
 	end
-	local result = mysql_query(handler, "SELECT id, x, y, z , interiorx, interiory, interiorz, type, owner, locked, cost, name, interior, dimensionwithin, interiorwithin, angle, angleexit, items, items_values, max_items, rentable, tennant, rent, money, safepositionX, safepositionY, safepositionZ, safepositionRZ FROM interiors WHERE id='" .. id .. "'")
+	local result = mysql_query(handler, "SELECT id, x, y, z , interiorx, interiory, interiorz, type, owner, locked, cost, name, interior, dimensionwithin, interiorwithin, angle, angleexit, max_items, rentable, tennant, rent, money, safepositionX, safepositionY, safepositionZ, safepositionRZ FROM interiors WHERE id='" .. id .. "'")
 	
 	if (hasCoroutine) then
 		coroutine.yield()
@@ -409,21 +409,19 @@ function reloadOneInterior(id, hasCoroutine, displayircmessage)
 			local optAngle = tonumber(row[16])
 			local exitAngle = tonumber(row[17])
 			
-			local items = row[18]
-			local items_values = row[19]
-			local max_items = tonumber(row[20])
+			local max_items = tonumber(row[18])
 			
-			local rentable = tonumber(row[21])
-			local tennant = row[22]
-			local rent = tonumber(row[23])
+			local rentable = tonumber(row[19])
+			local tennant = row[20]
+			local rent = tonumber(row[21])
 			
-			local money = tonumber(row[24])
+			local money = tonumber(row[22])
 			
 			if (hasCoroutine) then
 				coroutine.yield()
 			end
 			
-			local safeX, safeY, safeZ, safeRZ = row[25], row[26], row[27], row[28]
+			local safeX, safeY, safeZ, safeRZ = row[23], row[24], row[25], row[26]
 			-- If the is a house
 			if (inttype==0) then -- House
 				local pickup
@@ -499,30 +497,6 @@ function reloadOneInterior(id, hasCoroutine, displayircmessage)
 				setElementInterior(tempobject, interior)
 				setElementDimension(tempobject, id)
 				safeTable[id] = tempobject
-				
-				if items ~= mysql_null() and items_values ~= mysql_null() then
-					if #items > 0 and #items_values > 0 then
-						for i = 1, 20 do
-							local token = tonumber(gettok(items, i, string.byte(',')))
-							local vtoken = tonumber(gettok(items_values, i, string.byte(',')))
-							
-							if token and vtoken then
-								local itemID = tonumber(token)
-								if itemID >= 9000 then
-									itemID = - ( itemID - 9000 )
-								end
-								exports.global:giveItem( tempobject, itemID, tonumber(vtoken) )
-							end
-						end
-
-						local query = mysql_query( handler, "UPDATE interiors SET items=NULL, items_values=NULL WHERE id=" .. id )
-						if query then
-							mysql_free_result( query )
-						else
-							outputDebugString( mysql_error( handler ) )
-						end
-					end
-				end
 			end
 		end
 		if displayircmessage then

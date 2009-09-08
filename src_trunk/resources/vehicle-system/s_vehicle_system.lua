@@ -292,7 +292,7 @@ function loadAllVehicles(res)
 	end
 	
 	local result = mysql_query(handler, "SELECT currx, curry, currz, currrx, currry, currrz, x, y, z, rotx, roty, rotz, id, model, upgrade0, upgrade1, upgrade2, upgrade3, upgrade4, upgrade5, upgrade6, upgrade7, upgrade8, upgrade9, upgrade10, upgrade11, upgrade12, upgrade13, upgrade14, upgrade15, upgrade16, Impounded FROM vehicles")
-	local resultext = mysql_query(handler, "SELECT fuel, engine, locked, lights, sirens, paintjob, wheel1, wheel2, wheel3, wheel4, panel0, panel1, panel2, panel3, panel4, panel5, panel6, door1, door2, door3, door4, door5, door6, hp, color1, color2, plate, faction, owner, job, dimension, interior, currdimension, currinterior, items, itemvalues FROM vehicles")
+	local resultext = mysql_query(handler, "SELECT fuel, engine, locked, lights, sirens, paintjob, wheel1, wheel2, wheel3, wheel4, panel0, panel1, panel2, panel3, panel4, panel5, panel6, door1, door2, door3, door4, door5, door6, hp, color1, color2, plate, faction, owner, job, dimension, interior, currdimension, currinterior FROM vehicles")
 	
 	local counter = 0
 	local rowc = 1
@@ -379,9 +379,6 @@ function loadAllVehicles(res)
 			local interior = tonumber(mysql_result(resultext, rowc, 32))
 			local currdimension = tonumber(mysql_result(resultext, rowc, 33))
 			local currinterior = tonumber(mysql_result(resultext, rowc, 34))
-			
-			local items = mysql_result(resultext, rowc, 35)
-			local itemvalues = mysql_result(resultext, rowc, 36)
 			
 			if faction~=-1 or owner == -2 then
 				locked = 0
@@ -534,30 +531,6 @@ function loadAllVehicles(res)
 				setVehicleDamageProof(veh, true)
 				setVehicleEngineState(veh, false)
 				setElementData(veh, "enginebroke", 1, false)
-			end
-
-			if items ~= mysql_null() and itemvalues ~= mysql_null() then
-				if #items > 0 and #itemvalues > 0 then
-					for i = 1, 20 do
-						local token = tonumber(gettok(items, i, string.byte(',')))
-						local vtoken = tonumber(gettok(itemvalues, i, string.byte(',')))
-						
-						if token and vtoken then
-							local itemID = tonumber(token)
-							if itemID >= 9000 then
-								itemID = - ( itemID - 9000 )
-							end
-							exports.global:giveItem( veh, itemID, tonumber(vtoken) )
-						end
-					end
-
-					local query = mysql_query( handler, "UPDATE vehicles SET items=NULL, itemvalues=NULL WHERE id=" .. id )
-					if query then
-						mysql_free_result( query )
-					else
-						outputDebugString( mysql_error( handler ) )
-					end
-				end
 			end
 		end
 	end
@@ -1027,7 +1000,6 @@ function sellVehicle(thePlayer, commandName, targetPlayerName)
 										mysql_free_result(query)
 										setElementData(theVehicle, "owner", getElementData(targetPlayer, "dbid"))
 										
-										-- FIXME: remove all keys for that vehicle from all people
 										exports.global:takeItem(thePlayer, 3, vehicleID)
 										exports.global:giveItem(targetPlayer, 3, vehicleID)
 										

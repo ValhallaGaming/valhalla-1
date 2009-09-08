@@ -103,6 +103,7 @@ addEvent("payBusFare", true)
 addEventHandler("payBusFare", getRootElement(), takeBusFare)
 
 function ejectPlayerFromBus()
+	setElementData(source, "realinvehicle", 0, false)
 	removePedFromVehicle(source)
 end
 addEvent("removePlayerFromBus", true)

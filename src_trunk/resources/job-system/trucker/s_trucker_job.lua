@@ -7,6 +7,7 @@ addEvent("giveTruckingMoney", true)
 addEventHandler("giveTruckingMoney", getRootElement(), giveTruckingMoney)
 
 function respawnTruck(vehicle)
+	setElementData(source, "realinvehicle", 0, false)
 	removePedFromVehicle(source, vehicle)
 	respawnVehicle(vehicle)
 	setElementData(vehicle, "locked", 0, false)

@@ -108,6 +108,7 @@ end)
 
 addEvent("RemoveHangingPedFromVehicle",true)
 addEventHandler("RemoveHangingPedFromVehicle",root,function()
+	setElementData(source, "realinvehicle", 0, false)
 	removePedFromVehicle(source)
 end)
 

@@ -86,6 +86,7 @@ function dropOffCar()
 				destroyElement(chatSphere)
 				
 				-- cleanup
+				setElementData(thePlayer, "realinvehicle", 0, false)
 				removePedFromVehicle(thePlayer, vehicle)
 				
 				

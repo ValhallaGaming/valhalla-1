@@ -1340,6 +1340,7 @@ function jailPlayer(thePlayer, commandName, who, minutes, ...)
 				end
 				
 				if (isPedInVehicle(targetPlayer)) then
+					setElementData(targetPlayer, "realinvehicle", 0, false)
 					removePedFromVehicle(targetPlayer)
 				end
 				
@@ -1790,11 +1791,13 @@ function gotoMark(thePlayer, command)
 					
 					if(vehicle and (seat ~= 0)) then
 						removePedFromVehicle (thePlayer )
+						setElementData(thePlayer, "realinvehicle", 0, false)
 						setElementPosition(thePlayer, tonumber(getElementData(thePlayer, "tempMark.x")),tonumber(getElementData(thePlayer, "tempMark.y")),tonumber(getElementData(thePlayer, "tempMark.z")))
 						setElementInterior(thePlayer, getElementData(thePlayer, "tempMark.interior"))
 						setElementDimension(thePlayer, getElementData(thePlayer, "tempMark.dimension"))
 					elseif(vehicle and seat == 0) then
 						removePedFromVehicle (thePlayer )
+						setElementData(thePlayer, "realinvehicle", 0, false)
 						setElementPosition(vehicle, tonumber(getElementData(thePlayer, "tempMark.x")),tonumber(getElementData(thePlayer, "tempMark.y")),tonumber(getElementData(thePlayer, "tempMark.z")))
 						setElementInterior(vehicle, getElementData(thePlayer, "tempMark.interior"))
 						setElementDimension(vehicle, getElementData(thePlayer, "tempMark.dimension"))
@@ -1992,11 +1995,12 @@ function ejectPlayer(thePlayer, commandName, target)
 					
 					local targetvehicle = getPedOccupiedVehicle(targetPlayer)
 					
-					if (targetvehicle~=vehicle) then
+					if targetvehicle~=vehicle and not exports.global:isPlayerAdmin(thePlayer) then
 						outputChatBox("This player is not in your vehicle.", thePlayer, 255, 0, 0)
 					else
 						outputChatBox("You have thrown " .. targetPlayerName .. " out of your vehicle.", thePlayer, 0, 255, 0)
 						removePedFromVehicle(targetPlayer)
+						setElementData(targetPlayer, "realinvehicle", 0, false)
 					end
 				end
 			end

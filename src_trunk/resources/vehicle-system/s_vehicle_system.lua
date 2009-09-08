@@ -872,6 +872,7 @@ addEventHandler("onVehicleStartEnter", getRootElement(), checkBikeLock)
 
 function setRealInVehicle(thePlayer)
 	if isVehicleLocked(source) then
+		setElementData(thePlayer, "realinvehicle", 0, false)
 		removePedFromVehicle(thePlayer)
 		setVehicleLocked(source, true)
 	else
@@ -934,6 +935,7 @@ function removeFromFactionVehicle(thePlayer)
 				return
 			end
 			outputChatBox("You are not a member of '" .. factionName .. "'.", thePlayer, 255, 194, 14)
+			setElementData(thePlayer, "realinvehicle", 0, false)
 			removePedFromVehicle(thePlayer)
 			local x, y, z = getElementPosition(thePlayer)
 			setElementPosition(thePlayer, x, y, z)
@@ -963,6 +965,7 @@ function removeFromFactionVehicle(thePlayer)
 			elseif (vjob==3) then
 				outputChatBox("You are not a bus driver. Visit city hall to obtain this job.", thePlayer, 255, 0, 0)
 			end
+			setElementData(thePlayer, "realinvehicle", 0, false)
 			removePedFromVehicle(thePlayer)
 			local x, y, z = getElementPosition(thePlayer)
 			setElementPosition(thePlayer, x, y, z)

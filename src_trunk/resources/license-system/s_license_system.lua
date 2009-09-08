@@ -41,6 +41,7 @@ addEventHandler("onColShapeHit", licenseColSphere, hitLicenseColShape)
 function giveLicense(license, cost)
 	if (license==1) then -- car drivers license
 		local theVehicle = getPedOccupiedVehicle(source)
+		setElementData(source, "realinvehicle", 0, false)
 		removePedFromVehicle(source)
 		respawnVehicle(theVehicle)
 		setElementData(source, "license.car", 1)

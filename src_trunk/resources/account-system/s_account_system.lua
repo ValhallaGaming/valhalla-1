@@ -976,28 +976,36 @@ function deleteCharacterByName(charname)
 	local result = mysql_query(handler, "SELECT id FROM characters WHERE charactername='" .. fixedName .. "' AND account='" .. accountID .. "' LIMIT 1")
 	local charid = tonumber(mysql_result(result, 1, 1))
 	mysql_free_result(result)
+	
+	if charid then -- not ck'ed
+		-- delete all in-game vehicles
+		for key, value in pairs( getElementsByType( "vehicle" ) ) do
+			if isElement( value ) then
+				if getElementData( value, "owner" ) == charid then
+					call( getResourceFromName( "item-system" ), "deleteAll", 3, getElementData( value, "dbid" ) )
+					destroyElement( value )
+				end
+			end
+		end
+		mysql_free_result( mysql_query(handler, "DELETE FROM vehicles WHERE owner = " .. charid ) )
+
+		-- un-rent all interiors
+		local old = getElementData( source, "dbid" )
+		setElementData( source, "dbid", charid )
+		local result = mysql_query( handler, "SELECT id FROM interiors WHERE WHERE owner = " .. charid .. " AND type != 2" )
+		if result then
+			for result, row in mysql_rows( result ) do
+				local id = tonumber(row[1])
+				call( getResourceFromName( "interior-system" ), "publicSellProperty", source, id, false, false )
+			end
+		end
+		setElementData( source, "dbid", old )
 		
-	if (charid) then -- not ck'ed
-		local result
-		result = mysql_query(handler, "DELETE FROM characters WHERE charactername='" .. fixedName .. "' AND account='" .. accountID .. "' LIMIT 1")
-		mysql_free_result(result)
-		result = mysql_query(handler, "UPDATE interiors SET owner=-1, locked=1 WHERE owner='" .. tonumber(charid) .. "' AND type != 2")
-		mysql_free_result(result)
-		result = mysql_query(handler, "DELETE FROM vehicles WHERE owner='" .. tonumber(charid) .. "'")
-		mysql_free_result(result)
-	else
-		fixedName = string.sub(fixedName, 0, string.len(fixedName)-11)
+		-- get rid of all items
+		mysql_free_result( mysql_query(handler, "DELETE FROM items WHERE type = 1 AND owner = " .. charid ) )
 		
-		local result = mysql_query(handler, "SELECT id FROM characters WHERE charactername='" .. fixedName .. "' AND account='" .. accountID .. "' LIMIT 1")
-		local charid = tonumber(mysql_result(result, 1, 1))
-		mysql_free_result(result)
-		local result
-		result = mysql_query(handler, "DELETE FROM characters WHERE charactername='" .. fixedName .. "' AND account='" .. accountID .. "' LIMIT 1")
-		mysql_free_result(result)
-		result = mysql_query(handler, "UPDATE interiors SET owner=-1, locked=1 WHERE owner='" .. tonumber(charid) .. "' AND type != 2")
-		mysql_free_result(result)
-		result = mysql_query(handler, "DELETE FROM vehicles WHERE owner='" .. tonumber(charid) .. "'")
-		mysql_free_result(result)
+		-- finally delete the character
+		mysql_free_result( mysql_query(handler, "DELETE FROM characters WHERE id='" .. charid .. "' AND account='" .. accountID .. "' LIMIT 1") )
 	end
 	sendAccounts(source, accountID)
 	showChat(source, true)

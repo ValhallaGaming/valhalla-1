@@ -1,3 +1,5 @@
+armoredCars = { [427]=true, [528]=true, [432]=true, [601]=true, [428]=true, [597]=true } -- Enforcer, FBI Truck, Rhino, SWAT Tank, Securicar, SFPD Car
+
 -- Bodywork repair
 function bodyworkRepair(veh)
 	if (veh) then
@@ -28,6 +30,11 @@ function serviceVehicle(veh)
 			fixVehicle(veh)
 			if not getElementData(veh, "Impounded") or getElementData(veh, "Impounded") == 0 then
 				setElementData(veh, "enginebroke", 0, false)
+				if armoredCars[ getElementModel( veh ) ] then
+					setVehicleDamageProof(veh, true)
+				else
+					setVehicleDamageProof(veh, false)
+				end
 			end
 			exports.global:takePlayerSafeMoney(source, 100)
 			exports.global:sendLocalMeAction(source, "services the vehicle.")

@@ -25,7 +25,7 @@ addEventHandler("onResourceStop", getResourceRootElement(getThisResource()), clo
 -- ////////////////////////////////////
 -- //			MYSQL END			 //
 -- ////////////////////////////////////
-
+armoredCars = { [427]=true, [528]=true, [432]=true, [601]=true, [428]=true, [597]=true } -- Enforcer, FBI Truck, Rhino, SWAT Tank, Securicar, SFPD Car
 governmentVehicle = { [416]=true, [427]=true, [490]=true, [528]=true, [407]=true, [544]=true, [523]=true, [596]=true, [597]=true, [598]=true, [599]=true, [601]=true, [428]=true }
 
 function createSpray(thePlayer, commandName)
@@ -183,8 +183,13 @@ function sprayEffect(vehicle, thePlayer, shape, free)
 		else
 			outputChatBox("BILL: Car Repair - 0$", thePlayer, 255, 194, 14)
 		end
-
+		
 		fixVehicle(vehicle)
+		if armoredCars[ getElementModel( vehicle ) ] then
+			setVehicleDamageProof(vehicle, true)
+		else
+			setVehicleDamageProof(vehicle, false)
+		end
 	else
 		outputChatBox("You forgot to wait for your repair!", thePlayer, 255, 0, 0)
 	end

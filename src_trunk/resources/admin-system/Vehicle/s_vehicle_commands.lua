@@ -291,6 +291,11 @@ function respawnCmdVehicle(thePlayer, commandName, id)
 				if (dbid==tonumber(id)) then
 					if (dbid<0) then -- TEMP vehicle
 						fixVehicle(theVehicle) -- Can't really respawn this, so just repair it
+						if armoredCars[ getElementModel( theVehicle ) ] then
+							setVehicleDamageProof(theVehicle, true)
+						else
+							setVehicleDamageProof(theVehicle, false)
+						end
 						setVehicleWheelStates(theVehicle, 0, 0, 0, 0)
 						setElementData(theVehicle, "enginebroke", 0, false)
 					else
@@ -356,6 +361,11 @@ function respawnAllVehicles(thePlayer, commandName, timeToRespawn)
 				else
 					if isVehicleBlown(theVehicle) or isElementInWater(theVehicle) then
 						fixVehicle(theVehicle)
+						if armoredCars[ getElementModel( theVehicle ) ] then
+							setVehicleDamageProof(theVehicle, true)
+						else
+							setVehicleDamageProof(theVehicle, false)
+						end
 						for i = 0, 5 do
 							setVehicleDoorState(theVehicle, 4) -- all kind of stuff missing
 						end
@@ -378,6 +388,14 @@ function respawnAllVehicles(thePlayer, commandName, timeToRespawn)
 					-- fix faction vehicles
 					if getElementData(theVehicle, "faction") ~= -1 then
 						fixVehicle(theVehicle)
+						if (getElementData(theVehicle, "Impounded") == 0) then
+							setElementData(theVehicle, "enginebroke", 0, false)
+							if armoredCars[ getElementModel( theVehicle ) ] then
+								setVehicleDamageProof(theVehicle, true)
+							else
+								setVehicleDamageProof(theVehicle, false)
+							end
+						end
 					end
 				end
 			end
@@ -571,6 +589,11 @@ function fixPlayerVehicle(thePlayer, commandName, target)
 						fixVehicle(veh)
 						if (getElementData(veh, "Impounded") == 0) then
 							setElementData(veh, "enginebroke", 0, false)
+							if armoredCars[ getElementModel( veh ) ] then
+								setVehicleDamageProof(veh, true)
+							else
+								setVehicleDamageProof(veh, false)
+							end
 						end
 						outputChatBox("You repaired " .. targetPlayerName .. "'s vehicle.", thePlayer)
 						outputChatBox("Your vehicle was repaired by admin " .. username .. ".", targetPlayer)
@@ -692,6 +715,11 @@ function fixAllVehicles(thePlayer, commandName)
 			fixVehicle(value)
 			if (not getElementData(value, "Impounded")) then
 				setElementData(value, "enginebroke", 0, false)
+				if armoredCars[ getElementModel( value ) ] then
+					setVehicleDamageProof(value, true)
+				else
+				setVehicleDamageProof(value, false)
+				end
 			end
 		end
 		outputChatBox("All vehicles repaired by Admin " .. username .. ".")

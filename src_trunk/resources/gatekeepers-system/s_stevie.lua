@@ -551,9 +551,10 @@ deals = {
 function giveGoods(thePlayer)
 	local veh = getPedOccupiedVehicle(thePlayer)
 	if not(veh)then
-		outputChatBox("You'll need a vehicle to carry all these items", thePlayer, 255, 0, 0)
+		outputChatBox("You'll need a vehicle to carry all these items.", thePlayer, 255, 0, 0)
+	elseif not exports.global:hasSpaceForItem(veh) then
+		outputChatBox("There isn't any space in that vehicle left.", thePlayer, 255, 0, 0)
 	else
-		
 		local deal = getElementData(source, "dealNumber")
 		
 		destroyElement(stevieCol)

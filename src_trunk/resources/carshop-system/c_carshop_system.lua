@@ -1,9 +1,41 @@
 car, wCars, bClose, bBuy, gCars, lCost, lColors, sCol1, sCol2 = nil
 activeShop, shopID = nil
 
+vehiclecount = {}
+local function countVehicles( )
+	for key, value in pairs( getElementsByType( "vehicle" ) ) do
+		if isElement( value ) then
+			local model = getElementModel( value )
+			if vehiclecount[ model ] then
+				vehiclecount[ model ] = vehiclecount[ model ] + 1
+			else
+				vehiclecount[ model ] = 1
+			end
+		end
+	end
+end
+
+local function copy( t )
+	if type(t) == 'table' then
+		local r = {}
+		for k, v in pairs( t ) do
+			r[k] = copy( v )
+		end
+		return r
+	else
+		return t
+	end
+end
+
+local function sort( a, b )
+	return a[2] < b[2]
+end
+
 function showCarshopUI(id)
 	shopID = id
-	activeShop = g_shops[id]
+	
+	countVehicles()
+	activeShop = copy( g_shops[id] )
 	
 	local width, height = 400, 200
 	local scrWidth, scrHeight = guiGetScreenSize()
@@ -27,10 +59,18 @@ function showCarshopUI(id)
 		addEventHandler("onClientRender", getRootElement(), rotateCar)
 	end
 	
+	-- sort by price
+	for key, value in ipairs( activeShop ) do
+		if value[1] and value[2] and vehiclecount[ value[1] ] then
+			value[2] = value[2] + ( vehiclecount[ value[1] ] or 0 ) * 600
+		end
+	end
+	table.sort( activeShop, sort )
+	
 	gCars = guiCreateGridList(0.05, 0.1, 0.5, 0.75, true, wCars)
 	addEventHandler("onClientGUIClick", gCars, updateCar, false)
 	local col = guiGridListAddColumn(gCars, "Vehicle Model", 0.9)
-	for key, value in ipairs(activeShop) do
+	for key, value in ipairs( activeShop ) do
 		local row = guiGridListAddRow(gCars)
 		guiGridListSetItemText(gCars, row, col, tostring(getVehicleNameFromModel(value[1])), false, false)
 		guiGridListSetItemData(gCars, row, col, tostring(key), false, false)

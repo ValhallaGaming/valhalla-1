@@ -106,6 +106,7 @@ function drawLottery()
 	mysql_free_result(result)
 	
 	mysql_free_result( mysql_query(handler, "TRUNCATE TABLE lottery") )
+	call( getResourceFromName( "item-system" ), "deleteAll", 68 )
 end
 
 addCommandHandler( "forcedrawlottery", function( thePlayer ) if exports.global:isPlayerLeadAdmin( thePlayer ) then drawLottery() end end )

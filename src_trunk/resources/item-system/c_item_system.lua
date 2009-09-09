@@ -18,7 +18,7 @@ showElectronics = true
 showEmpty = true
 
 function clickItem(button, state, absX, absY, wx, wy, wz, element)
-	if (element) and (getElementType(element)=="object") and (button=="right") and (state=="down") and getElementParent(getElementParent(element)) == getResourceRootElement() and getElementData(element, "type") == "worlditem" then
+	if (element) and (getElementType(element)=="object") and (button=="right") and (state=="down") and getElementParent(getElementParent(element)) == getResourceRootElement() then
 		local x, y, z = getElementPosition(getLocalPlayer())
 		if getDistanceBetweenPoints3D(x, y, z, wx, wy, wz) < 3 then
 			if (wRightClick) then

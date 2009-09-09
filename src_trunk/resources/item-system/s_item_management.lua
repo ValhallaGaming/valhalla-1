@@ -114,7 +114,7 @@ local function getID(element)
 		return getElementData(element, "dbid")
 	elseif getElementType(element) == "vehicle" then -- Vehicle
 		return getElementData(element, "dbid")
-	elseif getElementData(element, "type") == "worlditem" then -- World Item
+	elseif getElementParent(getElementParent(element)) == getResourceRootElement() then -- World Item
 		return getElementData(element, "id")
 	elseif getElementType(element) == "object" then -- Safe
 		return getElementDimension(element)
@@ -129,7 +129,7 @@ local function getType(element)
 		return 1
 	elseif getElementType(element) == "vehicle" then -- Vehicle
 		return 2
-	elseif getElementData(element, "type") == "worlditem" then -- World Item
+	elseif getElementParent(getElementParent(element)) == getResourceRootElement() then -- World Item
 		return 3
 	elseif getElementType(element) == "object" then -- Safe
 		return 4

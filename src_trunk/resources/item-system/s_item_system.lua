@@ -566,7 +566,6 @@ function dropItem(itemID, x, y, z, ammo, keepammo)
 			setElementData(obj, "id", id, false)
 			setElementData(obj, "itemID", itemID)
 			setElementData(obj, "itemValue", itemValue)
-			setElementData(obj, "type", "worlditem")
 			
 			-- Dropped his backpack
 			if itemID == 48 then
@@ -667,7 +666,6 @@ function dropItem(itemID, x, y, z, ammo, keepammo)
 				setElementData(obj, "id", id, false)
 				setElementData(obj, "itemID", -itemID)
 				setElementData(obj, "itemValue", ammo)
-				setElementData(obj, "type", "worlditem")
 				
 				exports.global:sendLocalMeAction(source, "dropped a " .. getItemName( -itemID ) .. ".")
 			else
@@ -729,7 +727,6 @@ function loadWorldItems(res)
 			setElementData(obj, "id", id, false)
 			setElementData(obj, "itemID", -itemID)
 			setElementData(obj, "itemValue", itemValue)
-			setElementData(obj, "type", "worlditem")
 		else
 			local modelid = getItemModel(itemID)
 			
@@ -740,7 +737,6 @@ function loadWorldItems(res)
 			setElementData(obj, "id", id)
 			setElementData(obj, "itemID", itemID)
 			setElementData(obj, "itemValue", itemValue)
-			setElementData(obj, "type", "worlditem")
 		end
 	end
 	exports.irc:sendMessage("[SCRIPT] Loaded " .. tonumber(mysql_num_rows(result)) .. " world items.")
@@ -850,19 +846,16 @@ function getNearbyItems(thePlayer, commandName)
 		outputChatBox("Nearby Items:", thePlayer, 255, 126, 0)
 		local count = 0
 		
-		for k, theObject in ipairs(exports.pool:getPoolElementsByType("object")) do
+		for k, theObject in ipairs(getElementsByType("object", getResourceRootElement())) do
 			local dbid = getElementData(theObject, "id")
-
-			if (dbid) then
+			
+			if dbid then
 				local x, y, z = getElementPosition(theObject)
 				local distance = getDistanceBetweenPoints3D(posX, posY, posZ, x, y, z)
-
+				
 				if distance <= 10 and getElementDimension(theObject) == getElementDimension(thePlayer) and getElementInterior(theObject) == getElementInterior(thePlayer) then
-					local objtype = getElementData(theObject, "type")
-					if (objtype=="worlditem") then
-						outputChatBox("   Item with ID " .. dbid .. ": " .. ( getItemName( getElementData(theObject, "itemID") ) or "?" ) .. "(" .. getElementData(theObject, "itemID") .. ") with Value " .. tostring( getElementData(theObject, "itemValue") ), thePlayer, 255, 126, 0)
-						count = count + 1
-					end
+					outputChatBox("   Item with ID " .. dbid .. ": " .. ( getItemName( getElementData(theObject, "itemID") ) or "?" ) .. "(" .. getElementData(theObject, "itemID") .. ") with Value " .. tostring( getElementData(theObject, "itemValue") ), thePlayer, 255, 126, 0)
+					count = count + 1
 				end
 			end
 		end
@@ -880,19 +873,17 @@ function delItem(thePlayer, commandName, targetID)
 			outputChatBox("SYNTAX: " .. commandName .. " [ID]", thePlayer, 255, 194, 14)
 		else
 			local object = nil
-				
-			for key, value in ipairs(exports.pool:getPoolElementsByType("object")) do
+			targetID = tonumber( targetID )
+			
+			for key, value in ipairs(getElementsByType("object", getResourceRootElement())) do
 				local dbid = getElementData(value, "id")
-				local objtype = getElementData(value, "type")
-
-				if (dbid) and (objtype=="worlditem") then
-					if (dbid==tonumber(targetID)) then
-						object = value
-					end
+				if dbid and dbid == targetID then
+					object = value
+					break
 				end
 			end
 			
-			if (object) then
+			if object then
 				local id = getElementData(object, "id")
 				local result = mysql_query(handler, "DELETE FROM worlditems WHERE id='" .. id .. "'")
 						

@@ -696,9 +696,7 @@ function buyInterior(player, pickup, cost, isHouse, isRentable)
 end
 
 function vehicleStartEnter(thePlayer)
-	local thePickup = getElementData(thePlayer, "interiormarker")
-	
-	if thePickup then
+	if getElementData(thePlayer, "interiormarker") then
 		cancelEvent()
 	end
 end

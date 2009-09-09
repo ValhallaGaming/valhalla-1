@@ -154,6 +154,8 @@ function bindKeys(player, pickup)
 		if not(isKeyBound(player, "f", "down", func)) then
 			bindKey(player, "f", "down", func, player, pickup)
 		end
+		
+		setElementData( player, "interiormarker", true, false )
 	end
 end
 
@@ -166,6 +168,8 @@ function unbindKeys(player, pickup)
 		if (isKeyBound(player, "f", "down", func)) then
 			unbindKey(player, "f", "down", func, player, pickup)
 		end
+		
+		removeElementData( player, "interiormarker" )
 	end
 end
 

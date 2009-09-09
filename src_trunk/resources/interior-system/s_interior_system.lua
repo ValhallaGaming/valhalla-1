@@ -522,10 +522,6 @@ function setPickupElementData(pickup, id, optAngle, locked, owner, inttype, cost
 		setElementData(pickup, "money", money, false)
 		setElementDimension(pickup, dimension)
 		setElementInterior(pickup, interiorwithin)
-		
-		local shape = getElementColShape(pickup)
-		setElementDimension(shape, dimension)
-		setElementInterior(shape, interiorwithin)
 	end
 end
 
@@ -540,10 +536,6 @@ function setIntPickupElementData(intpickup, id, rot, locked, owner, inttype, int
 		setElementInterior(intpickup, interior)
 		setElementDimension(intpickup, id, false)
 		setElementData(intpickup, "type", "interiorexit") -- To identify it later
-		
-		local shape = getElementColShape(intpickup)
-		setElementDimension(shape, id)
-		setElementInterior(shape, interior)
 	end
 end
 

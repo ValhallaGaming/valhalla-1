@@ -1,4 +1,23 @@
 ---
+Friends
+---
+DROP TABLE IF EXISTS `friends`;
+CREATE TABLE `friends` (
+
+  `id` int(10) unsigned NOT NULL,
+
+  `friend` int(10) unsigned NOT NULL,
+
+  PRIMARY KEY (`id`,`friend`) USING BTREE
+
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+---
+Lottery
+---
+DROP TABLE `lotteryjackpot`;
+
+---
 Notes Item
 ---
 ALTER TABLE `worlditems` MODIFY COLUMN `itemvalue` TEXT;
@@ -39,8 +58,6 @@ DROP TABLE items;
 Lottery
 ---
 CREATE TABLE lottery (characterid INT(255) NOT NULL, ticketnumber INT(3) NOT NULL)
-CREATE TABLE lotteryjackpot (ammount INT(255) NOT NULL)
-INSERT INTO lotteryjackpot VALUES (0)
 
 ---
 Blindfold

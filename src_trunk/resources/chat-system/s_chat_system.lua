@@ -463,14 +463,13 @@ function pmPlayer(thePlayer, commandName, who, ...)
 					local targetPlayerName = string.gsub(getPlayerName(targetPlayer), "_", " ")
 				
 					-- Check for advertisements
-					local foundAdvert = 0
 					for k,v in ipairs(advertisementMessages) do
 						local found = string.find(string.lower(message), "%s" .. tostring(v))
 						local found2 = string.find(string.lower(message), tostring(v) .. "%s")
-						if (found) or (found2) or (string.lower(message)==tostring(v)) and (foundAdvert==0) then
+						if (found) or (found2) or (string.lower(message)==tostring(v)) then
 							exports.global:sendMessageToAdmins("AdmWrn: " .. tostring(playerName) .. " sent a possible advertisement PM to " .. tostring(targetPlayerName) .. ".")
 							exports.global:sendMessageToAdmins("AdmWrn: Message: " .. tostring(message))
-							foundAdvert = 1
+							break
 						end
 					end
 					

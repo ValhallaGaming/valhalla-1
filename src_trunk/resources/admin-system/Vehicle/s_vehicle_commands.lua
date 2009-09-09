@@ -45,7 +45,7 @@ addCommandHandler("unlockcivcars", unlockAllCivilianCars, false, false)
 
 -- /veh
 function createTempVehicle(thePlayer, commandName, ...)
-	if (exports.global:isPlayerAdmin(thePlayer)) then
+	if (exports.global:isPlayerFullAdmin(thePlayer)) then
 		local args = {...}
 		if (#args < 1) then
 			outputChatBox("SYNTAX: /" .. commandName .. " [id/name] [color1] [color2]", thePlayer, 255, 194, 14)

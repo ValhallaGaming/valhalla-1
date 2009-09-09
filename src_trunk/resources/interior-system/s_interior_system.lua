@@ -1,5 +1,4 @@
-addEvent("onPlayerInteriorEnter", true)
-addEvent("onPlayerInteriorExit", true)
+addEvent("onPlayerInteriorChange", true)
 local safeTable = {}
 
 -- START OF INTERIOR SYSTEM SCRIPT
@@ -102,23 +101,9 @@ function updateInteriorExit(thePlayer, commandName)
 				mysql_free_result(query)
 			end
 			
-			local pickups = exports.pool:getPoolElementsByType("pickup")
-			for k, thePickup in ipairs(pickups) do
-				local pickupType = getElementData(thePickup, "type")
-				
-				if (pickupType=="interiorexit") then
-					local pickupID = getElementData(thePickup, "dbid")
-					if (pickupID==dbid) then
-						setElementPosition(thePickup, x, y, z)
-					end
-				elseif (pickupType=="interior") then
-					local pickupID = getElementData(thePickup, "dbid")
-					if (pickupID==dbid) then
-						setElementData(thePickup, "x", x, false)
-						setElementData(thePickup, "y", y, false)
-						setElementData(thePickup, "z", z, false)
-					end
-				end
+			local dbid, entrance, exit = findProperty( thePlayer )
+			if exit then
+				setElementPosition(exit, x, y, z)
 			end
 			outputChatBox("Interior Exit Position Updated!", thePlayer, 0, 255, 0)
 		end
@@ -131,22 +116,17 @@ function findProperty(thePlayer, dimension)
 	if dbid > 0 then
 		-- find the entrance and exit
 		local entrance, exit = nil, nil
-		for key, value in pairs(exports.pool:getPoolElementsByType( "pickup" )) do
-			local pickupType = getElementData(value, "type")
-			if pickupType == "interior" then
+		for key, value in pairs(getElementsByType( "pickup", getResourceRootElement() )) do
+			if getElementData(value, "name") then
 				if getElementData(value, "dbid") == dbid then
 					entrance = value
-					if entrance and exit then
-						break
-					end
+					exit = getElementData( value, "other" )
+					break
 				end
-			elseif pickupType == "interiorexit" then
-				if getElementData(value, "dbid") == dbid then
-					exit = value
-					if entrance and exit then
-						break
-					end
-				end
+			elseif getElementData(value, "dbid") == dbid then
+				exit = value
+				entrance = getElementData( value, "other" )
+				break
 			end
 		end
 		return dbid, entrance, exit, getElementData(entrance,"inttype")
@@ -302,50 +282,41 @@ function deleteInterior(thePlayer, commandName)
 		if (interior==0) then
 			outputChatBox("You are not in an interior.", thePlayer, 255, 0, 0)
 		else
-			local dbid = getElementDimension(thePlayer)
-			local x, y, z, rot, interior, dimension = nil
-			
-			local pickups = exports.pool:getPoolElementsByType("pickup")
-			for k, thePickup in ipairs(pickups) do
-				local pickupType = getElementData(thePickup, "type")
-				
-				if (pickupType=="interiorexit") then
-					local pickupID = getElementData(thePickup, "dbid")
-					if (pickupID==dbid) then
-						x = getElementData(thePickup, "x")
-						y = getElementData(thePickup, "y")
-						z = getElementData(thePickup, "z")
-						rot = getPedRotation(thePlayer)
-						destroyElement(thePickup)
-					end
-				elseif (pickupType=="interior") then
-					local pickupID = getElementData(thePickup, "dbid")
-					if (pickupID==dbid) then
-						interior = getElementInterior(thePickup)
-						dimension = getElementDimension(thePickup)
-						local safe = safeTable[dbid]
-						if (safe) then
-							call( getResourceFromName( "item-system" ), "clearItems", safe )
-							destroyElement(safe)
-						end
-						destroyElement(thePickup)
+			local dbid, entrance, exit = findProperty( thePlayer )
+			if dbid > 0 then
+				-- move all players outside
+				for key, value in pairs( getElementsByType( "player" ) ) do
+					if isElement( value ) and getElementDimension( value ) == dbid then
+						setElementPosition( value, getElementPosition( entrance ) )
+						setElementInterior( value, getElementInterior( entrance ) )
+						setCameraInterior( value, getElementInterior( entrance ) )
+						setElementDimension( value, getElementDimension( entrance ) )
+						removeElementData( value, "interiormarker" )
+						
+						triggerEvent("onPlayerInteriorChange", value, exit, entrance)
 					end
 				end
-			end
-			setElementPosition(thePlayer, x, y, z)
-			setPedRotation(thePlayer, rot)
-			removeElementData(thePlayer, "interiormarker")
-			setElementInterior(thePlayer, interior)
-			setElementDimension(thePlayer, dimension)
-			setCameraInterior(thePlayer, interior)
-			local query = mysql_query(handler, "DELETE FROM interiors WHERE id='" .. dbid .. "'")
-			
-			if (query) then
-				mysql_free_result(query)
-				outputChatBox("Interior #" .. dbid .. " Deleted!", thePlayer, 0, 255, 0)
-				exports.irc:sendMessage(getPlayerName(thePlayer) .. " deleted interior #" .. dbid .. ".")
-			else
-				outputChatBox("Error 50001 - Report on forums.", thePlayer, 255, 0, 0)
+				
+				-- destroy the safe
+				local safe = safeTable[dbid]
+				if safe then
+					call( getResourceFromName( "item-system" ), "clearItems", safe )
+					destroyElement(safe)
+				end
+				
+				-- destroy the entrance and exit
+				destroyElement( entrance )
+				destroyElement( exit )
+				
+				local query = mysql_query(handler, "DELETE FROM interiors WHERE id='" .. dbid .. "'")
+				
+				if (query) then
+					mysql_free_result(query)
+					outputChatBox("Interior #" .. dbid .. " Deleted!", thePlayer, 0, 255, 0)
+					exports.irc:sendMessage(getPlayerName(thePlayer) .. " deleted interior #" .. dbid .. ".")
+				else
+					outputChatBox("Error 50001 - Report on forums.", thePlayer, 255, 0, 0)
+				end
 			end
 		end
 	end
@@ -424,10 +395,10 @@ function reloadOneInterior(id, hasCoroutine, displayircmessage)
 			end
 			
 			local safeX, safeY, safeZ, safeRZ = row[23], row[24], row[25], row[26]
+			
+			local intpickup, pickup
 			-- If the is a house
 			if (inttype==0) then -- House
-				local pickup
-				
 				if (owner<1) then
 					pickup = createPickup(x, y, z, 3, 1273)
 					exports.pool:allocateElement(pickup)
@@ -436,17 +407,13 @@ function reloadOneInterior(id, hasCoroutine, displayircmessage)
 					exports.pool:allocateElement(pickup)
 				end
 				
-				local intpickup = createPickup(ix, iy, iz, 3, 1318)
+				intpickup = createPickup(ix, iy, iz, 3, 1318)
 				exports.pool:allocateElement(intpickup)
 				if (hasCoroutine) then
 					coroutine.yield()
 				end
-				setPickupElementData(pickup, id, ix, iy, iz, optAngle, interior, locked, owner, inttype, cost, name, max_items, tennant, rentable, rent, interiorwithin, x, y, z, dimension, money)
-				setIntPickupElementData(intpickup, id, x, y, z, rot, locked, owner, inttype, interiorwithin, dimension, interior, ix, iy, iz)
 			-- if it is a business
 			elseif (inttype==1) then -- Business
-				local pickup
-					
 				if (owner<1) then
 					pickup = createPickup(x, y, z, 3, 1272)
 					exports.pool:allocateElement(pickup)
@@ -455,28 +422,22 @@ function reloadOneInterior(id, hasCoroutine, displayircmessage)
 					exports.pool:allocateElement(pickup)
 				end
 				
-				local intpickup = createPickup(ix, iy, iz, 3, 1318)
+				intpickup = createPickup(ix, iy, iz, 3, 1318)
 				exports.pool:allocateElement(intpickup)
 				if (hasCoroutine) then
 					coroutine.yield()
 				end
-				setPickupElementData(pickup, id, ix, iy, iz, optAngle, interior, locked, owner, inttype, cost, name, max_items, tennant, rentable, rent, interiorwithin, x, y, z, dimension, money)
-				setIntPickupElementData(intpickup, id, x, y, z, rot, locked, owner, inttype, interiorwithin, dimension, interior, ix, iy, iz)
 			-- if it is a gov building
 			elseif (inttype==2) then -- Interior Owned
-				local pickup = createPickup(x, y, z, 3, 1318)
-				local intpickup = createPickup(ix, iy, iz, 3, 1318)
+				pickup = createPickup(x, y, z, 3, 1318)
+				intpickup = createPickup(ix, iy, iz, 3, 1318)
 				exports.pool:allocateElement(pickup)
 				exports.pool:allocateElement(intpickup)
 				if (hasCoroutine) then
 					coroutine.yield()
 				end
-				setPickupElementData(pickup, id, ix, iy, iz, optAngle, interior, locked, owner, inttype, cost, name, max_items, tennant, rentable, rent, interiorwithin, x, y, z, dimension, money)
-				setIntPickupElementData(intpickup, id, x, y, z, rot, locked, owner, inttype, interiorwithin, dimension, interior, ix, iy, iz)
 			-- If the is rentable
 			elseif (inttype==3) then -- Rentable
-				local pickup
-					
 				if (owner<1) then
 					pickup = createPickup(x, y, z, 3, 1273)
 					exports.pool:allocateElement(pickup)
@@ -485,14 +446,21 @@ function reloadOneInterior(id, hasCoroutine, displayircmessage)
 					exports.pool:allocateElement(pickup)
 				end
 					
-				local intpickup = createPickup(ix, iy, iz, 3, 1318)
+				intpickup = createPickup(ix, iy, iz, 3, 1318)
 				exports.pool:allocateElement(intpickup)
 				if (hasCoroutine) then
 					coroutine.yield()
 				end
-				setPickupElementData(pickup, id, ix, iy, iz, optAngle, interior, locked, owner, inttype, cost, name, max_items, tennant, rentable, rent, interiorwithin, x, y, z, dimension, money)
-				setIntPickupElementData(intpickup, id, x, y, z, rot, locked, owner, inttype, interiorwithin, dimension, interior, ix, iy, iz)
+			else
+				outputDebugString("Invalid Interior: " .. tostring( id ))
+				return -- dun dun dunno!
 			end
+			
+			setElementData( pickup, "other", intpickup, false )
+			setElementData( intpickup, "other", pickup, false )
+			
+			setPickupElementData(pickup, id, optAngle, locked, owner, inttype, cost, name, max_items, tennant, rentable, rent, interiorwithin, x, y, z, dimension, money)
+			setIntPickupElementData(intpickup, id, rot, locked, owner, inttype, interior)
 			
 			if safeX ~= mysql_null() and safeY ~= mysql_null() and safeZ ~= mysql_null() and safeRZ ~= mysql_null() then
 				local tempobject = createObject(2332, tonumber(safeX), tonumber(safeY), tonumber(safeZ), 0, 0, tonumber(safeRZ))
@@ -539,14 +507,10 @@ function loadAllInteriors()
 end
 addEventHandler("onResourceStart", getResourceRootElement(getThisResource()), loadAllInteriors)
 
-function setPickupElementData(pickup, id, ix, iy, iz, optAngle, interior, locked, owner, inttype, cost, name, max_items, tennant, rentable, rent, interiorwithin, x, y, z, dimension, money)
+function setPickupElementData(pickup, id, optAngle, locked, owner, inttype, cost, name, max_items, tennant, rent, interiorwithin, dimension, money)
 	if(pickup) then
 		setElementData(pickup, "dbid", id, false)
-		setElementData(pickup, "x", ix, false)
-		setElementData(pickup, "y", iy, false)
-		setElementData(pickup, "z", iz, false)
 		setElementData(pickup, "angle", optAngle, false)
-		setElementData(pickup, "interior", interior, false)
 		setElementData(pickup, "locked", locked, false)
 		setElementData(pickup, "owner", owner, false)
 		setElementData(pickup, "inttype", inttype, false)
@@ -554,12 +518,10 @@ function setPickupElementData(pickup, id, ix, iy, iz, optAngle, interior, locked
 		setElementData(pickup, "name", name, false)
 		setElementData(pickup, "max_items", max_items, false)
 		setElementData(pickup, "tennant", tennant, false)
-		setElementData(pickup, "rentable", rentable, false)
 		setElementData(pickup, "rent", rent, false)
 		setElementData(pickup, "money", money, false)
 		setElementDimension(pickup, dimension)
-		setElementData(pickup, "type", "interior", false)
-		setElementInterior(pickup, interiorwithin, x, y, z)
+		setElementInterior(pickup, interiorwithin)
 		
 		local shape = getElementColShape(pickup)
 		setElementDimension(shape, dimension)
@@ -567,20 +529,15 @@ function setPickupElementData(pickup, id, ix, iy, iz, optAngle, interior, locked
 	end
 end
 
-function setIntPickupElementData(intpickup, id, x, y, z, rot, locked, owner, inttype, interiorwithin, dimension, interior, ix, iy, iz)
+function setIntPickupElementData(intpickup, id, rot, locked, owner, inttype, interior)
 	if(intpickup) then
 		-- For Interior Pickup
 		setElementData(intpickup, "dbid", id, false)
-		setElementData(intpickup, "x", x, false)
-		setElementData(intpickup, "y", y, false)
-		setElementData(intpickup, "z", z, false)
 		setElementData(intpickup, "angle", rot, false)
 		setElementData(intpickup, "locked", locked, false)
 		setElementData(intpickup, "owner", owner, false)
 		setElementData(intpickup, "inttype", inttype, false)
-		setElementData(intpickup, "interior", interiorwithin, false)
-		setElementData(intpickup, "dimension", dimension, false)
-		setElementInterior(intpickup, interior, ix, iy, iz)
+		setElementInterior(intpickup, interior)
 		setElementDimension(intpickup, id, false)
 		setElementData(intpickup, "type", "interiorexit") -- To identify it later
 		
@@ -591,67 +548,91 @@ function setIntPickupElementData(intpickup, id, x, y, z, rot, locked, owner, int
 end
 
 -- Bind Keys required
-function bindKeys()
-	local players = exports.pool:getPoolElementsByType("player")
-	for k, arrayPlayer in ipairs(players) do
-		if not(isKeyBound(arrayPlayer, "enter", "down", enterInterior)) then
-			bindKey(arrayPlayer, "enter", "down", enterInterior)
+function func (player, f, down, player, pickup) enterInterior(player, pickup) end 
+
+function bindKeys(player, pickup)
+	if (isElement(player)) then
+		if not(isKeyBound(player, "enter", "down", func)) then
+			bindKey(player, "enter", "down", func, player, pickup)
 		end
-		if not(isKeyBound(arrayPlayer, "f", "down", enterInterior)) then
-			bindKey(arrayPlayer, "f", "down", enterInterior)
+		
+		if not(isKeyBound(player, "f", "down", func)) then
+			bindKey(player, "f", "down", func, player, pickup)
 		end
+		
+		setElementData( player, "interiormarker", true, false )
 	end
 end
 
-function bindKeysOnJoin()
-	bindKey(source, "enter", "down", enterInterior)
-	bindKey(source, "f", "down", enterInterior)
+function unbindKeys(player, pickup)
+	if (isElement(player)) then
+		if (isKeyBound(player, "enter", "down", func)) then
+			unbindKey(player, "enter", "down", func, player, pickup)
+		end
+		
+		if (isKeyBound(player, "f", "down", func)) then
+			unbindKey(player, "f", "down", func, player, pickup)
+		end
+		
+		removeElementData( player, "interiormarker" )
+		triggerClientEvent( player, "displayInteriorName", player )
+	end
 end
-addEventHandler("onResourceStart", getResourceRootElement(), bindKeys)
-addEventHandler("onPlayerJoin", getRootElement(), bindKeysOnJoin)
+
+function isInPickup( thePlayer, thePickup, distance )
+	if isElement( thePlayer ) and isElement( thePickup ) then
+		local ax, ay, az = getElementPosition(thePlayer)
+		local bx, by, bz = getElementPosition(thePickup)
+		
+		return getDistanceBetweenPoints3D(ax, ay, az, bx, by, bz) < ( distance or 2 ) and getElementInterior(thePlayer) == getElementInterior(thePickup) and getElementDimension(thePlayer) == getElementDimension(thePickup)
+	else
+		return false
+	end
+end
+
+function checkLeavePickup( thePlayer, thePickup )
+	if isElement( thePlayer ) then
+		if isInPickup( thePlayer, thePickup ) then
+			setTimer(checkLeavePickup, 1000, 1, thePlayer, thePickup)
+		else
+			unbindKeys(thePlayer, thePickup)
+		end
+	end
+end
 
 function hitInteriorPickup(thePlayer)
 	local pickuptype = getElementData(source, "type")
 	
-	if (pickuptype=="interior") or (pickuptype=="interiorexit") then
-		local pdimension = getElementDimension(thePlayer)
-		local idimension = getElementDimension(source)
+	local pdimension = getElementDimension(thePlayer)
+	local idimension = getElementDimension(source)
+	
+	if pdimension == idimension then -- same dimension?
+		local name = getElementData( source, "name" )
 		
-		if (pdimension==idimension) then -- same dimension?
-			local locked = getElementData(source, "locked")
-			local inttype = getElementData(source, "inttype")
+		if name then
+			local owner = getElementData( source, "owner" )
+			local cost = getElementData( source, "cost" )
 			
-			if(getElementData(source, "type") == "interior") then
-				local name = getElementData(source, "name")
-				local owner = getElementData(source, "owner")
-				local cost = getElementData(source, "cost")
-				
-				local ownerName = "None"
-				local result = mysql_query(handler, "SELECT charactername FROM characters WHERE id='" .. owner .. "' LIMIT 1")
-			
-				if (mysql_num_rows(result)>0) then
+			local ownerName = "None"
+			local result = mysql_query(handler, "SELECT charactername FROM characters WHERE id='" .. owner .. "' LIMIT 1")
+		
+			if result then
+				if mysql_num_rows(result) > 0 then
 					ownerName = mysql_result(result, 1, 1)
 					ownerName = string.gsub(tostring(ownerName), "_", " ")
 				end
-				if (result) then
-					mysql_free_result(result)
-				end
-				triggerClientEvent(thePlayer, "displayInteriorName", thePlayer, name, ownerName, inttype, cost)
+				mysql_free_result(result)
 			end
 			
-			setElementData(thePlayer, "interiormarker", source, false)
-			setTimer(resetInteriorMarker, 3000, 1, thePlayer)
+			triggerClientEvent(thePlayer, "displayInteriorName", thePlayer, name, ownerName, getElementData( source, "inttype" ), cost)
 		end
-		cancelEvent() -- Stop it despawning
+		
+		bindKeys( thePlayer, source )
+		setTimer( checkLeavePickup, 500, 1, thePlayer, source ) 
 	end
+	cancelEvent() -- Stop it despawning
 end
-addEventHandler("onPickupHit", getRootElement(), hitInteriorPickup)
-
-function resetInteriorMarker(thePlayer)
-	if(getPlayerName(thePlayer)) then
-		removeElementData(thePlayer, "interiormarker")
-	end
-end
+addEventHandler("onPickupHit", getResourceRootElement(), hitInteriorPickup)
 
 function buyInterior(player, pickup, cost, isHouse, isRentable)
 	if isRentable then
@@ -683,6 +664,9 @@ function buyInterior(player, pickup, cost, isHouse, isRentable)
 		local charid = getElementData(player, "dbid")
 		local pickupid = getElementData(pickup, "dbid")
 		
+		local inttype = getElementData( pickup, "inttype" )
+		local ix, iy = getElementPosition( pickup )
+		
 		for key, value in ipairs(exports.pool:getPoolElementsByType("pickup")) do
 			local id = tonumber(getElementData(value, "dbid"))
 			if (id==pickupid) then
@@ -690,70 +674,25 @@ function buyInterior(player, pickup, cost, isHouse, isRentable)
 			end
 		end
 
-		local query = mysql_query(handler, "UPDATE interiors SET owner='" .. charid .. "', locked='0' WHERE id='" .. pickupid .. "'")
-		mysql_free_result(query)
-		local result = mysql_query(handler, "SELECT id, x, y, z, interiorx, interiory, interiorz, type, owner, locked, cost, name, interior, dimensionwithin, interiorwithin, angle, angleexit, items, items_values, max_items, rentable, tennant, rent, money FROM interiors WHERE id='" .. pickupid .. "'")
-		local id = tonumber(mysql_result(result, 1, 1))
-		local x = tonumber(mysql_result(result, 1, 2))
-		local y = tonumber(mysql_result(result, 1, 3))
-		local z = tonumber(mysql_result(result, 1, 4))
-					
-		local ix = tonumber(mysql_result(result, 1, 5))
-		local iy = tonumber(mysql_result(result, 1, 6))
-		local iz = tonumber(mysql_result(result, 1, 7))
-					
-		local inttype = tonumber(mysql_result(result, 1, 8))
-		local owner = tonumber(mysql_result(result, 1, 9))
-		local locked = tonumber(mysql_result(result, 1, 10))
-		local cost = tonumber(mysql_result(result, 1, 11))
-		local name = mysql_result(result, 1, 12)
-
-		local interior = tonumber(mysql_result(result, 1, 13))
-		local dimension = tonumber(mysql_result(result, 1, 14))
-		local interiorwithin = tonumber(mysql_result(result, 1, 15))
-		local optAngle = tonumber(mysql_result(result, 1, 16))
-		local exitAngle = tonumber(mysql_result(result, 1, 17))
-				
-		local items = mysql_result(result, 1, 18)
-		local items_values = mysql_result(result, 1, 19)
-		local max_items = tonumber(mysql_result(result, 1, 20))
-				
-		local rentable = tonumber(mysql_result(result, 1, 21))
-		local tennant = mysql_result(result, 1, 22)
-		local rent = tonumber(mysql_result(result, 1, 23))
-				
-		local money = tonumber(mysql_result(result, 1, 24))
-			
-		mysql_free_result(result)
+		mysql_free_result( mysql_query( handler, "UPDATE interiors SET owner='" .. charid .. "', locked='0' WHERE id='" .. pickupid .. "'") )
 		exports.global:takePlayerSafeMoney(player, cost)
 		
 		-- make sure it's an unqiue key
-		call( getResourceFromName( "item-system" ), "deleteAll", 4, dbid )
-		call( getResourceFromName( "item-system" ), "deleteAll", 5, dbid )
+		call( getResourceFromName( "item-system" ), "deleteAll", 4, pickupid )
+		call( getResourceFromName( "item-system" ), "deleteAll", 5, pickupid )
 		
 		if (isHouse) then
 			-- Achievement
 			exports.global:givePlayerAchievement(player, 9)
-			exports.global:giveItem(player, 4, id)
+			exports.global:giveItem(player, 4, pickupid)
 		elseif isRentable then
-			exports.global:giveItem(player, 4, id)
+			exports.global:giveItem(player, 4, pickupid)
 		else
 			-- Achievement
 			exports.global:givePlayerAchievement(player, 10)
-			exports.global:giveItem(player, 5, id)
+			exports.global:giveItem(player, 5, pickupid)
 		end
-		--[[
-		local pickup = createPickup(x+50, y+50, z, 3, 1318)
-		setElementData(pickup, "type", "interior")
-		setElementPosition(pickup, x, y, z)
-		local intpickup = createPickup(ix, iy, iz, 3, 1318)
-		exports.pool:allocateElement(pickup)
-		exports.pool:allocateElement(intpickup)
-
-		setPickupElementData(pickup, id, ix, iy, iz, optAngle, interior, locked, owner, inttype, cost, name, items, items_values, max_items, tennant, rentable, rent, interiorwithin, x, y, z, dimension, money)
-		setIntPickupElementData(intpickup, id, x, y, z, rot, locked, owner, inttype, interiorwithin, dimension, interior, ix, iy, iz)
-		reloadOneInterior(tonumber(pickupid), false, false)
-		]]--
+		
 		reloadOneInterior(tonumber(pickupid), false, false)
 		triggerClientEvent(player, "createBlipAtXY", player, inttype, ix, iy)
 			
@@ -767,89 +706,47 @@ end
 function vehicleStartEnter(thePlayer)
 	local thePickup = getElementData(thePlayer, "interiormarker")
 	
-	if (thePickup) then
+	if thePickup then
 		cancelEvent()
 	end
 end
 addEventHandler("onVehicleStartEnter", getRootElement(), vehicleStartEnter)
 
-function enterInterior(source)
-
-	local thePickup = getElementData(source, "interiormarker")
-
+function enterInterior( thePlayer, thePickup )
 	-- if the player is entering a pickup
-	if thePickup and not getPedOccupiedVehicle(source) then
-		
-		local pickupType = getElementData(thePickup, "type")
-		
-		
-		local pickupDimension = getElementDimension(thePickup)
-		local playerDimension = getElementDimension(source)
-		
-		local username = getPlayerName(source)
-
+	if thePickup and not getPedOccupiedVehicle(thePlayer) then
 		-- if pickup and player are in the same place
-		if (pickupDimension==playerDimension)  then
+		if getElementDimension(thePickup) == getElementDimension(thePlayer) then
 		
 			local inttype = getElementData(thePickup, "inttype")
+			local locked = getElementData(thePickup, "locked")
 			
 			-- if the pickup collided with is an interior
-			if (pickupType=="interior") then
-				local locked = getElementData(thePickup, "locked")
+			if getElementData(thePickup, "name") then
 				local owner = getElementData(thePickup, "owner")
 				local cost = getElementData(thePickup, "cost")
-				
-				local houseID = getElementData(thePickup, "dbid")
                 
 				-- if the interior is unlocked
-				if (locked == 0) then 
-					setPlayerInsideInterior(thePickup, source)
-				elseif (locked==1) and (inttype==0) and (owner==-1) then -- unowned house
-					buyInterior(source, thePickup, cost, true, false)
-				elseif (locked==1) and (inttype==1) and (owner==-1) then -- unowned business
-					buyInterior(source, thePickup, cost, false, false)
-				elseif (locked==1) and (inttype==3) and (owner==-1) then -- unowned rentable appartment
-					buyInterior(source, thePickup, cost, false, true)
+				if locked == 0 then 
+					setPlayerInsideInterior(thePickup, thePlayer)
+				elseif locked == 1 and owner == -1 then
+					if inttype == 0 then -- unowned house
+						buyInterior(thePlayer, thePickup, cost, true, false)
+					elseif inttype == 1 then -- unowned business
+						buyInterior(thePlayer, thePickup, cost, false, false)
+					elseif inttype == 3 then -- unowned rentable appartment
+						buyInterior(thePlayer, thePickup, cost, false, true)
+					end
 				else -- interior is locked
-					outputChatBox("You try the door handle, but it seems to be locked.", source, 255, 0,0, true)
+					outputChatBox("You try the door handle, but it seems to be locked.", thePlayer, 255, 0,0, true)
 				end
 				
 			-- if it is an exit marker, its unlocked or is government then
-			elseif (pickupType=="interiorexit") then
-
-				local locked = getElementData(thePickup, "locked")
-				local houseID = getElementData(thePickup, "dbid")
-
-				if ((locked == 0) or (inttype==2))  then -- if it is unlocked or its a government building
-					local owner = getElementData(thePickup, "owner")
-					local x = getElementData(thePickup, "x")
-					local y = getElementData(thePickup, "y")
-					local z = getElementData(thePickup, "z")
-					local rot = getElementData(thePickup, "angle")
-					local interior = getElementData(thePickup, "interior")
-					local dimension = getElementData(thePickup, "dimension")
-					
-                    triggerEvent("onPlayerInteriorExit", source, thePickup)
-                    
-					-- fade camera to black
-					fadeCamera ( source, false, 1,0,0,0 )
-					setPedFrozen( source, true )
-                    
-					-- teleport the player during the black fade
-					setTimer(function(source)
-						setElementInterior(source, interior, x, y, z)
-						setCameraInterior(source, interior)
-						setElementDimension(source, dimension)
-					
-						-- fade camera in
-						setTimer(fadeCamera, 1000, 1 , source , true, 2)
-						setTimer(setPedFrozen, 2000, 1, source, false)
-					end, 1000, 1, source)
-					
-					playSoundFrontEnd(source, 40)
-				
-				else -- door is locked
-					outputChatBox("You try the door handle, but it seems to be locked.", source, 255, 0,0, true)
+			else
+				if locked == 0 then
+					setPlayerInsideInterior( thePickup, thePlayer )
+				else
+					outputChatBox("You try the door handle, but it seems to be locked.", thePlayer, 255, 0,0, true)
 				end
 			end
 		end
@@ -859,52 +756,57 @@ end
 
 function setPlayerInsideInterior(thePickup, thePlayer)
 	-- teleport the player inside the interior
-	local dimension = getElementData(thePickup, "dbid")
-	local interior = getElementData(thePickup, "interior")
-	local x = getElementData(thePickup, "x")
-	local y = getElementData(thePickup, "y")
-	local z = getElementData(thePickup, "z")
-	local rot = getElementData(thePickup, "angle")
-	local name = getElementData(thePickup, "name")
-	local owner = getElementData(thePickup, "owner")
-	local inttype = getElementData(thePickup, "inttype")
-	local cost = getElementData(thePickup, "cost")
+	local other = getElementData( thePickup, "other" )
+	if other then
+		local dimension = getElementDimension( other, "dbid" )
+		local interior = getElementInterior( other )
+		local x, y, z = getElementPosition( other )
+		local rot = getElementData(thePickup, "angle")
+		
+		-- fade camera to black
+		fadeCamera ( thePlayer, false, 1,0,0,0 )
+		setPedFrozen( thePlayer, true )
+						
+		-- teleport the player during the black fade
+		setTimer(function(thePlayer, thePickup, other)
+			setElementPosition(thePlayer, x, y, z)
+			setElementInterior(thePlayer, interior)
+			setElementDimension(thePlayer, dimension)
+			setCameraInterior(thePlayer, interior)
+			if rot then
+				setPedRotation(thePlayer, rot)
+			end
+			
+			triggerEvent("onPlayerInteriorChange", thePlayer, thePickup, other)
+			
+			-- fade camera in
+			setTimer(fadeCamera, 1000, 1 , thePlayer , true, 2)
+			setTimer(setPedFrozen, 2000, 1, thePlayer, false )
+		end, 1000, 1, thePlayer, thePickup, other)
+		
+		local name = getElementData(thePickup, "name")
+		if name then
+			local owner = getElementData(thePickup, "owner")
+			local inttype = getElementData(thePickup, "inttype")
+			local cost = getElementData(thePickup, "cost")
+			
+			local ownerName = "None"
+			local result = mysql_query(handler, "SELECT charactername FROM characters WHERE id='" .. owner .. "' LIMIT 1")
+			
+			if (mysql_num_rows(result)>0) then
+				ownerName = mysql_result(result, 1, 1)
+				ownerName = string.gsub(tostring(ownerName), "_", " ")
+			end
+			
+			if (result) then
+				mysql_free_result(result)
+			end
 
-    triggerEvent("onPlayerInteriorEnter", thePlayer, thePickup)
-    
-	-- fade camera to black
-	fadeCamera ( thePlayer, false, 1,0,0,0 )
-	setPedFrozen( thePlayer, true )
-					
-	-- teleport the player during the black fade
-	setTimer(function(thePlayer)
-					
-		setElementInterior(thePlayer, interior, x, y, z)
-		setElementDimension(thePlayer, dimension)
-		setCameraInterior(thePlayer, interior)
-		setPedRotation(thePlayer, rot)
-					
-		-- fade camera in
-		setTimer(fadeCamera, 1000, 1 , thePlayer , true, 2)
-		setTimer(setPedFrozen, 2000, 1, thePlayer, false )
-	end, 1000, 1, thePlayer)
-	
-	local ownerName = "None"
-	local result = mysql_query(handler, "SELECT charactername FROM characters WHERE id='" .. owner .. "' LIMIT 1")
-	
-	if (mysql_num_rows(result)>0) then
-		ownerName = mysql_result(result, 1, 1)
-		ownerName = string.gsub(tostring(ownerName), "_", " ")
+			triggerClientEvent(thePlayer, "displayInteriorName", thePlayer, name, ownerName, inttype, cost)
+
+			playSoundFrontEnd(thePlayer, 40)
+		end
 	end
-	
-	if (result) then
-		mysql_free_result(result)
-	end
-
-	triggerClientEvent(thePlayer, "displayInteriorName", thePlayer, name, ownerName, inttype, cost)
-
-	setPedRotation(thePlayer, 0)
-	playSoundFrontEnd(thePlayer, 40)
 end
 
 function getNearbyInteriors(thePlayer, commandName)
@@ -914,14 +816,13 @@ function getNearbyInteriors(thePlayer, commandName)
 		local count = 0
 		
 		for k, thePickup in ipairs(exports.pool:getPoolElementsByType("pickup")) do
-			local pickuptype = getElementData(thePickup, "type")
-
-			if (pickuptype=="interior") then
+			local name = getElementData( thePickup, "name" )
+			if name then
 				local x, y, z = getElementPosition(thePickup)
 				local distance = getDistanceBetweenPoints3D(posX, posY, posZ, x, y, z)
 				if (distance<=10) then
 					local dbid = getElementData(thePickup, "dbid")
-					outputChatBox("   Interior with ID " .. dbid .. ".", thePlayer, 255, 126, 0)
+					outputChatBox("   Interior with ID " .. dbid .. ": " .. name, thePlayer, 255, 126, 0)
 					count = count + 1
 				end
 			end
@@ -950,16 +851,14 @@ function changeInteriorName( thePlayer, commandName, ...)
 			
 			-- update the name on the markers...
 			for k, thePickup in ipairs(exports.pool:getPoolElementsByType("pickup")) do
-			local pickupType = getElementData(thePickup, "type")
-			
-			if (pickupType=="interior") then
-				local pickupID = getElementData(thePickup, "dbid")
-				if (pickupID==id) then
-					setElementData(thePickup, "name", tostring(name), false)
-					break
+				local dbid = getElementData( thePickup, "dbid" )
+				if dbid and dbid == id then
+					if getElementData( thePickup, "name" ) then
+						setElementData( thePickup, "name", name, false )
+						break
+					end
 				end
 			end
-		end
 		end
 	end
 end

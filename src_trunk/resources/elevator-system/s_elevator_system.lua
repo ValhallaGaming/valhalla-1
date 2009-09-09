@@ -25,6 +25,7 @@ addEventHandler("onResourceStop", getResourceRootElement(getThisResource()), clo
 -- ////////////////////////////////////
 -- //			MYSQL END			 //
 -- ////////////////////////////////////
+addEvent("onPlayerInteriorChange", true)
 
 function createElevator(thePlayer, commandName, interior, dimension, ix, iy, iz)
 	if (exports.global:isPlayerLeadAdmin(thePlayer)) then
@@ -50,17 +51,17 @@ function createElevator(thePlayer, commandName, interior, dimension, ix, iy, iz)
 					exports.pool:allocateElement(pickup)
 					local intpickup = createPickup(ix, iy, iz, 3, 1318)
 					exports.pool:allocateElement(intpickup)
-
+					
 					setElementData(pickup, "dbid", id, false)
 					setElementData(pickup, "other", intpickup, false)
 					setElementInterior(pickup, interiorwithin)
 					setElementDimension(pickup, dimensionwithin)
-						
+					
 					setElementData(intpickup, "dbid", id, false)
 					setElementData(intpickup, "other", pickup, false)
 					setElementInterior(intpickup, interior)
 					setElementDimension(intpickup, dimension)
-
+					
 					outputChatBox("Elevator created with ID #" .. id .. "!", thePlayer, 0, 255, 0)
 				end
 			else
@@ -85,7 +86,7 @@ function loadAllElevators(res)
 			local x = tonumber(row[2])
 			local y = tonumber(row[3])
 			local z = tonumber(row[4])
-
+			
 			local ix = tonumber(row[5])
 			local iy = tonumber(row[6])
 			local iz = tonumber(row[7])
@@ -210,7 +211,7 @@ function enterElevator(player, pickup)
 			outputChatBox("You try the door handle, but it seems to be locked.", player, 255, 0,0, true)
 			return
 		end
-
+		
 		if getElementData(player, "IsInCustomInterior") == 1 then
 			removeElementData(player,"IsInCustomInterior")
 			local weather, blend = getWeather()
@@ -220,7 +221,7 @@ function enterElevator(player, pickup)
 			triggerClientEvent (player, "onClientWeatherChange", getRootElement(), 7, nil)
 			setElementData(player,"IsInCustomInterior", 1, false)
 		end
-
+		
 		-- fade camera to black
 		fadeCamera ( player, false, 1,0,0,0 )
 		
@@ -230,7 +231,9 @@ function enterElevator(player, pickup)
 			setElementInterior(player, interior)
 			setCameraInterior(player, interior)
 			setElementDimension(player, dimension)
-		
+			
+			triggerEvent("onPlayerInteriorChange", player, pickup, other)
+			
 			-- fade camera in
 			setTimer(fadeCamera, 1000, 1 , player , true, 2)
 			
@@ -239,7 +242,7 @@ function enterElevator(player, pickup)
 				setPedFrozen(player, true)
 				setPedGravity(player, 0)
 			end
-
+			
 			resetPlayerData(player)
 		end, 1000, 1)
 		

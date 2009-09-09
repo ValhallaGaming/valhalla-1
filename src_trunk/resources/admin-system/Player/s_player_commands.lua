@@ -2048,7 +2048,7 @@ end
 addCommandHandler("warn", warnPlayer, false, false)
 
 -- recon fix for interior changing
-function interiorChanged(thePickup)
+function interiorChanged()
 	for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
 		if isElement(value) then
 			local cameraTarget = getCameraTarget(value)
@@ -2064,8 +2064,7 @@ function interiorChanged(thePickup)
 		end
 	end
 end
-addEventHandler("onPlayerInteriorEnter", getRootElement(), interiorChanged)
-addEventHandler("onPlayerInteriorExit", getRootElement(), interiorChanged)
+addEventHandler("onPlayerInteriorChange", getRootElement(), interiorChanged)
 
 -- stop recon on quit of the player
 function removeReconning()

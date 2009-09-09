@@ -17,6 +17,8 @@ function showIntName(name, ownerName, inttype, cost)
 			gBuyMessage = nil
 		end
 	end
+	
+	if name then
 		if (inttype==3) then -- Interior name and Owner for rented
 			gInteriorName = guiCreateLabel(0.0, 0.85, 1.0, 0.3, tostring(name), true)
 			guiSetFont(gInteriorName, "sa-header")
@@ -57,6 +59,7 @@ function showIntName(name, ownerName, inttype, cost)
 		end
 		
 		timer = setTimer(fadeMessage, 50, 20, true)
+	end
 end
 
 function fadeMessage(fadein)

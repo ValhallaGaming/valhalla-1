@@ -30,6 +30,11 @@ function addFriend(player)
 
 	local result = mysql_query( handler, "INSERT INTO friends VALUES (" .. accid .. ", " .. targetID .. ")")
 	if result then
+		local friends = getElementData(source, "friends")
+		if friends then
+			friends[ targetID ] = true
+			setElementData(source, "friends", friends, false)
+		end
 		outputChatBox("'" .. getPlayerName(player) .. "' was added to your friends list.", source, 255, 194, 14)
 		mysql_free_result( result )
 	else

@@ -446,6 +446,8 @@ function spawnCharacter(charname)
 					friendsonline = friendsonline + 1
 				end
 			end
+			
+			setElementData(source, "friends", ids, false)
 		end
 		
 		if friendsonline == 1 then

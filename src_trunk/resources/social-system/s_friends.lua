@@ -146,6 +146,12 @@ function removeFriend(id, username, dontShowFriends)
 	local accid = tonumber(getElementData(source, "gameaccountid"))
 	local result = mysql_query( handler, "DELETE FROM friends WHERE id = " .. accid .. " AND friend = " .. id )
 	if result then
+		local friends = getElementData(source, "friends")
+		if friends then
+			friends[ tonumber(id) ] = nil
+			setElementData(source, "friends", friends, false)
+		end
+		
 		mysql_free_result( result )
 		outputChatBox("You removed '" .. username .. "' from your friends list.", source, 255, 194, 14)
 		

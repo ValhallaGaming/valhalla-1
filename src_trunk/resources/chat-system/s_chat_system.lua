@@ -441,6 +441,17 @@ addCommandHandler("toggleooc", playerToggleOOC, false, false)
 
 local advertisementMessages = { "sincityrp", "ls-rp", "sincity", "samp", "sa-mp", "eg", "tri0n3", "www.", ".com", ".net", ".co.uk", ".org", "Bryan", "Danny", "everlast", "neverlast", "www.everlastgaming.com"}
 
+function isFriendOf(thePlayer, targetPlayer)
+	local friends = getElementData(targetPlayer, "friends")
+	if friends then
+		local targetID = tonumber( getElementData( thePlayer, "gameaccountid" ) )
+		if friends[ targetID ] then
+			return true
+		end
+	end
+	return false
+end
+
 function pmPlayer(thePlayer, commandName, who, ...)
 
 		if not (who) or not (...) then
@@ -458,7 +469,7 @@ function pmPlayer(thePlayer, commandName, who, ...)
 					setElementData(targetPlayer, "pmblocked", 0, false)
 				end
 				
-				if (logged==1) and (pmblocked==0 or exports.global:isPlayerAdmin(thePlayer) or getElementData(thePlayer, "reportadmin") == targetPlayer) then
+				if (logged==1) and (pmblocked==0 or exports.global:isPlayerAdmin(thePlayer) or getElementData(thePlayer, "reportadmin") == targetPlayer or isFriendOf(thePlayer, targetPlayer)) then
 					local playerName = string.gsub(getPlayerName(thePlayer), "_", " ")
 					local targetPlayerName = string.gsub(getPlayerName(targetPlayer), "_", " ")
 				

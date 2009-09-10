@@ -171,6 +171,7 @@ function publicSellProperty(thePlayer, dbid, showmessages, givemoney)
 			local safe = safeTable[dbid]
 			call( getResourceFromName( "item-system" ), "clearItems", safe )
 			destroyElement(safe)
+			safeTable[dbid] = nil
 		end
 		
 		if interiorType == 0 or interiorType == 1 then
@@ -302,6 +303,7 @@ function deleteInterior(thePlayer, commandName)
 				if safe then
 					call( getResourceFromName( "item-system" ), "clearItems", safe )
 					destroyElement(safe)
+					safeTable[dbid] = nil
 				end
 				
 				-- destroy the entrance and exit

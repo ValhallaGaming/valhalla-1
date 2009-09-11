@@ -1165,7 +1165,7 @@ function setVehiclePosition(thePlayer, commandName)
 		outputChatBox("You are not in a vehicle.", thePlayer, 255, 0, 0)
 	else
 		if call( getResourceFromName("tow-system"), "cannotVehpos", thePlayer ) then
-			outputChatBox("Only McJones Towing is allowed to park their vehicles on the Impound Lot.", thePlayer, 255, 0, 0)
+			outputChatBox("Only Best's Towing and Recovery is allowed to park their vehicles on the Impound Lot.", thePlayer, 255, 0, 0)
 		elseif isElementWithinColShape( thePlayer, HospitalCol ) and getElementData( thePlayer, "faction" ) ~= 2 and not exports.global:isPlayerAdmin(thePlayer) then
 			outputChatBox("Only Los Santos Emergency Service is allowed to park their vehicles in front of the Hospital.", thePlayer, 255, 0, 0)
 		elseif isElementWithinColShape( thePlayer, PershingSquareCol ) and getElementData( thePlayer, "faction" ) ~= 1  and not exports.global:isPlayerAdmin(thePlayer) then
@@ -1180,7 +1180,7 @@ function setVehiclePosition(thePlayer, commandName)
 					outputChatBox("This vehicle is not permanently spawned.", thePlayer, 255, 0, 0)
 				else
 					if (call(getResourceFromName("tow-system"), "CanTowTruckDriverGetPaid", thePlayer)) then
-						call(getResourceFromName("faction-system"), "addToFactionMoney", 24, 75)
+						call(getResourceFromName("faction-system"), "addToFactionMoney", 30, 75)
 						call(getResourceFromName("faction-system"), "addToFactionMoney", 1, 75)
 					end
 					removeElementData(veh, "requires.vehpos")

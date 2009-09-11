@@ -350,12 +350,12 @@ function departmentradio(thePlayer, commandName, ...)
 	if (theTeam) then
 		local teamID = tonumber(getElementData(theTeam, "id"))
 
-		if (teamID==1 or teamID==2 or teamID==4 or teamID == 24) then
+		if (teamID==1 or teamID==2 or teamID==4 or teamID == 30) then
 			if (...) then
 				local message = trunklateText( thePlayer, table.concat({...}, " ") )
 				local PDFaction = getPlayersInTeam(getTeamFromName("Los Santos Police Department"))
 				local ESFaction = getPlayersInTeam(getTeamFromName("Los Santos Emergency Services"))
-				local TowFaction = getPlayersInTeam(getTeamFromName("McJones Towing"))
+				local TowFaction = getPlayersInTeam(getTeamFromName("Best's Towing and Recovery"))
 				local playerName = string.gsub(getPlayerName(thePlayer), "_", " ")
 				
 				for key, value in ipairs(PDFaction) do

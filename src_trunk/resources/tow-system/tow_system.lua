@@ -40,14 +40,14 @@ local towSphere = createColPolygon(1039.78515625, -914.3857421875, 1024.26074218
 local towSphere2 = createColPolygon(1592.8232421875, -1690.8232421875, 1611.7314453125, -1665.80859375, 1611.7275390625, -1721.408203125, 1556.486328125, -1721.513671875, 1546.5703125, -1719.9052734375, 1537.9248046875, -1715.505859375, 1530.921875, -1708.4306640625, 1526.8115234375, -1700.3681640625, 1524.9833984375, -1634.1396484375, 1555.84375, -1634.056640625, 1556.447265625, -1690.478515625, 1581.2490234375, -1690.4306640625, 1581.412109375, -1665.943359375, 1611.724609375, -1665.7958984375)
 
 function cannotVehpos(thePlayer)
-	return isElementWithinColShape(thePlayer, towSphere) and getTeamName(getPlayerTeam(thePlayer)) ~= "McJones Towing"
+	return isElementWithinColShape(thePlayer, towSphere) and getTeamName(getPlayerTeam(thePlayer)) ~= "Best's Towing and Recovery"
 end
 
 -- generic function to check if a guy is in the col polygon and the right team
 function CanTowTruckDriverVehPos(thePlayer, commandName)
 	local ret = 0
 	if (isElementWithinColShape(thePlayer, towSphere) or isElementWithinColShape(thePlayer,towSphere2)) then
-		if (getTeamName(getPlayerTeam(thePlayer)) == "McJones Towing") then
+		if (getTeamName(getPlayerTeam(thePlayer)) == "Best's Towing and Recovery") then
 			ret = 2
 		else
 			ret = 1
@@ -58,14 +58,14 @@ end
 --Auto Pay for PD
 function CanTowTruckDriverGetPaid(thePlayer, commandName)
 	if (isElementWithinColShape(thePlayer,towSphere2)) then
-		if (getTeamName(getPlayerTeam(thePlayer)) == "McJones Towing") then
+		if (getTeamName(getPlayerTeam(thePlayer)) == "Best's Towing and Recovery") then
 			return true
 		end
 	end
 	return false
 end
 function UnlockVehicle(element, matchingdimension)
-	if (getElementType(element) == "vehicle" and getVehicleOccupant(element) and getTeamName(getPlayerTeam(getVehicleOccupant(element))) == "McJones Towing" and getElementModel(element) == 525 and getVehicleTowedByVehicle(element)) then
+	if (getElementType(element) == "vehicle" and getVehicleOccupant(element) and getTeamName(getPlayerTeam(getVehicleOccupant(element))) == "Best's Towing and Recovery" and getElementModel(element) == 525 and getVehicleTowedByVehicle(element)) then
 		--local towing = getVehicleTowedByVehicle(element)
 		local temp = element
 		while (getVehicleTowedByVehicle(temp)) do
@@ -85,7 +85,7 @@ function UnlockVehicle(element, matchingdimension)
 						setVehicleEngineState(temp, false)
 						outputChatBox("Please remember to vehpos your vehicle in our car park.", getVehicleOccupant(element), 255, 194, 14)
 					else
-						--if (getElementData(temp, "faction") ~= 24) then
+						--if (getElementData(temp, "faction") ~= 30) then
 							--unlock it and impound it
 							setVehicleLocked(temp, false)
 							setElementData(temp, "locked", false)
@@ -108,7 +108,7 @@ addEventHandler("onColShapeHit", towSphere2, UnlockVehicle)
 function payRelease(vehID)
 	if getElementData(source, "money") >= 75 then
 		exports.global:takePlayerSafeMoney(source, 75)
-		local towCompany = getTeamFromName("McJones Towing")
+		local towCompany = getTeamFromName("Best's Towing and Recovery")
 		local dbid = getElementData(towCompany, "id")
 		call(getResourceFromName("faction-system"), "addToFactionMoney", dbid, 75)
 		setElementData(vehID, "Impounded", 0)
@@ -171,7 +171,7 @@ end
 
 function updateTowingVehicle(theTruck)
 	local thePlayer = getVehicleOccupant(theTruck)
-	if (getTeamName(getPlayerTeam(thePlayer)) == "McJones Towing") then
+	if (getTeamName(getPlayerTeam(thePlayer)) == "Best's Towing and Recovery") then
 		local owner = getElementData(source, "owner")
 		local faction = getElementData(source, "faction")
 		local carName = getVehicleName(source)
@@ -207,7 +207,7 @@ function updateCivilianVehicles(theTruck)
 		local dbid = getElementData(source, "dbid")
 
 		if (dbid >= 0 and faction == -1 and owner < 0) then
-			call(getResourceFromName("faction-system"), "addToFactionMoney", 24, 75)
+			call(getResourceFromName("faction-system"), "addToFactionMoney", 30, 75)
 			outputChatBox("The state has un-impounded the vehicle you where towing.", getVehicleOccupant(theTruck), 255, 194, 14)
 			respawnVehicle(source)
 		end

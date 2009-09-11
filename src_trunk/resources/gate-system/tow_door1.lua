@@ -9,7 +9,7 @@ local open = false
 function useImpoundDoorb(thePlayer)
 	local team = getPlayerTeam(thePlayer)
 	
-	if (team==getTeamFromName("McJones Towing")) then
+	if (team==getTeamFromName("Best's Towing and Recovery")) then
 		local x, y, z = getElementPosition(thePlayer)
 		local distance = getDistanceBetweenPoints3D(228.2837677002, 115.20336151123, 1010.5583496094, x, y, z)
 

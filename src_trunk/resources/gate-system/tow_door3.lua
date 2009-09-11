@@ -6,7 +6,7 @@ local open = false
 -- Gate code
 function useImpoundDoorc(thePlayer)
 	local team = getPlayerTeam(thePlayer)
-	if (team==getTeamFromName("McJones Towing")) then
+	if (team==getTeamFromName("Best's Towing and Recovery")) then
 		local x, y, z = getElementPosition(thePlayer)
 		local distance = getDistanceBetweenPoints3D(1026.7662353516, -904.46270751953, 42.064300537109, x, y, z)
 

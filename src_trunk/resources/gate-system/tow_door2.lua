@@ -9,7 +9,7 @@ local open = false
 function useImpoundDoora(thePlayer)
 	local team = getPlayerTeam(thePlayer)
 	
-	if (team==getTeamFromName("McJones Towing")) then
+	if (team==getTeamFromName("Best's Towing and Recovery")) then
 		local x, y, z = getElementPosition(thePlayer)
 		local distance = getDistanceBetweenPoints3D(222.18794250488, 119.52620697021, 1010.358215332, x, y, z)
 

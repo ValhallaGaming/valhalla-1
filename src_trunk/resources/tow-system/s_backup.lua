@@ -5,7 +5,7 @@ function removeBackup(thePlayer, commandName)
 	if (exports.global:isPlayerAdmin(thePlayer)) then
 		if (backupPlayer~=nil) then
 			
-			for k,v in ipairs(getPlayersInTeam ( getTeamFromName("McJones Towing") )) do
+			for k,v in ipairs(getPlayersInTeam ( getTeamFromName("Best's Towing and Recovery") )) do
 				triggerClientEvent(v, "destroyBackupBlip", backupBlip)
 			end
 			removeEventHandler("onPlayerQuit", backupPlayer, destroyBlip)
@@ -25,13 +25,13 @@ function backup(thePlayer, commandName)
 	local theTeam = getPlayerTeam(thePlayer)
 	local factionType = getElementData(theTeam, "type")
 	
-	--if (factionType==3 or getTeamName(thePlayerTeam) == "McJones Towing") then--Leaving this in in case of abuse.
+	--if (factionType==3 or getTeamName(thePlayerTeam) == "Best's Towing and Recovery") then--Leaving this in in case of abuse.
 		if (backupBlip == true) and (backupPlayer~=thePlayer) then -- in use
 			outputChatBox("There is already a backup beacon in use.", thePlayer, 255, 194, 14)
 		elseif (backupBlip == false) then -- make backup blip
 			backupBlip = true
 			backupPlayer = thePlayer
-			for k,v in ipairs(getPlayersInTeam(getTeamFromName("McJones Towing"))) do
+			for k,v in ipairs(getPlayersInTeam(getTeamFromName("Best's Towing and Recovery"))) do
 				triggerClientEvent(v, "createBackupBlip", thePlayer)
 				outputChatBox("A player requires a Tow Truck. Please respond ASAP!", v, 255, 194, 14)
 			end
@@ -40,7 +40,7 @@ function backup(thePlayer, commandName)
 			addEventHandler("savePlayer", thePlayer, destroyBlip)
 			
 		elseif (backupBlip == true) and (backupPlayer==thePlayer) then -- in use by this player
-			for key, v in ipairs(getPlayersInTeam(getTeamFromName("McJones Towing"))) do
+			for key, v in ipairs(getPlayersInTeam(getTeamFromName("Best's Towing and Recovery"))) do
 				triggerClientEvent(v, "destroyBackupBlip", getRootElement())
 				outputChatBox("The player no longer requires a Tow Truck. Resume normal patrol", v, 255, 194, 14)
 			end
@@ -56,10 +56,10 @@ addCommandHandler("towtruck", backup, false, false)
 
 function destroyBlip()
 	local theTeam = getPlayerTeam(source)
-	for key, value in ipairs(getPlayersInTeam(getTeamFromName("McJones Towing"))) do
+	for key, value in ipairs(getPlayersInTeam(getTeamFromName("Best's Towing and Recovery"))) do
 		outputChatBox("The unit no longer requires assistance. Resume normal patrol", value, 255, 194, 14)
 	end
-	for k,v in ipairs(getPlayersInTeam ( getTeamFromName("McJones Towing") )) do
+	for k,v in ipairs(getPlayersInTeam ( getTeamFromName("Best's Towing and Recovery") )) do
 		triggerClientEvent(v, "destroyBackupBlip", backupBlip)
 	end
 	removeEventHandler("onPlayerQuit", thePlayer, destroyBlip)

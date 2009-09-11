@@ -24,7 +24,8 @@ languages = {
 	"Portugese",
 	"Turkish",
 	"Estonian",
-	"Korean"
+	"Korean",
+	"Vietnamese"
 }
 	
 flags = {
@@ -53,7 +54,8 @@ flags = {
 	"pr",
 	"eu",
 	"ee",
-	"kr"
+	"kr",
+	"vn"
 }
 
 

@@ -935,7 +935,7 @@ addEventHandler( "lockUnlockHouse", getRootElement(),
 			end
 		end
 		
-		if found then
+		if found and itemValue then
 			local result = mysql_query(handler, "SELECT 1-locked FROM interiors WHERE id = " .. itemValue)
 			local locked = 0
 			if result then

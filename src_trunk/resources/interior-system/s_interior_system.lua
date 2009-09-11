@@ -461,7 +461,7 @@ function reloadOneInterior(id, hasCoroutine, displayircmessage)
 			setElementData( pickup, "other", intpickup, false )
 			setElementData( intpickup, "other", pickup, false )
 			
-			setPickupElementData(pickup, id, optAngle, locked, owner, inttype, cost, name, max_items, tennant, rentable, rent, interiorwithin, x, y, z, dimension, money)
+			setPickupElementData(pickup, id, optAngle, locked, owner, inttype, cost, name, max_items, tennant, rent, interiorwithin, dimension, money)
 			setIntPickupElementData(intpickup, id, rot, locked, owner, inttype, interior)
 			
 			if safeX ~= mysql_null() and safeY ~= mysql_null() and safeZ ~= mysql_null() and safeRZ ~= mysql_null() then
@@ -536,7 +536,7 @@ function setIntPickupElementData(intpickup, id, rot, locked, owner, inttype, int
 		setElementData(intpickup, "owner", owner, false)
 		setElementData(intpickup, "inttype", inttype, false)
 		setElementInterior(intpickup, interior)
-		setElementDimension(intpickup, id, false)
+		setElementDimension(intpickup, id)
 		setElementData(intpickup, "type", "interiorexit") -- To identify it later
 	end
 end

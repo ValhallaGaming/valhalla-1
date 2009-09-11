@@ -151,8 +151,3 @@ function removeBlipAtXY(inttype, x, y)
 end
 addEvent("removeBlipAtXY", true)
 addEventHandler("removeBlipAtXY", getRootElement(), removeBlipAtXY)
-
-function streamIn( )
-	outputChatBox( tostring( source ) )
-end
-addEventHandler( "onClientElementStreamIn", getResourceRootElement(), streamIn)

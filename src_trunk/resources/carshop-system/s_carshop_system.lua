@@ -49,13 +49,13 @@ function buyCar(id, cost, col1, col2, x, y, z, rz, px, py, pz, prz, shopID)
 		outputChatBox("You bought a " .. getVehicleNameFromModel(id) .. " for " .. cost .. "$. Enjoy!", source, 255, 194, 14)
 		
 		if shopID == 1 then
-			outputChatBox("You can set this vehicles spawn position by parking it and typing /vehpos", source, 255, 194, 14)
+			outputChatBox("You can set this vehicles spawn position by parking it and typing /park", source, 255, 194, 14)
 			outputChatBox("Vehicles parked near the dealership or bus spawn point will be deleted without notice.", source, 255, 0, 0)
 		elseif shopID == 2 then
-			outputChatBox("You can set this boats spawn position by parking it and typing /vehpos", source, 255, 194, 14)
+			outputChatBox("You can set this boats spawn position by parking it and typing /park", source, 255, 194, 14)
 			outputChatBox("Boats parked near the marina will be deleted without notice.", source, 255, 0, 0)
 		end
-		outputChatBox("If you do not use /vehpos within an hour, your car will be DELETED.", source, 255, 0, 0)
+		outputChatBox("If you do not use /park within an hour, your car will be DELETED.", source, 255, 0, 0)
 		outputChatBox("Press 'K' to unlock this vehicle.", source, 255, 194, 14)
 		makeCar(source, id, cost, col1, col2, x, y, z, rz, px, py, pz, prz)
 	end

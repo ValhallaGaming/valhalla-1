@@ -1123,7 +1123,7 @@ end
 addEvent("removeNOS", true)
 addEventHandler("removeNOS", getRootElement(), removeNOS)
 
--- /VEHPOS
+-- /VEHPOS /PARK
 local destroyTimers = { }
 function createShopVehicle(dbid, ...)
 	local veh = createVehicle(unpack({...}))
@@ -1212,3 +1212,4 @@ function setVehiclePosition(thePlayer, commandName)
 	end
 end
 addCommandHandler("vehpos", setVehiclePosition, false, false)
+addCommandHandler("park", setVehiclePosition, false, false)

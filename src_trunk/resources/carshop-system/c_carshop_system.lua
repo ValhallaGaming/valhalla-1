@@ -1,8 +1,8 @@
 car, wCars, bClose, bBuy, gCars, lCost, lColors, sCol1, sCol2 = nil
 activeShop, shopID = nil
 
-vehiclecount = {}
 local function countVehicles( )
+	vehiclecount = {}
 	for key, value in pairs( getElementsByType( "vehicle" ) ) do
 		if isElement( value ) then
 			local model = getElementModel( value )

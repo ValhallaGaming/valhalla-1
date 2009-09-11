@@ -23,5 +23,5 @@
 	<script src="Pershing_Square.lua" type="client"/>
 
 	
-	<script src=beachpartyTEMP.lua" type="client"/>
+	<script src="beachpartyTEMP.lua" type="client"/>
 </meta>

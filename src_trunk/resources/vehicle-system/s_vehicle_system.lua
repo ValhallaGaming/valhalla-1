@@ -784,7 +784,7 @@ function toggleLock(source, key, keystate)
 			for i, veh in ipairs(nearbyVehicles) do
 				local dbid = tonumber(getElementData(veh, "dbid"))
 				local distanceToVehicle = getDistanceBetweenPoints3D(x, y, z, getElementPosition(veh))
-				if shortest > distanceToVehicle and ( exports.global:hasItem(source, 3, dbid) or (getElementData(source, "faction") > 0 and getElementData(source, "faction") == getElementData(veh, "faction")) ) then
+				if shortest > distanceToVehicle and ( getElementData(source, "adminduty") == 1 or exports.global:hasItem(source, 3, dbid) or (getElementData(source, "faction") > 0 and getElementData(source, "faction") == getElementData(veh, "faction")) ) then
 					shortest = distanceToVehicle
 					found = veh
 				end

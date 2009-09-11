@@ -424,7 +424,7 @@ function respawnVehiclesStop(thePlayer, commandName)
 end
 addCommandHandler("respawnstop", respawnVehiclesStop, false, false)
 
-function respawnAllVehicles(thePlayer, commandName, timeToRespawn)
+function respawnAllCivVehicles(thePlayer, commandName, timeToRespawn)
 	if (exports.global:isPlayerAdmin(thePlayer)) then
 		local vehicles = exports.pool:getPoolElementsByType("vehicle")
 		local counter = 0
@@ -452,7 +452,7 @@ function respawnAllVehicles(thePlayer, commandName, timeToRespawn)
 		exports.irc:sendMessage("[ADMIN] " .. getPlayerName(thePlayer) .. " respawned all civilian vehicles.")
 	end
 end
-addCommandHandler("respawnciv", respawnAllVehicles, false, false)
+addCommandHandler("respawnciv", respawnAllCivVehicles, false, false)
 
 function addUpgrade(thePlayer, commandName, target, upgradeID)
 	if (exports.global:isPlayerAdmin(thePlayer)) then

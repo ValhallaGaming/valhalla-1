@@ -92,7 +92,7 @@ function withdrawMoneyBusiness(amount)
 	local money = getElementData(theTeam, "money")
 	setElementData(theTeam, "money", money-amount)
 
-	local query = mysql_query(handler, "UPDATE factions SET bankbalance='" .. money-amount .. "' WHERE name='" .. getTeamName(theTeam) .. "'")
+	local query = mysql_query(handler, "UPDATE factions SET bankbalance='" .. money-amount .. "' WHERE name='" .. mysql_escape_string(handler, getTeamName(theTeam)) .. "'")
 	mysql_free_result(query)
 
 	mysql_free_result( mysql_query( handler, "INSERT INTO wiretransfers (`from`, `to`, `amount`, `reason`, `type`) VALUES (" .. -getElementData(theTeam, "id") .. ", " .. getElementData(source, "dbid") .. ", " .. amount .. ", '', 4)" ) )
@@ -108,7 +108,7 @@ function depositMoneyBusiness(amount)
 	local money = getElementData(theTeam, "money")
 	setElementData(theTeam, "money", money+amount)
 	
-	local query = mysql_query(handler, "UPDATE factions SET bankbalance='" .. money+amount .. "' WHERE name='" .. getTeamName(theTeam) .. "'")
+	local query = mysql_query(handler, "UPDATE factions SET bankbalance='" .. money+amount .. "' WHERE name='" .. mysql_escape_string(handler, getTeamName(theTeam)) .. "'")
 	mysql_free_result(query)
 	
 	mysql_free_result( mysql_query( handler, "INSERT INTO wiretransfers (`from`, `to`, `amount`, `reason`, `type`) VALUES (" .. getElementData(source, "dbid") .. ", " .. -getElementData(theTeam, "id") .. ", " .. amount .. ", '', 5)" ) )
@@ -148,7 +148,7 @@ function transferMoneyToPersonal(business, name, amount, reason)
 		if business then
 			local theTeam = getPlayerTeam(source)
 			local money = getElementData(theTeam, "money")
-			local query = mysql_query(handler, "UPDATE factions SET bankbalance='" .. money - amount .. "' WHERE name='" .. getTeamName(theTeam) .. "'")
+			local query = mysql_query(handler, "UPDATE factions SET bankbalance='" .. money - amount .. "' WHERE name='" .. mysql_escape_string(handler, getTeamName(theTeam)) .. "'")
 			mysql_free_result(query)
 			setElementData(theTeam, "money", money - amount)
 			mysql_free_result( mysql_query( handler, "INSERT INTO wiretransfers (`from`, `to`, `amount`, `reason`, `type`) VALUES (" .. ( -getElementData( theTeam, "id" ) ) .. ", " .. dbid .. ", " .. amount .. ", '" .. reason .. "', 3)" ) )

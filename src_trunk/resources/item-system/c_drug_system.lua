@@ -1,3 +1,5 @@
+addEvent( "onClientVehicleEnterDelayed" )
+
 wChemistrySet, gChemicals, colChemSlot, colChemName, chemItems, bMixItems, bChemClose = nil
 
 function showChemistrySet()
@@ -240,18 +242,18 @@ function doDrug5Effect()
 		weather = getWeather()
 		setTimer(setWeather, 100, 1, 9)
 		drug5timer = setTimer(resetDrug5Effect, 300000, 1)
-		addEventHandler("onClientVehicleEnter", getRootElement(), resetDrug5Effect)
+		addEventHandler("onClientVehicleEnterDelayed", getRootElement(), resetDrug5Effect)
 		setGameSpeed(5)
 	end
 end
 
 function resetDrug5Effect(thePlayer)
-	if (thePlayer and thePlayer==getLocalPlayer()) or not (thePlayer) then
+	if not thePlayer or thePlayer == getLocalPlayer() then
 		drug5effect = false
 		setGameSpeed(1)
 		resetSkyGradient()
 		setTimer(setWeather, 100, 1, weather)
-		removeEventHandler("onClientVehicleEnter", getRootElement(), resetDrug5Effect)
+		removeEventHandler("onClientVehicleEnterDelayed", getRootElement(), resetDrug5Effect)
 	end
 end
 
@@ -353,3 +355,17 @@ function resetAllDrugs()
 	end
 end
 addEventHandler("onClientChangeChar", getRootElement(), resetAllDrugs)
+
+addEventHandler("onClientVehicleEnter", getRootElement(), 
+	function( player )
+		if player == getLocalPlayer() then
+			setTimer(
+				function( source )
+					if isPedInVehicle( getLocalPlayer( ) ) then
+						triggerEvent( "onClientVehicleEnterDelayed", source, getLocalPlayer( ) )
+					end
+				end, 500, 1, source
+			)
+		end
+	end
+)

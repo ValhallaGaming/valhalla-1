@@ -55,7 +55,7 @@ function toggleFriends(source)
 			local accid = tonumber(getElementData(source, "gameaccountid"))
 			
 			-- load friends list
-			local result = mysql_query( handler, "SELECT f.friend, a.username, a.friendsmessage, a.yearday, a.year, a.country, a.os, ( SELECT COUNT(*) FROM achievements b WHERE b.account = a.id ) FROM friends f LEFT JOIN accounts a ON f.friend = a.id WHERE f.id = " .. accid )
+			local result = mysql_query( handler, "SELECT f.friend, a.username, a.friendsmessage, a.yearday, a.year, a.country, a.os, ( SELECT COUNT(*) FROM achievements b WHERE b.account = a.id ) FROM friends f LEFT JOIN accounts a ON f.friend = a.id WHERE f.id = " .. accid .. " ORDER BY a.year, a.yearday DESC" )
 			if result then
 				local friends = { }
 				for result, row in mysql_rows(result) do
@@ -82,22 +82,21 @@ function toggleFriends(source)
 						end
 						
 						local state = "Offline"
-						local name = nil
 						
 						if player then
-							state = "Online"
-							name = getPlayerName( player ):gsub("_", " ")
-						elseif years ~= fyear then
-							state = "Last Seen: Last Year"
-						elseif yearday == fyearday then
-							state = "Last Seen: Today"
-						elseif yearday - fyearday == 1 then
-							state = "Last Seen: Yesterday"
+							table.insert( friends, 1, { id, account, row[3], row[6], player, row[7], tonumber( row[8] ) } )
 						else
-							state = "Last Seen: " .. yearday - fyearday .. " days ago"
+							if years ~= fyear then
+								state = "Last Seen: Last Year"
+							elseif yearday == fyearday then
+								state = "Last Seen: Today"
+							elseif yearday - fyearday == 1 then
+								state = "Last Seen: Yesterday"
+							else
+								state = "Last Seen: " .. yearday - fyearday .. " days ago"
+							end
+							table.insert( friends, { id, account, row[3], row[6], state, row[7], tonumber( row[8] ) } )
 						end
-							
-						friends[ #friends + 1 ] = { id, account, row[3], row[6], state, name, row[7], tonumber( row[8] ) }
 					end
 				end
 				

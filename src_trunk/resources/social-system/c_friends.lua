@@ -38,8 +38,9 @@ function showFriendsUI(friends, fmess)
 	
 	local dy = 0.0
 	local dheight = 0.2
+	local online = 0
 	for key, value in ipairs(friends) do
-		local id, username, message, country, status, name, operatingsystem = unpack( value )
+		local id, username, message, country, status, operatingsystem, achievements = unpack( value )
 		
 		-- Fix for blank messages
 		if not message then
@@ -47,20 +48,21 @@ function showFriendsUI(friends, fmess)
 		else
 			message = "'" .. message .. "'"
 		end
-	
+		
 		-- STANDARD UI
 		paneFriend[key] = {}
 		paneFriend[key][7] = guiCreateScrollPane(0.05, dy, 1.0, 0.35, true, paneFriends)
 		paneFriend[key][1] = guiCreateStaticImage(0.0, 0.1, 0.9, 0.5, ":account-system/img/charbg0.png", true, paneFriend[key][7])
-			
-			
+		
+		
 		paneFriend[key][2] = guiCreateLabel(0.12, 0.1, 0.8, 0.2, username, true, paneFriend[key][7])
 		guiSetFont(paneFriend[key][2], "default-bold-small")
-
+		
 		paneFriend[key][3] = guiCreateStaticImage(0.0175, 0.125, 0.09, 0.08, "images/flags/" .. string.lower(country or "ru") .. ".png", true, paneFriend[key][7])
 		
-		if name then
-			status = status .. " as " .. name
+		if isElement( status ) then
+			status = "Online as (" .. getElementData( status, "playerid" ) .. ") " .. getPlayerName( status ):gsub("_", " ")
+			online = online + 1
 		end
 		paneFriend[key][4] = guiCreateLabel(0.12, 0.2, 0.8, 0.2, tostring(status), true, paneFriend[key][7])
 		guiSetFont(paneFriend[key][4], "default-bold-small")
@@ -70,7 +72,7 @@ function showFriendsUI(friends, fmess)
 		
 		paneFriend[key][6] = guiCreateStaticImage(0.08, 0.42, 0.1, 0.16, "images/" .. operatingsystem .. ".png", true, paneFriend[key][7])
 		
-		paneFriend[key][10] = guiCreateLabel(0.22, 0.45, 0.5, 0.2, tostring(friends[key][8]) .. " Achievements", true, paneFriend[key][7])
+		paneFriend[key][10] = guiCreateLabel(0.22, 0.45, 0.5, 0.2, tostring(achievements) .. " Achievements", true, paneFriend[key][7])
 		guiSetFont(paneFriend[key][10], "default-bold-small")
 		
 		paneFriend[key][8] = guiCreateButton(0.63, 0.43, 0.25, 0.15, "Remove", true, paneFriend[key][7])
@@ -81,6 +83,7 @@ function showFriendsUI(friends, fmess)
 		
 		dy = dy + 0.205
 	end
+	guiSetText(wFriends, "Friends List - " .. online .. "/" .. #friends .. " online")
 	
 	guiSetInputEnabled(true)
 end

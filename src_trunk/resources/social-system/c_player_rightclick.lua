@@ -59,19 +59,19 @@ function showPlayerMenu(targetPlayer, friend, sdescription, sage, sweight, sheig
 	end
 	
 	-- FRISK
-	if getElementData(getLocalPlayer(), "hoursplayed") >= 12 then
+--[[	if getElementData(getLocalPlayer(), "hoursplayed") >= 12 then
 		bFrisk = guiCreateButton(0.05, 0.25, 0.45, 0.1, "Frisk", true, wRightClick)
 		addEventHandler("onClientGUIClick", bFrisk, cfriskPlayer, false)
-	end
+	end]]
 	
 	-- RESTRAIN
 	local cuffed = getElementData(player, "restrain")
 	
 	if cuffed == 0 then
-		bRestrain = guiCreateButton(0.555, 0.25, 0.45, 0.1, "Restrain", true, wRightClick)
+		bRestrain = guiCreateButton(0.05, 0.25, 0.87, 0.1, "Restrain", true, wRightClick)
 		addEventHandler("onClientGUIClick", bRestrain, crestrainPlayer, false)
 	else
-		bRestrain = guiCreateButton(0.555, 0.25, 0.45, 0.1, "Unrestrain", true, wRightClick)
+		bRestrain = guiCreateButton(0.05, 0.25, 0.87, 0.1, "Unrestrain", true, wRightClick)
 		addEventHandler("onClientGUIClick", bRestrain, cunrestrainPlayer, false)
 	end
 	
@@ -233,6 +233,7 @@ end
 --------------------
 --    FRISKING    --
 --------------------
+--[[
 wFriskItems, bFriskTakeItem, bFriskClose, gFriskItems, FriskColName = nil
 function cfriskPlayer(button, state, x, y)
 	if (button=="left") then
@@ -347,7 +348,7 @@ function takePlayerItem(button, state, x, y)
 			end
 		end
 	end
-end
+end]]
 --------------------
 --  END FRISKING  --
 --------------------

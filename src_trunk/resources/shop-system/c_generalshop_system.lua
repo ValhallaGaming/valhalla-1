@@ -457,7 +457,7 @@ function getShopSelectedItem(button, state)
 						local name = items[i][1]
 						local supplyCost = items[i][8]
 						
-						if isWeapon then
+						if isWeapon and getWeaponNameFromID(tonumber(id)) then
 							price = tonumber(price)
 							id = tonumber(id)
 							value = tonumber(value)
@@ -487,7 +487,7 @@ function getShopSelectedItem(button, state)
 						triggerServerEvent("ItemBought", getLocalPlayer(), id, value, price, isWeapon, name, supplyCost)
 					end
 				end
-			end				
+			end
 		end
 	end
  end

@@ -2,8 +2,7 @@
 	<script src="createObject.lua" type="client"/>
 	<script src="Bank Int.lua" type="client"/>
 	<script src="Church Int.lua" type="client"/>
-	<script src="Boxing Arena.lua" type="client"/>
-	<script src="FBI Field Office.lua" type="client"/>
+	<script src="falcone map.lua" type="client"/>
 	<script src="Hospital Int.lua" type="client"/>
 	<script src="Jefferson Interior Doors.lua" type="client"/>
 	<script src="LS Harbor.lua" type="client"/>

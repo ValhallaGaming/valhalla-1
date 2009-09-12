@@ -284,6 +284,7 @@ for key, value in pairs( languages ) do
 	
 	if key == 1 then
 		addCommandHandler( "en", speakLang ) -- English
+	elseif key == 4 then -- disable /fr for french
 	elseif key == 15 then
 		addCommandHandler( "ws", speakLang ) -- Welsh
 	else

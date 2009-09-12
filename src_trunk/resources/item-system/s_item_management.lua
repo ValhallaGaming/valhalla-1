@@ -40,6 +40,7 @@ x moveItem(from, to, slot) -- moves an item from any inventory to another (was o
 
 x hasItem(obj, itemID, itemValue = nil ) -- returns true if the player has that item
 x hasSpaceForItem(obj) -- returns true if you can put more stuff in
+x countItems(obj, itemID, itemValue) -- counts how often a player has that item
 
 x getItems(obj) -- returns an array of all items in { slot = { itemID, itemValue } } table
 x getInventorySlots(obj) -- returns the number of available inventory slots
@@ -330,6 +331,19 @@ end
 function hasSpaceForItem(element)
 	loadItems( element )
 	return #getItems(element) < getInventorySlots(element)
+end
+
+-- count all instances of that object
+function countItems( element, itemID, itemValue )
+	loadItems( element )
+	
+	local count = 0
+	for key, value in pairs(saveditems[element]) do
+		if value[1] == itemID and ( not itemValue or itemValue == value[2] ) then
+			count = count + 1
+		end
+	end
+	return count
 end
 
 -- returns a list of all items of that element

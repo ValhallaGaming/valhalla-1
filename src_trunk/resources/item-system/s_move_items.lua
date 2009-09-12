@@ -24,6 +24,15 @@ local function moveToElement( element, slot, ammo )
 		if not ammo then
 			local item = getItems( source )[ slot ]
 			if item then
+				if getElementType( element ) == "object" then -- safe
+					if ( item[1] == 4 or item[1] == 5 ) and getElementDimension( element ) == item[2] then -- keys to that safe as well
+						if countItems( source, item[1], item[2] ) < 2 then
+							outputChatBox("You can't place your only key to that safe in the safe.", source, 255, 0, 0)
+							return
+						end
+					end
+				end
+				
 				moveItem( source, element, slot )
 			end
 		else

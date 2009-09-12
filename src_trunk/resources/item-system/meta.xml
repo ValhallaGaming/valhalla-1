@@ -11,6 +11,7 @@
 	<export function="moveItem" type="server"/>
 	<export function="hasItem" type="server"/>
 	<export function="hasSpaceForItem" type="server"/>
+	<export function="countItems" type="server"/>
 	<export function="getItems" type="server"/>
 	<export function="getInventorySlots" type="server"/>
 	<export function="deleteAll" type="server"/>

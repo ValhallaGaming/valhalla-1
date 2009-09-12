@@ -56,7 +56,7 @@ end
 
 function setPlayerSafeMoney(thePlayer, amount)
 	if thePlayer and isElement(thePlayer) and tonumber(amount) >= 0 then
-		amount = math.ceil( amount )
+		amount = math.floor( amount )
 		local money = getElementData(thePlayer, "money")
 		checkMoneyHacks(thePlayer)
 		setElementData(thePlayer, "money", tonumber(amount))

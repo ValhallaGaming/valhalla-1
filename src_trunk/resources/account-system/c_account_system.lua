@@ -1803,7 +1803,7 @@ function characterCreation()
 	addEventHandler("onClientGUIChanged", tName, checkName) 
 	guiSetFont(lName, "default-bold-small")
 	
-	lRestrictions = guiCreateLabel(0.0, 0.105, 1.0, 0.3, "Restrictions: \n\n - Must NOT contain underscores, use spaces. \n - Must be a realistic, roleplay name \n - Must be less than 30 characters long \n - Must be two words, Firstname Lastname \n - Cannot contain numbers \n - Cannot contain special characters such as $@';", true, tabCreationOne)
+	lRestrictions = guiCreateLabel(0.0, 0.105, 1.0, 0.3, "Restrictions: \n\n - Must NOT contain underscores, use spaces. \n - Must be a realistic, roleplay name \n - Must be less than 23 characters long \n - Must be two words, Firstname Lastname \n - Cannot contain numbers \n - Cannot contain special characters such as $@';", true, tabCreationOne)
 	guiLabelSetColor(lRestrictions, 0, 255, 0)
 	guiLabelSetHorizontalAlign(lRestrictions, "center")
 	guiSetFont(lRestrictions,"default-bold-small")
@@ -1849,27 +1849,44 @@ function checkName()
 	if (source==tName) then
 		local theText = guiGetText(source)
 		
-		local foundSpace = string.find(theText, "%s", 2)
-		
-		local length = string.len(theText)
-		local foundNumber = false
-		for i = 0, 9 do
-			if (string.find(theText, tostring(i))) then
-				foundNumber = true
+		local foundSpace, valid = false, true
+		local lastChar, current = ' ', ''
+		for i = 1, #theText do
+			local char = theText:sub( i, i )
+			if char == ' ' then -- it's a space
+				if i == #theText then -- space at the end of name is not allowed
+					valid = false
+					break
+				else
+					foundSpace = true -- we have at least two name parts
+				end
+				
+				if #current < 2 then -- check if name's part is at least 2 chars
+					valid = false
+					break
+				end
+				current = ''
+			elseif lastChar == ' ' then -- this char follows a space, we need a capital letter
+				if char < 'A' or char > 'Z' then
+					valid = false
+					break
+				end
+				current = current .. char
+			elseif ( char >= 'a' and char <= 'z' ) or ( char >= 'A' and char <= 'Z' ) then -- can have letters anywhere in the name
+				current = current .. char
+			else -- unrecognized char (numbers, special chars)
+				valid = false
+				break
 			end
+			lastChar = char
 		end
 		
-		local noSpecialChars = false
-		if (string.find(theText, ";", 0)) or (string.find(theText, "'", 0)) or (string.find(theText, "_", 0)) or (string.find(theText, "@", 0)) or (string.find(theText, ",", 0)) then
-			noSpecialChars = false
-		else
-			noSpecialChars = true
-		end
-		
-		if (foundSpace) and (length<22) and not (foundNumber) and (noSpecialChars) then
+		if valid and foundSpace and #theText < 22 and #current >= 2 then
 			guiLabelSetColor(lRestrictions, 0, 255, 0)
+			guiSetEnabled(bNext, true)
 		else
 			guiLabelSetColor(lRestrictions, 255, 0, 0)
+			guiSetEnabled(bNext, false)
 		end
 	end
 end
@@ -1930,6 +1947,7 @@ function nextPage(exists)
 	if (exists) then
 		guiSetText(tName, "Already Taken")
 		guiLabelSetColor(lRestrictions, 255, 0, 0)
+		guiSetEnabled(bNext, false)
 	elseif not (exists) then
 		--local CJ = guiRadioButtonGetSelected(rCJ)
 			

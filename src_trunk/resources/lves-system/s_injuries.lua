@@ -76,7 +76,7 @@ function injuries(attacker, weapon, bodypart, loss)
 		playerInjuries[source] = { [bodypart] = true } -- table
 	end
 	
-	if ( bodypart == 3 and getElementHealth(source) < 40 ) or bodypart == 7 or bodypart == 8 then -- damaged either left or right leg
+	if ( bodypart == 3 and loss >= 15 ) or bodypart == 7 or bodypart == 8 then -- damaged either left or right leg
 		if bodypart == 3 then
 			bodypart = math.random( 7, 8 )
 			if not injuredBefore[bodypart] then

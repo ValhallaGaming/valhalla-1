@@ -51,8 +51,12 @@ function fuelDepleting()
 						
 						local x, y, z = getElementPosition(veh)
 						
-						if(engine==1) and (fuel>0) then
+						if (engine==1) and (fuel>0) then
 							distance = getDistanceBetweenPoints2D(x, y, oldx, oldy)
+							
+							if (distance==0) then
+								distance = 2  -- fuel leaking away when not moving
+							end
 							newFuel = fuel - (distance/200)
 							setElementData(veh, "fuel", newFuel)
 							setElementData(veh, "oldx", x, false)
@@ -193,6 +197,8 @@ function fillVehicle(thePlayer, commandName)
 				outputChatBox("This vehicle is already full.", thePlayer, 255, 0, 0)
 			elseif (vehiclesFueling[veh] ~= nil) then
 				outputChatBox("You are already filling this vehicle.", thePlayer, 255, 0, 0)
+			elseif (getVehicleEngineState(veh) == true) then
+				outputChatBox("You cannot fill a car with a running engine.", thePlayer, 255, 0, 0)
 			else
 				local faction = getPlayerTeam(thePlayer)
 				local ftype = getElementData(faction, "type")
@@ -325,22 +331,26 @@ function fuelTheVehicle(thePlayer, theVehicle, theShape, theLitres, free)
 	-- Check the player didn't move
 	if (colShape) then
 		if (colShape==theShape) then
-			local tax = exports.global:getTaxAmount()
-			local fuelCost = math.floor(theLitres*(FUEL_PRICE + (tax*FUEL_PRICE)))
-		
-			if (free) then
-				fuelCost = 0
+			if (getVehicleEngineState(veh) == false) then
+				local tax = exports.global:getTaxAmount()
+				local fuelCost = math.floor(theLitres*(FUEL_PRICE + (tax*FUEL_PRICE)))
+			
+				if (free) then
+					fuelCost = 0
+				end
+				
+				exports.global:takePlayerSafeMoney(thePlayer, fuelCost)
+			
+				local oldFuel = getElementData(theVehicle, "fuel")
+				local newFuel = oldFuel+theLitres
+				setElementData(theVehicle, "fuel", newFuel)
+				--triggerClientEvent(thePlayer, "setClientFuel", thePlayer, newFuel)
+				
+				outputChatBox("Gas Station Receipt:", thePlayer)
+				outputChatBox("    " .. math.ceil(theLitres) .. " Litres of petrol    -    " .. fuelCost .. "$", thePlayer)
+			else
+				outputChatBox("Fueling aborted, you've started the engine.", thePlayer, 255, 0, 0)
 			end
-			
-			exports.global:takePlayerSafeMoney(thePlayer, fuelCost)
-		
-			local oldFuel = getElementData(theVehicle, "fuel")
-			local newFuel = oldFuel+theLitres
-			setElementData(theVehicle, "fuel", newFuel)
-			--triggerClientEvent(thePlayer, "setClientFuel", thePlayer, newFuel)
-			
-			outputChatBox("Gas Station Receipt:", thePlayer)
-			outputChatBox("    " .. math.ceil(theLitres) .. " Litres of petrol    -    " .. fuelCost .. "$", thePlayer)
 		else
 			outputChatBox("Don't want my fuel?", thePlayer)
 		end

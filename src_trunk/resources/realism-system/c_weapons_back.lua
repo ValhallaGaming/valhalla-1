@@ -18,7 +18,7 @@ function weaponSwitch(prevSlot, newSlot)
 			destroyElement(object)
 			weapons[source] = nil
 		end
-	elseif weapons[source] and weapons[source][1] and isElement( weapons[source][1] ) then
+	elseif weapons[source] and weapons[source][1] and ( newWeapon == 30 or newWeapon == 31 or getPedTotalAmmo(source, 5) == 0 ) then
 		local object = weapons[source][1]
 		destroyElement(object)
 		weapons[source] = nil

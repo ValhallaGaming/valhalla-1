@@ -53,9 +53,9 @@ function fuelDepleting()
 						
 						if (engine==1) and (fuel>0) then
 							distance = getDistanceBetweenPoints2D(x, y, oldx, oldy)
-							
+							-- outputChatBox("distance " .. distance .. "!", v, 255, 0, 0)
 							if (distance==0) then
-								distance = 2  -- fuel leaking away when not moving
+								distance = 5  -- fuel leaking away when not moving
 							end
 							newFuel = fuel - (distance/200)
 							setElementData(veh, "fuel", newFuel)
@@ -78,7 +78,27 @@ function fuelDepleting()
 end
 setTimer(fuelDepleting, 10000, 0)
 
-
+function FuelDepetingEmptyVehicles()
+	local vehicles = exports.pool:getPoolElementsByType("vehicle")
+	for ka, theVehicle in ipairs(vehicles) do
+		local enginestatus = getElementData(theVehicle, "engine")
+		local vehid = getElementData(theVehicle, "dbid")
+		
+		if (enginestatus == 1) then
+			local driver = getVehicleOccupant(theVehicle)
+			if (driver == false) then
+				local fuel = getElementData(theVehicle, "fuel")
+				local newFuel = fuel - (30/200)
+				setElementData(theVehicle, "fuel", newFuel)
+				if (newFuel<1) then
+					setVehicleEngineState(theVehicle, false)
+					setElementData(theVehicle, "engine", 0, false)
+				end
+			end
+		end
+	end
+end
+setTimer(FuelDepetingEmptyVehicles, 30000,0)
 -- [////ADMIN COMMANDS/////]
 function createFuelPoint(thePlayer, commandName)
 	if (exports.global:isPlayerLeadAdmin(thePlayer)) then
@@ -331,7 +351,7 @@ function fuelTheVehicle(thePlayer, theVehicle, theShape, theLitres, free)
 	-- Check the player didn't move
 	if (colShape) then
 		if (colShape==theShape) then
-			if (getVehicleEngineState(veh) == false) then
+			if (getVehicleEngineState(theVehicle) == false) then
 				local tax = exports.global:getTaxAmount()
 				local fuelCost = math.floor(theLitres*(FUEL_PRICE + (tax*FUEL_PRICE)))
 			

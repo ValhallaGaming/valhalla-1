@@ -580,7 +580,7 @@ function adminRenameFaction(thePlayer, commandName, factionID, ...)
 				
 				if (theTeam) then
 					local factionName = table.concat({...}, " ")
-					local updated = mysql_query(handler, "UPDATE factions SET name='" .. factionName .. "' WHERE id='" .. factionID .. "'")
+					local updated = mysql_query(handler, "UPDATE factions SET name='" .. mysql_escape_string(handler, factionName) .. "' WHERE id='" .. factionID .. "'")
 					
 					setTeamName(theTeam, factionName)
 					

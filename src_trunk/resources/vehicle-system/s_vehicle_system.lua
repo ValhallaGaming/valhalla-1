@@ -1036,12 +1036,13 @@ addCommandHandler("sell", sellVehicle)
 function lockUnlockInside(vehicle)
 	local model = getElementModel(vehicle)
 	local owner = getElementData(vehicle, "owner")
+	local dbid = getElementData(vehicle, "dbid")
 	
 	if (owner ~= -2) then
-		if not (locklessVehicle[model]) then
+		if not locklessVehicle[model] or exports.global:hasItem( source, 3, dbid ) then
 			local locked = isVehicleLocked(vehicle)
 			local seat = getPedOccupiedVehicleSeat(source)
-			if (seat==0) then
+			if seat == 0 or exports.global:hasItem( source, 3, dbid ) then
 				if (locked) then
 					setVehicleLocked(vehicle, false)
 					exports.global:sendLocalMeAction(source, "unlocks the vehicle doors.")

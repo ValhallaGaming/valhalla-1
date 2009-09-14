@@ -57,6 +57,7 @@ local scripterAccounts = {
 	Flobu = true,
 	ryden = true,
 	CCC = true,
+	Mount = true,
 	['Mr.Hankey'] = true
 }
 function isPlayerScripter(thePlayer)

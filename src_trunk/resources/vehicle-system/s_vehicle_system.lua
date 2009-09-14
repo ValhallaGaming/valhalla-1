@@ -1084,11 +1084,13 @@ addEventHandler("lockUnlockOutsideVehicle", getRootElement(), lockUnlockOutside)
 
 function fillFuelTank(veh, fuel)
 	local currFuel = getElementData(veh, "fuel")
-	
+	local engine = getElementData(veh, "engine")
 	if (math.ceil(currFuel)==100) then
 		outputChatBox("This vehicle is already full.", source)
 	elseif (fuel==0) then
 		outputChatBox("This fuel can is empty.", source, 255, 0, 0)
+	elseif (engine) then
+		outputChatBox("You can not fuel running vehicles. Please stop the engine first.", source, 255, 0, 0)
 	else
 		local fuelAdded = fuel
 		
@@ -1214,3 +1216,36 @@ function setVehiclePosition(thePlayer, commandName)
 end
 addCommandHandler("vehpos", setVehiclePosition, false, false)
 addCommandHandler("park", setVehiclePosition, false, false)
+
+function quitPlayer ( quitReason )
+	if (quitReason == "Timed out") then -- if timed out
+		if (isPedInVehicle(source)) then -- if in vehicle
+			local vehicleSeat = getPedOccupiedVehicleSeat(source)
+			if (vehicleSeat == 0) then	-- is in driver seat?
+				local theVehicle = getPedOccupiedVehicle(source)
+				local dbid = tonumber(getElementData(theVehicle, "dbid"))
+				if (exports.global:hasItem(source, 3, dbid)) then -- has the player a key for this vehicle?
+					local locked = getElementData(theVehicle, "locked")
+					if (locked == false) then -- check if the vehicle aint locked already
+						local passenger1 = getVehicleOccupant( theVehicle , 1 )
+						local passenger2 = getVehicleOccupant( theVehicle , 2 )
+						local passenger3 = getVehicleOccupant( theVehicle , 3 )
+						if (passenger1 == false) then -- Nobody in passenger seat 1
+							if (passenger2 == false) then -- check seat 2
+								if (passenger3 == false) then -- and finally check seat 3
+									lockUnlockOutside(theVehicle)
+									local engine = getElementData(theVehicle, "engine")
+									if (engine) then -- stop the engine when its running
+										setVehicleEngineState(theVehicle, false)
+										setElementData(theVehicle, "engine", 0, false)
+									end
+								end
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+end
+addEventHandler("onPlayerQuit",getRootElement(), quitPlayer)

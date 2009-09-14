@@ -57,7 +57,7 @@ function giveReload(thePlayer, weapon, ammo)
 	toggleControl(thePlayer, "next_weapon", true)
 	toggleControl(thePlayer, "previous_weapon", true)
 	exports.global:givePlayerAchievement(thePlayer, 14)
-	exports.global:sendLocalMeAction(thePlayer, "reloads their " .. getWeaponNameFromID(weapon) .. ".")
+	--exports.global:sendLocalMeAction(thePlayer, "reloads their " .. getWeaponNameFromID(weapon) .. ".")
 end
 
 -- Bind Keys required

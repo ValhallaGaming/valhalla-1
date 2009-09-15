@@ -721,30 +721,34 @@ function asetPlayerName(thePlayer, commandName, targetPlayer, ...)
 				outputChatBox("Player not found or multiple were found.", thePlayer, 255, 0, 0)
 			else
 				local targetPlayerName = getPlayerName(targetPlayer)
-				
-				local result = mysql_query(handler, "SELECT charactername FROM characters WHERE charactername='" .. mysql_escape_string(handler, newName) .. "'")
-				
-				if (mysql_num_rows(result)>0) then
-					outputChatBox("This name is already in use.", thePlayer, 255, 0, 0)
+				if newName == targetPlayerName then
+					outputChatBox( "The player's name is already that.", thePlayer, 255, 0, 0)
 				else
-					setElementData(targetPlayer, "legitnamechange", 1)
-					local name = setPlayerName(targetPlayer, tostring(newName))
+					local dbid = getElementData(targetPlayer, "dbid")
+					local result = mysql_query(handler, "SELECT charactername FROM characters WHERE charactername='" .. mysql_escape_string(handler, newName) .. "' AND id != " .. dbid)
 					
-					if (name) then
-						local query = mysql_query(handler, "UPDATE characters SET charactername='" .. mysql_escape_string(handler, newName) .. "' WHERE charactername='" .. targetPlayerName .. "'")
-						local hiddenAdmin = getElementData(thePlayer, "hiddenadmin")
-						
-						if (hiddenAdmin==0) then
-							local adminTitle = exports.global:getPlayerAdminTitle(thePlayer)
-							exports.global:sendMessageToAdmins("AdmCmd: " .. tostring(adminTitle) .. " " .. getPlayerName(thePlayer) .. " changed " .. targetPlayerName .. "'s Name to " .. newName .. ".")
-						end
-						outputChatBox("You changed " .. targetPlayerName .. "'s Name to " .. tostring(newName) .. ".", thePlayer, 0, 255, 0)
-						setElementData(targetPlayer, "legitnamechange", 0)
-						mysql_free_result(query)
+					if (mysql_num_rows(result)>0) then
+						outputChatBox("This name is already in use.", thePlayer, 255, 0, 0)
 					else
-						outputChatBox("Failed to change name.", thePlayer, 255, 0, 0)
+						setElementData(targetPlayer, "legitnamechange", 1)
+						local name = setPlayerName(targetPlayer, tostring(newName))
+						
+						if (name) then
+							local query = mysql_query(handler, "UPDATE characters SET charactername='" .. mysql_escape_string(handler, newName) .. "' WHERE id = " .. dbid)
+							local hiddenAdmin = getElementData(thePlayer, "hiddenadmin")
+							
+							if (hiddenAdmin==0) then
+								local adminTitle = exports.global:getPlayerAdminTitle(thePlayer)
+								exports.global:sendMessageToAdmins("AdmCmd: " .. tostring(adminTitle) .. " " .. getPlayerName(thePlayer) .. " changed " .. targetPlayerName .. "'s Name to " .. newName .. ".")
+							end
+							outputChatBox("You changed " .. targetPlayerName .. "'s Name to " .. tostring(newName) .. ".", thePlayer, 0, 255, 0)
+							setElementData(targetPlayer, "legitnamechange", 0)
+							mysql_free_result(query)
+						else
+							outputChatBox("Failed to change name.", thePlayer, 255, 0, 0)
+						end
+						setElementData(targetPlayer, "legitnamechange", 0)
 					end
-					setElementData(targetPlayer, "legitnamechange", 0)
 				end
 				mysql_free_result(result)
 			end

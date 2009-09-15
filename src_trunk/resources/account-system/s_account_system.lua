@@ -469,7 +469,7 @@ function spawnCharacter(charname)
 		
 		
 		if (factionName~="Citizen") then
-			outputChatBox("Players Online: " .. playercount .. "/" .. maxplayers .. " (" .. percent .. "%)  -   " .. factiononline .. " - " .. friendsonline .. ".", source, 255, 194, 14)
+			outputChatBox("Players Online: " .. playercount .. "/" .. maxplayers .. " (" .. percent .. "%) - " .. factiononline .. " - " .. friendsonline .. ".", source, 255, 194, 14)
 		else
 			outputChatBox("Players Online: " .. playercount .. "/" .. maxplayers .. " (" .. percent .. "%) - " .. friendsonline .. ".", source, 255, 194, 14)
 		end

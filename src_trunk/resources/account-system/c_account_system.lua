@@ -1971,7 +1971,7 @@ addEventHandler("characterNextStep", getRootElement(), nextPage)
 tabCreationTwo, fatInc, fatDec, lFat, lFatDesc, muscleInc, muscleDec, lMuscle, lMuscleDesc = nil
 lDescriptionNormal, lGender, rMale, rFemale, lSkinColour, rBlack, rWhite, rAsian, tempPane, lChangeSkin, nextSkin, prevSkin = nil
 gender = 0
-skincolour = 0
+skincolour = 1
 curskin = 0
 
 blackMales = {7, 14, 15, 16, 17, 18, 20, 21, 22, 24, 25, 28, 35, 36, 50, 51, 66, 67, 78, 79, 80, 83, 84, 102, 103, 104, 105, 106, 107, 134, 136, 142, 143, 144, 156, 163, 166, 168, 176, 180, 182, 183, 185, 220, 221, 222, 249, 253, 260, 262 }
@@ -1982,6 +1982,10 @@ whiteFemales = {12, 31, 38, 39, 40, 41, 53, 54, 55, 56, 64, 75, 77, 85, 86, 87, 
 asianFemales = {38, 53, 54, 55, 56, 88, 141, 169, 178, 224, 225, 226, 263}
 
 function characterCreationStep2Normal()
+	gender = 0
+	skincolour = 1
+	curskin = 0
+	
 	local width, height = 400, 400
 			
 	local scrWidth, scrHeight = guiGetScreenSize()

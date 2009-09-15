@@ -47,12 +47,9 @@ function showStats(thePlayer, commandName, targetPlayerName)
 	-- Properties
 	local properties = ""
 	local numproperties = 0
-	for key, value in ipairs(exports.pool:getPoolElementsByType("pickup")) do
+	for key, value in ipairs(getElementsByType("pickup", getResourceRootElement(getResourceFromName("interior-system")))) do
 		local owner = tonumber(getElementData(value, "owner"))
-		local inttype = tonumber(getElementData(value, "inttype"))
-		local pickuptype = getElementData(value, "type")
-
-		if (owner) and (owner==dbid and inttype~=2 and pickuptype=="interior") then
+		if owner and owner == dbid and getElementData(value, "name") then
 			local id = getElementData(value, "dbid")
 			properties = properties .. id .. ", "
 			numproperties = numproperties + 1

@@ -1,18 +1,18 @@
 function applyAnimation(thePlayer, block, name, animtime, loop, updatePosition, forced)
-	removeAnimation(thePlayer)
-	
 	if animtime==nil then animtime=-1 end
 	if loop==nil then loop=true end
 	if updatePosition==nil then updatePosition=true end
 	if forced==nil then forced=true end
 
 	if isElement(thePlayer) and getElementType(thePlayer)=="player" and not getPedOccupiedVehicle(thePlayer) and getElementData(thePlayer, "freeze") ~= 1 then
-		if getElementData(thePlayer, "injuriedanimation") then
+		if getElementData(thePlayer, "injuriedanimation") or ( not forced and getElementData(thePlayer, "forcedanimation") ) then
 			return false
 		end
+		removeAnimation(thePlayer)
+		
 		toggleAllControls(thePlayer, false, true, false)
 		setElementData(thePlayer, "forcedanimation", forced)
-		setElementData(thePlayer, "animation", true, false)
+		setElementData(thePlayer, "animation", true)
 		local setanim = setPedAnimation(thePlayer, block, name, animtime, loop, updatePosition, false)
 		if animtime > 100 then
 			setTimer(setPedAnimation, 50, 2, thePlayer, block, name, animtime, loop, updatePosition, false)
@@ -30,7 +30,7 @@ function onSpawn()
 	setPedAnimation(source)
 	toggleAllControls(source, true, true, false)
 	setElementData(source, "forcedanimation", false)
-	setElementData(source, "animation", false, false)
+	setElementData(source, "animation", false)
 end
 addEventHandler("onPlayerSpawn", getRootElement(), onSpawn)
 

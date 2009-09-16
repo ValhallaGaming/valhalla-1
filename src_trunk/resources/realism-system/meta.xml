@@ -69,4 +69,6 @@
 	
 	<export function="hideSpeedo" type="client"/>
 	<export function="showSpeedo" type="client"/>
+	
+	<script src="c_running.lua" type="client"/>
 </meta>

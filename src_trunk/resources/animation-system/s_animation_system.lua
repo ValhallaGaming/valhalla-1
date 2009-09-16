@@ -505,7 +505,7 @@ function tiredAnimation(thePlayer)
 	local logged = getElementData(thePlayer, "loggedin")
 	
 	if (logged==1) then
-		exports.global:applyAnimation(thePlayer, "FAT", "idle_tired", false, -1, true, false, false)
+		exports.global:applyAnimation(thePlayer, "FAT", "idle_tired", -1, true, false, false)
 	end
 end
 addCommandHandler("tired", tiredAnimation, false, false)

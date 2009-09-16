@@ -10,7 +10,7 @@
 	$userid = mysql_real_escape_string($_COOKIE["uid"], $conn);
 	
 	mysql_select_db("mta", $conn);
-	$result = mysql_query("SELECT username FROM accounts WHERE id='" . $userid . "' LIMIT 1", $conn);
+	$result = mysql_query("SELECT username, admin, donator, appstate FROM accounts WHERE id='" . $userid . "' LIMIT 1", $conn);
 
 	if (!$result || mysql_num_rows($result)==0)
 	{
@@ -19,13 +19,31 @@
 		setcookie("password", "", time()-3600);		
 		header('Location: index.php');
 	}
-	$username = mysql_result($result, 0);
+	$username = mysql_result($result, 0, 0);
+	$admin = mysql_result($result, 0, 1);
+	$donator = mysql_result($result, 0, 2);
+	$appstate = mysql_result($result, 0, 3);
+?>
+
+<?php 
+	function getAdminTitleFromIndex($index)
+	{
+		$ranks = array("No", "Trial Admin", "Administrator", "Super Admin", "Lead Admin", "Head Admin", "Owner");
+		return $ranks[$index];
+	}
+	
+	function getDonatorTitleFromIndex($index)
+	{
+		$ranks = array("No", "Bronze" ,"Silver", "Gold", "Platinum", "Pearl", "Diamond", "Godly");
+		return $ranks[$index];
+	}
 ?>
 
 <html>
-	<head>
+<head>
 	<title>ValhallaGaming MTA :: User Control Panel</title>
-		<style type="text/css">.style9 {
+	<style type="text/css">
+		.style9 {
 	background-image: url('img/bg.png');
 }
 .style14 {
@@ -72,7 +90,39 @@ a:hover {
 a:active {
 	text-decoration: none;
 }
-</style>
+.style14 table tr td table .style14 td {
+	font-weight: bold;
+	text-align: right;
+}
+        .style14 table tr td table {
+	font-size: 9px;
+}
+        .style14 table tr td table {
+	font-size: 12px;
+	text-align: left;
+}
+        .style14 table tr td table .style14 td {
+	text-align: left;
+}
+        .style14 table tr td table .style14 td {
+	text-align: right;
+}
+        td {
+	text-align: left;
+}
+        .style15 table tr td table tr td {
+	font-size: 10px;
+}
+        .style15 table tr td table {
+	font-weight: bold;
+}
+        .style14 table tr td table tr td {
+	text-align: right;
+}
+        .style114 table tr td table tr td {
+	text-align: left;
+}
+    </style>
 <meta name="keywords" content="valhalla, gaming, mta, ucp">
 		<meta name="description" content="Valhalla Gaming MTA UCP">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></head>
@@ -130,10 +180,41 @@ a:active {
           </table></td>
   </tr>
 		<tr>
-			<td height="274" class="style14" style="height: 40px"><table width="1094" height="154" border="1">
+			<td height="274" class="style14" style="height: 40px; text-align: center; font-family: Verdana; font-size: xx-small;"><table width="1094" height="154" border="1">
 			  <tr>
 			    <td width="15%">&nbsp;</td>
-			    <td width="70%">&nbsp;</td>
+			    <td width="70%"><table width="322" border="0" align="center">
+			      <tr>
+			        <td colspan="2"><center>
+			          <strong>Account Information</strong>
+			        </center></td>
+		          </tr>
+			      <tr>
+			        <td align="right">Application Status:</td>
+			        <td align="left">
+                    
+                    <?php
+						if ($appstate == 0)
+							echo "<em><a href='writeapplication.php'><font color='#FF9900' align='left'>Click here to write one</font></a></em>";
+						elseif ($appstate == 1)
+							echo "<em><font color='#FF9900' align='left'>Pending Review</font></em>";
+						elseif ($appstate == 2)
+							echo "<em><font color='#FF0000'>Denied, Click here for reason & resubmission</font></em>";
+						elseif ($appstate == 3)
+							echo "<em><font color='#66FF00'>Accepted</font></em>";
+					?>
+                    
+                    </td>
+		          </tr>
+			      <tr class="">
+			        <td width="165" align="right">Administrator:</td>
+			        <td width="147" align="left"><em><?php echo getAdminTitleFromIndex($admin) ?></em></td>
+		          </tr>
+			      <tr>
+			        <td>Donator:</td>
+			        <td align="left"><em><?php echo getDonatorTitleFromIndex($donator) ?></em></td>
+		          </tr>
+		        </table></td>
 			    <td width="15%">&nbsp;</td>
 		      </tr>
 	      </table></td>

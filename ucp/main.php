@@ -12,6 +12,13 @@
 	mysql_select_db("mta", $conn);
 	$result = mysql_query("SELECT username FROM accounts WHERE id='" . $userid . "' LIMIT 1", $conn);
 
+	if (!$result || mysql_num_rows($result)==0)
+	{
+		setcookie("uid", "", time()-3600);
+		setcookie("username", "", time()-3600);
+		setcookie("password", "", time()-3600);		
+		header('Location: index.php');
+	}
 	$username = mysql_result($result, 0);
 ?>
 

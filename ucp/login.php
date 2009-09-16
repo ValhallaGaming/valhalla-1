@@ -33,7 +33,7 @@
 			setcookie("password", "", time()-3600);		
 			header('Location: index.php');
 		}
-		else if (isset($_COOKIE["loginattempts"]) && $_COOKIE["loginattempts"]>=399)
+		else if (isset($_COOKIE["loginattempts"]) && $_COOKIE["loginattempts"]>=3)
 		{
 			setcookie("uid", "", time()-3600);
 			setcookie("username", "", time()-3600);

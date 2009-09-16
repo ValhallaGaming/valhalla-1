@@ -241,7 +241,7 @@ a:active {
 		 </script>
 
 	
-		<form action="register2.php" method="post" onsubmit="return validate_form(this)">
+		<form action="register2.php" method="post" onSubmit="return validate_form(this)">
 		  <div align="center">
 		    <p><span class="style15"><strong>Please enter the details for your new account below.</strong></span></p>
 		    <table width="623" border="0">
@@ -256,7 +256,17 @@ a:active {
 		        <td><strong>Strength:</strong> <div class="percentImage1" id="securitybar"></div>&nbsp;</td>
 		        </tr>
 		      <tr>
-		        <td height="57" colspan="3"><input type="submit" name="register" id="register" value="Register"></td>
+		        <td height="57" colspan="3">
+			<?php
+			$errno = $_GET["errno"];
+			
+			if ($errno==1)
+				echo "<br><strong><span class='style5'>An account with this username already exists!</span></strong><br><br>";
+			elseif ($errno==2)
+				echo "<br><strong><span class='style5'>An unknown error occured, please report this on the forums!</span></strong><br><br>";
+			?>
+
+<input type="submit" name="register" id="register" value="Register"></td>
 		        </tr>
 		      </table>
 		    <p><span class="style15"><strong><br>

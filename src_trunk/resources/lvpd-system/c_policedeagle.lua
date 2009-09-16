@@ -12,14 +12,15 @@ function switchMode()
 		local mode = getElementData(localPlayer, "deaglemode")
 		if mode == 0 then -- tazer mode
 			setElementData(localPlayer, "deaglemode", 1, true)
-			triggerServerEvent("sendLocalMeAction", localPlayer, localPlayer, "switched their multipurpose handgun to Lethal mode.")
+			outputChatBox( "You switched your multipurpose handgun to Lethal Mode", 0, 255, 0 )
 		elseif mode == 1 and isLSPD() then -- lethal mode
+			outputChatBox( "You switched your multipurpose handgun to Radar Mode", 0, 255, 0 )
 			setElementData(localPlayer, "deaglemode", 2, true)
-			triggerServerEvent("sendLocalMeAction", localPlayer, localPlayer, "switched their multipurpose handgun to Radar Gun mode.")
 		elseif mode == 2 or mode == 1 then -- radar gun mode
+			outputChatBox( "You switched your multipurpose handgun to Tazer Mode", 0, 255, 0 )
 			setElementData(localPlayer, "deaglemode", 0, true)
-			triggerServerEvent("sendLocalMeAction", localPlayer, localPlayer, "switched their multipurpose handgun to Tazer mode.")
 		end
+		triggerServerEvent("sendLocalMeAction", localPlayer, localPlayer, "switched their multipurpose handgun mode.")
 	end
 end
 

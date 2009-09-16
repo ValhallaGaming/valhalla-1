@@ -68,7 +68,7 @@ function createInterior(thePlayer, commandName, interiorId, inttype, cost, ...)
 				local max_items = interior[6]
 				
 				local rot = getPedRotation(thePlayer)
-				local query = mysql_query(handler, "INSERT INTO interiors SET x='" .. x .. "', y='" .. y .."', z='" .. z .."', type='" .. inttype .. "', owner='" .. owner .. "', locked='" .. locked .. "', cost='" .. cost .. "', name='" .. name .. "', interior='" .. interiorw .. "', interiorx='" .. ix .. "', interiory='" .. iy .. "', interiorz='" .. iz .. "', dimensionwithin='" .. dimension .. "', interiorwithin='" .. interiorwithin .. "', angle='" .. optAngle .. "', angleexit='" .. rot .. "', max_items='" .. max_items .. "'")
+				local query = mysql_query(handler, "INSERT INTO interiors SET x='" .. x .. "', y='" .. y .."', z='" .. z .."', type='" .. inttype .. "', owner='" .. owner .. "', locked='" .. locked .. "', cost='" .. cost .. "', name='" .. name .. "', interior='" .. interiorw .. "', interiorx='" .. ix .. "', interiory='" .. iy .. "', interiorz='" .. iz .. "', dimensionwithin='" .. dimension .. "', interiorwithin='" .. interiorwithin .. "', angle='" .. optAngle .. "', angleexit='" .. rot .. "', max_items='" .. max_items .. "', fee=0")
 				
 				if (query) then
 					local id = mysql_insert_id(handler) -- Get the ID of the latest insert
@@ -154,7 +154,7 @@ addCommandHandler("sellproperty", sellProperty, false, false)
 
 function publicSellProperty(thePlayer, dbid, showmessages, givemoney)
 	local dbid, entrance, exit, interiorType = findProperty( thePlayer, dbid )
-	local query = mysql_query(handler, "UPDATE interiors SET owner=-1, locked=1, safepositionX=NULL, safepositionY=NULL, safepositionZ=NULL, safepositionRZ=NULL WHERE id='" .. dbid .. "'")
+	local query = mysql_query(handler, "UPDATE interiors SET owner=-1, locked=1, safepositionX=NULL, safepositionY=NULL, safepositionZ=NULL, safepositionRZ=NULL, fee=0 WHERE id='" .. dbid .. "'")
 	if query then
 		mysql_free_result(query)
 		
@@ -351,7 +351,7 @@ function reloadOneInterior(id, hasCoroutine, displayircmessage)
 	if displayircmessage == nil then
 		displayircmessage = false
 	end
-	local result = mysql_query(handler, "SELECT id, x, y, z , interiorx, interiory, interiorz, type, owner, locked, cost, name, interior, dimensionwithin, interiorwithin, angle, angleexit, max_items, rentable, tennant, rent, money, safepositionX, safepositionY, safepositionZ, safepositionRZ FROM interiors WHERE id='" .. id .. "'")
+	local result = mysql_query(handler, "SELECT id, x, y, z , interiorx, interiory, interiorz, type, owner, locked, cost, name, interior, dimensionwithin, interiorwithin, angle, angleexit, max_items, rentable, tennant, rent, money, safepositionX, safepositionY, safepositionZ, safepositionRZ, fee FROM interiors WHERE id='" .. id .. "'")
 	
 	if (hasCoroutine) then
 		coroutine.yield()
@@ -397,6 +397,7 @@ function reloadOneInterior(id, hasCoroutine, displayircmessage)
 			end
 			
 			local safeX, safeY, safeZ, safeRZ = row[23], row[24], row[25], row[26]
+			local fee = 0
 			
 			local intpickup, pickup
 			-- If the is a house
@@ -426,6 +427,9 @@ function reloadOneInterior(id, hasCoroutine, displayircmessage)
 				
 				intpickup = createPickup(ix, iy, iz, 3, 1318)
 				exports.pool:allocateElement(intpickup)
+				
+				fee = tonumber(row[27])
+				
 				if (hasCoroutine) then
 					coroutine.yield()
 				end
@@ -461,7 +465,7 @@ function reloadOneInterior(id, hasCoroutine, displayircmessage)
 			setElementData( pickup, "other", intpickup, false )
 			setElementData( intpickup, "other", pickup, false )
 			
-			setPickupElementData(pickup, id, optAngle, locked, owner, inttype, cost, name, max_items, tennant, rent, interiorwithin, dimension, money)
+			setPickupElementData(pickup, id, optAngle, locked, owner, inttype, cost, name, max_items, tennant, rent, interiorwithin, dimension, money, fee)
 			setIntPickupElementData(intpickup, id, rot, locked, owner, inttype, interior)
 			
 			if safeX ~= mysql_null() and safeY ~= mysql_null() and safeZ ~= mysql_null() and safeRZ ~= mysql_null() then
@@ -509,7 +513,7 @@ function loadAllInteriors()
 end
 addEventHandler("onResourceStart", getResourceRootElement(getThisResource()), loadAllInteriors)
 
-function setPickupElementData(pickup, id, optAngle, locked, owner, inttype, cost, name, max_items, tennant, rent, interiorwithin, dimension, money)
+function setPickupElementData(pickup, id, optAngle, locked, owner, inttype, cost, name, max_items, tennant, rent, interiorwithin, dimension, money, fee)
 	if(pickup) then
 		setElementData(pickup, "dbid", id, false)
 		setElementData(pickup, "angle", optAngle, false)
@@ -522,6 +526,7 @@ function setPickupElementData(pickup, id, optAngle, locked, owner, inttype, cost
 		setElementData(pickup, "tennant", tennant, false)
 		setElementData(pickup, "rent", rent, false)
 		setElementData(pickup, "money", money, false)
+		setElementData(pickup, "fee", fee, false)
 		setElementDimension(pickup, dimension)
 		setElementInterior(pickup, interiorwithin)
 	end
@@ -618,7 +623,7 @@ function hitInteriorPickup(thePlayer)
 				mysql_free_result(result)
 			end
 			
-			triggerClientEvent(thePlayer, "displayInteriorName", thePlayer, name, ownerName, getElementData( source, "inttype" ), cost)
+			triggerClientEvent(thePlayer, "displayInteriorName", thePlayer, name, ownerName, getElementData( source, "inttype" ), cost, getElementData( source, "fee" ) )
 		end
 		
 		bindKeys( thePlayer, source )
@@ -667,8 +672,8 @@ function buyInterior(player, pickup, cost, isHouse, isRentable)
 				destroyElement(value)
 			end
 		end
-
-		mysql_free_result( mysql_query( handler, "UPDATE interiors SET owner='" .. charid .. "', locked='0' WHERE id='" .. pickupid .. "'") )
+		
+		mysql_free_result( mysql_query( handler, "UPDATE interiors SET owner='" .. charid .. "', locked=0 WHERE id='" .. pickupid .. "'") )
 		exports.global:takePlayerSafeMoney(player, cost)
 		
 		-- make sure it's an unqiue key
@@ -747,6 +752,37 @@ end
 
 
 function setPlayerInsideInterior(thePickup, thePlayer)
+	-- check for entrance fee
+	if getElementData( thePlayer, "adminduty" ) ~= 1 and not exports.global:hasItem( thePlayer, 5, getElementData( thePickup, "dbid" ) ) then
+		local money = getElementData( thePlayer, "money" )
+		local fee = getElementData( thePickup, "fee" )
+		if fee and fee > 0 then
+			if fee > money then
+				outputChatBox( "You don't have enough money with you to enter this interior.", thePlayer, 255, 0, 0 )
+				return
+			else
+				local ownerid = getElementData( thePickup, "owner" )
+				local query = mysql_query( handler, "UPDATE characters SET bankmoney = bankmoney + " .. fee .. " WHERE id = " .. ownerid )
+				if query then
+					mysql_free_result( query )
+					
+					exports.global:takePlayerSafeMoney( thePlayer, fee )
+					
+					
+					for k, v in pairs( getElementsByType( "player" ) ) do
+						if isElement( v ) then
+							if getElementData( v, "dbid" ) == ownerid then
+								setElementData( v, "businessprofit", getElementData( v, "businessprofit" ) + fee, false )
+								break
+							end
+						end
+					end
+				else
+					outputChatBox( "Error 9018 - Report on Forums.", thePlayer, 255, 0, 0 )
+				end
+			end
+		end
+	end
 	-- teleport the player inside the interior
 	local other = getElementData( thePickup, "other" )
 	if other then
@@ -961,3 +997,65 @@ addEventHandler( "lockUnlockHouse", getRootElement(),
 		end	
 	end
 )
+
+function setFee( thePlayer, commandName, theFee )
+	if not theFee or not tonumber( theFee ) then
+		outputChatBox( "SYNTAX: /" .. commandName .. " [Fee]", thePlayer, 255, 194, 14 )
+	else
+		local dbid, entrance, exit = findProperty( thePlayer )
+		if entrance then
+			local theFee = tonumber( theFee )
+			if theFee >= 0 then
+				if getElementData( entrance, "inttype" ) == 1 then
+					if exports.global:isPlayerAdmin( thePlayer ) or getElementData( entrance, "owner" ) == getElementData( thePlayer, "dbid" ) then
+						-- check if you can set a fee for that biz
+						local x, y, z = getElementPosition( exit )
+						local interior = getElementInterior( exit )
+						
+						local canHazFee, intID = false
+						if exports.global:isPlayerSuperAdmin( thePlayer ) then
+							canHazFee = true
+						elseif getElementData( entrance, "fee" ) > 0 then
+							canHazFee = true
+						else
+							for k, v in pairs( interiors ) do
+								if interior == v[1] and getDistanceBetweenPoints3D( x, y, z, v[2], v[3], v[4] ) < 10 then
+									if v[7] then
+										canHazFee = true
+									end
+									intID = k
+									break
+								end
+							end
+						end
+						
+						if canHazFee then
+							local query = mysql_query( handler, "UPDATE interiors SET fee = " .. theFee .. " WHERE id = " .. dbid )
+							if query then
+								mysql_free_result( query )
+								setElementData( entrance, "fee", theFee )
+								
+								outputChatBox( "The entrance fee for '" .. getElementData( entrance, "name" ) .. "' is now $" .. theFee .. ".", thePlayer, 0, 255, 0 )
+							else
+								outputDebugString( "/" .. commandName .. ": " .. mysql_error( handler ) )
+								outputChatBox( "Error 9017 - Report on Forums.", thePlayer, 255, 0, 0 )
+							end
+						else
+							outputChatBox( "You can't charge a fee for this business.", thePlayer, 255, 0, 0 )
+							outputDebugString( "Int Map ID: " .. tostring( intID ) ) 
+						end
+					else
+						outputChatBox( "This business is not yours.", thePlayer, 255, 0, 0 )
+					end
+				else
+					outputChatBox( "This interior is no business.", thePlayer, 255, 0, 0 )
+				end
+			else
+				outputChatBox( "You can only use positive values!", thePlayer, 255, 0, 0 )
+			end
+		else
+			outputChatBox( "You are not in an interior!", thePlayer, 255, 0, 0 )
+		end
+	end
+end
+addCommandHandler( "setfee", setFee )

@@ -3,7 +3,7 @@ gInteriorName, gOwnerName, gBuyMessage = nil
 timer = nil
 
 -- Message on enter
-function showIntName(name, ownerName, inttype, cost)
+function showIntName(name, ownerName, inttype, cost, fee)
 	if (guiGetVisible(gInteriorName)) then
 		killTimer(timer)
 		destroyElement(gInteriorName)
@@ -52,7 +52,15 @@ function showIntName(name, ownerName, inttype, cost)
 			guiLabelSetHorizontalAlign(gBuyMessage, "center", true)
 			guiSetAlpha(gBuyMessage, 0.0)
 		else
-			gBuyMessage = guiCreateLabel(0.0, 0.915, 1.0, 0.3, "Press F to enter.", true)
+			local msg = "Press F to enter."
+			if fee and fee > 0 then
+				msg = "Entrance Fee: $" .. fee
+				
+				if getElementData( getLocalPlayer(), "money" ) >= fee then
+					msg = msg .. "\nPress F to enter."
+				end
+			end
+			gBuyMessage = guiCreateLabel(0.0, 0.915, 1.0, 0.3, msg, true)
 			guiSetFont(gBuyMessage, "default-bold-small")
 			guiLabelSetHorizontalAlign(gBuyMessage, "center", true)
 			guiSetAlpha(gBuyMessage, 0.0)

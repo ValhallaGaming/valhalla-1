@@ -48,7 +48,7 @@
 	$clarifications = mysql_real_escape_string($_POST["clarifications"], $conn);
 	
 	mysql_select_db("mta", $conn);
-	$query = mysql_query("UPDATE accounts SET appgamingexperience='" . $gamingexperience . "', appcountry='" . $country . "', applanguage='" . language . "', apphow='" . $how . "', appwhy='" . $why . "', appexpectations='" . $expectations . "', appdefinitions='" . $definitions . "', appfirstcharacter='" . $firstcharacter . "', appclarifications='" . $clarifications . "', apphandler='', appdatetime=NOW(), appstate='1' WHERE id='" . $uid . "' LIMIT 1", $conn);
+	$query = mysql_query("UPDATE accounts SET appgamingexperience='" . $gamingexperience . "', appcountry='" . $country . "', applanguage='" . $language . "', apphow='" . $how . "', appwhy='" . $why . "', appexpectations='" . $expectations . "', appdefinitions='" . $definitions . "', appfirstcharacter='" . $firstcharacter . "', appclarifications='" . $clarifications . "', apphandler='', appdatetime=NOW(), appstate='1' WHERE id='" . $uid . "' LIMIT 1", $conn);
 	
 	//if (!$query)
 		//echo mysql_error($conn);

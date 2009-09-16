@@ -36,11 +36,13 @@ function enableCooldown()
 	cooldown = 1
 	cooldownTimer = setTimer(disableCooldown, 3000, 1)
 	toggleControl("fire", false)
+	setElementData(getLocalPlayer(), "deagle:reload", true)
 end
 
 function disableCooldown()
 	cooldown = 0
 	toggleControl("fire", true)
+	setElementData(getLocalPlayer(), "deagle:reload", false)
 
 	if (cooldownTimer~=nil) then
 		killTimer(cooldownTimer)

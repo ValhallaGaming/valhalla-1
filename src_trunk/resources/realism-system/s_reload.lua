@@ -9,7 +9,7 @@ function reloadWeapon(thePlayer)
 	
 	if (reloading==false) and not (isPedInVehicle(thePlayer)) and ((jammed==0) or not jammed) then
 		if (weapon) and (ammo) then
-			if (weapon>21) and (weapon<35) and not (noReloadGuns[weapon]) then
+			if (weapon>21) and (weapon<35) and not (noReloadGuns[weapon]) and not getElementData(thePlayer, "deagle:reload") then
 				toggleControl(thePlayer, "fire", false)
 				toggleControl(thePlayer, "next_weapon", false)
 				toggleControl(thePlayer, "previous_weapon", false)

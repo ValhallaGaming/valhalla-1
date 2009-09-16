@@ -7,7 +7,7 @@ end
 addEventHandler("onClientPlayerWeaponSwitch", getLocalPlayer(), weaponAmmo)
 
 function disableAutoReload(weapon, ammo, ammoInClip)
-	if (ammoInClip==1) and ((ammo-ammoInClip)>0) and not (noReloadGuns[weapon]) and (weapon>21) and (weapon<35) and not (isPedInVehicle(getLocalPlayer())) then
+	if (ammoInClip==1) and ((ammo-ammoInClip)>0) and not (noReloadGuns[weapon]) and (weapon>21) and (weapon<35) and not (isPedInVehicle(getLocalPlayer())) and not getElementData(getLocalPlayer(), "deagle:reload") then
 		-- Message to reload
 		addEventHandler("onClientRender", getRootElement(), drawText)
 		

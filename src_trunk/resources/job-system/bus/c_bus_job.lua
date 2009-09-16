@@ -287,7 +287,7 @@ function startEnterBus(thePlayer, seat)
 		end
 	end
 end
-addEventHandler("onClientVehicleStartEnter", getLocalPlayer(), startEnterBus)
+addEventHandler("onClientVehicleStartEnter", getRootElement(), startEnterBus)
 
 function onPlayerQuit()
 	if getElementData(source, "job") == 3 then
@@ -297,4 +297,4 @@ function onPlayerQuit()
 		end
 	end
 end
-addEventHandler("onClientPlayerQuit", getLocalPlayer(), onPlayerQuit)
+addEventHandler("onClientPlayerQuit", getRootElement(), onPlayerQuit)

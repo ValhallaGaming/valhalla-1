@@ -259,19 +259,11 @@ function givePlayerBoughtItem(itemID, itemValue, theCost, isWeapon, name, supply
 		end
 	end
 	
-	local thePickup = nil
 	local inttype = nil
 	local supplies = nil
-	for key, value in ipairs(exports.pool:getPoolElementsByType("pickup")) do
-		local pickupType = getElementData(value, "type")
-		if (pickupType=="interior") then
-			local id = getElementData(value, "dbid")
-			if (tonumber(id)==tonumber(interior)) then
-				thePickup = value
-				inttype = getElementData(value, "inttype")
-				break
-			end
-		end
+	local dbid, thePickup = call( getResourceFromName( "interior-system" ), "findProperty", source)
+	if thePickup then
+		inttype = getElementData(thePickup, "inttype")
 	end
 	
 	if inttype == 1 then

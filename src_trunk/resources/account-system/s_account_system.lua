@@ -566,15 +566,13 @@ function spawnCharacter(charname)
 		-- Let's stick some blips on the properties they own
 		local interiors = { }
 		local count = 1
-		for key, value in ipairs(exports.pool:getPoolElementsByType("pickup")) do
-			if (value) then
-				local ptype = getElementData(value, "type")
-				if (ptype=="interior") then
+		for key, value in ipairs(getElementsByType("pickup", getResourceRootElement(getResourceFromName("interior-system")))) do
+			if isElement(value) then
+				if getElementData(value, "name") then
 					local inttype = getElementData(value, "inttype")
 					local owner = tonumber(getElementData(value, "owner"))
 
-					if (owner==tonumber(id)) and (inttype<2) then -- house/business and owned by this player
-						
+					if owner == id then -- house/business and owned by this player
 						local x, y, z = getElementPosition(value)
 						if (inttype ~= 2) then -- house, business or rentable
 							if inttype == 3 then inttype = 0 end

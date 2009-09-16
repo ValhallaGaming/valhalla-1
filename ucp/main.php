@@ -10,7 +10,7 @@
 	$userid = mysql_real_escape_string($_COOKIE["uid"], $conn);
 	
 	mysql_select_db("mta", $conn);
-	$result = mysql_query("SELECT username, admin, donator, appstate FROM accounts WHERE id='" . $userid . "' LIMIT 1", $conn);
+	$result = mysql_query("SELECT username, admin, donator, appstate, apphandler, appreason FROM accounts WHERE id='" . $userid . "' LIMIT 1", $conn);
 
 	if (!$result || mysql_num_rows($result)==0)
 	{
@@ -23,6 +23,8 @@
 	$admin = mysql_result($result, 0, 1);
 	$donator = mysql_result($result, 0, 2);
 	$appstate = mysql_result($result, 0, 3);
+	$apphandler = mysql_result($result, 0, 4);
+	$appreason = mysql_result($result, 0, 5);
 ?>
 
 <?php 
@@ -212,7 +214,19 @@ a:active {
 				?>
                 
                 &nbsp;</td>
-			    <td width="60%"><table width="322" border="0" align="center">
+			    <td width="60%">
+                <center>
+                <?php
+					if ($appstate == 3)
+					{
+						echo "<em><font color='#66FF00'>Your application was Accepted! (Handler: " . $apphandler . ").<br><br></font></em>";
+					}
+					elseif ($appstate == 2)
+					{
+						echo "<em><font color='#FF0000'>Your application was Denied! (Handler: " . $apphandler . ").<br><br>Reason: " . $appreason . "<br><br></font></em>";
+					}
+					?>
+                <table width="322" border="0" align="center">
 			      <tr>
 			        <td colspan="2"><center>
 			          <strong>Account Information</strong>
@@ -228,7 +242,7 @@ a:active {
 						elseif ($appstate == 1)
 							echo "<em><font color='#FF9900' align='left'>Pending Review</font></em>";
 						elseif ($appstate == 2)
-							echo "<em><font color='#FF0000'>Denied, Click here for reason & resubmission</font></em>";
+							echo "<em><a href='writeapplication.php'<font color='#FF0000'>Denied - Click here to write a new application.</a></font></em>";
 						elseif ($appstate == 3)
 							echo "<em><font color='#66FF00'>Accepted</font></em>";
 					?>

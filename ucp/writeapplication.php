@@ -10,7 +10,7 @@
 	$userid = mysql_real_escape_string($_COOKIE["uid"], $conn);
 	
 	mysql_select_db("mta", $conn);
-	$result = mysql_query("SELECT username, admin, donator, appstate FROM accounts WHERE id='" . $userid . "' LIMIT 1", $conn);
+	$result = mysql_query("SELECT username, admin, donator, appstate, appgamingexperience, appcountry, applanguage, apphow, appwhy, appexpectations, appdefinitions, appfirstcharacter, appclarifications FROM accounts WHERE id='" . $userid . "' LIMIT 1", $conn);
 
 	if (!$result || mysql_num_rows($result)==0)
 	{
@@ -24,7 +24,17 @@
 	$donator = mysql_result($result, 0, 2);
 	$appstate = mysql_result($result, 0, 3);
 	
-	if ($appstate > 1)
+	$gamingexperience = mysql_result($result, 0, 4);
+	$country = mysql_result($result, 0, 5);
+	$language = mysql_result($result, 0, 6);
+	$how = mysql_result($result, 0, 7);
+	$why = mysql_result($result, 0, 8);
+	$expectations = mysql_result($result, 0, 9);
+	$definitions = mysql_result($result, 0, 10);
+	$firstcharacter = mysql_result($result, 0, 11);
+	$clarifications = mysql_result($result, 0, 12);
+	
+	if ($appstate == 1 || $appstate == 3)
 		header('Location: main.php');
 ?>
 
@@ -278,7 +288,7 @@ a:active {
 		        <td height="23" colspan="2">Tell us about your gaming Experience:</td>
 		        </tr>
 		      <tr>
-		        <td colspan="2"><textarea name="gamingexperience" id="gamingexperience" cols="45" rows="5"></textarea></td>
+		        <td colspan="2"><textarea name="gamingexperience" id="gamingexperience" cols="45" rows="5"><?php echo $gamingexperience; ?></textarea></td>
 		      </tr>
 		    </table>
 		    <table width="450" border="0">
@@ -288,11 +298,11 @@ a:active {
 		        </tr>
 		      <tr>
 		        <td>Country of Residence:</td>
-		        <td><input type="text" name="country" id="country"></td>
+		        <td><input type="text" name="country" id="country" value="<?php echo $country; ?>"></td>
 		        </tr>
 		      <tr>
 		        <td>Primary Language:</td>
-		        <td><input type="text" name="language" id="language"></td>
+		        <td><input type="text" name="language" id="language" value="<?php echo $language; ?>"></td>
 		        </tr>
 		      <tr>
 		        <td>&nbsp;</td>
@@ -302,7 +312,7 @@ a:active {
 		        <td colspan="2">How did you get into Grand Theft Auto Roleplay?</td>
 		        </tr>
 		      <tr>
-		        <td colspan="2"><textarea name="how" id="how" cols="45" rows="5"></textarea></td>
+		        <td colspan="2"><textarea name="how" id="how" cols="45" rows="5"><?php echo $how; ?></textarea></td>
 		        </tr>
 		      <tr>
 		        <td colspan="2">&nbsp;</td>
@@ -311,7 +321,7 @@ a:active {
 		        <td colspan="2">Why did you choose the Valhalla Gaming MTA Roleplay server over others?</td>
 		        </tr>
 		      <tr>
-		        <td colspan="2"><textarea name="why" id="why" cols="45" rows="5"></textarea></td>
+		        <td colspan="2"><textarea name="why" id="why" cols="45" rows="5"><?php echo $why; ?></textarea></td>
 		        </tr>
 		      <tr>
 		        <td colspan="2">&nbsp;</td>
@@ -320,7 +330,7 @@ a:active {
 		        <td colspan="2">What are your expectations of this server and what do you hope to get out of the server?</td>
 		        </tr>
 		      <tr>
-		        <td colspan="2"><textarea name="expectations" id="expectations" cols="45" rows="5"></textarea></td>
+		        <td colspan="2"><textarea name="expectations" id="expectations" cols="45" rows="5"><?php echo $expectations; ?></textarea></td>
 		        </tr>
 		      <tr>
 		        <td colspan="2">&nbsp;</td>
@@ -329,7 +339,7 @@ a:active {
 		        <td colspan="2">Write a brief definition of Metagaming and Powergaming</td>
 		        </tr>
 		      <tr>
-		        <td colspan="2"><textarea name="definitions" id="definitions" cols="45" rows="5"></textarea></td>
+		        <td colspan="2"><textarea name="definitions" id="definitions" cols="45" rows="5"><?php echo $definitions; ?></textarea></td>
 		        </tr>
 		      <tr>
 		        <td colspan="2">&nbsp;</td>
@@ -340,7 +350,7 @@ a:active {
 		          Try to be original but overall be realistic. )</td>
 		        </tr>
 		      <tr>
-		        <td colspan="2"><textarea name="firstcharacter" id="firstcharacter" cols="45" rows="5"></textarea></td>
+		        <td colspan="2"><textarea name="firstcharacter" id="firstcharacter" cols="45" rows="5"><?php echo $firstcharacter; ?></textarea></td>
 		        </tr>
 		      <tr>
 		        <td colspan="2">&nbsp;</td>
@@ -349,7 +359,7 @@ a:active {
 		        <td colspan="2">Is there anything else you would like to add, ask or otherwise clarify?</td>
 		        </tr>
 		      <tr>
-		        <td colspan="2"><textarea name="clarifications" id="clarifications" cols="45" rows="5"></textarea></td>
+		        <td colspan="2"><textarea name="clarifications" id="clarifications" cols="45" rows="5"><?php echo $clarifications; ?></textarea></td>
 		        </tr>
 		      <tr>
 		        <td colspan="2"><br>

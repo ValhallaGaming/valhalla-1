@@ -194,11 +194,11 @@ a:active {
 							$appstate = mysql_result($result, 0, 1);
 							$admin = mysql_result($result, 0, 2);
 							
-							if ($appstate != 2)
+							if ($appstate != 3)
 							{
 								echo "This account can not be deactivated as it is not active.";
 							}
-							elseif ($admin > 0)
+							elseif ($admin > 6)
 							{
 								echo "This account can not be deactivated as it is an administrator account.";
 							}

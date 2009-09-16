@@ -220,71 +220,50 @@ a:active {
 				var notcomplete = false;
 				var field = "None";
 				
-              	if (thisform.gamingexperience.value==null || thisform.gamingexperience.value==""  || thisform.gamingexperience.value.length<20 )
+              	if (thisform.accept.value==null || thisform.accept.value=="" || thisform.accept.value==null || thisform.accept.value=="")
 				{
-                	notcomplete = true;
-					field = "Gaming Experience";
+                	alert("You have not picked an option.");
+					return false;
 				}
-				else if (thisform.country.value==null || thisform.country.value==""  || thisform.country.value.length<2 )
+				else if (thisform.deny.value  == true && (thisform.reason.value == null || thisform.reason.value == "" || thisform.reason.value.length < 10))
                 {
                 	notcomplete = true;
 					field = "Country";
 				}
-				else if (thisform.language.value==null || thisform.language.value==""  || thisform.language.value.length<2 )
-                {
-                	notcomplete = true;
-					field = "Language";
-				}
-				else if (thisform.country.value==null || thisform.country.value==""  || thisform.country.value.length<2 )
-                {
-                	notcomplete = true;
-					field = "Country";
-				}
-				else if (thisform.how.value==null || thisform.how.value==""  || thisform.how.value.length<2 )
-                {
-                	notcomplete = true;
-					field = "How you found Valhalla";
-				}
-				else if (thisform.why.value==null || thisform.why.value==""  || thisform.why.value.length<2 )
-                {
-                	notcomplete = true;
-					field = "Why you picked Valhalla";
-				}
-				else if (thisform.expectations.value==null || thisform.expectations.value==""  || thisform.expectations.value.length<2 )
-                {
-                	notcomplete = true;
-					field = "Expectations of the community";
-				}
-				else if (thisform.definitions.value==null || thisform.definitions.value==""  || thisform.definitions.value.length<2 )
-                {
-                	notcomplete = true;
-					field = "Definitions of Metagaming and Powergaming";
-				}
-				else if (thisform.firstcharacter.value==null || thisform.firstcharacter.value==""  || thisform.firstcharacter.value.length<2 )
-                {
-                	notcomplete = true;
-					field = "First Character Description";
-				}
-				else if (thisform.clarifications.value==null || thisform.clarifications.value==""  || thisform.clarifications.value.length<2 )
-                {
-                	notcomplete = true;
-					field = "Clarifications & Other";
-				}
-				
-				if ( notcomplete )
-					alert ( "You have not completed the application form. \n\n Missing Field : " + field );
 					
-				return !notcomplete;
+				return true;
               }
          }
+		 
+		 function doCheck(thisform)
+		 {
+			 
+		 }
+		 
+		 function doCheck2(thisform)
+		 {
+
+		 }
          //-->
 		 </script>
 
 	
-		<form action="submitapplication.php" method="post" onSubmit="return validate_form(this)">
+		<form action="creviewapp.php" method="post" onSubmit="return validate_form(this)">
 		  <div align="center">
 		    <p><span class="style15"><strong>Application for:  <em><?php echo $targetusername; ?></strong></span></p>
 		    <table width="450" border="0">
+		      <tr>
+		        <td width="225">Account ID:</td>
+		        <td width="215"><input name="targetid" type="text" id="targetid" value="<?php echo $userid ?>" readonly="readonly"></td>
+		        </tr>
+		      <tr>
+		        <td>Account Username:</td>
+		        <td><input name="targetusername" type="text" id="targetusername" value="<?php echo $targetusername ?>" readonly="readonly"></td>
+		        </tr>
+		      <tr>
+		        <td>&nbsp;</td>
+		        <td>&nbsp;</td>
+		        </tr>
 		      <tr>
 		        <td height="23" colspan="2">Tell us about your gaming Experience:</td>
 		        </tr>
@@ -302,7 +281,8 @@ a:active {
 		        <td><input name="country" type="text" id="country" value="<?php echo $country ?>" readonly="readonly"></td>
 		        </tr>
 		      <tr>
-		        <td>Primary Language:</td>
+		        <td>Primary Language:
+		          	</td>
 		        <td><input name="language" type="text" id="language" readonly="readonly"value="<?php echo $language ?>"></td>
 		        </tr>
 		      <tr>
@@ -363,9 +343,22 @@ a:active {
 		        <td colspan="2"><textarea name="clarifications" cols="45" rows="5" readonly="readonly" id="clarifications"><?php echo $clarifications ?></textarea></td>
 		        </tr>
 		      <tr>
-		        <td colspan="2"><br>
-		          <br>		          
-		          <input type="submit" name="submit" id="submit" value="Submit"></td>
+		        <td colspan="2"><p>
+		          <br>
+		          <br>
+<br>
+		          <br>
+		          <br>
+<input type="radio" name="accept" id="accept" value="accept"onClick="doCheck2(this)">
+		          Accept<br>
+		          <input type="radio" name="deny" id="deny" value="deny" onClick="doCheck(this)"> 
+		          Deny
+                  <br>
+                  <textarea name="reason" cols="45" rows="5" id="reason">Write the reason why the person is denied here. This does not have any effect if you are accepting the application.</textarea>
+                  <br>
+		            <br>		          
+		            <input type="submit" name="submit" id="submit" value="Submit">
+		            </p></td>
 		        </tr>
 		      </table>
 		    <p><span class="style15"><strong><br>

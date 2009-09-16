@@ -120,8 +120,37 @@ end
 addEventHandler("onResourceStart", getResourceRootElement(), loadAllElevators)
 
 function hitInteriorPickup( thePlayer )
-	bindKeys(thePlayer, source)
-	setTimer(checkLeavePickup, 1000, 1, thePlayer, source)
+	local pickuptype = getElementData(source, "type")
+	
+	local pdimension = getElementDimension(thePlayer)
+	local idimension = getElementDimension(source)
+	
+	if pdimension == idimension then -- same dimension?
+		local dbid, thePickup = call( getResourceFromName( "interior-system" ), "findProperty", player, getElementDimension( getElementData( source, "other" ) ) )
+		if thePickup then
+			local name = getElementData( thePickup, "name" )
+			
+			if name then
+				local owner = getElementData( thePickup, "owner" )
+				local cost = getElementData( thePickup, "cost" )
+				
+				local ownerName = "None"
+				local result = mysql_query(handler, "SELECT charactername FROM characters WHERE id='" .. owner .. "' LIMIT 1")
+			
+				if result then
+					if mysql_num_rows(result) > 0 then
+						ownerName = mysql_result(result, 1, 1):gsub("_", " ")
+					end
+					mysql_free_result(result)
+				end
+				
+				triggerClientEvent(thePlayer, "displayInteriorName", thePlayer, name, ownerName, getElementData( thePickup, "inttype" ), cost, getElementData( thePickup, "fee" ) )
+			end
+		end
+		
+		bindKeys( thePlayer, source )
+		setTimer( checkLeavePickup, 500, 1, thePlayer, source ) 
+	end
 	cancelEvent()
 end
 addEventHandler("onPickupHit", getResourceRootElement(), hitInteriorPickup)
@@ -170,6 +199,7 @@ function unbindKeys(player, pickup)
 		end
 		
 		removeElementData( player, "interiormarker" )
+		triggerClientEvent( player, "displayInteriorName", player )
 	end
 end
 

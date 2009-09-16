@@ -129,7 +129,10 @@ function findProperty(thePlayer, dimension)
 				break
 			end
 		end
-		return dbid, entrance, exit, getElementData(entrance,"inttype")
+		
+		if entrance then
+			return dbid, entrance, exit, getElementData(entrance,"inttype")
+		end
 	end
 	return 0
 end
@@ -617,8 +620,7 @@ function hitInteriorPickup(thePlayer)
 		
 			if result then
 				if mysql_num_rows(result) > 0 then
-					ownerName = mysql_result(result, 1, 1)
-					ownerName = string.gsub(tostring(ownerName), "_", " ")
+					ownerName = mysql_result(result, 1, 1):gsub("_", " ")
 				end
 				mysql_free_result(result)
 			end

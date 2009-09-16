@@ -10,7 +10,7 @@
 	$userid = mysql_real_escape_string($_COOKIE["uid"], $conn);
 	
 	mysql_select_db("mta", $conn);
-	$result = mysql_query("SELECT username, admin, donator, appstate, apphandler, appreason FROM accounts WHERE id='" . $userid . "' LIMIT 1", $conn);
+	$result = mysql_query("SELECT username, admin, donator, appstate, apphandler, appreason, banned FROM accounts WHERE id='" . $userid . "' LIMIT 1", $conn);
 
 	if (!$result || mysql_num_rows($result)==0)
 	{
@@ -25,6 +25,7 @@
 	$appstate = mysql_result($result, 0, 3);
 	$apphandler = mysql_result($result, 0, 4);
 	$appreason = mysql_result($result, 0, 5);
+	$banned = mysql_result($result, 0, 6);
 ?>
 
 <?php 
@@ -37,6 +38,12 @@
 	function getDonatorTitleFromIndex($index)
 	{
 		$ranks = array("No", "Bronze" ,"Silver", "Gold", "Platinum", "Pearl", "Diamond", "Godly");
+		return $ranks[$index];
+	}
+	
+	function getStandingFromIndex($index)
+	{
+		$ranks = array("<em><font color='#66FF00'>In Good Standing</font></em>", "<em><font color='#FF0000'>Banned</font></em>");
 		return $ranks[$index];
 	}
 ?>
@@ -256,6 +263,10 @@ a:active {
 			      <tr>
 			        <td>Donator:</td>
 			        <td align="left"><em><?php echo getDonatorTitleFromIndex($donator) ?></em></td>
+		          </tr>
+			      <tr>
+			        <td>Account Standing:</td>
+			        <td align="left"><em><?php echo getStandingFromIndex($banned) ?></em></td>
 		          </tr>
 		        </table></td>
 			    <td width="20%">&nbsp;</td>

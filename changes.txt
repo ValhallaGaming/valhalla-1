@@ -1,4 +1,9 @@
 ---
+Entry Fee
+---
+ALTER TABLE `interiors` ADD COLUMN `fee` INTEGER UNSIGNED DEFAULT 0;
+
+---
 Friends
 ---
 DROP TABLE IF EXISTS `friends`;

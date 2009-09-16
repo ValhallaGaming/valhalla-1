@@ -192,6 +192,32 @@ function tyreWindow()
 	end
 end
 
+function previewColors()
+	local col1 = guiGetText(iColour1)
+	local col2 = guiGetText(iColour2)
+	local col3 = guiGetText(iColour3)
+	local col4 = guiGetText(iColour4)
+	
+	if(col1 == "") and (col2 == "") and (col3 == "") and (col4 == "") then
+		triggerServerEvent( "colorEndPreview", getLocalPlayer(), currentVehicle)
+	else
+		if(col1 == "") then
+			col1 = nil
+		end
+		if(col2 == "") then
+			col2 = nil
+		end
+		if(col3 == "") then
+			col3 = nil
+		end
+		if(col4 == "") then
+			col4 = nil
+		end
+		
+		triggerServerEvent( "colorPreview", getLocalPlayer(), currentVehicle, col1, col2, col3, col4)
+	end
+end
+
 function paintWindow()
 	-- Window variables
 	local Width = 700
@@ -201,6 +227,8 @@ function paintWindow()
 	local Y = (screenheight - Height)/2
 	
 	if not (wPaint) then
+		guiSetInputEnabled(true)
+		
 		-- Create the window
 		wPaint = guiCreateWindow(X, Y, Width, Height, "Enter the colours to paint the vehicle.", false )
 		
@@ -227,7 +255,7 @@ function paintWindow()
 				local col3 = guiGetText(iColour3)
 				local col4 = guiGetText(iColour4)
 				
-				if(col1 == "") and (col2 == "") and (col3 == "") and (col4 == "")then
+				if(col1 == "") and (col2 == "") and (col3 == "") and (col4 == "") then
 					outputChatBox("You need to input at least one colour ID", 255, 0, 0)
 				else
 					if(col1 == "") then
@@ -243,12 +271,18 @@ function paintWindow()
 						col4 = nil
 					end
 					
+					triggerServerEvent( "colorEndPreview", getLocalPlayer(), currentVehicle)
 					triggerServerEvent( "repaintVehicle", getLocalPlayer(), currentVehicle, col1, col2, col3, col4)
 					
 					closeMechanicWindow()
 				end				
 			end
 		end, false)
+		
+		addEventHandler( "onClientGUIChanged", iColour1, previewColors, false )
+		addEventHandler( "onClientGUIChanged", iColour2, previewColors, false )
+		addEventHandler( "onClientGUIChanged", iColour3, previewColors, false )
+		addEventHandler( "onClientGUIChanged", iColour4, previewColors, false )
 		
 		-- Close
 		bPaintClose = guiCreateButton( 0.35, 0.8, 0.3, 0.2, "Close", true, wPaint )
@@ -267,7 +301,8 @@ function paintWindow()
 				destroyElement(bPaintClose)
 				destroyElement(wPaint)
 				wPaint, iColour1, iColour2, iColour3, iColour4, lcol1, lcol2, lcol3, lcol4, colourChart, bPaintClose = nil				
-				
+				triggerServerEvent( "colorEndPreview", getLocalPlayer(), currentVehicle)
+				guiSetInputEnabled(false)
 			end
 		end, false)	 
 	end
@@ -715,7 +750,9 @@ function closeMechanicWindow()
 		destroyElement(colourChart)
 		destroyElement(bPaintClose)
 		destroyElement(wPaint)
-		wPaint, iColour1, iColour2, iColour3, iColour4, lcol1, lcol2, lcol3, lcol4, colourChart, bPaintClose = nil				
+		wPaint, iColour1, iColour2, iColour3, iColour4, lcol1, lcol2, lcol3, lcol4, colourChart, bPaintClose = nil
+		triggerServerEvent( "colorEndPreview", getLocalPlayer(), currentVehicle)
+		guiSetInputEnabled(false)
 	end
 	
 	if wPaintjob then

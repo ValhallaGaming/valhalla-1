@@ -1,3 +1,33 @@
+function previewColors( veh, color1, color2, color3, color4 )
+	if veh then
+		if not getElementData( veh, "oldcolors" ) then
+			setElementData( veh, "oldcolors", { getVehicleColor( veh ) }, false )
+		end
+		local col = getElementData( veh, "oldcolors" )
+		color1 = color1 or col[1]
+		color2 = color2 or col[2]
+		color3 = color3 or col[3]
+		color4 = color4 or col[4]
+		if setVehicleColor( veh, color1, color2, color3, color4 ) then
+			setTimer(endColorPreview, 45000, 1, veh)
+		end
+	end
+end
+addEvent("colorPreview", true)
+addEventHandler("colorPreview", getRootElement(), previewColors)
+
+function endColorPreview( veh )
+	if veh then
+		local colors = getElementData( veh, "oldcolors" )
+		if colors then
+			setVehicleColor( veh, unpack( colors ) )
+			removeElementData( veh, "oldcolors" )
+		end
+	end
+end
+addEvent("colorEndPreview", true)
+addEventHandler("colorEndPreview", getRootElement(), endColorPreview)
+
 function previewPaintjob( veh, paintjob )
 	if veh then
 		if not getElementData( veh, "oldpaintjob" ) then

@@ -123,7 +123,7 @@ a:active {
 	text-align: left;
 }
     .style14 table tr td {
-	text-align: center;
+	text-align: left;
 }
     </style>
 <meta name="keywords" content="valhalla, gaming, mta, ucp">
@@ -185,8 +185,34 @@ a:active {
 		<tr>
 			<td height="274" class="style14" style="height: 40px; text-align: center; font-family: Verdana; font-size: xx-small;"><table width="1094" height="154" border="1">
 			  <tr>
-			    <td width="15%">&nbsp;</td>
-			    <td width="70%"><table width="322" border="0" align="center">
+			    <td width="20%" valign="top">
+                <?php
+					if ($admin > 0)
+					{
+						// new applications
+						$result = mysql_query("SELECT COUNT(*) FROM accounts WHERE appstate=1");
+						$num = mysql_result($result, 0, 0);
+						echo "<font size='1'><a href='applications.php?show=1'> > New Applications (" . $num . ")</a></font><br>";
+						
+						// accepted
+					 	$result = mysql_query("SELECT COUNT(*) FROM accounts WHERE appstate=3");
+						$num = mysql_result($result, 0, 0);
+						echo "<font size='1'><a href='applications.php?show=4'>> Accepted Applications (" . $num . ")</a></font><br>";
+						
+						// declined
+						$result = mysql_query("SELECT COUNT(*) FROM accounts WHERE appstate=2");
+						$num = mysql_result($result, 0, 0);
+						echo "<font size='1'><a href='applications.php?show=2'>> Declined Applications (" . $num . ")</a></font><br>";
+						
+						// accounts without applications
+						$result = mysql_query("SELECT COUNT(*) FROM accounts WHERE appstate=0");
+						$num = mysql_result($result, 0, 0);
+						echo "<font size='1'><a href='applications.php?show=3'>> Application-less Accounts (" . $num . ")</a></font><br>";
+					}
+				?>
+                
+                &nbsp;</td>
+			    <td width="60%"><table width="322" border="0" align="center">
 			      <tr>
 			        <td colspan="2"><center>
 			          <strong>Account Information</strong>
@@ -218,7 +244,7 @@ a:active {
 			        <td align="left"><em><?php echo getDonatorTitleFromIndex($donator) ?></em></td>
 		          </tr>
 		        </table></td>
-			    <td width="15%">&nbsp;</td>
+			    <td width="20%">&nbsp;</td>
 		      </tr>
 	      </table></td>
 		</tr>

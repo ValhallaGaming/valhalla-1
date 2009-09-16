@@ -2,8 +2,9 @@
 	if (!isset($_COOKIE["username"]) || !isset($_COOKIE["password"]) || !isset($_COOKIE["uid"]))
 		header('Location: index.php');
 		
-	if (!$_POST["gamingexperience"])
+	if (!$_GET["show"] || $_GET["show"] < 1 || !$_GET["show"] > 3)
 		header('Location: main.php');
+
 ?>
 
 <?php include("config.php"); ?>
@@ -13,7 +14,7 @@
 	$userid = mysql_real_escape_string($_COOKIE["uid"], $conn);
 	
 	mysql_select_db("mta", $conn);
-	$result = mysql_query("SELECT username FROM accounts WHERE id='" . $userid . "' LIMIT 1", $conn);
+	$result = mysql_query("SELECT username, admin FROM accounts WHERE id='" . $userid . "' LIMIT 1", $conn);
 
 	if (!$result || mysql_num_rows($result)==0)
 	{
@@ -23,36 +24,11 @@
 		header('Location: index.php');
 	}
 	$username = mysql_result($result, 0, 0);
+	$admin = mysql_result($result, 0, 1);
+	
+	if ($admin < 1)
+		header('Location: main.php');
 ?>
-
-<?php
-	$uid = $_COOKIE["uid"];
-	$conn = mysql_pconnect($mysql_host, $mysql_user, $mysql_pass);
-
-	if (!$conn)
-	{
-		setcookie("uid", "", time()-3600);
-		setcookie("username", "", time()-3600);
-		setcookie("password", "", time()-3600);
-		header('Location: index.php?errno=2');
-	}
-	
-	$gamingexperience = mysql_real_escape_string($_POST["gamingexperience"], $conn);
-	$country = mysql_real_escape_string($_POST["country"], $conn);
-	$language = mysql_real_escape_string($_POST["language"], $conn);
-	$how = mysql_real_escape_string($_POST["how"], $conn);
-	$why = mysql_real_escape_string($_POST["why"], $conn);
-	$expectations = mysql_real_escape_string($_POST["expectations", $conn]);
-	$definitions = mysql_real_escape_string($_POST["definitions"], $conn);
-	$firstcharacter = mysql_real_escape_string($_POST["firstcharacter"], $conn);
-	$clarifications = mysql_real_escape_string($_POST["clarifications"], $conn);
-	
-	mysql_select_db("mta", $conn);
-	$query = mysql_query("UPDATE accounts SET appgamingexperience='" . $gamingexperience . "', appcountry='" . $country . "', applanguage='" . language . "', apphow='" . $how . "', appwhy='" . $why . "', appexpectations='" . $expectations . "', appdefinitions='" . $definitions . "', appfirstcharacter='" . $firstcharacter . "', appclarifications='" . $clarifications . "', apphandler='', appdatetime=NOW(), appstate='1' WHERE id='" . $uid . "' LIMIT 1", $conn);
-	
-	//if (!$query)
-		//echo mysql_error($conn);
-	?>
 
 <html>
 <head>
@@ -198,12 +174,162 @@ a:active {
 			<td height="274" class="style14" style="height: 40px; text-align: center; font-family: Verdana; font-size: xx-small;"><table width="1094" height="154" border="1">
 			  <tr>
 			    <td width="15%">&nbsp;</td>
-			    <td width="70%"><table width="389" border="0" align="center">
-			      <tr>
-			        <td width="383" colspan="2"><p>Your application has been submitted.</p>
-		            <p>You can view your applications status by logging into this UCP, or clicking Home above on the left.</p>
-		            <p><strong><a href="main.php">&lt; Go Home</a></strong></p></td>
-		          </tr>
+			    <td width="70%"><table width="389" border="1" align="center">
+                    
+                    <?php
+						if ( $_GET["show"] == 1 ) // show new applications
+						{
+							echo "<center>Older applications are shown at the top, please resolve them first.</center>";
+							$query = mysql_query("SELECT id, username, appdatetime, DATEDIFF(appdatetime, NOW()) FROM accounts WHERE appstate=1 ORDER BY appdatetime ASC", $conn);
+							
+							echo "<tr>";
+							echo "<td align='center'><b>Username</b></td>";
+							echo "<td align='center'><b>Date & Time</b></td>";
+							echo "<td align='center'><b>Action</b></td>";
+							echo "</tr>";
+							
+							if (mysql_num_rows($query) > 0)
+							{
+								for ( $i = 0; $i < mysql_num_rows($query); $i++ )
+								{
+									$id = mysql_result($query, $i, 0);
+									$username = mysql_result($query, $i, 1);
+									$appdatetime = mysql_result($query, $i, 2);
+									$diff = mysql_result($query, $i, 3);
+									
+									echo "<tr>";
+									echo "<td align='left'>" . $username . "</td>";
+									echo "<td align='left'>" . $appdatetime . " (" . $diff . " Days Old)</td>";
+									echo "<td align='left'><a href='reviewapp.php?id=" . $id . "'>Review ></a></td>";
+									echo "</tr>";
+								}
+								mysql_free_result($query);
+							}
+							else
+							{
+								echo "<tr>";
+								echo "<td align='left'>None.</td>";
+								echo "<td align='left'>None.</td>";
+								echo "<td align='left'>None.</td>";
+								echo "</tr>";
+							}
+						}
+						elseif ( $_GET["show"] == 2 ) // show declined applications
+						{
+							echo "<center>Declined Applications:</center>";
+							$query = mysql_query("SELECT id, username, appdatetime, DATEDIFF(appdatetime, NOW()) FROM accounts WHERE appstate=2 ORDER BY appdatetime ASC", $conn);
+							
+							echo "<tr>";
+							echo "<td align='center'><b>Username</b></td>";
+							echo "<td align='center'><b>Date & Time</b></td>";
+							echo "<td align='center'><b>Action</b></td>";
+							echo "</tr>";
+							
+							if (mysql_num_rows($query) > 0)
+							{
+								for ( $i = 0; $i < mysql_num_rows($query); $i++ )
+								{
+									$id = mysql_result($query, $i, 0);
+									$username = mysql_result($query, $i, 1);
+									$appdatetime = mysql_result($query, $i, 2);
+									$diff = mysql_result($query, $i, 3);
+									
+									echo "<tr>";
+									echo "<td align='left'>" . $username . "</td>";
+									echo "<td align='left'>" . $appdatetime . " (" . $diff . " Days Old)</td>";
+									echo "<td align='left'><a href='reviewapp.php?id=" . $id . "'>View ></a></td>";
+									echo "</tr>";
+								}
+								mysql_free_result($query);
+							}
+							else
+							{
+								echo "<tr>";
+								echo "<td align='left'>None.</td>";
+								echo "<td align='left'>None.</td>";
+								echo "<td align='left'>None.</td>";
+								echo "</tr>";
+							}
+						}
+						elseif ( $_GET["show"] == 3 ) // show accounts without applications
+						{
+							echo "<center>Accounts without Applications:<br><br>You can delete these if they are old.</center>";
+							$query = mysql_query("SELECT id, username, registerdate FROM accounts WHERE appstate=0 ORDER BY appdatetime ASC", $conn);
+							
+							echo "<tr>";
+							echo "<td align='center'><b>Username</b></td>";
+							echo "<td align='center'><b>Registration Date</b></td>";
+							echo "<td align='center'><b>Action</b></td>";
+							echo "</tr>";
+							
+							//$ids = array();
+							
+							if (mysql_num_rows($query) > 0)
+							{
+								for ( $i = 0; $i < mysql_num_rows($query); $i++ )
+								{
+									$id = mysql_result($query, $i, 0);
+									$username = mysql_result($query, $i, 1);
+									$registerdate = mysql_result($query, $i, 2);
+									//$ids[$i] = $id;
+									
+									echo "<tr>";
+									echo "<td align='left'>" . $username . "</td>";
+									echo "<td align='left'>" . $registerdate . "</td>";
+									echo "<td align='left'><a href='deleteaccount.php?id=" . $id . "'>Delete Account ></a></td>";
+									echo "</tr>";
+								}
+								mysql_free_result($query);
+							}
+							else
+							{
+								echo "<tr>";
+								echo "<td align='left'>None.</td>";
+								echo "<td align='left'>None.</td>";
+								echo "<td align='left'>None.</td>";
+								echo "</tr>";
+							}
+						}
+						elseif ( $_GET["show"] == 4 ) // show accounts with successful applications
+						{
+							echo "<center>Active Accounts:</center>";
+							$query = mysql_query("SELECT id, username, appdatetime, DATEDIFF(appdatetime, NOW()) FROM accounts WHERE appstate=3 ORDER BY appdatetime ASC", $conn);
+							
+							echo "<tr>";
+							echo "<td align='center'><b>Username</b></td>";
+							echo "<td align='center'><b>Application Date</b></td>";
+							echo "<td align='center'><b>Action</b></td>";
+							echo "</tr>";
+
+							if (mysql_num_rows($query) > 0)
+							{
+								for ( $i = 0; $i < mysql_num_rows($query); $i++ )
+								{
+									$id = mysql_result($query, $i, 0);
+									$username = mysql_result($query, $i, 1);
+									$registerdate = mysql_result($query, $i, 2);
+									$diff = mysql_result($query, $i, 3);
+									
+									echo "<tr>";
+									echo "<td align='left'>" . $username . "</td>";
+									echo "<td align='left'>" . $registerdate . " (" . $diff . " Days Ago)</td>";
+									echo "<td align='left'><a href='deactivateaccount.php?id=" . $id . "'>Deactivate Account ></a></td>";
+									echo "</tr>";
+								}
+								mysql_free_result($query);
+							}
+							else
+							{
+								echo "<tr>";
+								echo "<td align='left'>None.</td>";
+								echo "<td align='left'>None.</td>";
+								echo "<td align='left'>None.</td>";
+								echo "</tr>";
+							}
+						}
+					?>
+                    
+                    &nbsp;</p>
 		        </table></td>
 			    <td width="15%">&nbsp;</td>
 		      </tr>

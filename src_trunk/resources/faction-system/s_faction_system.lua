@@ -550,7 +550,7 @@ function createFaction(thePlayer, commandName, factionType, ...)
 					outputChatBox("Faction " .. factionName .. " created with ID #" .. id .. ".", thePlayer, 0, 255, 0)
 					setElementData(theTeam, "type", tonumber(factionType))
 					setElementData(theTeam, "id", tonumber(id), false)
-					setElementData(theTeam, "money", 0.00)
+					setElementData(theTeam, "money", 0)
 				else
 					outputChatBox("Error creating faction.", thePlayer, 255, 0, 0)
 				end
@@ -787,9 +787,7 @@ function setFactionMoney(thePlayer, commandName, factionID, amount)
 				end
 				
 				if (theTeam) then
-					setElementData(theTeam, "money", amount)
-					local result = mysql_query(handler, "UPDATE factions SET bankbalance='" .. amount .. "' WHERE id='" .. tonumber(factionID) .. "'")
-					mysql_free_result(result)
+					exports.global:setMoney(theTeam, amount)
 					outputChatBox("Set faction '" .. getTeamName(theTeam) .. "'s money to " .. amount .. " $.", thePlayer, 255, 194, 14)
 				else
 					outputChatBox("Invalid faction ID.", thePlayer, 255, 194, 14)
@@ -953,10 +951,8 @@ function payAllWages()
 					local rankWage = tonumber(mysql_result(rankWageresult, 1, 1))
 					mysql_free_result(rankWageresult)
 					
-					local factionMoney = getElementData(theTeam, "money")
-					
 					local taxes = 0
-					if rankWage > factionMoney then
+					if not exports.global:takeMoney(theTeam, rankWage) then
 						rankWage = -1
 					else
 						local incomeTax = exports.global:getIncomeTaxAmount()
@@ -966,14 +962,6 @@ function payAllWages()
 					govAmount = govAmount + taxes
 					
 					payWage( value, rankWage, true, taxes )
-					
-					if rankWage > 0 then
-						local factionAmount = factionMoney - rankWage
-						setElementData(theTeam, "money", tonumber(factionAmount))
-						local update = mysql_query(handler, "UPDATE factions SET bankbalance='" .. factionAmount .. "' WHERE id='" .. playerFaction .. "'")
-						mysql_free_result(update)
-					end
-					
 				else
 					local unemployedPay = 150
 					if unemployedPay >= govAmount then
@@ -1051,13 +1039,7 @@ function addToFactionMoney(factionID, amount)
 		end
 		
 		if (theTeam) then
-			local gresult = mysql_query(handler, "SELECT bankbalance FROM factions WHERE id='" .. factionID .."'")
-			local amount = tonumber(mysql_result(gresult, 1, 1)) + amount
-			mysql_free_result(gresult)
-			setElementData(theTeam, "money", amount)
-			local result = mysql_query(handler, "UPDATE factions SET bankbalance='" .. amount .. "' WHERE id='" .. tonumber(factionID) .. "'")
-			mysql_free_result(result)
-			return true
+			return exports.global:giveMoney(theTeam, amount)
 		end
 	end
 	return false

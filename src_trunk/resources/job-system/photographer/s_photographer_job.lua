@@ -1,5 +1,5 @@
 function getPaid(collectionValue)
-	exports.global:givePlayerSafeMoney(source, tonumber(collectionValue))
+	exports.global:giveMoney(source, tonumber(collectionValue))
 	exports.global:sendLocalMeAction(source,"hands his collection of photographs to the woman behind the desk.")
 	local pedX, pedY, pedZ = getElementPosition( source )
 	local chatSphere = createColSphere( pedX, pedY, pedZ, 10 )

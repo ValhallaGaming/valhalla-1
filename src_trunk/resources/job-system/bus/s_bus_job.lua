@@ -47,14 +47,14 @@ addEventHandler("onCharacterLogin", getRootElement(), removeDriverOnAllLines )
 function payBusDriver(line, stop)
 	if stop == -2 then
 		removeDriver()
-		exports.global:givePlayerSafeMoney(source, 36)
+		exports.global:giveMoney(source, 36)
 	elseif stop == -1 then
 		removeDriverOnAllLines()
 		return
 	elseif stop == 0 then
 		table.insert( drivers[line][1], source )
 	else
-		exports.global:givePlayerSafeMoney(source, 18)
+		exports.global:giveMoney(source, 18)
 		
 		local x, y, z = getElementPosition(source)
 		local chatSphere = createColSphere(x, y, z, 20)
@@ -96,8 +96,8 @@ addEvent("payBusDriver",true)
 addEventHandler("payBusDriver", getRootElement(), payBusDriver)
 
 function takeBusFare(thePlayer)
-	exports.global:takePlayerSafeMoney(source, 5)
-	exports.global:givePlayerSafeMoney(thePlayer, 5)
+	exports.global:takeMoney(source, 5)
+	exports.global:giveMoney(thePlayer, 5)
 end
 addEvent("payBusFare", true)
 addEventHandler("payBusFare", getRootElement(), takeBusFare)

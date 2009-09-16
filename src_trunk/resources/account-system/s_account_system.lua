@@ -510,7 +510,7 @@ function spawnCharacter(charname)
 		setElementData(source, "legitnamechange", 0)
 		setElementData(source, "muted", tonumber(muted))
 		setElementData(source, "hoursplayed", hoursplayed)
-		exports.global:setPlayerSafeMoney(source, money)
+		exports.global:setMoney(source, money)
 		exports.global:checkMoneyHacks(source)
 		
 		setElementData(source, "faction", factionID)

@@ -56,7 +56,7 @@ function showIntName(name, ownerName, inttype, cost, fee)
 			if fee and fee > 0 then
 				msg = "Entrance Fee: $" .. fee
 				
-				if getElementData( getLocalPlayer(), "money" ) >= fee then
+				if exports.global:hasMoney( getLocalPlayer(), fee ) then
 					msg = msg .. "\nPress F to enter."
 				end
 			end

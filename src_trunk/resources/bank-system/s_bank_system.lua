@@ -53,14 +53,14 @@ function pickupUse(thePlayer)
 		end
 		
 		local faction = getPlayerTeam(thePlayer)
-		local money = getElementData(faction, "money")
+		local money = exports.global:getMoney(faction)
 		triggerClientEvent(thePlayer, "showBankUI", thePlayer, isInFaction, isFactionLeader, money)
 	end
 end
 addEventHandler("onPickupHit", bankPickup, pickupUse)
 
 function withdrawMoneyPersonal(amount)
-	exports.global:givePlayerSafeMoney(source, amount)
+	exports.global:giveMoney(source, amount)
 	
 	local money = getElementData(source, "bankmoney")
 	setElementData(source, "bankmoney", money-amount)
@@ -74,47 +74,41 @@ addEvent("withdrawMoneyPersonal", true)
 addEventHandler("withdrawMoneyPersonal", getRootElement(), withdrawMoneyPersonal)
 
 function depositMoneyPersonal(amount)
-	exports.global:takePlayerSafeMoney(source, amount)
-	
-	local money = getElementData(source, "bankmoney")
-	setElementData(source, "bankmoney", money+amount)
-	saveBank(source)
-	
-	mysql_free_result( mysql_query( handler, "INSERT INTO wiretransfers (`from`, `to`, `amount`, `reason`, `type`) VALUES (" .. getElementData(source, "dbid") .. ", 0, " .. amount .. ", '', 1)" ) )
+	if exports.global:takeMoney(source, amount) then
+		local money = getElementData(source, "bankmoney")
+		setElementData(source, "bankmoney", money+amount)
+		saveBank(source)
+		
+		mysql_free_result( mysql_query( handler, "INSERT INTO wiretransfers (`from`, `to`, `amount`, `reason`, `type`) VALUES (" .. getElementData(source, "dbid") .. ", 0, " .. amount .. ", '', 1)" ) )
 
-	outputChatBox("You deposited " .. amount .. "$ into your personal account.", source, 255, 194, 14)
+		outputChatBox("You deposited " .. amount .. "$ into your personal account.", source, 255, 194, 14)
+	end
 end
 addEvent("depositMoneyPersonal", true)
 addEventHandler("depositMoneyPersonal", getRootElement(), depositMoneyPersonal)
 
 function withdrawMoneyBusiness(amount)
 	local theTeam = getPlayerTeam(source)
-	local money = getElementData(theTeam, "money")
-	setElementData(theTeam, "money", money-amount)
+	if exports.global:takeMoney(theTeam, amount) then
+		if exports.global:giveMoney(source, amount) then
+			mysql_free_result( mysql_query( handler, "INSERT INTO wiretransfers (`from`, `to`, `amount`, `reason`, `type`) VALUES (" .. -getElementData(theTeam, "id") .. ", " .. getElementData(source, "dbid") .. ", " .. amount .. ", '', 4)" ) )
 
-	local query = mysql_query(handler, "UPDATE factions SET bankbalance='" .. money-amount .. "' WHERE name='" .. mysql_escape_string(handler, getTeamName(theTeam)) .. "'")
-	mysql_free_result(query)
-
-	mysql_free_result( mysql_query( handler, "INSERT INTO wiretransfers (`from`, `to`, `amount`, `reason`, `type`) VALUES (" .. -getElementData(theTeam, "id") .. ", " .. getElementData(source, "dbid") .. ", " .. amount .. ", '', 4)" ) )
-
-	exports.global:givePlayerSafeMoney(source, amount)
-	outputChatBox("You withdraw " .. amount .. "$ from your business account.", source, 255, 194, 14)
+			outputChatBox("You withdraw " .. amount .. "$ from your business account.", source, 255, 194, 14)
+		end
+	end
 end
 addEvent("withdrawMoneyBusiness", true)
 addEventHandler("withdrawMoneyBusiness", getRootElement(), withdrawMoneyBusiness)
 
 function depositMoneyBusiness(amount)
-	local theTeam = getPlayerTeam(source)
-	local money = getElementData(theTeam, "money")
-	setElementData(theTeam, "money", money+amount)
-	
-	local query = mysql_query(handler, "UPDATE factions SET bankbalance='" .. money+amount .. "' WHERE name='" .. mysql_escape_string(handler, getTeamName(theTeam)) .. "'")
-	mysql_free_result(query)
-	
-	mysql_free_result( mysql_query( handler, "INSERT INTO wiretransfers (`from`, `to`, `amount`, `reason`, `type`) VALUES (" .. getElementData(source, "dbid") .. ", " .. -getElementData(theTeam, "id") .. ", " .. amount .. ", '', 5)" ) )
+	if exports.global:takeMoney(source, amount) then
+		local theTeam = getPlayerTeam(source)
+		if exports.global:giveMoney(theTeam, amount) then
+			mysql_free_result( mysql_query( handler, "INSERT INTO wiretransfers (`from`, `to`, `amount`, `reason`, `type`) VALUES (" .. getElementData(source, "dbid") .. ", " .. -getElementData(theTeam, "id") .. ", " .. amount .. ", '', 5)" ) )
 
-	exports.global:takePlayerSafeMoney(source, amount)
-	outputChatBox("You deposited " .. amount .. "$ into your business account.", source, 255, 194, 14)
+			outputChatBox("You deposited " .. amount .. "$ into your business account.", source, 255, 194, 14)
+		end
+	end
 end
 addEvent("depositMoneyBusiness", true)
 addEventHandler("depositMoneyBusiness", getRootElement(), depositMoneyBusiness)
@@ -147,14 +141,12 @@ function transferMoneyToPersonal(business, name, amount, reason)
 	else
 		if business then
 			local theTeam = getPlayerTeam(source)
-			local money = getElementData(theTeam, "money")
-			local query = mysql_query(handler, "UPDATE factions SET bankbalance='" .. money - amount .. "' WHERE name='" .. mysql_escape_string(handler, getTeamName(theTeam)) .. "'")
-			mysql_free_result(query)
-			setElementData(theTeam, "money", money - amount)
-			mysql_free_result( mysql_query( handler, "INSERT INTO wiretransfers (`from`, `to`, `amount`, `reason`, `type`) VALUES (" .. ( -getElementData( theTeam, "id" ) ) .. ", " .. dbid .. ", " .. amount .. ", '" .. reason .. "', 3)" ) )
-		else
-			setElementData(source, "bankmoney", getElementData(source, "bankmoney") - amount)
-			mysql_free_result( mysql_query( handler, "INSERT INTO wiretransfers (`from`, `to`, `amount`, `reason`, `type`) VALUES (" .. getElementData(source, "dbid") .. ", " .. dbid .. ", " .. amount .. ", '" .. reason .. "', 2)" ) )
+			if exports.global:takeMoney(theTeam, amount) then
+				mysql_free_result( mysql_query( handler, "INSERT INTO wiretransfers (`from`, `to`, `amount`, `reason`, `type`) VALUES (" .. ( -getElementData( theTeam, "id" ) ) .. ", " .. dbid .. ", " .. amount .. ", '" .. reason .. "', 3)" ) )
+			else
+				setElementData(source, "bankmoney", getElementData(source, "bankmoney") - amount)
+				mysql_free_result( mysql_query( handler, "INSERT INTO wiretransfers (`from`, `to`, `amount`, `reason`, `type`) VALUES (" .. getElementData(source, "dbid") .. ", " .. dbid .. ", " .. amount .. ", '" .. reason .. "', 2)" ) )
+			end
 		end
 		
 		if reciever then

@@ -145,8 +145,6 @@ function shapeHit(element, matchingDimension)
 		local thePlayer = getVehicleOccupant(element)
 		
 		if (thePlayer) then
-			local money = getElementData(thePlayer, "money")
-			
 			local faction = getPlayerTeam(thePlayer)
 			local ftype = getElementData(faction, "type")
 			local free = false
@@ -154,7 +152,7 @@ function shapeHit(element, matchingDimension)
 				free = true
 			end
 			
-			if (money<250 and not free) then
+			if not exports.global:hasMoney(thePlayer, 250) and not free then
 				outputChatBox("You cannot afford to have your car worked on.", thePlayer, 255, 0, 0)
 			else
 				outputChatBox("Welcome to Pay 'n' Spray. Please wait while we work on your " .. getVehicleName(element) .. ".", thePlayer, 255, 194, 14)
@@ -178,7 +176,7 @@ function sprayEffect(vehicle, thePlayer, shape, free)
 		outputChatBox("Thank you for visting Pay 'n' Spray garage. Have a safe journey.", thePlayer, 255, 194, 14)
 		
 		if not free then
-			exports.global:takePlayerSafeMoney(thePlayer, 250)
+			exports.global:takeMoney(thePlayer, 250, true)
 			outputChatBox("BILL: Car Repair - 250$", thePlayer, 255, 194, 14)
 		else
 			outputChatBox("BILL: Car Repair - 0$", thePlayer, 255, 194, 14)

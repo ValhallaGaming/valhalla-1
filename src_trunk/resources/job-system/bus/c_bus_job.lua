@@ -261,8 +261,7 @@ function enterBus ( thePlayer, seat, jacked )
 			if(seat~=0)then
 				local driver = getVehicleOccupant(source)
 				if driver then -- you can only pay the driver if the bus has a driver
-					local money = getElementData(getLocalPlayer(),"money")
-					if(money<5)then
+					if not exports.global:hasMoney(getLocalPlayer(), 5)then
 						triggerServerEvent("removePlayerFromBus", getLocalPlayer())
 						outputChatBox("You can't afford the $5 bus fare.", 255, 0, 0)
 					else

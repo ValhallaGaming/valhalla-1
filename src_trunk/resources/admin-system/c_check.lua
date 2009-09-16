@@ -85,7 +85,7 @@ addEventHandler( "onClientRender", getRootElement(),
 			guiSetText ( Label[13], "X: " .. x )
 			guiSetText ( Label[14], "Y: " .. y )
 			guiSetText ( Label[15], "Z: " .. z )
-			guiSetText ( Label[3], "Money: $" .. getElementData( player, "money" ) .. " (Bank: $" .. getElementData( player, "bankmoney" ) .. ")")
+			guiSetText ( Label[3], "Money: $" .. exports.global:getMoney( player ) .. " (Bank: $" .. getElementData( player, "bankmoney" ) .. ")")
 			guiSetText ( Label[4], "Health: " .. math.ceil( getElementHealth( player ) ) )
 			guiSetText ( Label[5], "Armour: " .. math.ceil( getPedArmor( player ) ) )
 			guiSetText ( Label[6], "Skin: " .. getElementModel( player ) )

@@ -88,22 +88,16 @@ function createPermVehicle(thePlayer, commandName, ...)
 				if (factionVehicle==1) then
 					factionVehicle = tonumber(getElementData(targetPlayer, "faction"))
 					local theTeam = getPlayerTeam(targetPlayer)
-					local money = getElementData(theTeam, "money")
 					
-					if (cost>money) then
+					if not exports.global:takeMoney(theTeam, cost) then
 						outputChatBox("This faction cannot afford this vehicle.", thePlayer, 255, 0, 0)
-					else
-						setElementData(theTeam, "money", money-cost)
-						local query = mysql_query(handler, "UPDATE factions SET bankbalance=bankbalance-" .. cost .. " WHERE id='" .. getElementData(theTeam, "id") .. "'")
-						mysql_free_result(query)
+						return
 					end
 				else
 					factionVehicle = -1
-					local money = getElementData(targetPlayer, "money")
-					if (cost>money) then
+					if not exports.global:takeMoney(targetPlayer, cost) then
 						outputChatBox("This player cannot afford this vehicle.", thePlayer, 255, 0, 0)
-					else
-						exports.global:takePlayerSafeMoney(targetPlayer, cost)
+						return
 					end
 				end
 				

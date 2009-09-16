@@ -31,7 +31,7 @@ function scanMoneyHacks()
 			if not (exports.global:isPlayerAdmin(value)) then -- Only check if its not an admin...
 				
 				local money = getPlayerMoney(value)
-				local truemoney = getElementData(value, "money")
+				local truemoney = exports.global:getMoney(value)
 				if (money) then
 					if (money~=truemoney) then
 						counter = counter + 1

@@ -112,7 +112,7 @@ function updateCar()
 		setElementModel(car, value[1])
 		guiSetText(lCost, "Cost: " .. tostring(value[2]) .. "$")
 		
-		local money = getElementData(getLocalPlayer(), "money")
+		local money = exports.global:getMoney(getLocalPlayer())
 		if value[2] > money then
 			guiLabelSetColor(lCost, 255, 0, 0)
 			guiSetEnabled(bBuy, false)

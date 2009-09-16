@@ -1632,7 +1632,7 @@ function setMoney(thePlayer, commandName, target, money)
 			else
 				local targetPlayerName = getPlayerName(targetPlayer)
 				
-				exports.global:setPlayerSafeMoney(targetPlayer, money)
+				exports.global:setMoney(targetPlayer, money)
 				outputChatBox(targetPlayerName .. " now has " .. money .. " $.", thePlayer)
 				outputChatBox("Admin " .. username .. " set your money to " .. money .. " $.", targetPlayer)
 			end
@@ -1654,7 +1654,7 @@ function giveMoney(thePlayer, commandName, target, money)
 			else
 				local targetPlayerName = getPlayerName(targetPlayer)
 				
-				exports.global:givePlayerSafeMoney(targetPlayer, money)
+				exports.global:giveMoney(targetPlayer, money)
 				outputChatBox("You have given " .. targetPlayerName .. " $" .. money .. ".", thePlayer)
 				outputChatBox("Admin " .. username .. " has given you $" .. money .. ".", targetPlayer)
 			end

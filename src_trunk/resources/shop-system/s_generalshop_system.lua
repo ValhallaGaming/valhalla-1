@@ -251,7 +251,6 @@ addEventHandler("onClickStoreKeeper", getRootElement(), clickStoreKeeper)
 
 function givePlayerBoughtItem(itemID, itemValue, theCost, isWeapon, name, supplyCost)
 	local interior = getElementDimension(source)
-	local money = tonumber(getElementData(source, "money"))
 	
 	if (itemID==48) then -- BACKPACK = UNIQUE
 		if (exports.global:hasItem(source, itemID)) then
@@ -281,7 +280,7 @@ function givePlayerBoughtItem(itemID, itemValue, theCost, isWeapon, name, supply
 		mysql_free_result(result)
 	end
 	
-	if (money<tonumber(theCost)) then
+	if not exports.global:hasMoney(source, theCost) then
 		outputChatBox("You cannot afford this item.", source, 255, 0, 0)
 	else
 		if inttype==1 and supplies<supplyCost then
@@ -301,94 +300,90 @@ function givePlayerBoughtItem(itemID, itemValue, theCost, isWeapon, name, supply
 			end
 		else
 			if (isWeapon==nil) then
-				exports.global:takePlayerSafeMoney(source, tonumber(theCost))
-				exports.global:giveItem(source, 16, tonumber(itemValue))
-				setPedSkin(source, tonumber(itemValue))
-				setElementData(source, "casualskin", tonumber(itemValue), false)
-				exports.global:givePlayerAchievement(source, 21)
-			elseif (isWeapon==false) and (itemID==68) then
-				local ticketNumber = exports.lottery:giveTicket(source)
-				if ticketNumber ~= false then
-					exports.global:takePlayerSafeMoney(source, tonumber(theCost))
-					outputChatBox("You bought a " .. name .. ". The ticket number is: " .. ticketNumber .. ".", source, 255, 194, 14)
-					outputChatBox("The money will be transfered to your account if you win.", source, 255, 194, 14)
-					outputChatBox("You have $"..getElementData(source, "money").." left in your wallet.", source, 255, 194, 14)
-				else
-					outputChatBox("I'm sorry, the lottery is already closed. Wait for the next round.", source, 255, 194, 14)
+				if exports.global:takeMoney(source, theCost) then
+					exports.global:giveItem(source, 16, tonumber(itemValue))
+					setPedSkin(source, tonumber(itemValue))
+					setElementData(source, "casualskin", tonumber(itemValue), false)
+					exports.global:givePlayerAchievement(source, 21)
 				end
 			elseif (isWeapon==false) and (itemID==68) then
 				local ticketNumber = exports.lottery:giveTicket(source)
-				exports.global:takePlayerSafeMoney(source, tonumber(theCost))
-				outputChatBox("You bought a " .. name .. ". The ticket number is: " .. ticketNumber .. ".", source, 255, 194, 14)
-				outputChatBox("The money will be transfered to your account if you win.", source, 255, 194, 14)
-				outputChatBox("You have $"..getElementData(source, "money").." left in your wallet.", source, 255, 194, 14)
+				if ticketNumber ~= false then
+					exports.global:takeMoney(source, tonumber(theCost))
+					outputChatBox("You bought a " .. name .. ". The ticket number is: " .. ticketNumber .. ".", source, 255, 194, 14)
+					outputChatBox("The money will be transfered to your account if you win.", source, 255, 194, 14)
+					outputChatBox("You have $"..exports.global:getMoney(source).." left in your wallet.", source, 255, 194, 14)
+				else
+					outputChatBox("I'm sorry, the lottery is already closed. Wait for the next round.", source, 255, 194, 14)
+				end
 			elseif (isWeapon==false) then
 				if(exports.global:giveItem(source, itemID, itemValue)) then
-					exports.global:takePlayerSafeMoney(source, tonumber(theCost))
-					
-					if (itemID~=30) and (itemID~=31) and (itemID~=32) and (itemID~=33) then
-						outputChatBox("You bought a " .. name .. ".", source, 255, 194, 14)
-						outputChatBox("You have $"..getElementData(source, "money").." left in your wallet.", source, 255, 194, 14)
-					else
-						outputChatBox("You stole some " .. name .. ".", source, 255, 194, 14)
+					if exports.global:takeMoney(source, theCost) then
+						if (itemID~=30) and (itemID~=31) and (itemID~=32) and (itemID~=33) then
+							outputChatBox("You bought a " .. name .. ".", source, 255, 194, 14)
+							outputChatBox("You have $"..exports.global:getMoney(source).." left in your wallet.", source, 255, 194, 14)
+						else
+							outputChatBox("You stole some " .. name .. ".", source, 255, 194, 14)
+						end
 					end
 				else
 					outputChatBox("You do not have enough space to purchase that item.", source, 255, 0, 0)
 				end
 			elseif (isWeapon) and (itemValue==-1) then -- fighting styles!
-				exports.global:takePlayerSafeMoney(source, tonumber(theCost))
-				outputChatBox("You learnt " .. name .. ".", source, 255, 194, 14)
-				outputChatBox("You have $"..getElementData(source, "money").." left in your wallet.", source, 255, 194, 14)
-				
-				itemID = tonumber(itemID)
-				
-				if (itemID==4) then
-					setPedFightingStyle(source, itemID)
-					exports.global:giveItem(source, 20, 1)
-				elseif (itemID==5) then
-					setPedFightingStyle(source, itemID)
-					exports.global:giveItem(source, 21, 1)
-				elseif (itemID==6) then
-					setPedFightingStyle(source, itemID)
-					exports.global:giveItem(source, 22, 1)
-				elseif (itemID==7) then
-					setPedFightingStyle(source, itemID)
-					exports.global:giveItem(source, 23, 1)
-				elseif (itemID==15) then
-					setPedFightingStyle(source, itemID)
-					exports.global:giveItem(source, 24, 1)
-				elseif (itemID==16) then
-					setPedFightingStyle(source, itemID)
-					exports.global:giveItem(source, 25, 1)
+				if exports.global:takeMoney(source, theCost) then
+					outputChatBox("You learnt " .. name .. ".", source, 255, 194, 14)
+					outputChatBox("You have $"..exports.global:getMoney(source).." left in your wallet.", source, 255, 194, 14)
+					
+					itemID = tonumber(itemID)
+					
+					if (itemID==4) then
+						setPedFightingStyle(source, itemID)
+						exports.global:giveItem(source, 20, 1)
+					elseif (itemID==5) then
+						setPedFightingStyle(source, itemID)
+						exports.global:giveItem(source, 21, 1)
+					elseif (itemID==6) then
+						setPedFightingStyle(source, itemID)
+						exports.global:giveItem(source, 22, 1)
+					elseif (itemID==7) then
+						setPedFightingStyle(source, itemID)
+						exports.global:giveItem(source, 23, 1)
+					elseif (itemID==15) then
+						setPedFightingStyle(source, itemID)
+						exports.global:giveItem(source, 24, 1)
+					elseif (itemID==16) then
+						setPedFightingStyle(source, itemID)
+						exports.global:giveItem(source, 25, 1)
+					end
+					
+					exports.global:givePlayerAchievement(source, 20)
 				end
-				
-				exports.global:givePlayerAchievement(source, 20)
 			else
 				if (itemID==999) then
-					setPedArmor(source, 50)
-					exports.global:takePlayerSafeMoney(source, tonumber(theCost))
-					outputChatBox("You bought a " .. name .. ".", source, 255, 194, 14)
-					outputChatBox("You have $"..getElementData(source, "money").." left in your wallet.", source, 255, 194, 14)
-					return
-				end
-				
-				if isWeapon and isGun(tonumber(itemID)) then
+					if exports.global:takeMoney(source, tonumber(theCost)) then
+						setPedArmor(source, 50)
+						outputChatBox("You bought a " .. name .. ".", source, 255, 194, 14)
+						outputChatBox("You have $"..exports.global:getMoney(source).." left in your wallet.", source, 255, 194, 14)
+					end
+				elseif isWeapon and isGun(tonumber(itemID)) then
 					-- licensing check
 					local gunlicense = getElementData(source, "license.gun")
 					if (gunlicense==1) then
-						exports.global:takePlayerSafeMoney(source, tonumber(theCost))
-						outputChatBox("You bought a " .. name .. ".", source, 255, 194, 14)
-						outputChatBox("You have $".. getElementData(source, "money").." left in your wallet.", source, 255, 194, 14)
-						exports.global:giveWeapon(source, tonumber(itemID), tonumber(itemValue), true)
+						if exports.global:takeMoney(source, theCost) then
+							outputChatBox("You bought a " .. name .. ".", source, 255, 194, 14)
+							outputChatBox("You have $".. exports.global:getMoney(source).." left in your wallet.", source, 255, 194, 14)
+							exports.global:giveWeapon(source, tonumber(itemID), tonumber(itemValue), true)
+						end
 					else
 						outputChatBox("You do not have a weapons license - You can buy this license at City Hall.", source, 255, 194, 14)
 					end
 				else
-					exports.global:takePlayerSafeMoney(source, tonumber(theCost))
-					outputChatBox("You bought a " .. name .. ".", source, 255, 194, 14)
-					outputChatBox("You have $"..getElementData(source, "money").." left in your wallet.", source, 255, 194, 14)
-					exports.global:giveWeapon(source, tonumber(itemID), tonumber(itemValue), true)
-					exports.global:givePlayerAchievement(source, 22)
+					if exports.global:takeMoney(source, theCost) then
+						outputChatBox("You bought a " .. name .. ".", source, 255, 194, 14)
+						outputChatBox("You have $"..exports.global:getMoney(source).." left in your wallet.", source, 255, 194, 14)
+						exports.global:giveWeapon(source, tonumber(itemID), tonumber(itemValue), true)
+						exports.global:givePlayerAchievement(source, 22)
+					end
 				end
 			end
 			
@@ -504,12 +499,10 @@ function orderSupplies(thePlayer, commandName, amount)
 					outputChatBox("Supplier: Sorry, we do not have that many supplies in stock currently.", thePlayer, 255, 194, 14)
 				else
 					local cost = amount*2
-					local money = getElementData(thePlayer, "money")
 					
-					if (cost>money) then
+					if not exports.global:takeMoney(thePlayer, cost) then
 						outputChatBox("You cannot afford that many supplies. (Cost is 2$ per supply).", thePlayer, 255, 0, 0)
 					else
-						exports.global:takePlayerSafeMoney(thePlayer, cost)
 						globalSupplies = globalSupplies - amount
 						local query = mysql_query(handler, "UPDATE settings SET value='" .. globalSupplies .. "' where name='globalsupplies'")
 						mysql_free_result(query)

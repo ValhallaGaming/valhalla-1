@@ -74,7 +74,7 @@ function dropOffCar()
 			else
 				local health = getElementHealth(vehicle)
 				local profit = math.floor(health*1.5)
-				exports.global:givePlayerSafeMoney(thePlayer, profit)
+				exports.global:giveMoney(thePlayer, profit)
 				local pedX, pedY, pedZ = getElementPosition( thePlayer )
 				local chatSphere = createColSphere( pedX, pedY, pedZ, 10 )
 				exports.pool:allocateElement(chatSphere) -- Create the colSphere for chat output to local players.

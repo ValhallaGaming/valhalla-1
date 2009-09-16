@@ -101,7 +101,7 @@ function savePlayer(reason, player)
 		armor = getPedArmor(source)
 		interior = getElementInterior(source)
 		dimension = getElementDimension(source)
-		money = getElementData(source, "money") + ( getElementData(source, "stevie.money") or 0 )
+		money = exports.global:getMoney(source) + ( getElementData(source, "stevie.money") or 0 )
 		cuffed = getElementData(source, "restrain")
 		skin = getElementModel(source)
 		

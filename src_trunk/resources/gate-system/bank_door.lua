@@ -100,6 +100,6 @@ end
 function giveBankMoney(thePlayer, colshape)
 	if (isElementWithinColShape(thePlayer, colshape)) then
 		destroyElement(colshape)
-		exports.global:givePlayerSafeMoney(thePlayer, 2500)
+		exports.global:giveMoney(thePlayer, 2500)
 	end
 end

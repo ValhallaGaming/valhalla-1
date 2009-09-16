@@ -202,11 +202,10 @@ end
 function depositMoneyPersonal(button)
 	if (button=="left") then
 		local amount = tonumber(guiGetText(tDepositP))
-		local money = getElementData(localPlayer, "money")
 		
 		if not amount or amount <= 0 or math.ceil( amount ) ~= amount then
 			outputChatBox("Please enter a number greater than 0!", 255, 0, 0)
-		elseif (amount>money) then
+		elseif not exports.global:hasMoney(localPlayer, amount) then
 			outputChatBox("You do not have enough funds.", 255, 0, 0)
 		else
 			hideBankUI()
@@ -257,11 +256,10 @@ end
 function depositMoneyBusiness(button)
 	if (button=="left") then
 		local amount = tonumber(guiGetText(tDepositB))
-		local money = getElementData(localPlayer, "money")
 
 		if not amount or amount <= 0 or math.ceil( amount ) ~= amount then
 			outputChatBox("Please enter a number greater than 0!", 255, 0, 0)
-		elseif (amount>money) then
+		elseif not exports.global:hasMoney(localPlayer, amount) then
 			outputChatBox("You do not have enough funds.", 255, 0, 0)
 		else
 			hideBankUI()

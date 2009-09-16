@@ -58,9 +58,7 @@ function arrestPlayer(thePlayer, commandName, targetPlayerNick, fine, jailtime, 
 							outputChatBox("This player is already serving a jail sentance.", thePlayer, 255, 0, 0)
 						else
 							local amount = tonumber(fine)
-							local money = getElementData(targetPlayer, "money")
-							
-							if (amount>money) then
+							if not exports.global:takeMoney(targetPlayer, amount) then
 								outputChatBox("The player cannot afford such a fine.", thePlayer, 255, 0, 0)
 							else
 								local theTimer = setTimer(timerPDUnjailPlayer, 60000, jailtime, targetPlayer)
@@ -104,8 +102,6 @@ function arrestPlayer(thePlayer, commandName, targetPlayerNick, fine, jailtime, 
 								
 								setElementPosition(targetPlayer, cells[cell][1], cells[cell][2], cells[cell][3])
 								setPedRotation(targetPlayer, cells[cell][4])
-								
-								exports.global:takePlayerSafeMoney(targetPlayer, tonumber(amount))
 								
 								-- Trigger the event
 								triggerEvent("onPlayerArrest", thePlayer, targetPlayer, fine, jailtime, reason)

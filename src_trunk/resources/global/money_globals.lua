@@ -1,3 +1,31 @@
+-- ////////////////////////////////////
+-- //			MYSQL				 //
+-- ////////////////////////////////////		
+sqlUsername = exports.mysql:getMySQLUsername()
+sqlPassword = exports.mysql:getMySQLPassword()
+sqlDB = exports.mysql:getMySQLDBName()
+sqlHost = exports.mysql:getMySQLHost()
+sqlPort = exports.mysql:getMySQLPort()
+
+handler = mysql_connect(sqlHost, sqlUsername, sqlPassword, sqlDB, sqlPort)
+
+function checkMySQL()
+	if not (mysql_ping(handler)) then
+		handler = mysql_connect(sqlHost, sqlUsername, sqlPassword, sqlDB, sqlPort)
+	end
+end
+setTimer(checkMySQL, 300000, 0)
+
+function closeMySQL()
+	if (handler) then
+		mysql_close(handler)
+	end
+end
+addEventHandler("onResourceStop", getResourceRootElement(getThisResource()), closeMySQL)
+-- ////////////////////////////////////
+-- //			MYSQL END			 //
+-- ////////////////////////////////////
+
 --TAX
 tax = 15 -- percent
 
@@ -27,48 +55,89 @@ end
 
 
 
-function givePlayerSafeMoney(thePlayer, amount)
-	if thePlayer and isElement(thePlayer) and tonumber(amount) > 0 then
+function giveMoney(thePlayer, amount)
+	amount = tonumber( amount ) or 0
+	if amount == 0 then
+		return true
+	elseif thePlayer and isElement(thePlayer) and amount > 0 then
 		amount = math.floor( amount )
-		local money = getElementData(thePlayer, "money")
-		checkMoneyHacks(thePlayer)
-		setElementData(thePlayer, "money", money+tonumber(amount))
-		return givePlayerMoney(thePlayer, tonumber(amount))
+		
+		setElementData(thePlayer, "money", getMoney( thePlayer ) + amount )
+		if getElementType(thePlayer) == "player" then
+			mysql_free_result( mysql_query( handler, "UPDATE characters SET money = money + " .. amount .. " WHERE id = " .. getElementData( thePlayer, "dbid" ) ) )
+			givePlayerMoney( thePlayer, amount )
+		elseif getElementType(thePlayer) == "team" then
+			mysql_free_result( mysql_query( handler, "UPDATE factions SET bankbalance = bankbalance + " .. amount .. " WHERE id = " .. getElementData( thePlayer, "id" ) ) )
+		end
+		return true
 	end
 	return false
 end
 
-function takePlayerSafeMoney(thePlayer, amount)
-	if thePlayer and isElement(thePlayer) and tonumber(amount) > 0 then
+function takeMoney(thePlayer, amount, rest)
+	amount = tonumber( amount ) or 0
+	if amount == 0 then
+		return true
+	elseif thePlayer and isElement(thePlayer) and amount > 0 then
 		amount = math.ceil( amount )
-		local money = getElementData(thePlayer, "money")
 		
-		if (amount>=money) then
+		local money = getMoney( thePlayer )
+		if rest and amount > money then
 			amount = money
 		end
 		
-		checkMoneyHacks(thePlayer)
-		setElementData(thePlayer, "money", money-amount)
-		return takePlayerMoney(thePlayer, tonumber(amount))
+		if hasMoney(thePlayer, amount) then
+			setElementData(thePlayer, "money", money - amount )
+			if getElementType(thePlayer) == "player" then
+				mysql_free_result( mysql_query( handler, "UPDATE characters SET money = money - " .. amount .. " WHERE id = " .. getElementData( thePlayer, "dbid" ) ) )
+				takePlayerMoney( thePlayer, amount )
+			elseif getElementType(thePlayer) == "team" then
+				mysql_free_result( mysql_query( handler, "UPDATE factions SET bankbalance = bankbalance - " .. amount .. " WHERE id = " .. getElementData( thePlayer, "id" ) ) )
+			end
+			return true, amount
+		end
 	end
 	return false
 end
 
-function setPlayerSafeMoney(thePlayer, amount)
-	if thePlayer and isElement(thePlayer) and tonumber(amount) >= 0 then
+function setMoney(thePlayer, amount)
+	amount = tonumber( amount ) or 0
+	if thePlayer and isElement(thePlayer) and amount >= 0 then
 		amount = math.floor( amount )
-		local money = getElementData(thePlayer, "money")
-		checkMoneyHacks(thePlayer)
-		setElementData(thePlayer, "money", tonumber(amount))
-		return setPlayerMoney(thePlayer, tonumber(amount))
+		
+		setElementData(thePlayer, "money", amount )
+		if getElementType(thePlayer) == "player" then
+			mysql_free_result( mysql_query( handler, "UPDATE characters SET money = " .. amount .. " WHERE id = " .. getElementData( thePlayer, "dbid" ) ) )
+			setPlayerMoney( thePlayer, amount )
+		elseif getElementType(thePlayer) == "team" then
+			mysql_free_result( mysql_query( handler, "UPDATE factions SET bankbalance = " .. amount .. " WHERE id = " .. getElementData( thePlayer, "id" ) ) )
+		end
+		return true
 	end
 	return false
+end
+
+function hasMoney(thePlayer, amount)
+	amount = tonumber( amount ) or 0
+	if thePlayer and isElement(thePlayer) and amount > 0 then
+		amount = math.floor( amount )
+		
+		return getMoney(thePlayer) >= amount
+	end
+	return false
+end
+
+function getMoney(thePlayer, nocheck)
+	if not nocheck then
+		checkMoneyHacks(thePlayer)
+	end
+	return getElementData(thePlayer, "money") or 0
 end
 
 function checkMoneyHacks(thePlayer)
-	if not getElementData(thePlayer, "money") then return end
+	if not getMoney(thePlayer, true) or getElementType(thePlayer) ~= "player" then return end
 	
-	local safemoney = tonumber(getElementData(thePlayer, "money"))
+	local safemoney = getMoney(thePlayer, true)
 	local hackmoney = getPlayerMoney(thePlayer)
 
 	if (safemoney~=hackmoney) then

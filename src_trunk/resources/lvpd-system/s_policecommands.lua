@@ -203,7 +203,7 @@ function ticketPlayer(thePlayer, commandName, targetPlayerNick, amount, ...)
 						amount = tonumber(amount)
 						local reason = table.concat({...}, " ")
 						
-						local money = getElementData(targetPlayer, "money")
+						local money = exports.global:getMoney(targetPlayer)
 						local bankmoney = getElementData(targetPlayer, "bankmoney")
 						
 						if money + bankmoney < amount then
@@ -211,32 +211,14 @@ function ticketPlayer(thePlayer, commandName, targetPlayerNick, amount, ...)
 						else
 							local takeFromCash = math.min( money, amount )
 							local takeFromBank = amount - takeFromCash
-							exports.global:takePlayerSafeMoney(targetPlayer, takeFromCash)
+							exports.global:takeMoney(targetPlayer, takeFromCash)
 							
 							
 							-- Distribute money between the PD and Government
-							local result = mysql_query(handler, "SELECT bankbalance FROM factions WHERE id='1' OR id='3' LIMIT 2")
-							if (result) then
-								local tax = exports.global:getTaxAmount()
-								local currentPDBalance = mysql_result(result, 1, 1)
-								local currentGOVBalance = mysql_result(result, 2, 1)
+							local tax = exports.global:getTaxAmount()
 								
-								local PDMoney = math.ceil((1-tax)*amount)
-								local GOVMoney = math.ceil(tax*amount)
-								
-								local theTeamPD = getTeamFromName("Los Santos Police Department")
-								local theTeamGov = getTeamFromName("Government of Los Santos")
-								
-								setElementData(theTeamPD, "money", (currentPDBalance+PDMoney))
-								setElementData(theTeamGov, "money", (currentGOVBalance+GOVMoney))
-								local query
-								query = mysql_query(handler, "UPDATE factions SET bankbalance='" .. (currentPDBalance+PDMoney) .. "' WHERE id='1'")
-								mysql_free_result(query)
-								query = mysql_query(handler, "UPDATE factions SET bankbalance='" .. (currentGOVBalance+GOVMoney) .. "' WHERE id='3'")
-								mysql_free_result(query)
-								mysql_free_result(result)
-								
-							end
+							exports.global:giveMoney( getTeamFromName("Los Santos Police Department"), math.ceil((1-tax)*amount) )
+							exports.global:giveMoney( getTeamFromName("Government of Los Santos"), math.ceil(tax*amount) )
 							
 							outputChatBox("You ticketed " .. getPlayerName(targetPlayer) .. " for " .. amount .. "$. Reason: " .. reason .. ".", thePlayer)
 							outputChatBox("You were ticketed for " .. amount .. "$ by " .. getPlayerName(thePlayer) .. ". Reason: " .. reason .. ".", targetPlayer)

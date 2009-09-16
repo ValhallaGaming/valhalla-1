@@ -376,8 +376,7 @@ function startPhoneCall(thePlayer)
 		if (calling) then -- Using phone already.
 			outputChatBox("You are already using your phone.", thePlayer, 255, 0, 0)
 		else
-			local money = getElementData(thePlayer, "money")
-			if not exports.global:isPlayerSilverDonator(thePlayer) and money < 10 then
+			if not exports.global:isPlayerSilverDonator(thePlayer) and not exports.global:hasMoney(thePlayer, 10) then
 				outputChatBox("You cannot afford a call.", thePlayer, 255, 0, 0)
 			else
 				if(stevie)then -- If stevie is currently spawned (i.e., if it's between 1900 and 2200).   -- disabled while testing.
@@ -475,8 +474,7 @@ function acceptDeal_S( dealNumber )
 		cost = 1000
 	end
 	
-	local money = getElementData(source, "money")
-	if (money<cost) then -- can the player afford the deal?
+	if not exports.global:takeMoney(source, cost) then -- can the player afford the deal?
 		outputChatBox("((Steven Pullman)) #081016 [Cellphone]: Call me when you've got some money.", source)
 		outputChatBox("You can't afford to pay Stevie for the deal.", source, 255, 0, 0)
 		endCall()
@@ -487,7 +485,6 @@ function acceptDeal_S( dealNumber )
 		end
 		doneDeals = doneDeals + 1
 		
-		exports.global:takePlayerSafeMoney(source, cost) -- pay the money.
 		outputChatBox("You have sent Stevie $".. cost .." for the deal.", source, 0, 255, 0)
 		
 		local x, y, z = locations[doneDeals][1], locations[doneDeals][2], locations[doneDeals][3]
@@ -633,7 +630,7 @@ function endCall(thePlayer) -- to cancel the phone animation and reset the phone
 	toggleAllControls(thePlayer, true, true, true)
 	removeElementData(thePlayer, "calling")
 	if not exports.global:isPlayerSilverDonator(thePlayer) then
-		exports.global:takePlayerSafeMoney(thePlayer, 10)
+		exports.global:takeMoney(thePlayer, 10, true)
 	end
 	phoneState = 0
 	removeEventHandler ( "onPlayerQuit", thePlayer, endCall )

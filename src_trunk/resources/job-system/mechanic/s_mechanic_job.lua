@@ -3,14 +3,12 @@ armoredCars = { [427]=true, [528]=true, [432]=true, [601]=true, [428]=true, [597
 -- Bodywork repair
 function bodyworkRepair(veh)
 	if (veh) then
-		local money = getElementData(source, "money")
-		if(money<50)then
+		if not exports.global:takeMoney(source, 50) then
 			outputChatBox("You can't afford the parts to repair this vehicle's bodywork.", source, 255, 0, 0)
 		else
 			local health = getElementHealth(veh)
 			fixVehicle(veh)
 			setElementHealth(veh, health)
-			exports.global:takePlayerSafeMoney(source, 50)
 			exports.global:sendLocalMeAction(source, "repairs the vehicle's body work.")
 		end
 	else
@@ -23,8 +21,7 @@ addEventHandler("repairBody", getRootElement(), bodyworkRepair)
 -- Full Service
 function serviceVehicle(veh)
 	if (veh) then
-		local money = getElementData(source, "money")
-		if(money<100)then
+		if not exports.global:takeMoney(source, 100) then
 			outputChatBox("You can't afford the parts to service this vehicle.", source, 255, 0, 0)
 		else
 			fixVehicle(veh)
@@ -36,7 +33,6 @@ function serviceVehicle(veh)
 					setVehicleDamageProof(veh, false)
 				end
 			end
-			exports.global:takePlayerSafeMoney(source, 100)
 			exports.global:sendLocalMeAction(source, "services the vehicle.")
 		end
 	else
@@ -48,8 +44,7 @@ addEventHandler("serviceVehicle", getRootElement(), serviceVehicle)
 
 function changeTyre( veh, wheelNumber )
 	if (veh) then
-		local money = getElementData(source, "money")
-		if(money<10)then
+		if not exports.global:takeMoney(source, 10) then
 			outputChatBox("You can't afford the parts to change this vehicle's tyres.", source, 255, 0, 0)
 		else
 			local wheel1, wheel2, wheel3, wheel4 = getVehicleWheelStates( veh )
@@ -67,7 +62,6 @@ function changeTyre( veh, wheelNumber )
 				outputDebugString("Tyre 4 changed.")
 				setVehicleWheelStates ( veh, wheel1, wheel2, wheel3, 0 )			
 			end
-			exports.global:takePlayerSafeMoney(source, 10)
 			exports.global:sendLocalMeAction(source, "replaces the vehicle's tyre.")
 		end
 	end
@@ -77,8 +71,7 @@ addEventHandler("tyreChange", getRootElement(), changeTyre)
 
 function changePaintjob( veh, paintjob )
 	if (veh) then
-		local money = getElementData(source, "money")
-		if money < 7500 then
+		if not exports.global:takeMoney(source, 7500) then
 			outputChatBox("You can't afford to repaint this vehicle.", source, 255, 0, 0)
 		else
 			triggerEvent( "paintjobEndPreview", source, veh )
@@ -87,7 +80,6 @@ function changePaintjob( veh, paintjob )
 				if col1 == 0 or col2 == 0 then
 					setVehicleColor( veh, 1, 1, 1, 1 )
 				end
-				exports.global:takePlayerSafeMoney(source, 7500)
 				exports.global:sendLocalMeAction(source, "repaints the vehicle.")
 			else
 				outputChatBox("This car already has this paintjob.", source, 255, 0, 0)
@@ -100,8 +92,7 @@ addEventHandler("paintjobChange", getRootElement(), changePaintjob)
 
 function changeVehicleUpgrade( veh, upgrade, name, cost )
 	if (veh) then
-		local money = getElementData(source, "money")
-		if money < cost then
+		if not exports.global:hasMoney( source, cost ) then
 			outputChatBox("You can't afford to add " .. name .. " to this vehicle.", source, 255, 0, 0)
 		else
 			for i = 0, 16 do
@@ -111,7 +102,7 @@ function changeVehicleUpgrade( veh, upgrade, name, cost )
 				end
 			end
 			if addVehicleUpgrade( veh, upgrade ) then
-				exports.global:takePlayerSafeMoney(source, cost)
+				exports.global:takeMoney(source, cost)
 				exports.global:sendLocalMeAction(source, "added " .. name .. " to the vehicle.")
 			else
 				outputChatBox("Failed to apply the car upgrade.", source, 255, 0, 0)
@@ -124,8 +115,7 @@ addEventHandler("changeVehicleUpgrade", getRootElement(), changeVehicleUpgrade)
 
 function changeVehicleColour(veh, col1, col2, col3, col4)
 	if (veh) then
-		local money = getElementData(source, "money")
-		if(money<100)then
+		if not exports.global:takeMoney(source, 100) then
 			outputChatBox("You can't afford to repaint this vehicle.", source, 255, 0, 0)
 		else			
 			exCol1, exCol2, exCol3, exCol4 = getVehicleColor ( veh )
@@ -137,7 +127,6 @@ function changeVehicleColour(veh, col1, col2, col3, col4)
 			
 			setVehicleColor ( veh, col1, col2, col3, col4 )
 			
-			exports.global:takePlayerSafeMoney(source, 100)
 			exports.global:sendLocalMeAction(source, "repaints the vehicle.")
 		end
 	end

@@ -47,7 +47,7 @@ addEventHandler("catchFish", getRootElement(), catchFish)
 ------ /sellfish
 function unloadCatch( totalCatch, profit)
 	exports.global:sendLocalMeAction(source,"sells " .. totalCatch .."lbs of fish.")
-	exports.global:givePlayerSafeMoney(source, profit)
+	exports.global:giveMoney(source, profit)
 	mysql_free_result(mysql_query(handler, "UPDATE characters SET fish=0 WHERE id=" .. getElementData(source, "dbid")))
 end
 addEvent("sellcatch", true)

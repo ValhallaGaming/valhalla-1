@@ -106,8 +106,7 @@ end
 addEventHandler("onColShapeHit", towSphere, UnlockVehicle)
 addEventHandler("onColShapeHit", towSphere2, UnlockVehicle)
 function payRelease(vehID)
-	if getElementData(source, "money") >= 75 then
-		exports.global:takePlayerSafeMoney(source, 75)
+	if exports.global:takeMoney(source, 75) then
 		local towCompany = getTeamFromName("Best's Towing and Recovery")
 		local dbid = getElementData(towCompany, "id")
 		call(getResourceFromName("faction-system"), "addToFactionMoney", dbid, 75)
@@ -124,8 +123,6 @@ function payRelease(vehID)
 		outputChatBox("Insufficient Funds.", source, 255, 0, 0)
 		--Should be impossible to get to here, but you never know.
 	end
-		
-	
 end
 addEvent("releaseCar", true)
 addEventHandler("releaseCar", getRootElement(), payRelease)

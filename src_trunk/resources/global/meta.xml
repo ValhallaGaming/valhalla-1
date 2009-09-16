@@ -23,10 +23,14 @@
 	<script src="optomization_globals.lua" type="server"/>
 	
 	<script src="money_globals.lua" type="server"/>
-	<export function="givePlayerSafeMoney" type="server"/>
-	<export function="takePlayerSafeMoney" type="server"/>
-	<export function="setPlayerSafeMoney" type="server"/>
-	<export function="checkMoneyHacks" type="server"/>
+	<script src="c_money_globals.lua" type="client"/>
+	<export function="giveMoney" type="server"/>
+	<export function="takeMoney" type="server"/>
+	<export function="setMoney" type="server"/>
+	<export function="hasMoney" type="server"/>
+	<export function="hasMoney" type="client"/>
+	<export function="getMoney" type="server"/>
+	<export function="getMoney" type="client"/>
 	<export function="getTaxAmount" type="server"/>
 	<export function="getIncomeTaxAmount" type="server"/>
 	

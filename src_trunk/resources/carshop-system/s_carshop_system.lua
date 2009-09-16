@@ -41,11 +41,7 @@ end
 addEventHandler("onPickupHit", getResourceRootElement(), pickupUse)
 
 function buyCar(id, cost, col1, col2, x, y, z, rz, px, py, pz, prz, shopID)
-	if not getElementData(source, "money") then return end
-	
-	local safemoney = tonumber(getElementData(source, "money"))
-	local hackmoney = getPlayerMoney(source)
-	if (safemoney == hackmoney and safemoney >= tonumber(cost)) then
+	if exports.global:hasMoney(source, cost) then
 		outputChatBox("You bought a " .. getVehicleNameFromModel(id) .. " for " .. cost .. "$. Enjoy!", source, 255, 194, 14)
 		
 		if shopID == 1 then
@@ -64,6 +60,10 @@ addEvent("buyCar", true)
 addEventHandler("buyCar", getRootElement(), buyCar)
 
 function makeCar(thePlayer, id, cost, col1, col2, x, y, z, rz, px, py, pz, prz)
+	if not exports.global:takeMoney(thePlayer, cost) then
+		return
+	end
+	
 	local rx = 0
 	local ry = 0
 		
@@ -83,8 +83,6 @@ function makeCar(thePlayer, id, cost, col1, col2, x, y, z, rz, px, py, pz, prz)
 	if (query) then
 		mysql_free_result(query)
 		
-		exports.global:takePlayerSafeMoney(thePlayer, tonumber(cost))
-
 		local veh = call( getResourceFromName( "vehicle-system" ), "createShopVehicle", insertid, id, x, y, z, 0, 0, rz, plate )
 		exports.pool:allocateElement(veh)
 		

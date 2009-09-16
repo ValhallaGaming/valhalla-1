@@ -34,86 +34,55 @@ addEventHandler("onPlayerWasted", getRootElement(), playerDeath)
 
 function respawnPlayer(thePlayer)
 	if (isElement(thePlayer)) then
-		local cost = math.random(150,300)
-		local money = getElementData(thePlayer, "money")
-		
-		-- Fix for injected cash
-		if (cost>money) then
-			cost = money
+		local cost = 0
+		if not exports.global:isPlayerSilverDonator(thePlayer) then
+			_, cost = exports.global:takeMoney(thePlayer, math.random(150, 300), true)
 		end
 		
-		if (exports.global:isPlayerSilverDonator(thePlayer)) then
-			cost = 0
-		else
-			exports.global:takePlayerSafeMoney(thePlayer, cost)
+		local tax = exports.global:getTaxAmount()
+		
+		exports.global:giveMoney( getTeamFromName("Los Santos Emergency Services"), math.ceil((1-tax)*cost) )
+		exports.global:giveMoney( getTeamFromName("Government of Los Santos"), math.ceil(tax*cost) )
+			
+		local update = mysql_query(handler, "UPDATE characters SET deaths = deaths + 1 WHERE charactername='" .. mysql_escape_string(handler, getPlayerName(thePlayer)) .. "'")
+		
+		if (update) then
+			mysql_free_result(update)
 		end
 		
-		local result = mysql_query(handler, "SELECT bankbalance FROM factions WHERE id='2' OR id='3' LIMIT 2")
-		if (mysql_num_rows(result)>0) then
-			local tax = exports.global:getTaxAmount()
-			local currentESBalance = mysql_result(result, 1, 1)
-			local currentGOVBalance = mysql_result(result, 2, 1)
-			
-			local ESMoney = math.ceil((1-tax)*cost)
-			local GOVMoney = math.ceil(tax*cost)
-			
-			local theTeamES = getTeamFromName("Los Santos Emergency Services")
-			local theTeamGov = getTeamFromName("Government of Los Santos")
-			
-			setElementData(theTeamES, "money", (currentESBalance+ESMoney))
-			setElementData(theTeamGov, "money", (currentGOVBalance+GOVMoney+money))
-			
-			local update = mysql_query(handler, "UPDATE factions SET bankbalance='" .. (currentESBalance+ESMoney) .. "' WHERE id='2'")
-			local update2 = mysql_query(handler, "UPDATE factions SET bankbalance='" .. (currentGOVBalance+GOVMoney+money) .. "' WHERE id='3'")
-			local update3 = mysql_query(handler, "UPDATE characters SET deaths = deaths + 1 WHERE charactername='" .. mysql_escape_string(handler, getPlayerName(thePlayer)) .. "'")
-			
-			if (update) then
-				mysql_free_result(update)
-			end
-
-			if (update2) then
-				mysql_free_result(update2)
-			end
-
-			if (update3) then
-				mysql_free_result(update3)
-			end
-			
-			setCameraInterior(thePlayer, 0)
-			
-			local text = "You have recieved treatment from the Los Santos Emergency Services."
-			if cost > 0 then
-				text = text .. " Cost: " .. cost .. "$"
-			end
-			outputChatBox(text, thePlayer, 255, 255, 0)
-			
-			-- take all drugs
-			local count = 0
-			for i = 30, 43 do
-				while exports.global:hasItem(thePlayer, i) do
-					exports.global:takeItem(thePlayer, i)
-					count = count + 1
-				end
-			end
-			if count > 0 then
-				outputChatBox("LSES Employee: We handed your drugs over to the LSPD Investigators.", thePlayer, 255, 194, 14)
-			end
-			
-			local theSkin = getPedSkin(thePlayer)
-			
-			local theTeam = getPlayerTeam(thePlayer)
-			
-			local fat = getPedStat(thePlayer, 21)
-			local muscle = getPedStat(thePlayer, 23)
-			
-			setPedStat(thePlayer, 21, fat)
-			setPedStat(thePlayer, 23, muscle)
-
-			spawnPlayer(thePlayer, 1183.291015625, -1323.033203125, 13.577140808105, 267.4580078125, theSkin, 0, 0, theTeam)
-			
-			fadeCamera(thePlayer, true, 2)
+		setCameraInterior(thePlayer, 0)
+		
+		local text = "You have recieved treatment from the Los Santos Emergency Services."
+		if cost > 0 then
+			text = text .. " Cost: " .. cost .. "$"
 		end
-		mysql_free_result(result)
+		outputChatBox(text, thePlayer, 255, 255, 0)
+		
+		-- take all drugs
+		local count = 0
+		for i = 30, 43 do
+			while exports.global:hasItem(thePlayer, i) do
+				exports.global:takeItem(thePlayer, i)
+				count = count + 1
+			end
+		end
+		if count > 0 then
+			outputChatBox("LSES Employee: We handed your drugs over to the LSPD Investigators.", thePlayer, 255, 194, 14)
+		end
+		
+		local theSkin = getPedSkin(thePlayer)
+		
+		local theTeam = getPlayerTeam(thePlayer)
+		
+		local fat = getPedStat(thePlayer, 21)
+		local muscle = getPedStat(thePlayer, 23)
+		
+		setPedStat(thePlayer, 21, fat)
+		setPedStat(thePlayer, 23, muscle)
+
+		spawnPlayer(thePlayer, 1183.291015625, -1323.033203125, 13.577140808105, 267.4580078125, theSkin, 0, 0, theTeam)
+		
+		fadeCamera(thePlayer, true, 2)
 	end
 end
 

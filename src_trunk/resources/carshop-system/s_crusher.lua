@@ -94,7 +94,7 @@ local function crushCar(thePlayer, matching)
 					
 					local result = mysql_query( handler, "DELETE FROM vehicles WHERE id = " .. dbid )
 					if result then
-						exports.global:givePlayerSafeMoney(thePlayer, price)
+						exports.global:giveMoney(thePlayer, price)
 						call( getResourceFromName( "item-system" ), "deleteAll", 3, dbid )
 						call( getResourceFromName( "item-system" ), "clearItems", theVehicle )
 						outputChatBox("You crushed your " .. getVehicleName(theVehicle) .. " for $" .. price .. ".", thePlayer, 0, 255, 0)

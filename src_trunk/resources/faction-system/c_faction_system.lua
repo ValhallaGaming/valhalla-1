@@ -106,7 +106,7 @@ function showFactionMenu(motd, memberUsernames, memberRanks, memberLeaders, memb
 			gButtonInvite = guiCreateButton(0.825, 0.5356, 0.16, 0.06, "Invite Player", true, gFactionWindow)
 			gButtonRespawn = guiCreateButton(0.825, 0.6122, 0.16, 0.06, "Respawn Vehicles", true, gFactionWindow)
 			
-			local balance = tonumber(getElementData(factionTheTeam, "money"))
+			local balance = exports.global:getMoney(factionTheTeam)
 			local balanceLabel = guiCreateLabel(0.825, 0.7056, 0.16, 0.1, "Balance: \n" .. balance .. "$", true, gFactionWindow)
 			guiLabelSetHorizontalAlign(balanceLabel, "center")
 			guiSetFont(balanceLabel, "default-bold-small")

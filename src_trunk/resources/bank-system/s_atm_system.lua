@@ -146,7 +146,7 @@ function showATMInterface()
 		end
 		
 		local faction = getPlayerTeam(source)
-		local money = getElementData(faction, "money")
+		local money = exports.global:getMoney(faction)
 		triggerClientEvent(source, "showBankUI", source, isInFaction, isFactionLeader, money)
 	end
 end

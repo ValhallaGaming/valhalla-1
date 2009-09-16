@@ -1,7 +1,7 @@
 local lockTimer = nil
 
 function giveTruckingMoney(wage)
-	exports.global:givePlayerSafeMoney(source, wage)
+	exports.global:giveMoney(source, wage)
 end
 addEvent("giveTruckingMoney", true)
 addEventHandler("giveTruckingMoney", getRootElement(), giveTruckingMoney)

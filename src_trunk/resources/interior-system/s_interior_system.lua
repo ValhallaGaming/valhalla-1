@@ -178,7 +178,7 @@ function publicSellProperty(thePlayer, dbid, showmessages, givemoney)
 			if getElementData(entrance, "owner") == getElementData(thePlayer, "dbid") then
 				local money = math.ceil(getElementData(entrance, "cost") * 2/3)
 				if givemoney then
-					exports.global:givePlayerSafeMoney(thePlayer, money)
+					exports.global:giveMoney(thePlayer, money)
 				end
 				
 				if showmessages then
@@ -649,9 +649,7 @@ function buyInterior(player, pickup, cost, isHouse, isRentable)
 		return
 	end
 	
-	local money = tonumber(getElementData(player, "money"))
-	cost = tonumber(cost)
-	if (money>=cost) then
+	if exports.global:takeMoney(player, cost) then
 		if (isHouse) then
 			outputChatBox("Congratulations! You have just bought this house for $" .. cost .. ".", player, 255, 194, 14)
 		elseif (isRentable) then
@@ -674,7 +672,6 @@ function buyInterior(player, pickup, cost, isHouse, isRentable)
 		end
 		
 		mysql_free_result( mysql_query( handler, "UPDATE interiors SET owner='" .. charid .. "', locked=0 WHERE id='" .. pickupid .. "'") )
-		exports.global:takePlayerSafeMoney(player, cost)
 		
 		-- make sure it's an unqiue key
 		call( getResourceFromName( "item-system" ), "deleteAll", 4, pickupid )
@@ -754,10 +751,9 @@ end
 function setPlayerInsideInterior(thePickup, thePlayer)
 	-- check for entrance fee
 	if getElementData( thePlayer, "adminduty" ) ~= 1 and not exports.global:hasItem( thePlayer, 5, getElementData( thePickup, "dbid" ) ) then
-		local money = getElementData( thePlayer, "money" )
 		local fee = getElementData( thePickup, "fee" )
 		if fee and fee > 0 then
-			if fee > money then
+			if not exports.global:takeMoney( thePlayer, fee ) then
 				outputChatBox( "You don't have enough money with you to enter this interior.", thePlayer, 255, 0, 0 )
 				return
 			else
@@ -765,9 +761,6 @@ function setPlayerInsideInterior(thePickup, thePlayer)
 				local query = mysql_query( handler, "UPDATE characters SET bankmoney = bankmoney + " .. fee .. " WHERE id = " .. ownerid )
 				if query then
 					mysql_free_result( query )
-					
-					exports.global:takePlayerSafeMoney( thePlayer, fee )
-					
 					
 					for k, v in pairs( getElementsByType( "player" ) ) do
 						if isElement( v ) then

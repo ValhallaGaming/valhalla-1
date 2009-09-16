@@ -76,11 +76,7 @@ function advertMessage(thePlayer, commandName, showNumber, ...)
 				end
 				
 				local cost = math.ceil(string.len(message)/6)
-				local money = getElementData(thePlayer, "money")
-				
-				if (cost>money) then
-					outputChatBox("You cannot afford to place such an advert, try making it smaller.", thePlayer)
-				else
+				if exports.global:takeMoney(thePlayer, cost) then
 					local name = string.gsub(getPlayerName(thePlayer), "_", " ")
 					local phoneNumber = getElementData(thePlayer, "cellnumber")
 					
@@ -94,9 +90,9 @@ function advertMessage(thePlayer, commandName, showNumber, ...)
 							end
 						end
 					end
-					
-					exports.global:takePlayerSafeMoney(thePlayer, cost)
 					outputChatBox("Thank you for placing your advert. Total Cost: $" .. cost .. ".", thePlayer)
+				else
+					outputChatBox("You cannot afford to place such an advert, try making it smaller.", thePlayer)
 				end
 			else
 				outputChatBox("You do not have a cellphone to call the advertisement agency.", thePlayer, 255, 0, 0)
@@ -1021,24 +1017,20 @@ function payPlayer(thePlayer, commandName, targetPlayerNick, amount)
 				if (distance<=10) then
 					amount = math.abs(tonumber(amount))
 					
-					local money = getElementData(thePlayer, "money")
 					local hoursplayed = getElementData(thePlayer, "hoursplayed")
 					
 					if (targetPlayer==thePlayer) then
 						outputChatBox("You cannot pay money to yourself.", thePlayer, 255, 0, 0)
-					elseif (money<amount) then
-						outputChatBox("You do not have enough money.", thePlayer, 255, 0, 0)
 					elseif (hoursplayed<5) and (amount>50) then
 						outputChatBox("You must play atleast 5 hours before transferring over 50$", thePlayer, 255, 0, 0)
-					else
-						exports.global:takePlayerSafeMoney(thePlayer, amount)
+					elseif exports.global:takeMoney(thePlayer, amount)
 						
 						exports.logs:logMessage("[Money Transfer From " .. getPlayerName(thePlayer) .. " To: " .. getPlayerName(targetPlayer) .. "] Value: " .. amount .. "$", 5)
 						if (hoursplayed<5) then
 							exports.global:sendMessageToAdmins("AdmWarn: New Player '" .. getPlayerName(thePlayer) .. "' transferred " .. amount .. "$ to '" .. getPlayerName(targetPlayer) .. "'.")
 						end
 						
-						exports.global:givePlayerSafeMoney(targetPlayer, amount)
+						exports.global:giveMoney(targetPlayer, amount)
 						
 						exports.global:sendLocalMeAction(thePlayer, "takes some dollar notes from his wallet and gives them to " .. getPlayerName(targetPlayer) .. ".")
 						outputChatBox("You gave $" .. amount .. " to " .. getPlayerName(targetPlayer) .. ".", thePlayer)
@@ -1046,6 +1038,8 @@ function payPlayer(thePlayer, commandName, targetPlayerNick, amount)
 						exports.irc:sendMessage("[MONEY TRANSFER] From '" .. getPlayerName(thePlayer) .. "' to " .. getPlayerName(targetPlayer) .. "' Amount: $" .. amount .. ".")
 						
 						exports.global:applyAnimation(thePlayer, "DEALER", "shop_pay", 4000, false, true, true)
+					else
+						outputChatBox("You do not have enough money.", thePlayer, 255, 0, 0)
 					end
 				else
 					outputChatBox("You are too far away from " .. getPlayerName(targetPlayer) .. ".", thePlayer, 255, 0, 0)
@@ -1204,13 +1198,8 @@ function newsMessage(thePlayer, commandName, ...)
 						end
 					end
 				end
-								
-				local factionFunds = getElementData(theTeam, "money")
-				local newFunds = factionFunds + 200
-				setElementData(theTeam, "money", tonumber(newFunds), false)
-				local id = getElementData(theTeam, "id")
-				local result = mysql_query(handler, "UPDATE factions SET bankbalance='" .. newFunds .. "' WHERE id='" .. id .. "' LIMIT 1")
-				mysql_free_result(result)
+				
+				exports.global:giveMoney(theTeam, 200)
 			end
 		end
 	end
@@ -1445,11 +1434,9 @@ function charityCash(thePlayer, commandName, amount)
 		if (donation<=0) then
 			outputChatBox("You must enter an amount greater than zero.", thePlayer, 255, 0, 0)
 		else
-			local money = getElementData(thePlayer, "money")
-			if (money<donation) then
+			if not exports.global:takeMoney(thePlayer, donation) then
 				outputChatBox("You don't have that much money to remove.", thePlayer, 255, 0, 0)
 			else
-				exports.global:takePlayerSafeMoney(thePlayer, donation)
 				outputChatBox("You have donated $".. donation .." to charity.", thePlayer, 0, 255, 0)
 				if(donation>=1000)then
 					local name = string.gsub(getPlayerName(thePlayer), "_", " ")

@@ -63,9 +63,7 @@ function acceptLicense(button, state)
 			end
 			
 			if (license>0) then
-				local money = getElementData(getLocalPlayer(), "money")
-
-				if (money<licensecost) then
+				if not exports.global:hasMoney( licensecost ) then
 					outputChatBox("You cannot afford this license.", 255, 0, 0)
 				else
 					if (license == 1) then
@@ -604,8 +602,7 @@ function EndTest(element)
     	else
     		local vehicleHealth = getElementHealth ( vehicle )
     		if (vehicleHealth >= 800) then
-    			local playerMoney = getElementData(getLocalPlayer(), "money")
-    			if (playerMoney < 250 ) then
+    			if not exports.global:hasMoney( getLocalPlayer(), 250 ) then
     				outputChatBox("You can't afford the $250 processing fee.", 255, 0, 0)
     			else
     				----------

@@ -6,8 +6,7 @@ function makeKey(thePlayer, commandName, keyType, keyID)
 			if not (keyType) or not (keyID) then
 				outputChatBox("SYNTAX: /" .. commandName .. " [Key Type: 1=Vehicle 2=House 3=Business][Key ID]", thePlayer, 255, 194, 14)
 			else
-				local money = getElementData(thePlayer, "money")
-				if (money<15) then
+				if not exports.global:hasMoney(thePlayer, 15) then
 					outputChatBox("You do not have enough money to duplicate a key.", thePlayer, 255, 0, 0)
 				else
 					-- Translate keytype to key item IDs.
@@ -24,7 +23,7 @@ function makeKey(thePlayer, commandName, keyType, keyID)
 					local success = exports.global:hasItem(thePlayer, tonumber(itemID), tonumber(keyID))
 					if(success)then -- does the player have the key?
 						exports.global:giveItem(thePlayer, tonumber(itemID), tonumber(keyID)) -- create a ket for the locksmith.
-						exports.global:takePlayerSafeMoney(thePlayer, 15) -- take the cost of making the key from the locksmith.
+						exports.global:takeMoney(thePlayer, 15) -- take the cost of making the key from the locksmith.
 						outputChatBox("You have duplicated ".. keyname .." ".. keyID .." at a cost of $15.", thePlayer)
 						exports.global:sendLocalMeAction(thePlayer,"duplicates a key.")
 					else

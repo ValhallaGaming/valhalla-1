@@ -306,8 +306,7 @@ function giveTyItems( itemNumber )
 	end
 		
 	-- does the player have enough money?
-	local money = getElementData(source, "money")
-	if (money<cost)then
+	if not exports.global:takeMoney(source, cost) then
 		
 		local pedX, pedY, pedZ = getElementPosition( tyrese )
 		local chatSphere = createColSphere( pedX, pedY, pedZ, 5 )
@@ -330,7 +329,6 @@ function giveTyItems( itemNumber )
 	
 	else
 		exports.global:giveItem(source, itemID, 1)
-		exports.global:takePlayerSafeMoney(source, cost)
 		outputChatBox("You have bought a drug item from Ty for $"..cost..".", source)
 	end
 end

@@ -68,7 +68,7 @@ function makeTagObject(cx, cy, cz, rot, interior, dimension)
 		if (object) then
 			local id = getElementData(object, "dbid")
 			outputChatBox("You removed the tag. You earnt 30$ for doing so.", source, 255, 194, 14)
-			exports.global:givePlayerSafeMoney(source, 30)
+			exports.global:giveMoney(source, 30)
 			destroyElement(object)
 			local query = mysql_query(handler, "DELETE FROM tags WHERE id='" .. id .. "'")
 			mysql_free_result(query)

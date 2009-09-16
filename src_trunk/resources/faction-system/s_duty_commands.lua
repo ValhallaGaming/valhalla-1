@@ -68,7 +68,7 @@ function lvesHeal(thePlayer, commandName, targetPartialNick, price)
 						if (getDistanceBetweenPoints3D(x, y, z, tx, ty, tz)>5) then -- Are they standing next to each other?
 							outputChatBox("You are too far away to heal '"..getPlayerName(targetPlayerName).."'.", thePlayer, 255, 0, 0)
 						else
-							local money = getElementData(targetPlayer, "money")
+							local money = exports.global:getMoney(targetPlayer)
 							local bankmoney = getElementData(targetPlayer, "bankmoney")
 							
 							if money + bankmoney < price then
@@ -76,32 +76,15 @@ function lvesHeal(thePlayer, commandName, targetPartialNick, price)
 							else
 								local takeFromCash = math.min( money, price )
 								local takeFromBank = price - takeFromCash
-								exports.global:takePlayerSafeMoney(targetPlayer, takeFromCash)
+								exports.global:takeMoney(targetPlayer, takeFromCash)
 								if takeFromBank > 0 then
 									setElementData(targetPlayer, "bankmoney", bankmoney - takeFromBank)
 								end
 								
-								local result = mysql_query(handler, "SELECT bankbalance FROM factions WHERE id='2' OR id='3' LIMIT 2")
-								if (mysql_num_rows(result)>0) then
-									local tax = exports.global:getTaxAmount()
-									local currentESBalance = mysql_result(result, 1, 1)
-									local currentGOVBalance = mysql_result(result, 2, 1)
-									
-									local ESMoney = math.ceil((1-tax)*price)
-									local GOVMoney = math.ceil(tax*price)
-									
-									local theTeamES = getTeamFromName("Los Santos Emergency Services")
-									local theTeamGov = getTeamFromName("Government of Los Santos")
-									
-									setElementData(theTeamES, "money", (currentESBalance+ESMoney))
-									setElementData(theTeamGov, "money", (currentGOVBalance+GOVMoney+money))
-									
-									local update = mysql_query(handler, "UPDATE factions SET bankbalance='" .. (currentESBalance+ESMoney) .. "' WHERE id='2'")
-									local update2 = mysql_query(handler, "UPDATE factions SET bankbalance='" .. (currentGOVBalance+GOVMoney+money) .. "' WHERE id='3'")
-									mysql_free_result(update)
-									mysql_free_result(update2)
-								end
-								mysql_free_result(result)
+								local tax = exports.global:getTaxAmount()
+								
+								exports.global:giveMoney( getTeamFromName("Los Santos Emergency Services"), math.ceil((1-tax)*price) )
+								exports.global:giveMoney( getTeamFromName("Government of Los Santos"), math.ceil(tax*price) )
 								
 								setElementHealth(targetPlayer, 100)
 								triggerEvent("onPlayerHeal", targetPlayer, true)

@@ -324,7 +324,7 @@ function FinishCheckpoints(thePlayer)
 					
 					outputChatBox("You have completed your task, well done.", thePlayer, 255, 194, 14)
 					outputChatBox("You received: 300$", thePlayer, 255, 194, 14)
-					exports.global:givePlayerSafeMoney(thePlayer, 300)
+					exports.global:giveMoney(thePlayer, 300)
 					
 					removeElementData ( thePlayer, "cleaner.marker" )
 					removeElementData ( thePlayer, "cleaner.t" )

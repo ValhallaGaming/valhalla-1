@@ -224,7 +224,7 @@ function fillVehicle(thePlayer, commandName)
 				local ftype = getElementData(faction, "type")
 				
 				if (ftype~=2) and (ftype~=3) and (ftype~=4) then
-					local money = getElementData(thePlayer, "money")
+					local money = exports.global:hasMoney(thePlayer)
 					
 					local tax = exports.global:getTaxAmount()
 					local cost = FUEL_PRICE + (tax*FUEL_PRICE)
@@ -289,7 +289,7 @@ function fillCan(thePlayer, commandName)
 				local ftype = getElementData(faction, "type")
 				
 				if (ftype~=2) and (ftype~=3) and (ftype~=4) then
-					local money = getElementData(thePlayer, "money")
+					local money = exports.global:hasMoney(thePlayer)
 					
 					local tax = exports.global:getTaxAmount()
 					local cost = FUEL_PRICE + (tax*FUEL_PRICE)
@@ -309,7 +309,7 @@ function fillCan(thePlayer, commandName)
 						local fuelCost = math.floor(litresAffordable*cost)
 						outputChatBox("Gas Station Receipt:", thePlayer)
 						outputChatBox("    " .. math.ceil(litresAffordable) .. " Litres of petrol    -    " .. fuelCost .. "$", thePlayer)
-						exports.global:takePlayerSafeMoney(thePlayer, fuelCost)
+						exports.global:takeMoney(thePlayer, fuelCost, true)
 						exports.global:takeItem(thePlayer, 57, currFuel)
 						exports.global:giveItem(thePlayer, 57, litresAffordable+currFuel)
 					end
@@ -359,7 +359,7 @@ function fuelTheVehicle(thePlayer, theVehicle, theShape, theLitres, free)
 					fuelCost = 0
 				end
 				
-				exports.global:takePlayerSafeMoney(thePlayer, fuelCost)
+				exports.global:takeMoney(thePlayer, fuelCost, true)
 			
 				local oldFuel = getElementData(theVehicle, "fuel")
 				local newFuel = oldFuel+theLitres

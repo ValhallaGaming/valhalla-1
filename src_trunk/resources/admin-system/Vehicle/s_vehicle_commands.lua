@@ -385,6 +385,8 @@ function respawnAllVehicles(thePlayer, commandName, timeToRespawn)
 					local x, y, z, rx, ry, rz = unpack(getElementData(theVehicle, "respawnposition"))
 					setElementPosition(theVehicle, x, y, z)
 					setVehicleRotation(theVehicle, rx, ry, rz)
+					setElementInterior(theVehicle, getElementData(theVehicle, "interior"))
+					setElementDimension(theVehicle, getElementData(theVehicle, "dimension"))
 					
 					-- unlock Civ vehicles
 					if getElementData(theVehicle, "owner") == -2 and getElementData(theVehicle,"Impounded") == 0 then

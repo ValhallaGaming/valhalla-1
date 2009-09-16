@@ -5,6 +5,7 @@
 	<script src="s_interior_system.lua" type="server" />
 	<export function="addSafeAtPosition" type="server"/>
 	<export function="publicSellProperty" type="server"/>
+	<export function="findProperty" type="server"/>
 	
 	<script src="c_interior_system.lua" type="client" />
 

@@ -216,6 +216,37 @@ function enterElevator(player, pickup)
 			return
 		end
 		
+		-- check for entrance fee
+		local dbid, thePickup = call( getResourceFromName( "interior-system" ), "findProperty", player, dimension )
+		if thePickup then
+			if getElementData( player, "adminduty" ) ~= 1 and not exports.global:hasItem( player, 5, getElementData( thePickup, "dbid" ) ) then
+				local fee = getElementData( thePickup, "fee" )
+				if fee and fee > 0 then
+					if not exports.global:takeMoney( player, fee ) then
+						outputChatBox( "You don't have enough money with you to enter this interior.", player, 255, 0, 0 )
+						return
+					else
+						local ownerid = getElementData( thePickup, "owner" )
+						local query = mysql_query( handler, "UPDATE characters SET bankmoney = bankmoney + " .. fee .. " WHERE id = " .. ownerid )
+						if query then
+							mysql_free_result( query )
+							
+							for k, v in pairs( getElementsByType( "player" ) ) do
+								if isElement( v ) then
+									if getElementData( v, "dbid" ) == ownerid then
+										setElementData( v, "businessprofit", getElementData( v, "businessprofit" ) + fee, false )
+										break
+									end
+								end
+							end
+						else
+							outputChatBox( "Error 9019 - Report on Forums.", player, 255, 0, 0 )
+						end
+					end
+				end
+			end
+		end
+
 		if getElementData(player, "IsInCustomInterior") == 1 then
 			removeElementData(player,"IsInCustomInterior")
 			local weather, blend = getWeather()

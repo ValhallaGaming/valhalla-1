@@ -1,4 +1,9 @@
 ---
+Car Elevators
+---
+ALTER TABLE `elevators` ADD COLUMN `car` TINYINT UNSIGNED DEFAULT 0;
+
+---
 Entry Fee
 ---
 ALTER TABLE `interiors` ADD COLUMN `fee` INTEGER UNSIGNED DEFAULT 0;

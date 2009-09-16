@@ -77,7 +77,7 @@ function loadAllElevators(res)
 	for k, thePlayer in ipairs(players) do
 		removeElementData(thePlayer, "UsedElevator")
 	end
-	local result = mysql_query(handler, "SELECT id, x, y, z, tpx, tpy, tpz, dimensionwithin, interiorwithin, dimension, interior FROM elevators")
+	local result = mysql_query(handler, "SELECT id, x, y, z, tpx, tpy, tpz, dimensionwithin, interiorwithin, dimension, interior, car FROM elevators")
 	local counter = 0
 	
 	if (result) then
@@ -96,6 +96,7 @@ function loadAllElevators(res)
 			
 			local dimension = tonumber(row[10])
 			local interior = tonumber(row[11])
+			local car = tonumber(row[12])
 			
 			local pickup = createPickup(x, y, z, 3, 1318)
 			exports.pool:allocateElement(pickup)
@@ -104,11 +105,13 @@ function loadAllElevators(res)
 			
 			setElementData(pickup, "dbid", id, false)
 			setElementData(pickup, "other", intpickup, false)
+			setElementData(pickup, "car", car, false)
 			setElementInterior(pickup, interiorwithin)
 			setElementDimension(pickup, dimensionwithin)
 				
 			setElementData(intpickup, "dbid", id, false)
 			setElementData(intpickup, "other", pickup, false)
+			setElementData(intpickup, "car", car, false)
 			setElementInterior(intpickup, interior)
 			setElementDimension(intpickup, dimension)
 			counter = counter + 1
@@ -218,9 +221,21 @@ function isInteriorLocked(dimension)
 	return locked
 end
 
-
+--[[
+Car Teleport Modes:
+0: players only
+1: players and vehicles
+2: vehicles only
+]]--
 function enterElevator(player, pickup)
-	if isInPickup ( player, pickup ) and not getElementData(player, "UsedElevator") and not getPedOccupiedVehicle( player ) then
+	local cartp = getElementData( pickup, "car" )
+	vehicle = getPedOccupiedVehicle( player )
+	if isInPickup ( player, pickup ) and not getElementData(player, "UsedElevator") and ( ( vehicle and cartp ~= 0 and getVehicleOccupant( vehicle ) == player ) or not vehicle ) then
+		if not vehicle and cartp == 2 then
+			outputChatBox( "This entrance is for vehicles only.", player, 255, 0, 0 )
+			return
+		end
+		
 		local other = getElementData( pickup, "other" )
 		
 		local x, y, z = getElementPosition( other )
@@ -276,39 +291,98 @@ function enterElevator(player, pickup)
 				end
 			end
 		end
-
-		if getElementData(player, "IsInCustomInterior") == 1 then
-			removeElementData(player,"IsInCustomInterior")
-			local weather, blend = getWeather()
-			triggerClientEvent(player, "onClientWeatherChange", getRootElement(), weather, blend)
-		end
-		if z <= -5 then
-			triggerClientEvent (player, "onClientWeatherChange", getRootElement(), 7, nil)
-			setElementData(player,"IsInCustomInterior", 1, false)
-		end
 		
-		-- fade camera to black
-		fadeCamera ( player, false, 1,0,0,0 )
+		if vehicle then
+			for i = 0, getVehicleMaxPassengers( vehicle ) do
+				local p = getVehicleOccupant( vehicle )
+				if p then
+					if getElementData(p, "IsInCustomInterior") == 1 then
+						removeElementData(p,"IsInCustomInterior")
+						local weather, blend = getWeather()
+						triggerClientEvent(p, "onClientWeatherChange", getRootElement(), weather, blend)
+					end
+					if z <= -5 then
+						triggerClientEvent (p, "onClientWeatherChange", getRootElement(), 7, nil)
+						setElementData(p,"IsInCustomInterior", 1, false)
+					end
+					
+					-- fade camera to black
+					fadeCamera ( p, false, 1,0,0,0 )
+					
+					triggerClientEvent( p, "CantFallOffBike", p )
+				end
+			end
+		else
+			if getElementData(player, "IsInCustomInterior") == 1 then
+				removeElementData(player,"IsInCustomInterior")
+				local weather, blend = getWeather()
+				triggerClientEvent(player, "onClientWeatherChange", getRootElement(), weather, blend)
+			end
+			if z <= -5 then
+				triggerClientEvent (player, "onClientWeatherChange", getRootElement(), 7, nil)
+				setElementData(player,"IsInCustomInterior", 1, false)
+			end
+			
+			-- fade camera to black
+			fadeCamera ( player, false, 1,0,0,0 )
+		end
 		
 		-- teleport the player during the black fade
 		setTimer(function()
-			setElementPosition(player, x, y, z)
-			setElementInterior(player, interior)
-			setCameraInterior(player, interior)
-			setElementDimension(player, dimension)
-			
-			triggerEvent("onPlayerInteriorChange", player, pickup, other)
-			
-			-- fade camera in
-			setTimer(fadeCamera, 1000, 1 , player , true, 2)
-			
-			if interior == 3 or interior == 4 then
-				triggerClientEvent(player, "usedElevator", player)
-				setPedFrozen(player, true)
-				setPedGravity(player, 0)
+			if vehicle then
+				local offset = getElementData(vehicle, "groundoffset") or 2
+				setElementPosition(vehicle, x, y, z - 1 + offset)
+				setElementInterior(vehicle, interior)
+				setElementDimension(vehicle, dimension)
+				setVehicleTurnVelocity(vehicle, 0, 0, 0)
+				local rx, ry, rz = getVehicleRotation(vehicle)
+				setVehicleRotation(vehicle, 0, 0, rz)
+				setTimer(setVehicleTurnVelocity, 50, 2, vehicle, 0, 0, 0)
+				
+				setVehicleFrozen(vehicle, true)
+				setTimer(setVehicleFrozen, 333, 1, vehicle, false)
+				
+				for i = 0, getVehicleMaxPassengers( vehicle ) do
+					local player = getVehicleOccupant( vehicle, i )
+					if player then
+						setElementInterior(player, interior)
+						setCameraInterior(player, interior)
+						setElementDimension(player, dimension)
+						setCameraTarget(player)
+						
+						triggerEvent("onPlayerInteriorChange", player, pickup, other)
+						
+						-- fade camera in
+						setTimer(fadeCamera, 1000, 1 , player , true, 2)
+						
+						if interior == 3 or interior == 4 then
+							triggerClientEvent(player, "usedElevator", player)
+							setPedFrozen(player, true)
+							setPedGravity(player, 0)
+						end
+						
+						resetPlayerData(player)
+					end
+				end
+			else
+				setElementPosition(player, x, y, z)
+				setElementInterior(player, interior)
+				setCameraInterior(player, interior)
+				setElementDimension(player, dimension)
+				
+				triggerEvent("onPlayerInteriorChange", player, pickup, other)
+				
+				-- fade camera in
+				setTimer(fadeCamera, 1000, 1 , player , true, 2)
+				
+				if interior == 3 or interior == 4 then
+					triggerClientEvent(player, "usedElevator", player)
+					setPedFrozen(player, true)
+					setPedGravity(player, 0)
+				end
+				
+				resetPlayerData(player)
 			end
-			
-			resetPlayerData(player)
 		end, 1000, 1)
 		
 		setElementData(player,"UsedElevator", 1, false)
@@ -419,3 +493,27 @@ function JoinsInCustomInt()
 	end
 end
 addEventHandler("onPlayerSpawn", getRootElement(), JoinsInCustomInt)
+
+addEvent( "toggleCarTeleportMode", false )
+addEventHandler( "toggleCarTeleportMode", getRootElement(),
+	function( player )
+		local mode = ( getElementData( source, "car" ) + 1 ) % 3
+		local query = mysql_query( handler, "UPDATE elevators SET car = " .. mode .. " WHERE id = " .. getElementData( source, "dbid" ) )
+		if query then
+			mysql_free_result( query )
+			
+			if mode == 0 then
+				outputChatBox( "You changed the mode to 'players only'.", player, 0, 255, 0 )
+			elseif mode == 1 then
+				outputChatBox( "You changed the mode to 'players and vehicles'.", player, 0, 255, 0 )
+			else
+				outputChatBox( "You changed the mode to 'vehicles only'.", player, 0, 255, 0 )
+			end
+			
+			setElementData( source, "car", mode, false )
+			setElementData( getElementData( source, "other" ), "car", mode )
+		else
+			outputChatBox( "Error 9019 - Report on Forums.", player, 255, 0, 0 )
+		end
+	end
+)

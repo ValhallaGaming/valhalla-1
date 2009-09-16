@@ -57,7 +57,7 @@ function useItem(itemSlot, additional)
 			for key, value in ipairs(exports.pool:getPoolElementsByType("pickup")) do
 				local vx, vy, vz = getElementPosition(value)
 				local x, y, z = getElementPosition(source)
-
+				
 				if getDistanceBetweenPoints3D(x, y, z, vx, vy, vz) <= 5 then
 					local dbid = getElementData(value, "dbid")
 					if dbid == itemValue then -- house found
@@ -99,6 +99,27 @@ function useItem(itemSlot, additional)
 						setElementData(value, "locked", locked, false)
 					end
 				end
+			end
+		elseif (itemID==73) then -- elevator remote
+			local itemValue = tonumber(itemValue)
+			local found = nil
+			for key, value in ipairs( getElementsByType( "pickup", getResourceRootElement( getResourceFromName( "elevator-system" ) ) ) ) do
+				local vx, vy, vz = getElementPosition(value)
+				local x, y, z = getElementPosition(source)
+				
+				if getDistanceBetweenPoints3D(x, y, z, vx, vy, vz) <= 5 then
+					local dbid = getElementData(value, "dbid")
+					if dbid == itemValue then -- elevator found
+						found = value
+						break
+					end
+				end
+			end
+			
+			if not found then
+				outputChatBox("You are too far from the door.", source, 255, 194, 14)
+			else
+				triggerEvent( "toggleCarTeleportMode", found, source )
 			end
 		elseif (itemID==8) then -- sandwich
 			giveHealth(source, 50)

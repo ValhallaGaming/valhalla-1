@@ -707,6 +707,7 @@ function vehicleStartEnter(thePlayer)
 	end
 end
 addEventHandler("onVehicleStartEnter", getRootElement(), vehicleStartEnter)
+addEventHandler("onVehicleStartExit", getRootElement(), vehicleStartEnter)
 
 function enterInterior( thePlayer, thePickup )
 	-- if the player is entering a pickup

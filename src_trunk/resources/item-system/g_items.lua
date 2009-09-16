@@ -80,7 +80,8 @@ g_items = {
 	{ "Dictionary", "A Dictionary.", 5, 1271 },
 	{ "First Aid Kit", "Saves a Life. Can be used #v times.", 4, 1271 },
 	{ "Notebook", "A small collection of blank papers, useful for writing notes. There are #v pages left. ((/writenote))", 4, 1271 },
-	{ "Note", "The note reads: #v", 4, 1271 }
+	{ "Note", "The note reads: #v", 4, 1271 },
+	{ "Elevator Remote", "A small remote to change an elevator's mode.", 2, 1271 }
 }
 
 function getItemName(id)

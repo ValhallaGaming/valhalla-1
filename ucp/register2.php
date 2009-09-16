@@ -78,7 +78,7 @@
 				setcookie("password", $hashpassword, time()+3600);
 				setcookie("uid", mysql_insert_id($conn), time()+3600);
 				setcookie("loginattempts", "", time()-3600);	
-				header('Location: main.php');
+				header('Location: writeapplication.php');
 			}
 			else
 			{

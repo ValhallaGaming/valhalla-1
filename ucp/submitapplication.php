@@ -1,6 +1,9 @@
 ﻿<?php
 	if (!isset($_COOKIE["username"]) || !isset($_COOKIE["password"]) || !isset($_COOKIE["uid"]))
 		header('Location: index.php');
+		
+	if (!$_POST["gamingexperience"])
+		header('Location: main.php');
 ?>
 
 <?php include("config.php"); ?>
@@ -10,7 +13,7 @@
 	$userid = mysql_real_escape_string($_COOKIE["uid"], $conn);
 	
 	mysql_select_db("mta", $conn);
-	$result = mysql_query("SELECT username, admin, donator, appstate FROM accounts WHERE id='" . $userid . "' LIMIT 1", $conn);
+	$result = mysql_query("SELECT username FROM accounts WHERE id='" . $userid . "' LIMIT 1", $conn);
 
 	if (!$result || mysql_num_rows($result)==0)
 	{
@@ -20,24 +23,37 @@
 		header('Location: index.php');
 	}
 	$username = mysql_result($result, 0, 0);
-	$admin = mysql_result($result, 0, 1);
-	$donator = mysql_result($result, 0, 2);
-	$appstate = mysql_result($result, 0, 3);
 ?>
 
-<?php 
-	function getAdminTitleFromIndex($index)
+<?php
+	$uid = $_COOKIE["uid"];
+	
+	$gamingexperience = $_POST["gamingexperience"];
+	$country = $_POST["country"];
+	$language = $_POST["language"];
+	$how = $_POST["how"];
+	$why = $_POST["why"];
+	$expectations = $_POST["expectations"];
+	$definitions = $_POST["definitions"];
+	$firstcharacter = $_POST["firstcharacter"];
+	$clarifications = $_POST["clarifications"];
+	
+	$conn = mysql_pconnect($mysql_host, $mysql_user, $mysql_pass);
+		
+	if (!$conn)
 	{
-		$ranks = array("No", "Trial Admin", "Administrator", "Super Admin", "Lead Admin", "Head Admin", "Owner");
-		return $ranks[$index];
+		setcookie("uid", "", time()-3600);
+		setcookie("username", "", time()-3600);
+		setcookie("password", "", time()-3600);
+		header('Location: index.php?errno=2');
 	}
 	
-	function getDonatorTitleFromIndex($index)
-	{
-		$ranks = array("No", "Bronze" ,"Silver", "Gold", "Platinum", "Pearl", "Diamond", "Godly");
-		return $ranks[$index];
-	}
-?>
+	mysql_select_db("mta", $conn);
+	$query = mysql_query("UPDATE accounts SET appgamingexperience='" . $gamingexperience . "', appcountry='" . $country . "', applanguage='" . language . "', apphow='" . $how . "', appwhy='" . $why . "', appexpectations='" . $expectations . "', appdefinitions='" . $definitions . "', appfirstcharacter='" . $firstcharacter . "', appclarifications='" . $clarifications . "', apphandler='', appdatetime=NOW(), appstate='1' WHERE id='" . $uid . "' LIMIT 1", $conn);
+	
+	//if (!$query)
+		//echo mysql_error($conn);
+	?>
 
 <html>
 <head>
@@ -117,13 +133,10 @@ a:active {
 	font-weight: bold;
 }
         .style14 table tr td table tr td {
-	text-align: right;
+	text-align: center;
 }
         .style114 table tr td table tr td {
 	text-align: left;
-}
-    .style14 table tr td {
-	text-align: center;
 }
     </style>
 <meta name="keywords" content="valhalla, gaming, mta, ucp">
@@ -186,36 +199,11 @@ a:active {
 			<td height="274" class="style14" style="height: 40px; text-align: center; font-family: Verdana; font-size: xx-small;"><table width="1094" height="154" border="1">
 			  <tr>
 			    <td width="15%">&nbsp;</td>
-			    <td width="70%"><table width="322" border="0" align="center">
+			    <td width="70%"><table width="389" border="0" align="center">
 			      <tr>
-			        <td colspan="2"><center>
-			          <strong>Account Information</strong>
-			        </center></td>
-		          </tr>
-			      <tr>
-			        <td align="right">Application Status:</td>
-			        <td align="left">
-                    
-                    <?php
-						if ($appstate == 0)
-							echo "<em><a href='writeapplication.php'><font color='#FF9900' align='left'>Click here to write one</font></a></em>";
-						elseif ($appstate == 1)
-							echo "<em><font color='#FF9900' align='left'>Pending Review</font></em>";
-						elseif ($appstate == 2)
-							echo "<em><font color='#FF0000'>Denied, Click here for reason & resubmission</font></em>";
-						elseif ($appstate == 3)
-							echo "<em><font color='#66FF00'>Accepted</font></em>";
-					?>
-                    
-                    </td>
-		          </tr>
-			      <tr class="">
-			        <td width="165" align="right">Administrator:</td>
-			        <td width="147" align="left"><em><?php echo getAdminTitleFromIndex($admin) ?></em></td>
-		          </tr>
-			      <tr>
-			        <td>Donator:</td>
-			        <td align="left"><em><?php echo getDonatorTitleFromIndex($donator) ?></em></td>
+			        <td width="383" colspan="2"><p>Your application has been submitted.</p>
+		            <p>You can view your applications status by logging into this UCP, or clicking Home above on the left.</p>
+		            <p><strong><a href="main.php">&lt; Go Home</a></strong></p></td>
 		          </tr>
 		        </table></td>
 			    <td width="15%">&nbsp;</td>

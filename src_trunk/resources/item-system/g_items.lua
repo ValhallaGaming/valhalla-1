@@ -96,17 +96,13 @@ function getItemName(id)
 end
 
 function getItemDescription(id)
-	return g_items[id][2] or nil
+	return ( g_items[id] or { nil, "?" } )[2]
 end
 
 function getItemType(id)
-	return g_items[id][3] or nil
+	return ( g_items[id] or { nil, nil, 4 } )[3]
 end
 
 function getItemModel(id)
-	if not (g_items[id]) then
-		return 1271
-	else
-		return g_items[id][4]
-	end
+	return ( g_items[id] or { nil, nil, nil, 1271 } )[4]
 end

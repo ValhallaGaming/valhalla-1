@@ -58,7 +58,7 @@ end
 
 local count = 1
 function syncWeapons(weapons, ammo)
-	outputDebugString("Got weapon sync packet #" .. count .. " FROM: " .. getPlayerName(source))
+	--outputDebugString("Got weapon sync packet #" .. count .. " FROM: " .. getPlayerName(source))
 	count = count + 1
 	
 	if (tweapons[source] == nil) then

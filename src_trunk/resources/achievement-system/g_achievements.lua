@@ -39,7 +39,7 @@ local g_achievements = {
 	{ "Welcome to Los Santos", "Arrive in Los Santos.", 10 },
 	{ "Party Time", "Join the 2.1 Relaunch Party.", 100 },
 	{ "Where the Past Lies", "Which bones are those in the grave?", 25 },
-	{ "Sea World Los Santos", "Survived the 1st Flood of Los Snatos.", 100 }
+	{ "Sea World Los Santos", "Survived the 1st Flood of Los Santos.", 100 }
 }
 
 function getAchievementInfo(id)

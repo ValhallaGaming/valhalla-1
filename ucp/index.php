@@ -1,6 +1,16 @@
 <?php
 	if (isset($_COOKIE["username"]) &&isset($_COOKIE["password"]) && isset($_COOKIE["uid"]))
 		header('Location: main.php');
+		
+	$errno = $_GET["errno"];
+	if ($errno==3)
+	{
+		// allow 3 tries				
+		if (!isset($_COOKIE["loginattempts"]))
+			setcookie("loginattempts", "1", time()+900);
+		else
+			setcookie("loginattempts", $_COOKIE["loginattempts"]+1, time()+900);
+	}
 ?>
 
 <?php include("config.php"); ?>
@@ -174,13 +184,7 @@ a:active {
 				echo "<br><strong><span class='style5'>UCP is currently unavailable!</span></strong><br>";
 			elseif ($errno==3)
 			{
-				// allow 3 tries				
-				if (!isset($_COOKIE["loginattempts"]))
-					setcookie("loginattempts", "1", time()+900);
-				else
-					setcookie("loginattempts", $_COOKIE["loginattempts"]+1, time()+900);
-
-					echo "<br><strong><span class='style5'>Invalid Username / Password!</span></strong><br>";
+				echo "<br><strong><span class='style5'>Invalid Username / Password!</span></strong><br>";
 			}	
 			else if ($errno==4)
 				echo "<br><strong><span class='style5'>You have used up your 3 login attempts. You are now locked out for 15 minutes.</span></strong><br>";

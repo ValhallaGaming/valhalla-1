@@ -343,7 +343,6 @@ function forceApplication(thePlayer, commandName, targetPlayer, ...)
 			elseif exports.global:isPlayerAdmin(targetPlayer) then
 				outputChatBox("No.", thePlayer, 255, 0, 0)
 			else
-				local adminTitle = exports.global:getAdminTitle(
 				local targetPlayerName = getPlayerName(targetPlayer)
 				local logged = getElementData(targetPlayer, "loggedin")
 				

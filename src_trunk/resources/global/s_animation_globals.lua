@@ -8,7 +8,6 @@ function applyAnimation(thePlayer, block, name, animtime, loop, updatePosition, 
 		if getElementData(thePlayer, "injuriedanimation") or ( not forced and getElementData(thePlayer, "forcedanimation") ) then
 			return false
 		end
-		removeAnimation(thePlayer)
 		
 		toggleAllControls(thePlayer, false, true, false)
 		setElementData(thePlayer, "forcedanimation", forced)

@@ -556,14 +556,13 @@ weaponmodels = { [1]=331, [2]=333, [3]=326, [4]=335, [5]=336, [6]=337, [7]=338, 
 function dropItem(itemID, x, y, z, ammo, keepammo)
 	if isPedDead(source) then return end
 	
-	local yearday = getRealTime().yearday
 	local interior = getElementInterior(source)
 	local dimension = getElementDimension(source)
 	
 	if not ammo then
 		local itemSlot = itemID
 		local itemID, itemValue = unpack( getItems( source )[ itemSlot ] )
-		local insert = mysql_query(handler, "INSERT INTO worlditems SET itemid='" .. itemID .. "', itemvalue='" .. mysql_escape_string(handler, itemValue) .. "', yearday = " .. yearday .. ", x = " .. x .. ", y = " .. y .. ", z= " .. z+0.3 .. ", dimension = " .. dimension .. ", interior = " .. interior)
+		local insert = mysql_query(handler, "INSERT INTO worlditems SET itemid='" .. itemID .. "', itemvalue='" .. mysql_escape_string(handler, itemValue) .. "', creationdate = NOW(), x = " .. x .. ", y = " .. y .. ", z= " .. z+0.3 .. ", dimension = " .. dimension .. ", interior = " .. interior)
 		if insert then
 			local id = mysql_insert_id(handler)
 			mysql_free_result(insert)
@@ -655,7 +654,7 @@ function dropItem(itemID, x, y, z, ammo, keepammo)
 				setPedArmor(source, 0)
 			end
 			
-			local query = mysql_query(handler, "INSERT INTO worlditems SET itemid=" .. -itemID .. ", itemvalue=" .. ammo .. ", yearday=" .. yearday .. ", x=" .. x .. ", y=" .. y .. ", z=" .. z+0.1 .. ", dimension=" .. dimension .. ", interior=" .. interior)
+			local query = mysql_query(handler, "INSERT INTO worlditems SET itemid=" .. -itemID .. ", itemvalue=" .. ammo .. ", creationdate=NOW(), x=" .. x .. ", y=" .. y .. ", z=" .. z+0.1 .. ", dimension=" .. dimension .. ", interior=" .. interior)
 			if query then
 				local id = mysql_insert_id(handler)
 				mysql_free_result(query)
@@ -699,18 +698,9 @@ addEvent("dropItem", true)
 addEventHandler("dropItem", getRootElement(), dropItem)
 
 function loadWorldItems(res)
-	local yearday = getRealTime().yearday
-	
-	-- new year
-	local query = mysql_query( handler, "UPDATE worlditems SET yearday = " .. yearday .. " WHERE yearday > " .. yearday )
-	if query then
-		mysql_free_result( query )
-	else
-		outputDebugString( mysql_error( handler ) )
-	end
 	
 	-- delete items too old
-	local query = mysql_query( handler, "DELETE FROM worlditems WHERE " .. ( yearday - 7 ) .. " > yearday " )
+	local query = mysql_query( handler, "DELETE FROM worlditems WHERE DATEDIFF(creationdate, NOW()) > 7 " )
 	if query then
 		mysql_free_result( query )
 	else

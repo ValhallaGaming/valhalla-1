@@ -55,7 +55,7 @@ function toggleFriends(source)
 			local accid = tonumber(getElementData(source, "gameaccountid"))
 			
 			-- load friends list
-			local result = mysql_query( handler, "SELECT f.friend, a.username, a.friendsmessage, a.yearday, a.year, a.country, a.os, ( SELECT COUNT(*) FROM achievements b WHERE b.account = a.id ) FROM friends f LEFT JOIN accounts a ON f.friend = a.id WHERE f.id = " .. accid .. " ORDER BY a.year, a.yearday DESC" )
+			local result = mysql_query( handler, "SELECT f.friend, a.username, a.friendsmessage, DATEDIFF(a.lastlogin, NOW()), a.country, a.os, ( SELECT COUNT(*) FROM achievements b WHERE b.account = a.id ) FROM friends f LEFT JOIN accounts a ON f.friend = a.id WHERE f.id = " .. accid .. " ORDER BY DATEDIFF(a.lastlogin, NOW()) DESC" )
 			if result then
 				local friends = { }
 				for result, row in mysql_rows(result) do
@@ -70,8 +70,7 @@ function toggleFriends(source)
 						local years = (1900+time.year)
 						local yearday = time.yearday
 
-						local fyearday = tonumber( row[4] ) -- YEAR DAY
-						local fyear = tonumber( row[5] ) -- YEAR
+						local timeoffline = tonumber( row[4] ) -- time offline
 						
 						local player = nil
 						for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
@@ -84,18 +83,18 @@ function toggleFriends(source)
 						local state = "Offline"
 						
 						if player then
-							table.insert( friends, 1, { id, account, row[3], row[6], player, row[7], tonumber( row[8] ) } )
+							table.insert( friends, 1, { id, account, row[3], row[5], player, row[6], tonumber( row[7] ) } )
 						else
-							if years ~= fyear then
-								state = "Last Seen: Last Year"
-							elseif yearday == fyearday then
+							if not timeoffline then
+								state = "Last Seen: Never"
+							elseif timeoffline == 0 then
 								state = "Last Seen: Today"
-							elseif yearday - fyearday == 1 then
+							elseif timeoffline == 1 then
 								state = "Last Seen: Yesterday"
 							else
-								state = "Last Seen: " .. yearday - fyearday .. " days ago"
+								state = "Last Seen: " .. timeoffline .. " days ago"
 							end
-							table.insert( friends, { id, account, row[3], row[6], state, row[7], tonumber( row[8] ) } )
+							table.insert( friends, { id, account, row[3], row[5], state, row[6], tonumber( row[7] ) } )
 						end
 					end
 				end
@@ -116,7 +115,7 @@ function toggleFriends(source)
 				triggerClientEvent( source, "showFriendsList", source, friends, friendsmessage )
 				setElementData(source, "friends.visible", 1)
 			else
-				outputDebugScript( "Friends load failed: " .. mysql_error(handler) )
+				outputDebugString( "Friends load failed: " .. mysql_error(handler) )
 				outputChatBox("Error 600000 - Could not retrieve friends list.", source, 255, 0, 0)
 			end
 		else

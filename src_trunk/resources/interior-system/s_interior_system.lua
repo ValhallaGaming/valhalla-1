@@ -826,7 +826,7 @@ function setPlayerInsideInterior(thePickup, thePlayer)
 				mysql_free_result(result)
 			end
 
-			triggerClientEvent(thePlayer, "displayInteriorName", thePlayer, name, ownerName, inttype, cost)
+			triggerClientEvent(thePlayer, "displayInteriorName", thePlayer, name, ownerName, inttype, cost, getElementData( thePickup, "fee" ))
 
 			playSoundFrontEnd(thePlayer, 40)
 		end

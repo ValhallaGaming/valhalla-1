@@ -6,7 +6,13 @@ addEventHandler( "onClientPreRender", getRootElement(),
 		if getControlState( "sprint" ) or down > 0 then
 			run = run + slice
 			if run >= 20000 then
-				exports.global:applyAnimation(getLocalPlayer(), "FAT", "idle_tired", 5000, true, false, true)
+				if isPedOnGround( getLocalPlayer( ) ) then
+					exports.global:applyAnimation(getLocalPlayer(), "FAT", "idle_tired", 5000, true, false, true)
+					run = 19000
+				else
+					toggleControl( 'sprint', false )
+					setTimer( toggleControl, 5000, 1, 'sprint', true )
+				end
 			end
 			if not getControlState( "sprint" ) then
 				down = math.max( 0, down - slice )

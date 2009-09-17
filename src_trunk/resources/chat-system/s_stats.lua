@@ -68,6 +68,6 @@ function showStats(thePlayer, commandName, targetPlayerName)
 	outputChatBox("Vehicles (" .. numcars .. "): " .. string.sub(carids, 1, string.len(carids)-2), showPlayer, 255, 194, 14)
 	outputChatBox("Properties (" .. numproperties .. "): " .. string.sub(properties, 1, string.len(properties)-2), showPlayer, 255, 194, 14)
 	outputChatBox("Time spent on this character: " .. hoursplayed .. " hours.", showPlayer, 255, 194, 14)
-	outputChatBox("~-~-~-~-~-~-~-~-~-~-~-~-~-~-~~-~-~-~-~-~-~-~-~-~-~-~-~-~-~", showPlayer, 255, 194, 14)
+	outputChatBox("~-~-~-~-~-~-~-~-~-~-~-~-~-~-~~-~", showPlayer, 255, 194, 14)
 end
 addCommandHandler("stats", showStats, false, false)

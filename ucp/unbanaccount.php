@@ -203,7 +203,7 @@ a:active {
 
 								try
 								{
-									$mtaServer = new mta( "localhost", 22005, "debugger", "186dcdfaea14f0767c88f199a15278a1" ); // 67.210.235.106
+									$mtaServer = new mta( "67.210.235.106", 22005, "debugger", "186dcdfaea14f0767c88f199a15278a1" );
 									
 									if ( $mtaServer )
 									{

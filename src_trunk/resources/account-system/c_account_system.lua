@@ -1332,21 +1332,20 @@ function showCharacterUI(accounts, firstTime)
 		local factionName = accounts[key][7]
 		local factionRank = accounts[key][8]
 		local skinID = tostring(accounts[key][9])
-		local charyearday = tonumber(accounts[key][10])
-		local charyear = tonumber(accounts[key][11])
+		--local charyearday = tonumber(accounts[key][10])
+		--local charyear = tonumber(accounts[key][11])
+		local difference = tonumber(accounts[key][10])
 		local login = ""
 		
 		-- Compare the TIME
-		local time = getRealTime()
-		local year = 1900+time.year
-		local yearday = time.yearday
-		
-		if (charyearday==999) then
+		--local time = getRealTime()
+		--local year = 1900+time.year
+		--local yearday = time.yearday
+
+		if (not difference) then
 			login = "Never"
-		elseif (year>charyear) then
-			login = "last year"
 		else
-			local difference = yearday - charyearday
+			--local difference = yearday - charyearday
 			
 			if (difference==0) then
 				login = "Today"

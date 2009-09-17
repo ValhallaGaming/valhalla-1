@@ -897,7 +897,7 @@ function sendAccounts(thePlayer, id, isChangeChar)
 	exports.global:takeAllWeapons(thePlayer)
 	local accounts = { }
 	
-	local result = mysql_query(handler, "SELECT id, charactername, cked, lastarea, age, gender, faction_id, faction_rank, skin, yearday, year FROM characters WHERE account='" .. id .. "'")
+	local result = mysql_query(handler, "SELECT id, charactername, cked, lastarea, age, gender, faction_id, faction_rank, skin, DATEDIFF(lastlogin, NOW()) FROM characters WHERE account='" .. id .. "'")
 	
 	if (mysql_num_rows(result)>0) then
 		if (isChangeChar) then
@@ -941,7 +941,6 @@ function sendAccounts(thePlayer, id, isChangeChar)
 			end
 			accounts[i][9] = mysql_result(result, i, 9)
 			accounts[i][10] = mysql_result(result, i, 10)
-			accounts[i][11] = mysql_result(result, i, 11)
 			i = i + 1
 		end
 	end

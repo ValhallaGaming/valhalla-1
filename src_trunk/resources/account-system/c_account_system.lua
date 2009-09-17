@@ -947,6 +947,7 @@ function createMainUI(res, isChangeAccount)
 				outputChatBox("WARNING: You are running on a low resolution. We recommend atleast 1024x768.", 255, 0, 0)
 			end
 			
+			--[[
 			local version = tonumber(string.sub(getVersion().type, 10, string.len(getVersion().type)))
 			if (getVersion().type~="Custom" and getVersion().type~="Release") and sversion then
 				if (version~=nil) then
@@ -959,6 +960,7 @@ function createMainUI(res, isChangeAccount)
 					end
 				end
 			end
+			]]--
 				
 			tabPanelMain = guiCreateTabPanel(x, y, width, height, false)
 			

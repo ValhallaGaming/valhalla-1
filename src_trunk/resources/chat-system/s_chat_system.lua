@@ -65,6 +65,8 @@ function advertMessage(thePlayer, commandName, showNumber, ...)
 	if (logged==1) then
 		if not (...) or not (showNumber) then
 			outputChatBox("SYNTAX: /" .. commandName .. " [Show Phone Number 0/1] [Message]", thePlayer, 255, 194, 14)
+		elseif getElementData(thePlayer, "adminjail") == 1 then
+			outputChatBox("You cannot advertise in jail.", thePlayer, 255, 0, 0)
 		elseif getElementData(thePlayer, "alcohollevel") and getElementData(thePlayer, "alcohollevel") ~= 0 then
 			outputChatBox("You are too drunk to advertise!", thePlayer, 255, 0, 0)
 		else

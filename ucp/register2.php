@@ -4,17 +4,7 @@
 		
 	if (isset($_COOKIE["username"]) && isset($_COOKIE["password"]) && isset($_COOKIE["uid"]))
 		header('Location: main.php');
-?>
-
-<?php include("config.php"); ?>
-
-<html>
-	<head>
-		<title>ValhallaGaming :: User Control Panel</title>
-	</head>
-	
-	<body>
-	<?php
+?><?php include("config.php"); ?><?php
 		function encryptSerial($str)
 		{
 			$hash = md5($str);
@@ -86,5 +76,11 @@
 			}
 		}
 	?>
+<html>
+	<head>
+		<title>ValhallaGaming :: User Control Panel</title>
+	</head>
+	
+	<body>
 	</body>
 </html>

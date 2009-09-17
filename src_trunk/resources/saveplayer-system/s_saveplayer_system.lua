@@ -191,14 +191,13 @@ function savePlayer(reason, player)
 		end
 		
 		local update = mysql_query(handler, "UPDATE characters SET casualskin='" .. casualskin .. "', x='" .. x .. "', y='" .. y .. "', z='" .. z .. "', rotation='" .. rot .. "', health='" .. health .. "', armor='" .. armor .. "', skin='" .. skin .. "', dimension_id='" .. dimension .. "', interior_id='" .. interior .. "', money='" .. money .. "', cuffed='" .. cuffed .. "', radiochannel='" .. radiochannel .. "', duty='" .. duty .. "', fightstyle='" .. fightstyle .. "', lastlogin=NOW(), lastarea='" .. zone .. "', bankmoney='" .. bankmoney .. "', tag='" .. tag .. "', hoursplayed='" .. hoursplayed .. "', timeinserver='" .. timeinserver .. "', restrainedobj='" .. restrainedobj .. "', restrainedby='" .. restrainedby .. "', dutyskin='" .. dutyskin .. "', job='" .. job .. "', blindfold='" .. blindfold .. "', lang1='" .. lang1 .. "', lang1skill='" .. lang1skill .. "', lang2='" .. lang2 .. "', lang2skill='" .. lang2skill .. "', lang3='" .. lang3 .. "', lang3skill='" .. lang3skill .. "', currLang='" .. currentLanguage .. "' WHERE charactername='" .. username .. "'")
-		local update2 = mysql_query(handler, "UPDATE accounts SET muted='" .. muted .. "', hiddenadmin='" .. hiddenAdmin .. "', adminduty='" .. adminduty .. "', globalooc='" .. globalooc .. "', blur='" .. blur .. "', adminreports='" .. adminreports .. "', pmblocked='" .. pmblocked .. "', warns='" .. warns .. "', chatbubbles='" .. chatbubbles .. "' WHERE username='" .. tostring(safegameAccountUsername) .. "'")
-		
 		if (update) then
 			mysql_free_result(update)
 		else
 			outputDebugString( "Saveplayer Update: " .. mysql_error( handler ) )
 		end
 		
+		local update2 = mysql_query(handler, "UPDATE accounts SET muted='" .. muted .. "', hiddenadmin='" .. hiddenAdmin .. "', adminduty='" .. adminduty .. "', globalooc='" .. globalooc .. "', blur='" .. blur .. "', adminreports='" .. adminreports .. "', pmblocked='" .. pmblocked .. "', warns='" .. warns .. "', chatbubbles='" .. chatbubbles .. "' WHERE username='" .. tostring(safegameAccountUsername) .. "'")
 		if (update2) then
 			mysql_free_result(update2)
 		else

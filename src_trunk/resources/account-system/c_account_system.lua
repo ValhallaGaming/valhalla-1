@@ -976,30 +976,35 @@ function createMainUI(res, isChangeAccount)
 			
 			guiSetAlpha(tabPanelMain, 0)
 			
-			lRegUsername = guiCreateLabel(0.2, 0.15, 0.3, 0.1, "Account Name:", true, tabRegister)
-			lRegUsernameNote = guiCreateLabel(0.225, 0.25, 0.8, 0.2, "NOTE: This is NOT your character's name.", true, tabRegister)
-			guiSetFont(lRegUsernameNote, "default-bold-small")
+			lRegUsername = guiCreateLabel(0.025, 0.15, 0.95, 0.95, "To join this server you must submit an application at: \n\n\nwww.ValhallaGaming.net/mtaucp.\n\n\n We aim to respond to all applications within a few hours. \n\n This helps us pick out undesirable players such as Deathmatchers.", true, tabRegister)
+			--lRegUsernameNote = guiCreateLabel(0.225, 0.25, 0.8, 0.2, "NOTE: This is NOT your character's name.", true, tabRegister)
+			guiLabelSetHorizontalAlign(lRegUsername, "center")
+			guiSetFont(lRegUsername, "default-bold-small")
 			
-			tRegUsername = guiCreateEdit(0.425, 0.15, 0.3, 0.1, "Memorable Name", true, tabRegister)
-			guiEditSetMaxLength(tRegUsername, 16)
+			--lRegUsername = guiCreateLabel(0.2, 0.15, 0.3, 0.1, "Account Name:", true, tabRegister)
+			--lRegUsernameNote = guiCreateLabel(0.225, 0.25, 0.8, 0.2, "NOTE: This is NOT your character's name.", true, tabRegister)
+			--guiSetFont(lRegUsernameNote, "default-bold-small")
 			
-			lRegPassword = guiCreateLabel(0.15, 0.45, 0.3, 0.1, "Account Password:", true, tabRegister)
-			tRegPassword = guiCreateEdit(0.425, 0.45, 0.3, 0.1, "password", true, tabRegister)
-			guiEditSetMasked(tRegPassword, true)
-			guiEditSetMaxLength(tRegPassword, 29)
+			--tRegUsername = guiCreateEdit(0.425, 0.15, 0.3, 0.1, "Memorable Name", true, tabRegister)
+			--guiEditSetMaxLength(tRegUsername, 16)
 			
-			lRegPassword2 = guiCreateLabel(0.165, 0.575, 0.3, 0.1, "Confirm Password:", true, tabRegister)
-			tRegPassword2 = guiCreateEdit(0.425, 0.575, 0.3, 0.1, "password", true, tabRegister)
-			guiEditSetMasked(tRegPassword2, true)
-			guiEditSetMaxLength(tRegPassword2, 29)
+			--lRegPassword = guiCreateLabel(0.15, 0.45, 0.3, 0.1, "Account Password:", true, tabRegister)
+			--tRegPassword = guiCreateEdit(0.425, 0.45, 0.3, 0.1, "password", true, tabRegister)
+			--guiEditSetMasked(tRegPassword, true)
+			--guiEditSetMaxLength(tRegPassword, 29)
 			
-			bRegister = guiCreateButton(0.25, 0.75, 0.5, 0.2, "Register", true, tabRegister)
-			addEventHandler("onClientGUIClick", bRegister, validateDetails, false)
+			--lRegPassword2 = guiCreateLabel(0.165, 0.575, 0.3, 0.1, "Confirm Password:", true, tabRegister)
+			--tRegPassword2 = guiCreateEdit(0.425, 0.575, 0.3, 0.1, "password", true, tabRegister)
+			--guiEditSetMasked(tRegPassword2, true)
+			--guiEditSetMaxLength(tRegPassword2, 29)
+			
+			--bRegister = guiCreateButton(0.25, 0.75, 0.5, 0.2, "Register", true, tabRegister)
+			--addEventHandler("onClientGUIClick", bRegister, validateDetails, false)
 			
 			-- LOGIN
-			lLogUsername = guiCreateLabel(0.2, 0.2, 0.3, 0.1, "Account Name:", true, tabLogin)
-			lLogUsernameNote = guiCreateLabel(0.225, 0.3, 0.8, 0.2, "NOTE: This is NOT your character's name.", true, tabLogin)
-			guiSetFont(lLogUsernameNote, "default-bold-small")
+			--lLogUsername = guiCreateLabel(0.2, 0.2, 0.3, 0.1, "Account Name:", true, tabLogin)
+			--lLogUsernameNote = guiCreateLabel(0.225, 0.3, 0.8, 0.2, "NOTE: This is NOT your character's name.", true, tabLogin)
+			--guiSetFont(lLogUsernameNote, "default-bold-small")
 			
 			
 			tLogUsername = guiCreateEdit(0.425, 0.2, 0.3, 0.1, "", true, tabLogin)

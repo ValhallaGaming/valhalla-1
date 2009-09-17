@@ -77,7 +77,7 @@ end
 function takeMoney(thePlayer, amount, rest)
 	amount = tonumber( amount ) or 0
 	if amount == 0 then
-		return true
+		return true, 0
 	elseif thePlayer and isElement(thePlayer) and amount > 0 then
 		amount = math.ceil( amount )
 		
@@ -86,7 +86,9 @@ function takeMoney(thePlayer, amount, rest)
 			amount = money
 		end
 		
-		if hasMoney(thePlayer, amount) then
+		if amount == 0 then
+			return true, 0
+		elseif hasMoney(thePlayer, amount) then
 			setElementData(thePlayer, "money", money - amount )
 			if getElementType(thePlayer) == "player" then
 				mysql_free_result( mysql_query( handler, "UPDATE characters SET money = money - " .. amount .. " WHERE id = " .. getElementData( thePlayer, "dbid" ) ) )
@@ -97,7 +99,7 @@ function takeMoney(thePlayer, amount, rest)
 			return true, amount
 		end
 	end
-	return false
+	return false, 0
 end
 
 function setMoney(thePlayer, amount)
@@ -119,7 +121,7 @@ end
 
 function hasMoney(thePlayer, amount)
 	amount = tonumber( amount ) or 0
-	if thePlayer and isElement(thePlayer) and amount > 0 then
+	if thePlayer and isElement(thePlayer) and amount >= 0 then
 		amount = math.floor( amount )
 		
 		return getMoney(thePlayer) >= amount

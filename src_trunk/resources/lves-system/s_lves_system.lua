@@ -34,9 +34,9 @@ addEventHandler("onPlayerWasted", getRootElement(), playerDeath)
 
 function respawnPlayer(thePlayer)
 	if (isElement(thePlayer)) then
-		local cost = math.random(150, 300)
+		local cost = 0
 		if not exports.global:isPlayerSilverDonator(thePlayer) then
-			exports.global:takeMoney(thePlayer, cost, true)
+			_, cost = exports.global:takeMoney(thePlayer, math.random(150, 300), true)
 		end
 		
 		local tax = exports.global:getTaxAmount()

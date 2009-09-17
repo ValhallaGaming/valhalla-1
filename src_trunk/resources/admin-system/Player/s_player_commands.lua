@@ -341,6 +341,7 @@ function forceApplication(thePlayer, commandName, targetPlayer, ...)
 			elseif exports.global:isPlayerAdmin(targetPlayer) then
 				outputChatBox("No.", thePlayer, 255, 0, 0)
 			else
+				local adminTitle = exports.global:getAdminTitle(
 				local targetPlayerName = getPlayerName(targetPlayer)
 				local logged = getElementData(targetPlayer, "loggedin")
 				
@@ -356,6 +357,7 @@ function forceApplication(thePlayer, commandName, targetPlayer, ...)
 					local port = getServerPort()
 					local password = getServerPassword()
 					
+					local adminTitle = exports.global:getPlayerAdminTitle(thePlayer)
 					exports.global:sendMessageToAdmins("AdmCmd: " .. tostring(adminTitle) .. " " .. getPlayerName(thePlayer) .. " sent " .. targetPlayerName .. " back to the application stage.")
 					redirectPlayer(targetPlayer, "67.210.235.106", port, password)
 				end

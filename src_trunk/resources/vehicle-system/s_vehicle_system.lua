@@ -441,18 +441,10 @@ function loadAllVehicles(res)
 			setElementHealth(veh, hp)
 			
 			-- Lock the vehicle if locked
-			if (locked==1) then
-				setVehicleLocked(veh, true)
-			else
-				setVehicleLocked(veh, false)
-			end
+			setVehicleLocked(veh, locked == 1)
 			
 			-- Set the siren status
-			if (sirens==1) then
-				setVehicleSirensOn(veh, true)
-			else
-				setVehicleSirensOn(veh, false)
-			end
+			setVehicleSirensOn(veh, sirens == 1)
 			
 			if (job>0) then
 				toggleVehicleRespawn(veh, true)
@@ -502,15 +494,8 @@ function loadAllVehicles(res)
 				setVehicleOverrideLights(veh, 2)
 			end
 			
-			-- Set the sirens
-			setVehicleSirensOn(veh, false)
-			
 			-- Set the engine
-			if (engine==0) then
-				setVehicleEngineState(veh, false)
-			else
-				setVehicleEngineState(veh, true)
-			end
+			setVehicleEngineState(veh, engine == 1)
 			
 			-- Set the fuel tank non explodable
 			setVehicleFuelTankExplodable(veh, false)
@@ -603,25 +588,21 @@ function vehicleRespawn(exploded)
 end
 addEventHandler("onVehicleRespawn", getRootElement(), vehicleRespawn)
 
-function setEngineStatusOnEnter(thePlayer, seat, jacked)
-	local engine = getElementData(source, "engine")
-	
-	if (seat==0) then
+function setEngineStatusOnEnter(thePlayer, seat)
+	if seat == 0 then
+		local engine = getElementData(source, "engine")
 		local model = getElementModel(source)
 		if not (enginelessVehicle[model]) then
 			if (engine==0) then
-				toggleControl(thePlayer, "accelerate", false)
-				toggleControl(thePlayer, "brake_reverse", false)
-				toggleControl(thePlayer, "vehicle_fire", false)
+				toggleControl(thePlayer, 'brake_reverse', false)
 				setVehicleEngineState(source, false)
 			else
+				toggleControl(thePlayer, 'brake_reverse', true)
 				setVehicleEngineState(source, true)
 			end
 		else
-			toggleControl(thePlayer, "accelerate", true)
-			toggleControl(thePlayer, "brake_reverse", true)
-			toggleControl(thePlayer, "vehicle_fire", true)
-					
+			toggleControl(thePlayer, 'brake_reverse', true)
+			
 			setVehicleEngineState(source, true)
 			setElementData(source, "engine", 1, false)
 		end
@@ -630,9 +611,7 @@ end
 addEventHandler("onVehicleEnter", getRootElement(), setEngineStatusOnEnter)
 
 function vehicleExit(thePlayer, seat)
-	toggleControl(thePlayer, "accelerate", true)
-	toggleControl(thePlayer, "brake_reverse", true)
-	toggleControl(thePlayer, "vehicle_fire", true)
+	toggleControl(thePlayer, 'brake_reverse', true)
 	
 	-- For oldcar
 	local vehid = getElementData(source, "dbid")
@@ -711,48 +690,33 @@ addEventHandler("onPlayerJoin", getRootElement(), bindKeysOnJoin)
 function toggleEngine(source, key, keystate)
 	local veh = getPedOccupiedVehicle(source)
 	local inVehicle = getElementData(source, "realinvehicle")
+	local seat = getPedOccupiedVehicleSeat(source)
 	
-	if (veh) and (inVehicle==1) then
+	if veh and inVehicle == 1 and seat == 0 then
 		local model = getElementModel(veh)
 		if not (enginelessVehicle[model]) then
 			local engine = getElementData(veh, "engine")
-			local fuel = getElementData(veh, "fuel")
-			local seat = getPedOccupiedVehicleSeat(source)
 			
-			-- engine broken
-			local broke = getElementData(veh, "enginebroke")
-			
-			if (broke==1) then
-				exports.global:sendLocalMeAction(source, "attempts to start the engine but fails.")
-				return
-			end
-			
-			if (seat==0) then
-				if (engine==0) and (fuel>0) then
-					-- Bike fix
-					toggleControl(source, "accelerate", true)
-					toggleControl(source, "brake_reverse", true)
-					toggleControl(source, "vehicle_fire", true)
+			if engine == 0 then
+				local fuel = getElementData(veh, "fuel")
+				local broke = getElementData(veh, "enginebroke")
+				if broke == 1 then
+					exports.global:sendLocalMeAction(source, "attempts to start the engine but fails.")
+					outputChatBox("The engine is broken.", source)
+				elseif fuel >= 1 then
+					toggleControl(source, 'brake_reverse', true)
 					
 					setVehicleEngineState(veh, true)
 					setElementData(veh, "engine", 1, false)
-				elseif (engine==0) and (fuel<1) then
-					-- Bike fix
-					toggleControl(source, "accelerate", false)
-					toggleControl(source, "brake_reverse", false)
-					toggleControl(source, "vehicle_fire", false)
-					
+				elseif fuel < 1 then
 					exports.global:sendLocalMeAction(source, "attempts to turn the engine on and fails.")
 					outputChatBox("This vehicle has no fuel.", source)
-				else
-					-- Bike fix
-					toggleControl(source, "accelerate", false)
-					toggleControl(source, "brake_reverse", false)
-					toggleControl(source, "vehicle_fire", false)
-					
-					setVehicleEngineState(veh, false)
-					setElementData(veh, "engine", 0, false)
 				end
+			else
+				toggleControl(source, 'brake_reverse', false)
+				
+				setVehicleEngineState(veh, false)
+				setElementData(veh, "engine", 0, false)
 			end
 		end
 	end
@@ -953,6 +917,12 @@ function doBreakdown()
 		setVehicleDamageProof(source, true)
 		setVehicleEngineState(source, false)
 		setElementData(source, "enginebroke", 1, false)
+		setElementData(source, "engine", 0, false)
+		
+		local player = getVehicleOccupant(source)
+		if player then
+			toggleControl(player, 'brake_reverse', false)
+		end
 	end
 end
 addEventHandler("onVehicleDamage", getRootElement(), doBreakdown)
@@ -1083,7 +1053,7 @@ function fillFuelTank(veh, fuel)
 		outputChatBox("This vehicle is already full.", source)
 	elseif (fuel==0) then
 		outputChatBox("This fuel can is empty.", source, 255, 0, 0)
-	elseif (engine) then
+	elseif (engine==1) then
 		outputChatBox("You can not fuel running vehicles. Please stop the engine first.", source, 255, 0, 0)
 	else
 		local fuelAdded = fuel
@@ -1099,7 +1069,7 @@ function fillFuelTank(veh, fuel)
 		exports.global:giveItem(source, 57, math.ceil(fuel-fuelAdded))
 		
 		setElementData(veh, "fuel", currFuel+fuelAdded)
-		triggerClientEvent(source, "setClientFuel", source, currFuel+fuelAdded)
+		--triggerClientEvent(source, "setClientFuel", source, currFuel+fuelAdded)
 	end
 end
 addEvent("fillFuelTankVehicle", true)
@@ -1229,7 +1199,7 @@ function quitPlayer ( quitReason )
 								if (passenger3 == false) then -- and finally check seat 3
 									lockUnlockOutside(theVehicle)
 									local engine = getElementData(theVehicle, "engine")
-									if (engine) then -- stop the engine when its running
+									if engine == 1 then -- stop the engine when its running
 										setVehicleEngineState(theVehicle, false)
 										setElementData(theVehicle, "engine", 0, false)
 									end

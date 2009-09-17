@@ -51,24 +51,25 @@ function fuelDepleting()
 						
 						local x, y, z = getElementPosition(veh)
 						
-						if (engine==1) and (fuel>0) then
-							distance = getDistanceBetweenPoints2D(x, y, oldx, oldy)
-							-- outputChatBox("distance " .. distance .. "!", v, 255, 0, 0)
-							if (distance==0) then
-								distance = 5  -- fuel leaking away when not moving
+						if engine == 1 then
+							if fuel >= 1 then
+								distance = getDistanceBetweenPoints2D(x, y, oldx, oldy)
+								-- outputChatBox("distance " .. distance .. "!", v, 255, 0, 0)
+								if (distance==0) then
+									distance = 5  -- fuel leaking away when not moving
+								end
+								newFuel = fuel - (distance/200)
+								setElementData(veh, "fuel", newFuel)
+								setElementData(veh, "oldx", x, false)
+								setElementData(veh, "oldy", y, false)
+								setElementData(veh, "oldz", z, false)
+								
+								if newFuel < 1 then
+									setVehicleEngineState(veh, false)
+									setElementData(veh, "engine", 0, false)
+									toggleControl(v, 'brake_reverse', false)
+								end
 							end
-							newFuel = fuel - (distance/200)
-							setElementData(veh, "fuel", newFuel)
-							setElementData(veh, "oldx", x, false)
-							setElementData(veh, "oldy", y, false)
-							setElementData(veh, "oldz", z, false)
-
-							if (newFuel<1) then
-								setVehicleEngineState(veh, false)
-								setElementData(veh, "engine", 0, false)
-							end
-						elseif (tonumber(fuel)<1) then
-							setVehicleEngineState(veh, false)
 						end
 					end
 				end
@@ -88,11 +89,13 @@ function FuelDepetingEmptyVehicles()
 			local driver = getVehicleOccupant(theVehicle)
 			if (driver == false) then
 				local fuel = getElementData(theVehicle, "fuel")
-				local newFuel = fuel - (30/200)
-				setElementData(theVehicle, "fuel", newFuel)
-				if (newFuel<1) then
-					setVehicleEngineState(theVehicle, false)
-					setElementData(theVehicle, "engine", 0, false)
+				if fuel >= 1 then
+					local newFuel = fuel - (30/200)
+					setElementData(theVehicle, "fuel", newFuel)
+					if (newFuel<1) then
+						setVehicleEngineState(theVehicle, false)
+						setElementData(theVehicle, "engine", 0, false)
+					end
 				end
 			end
 		end

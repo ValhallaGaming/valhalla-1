@@ -112,10 +112,10 @@ function registerPlayer(username, password)
 		triggerEvent("onPlayerRegister", source, username, password)
 		
 		-- Get registration time & date
-		local time = getRealTime()
-		local days = time.monthday
-		local months = (time.month+1)
-		local years = (1900+time.year)
+		--local time = getRealTime()
+		--local days = time.monthday
+		--local months = (time.month+1)
+		--local years = (1900+time.year)
 				
 		local registerdate = days .. "/" .. months .. "/" .. years
 		
@@ -128,7 +128,7 @@ function registerPlayer(username, password)
 		local keysalt2 = "securitykey"
 		local securitykey = encryptSerial(keysalt1 .. username .. keysalt2)
 		
-		local result = mysql_query(handler, "INSERT INTO accounts SET username='" .. safeusername .. "', password=MD5('" .. salt .. password .. "'), registerdate='" .. registerdate .. "', lastlogin='" .. registerdate .. "', ip='" .. ip .. "', securitykey='" .. securitykey .. "', country='" .. tostring(country) .. "', friendsmessage='Sample Message'")
+		local result = mysql_query(handler, "INSERT INTO accounts SET username='" .. safeusername .. "', password=MD5('" .. salt .. password .. "'), registerdate=NOW(), lastlogin=NOW(), ip='" .. ip .. "', securitykey='" .. securitykey .. "', country='" .. tostring(country) .. "', friendsmessage='Sample Message'")
 		
 		if (result) then
 			outputChatBox("You have now registered, Thank you for registering.", source, 0, 255, 0)
@@ -475,18 +475,18 @@ function spawnCharacter(charname)
 		end
 		
 		-- LAST LOGIN
-		local time = getRealTime()
-		local days = time.monthday
-		local months = (time.month+1)
-		local years = (1900+time.year)
+		--local time = getRealTime()
+		--local days = time.monthday
+		--local months = (time.month+1)
+		--local years = (1900+time.year)
 				
-		local yearday = time.yearday
+		--local yearday = time.yearday
 
 			
 		local username = getPlayerName(source)
 		local safeusername = mysql_escape_string(handler, username)
 		
-		local update = mysql_query(handler, "UPDATE characters SET year='" .. years .. "', yearday='" .. yearday .. "' WHERE charactername='" .. safeusername .. "'")
+		local update = mysql_query(handler, "UPDATE characters SET lastlogin=NOW() WHERE charactername='" .. safeusername .. "'")
 		
 		if (update) then
 			mysql_free_result(update)
@@ -595,7 +595,7 @@ function spawnCharacter(charname)
 		-- Achievement
 		if not (exports.global:doesPlayerHaveAchievement(source, 38)) then
 			exports.global:givePlayerAchievement(source, 38) -- Welcome to Los Santos
-			--triggerClientEvent(source, "showCityGuide", source)
+			triggerClientEvent(source, "showCityGuide", source)
 		end
 		
 		-- Weapon stats
@@ -607,12 +607,6 @@ function spawnCharacter(charname)
 		setPedStat(source, 77, 999)
 		setPedStat(source, 78, 999)
 		setPedStat(source, 79, 999)
-		
-		-- MTA BETA ONLY
-		--setTimer(giveBetaAchievement, 10000, 1, source)
-		
-		--outputChatBox("Welcome to the MTA 1.0 Beta Test #2.", source, 0, 255, 0)
-		--outputChatBox("Please report any bugs you encounter on http://bugs.multitheftauto.com", source, 0, 255, 0)
 		
 		-- blindfolds
 		if (blindfold==1) then
@@ -801,7 +795,7 @@ function loginPlayer(username, password, operatingsystem)
 				
 				local ip = getPlayerIP(source)
 				
-				local update = mysql_query(handler, "UPDATE accounts SET lastlogin='" .. logindate .. "', year='" .. years .. "', yearday='" .. yearday .. "', ip='" .. ip .. "', country='" .. country .. "', os='" .. operatingsystem .. "' WHERE id='" .. id .. "'")
+				local update = mysql_query(handler, "UPDATE accounts SET lastlogin=NOW(), ip='" .. ip .. "', country='" .. country .. "', os='" .. operatingsystem .. "' WHERE id='" .. id .. "'")
 				
 				if (update) then
 					mysql_free_result(update)

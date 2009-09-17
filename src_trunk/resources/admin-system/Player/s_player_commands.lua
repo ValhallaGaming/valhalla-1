@@ -190,6 +190,8 @@ function infoDisplay(thePlayer)
 		outputChatBox("---[ Ventrilo: 72.37.247.172 Port 3797", getRootElement(), 255, 194, 15)
 		outputChatBox("---[ Forums: www.ValhallaGaming.net/forums", getRootElement(), 255, 194, 15)
 		outputChatBox("---[ IRC: irc.multitheftauto.com #Valhalla", getRootElement(), 255, 194, 15)
+		outputChatBox("---[ UCP: www.ValhallaGaming.net/mtaucp", getRootElement(), 255, 194, 15)
+
 	end
 end
 addCommandHandler("vginfo", infoDisplay)

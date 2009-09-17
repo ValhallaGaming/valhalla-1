@@ -1,3 +1,5 @@
+toggleControl( 'action', false ) -- yay, that key has no purpose either way
+
 local scoreboardRows = {}
 local scoreboardGrid
 local updateInterval = 1000 --ms
@@ -92,6 +94,8 @@ end
 
 function showScoreboardCursor(key,keystate,show)
 	showCursor(show)
+	setControlState( 'fire', false )
+	setControlState( 'weapon_aim', false )
 end
 
 function toggleScoreboard(state)
@@ -101,11 +105,19 @@ function toggleScoreboard(state)
 		updateScoreboard()
 		bindKey("mouse2","down",showScoreboardCursor,true)
 		bindKey("mouse2","up",showScoreboardCursor,false)
+		if isControlEnabled( 'fire' ) then
+			setElementData(getLocalPlayer(), "scoreboard:reload", true)
+			toggleControl( 'fire', false )
+		end
 		guiBringToFront(scoreboardGrid)
 	elseif state == false then
 		showCursor(false)
 		unbindKey("mouse2","down",showScoreboardCursor)
 		unbindKey("mouse2","up",showScoreboardCursor)
+		if getElementData(getLocalPlayer(), "scoreboard:reload") then
+			setElementData(getLocalPlayer(), "scoreboard:reload", false)
+			toggleControl( 'fire', true )
+		end
 	end
 	
 	guiSetVisible(scoreboardGrid,state)

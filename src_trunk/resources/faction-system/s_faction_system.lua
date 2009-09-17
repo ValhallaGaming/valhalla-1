@@ -181,8 +181,7 @@ function showFactionMenu(source)
 						local targetPlayer = getPlayerFromName(tostring(playerName))
 						if (targetPlayer) then
 							memberOnline[i] = true
-							local zone = getElementZoneName(targetPlayer, false)
-							local city = getElementZoneName(targetPlayer, true)
+							local zone, city = exports.global:getElementZoneName(targetPlayer)
 							
 							if(zone~=city) then
 								memberLocation[i] = zone .. ", " .. city

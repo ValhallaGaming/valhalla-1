@@ -1062,3 +1062,8 @@ function setFee( thePlayer, commandName, theFee )
 	end
 end
 addCommandHandler( "setfee", setFee )
+
+function findParent( element, dimension )
+	local dbid, entrance = findProperty( element, dimension )
+	return entrance
+end

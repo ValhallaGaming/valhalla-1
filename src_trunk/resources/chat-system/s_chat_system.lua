@@ -549,10 +549,10 @@ function districtIC(thePlayer, commandName, ...)
 		else
 			local playerName = string.gsub(getPlayerName(thePlayer), "_", " ")
 			local message = table.concat({...}, " ")
-			local zonename = getElementZoneName(thePlayer)
+			local zonename = exports.global:getElementZoneName(thePlayer)
 			
 			for key, value in ipairs(exports.pool:getPoolElementsByType("player")) do
-				local playerzone = getElementZoneName(value)
+				local playerzone = exports.global:getElementZoneName(value)
 				local playerdimension = getElementDimension(value)
 				local playerinterior = getElementInterior(value)
 				

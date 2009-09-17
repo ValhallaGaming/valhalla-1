@@ -184,7 +184,7 @@ function savePlayer(reason, player)
 		if lang3 == 0 then lang3skill = 0 end
 		
 		-- LAST AREA
-		local zone = getElementZoneName(source)
+		local zone = exports.global:getElementZoneName(source)
 		
 		if not (job) then
 			job = 0

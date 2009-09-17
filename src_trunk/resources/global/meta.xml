@@ -98,4 +98,7 @@
 	
 	<script src="nametag_globals.lua" type="server"/>
 	<export function="updateNametagColor" type="server"/>
+	
+	<script src="zone_globals.lua" type="server"/>
+	<export function="getElementZoneName" type="server"/>
 </meta>

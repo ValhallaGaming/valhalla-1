@@ -31,6 +31,7 @@
 	<export function="hasMoney" type="client"/>
 	<export function="getMoney" type="server"/>
 	<export function="getMoney" type="client"/>
+	<export function="checkMoneyHacks" type="server"/>
 	<export function="getTaxAmount" type="server"/>
 	<export function="getIncomeTaxAmount" type="server"/>
 	

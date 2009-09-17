@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 	setcookie("uid", "", time()-3600);
 	setcookie("username", "", time()-3600);
 	setcookie("password", "", time()-3600);

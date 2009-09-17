@@ -1,24 +1,14 @@
-﻿<?php
+<?php
 	if (isset($_COOKIE["username"]) && isset($_COOKIE["password"]) && isset($_COOKIE["uid"]))
 		header('Location: main.php');
-?>
-
-<?php include("config.php"); ?>
-
-<html>
-	<head>
-		<title>ValhallaGaming :: User Control Panel</title>
-	</head>
-	
-	<body>
-	<?php
+		
+		include("config.php");
+		
 		$username = $_POST["username"];
 		$password = $_POST["password"];
 		$salt = "vgrpkeyscotland";
 		$hashpassword = md5($salt . $password);
-		
 		$conn = mysql_pconnect($mysql_host, $mysql_user, $mysql_pass);
-		
 		if (!$conn)
 		{
 			setcookie("uid", "", time()-3600);
@@ -44,10 +34,8 @@
 		{
 			$escUsername = mysql_real_escape_string($username, $conn);
 			$escPassword = mysql_real_escape_string($hashpassword, $conn);
-
 			mysql_select_db("mta", $conn);
 			$result = mysql_query("SELECT id FROM accounts WHERE username='" . $escUsername . "' AND password='" . $escPassword . "' LIMIT 1", $conn);
-
 			if (!$result || mysql_num_rows($result)==0)
 			{
 				setcookie("uid", "", time()-3600);
@@ -65,5 +53,12 @@
 			}
 		}
 	?>
+<html>
+	<head>
+		<title>ValhallaGaming :: User Control Panel</title>
+	</head>
+	
+	<body>
+	
 	</body>
 </html>

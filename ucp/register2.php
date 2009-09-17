@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 	if ( !$_POST["username"] || $_POST["username"] == NULL)
 		header('Location: index.php');
 		

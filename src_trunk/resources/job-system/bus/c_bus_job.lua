@@ -281,7 +281,9 @@ function startEnterBus(thePlayer, seat)
 	if seat == 0 and bus[getElementModel(source)] then
 		if getVehicleController(source) then -- if someone try to jack the driver stop him
 			cancelEvent()
-			outputChatBox("The drivers door is locked.", 255, 0, 0)
+			if thePlayer == getLocalPlayer() then
+				outputChatBox("The drivers door is locked.", 255, 0, 0)
+			end
 		else
 			setVehicleLocked(source, false)
 		end

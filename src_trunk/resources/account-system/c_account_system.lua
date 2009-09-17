@@ -1002,9 +1002,9 @@ function createMainUI(res, isChangeAccount)
 			--addEventHandler("onClientGUIClick", bRegister, validateDetails, false)
 			
 			-- LOGIN
-			--lLogUsername = guiCreateLabel(0.2, 0.2, 0.3, 0.1, "Account Name:", true, tabLogin)
-			--lLogUsernameNote = guiCreateLabel(0.225, 0.3, 0.8, 0.2, "NOTE: This is NOT your character's name.", true, tabLogin)
-			--guiSetFont(lLogUsernameNote, "default-bold-small")
+			lLogUsername = guiCreateLabel(0.2, 0.2, 0.3, 0.1, "Account Name:", true, tabLogin)
+			lLogUsernameNote = guiCreateLabel(0.225, 0.3, 0.8, 0.2, "NOTE: This is NOT your character's name.", true, tabLogin)
+			guiSetFont(lLogUsernameNote, "default-bold-small")
 			
 			
 			tLogUsername = guiCreateEdit(0.425, 0.2, 0.3, 0.1, "", true, tabLogin)

@@ -198,7 +198,7 @@ a:active {
 							{
 								echo "This account can not be deactivated as it is not active.";
 							}
-							elseif ($admin > 6)
+							elseif ($admin > 0)
 							{
 								echo "This account can not be deactivated as it is an administrator account.";
 							}

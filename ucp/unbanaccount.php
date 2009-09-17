@@ -2,9 +2,8 @@
 	if (!isset($_COOKIE["username"]) || !isset($_COOKIE["password"]) || !isset($_COOKIE["uid"]))
 		header('Location: index.php');
 		
-	if (!$_GET["show"] || $_GET["show"] < 1 || !$_GET["show"] > 3)
+	if (!$_GET["id"])
 		header('Location: main.php');
-
 ?>
 
 <?php include("config.php"); ?>
@@ -174,201 +173,60 @@ a:active {
 			<td height="274" class="style14" style="height: 40px; text-align: center; font-family: Verdana; font-size: xx-small;"><table width="1094" height="154" border="1">
 			  <tr>
 			    <td width="15%">&nbsp;</td>
-			    <td width="70%"><table width="389" border="1" align="center">
+			    <td width="70%"><table width="389" border="0" align="center">
+			      <tr>
+			        <td width="383" colspan="2"><p>
                     
-                    <?php
-						if ( $_GET["show"] == 1 ) // show new applications
+                    <?php 
+						$conn = mysql_pconnect($mysql_host, $mysql_user, $mysql_pass);
+						$userid = $_GET["id"];
+						
+						mysql_select_db("mta", $conn);
+						$result = mysql_query("SELECT username, banned FROM accounts WHERE id='" . $userid . "' LIMIT 1", $conn);
+					
+						if (!$result || mysql_num_rows($result)==0)
+						{	
+							echo "Account with ID: " . $userid . " was not found.";
+						}
+						else
 						{
-							echo "<center>Older applications are shown at the top, please resolve them first.</center>";
-							$query = mysql_query("SELECT id, username, appdatetime, DATEDIFF(appdatetime, NOW()) FROM accounts WHERE appstate=1 ORDER BY appdatetime ASC", $conn);
+							$tusername = mysql_result($result, 0, 0);
+							$banned = mysql_result($result, 0, 1);
 							
-							echo "<tr>";
-							echo "<td align='center'><b>Username</b></td>";
-							echo "<td align='center'><b>Date & Time</b></td>";
-							echo "<td align='center'><b>Action</b></td>";
-							echo "</tr>";
-							
-							if (mysql_num_rows($query) > 0)
+							if ($banned != 1)
 							{
-								for ( $i = 0; $i < mysql_num_rows($query); $i++ )
-								{
-									$id = mysql_result($query, $i, 0);
-									$username = mysql_result($query, $i, 1);
-									$appdatetime = mysql_result($query, $i, 2);
-									$diff = mysql_result($query, $i, 3);
-									
-									echo "<tr>";
-									echo "<td align='left'>" . $username . "</td>";
-									echo "<td align='left'>" . $appdatetime . " (" . $diff . " Days Old)</td>";
-									echo "<td align='left'><a href='reviewapp.php?id=" . $id . "'>Review ></a></td>";
-									echo "</tr>";
-								}
-								mysql_free_result($query);
+								echo "This account is not banned.";
 							}
 							else
 							{
-								echo "<tr>";
-								echo "<td align='left'>None.</td>";
-								echo "<td align='left'>None.</td>";
-								echo "<td align='left'>None.</td>";
-								echo "</tr>";
-							}
-						}
-						elseif ( $_GET["show"] == 2 ) // show declined applications
-						{
-							echo "<center>Declined Applications:</center>";
-							$query = mysql_query("SELECT id, username, appdatetime, DATEDIFF(appdatetime, NOW()) FROM accounts WHERE appstate=2 ORDER BY appdatetime ASC", $conn);
-							
-							echo "<tr>";
-							echo "<td align='center'><b>Username</b></td>";
-							echo "<td align='center'><b>Date & Time</b></td>";
-							echo "<td align='center'><b>Action</b></td>";
-							echo "</tr>";
-							
-							if (mysql_num_rows($query) > 0)
-							{
-								for ( $i = 0; $i < mysql_num_rows($query); $i++ )
-								{
-									$id = mysql_result($query, $i, 0);
-									$username = mysql_result($query, $i, 1);
-									$appdatetime = mysql_result($query, $i, 2);
-									$diff = mysql_result($query, $i, 3);
-									
-									echo "<tr>";
-									echo "<td align='left'>" . $username . "</td>";
-									echo "<td align='left'>" . $appdatetime . " (" . $diff . " Days Old)</td>";
-									echo "<td align='left'><a href='reviewapp.php?id=" . $id . "'>View ></a></td>";
-									echo "</tr>";
-								}
-								mysql_free_result($query);
-							}
-							else
-							{
-								echo "<tr>";
-								echo "<td align='left'>None.</td>";
-								echo "<td align='left'>None.</td>";
-								echo "<td align='left'>None.</td>";
-								echo "</tr>";
-							}
-						}
-						elseif ( $_GET["show"] == 3 ) // show accounts without applications
-						{
-							echo "<center>Accounts without Applications:<br><br>Only delete these if you KNOW they are inactive and are not just being forced to retake the applications.</center>";
-							$query = mysql_query("SELECT id, username, registerdate FROM accounts WHERE appstate=0 ORDER BY appdatetime ASC", $conn);
-							
-							echo "<tr>";
-							echo "<td align='center'><b>Username</b></td>";
-							echo "<td align='center'><b>Registration Date</b></td>";
-							echo "<td align='center'><b>Action</b></td>";
-							echo "</tr>";
-							
-							//$ids = array();
-							
-							if (mysql_num_rows($query) > 0)
-							{
-								for ( $i = 0; $i < mysql_num_rows($query); $i++ )
-								{
-									$id = mysql_result($query, $i, 0);
-									$username = mysql_result($query, $i, 1);
-									$registerdate = mysql_result($query, $i, 2);
-									//$ids[$i] = $id;
-									
-									echo "<tr>";
-									echo "<td align='left'>" . $username . "</td>";
-									echo "<td align='left'>" . $registerdate . "</td>";
-									echo "<td align='left'><a href='deleteaccount.php?id=" . $id . "'>Delete Account ></a></td>";
-									echo "</tr>";
-								}
-								mysql_free_result($query);
-							}
-							else
-							{
-								echo "<tr>";
-								echo "<td align='left'>None.</td>";
-								echo "<td align='left'>None.</td>";
-								echo "<td align='left'>None.</td>";
-								echo "</tr>";
-							}
-						}
-						elseif ( $_GET["show"] == 4 ) // show accounts with successful applications
-						{
-							echo "<center>Active Accounts:</center>";
-							$query = mysql_query("SELECT id, username, appdatetime, DATEDIFF(appdatetime, NOW()) FROM accounts WHERE appstate=3 ORDER BY appdatetime ASC", $conn);
-							
-							echo "<tr>";
-							echo "<td align='center'><b>Username</b></td>";
-							echo "<td align='center'><b>Application Date</b></td>";
-							echo "<td align='center'><b>Action</b></td>";
-							echo "</tr>";
+								include( "sdk/mta_sdk.php" );
 
-							if (mysql_num_rows($query) > 0)
-							{
-								for ( $i = 0; $i < mysql_num_rows($query); $i++ )
+								try
 								{
-									$id = mysql_result($query, $i, 0);
-									$username = mysql_result($query, $i, 1);
-									$registerdate = mysql_result($query, $i, 2);
-									$diff = mysql_result($query, $i, 3);
+									$mtaServer = new mta( "localhost", 22005, "debugger", "186dcdfaea14f0767c88f199a15278a1" ); // 67.210.235.106
 									
-									echo "<tr>";
-									echo "<td align='left'>" . $username . "</td>";
-									echo "<td align='left'>" . $registerdate . " (" . $diff . " Days Ago)</td>";
-									echo "<td align='left'><a href='deactivateaccount.php?id=" . $id . "'>Deactivate Account ></a></td>";
-									echo "</tr>";
+									if ( $mtaServer )
+									{
+										$resource = $mtaServer->getResource ( "admin-system" );
+										$resource->call ( "remoteUnban", $username, $tusername );
+										mysql_query("UPDATE accounts SET banned=0 WHERE id='" . $userid . "' LIMIT 1", $conn);
+										echo "'" . $tusername . "' is now unbanned.";
+									}
+									else
+									{
+										echo "The server is currently unavailable to unban someone.";
+									}
 								}
-								mysql_free_result($query);
-							}
-							else
-							{
-								echo "<tr>";
-								echo "<td align='left'>None.</td>";
-								echo "<td align='left'>None.</td>";
-								echo "<td align='left'>None.</td>";
-								echo "</tr>";
-							}
-						}
-						elseif ( $_GET["show"] == 5 ) // show banned accounts
-						{
-							echo "<center>Banned Accounts:</center>";
-							$query = mysql_query("SELECT id, username, banned_by, banned_reason FROM accounts WHERE banned>0", $conn);
-							
-							echo "<tr>";
-							echo "<td align='center'><b>Username</b></td>";
-							echo "<td align='center'><b>Banned By</b></td>";
-							echo "<td align='center'><b>Reason</b></td>";
-							echo "<td align='center'><b>Action</b></td>";
-							echo "</tr>";
-
-							if (mysql_num_rows($query) > 0)
-							{
-								for ( $i = 0; $i < mysql_num_rows($query); $i++ )
+								catch(Exception $e)
 								{
-									$id = mysql_result($query, $i, 0);
-									$username = mysql_result($query, $i, 1);
-									$banned_by = mysql_result($query, $i, 2);
-									$banned_reason = mysql_result($query, $i, 3);
-									
-									echo "<tr>";
-									echo "<td align='left'>" . $username . "</td>";
-									echo "<td align='left'>" . $banned_by . "</td>";
-									echo "<td align='left'>" . $banned_reason . "</td>";
-									echo "<td align='left'><a href='unbanaccount.php?id=" . $id . "'>Unban Account ></a></td>";
-									echo "</tr>";
+									echo "The server is currently unavailable to unban someone.";
 								}
-								mysql_free_result($query);
-							}
-							else
-							{
-								echo "<tr>";
-								echo "<td align='left'>None.</td>";
-								echo "<td align='left'>None.</td>";
-								echo "<td align='left'>None.</td>";
-								echo "</tr>";
 							}
 						}
 					?>
-                    
                     &nbsp;</p>
+<p><strong><a href="main.php">&lt; Go Home</a></strong></p></td>
+		          </tr>
 		        </table></td>
 			    <td width="15%">&nbsp;</td>
 		      </tr>

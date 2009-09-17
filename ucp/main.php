@@ -217,6 +217,11 @@ a:active {
 						$result = mysql_query("SELECT COUNT(*) FROM accounts WHERE appstate=0");
 						$num = mysql_result($result, 0, 0);
 						echo "<font size='1'><a href='applications.php?show=3'>> Application-less Accounts (" . $num . ")</a></font><br>";
+						
+						// bans
+						$result = mysql_query("SELECT COUNT(*) FROM accounts WHERE banned>0");
+						$num = mysql_result($result, 0, 0);
+						echo "<font size='1'><a href='applications.php?show=5'>> Banned Accounts (" . $num . ")</a></font><br>";
 					}
 				?>
                 

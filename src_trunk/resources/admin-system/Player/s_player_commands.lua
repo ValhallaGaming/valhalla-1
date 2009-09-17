@@ -329,15 +329,17 @@ end
 addCommandHandler("disarm", disarmPlayer, false, false)
 
 -- forceapp
-function forceApplication(thePlayer, commandName, targetPlayer, reason)
+function forceApplication(thePlayer, commandName, targetPlayer, ...)
 	if (exports.global:isPlayerAdmin(thePlayer)) then
-		if not (targetPlayer) or not (reason) then
+		if not (targetPlayer) or not (...) then
 			outputChatBox("SYNTAX: /" .. commandName .. " [Player Partial Nick/ID] [Reason]", thePlayer, 255, 194, 14)
 		else
 			local targetPlayer = exports.global:findPlayerByPartialNick(targetPlayer)
 			
 			if not (targetPlayer) then
 				outputChatBox("Player not found or multiple were found.", thePlayer, 255, 0, 0)
+			elseif exports.global:isPlayerAdmin(targetPlayer) then
+				outputChatBox("No.", thePlayer, 255, 0, 0)
 			else
 				local targetPlayerName = getPlayerName(targetPlayer)
 				local logged = getElementData(targetPlayer, "loggedin")
@@ -345,10 +347,10 @@ function forceApplication(thePlayer, commandName, targetPlayer, reason)
 				if (logged==0) then
 					outputChatBox("Player is not logged in.", thePlayer, 255, 0, 0)
 				elseif (logged==1) then
-					
+					local reason = table.concat({...}, " ")
 					local id = getElementData(targetPlayer, "gameaccountid")
 					local username = getElementData(thePlayer, "gameaccountusername")
-					mysql_query(handler, "UPDATE accounts SET appstate = 2, apphandler='" .. username .. "', appreason='" .. reason .. "' WHERE id='" .. id .. "'")
+					mysql_query(handler, "UPDATE accounts SET appstate = 2, apphandler='" .. username .. "', appreason='" .. mysql_escape_string(handler, reason) .. "' WHERE id='" .. id .. "'")
 					outputChatBox(targetPlayerName .. " was forced to re-write their application.", thePlayer, 255, 194, 14)
 					
 					local port = getServerPort()

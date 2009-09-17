@@ -1,4 +1,5 @@
 addEvent("onPlayerInteriorChange", true)
+local intTable = {}
 local safeTable = {}
 
 -- START OF INTERIOR SYSTEM SCRIPT
@@ -115,7 +116,7 @@ function findProperty(thePlayer, dimension)
 	local dbid = dimension or getElementDimension( thePlayer )
 	if dbid > 0 then
 		-- find the entrance and exit
-		local entrance, exit = nil, nil
+--[[		local entrance, exit = nil, nil
 		for key, value in pairs(getElementsByType( "pickup", getResourceRootElement() )) do
 			if getElementData(value, "name") then
 				if getElementData(value, "dbid") == dbid then
@@ -132,6 +133,9 @@ function findProperty(thePlayer, dimension)
 		
 		if entrance then
 			return dbid, entrance, exit, getElementData(entrance,"inttype")
+		end]]
+		if intTable[dbid] then
+			return dbid, unpack( intTable[dbid] )
 		end
 	end
 	return 0
@@ -209,6 +213,7 @@ function publicSellProperty(thePlayer, dbid, showmessages, givemoney)
 
 		destroyElement(entrance)
 		destroyElement(exit)
+		intTable[dbid] = nil
 		
 		reloadOneInterior(dbid, false)
 	else
@@ -312,6 +317,7 @@ function deleteInterior(thePlayer, commandName)
 				-- destroy the entrance and exit
 				destroyElement( entrance )
 				destroyElement( exit )
+				intTable[dbid] = nil
 				
 				local query = mysql_query(handler, "DELETE FROM interiors WHERE id='" .. dbid .. "'")
 				
@@ -337,6 +343,7 @@ function reloadInterior(thePlayer, commandName, interiorID)
 			if dbid ~= 0 then
 				destroyElement(entrance)
 				destroyElement(exit)
+				intTable[dbid] = nil
 				
 				reloadOneInterior(dbid, false)
 				outputChatBox("Reloaded Interior #" .. dbid, thePlayer, 0, 255, 0)
@@ -477,6 +484,8 @@ function reloadOneInterior(id, hasCoroutine, displayircmessage)
 				setElementDimension(tempobject, id)
 				safeTable[id] = tempobject
 			end
+			
+			intTable[id] = { pickup, intpickup }
 		end
 		if displayircmessage then
 			exports.irc:sendMessage("[SCRIPT] Loaded 1 interior (ID: " .. id .. ")")
@@ -666,12 +675,10 @@ function buyInterior(player, pickup, cost, isHouse, isRentable)
 		local inttype = getElementData( pickup, "inttype" )
 		local ix, iy = getElementPosition( pickup )
 		
-		for key, value in ipairs(exports.pool:getPoolElementsByType("pickup")) do
-			local id = tonumber(getElementData(value, "dbid"))
-			if (id==pickupid) then
-				destroyElement(value)
-			end
+		for key, value in pairs( intTable[pickupid] ) do
+			destroyElement(value)
 		end
+		intTable[pickupid] = nil
 		
 		mysql_free_result( mysql_query( handler, "UPDATE interiors SET owner='" .. charid .. "', locked=0 WHERE id='" .. pickupid .. "'") )
 		

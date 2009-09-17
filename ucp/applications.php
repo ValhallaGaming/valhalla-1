@@ -293,11 +293,12 @@ a:active {
 						elseif ( $_GET["show"] == 4 ) // show accounts with successful applications
 						{
 							echo "<center>Active Accounts:</center>";
-							$query = mysql_query("SELECT id, username, appdatetime, DATEDIFF(appdatetime, NOW()) FROM accounts WHERE appstate=3 ORDER BY appdatetime ASC", $conn);
+							$query = mysql_query("SELECT id, username, appdatetime, DATEDIFF(appdatetime, NOW()), apphandler FROM accounts WHERE appstate=3 ORDER BY appdatetime ASC LIMIT 1000", $conn);
 							
 							echo "<tr>";
 							echo "<td align='center'><b>Username</b></td>";
 							echo "<td align='center'><b>Application Date</b></td>";
+							echo "<td align='center'><b>Application Handler</b></td>";
 							echo "<td align='center'><b>Action</b></td>";
 							echo "</tr>";
 
@@ -309,10 +310,12 @@ a:active {
 									$username = mysql_result($query, $i, 1);
 									$registerdate = mysql_result($query, $i, 2);
 									$diff = mysql_result($query, $i, 3);
+									$handler = mysql_result($query, $i, 4);
 									
 									echo "<tr>";
 									echo "<td align='left'>" . $username . "</td>";
 									echo "<td align='left'>" . $registerdate . " (" . $diff . " Days Ago)</td>";
+									echo "<td align='left'>" . $handler . "</td>";
 									echo "<td align='left'><a href='deactivateaccount.php?id=" . $id . "'>Deactivate Account ></a></td>";
 									echo "</tr>";
 								}

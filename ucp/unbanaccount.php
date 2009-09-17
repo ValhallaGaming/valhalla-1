@@ -219,6 +219,7 @@ a:active {
 								}
 								catch(Exception $e)
 								{
+									echo $e;
 									echo "The server is currently unavailable to unban someone.";
 								}
 							}

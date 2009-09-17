@@ -356,6 +356,7 @@ function forceApplication(thePlayer, commandName, targetPlayer, ...)
 					local port = getServerPort()
 					local password = getServerPassword()
 					
+					exports.global:sendMessageToAdmins("AdmCmd: " .. tostring(adminTitle) .. " " .. getPlayerName(thePlayer) .. " sent " .. targetPlayerName .. " back to the application stage.")
 					redirectPlayer(targetPlayer, "67.210.235.106", port, password)
 				end
 			end

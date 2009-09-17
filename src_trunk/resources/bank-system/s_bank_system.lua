@@ -25,6 +25,12 @@ addEventHandler("onResourceStop", getResourceRootElement(getThisResource()), clo
 -- ////////////////////////////////////
 -- //			MYSQL END			 //
 -- ////////////////////////////////////
+addEventHandler( "onResourceStart", getResourceRootElement(),
+	function()
+		-- delete all old wiretransfers
+		mysql_free_result( mysql_query( handler, "DELETE FROM wiretransfers WHERE time < NOW() - INTERVAL 2 WEEK" ) )
+	end
+)
 
 bankPickup = createPickup(2356.2719, 2361.5007, 2022.5257, 3, 1274)
 exports.pool:allocateElement(bankPickup)

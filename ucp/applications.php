@@ -174,7 +174,7 @@ a:active {
 			<td height="274" class="style14" style="height: 40px; text-align: center; font-family: Verdana; font-size: xx-small;"><table width="1094" height="154" border="1">
 			  <tr>
 			    <td width="15%">&nbsp;</td>
-			    <td width="70%"><table width="389" border="1" align="center">
+		      <td width="70%"><table width="389" border="1" align="center">
                     
                     <?php
 						if ( $_GET["show"] == 1 ) // show new applications

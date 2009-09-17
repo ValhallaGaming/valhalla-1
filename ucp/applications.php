@@ -217,11 +217,12 @@ a:active {
 						elseif ( $_GET["show"] == 2 ) // show declined applications
 						{
 							echo "<center>Declined Applications:</center>";
-							$query = mysql_query("SELECT id, username, appdatetime, DATEDIFF(appdatetime, NOW()) FROM accounts WHERE appstate=2 ORDER BY appdatetime ASC", $conn);
+							$query = mysql_query("SELECT id, username, appdatetime, DATEDIFF(appdatetime, NOW()), apphandler FROM accounts WHERE appstate=2 ORDER BY appdatetime ASC", $conn);
 							
 							echo "<tr>";
 							echo "<td align='center'><b>Username</b></td>";
 							echo "<td align='center'><b>Date & Time</b></td>";
+							echo "<td align='center'><b>Application Handler</b></td>";
 							echo "<td align='center'><b>Action</b></td>";
 							echo "</tr>";
 							
@@ -233,10 +234,12 @@ a:active {
 									$username = mysql_result($query, $i, 1);
 									$appdatetime = mysql_result($query, $i, 2);
 									$diff = mysql_result($query, $i, 3);
+									$apphandler = mysql_result($query, $i, 4);
 									
 									echo "<tr>";
 									echo "<td align='left'>" . $username . "</td>";
 									echo "<td align='left'>" . $appdatetime . " (" . $diff . " Days Old)</td>";
+									echo "<td align='left'>" . $apphandler ."</td>";
 									echo "<td align='left'><a href='reviewapp.php?id=" . $id . "'>View ></a></td>";
 									echo "</tr>";
 								}
@@ -245,6 +248,7 @@ a:active {
 							else
 							{
 								echo "<tr>";
+								echo "<td align='left'>None.</td>";
 								echo "<td align='left'>None.</td>";
 								echo "<td align='left'>None.</td>";
 								echo "<td align='left'>None.</td>";

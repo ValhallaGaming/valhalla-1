@@ -63,7 +63,7 @@ function acceptLicense(button, state)
 			end
 			
 			if (license>0) then
-				if not exports.global:hasMoney( licensecost ) then
+				if not exports.global:hasMoney( getLocalPlayer(), licensecost ) then
 					outputChatBox("You cannot afford this license.", 255, 0, 0)
 				else
 					if (license == 1) then

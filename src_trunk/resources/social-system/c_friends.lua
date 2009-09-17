@@ -85,7 +85,17 @@ function showFriendsUI(friends, fmess)
 	end
 	guiSetText(wFriends, "Friends List - " .. online .. "/" .. #friends .. " online")
 	
-	guiSetInputEnabled(true)
+	addEventHandler("onClientGUIClick", wFriends,
+		function( button, state )
+			if button == "left" and state == "up" then
+				if source == tMessage then
+					guiSetInputEnabled(true)
+				else
+					guiSetInputEnabled(false)
+				end
+			end
+		end
+	)
 end
 addEvent("showFriendsList", true)
 addEventHandler("showFriendsList", getRootElement(), showFriendsUI)
@@ -113,6 +123,8 @@ function hideFriendsUI()
 	setElementData(getLocalPlayer(), "friends.visible", 0, true)
 	tFriends = nil
 end
+addEvent("hideFriendsList", true)
+addEventHandler("hideFriendsList", getRootElement(), hideFriendsUI)
 
 function removeFriend(button)
 	if (button=="left") then
@@ -139,7 +151,8 @@ function toggleCursor()
 		showCursor(true)
 	end
 end
-bindKey("m", "down", toggleCursor)
+addCommandHandler("togglecursor", toggleCursor)
+bindKey("m", "down", "togglecursor")
 
 function cursorHide()
 	showCursor(false)

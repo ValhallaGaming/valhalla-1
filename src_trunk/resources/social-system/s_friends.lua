@@ -31,14 +31,14 @@ function bindKeys()
 	local players = exports.pool:getPoolElementsByType("player")
 	for k, arrayPlayer in ipairs(players) do
 		setElementData(arrayPlayer, "friends.visible", 0, false)
-		if not(isKeyBound(arrayPlayer, "o", "down", toggleFriends)) then
-			bindKey(arrayPlayer, "o", "down", toggleFriends)
+		if not(isKeyBound(arrayPlayer, "o", "down", "friends")) then
+			bindKey(arrayPlayer, "o", "down", "friends")
 		end
 	end
 end
 
 function bindKeysOnJoin()
-	bindKey(source, "o", "down", toggleFriends)
+	bindKey(source, "o", "down", "friends")
 	
 	setElementData(source, "friends.visible", 0, false)
 end
@@ -119,9 +119,12 @@ function toggleFriends(source)
 				outputDebugScript( "Friends load failed: " .. mysql_error(handler) )
 				outputChatBox("Error 600000 - Could not retrieve friends list.", source, 255, 0, 0)
 			end
+		else
+			triggerClientEvent( source, "hideFriendsList", source )
 		end
 	end
 end
+addCommandHandler("friends", toggleFriends)
 addEvent("sendFriends", false)
 addEventHandler("sendFriends", getRootElement(), toggleFriends)
 

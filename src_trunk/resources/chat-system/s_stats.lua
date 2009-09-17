@@ -61,6 +61,22 @@ function showStats(thePlayer, commandName, targetPlayerName)
 	
 	local hoursplayed = getElementData(thePlayer, "hoursplayed")
 	
+	local languages = {}
+	for i = 1, 3 do
+		local lang = getElementData(thePlayer, "languages.lang" .. i)
+		if lang and lang ~= 0 then
+			local skill = getElementData(thePlayer, "languages.lang" .. i .. "skill")
+			local langname = exports['language-system']:getLanguageName( lang )
+			if langname then
+				languages[i] = langname .. " (" .. skill .. "%)"
+			else
+				languages[i] = "-"
+			end
+		else
+			languages[i] = "-"
+		end
+	end
+	
 	outputChatBox("~-~-~-~-~-~ " .. getPlayerName(thePlayer) .. " ~-~-~-~-~", showPlayer, 255, 194, 14)
 	outputChatBox("Cell Number: " .. getElementData(thePlayer, "cellnumber"), showPlayer, 255, 194, 14)
 	outputChatBox("Drivers License: " .. carlicense, showPlayer, 255, 194, 14)
@@ -68,6 +84,7 @@ function showStats(thePlayer, commandName, targetPlayerName)
 	outputChatBox("Vehicles (" .. numcars .. "): " .. string.sub(carids, 1, string.len(carids)-2), showPlayer, 255, 194, 14)
 	outputChatBox("Properties (" .. numproperties .. "): " .. string.sub(properties, 1, string.len(properties)-2), showPlayer, 255, 194, 14)
 	outputChatBox("Time spent on this character: " .. hoursplayed .. " hours.", showPlayer, 255, 194, 14)
+	outputChatBox("Languages: " .. table.concat(languages, ", "), showPlayer, 255, 194, 14)
 	outputChatBox("~-~-~-~-~-~-~-~-~-~-~-~-~-~-~~-~", showPlayer, 255, 194, 14)
 end
 addCommandHandler("stats", showStats, false, false)

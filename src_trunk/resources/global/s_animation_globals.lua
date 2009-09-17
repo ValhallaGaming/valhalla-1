@@ -46,6 +46,7 @@ function removeAnimation(thePlayer)
 		removeElementData(thePlayer, "animationt")
 		toggleAllControls(thePlayer, true, true, false)
 		setPedAnimation(thePlayer)
+		setTimer(setPedAnimation, 50, 2, thePlayer)
 		setTimer(triggerEvent, 100, 1, "onPlayerStopAnimation", thePlayer)
 		return setanim
 	else

@@ -689,7 +689,7 @@ end
 
 function loginPlayer(username, password, operatingsystem)
 	local safeusername = mysql_escape_string(handler, username)
-	local result = mysql_query(handler, "SELECT id, admin, hiddenadmin, adminduty, donator, adminjail, adminjail_time, adminjail_by, adminjail_reason, banned, banned_by, banned_reason, muted, globalooc, blur, adminreports, pmblocked, warns, chatbubbles FROM accounts WHERE username='" .. safeusername .. "' AND password='" .. password .. "'")
+	local result = mysql_query(handler, "SELECT id, admin, hiddenadmin, adminduty, donator, adminjail, adminjail_time, adminjail_by, adminjail_reason, banned, banned_by, banned_reason, muted, globalooc, blur, adminreports, pmblocked, warns, chatbubbles, appstate FROM accounts WHERE username='" .. safeusername .. "' AND password='" .. password .. "'")
 	
 	if (mysql_num_rows(result)>0) then
 		triggerEvent("onPlayerLogin", source, username, password)
@@ -707,9 +707,11 @@ function loginPlayer(username, password, operatingsystem)
 				end
 			end
 		end
+		
 		-- 0331: Query to check for invalid accounts, can possibly remove this later
 		local resultUpdate = mysql_query(handler, "UPDATE characters SET money=0 WHERE money<0")
 		mysql_free_result(resultUpdate)
+		
 		if not (found) then
 			triggerClientEvent(source, "hideUI", source, false)
 			local admin = tonumber(mysql_result(result, 1, 2))
@@ -730,6 +732,7 @@ function loginPlayer(username, password, operatingsystem)
 			local pmblocked = tonumber(mysql_result(result, 1, 17))
 			local warns = tonumber(mysql_result(result, 1, 18))
 			local chatbubbles = tonumber(mysql_result(result, 1, 19))
+			local appstate = tonumber(mysql_result(result, 1, 20))
 			
 			local country = exports.global:getPlayerCountry(source)
 			if (username=="Daniels") then
@@ -750,7 +753,19 @@ function loginPlayer(username, password, operatingsystem)
 				setPlayerBlurLevel(source, 38)
 			end
 			
-			if (banned==1) then
+			if (appstate==0) then
+				clearChatBox(source)
+				outputChatBox("You must submit an application at www.valhallagaming.net/mtaucp in order to get your account activated.", 255, 194, 15)
+				setTimer(kickPlayer, 30000, 1, source, getRootElement(), "Submit an application at www.valhallagaming.net/mtaucp")
+			elseif (appstate==1) then
+				clearChatBox(source)
+				outputChatBox("Your application is still pending, visit www.valhallagaming.net/mtaucp to review its status.", 255, 194, 15)
+				setTimer(kickPlayer, 30000, 1, source, getRootElement(), "Application Pending, Review Status at www.valhallagaming.net/mtaucp")
+			elseif (appstate==2) then
+				clearChatBox(source)
+				outputChatBox("Your application was declined, You can read why, and resubmit a fixed on at www.valhallagaming.net/mtaucp", 255, 194, 15)
+				setTimer(kickPlayer, 30000, 1, source, getRootElement(), "Re-Submit an application at www.valhallagaming.net/mtaucp")
+			elseif (banned==1) then
 				clearChatBox(source)
 				outputChatBox("You have been banned from this server by: " .. tostring(banned_by) .. ".", source, 255, 0, 0)
 				outputChatBox("Ban Reason: " .. tostring(banned_reason) .. ".", source, 255, 0, 0)

@@ -10,6 +10,8 @@
 	<script src="Player/s_afk_kick.lua" type="server"/>
 	<script src="Player/c_afk_kick.lua" type="client"/>
 	
+	<export function="remoteUnban" http="true"/>
+	
 	<config src="whatisroleplaying.xml" type="client" />
 	<config src="powergaming.xml" type="client" />
 	<config src="metagaming.xml" type="client" />

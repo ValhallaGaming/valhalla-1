@@ -1109,6 +1109,33 @@ function unbanAccount(theBan)
 end
 addEventHandler("onUnban", getRootElement(), unbanAccount)
 
+function remoteUnban(thePlayer, targetNick)
+	local bans = getBans()
+	local found = false
+	
+	local result1 = mysql_query(handler, "SELECT id, ip FROM accounts WHERE username='" .. tostring(targetNick) .. "' LIMIT 1")
+	
+	if (result1) then
+		if (mysql_num_rows(result1)>0) then
+			local accountid = tonumber(mysql_result(result1, 1, 1))
+			local ip = tostring(mysql_result(result1, 1, 2))
+			mysql_free_result(result1)
+			local bans = getBans()
+			
+			for key, value in ipairs(bans) do
+				if (ip==getBanIP(value)) then
+					exports.global:sendMessageToAdmins(tostring(targetNick) .. " was remote unbanned from UCP by " .. thePlayer .. ".")
+					removeBan(value)
+					local query = mysql_query(handler, "UPDATE accounts SET banned='0', banned_by=NULL WHERE ip='" .. ip .. "'")
+					mysql_free_result(query)
+					found = true
+					break
+				end
+			end
+		end
+	end
+	return found
+end
 
 -- /UNBAN
 function unbanPlayer(thePlayer, commandName, nickName)

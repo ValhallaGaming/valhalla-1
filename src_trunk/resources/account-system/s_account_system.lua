@@ -757,7 +757,7 @@ function loginPlayer(username, password, operatingsystem)
 				setTimer(kickPlayer, 30000, 1, source, getRootElement(), "Application Pending, Review Status at www.valhallagaming.net/mtaucp")
 			elseif (appstate==2) then
 				clearChatBox(source)
-				outputChatBox("Your application was declined, You can read why, and resubmit a fixed on at www.valhallagaming.net/mtaucp", 255, 194, 15)
+				outputChatBox("Your application was declined, You can read why, and resubmit a fixed one at www.valhallagaming.net/mtaucp", 255, 194, 15)
 				setTimer(kickPlayer, 30000, 1, source, getRootElement(), "Re-Submit an application at www.valhallagaming.net/mtaucp")
 			elseif (banned==1) then
 				clearChatBox(source)

@@ -55,14 +55,14 @@
 		else // create the account and log them into it
 		{
 
-			$datetime = getdate();
+			//$datetime = getdate();
 			
-			$day = $datetime[mday];
-			$month = $datetime[mon];
-			$year = $datetime[year];
+			//$day = $datetime[mday];
+			//$month = $datetime[mon];
+			//$year = $datetime[year];
 			
 			$country = "SC";
-			$registerdate = $day . "/" . $month . "/" . $year;
+			//$registerdate = $day . "/" . $month . "/" . $year;
 			$ip = $_SERVER['REMOTE_ADDR'];
 			
 			// security key generation
@@ -70,7 +70,7 @@
 			$keysalt2 = "securitykey";
 			$securitykey = strtoupper(encryptSerial($keysalt1 . $username . $keysalt2));
 			
-			$result = mysql_query("INSERT INTO accounts SET username='" . $escUsername . "', password='" . $escPassword . "', securitykey='" . $securitykey . "', registerdate='" . $registerdate . "', lastlogin='" . $registerdate . "', ip='" . $ip . "', country='" . $country . "', friendsmessage='Sample Messsage'", $conn);
+			$result = mysql_query("INSERT INTO accounts SET username='" . $escUsername . "', password='" . $escPassword . "', securitykey='" . $securitykey . "', registerdate=NOW(), lastlogin=NOW(), ip='" . $ip . "', country='" . $country . "', friendsmessage='Sample Messsage'", $conn);
 			
 			if ($result)
 			{

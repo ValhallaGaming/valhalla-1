@@ -224,7 +224,7 @@ function fillVehicle(thePlayer, commandName)
 				local ftype = getElementData(faction, "type")
 				
 				if (ftype~=2) and (ftype~=3) and (ftype~=4) then
-					local money = exports.global:hasMoney(thePlayer)
+					local money = exports.global:getMoney(thePlayer)
 					
 					local tax = exports.global:getTaxAmount()
 					local cost = FUEL_PRICE + (tax*FUEL_PRICE)
@@ -289,7 +289,7 @@ function fillCan(thePlayer, commandName)
 				local ftype = getElementData(faction, "type")
 				
 				if (ftype~=2) and (ftype~=3) and (ftype~=4) then
-					local money = exports.global:hasMoney(thePlayer)
+					local money = exports.global:getMoney(thePlayer)
 					
 					local tax = exports.global:getTaxAmount()
 					local cost = FUEL_PRICE + (tax*FUEL_PRICE)

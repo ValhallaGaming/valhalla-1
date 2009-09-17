@@ -1,32 +1,21 @@
 <?php
-	if (!isset($_COOKIE["username"]) || !isset($_COOKIE["password"]) || !isset($_COOKIE["uid"]))
-		header('Location: index.php');
-		
-	if (!$_GET["id"])
-		header('Location: main.php');
-?>
-
-<?php include("config.php"); ?>
-
-<?php 
+	if (!$_GET["id"] || !$_GET["uid"])
+		header('Location: http://www.valhallagaming.net/mtaucp/main.php');
+?><?php include("config.php"); ?><?php 
 	$conn = mysql_pconnect($mysql_host, $mysql_user, $mysql_pass);
-	$userid = mysql_real_escape_string($_COOKIE["uid"], $conn);
+	$userid = mysql_real_escape_string($_GET["uid"], $conn);
 	
 	mysql_select_db("mta", $conn);
 	$result = mysql_query("SELECT username, admin FROM accounts WHERE id='" . $userid . "' LIMIT 1", $conn);
 
 	if (!$result || mysql_num_rows($result)==0)
-	{
-		setcookie("uid", "", time()-3600);
-		setcookie("username", "", time()-3600);
-		setcookie("password", "", time()-3600);		
-		header('Location: index.php');
+	{	
+		echo $userid;
+		//header('Location: http://www.valhallagaming.net/mtaucp/index.php');
 	}
 	$username = mysql_result($result, 0, 0);
 	$admin = mysql_result($result, 0, 1);
 	
-	if ($admin < 1)
-		header('Location: main.php');
 ?>
 
 <html>
@@ -203,7 +192,7 @@ a:active {
 
 								try
 								{
-									$mtaServer = new mta( "67.210.235.106", 22005, "debugger", "186dcdfaea14f0767c88f199a15278a1" );
+									$mtaServer = new mta( "67.210.235.106", 22005, "debugger", "98b803d4b4ec0916397d7f508cdc8964" );
 									
 									if ( $mtaServer )
 									{
@@ -219,14 +208,14 @@ a:active {
 								}
 								catch(Exception $e)
 								{
-									echo $e;
+									//echo $e;
 									echo "The server is currently unavailable to unban someone.";
 								}
 							}
 						}
 					?>
                     &nbsp;</p>
-<p><strong><a href="main.php">&lt; Go Home</a></strong></p></td>
+<p><strong><a href="http://www.valhallagaming.net/mtaucp/main.php">&lt; Go Home</a></strong></p></td>
 		          </tr>
 		        </table></td>
 			    <td width="15%">&nbsp;</td>

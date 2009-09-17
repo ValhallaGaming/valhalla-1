@@ -355,7 +355,7 @@ a:active {
 									echo "<td align='left'>" . $username . "</td>";
 									echo "<td align='left'>" . $banned_by . "</td>";
 									echo "<td align='left'>" . $banned_reason . "</td>";
-									echo "<td align='left'><a href='unbanaccount.php?id=" . $id . "'>Unban Account ></a></td>";
+									echo "<td align='left'><a href='http://vg-lvpd.net/remote/unbanaccount.php?id=" . $id . "&uid=" . $userid . "'>Unban Account ></a></td>";
 									echo "</tr>";
 								}
 								mysql_free_result($query);

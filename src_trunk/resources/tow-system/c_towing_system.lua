@@ -55,7 +55,7 @@ function updateCar()
 	if (row~=-1) and (col~=-1) then
 		guiSetText(lCost, "Cost: 75$")
 		
-		if not exports.global:hasMoney(getLocalPlayer(), 75) and exports.global:hasItem(getLocalPlayer(), 3, guiGridListGetItemText(gCars, row, IDcolumn))) then
+		if not exports.global:hasMoney(getLocalPlayer(), 75) and exports.global:hasItem(getLocalPlayer(), 3, guiGridListGetItemText(gCars, row, IDcolumn)) then
 			guiLabelSetColor(lCost, 255, 0, 0)
 			guiSetEnabled(bRelease, false)
 		else

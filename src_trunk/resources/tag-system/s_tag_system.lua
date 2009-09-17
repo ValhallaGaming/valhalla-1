@@ -35,10 +35,7 @@ function makeTagObject(cx, cy, cz, rot, interior, dimension)
 		setElementDimension(obj, dimension)
 		setElementInterior(obj, interior)
 		
-		local time = getRealTime()
-		local yearday = time.yearday
-		
-		local query = mysql_query(handler, "INSERT INTO tags SET x='" .. cx .. "', y='" .. cy .. "', z='" .. cz .. "', interior='" .. interior .. "', dimension='" .. dimension .. "', rx='0', ry='0', rz='" .. rot+90 .. "', modelid='" .. tags[tag] .. "', yearday='" .. yearday .. "'")
+		local query = mysql_query(handler, "INSERT INTO tags SET x='" .. cx .. "', y='" .. cy .. "', z='" .. cz .. "', interior='" .. interior .. "', dimension='" .. dimension .. "', rx='0', ry='0', rz='" .. rot+90 .. "', modelid='" .. tags[tag] .. "', creationdate=NOW()")
 		exports.global:sendLocalMeAction(source, "tags the wall.")
 		
 		local id = mysql_insert_id(handler)
@@ -115,11 +112,8 @@ end
 addCommandHandler("clearnearbytag", clearNearbyTag, false, false)
 
 function loadAllTags(res)
-	local result = mysql_query(handler, "SELECT id, x, y, z, interior, dimension, rx, ry, rz, modelid,yearday FROM tags")
+	local result = mysql_query(handler, "SELECT id, x, y, z, interior, dimension, rx, ry, rz, modelid, DATEDIFF(creationdate, NOW()) FROM tags")
 	local count = 0
-	
-	local time = getRealTime()
-	local yearday = time.yearday
 	
 	if (result) then
 		local highest = 0
@@ -138,23 +132,11 @@ function loadAllTags(res)
 			local ry = tonumber(row[8])
 			local rz = tonumber(row[9])
 			local modelid = tonumber(row[10])
+			local datetime = tonumber(row[11])
 
-			if (yearday>(wyearday+2)) then -- EXPIRED
+			if (datetime >= 2) then -- EXPIRED
 				local query = mysql_query(handler, "DELETE FROM tags WHERE id='" .. id .. "'")
 				mysql_free_result(query)
-			elseif (wyearday>yearday) then -- NEW YEAR
-				local query = mysql_query(handler, "UPDATE tags SET yearday='" .. yearday .. "' WHERE id='" .. id .. "'")
-				mysql_free_result(query)
-				local object = createObject(modelid, x, y, z, rx, ry, rz)
-				exports.pool:allocateElement(object)
-				setElementInterior(object, interior)
-				setElementDimension(object, dimension)
-				setElementData(object, "dbid", id, false)
-				setElementData(object, "type", "tag")
-				count = count + 1
-				if id > highest then
-					highest = id
-				end
 			else
 				local object = createObject(modelid, x, y, z, rx, ry, rz)
 				exports.pool:allocateElement(object)

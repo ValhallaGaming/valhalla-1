@@ -254,7 +254,7 @@ a:active {
 						elseif ( $_GET["show"] == 3 ) // show accounts without applications
 						{
 							echo "<center>Accounts without Applications:<br><br>Only delete these if you KNOW they are inactive and are not just being forced to retake the applications.</center>";
-							$query = mysql_query("SELECT id, username, registerdate FROM accounts WHERE appstate=0 ORDER BY appdatetime ASC", $conn);
+							$query = mysql_query("SELECT id, username, registerdate, DATEDIFF(registerdate, NOW()) FROM accounts WHERE appstate=0 ORDER BY appdatetime ASC", $conn);
 							
 							echo "<tr>";
 							echo "<td align='center'><b>Username</b></td>";
@@ -271,11 +271,12 @@ a:active {
 									$id = mysql_result($query, $i, 0);
 									$username = mysql_result($query, $i, 1);
 									$registerdate = mysql_result($query, $i, 2);
+									$diff = mysql_result($query, $i, 3);
 									//$ids[$i] = $id;
 									
 									echo "<tr>";
 									echo "<td align='left'>" . $username . "</td>";
-									echo "<td align='left'>" . $registerdate . "</td>";
+									echo "<td align='left'>" . $registerdate . "(" . $diff . " Days Ago)</td>";
 									echo "<td align='left'><a href='deleteaccount.php?id=" . $id . "'>Delete Account ></a></td>";
 									echo "</tr>";
 								}
@@ -327,6 +328,7 @@ a:active {
 								echo "<td align='left'>None.</td>";
 								echo "<td align='left'>None.</td>";
 								echo "<td align='left'>None.</td>";
+								echo "<td align='left'>None.</td>";
 								echo "</tr>";
 							}
 						}
@@ -363,6 +365,7 @@ a:active {
 							else
 							{
 								echo "<tr>";
+								echo "<td align='left'>None.</td>";
 								echo "<td align='left'>None.</td>";
 								echo "<td align='left'>None.</td>";
 								echo "<td align='left'>None.</td>";

@@ -119,7 +119,7 @@ function showFactionMenu(source)
 			local factionID = getElementData(source, "faction")
 			
 			if (factionID~=-1) then
-				local query = mysql_query(handler, "SELECT charactername, faction_rank, faction_leader, yearday, year FROM characters WHERE faction_ID='" .. factionID .. "'")
+				local query = mysql_query(handler, "SELECT charactername, faction_rank, faction_leader, DATEDIFF(lastlogin, NOW()) FROM characters WHERE faction_ID='" .. factionID .. "'")
 				local query2 = mysql_query(handler, "SELECT rank_1, rank_2, rank_3, rank_4, rank_5, rank_6, rank_7, rank_8, rank_9, rank_10, rank_11, rank_12, rank_13, rank_14, rank_15 FROM factions WHERE id='" .. factionID .. "' LIMIT 1")
 				local query3 = mysql_query(handler, "SELECT wage_1, wage_2, wage_3, wage_4, wage_5, wage_6, wage_7, wage_8, wage_9, wage_10, wage_11, wage_12, wage_13, wage_14, wage_15, motd FROM factions WHERE id='" .. factionID .. "' LIMIT 1")
 				
@@ -155,25 +155,22 @@ function showFactionMenu(source)
 							memberLeaders[i] = false
 						end
 						
-						local charyearday = tonumber(row[4])
-						local charyear = tonumber(row[5])
+						--local charyearday = tonumber(row[4])
+						--local charyear = tonumber(row[5])
 						local login = ""
 						
 						-- Compare the TIME
-						local time = getRealTime()
-						local year = 1900+time.year
-						local yearday = time.yearday
+						--local time = getRealTime()
+						--local year = 1900+time.year
+						--local yearday = time.yearday
+						local lastlogin = tonumber(row[4])
 						
-						if (charyearday==999) then
+						if (not lastlogin) then
 							login = "Never"
-						elseif (year>charyear) then
-							login = "last year"
 						else
-							local difference = yearday - charyearday
-							
-							if (difference==0) then
+							if (lastlogin==0) then
 								login = "Today"
-							elseif (difference==1) then
+							elseif (lastlogin==1) then
 								login = tostring(difference) .. " day ago"
 							else
 								login = tostring(difference) .. " days ago"

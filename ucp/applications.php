@@ -1,15 +1,14 @@
 <?php
 	if (!isset($_COOKIE["username"]) || !isset($_COOKIE["password"]) || !isset($_COOKIE["uid"]))
+	{
 		header('Location: index.php');
+		exit;
+	}
 		
 	if (!$_GET["show"] || $_GET["show"] < 1 || !$_GET["show"] > 3)
 		header('Location: main.php');
 
-?>
-
-<?php include("config.php"); ?>
-
-<?php 
+?><?php include("config.php"); ?><?php 
 	$conn = mysql_pconnect($mysql_host, $mysql_user, $mysql_pass);
 	$userid = mysql_real_escape_string($_COOKIE["uid"], $conn);
 	

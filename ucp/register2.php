@@ -1,9 +1,15 @@
 <?php
 	if ( !$_POST["username"] || $_POST["username"] == NULL)
+	{
 		header('Location: index.php');
+		exit;
+	}
 		
 	if (isset($_COOKIE["username"]) && isset($_COOKIE["password"]) && isset($_COOKIE["uid"]))
+	{
 		header('Location: main.php');
+		exit;
+	}
 ?><?php include("config.php"); ?><?php
 		function encryptSerial($str)
 		{

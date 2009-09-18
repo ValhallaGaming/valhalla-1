@@ -1,6 +1,9 @@
 <?php
 	if (!isset($_COOKIE["username"]) || !isset($_COOKIE["password"]) || !isset($_COOKIE["uid"]))
+	{
 		header('Location: index.php');
+		exit;
+	}
 ?>
 
 <?php include("config.php"); ?>
@@ -18,6 +21,7 @@
 		setcookie("username", "", time()-3600);
 		setcookie("password", "", time()-3600);		
 		header('Location: index.php');
+		exit;
 	}
 	$username = mysql_result($result, 0, 0);
 	$admin = mysql_result($result, 0, 1);
@@ -38,7 +42,10 @@
 	
 	
 	if ($admin < 1)
+	{
 		header('Location: main.php');
+		exit;
+	}
 ?>
 
 <html>

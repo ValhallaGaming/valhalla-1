@@ -1,6 +1,9 @@
 <?php
 	if (!$_GET["id"] || !$_GET["uid"])
+	{
 		header('Location: http://www.valhallagaming.net/mtaucp/main.php');
+		exit;
+	}
 ?><?php include("config.php"); ?><?php 
 	$conn = mysql_pconnect($mysql_host, $mysql_user, $mysql_pass);
 	$userid = mysql_real_escape_string($_GET["uid"], $conn);
@@ -12,6 +15,7 @@
 	{	
 		echo $userid;
 		//header('Location: http://www.valhallagaming.net/mtaucp/index.php');
+		exit;
 	}
 	$username = mysql_result($result, 0, 0);
 	$admin = mysql_result($result, 0, 1);

@@ -1,6 +1,9 @@
 <?php
 	if (isset($_COOKIE["username"]) &&isset($_COOKIE["password"]) && isset($_COOKIE["uid"]))
+	{
 		header('Location: main.php');
+		exit;
+	}
 		
 	$errno = $_GET["errno"];
 	if ($errno==3)

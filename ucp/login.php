@@ -1,6 +1,9 @@
 <?php
 	if (isset($_COOKIE["username"]) && isset($_COOKIE["password"]) && isset($_COOKIE["uid"]))
+	{
 		header('Location: main.php');
+		exit;
+	}
 		
 		include("config.php");
 		
@@ -15,6 +18,7 @@
 			setcookie("username", "", time()-3600);
 			setcookie("password", "", time()-3600);
 			header('Location: index.php?errno=2');
+			exit;
 		}
 		else if (!$username || !$password)
 		{			
@@ -22,6 +26,7 @@
 			setcookie("username", "", time()-3600);
 			setcookie("password", "", time()-3600);		
 			header('Location: index.php');
+			exit;
 		}
 		else if (isset($_COOKIE["loginattempts"]) && $_COOKIE["loginattempts"]>=3)
 		{
@@ -29,6 +34,7 @@
 			setcookie("username", "", time()-3600);
 			setcookie("password", "", time()-3600);		
 			header('Location: index.php?errno=4');
+			exit;
 		}
 		else
 		{
@@ -42,6 +48,7 @@
 				setcookie("username", "", time()-3600);
 				setcookie("password", "", time()-3600);
 				header('Location: index.php?errno=3');
+				exit;
 			}
 			else
 			{
@@ -50,6 +57,7 @@
 				setcookie("uid", mysql_result($result, 0), time()+3600);
 				setcookie("loginattempts", "", time()-3600);	
 				header('Location: main.php');
+				exit;
 			}
 		}
 	?>

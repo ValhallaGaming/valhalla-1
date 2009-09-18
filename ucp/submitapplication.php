@@ -1,9 +1,15 @@
 <?php
 	if (!isset($_COOKIE["username"]) || !isset($_COOKIE["password"]) || !isset($_COOKIE["uid"]))
+	{
 		header('Location: index.php');
+		exit;
+	}
 		
 	if (!$_POST["gamingexperience"])
+	{
 		header('Location: main.php');
+		exit;
+	}
 ?>
 
 <?php include("config.php"); ?>
@@ -21,6 +27,7 @@
 		setcookie("username", "", time()-3600);
 		setcookie("password", "", time()-3600);		
 		header('Location: index.php');
+		exit;
 	}
 	$username = mysql_result($result, 0, 0);
 ?>
@@ -35,6 +42,7 @@
 		setcookie("username", "", time()-3600);
 		setcookie("password", "", time()-3600);
 		header('Location: index.php?errno=2');
+		exit;
 	}
 	
 	$gamingexperience = mysql_real_escape_string($_POST["gamingexperience"], $conn);

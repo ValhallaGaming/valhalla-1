@@ -52,7 +52,6 @@ local scripterAccounts = {
 	Daniels = true,
 	Chamberlain = true,
 	mabako = true,
-	Cazomino09 = true,
 	Serizzim = true,
 	Flobu = true,
 	ryden = true,

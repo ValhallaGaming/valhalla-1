@@ -93,7 +93,7 @@ function applyLanguage(from, player, message, language)
 		local fromskill = getSkillFromLanguage(from, language)
 		
 		local length = string.len(message)
-		local percent = 100 - math.max( skill, fromskill )
+		local percent = 100 - math.min( skill, fromskill )
 		local replace = (percent/100) * length
 		
 		local i = 1

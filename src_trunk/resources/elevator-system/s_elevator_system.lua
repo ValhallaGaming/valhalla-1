@@ -54,11 +54,13 @@ function createElevator(thePlayer, commandName, interior, dimension, ix, iy, iz)
 					
 					setElementData(pickup, "dbid", id, false)
 					setElementData(pickup, "other", intpickup, false)
+					setElementData(pickup, "car", 0, false)
 					setElementInterior(pickup, interiorwithin)
 					setElementDimension(pickup, dimensionwithin)
 					
 					setElementData(intpickup, "dbid", id, false)
 					setElementData(intpickup, "other", pickup, false)
+					setElementData(intpickup, "car", 0, false)
 					setElementInterior(intpickup, interior)
 					setElementDimension(intpickup, dimension)
 					

@@ -180,7 +180,7 @@ a:active {
 						if ( $_GET["show"] == 1 ) // show new applications
 						{
 							echo "<center>Older applications are shown at the top, please resolve them first.</center>";
-							$query = mysql_query("SELECT id, username, appdatetime, DATEDIFF(appdatetime, NOW()) FROM accounts WHERE appstate=1 ORDER BY appdatetime ASC", $conn);
+							$query = mysql_query("SELECT id, username, appdatetime, DATEDIFF(NOW(), appdatetime) FROM accounts WHERE appstate=1 ORDER BY appdatetime ASC", $conn);
 							
 							echo "<tr>";
 							echo "<td align='center'><b>Username</b></td>";
@@ -217,7 +217,7 @@ a:active {
 						elseif ( $_GET["show"] == 2 ) // show declined applications
 						{
 							echo "<center>Declined Applications:</center>";
-							$query = mysql_query("SELECT id, username, appdatetime, DATEDIFF(appdatetime, NOW()), apphandler FROM accounts WHERE appstate=2 ORDER BY appdatetime ASC", $conn);
+							$query = mysql_query("SELECT id, username, appdatetime, DATEDIFF(NOW(), appdatetime), apphandler FROM accounts WHERE appstate=2 ORDER BY appdatetime ASC", $conn);
 							
 							echo "<tr>";
 							echo "<td align='center'><b>Username</b></td>";
@@ -258,7 +258,7 @@ a:active {
 						elseif ( $_GET["show"] == 3 ) // show accounts without applications
 						{
 							echo "<center>Accounts without Applications:<br><br>Only delete these if you KNOW they are inactive and are not just being forced to retake the applications.</center>";
-							$query = mysql_query("SELECT id, username, registerdate, DATEDIFF(registerdate, NOW()) FROM accounts WHERE appstate=0 ORDER BY appdatetime ASC", $conn);
+							$query = mysql_query("SELECT id, username, registerdate, DATEDIFF(NOW(), registerdate) FROM accounts WHERE appstate=0 ORDER BY appdatetime ASC", $conn);
 							
 							echo "<tr>";
 							echo "<td align='center'><b>Username</b></td>";
@@ -298,7 +298,7 @@ a:active {
 						elseif ( $_GET["show"] == 4 ) // show accounts with successful applications
 						{
 							echo "<center>Active Accounts:</center>";
-							$query = mysql_query("SELECT id, username, appdatetime, DATEDIFF(appdatetime, NOW()), apphandler FROM accounts WHERE appstate=3 ORDER BY appdatetime ASC LIMIT 1000", $conn);
+							$query = mysql_query("SELECT id, username, appdatetime, DATEDIFF(NOW(), appdatetime), apphandler FROM accounts WHERE appstate=3 ORDER BY appdatetime ASC LIMIT 1000", $conn);
 							
 							echo "<tr>";
 							echo "<td align='center'><b>Username</b></td>";

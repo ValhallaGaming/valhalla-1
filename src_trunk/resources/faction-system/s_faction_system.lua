@@ -982,7 +982,7 @@ function payAllWages()
 			triggerClientEvent(value, "cPayDay", value)
 			local hoursplayed = getElementData(value, "hoursplayed") or 0
 			setElementData(value, "hoursplayed", hoursplayed+1, false)
-		elseif (timeinserver<60) then
+		elseif (logged==1) and (timeinserver) and (timeinserver<60) then
 			outputChatBox("You have not played long enough to recieve a payday. (You require another " .. 60-timeinserver .. " Minutes of play.)", value, 255, 0, 0)
 		end
 	end

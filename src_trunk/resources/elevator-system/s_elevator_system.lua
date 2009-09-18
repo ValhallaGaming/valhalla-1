@@ -295,6 +295,7 @@ function enterElevator(player, pickup)
 		end
 		
 		if vehicle then
+			setElementData(vehicle, "health", getElementHealth(vehicle), false)
 			for i = 0, getVehicleMaxPassengers( vehicle ) do
 				local p = getVehicleOccupant( vehicle )
 				if p then
@@ -340,6 +341,9 @@ function enterElevator(player, pickup)
 				local rx, ry, rz = getVehicleRotation(vehicle)
 				setVehicleRotation(vehicle, 0, 0, rz)
 				setTimer(setVehicleTurnVelocity, 50, 2, vehicle, 0, 0, 0)
+				
+				setElementHealth(vehicle, getElementData(vehicle, "health"))
+				removeElementData(vehicle, "health")
 				
 				setVehicleFrozen(vehicle, true)
 				setTimer(setVehicleFrozen, 333, 1, vehicle, false)

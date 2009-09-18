@@ -47,6 +47,7 @@
 			setcookie("username", "", time()-3600);
 			setcookie("password", "", time()-3600);
 			header('Location: register.php?errno=1');
+			exit;
 		}
 		else // create the account and log them into it
 		{
@@ -75,10 +76,12 @@
 				setcookie("uid", mysql_insert_id($conn), time()+3600);
 				setcookie("loginattempts", "", time()-3600);	
 				header('Location: writeapplication.php');
+				exit;
 			}
 			else
 			{
 				header('Location: register.php?errno=2');
+				exit;
 			}
 		}
 	?>

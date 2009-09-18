@@ -1,9 +1,10 @@
 fuellessVehicle = { [594]=true, [537]=true, [538]=true, [569]=true, [590]=true, [606]=true, [607]=true, [610]=true, [590]=true, [569]=true, [611]=true, [584]=true, [608]=true, [435]=true, [450]=true, [591]=true, [472]=true, [473]=true, [493]=true, [595]=true, [484]=true, [430]=true, [453]=true, [452]=true, [446]=true, [454]=true, [497]=true, [592]=true, [577]=true, [511]=true, [548]=true, [512]=true, [593]=true, [425]=true, [520]=true, [417]=true, [487]=true, [553]=true, [488]=true, [563]=true, [476]=true, [447]=true, [519]=true, [460]=true, [469]=true, [513]=true, [509]=true, [510]=true, [481]=true }
 
 enginelessVehicle = { [510]=true, [509]=true, [481]=true }
+local active = true
 
 function drawSpeedo()
-	if not isPlayerMapVisible() then
+	if active and not isPlayerMapVisible() then
 		local vehicle = getPedOccupiedVehicle(getLocalPlayer())
 		if (vehicle) then
 			speedx, speedy, speedz = getElementVelocity(vehicle)
@@ -23,7 +24,7 @@ function drawSpeedo()
 end
 
 function drawFuel()
-	if not isPlayerMapVisible() then
+	if active and not isPlayerMapVisible() then
 		local vehicle = getPedOccupiedVehicle(getLocalPlayer())
 		if (vehicle) then
 			local fuel = getElementData(vehicle, "fuel")	
@@ -78,24 +79,36 @@ function hideSpeedo()
 end
 
 function showSpeedo()
-	if (isPedInVehicle(getLocalPlayer())) then
-		addEventHandler("onClientRender", getRootElement(), drawSpeedo)
-		addEventHandler("onClientRender", getRootElement(), drawFuel)
+	local source = getPedOccupiedVehicle(getLocalPlayer())
+	if source then
+		if getVehicleOccupant( source ) == getLocalPlayer() then
+			onVehicleEnter(getLocalPlayer(), 0)
+		elseif getVehicleOccupant( source, 1 ) == getLocalPlayer() then
+			onVehicleEnter(getLocalPlayer(), 1)
+		end
 	end
 end
 
 -- If player is not in vehicle stop drawing the speedo needle.
 function removeSpeedo()
 	if not (isPedInVehicle(getLocalPlayer())) then
-		removeEventHandler("onClientRender", getRootElement(), drawSpeedo)
+		hideSpeedo()
 	end
 end
 setTimer(removeSpeedo, 1000, 0)
 
--- If player is not in vehicle stop drawing the fuel needle.
-function removeFuel()
-	if not (isPedInVehicle(getLocalPlayer())) then
-		removeEventHandler("onClientRender", getRootElement(), drawFuel)
+addCommandHandler( "togglespeedo",
+	function( )
+		local source = getPedOccupiedVehicle(getLocalPlayer())
+		if source then
+			active = not active
+			if active then
+				outputChatBox( "Speedo is now on.", 0, 255, 0 )
+			else
+				outputChatBox( "Speedo is now off.", 255, 0, 0 )
+			end
+		end
 	end
-end
-setTimer(removeFuel, 1000, 0)
+)
+
+addEventHandler( "onClientResourceStart", getResourceRootElement(), showSpeedo )

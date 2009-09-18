@@ -55,7 +55,7 @@ function toggleFriends(source)
 			local accid = tonumber(getElementData(source, "gameaccountid"))
 			
 			-- load friends list
-			local result = mysql_query( handler, "SELECT f.friend, a.username, a.friendsmessage, DATEDIFF(a.lastlogin, NOW()), a.country, a.os, ( SELECT COUNT(*) FROM achievements b WHERE b.account = a.id ) FROM friends f LEFT JOIN accounts a ON f.friend = a.id WHERE f.id = " .. accid .. " ORDER BY DATEDIFF(a.lastlogin, NOW()) DESC" )
+			local result = mysql_query( handler, "SELECT f.friend, a.username, a.friendsmessage, DATEDIFF(NOW(), a.lastlogin), a.country, a.os, ( SELECT COUNT(*) FROM achievements b WHERE b.account = a.id ) FROM friends f LEFT JOIN accounts a ON f.friend = a.id WHERE f.id = " .. accid .. " ORDER BY DATEDIFF(NOW(), a.lastlogin) ASC" )
 			if result then
 				local friends = { }
 				for result, row in mysql_rows(result) do

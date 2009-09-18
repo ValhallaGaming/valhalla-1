@@ -112,7 +112,9 @@ end
 addCommandHandler("clearnearbytag", clearNearbyTag, false, false)
 
 function loadAllTags(res)
-	local result = mysql_query(handler, "SELECT id, x, y, z, interior, dimension, rx, ry, rz, modelid, DATEDIFF(creationdate, NOW()) FROM tags")
+	-- delete old tags
+	mysql_free_result( mysql_query(handler, "DELETE FROM tags WHERE DATEDIFF(NOW(), creationdate) > 2") )
+	local result = mysql_query(handler, "SELECT id, x, y, z, interior, dimension, rx, ry, rz, modelid FROM tags")
 	local count = 0
 	
 	if (result) then
@@ -132,22 +134,16 @@ function loadAllTags(res)
 			local ry = tonumber(row[8])
 			local rz = tonumber(row[9])
 			local modelid = tonumber(row[10])
-			local datetime = tonumber(row[11])
-
-			if (datetime >= 2) then -- EXPIRED
-				local query = mysql_query(handler, "DELETE FROM tags WHERE id='" .. id .. "'")
-				mysql_free_result(query)
-			else
-				local object = createObject(modelid, x, y, z, rx, ry, rz)
-				exports.pool:allocateElement(object)
-				setElementInterior(object, interior)
-				setElementDimension(object, dimension)
-				setElementData(object, "dbid", id, false)
-				setElementData(object, "type", "tag")
-				count = count + 1
-				if id > highest then
-					highest = id
-				end
+			
+			local object = createObject(modelid, x, y, z, rx, ry, rz)
+			exports.pool:allocateElement(object)
+			setElementInterior(object, interior)
+			setElementDimension(object, dimension)
+			setElementData(object, "dbid", id, false)
+			setElementData(object, "type", "tag")
+			count = count + 1
+			if id > highest then
+				highest = id
 			end
 		end
 		-- update the auto increment with highest used tag id + 1

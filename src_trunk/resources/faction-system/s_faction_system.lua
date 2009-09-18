@@ -119,7 +119,7 @@ function showFactionMenu(source)
 			local factionID = getElementData(source, "faction")
 			
 			if (factionID~=-1) then
-				local query = mysql_query(handler, "SELECT charactername, faction_rank, faction_leader, DATEDIFF(lastlogin, NOW()) FROM characters WHERE faction_ID='" .. factionID .. "'")
+				local query = mysql_query(handler, "SELECT charactername, faction_rank, faction_leader, DATEDIFF(NOW(), lastlogin) FROM characters WHERE faction_ID='" .. factionID .. "'")
 				local query2 = mysql_query(handler, "SELECT rank_1, rank_2, rank_3, rank_4, rank_5, rank_6, rank_7, rank_8, rank_9, rank_10, rank_11, rank_12, rank_13, rank_14, rank_15 FROM factions WHERE id='" .. factionID .. "' LIMIT 1")
 				local query3 = mysql_query(handler, "SELECT wage_1, wage_2, wage_3, wage_4, wage_5, wage_6, wage_7, wage_8, wage_9, wage_10, wage_11, wage_12, wage_13, wage_14, wage_15, motd FROM factions WHERE id='" .. factionID .. "' LIMIT 1")
 				
@@ -127,7 +127,7 @@ function showFactionMenu(source)
 					local rank1, rank2, rank3, rank4, rank5, rank6, rank7, rank8, rank9, rank10, rank11, rank12, rank13, rank14, rank15 = mysql_result(query2, 1, 1), mysql_result(query2, 1, 2), mysql_result(query2, 1, 3), mysql_result(query2, 1, 4), mysql_result(query2, 1, 5), mysql_result(query2, 1, 6), mysql_result(query2, 1, 7), mysql_result(query2, 1, 8), mysql_result(query2, 1, 9), mysql_result(query2, 1, 10), mysql_result(query2, 1, 11), mysql_result(query2, 1, 12), mysql_result(query2, 1, 13), mysql_result(query2, 1, 14), mysql_result(query2, 1, 15)
 					local wage1, wage2, wage3, wage4, wage5, wage6, wage7, wage8, wage9, wage10, wage11, wage12, wage13, wage14, wage15 = mysql_result(query3, 1, 1), mysql_result(query3, 1, 2), mysql_result(query3, 1, 3), mysql_result(query3, 1, 4), mysql_result(query3, 1, 5), mysql_result(query3, 1, 6), mysql_result(query3, 1, 7), mysql_result(query3, 1, 8), mysql_result(query3, 1, 9), mysql_result(query3, 1, 10), mysql_result(query3, 1, 11), mysql_result(query3, 1, 12), mysql_result(query3, 1, 13), mysql_result(query3, 1, 14), mysql_result(query3, 1, 15)
 					local motd = mysql_result(query3, 1, 16)
-
+					
 					-- Fix the MOTD
 					if (motd==nil) then
 						motd = ""

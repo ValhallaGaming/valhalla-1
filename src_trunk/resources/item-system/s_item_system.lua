@@ -700,7 +700,7 @@ addEventHandler("dropItem", getRootElement(), dropItem)
 function loadWorldItems(res)
 	
 	-- delete items too old
-	local query = mysql_query( handler, "DELETE FROM worlditems WHERE DATEDIFF(creationdate, NOW()) > 7 " )
+	local query = mysql_query( handler, "DELETE FROM worlditems WHERE DATEDIFF(NOW(), creationdate) > 7 " )
 	if query then
 		mysql_free_result( query )
 	else

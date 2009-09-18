@@ -110,8 +110,12 @@ end
 function fillFuelTank(button, state)
 	if (button=="left") then
 		local _,_, value = exports.global:hasItem(localPlayer, 57)
-		triggerServerEvent("fillFuelTankVehicle", localPlayer, vehicle, value)
-		hideVehicleMenu()
+		if value > 0 then
+			triggerServerEvent("fillFuelTankVehicle", localPlayer, vehicle, value)
+			hideVehicleMenu()
+		else
+			outputChatBox("This fuel can is empty...", 255, 0, 0)
+		end
 	end
 end
 

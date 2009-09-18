@@ -21,11 +21,11 @@ end
 
 
 function getRadarRadius ()
-	if not isPlayerInVehicle(localPlayer) then --The radar does not resize when on foot
+	if not isPedInVehicle(localPlayer) then --The radar does not resize when on foot
 		return MIN_DISTANCE
 	else
-		local vehicle = getPlayerOccupiedVehicle(localPlayer)
-		if planes[getVehicleID(vehicle)] then
+		local vehicle = getPedOccupiedVehicle(localPlayer)
+		if planes[getElementModel(vehicle)] then
 			return MAX_DISTANCE
 		end
 		local speed = ( getDistanceBetweenPoints3D(0,0,0,getElementVelocity(vehicle)) )

@@ -107,7 +107,7 @@ addEventHandler ( "onClientRender", getRootElement(),
 					end
 				end
 			
-				vx, vy, vz = getVehicleRotation(vehicle)
+				vx, vy, vz = getElementRotation(vehicle)
 				local x = node.x
 				local y =  node.y
 				local pos = { x, y, 0 }

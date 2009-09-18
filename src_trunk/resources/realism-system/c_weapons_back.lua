@@ -1,8 +1,8 @@
 weapons = { }
 
 function weaponSwitch(prevSlot, newSlot)
-	local weapon = getPlayerWeapon(source, prevSlot)
-	local newWeapon = getPlayerWeapon(source, newSlot)
+	local weapon = getPedWeapon(source, prevSlot)
+	local newWeapon = getPedWeapon(source, newSlot)
 	
 	if (weapons[source] == nil) then
 		weapons[source] = { }

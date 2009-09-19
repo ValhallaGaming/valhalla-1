@@ -437,7 +437,7 @@ end
 addCommandHandler("toggleooc", playerToggleOOC, false, false)
 
 
-local advertisementMessages = { "sincityrp", "ls-rp", "sincity", "samp", "sa-mp", "eg", "tri0n3", "www.", ".com", ".net", ".co.uk", ".org", "Bryan", "Danny", "everlast", "neverlast", "www.everlastgaming.com"}
+local advertisementMessages = { "sincityrp", "ls-rp", "sincity", "eg", "tri0n3", "www.", ".com", ".net", ".co.uk", ".org", "Bryan", "Danny", "everlast", "neverlast", "www.everlastgaming.com"}
 
 function isFriendOf(thePlayer, targetPlayer)
 	local friends = getElementData(targetPlayer, "friends")

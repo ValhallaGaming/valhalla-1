@@ -515,6 +515,8 @@ function startDrivingTest()
 	local id = getElementModel(vehicle)
 	if not (testVehicle[id]) then
 		outputChatBox("#FF9933You must be in a DMV test car when passing through the check points.", 255, 0, 0, true ) -- Wrong car type.
+	elseif not exports.global:hasMoney( getLocalPlayer(), 100 ) then
+		outputChatBox("You can't pay the processing fee.", 255, 0, 0 )
 	else
 		destroyElement(blip)
 		destroyElement(marker)

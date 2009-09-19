@@ -998,6 +998,12 @@ function togglePM(thePlayer, commandName)
 end
 addCommandHandler("togpm", togglePM)
 
+function resetTransactionWarning(thePlayer)
+	if (isElement(thePlayer)) then
+		removeElementData(thePlayer, "checktranslimit")
+	end
+end
+
 -- /pay
 function payPlayer(thePlayer, commandName, targetPlayerNick, amount)
 	local logged = getElementData(thePlayer, "loggedin")
@@ -1026,10 +1032,19 @@ function payPlayer(thePlayer, commandName, targetPlayerNick, amount)
 					elseif (hoursplayed<5) and (amount>50) then
 						outputChatBox("You must play atleast 5 hours before transferring over 50$", thePlayer, 255, 0, 0)
 					elseif exports.global:takeMoney(thePlayer, amount) then
-						
 						exports.logs:logMessage("[Money Transfer From " .. getPlayerName(thePlayer) .. " To: " .. getPlayerName(targetPlayer) .. "] Value: " .. amount .. "$", 5)
 						if (hoursplayed<5) then
-							exports.global:sendMessageToAdmins("AdmWarn: New Player '" .. getPlayerName(thePlayer) .. "' transferred " .. amount .. "$ to '" .. getPlayerName(targetPlayer) .. "'.")
+							local checktranslimit = getElementData(thePlayer, "checktranslimit")
+							if (checktranslimit) then
+								local newvalue = checktranslimit + 1
+								if (newvalue == 3) or (newvalue == 5) or (newvalue == 10) then
+									exports.global:sendMessageToAdmins("AdmWarn: New Player '" .. getPlayerName(thePlayer) .. "' made more then " .. newvalue .. " transactions within 5 minutes.")
+								end
+								setElementData(thePlayer, "checktranslimit", newvalue, false)
+							else
+								setElementData(thePlayer, "checktranslimit", 1, false)
+								setTimer(resetTransactionWarning, 300000, 1, thePlayer)
+							end
 						end
 						
 						exports.global:giveMoney(targetPlayer, amount)

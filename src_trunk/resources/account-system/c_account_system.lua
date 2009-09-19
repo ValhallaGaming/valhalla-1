@@ -1384,7 +1384,7 @@ function showCharacterUI(accounts, firstTime)
 		paneChars[key][3] = guiCreateStaticImage(0.05, 0.1, 0.2, 0.5, "img/" .. skinID .. ".png", true, paneChars[key][7])
 		paneChars[key][4] = guiCreateLabel(0.3, 0.25, 0.7, 0.2, age .. " year old " .. gender .. ".", true, paneChars[key][7])
 		
-		if (factionRank=="Nullement") then
+		if (factionRank==nil) then
 			paneChars[key][5] = guiCreateLabel(0.3, 0.35, 0.7, 0.2, "Not in a faction.", true, paneChars[key][7])
 		else
 			paneChars[key][5] = guiCreateLabel(0.3, 0.35, 0.7, 0.2, tostring(factionRank) .. " of '" .. tostring(factionName) .. "'.", true, paneChars[key][7])

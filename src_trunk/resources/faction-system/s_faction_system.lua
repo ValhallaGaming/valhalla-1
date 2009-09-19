@@ -171,9 +171,9 @@ function showFactionMenu(source)
 							if (lastlogin==0) then
 								login = "Today"
 							elseif (lastlogin==1) then
-								login = tostring(difference) .. " day ago"
+								login = tostring(lastlogin) .. " day ago"
 							else
-								login = tostring(difference) .. " days ago"
+								login = tostring(lastlogin) .. " days ago"
 							end
 						end
 						memberLastLogin[i] = login
@@ -183,7 +183,7 @@ function showFactionMenu(source)
 							memberOnline[i] = true
 							local zone, city = exports.global:getElementZoneName(targetPlayer)
 							
-							if(zone~=city) then
+							if(zone~=city) and (city~=nil) then
 								memberLocation[i] = zone .. ", " .. city
 							else
 								memberLocation[i] = zone

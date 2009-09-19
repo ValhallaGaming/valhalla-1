@@ -918,8 +918,8 @@ function sendAccounts(thePlayer, id, isChangeChar)
 			local factionRank = tonumber(mysql_result(result, i, 8))
 			
 			if (factionID<1) or not (factionID) then
-				accounts[i][7] = "Not in a faction"
-				accounts[i][8] = "Nullement"
+				accounts[i][7] = nil
+				accounts[i][8] = nil
 			else
 				factionResult = mysql_query(handler, "SELECT name, rank_" .. factionRank .. " FROM factions WHERE id='" .. tonumber(factionID) .. "'")
 
@@ -931,8 +931,8 @@ function sendAccounts(thePlayer, id, isChangeChar)
 						accounts[i][7] = string.sub(accounts[i][7], 1, 32) .. "..."
 					end
 				else
-					accounts[i][7] = "Nullement"
-					accounts[i][8] = "Nullement"
+					accounts[i][7] = nil
+					accounts[i][8] = nil
 				end
 				
 				if(factionResult) then

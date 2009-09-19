@@ -7,7 +7,7 @@ function showLaser()
 				local laser = getElementData(value, "laser")
 				local deaglemode = getElementData(value, "deaglemode")
 
-				if (laser==1) and (deaglemode==nil or deaglemode==0) then
+				if (laser == false) and (deaglemode==nil or deaglemode==0) then
 					local sx, sy, sz = getPedWeaponMuzzlePosition(value)
 					local ex, ey, ez = getPedTargetEnd(value)
 					local task = getPedTask(value, "secondary", 0)
@@ -29,18 +29,3 @@ function showLaser()
 	end
 end
 addEventHandler("onClientRender", getRootElement(), showLaser)
-
-
-function toggleLaser()
-	local laser = getElementData(getLocalPlayer(), "laser")
-	
-	if (laser==0) then
-		setElementData(getLocalPlayer(), "laser", 1, true)
-		outputChatBox("Your weapon laser is now ON.", 0, 255, 0)
-	else
-		setElementData(getLocalPlayer(), "laser", 0, true)
-		outputChatBox("Your weapon laser is now OFF.", 255, 0, 0)
-	end
-end
-addCommandHandler("toglaser", toggleLaser, false)
-addCommandHandler("togglelaser", toggleLaser, false)

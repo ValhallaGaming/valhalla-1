@@ -14,8 +14,8 @@ local lasthp = { }
 local playerarmor = { }
 local lastarmor = { }
 
-local lastx = { }
-local lasty = { }
+--local lastx = { }
+--local lasty = { }
 
 function playerQuit()
 	if (getElementType(source)=="player") then
@@ -23,8 +23,8 @@ function playerQuit()
 		lasthp[source] = nil
 		playerarmor[source] = nil
 		lastarmor[source] = nil
-		lastx[source] = nil
-		lasty[source] = nil
+		--lastx[source] = nil
+		--lasty[source] = nil
 	end
 end
 addEventHandler("onClientElementStreamOut", getRootElement(), playerQuit)
@@ -44,8 +44,8 @@ function streamIn()
 		playerarmor[source] = getPedArmor(source)
 		lastarmor[source] = playerarmor[source]
 		
-		lastx[source] = 0
-		lasty[source] = 0
+		--lastx[source] = 0
+		--lasty[source] = 0
 	end
 end
 addEventHandler("onClientElementStreamIn", getRootElement(), streamIn)
@@ -53,6 +53,8 @@ addEventHandler("onClientElementStreamIn", getRootElement(), streamIn)
 function isPlayerMoving(player)
 	return (not isPedInVehicle(player) and (getPedControlState(player, "forwards") or getPedControlState(player, "backwards") or getPedControlState(player, "left") or getPedControlState(player, "right") or getPedControlState(player, "accelerate") or getPedControlState(player, "brake_reverse") or getPedControlState(player, "enter_exit") or getPedControlState(player, "enter_passenger")))
 end	
+
+local lastrot = nil
 
 function renderNametags()
 	if (show) then
@@ -81,7 +83,7 @@ function renderNametags()
 					lastarmor[player] = playerarmor[player]
 				end
 				
-				if (player~=localPlayera) and (isElementOnScreen(player)) and ((distance<limitdistance) or reconx) then
+				if (player~=localPlayer) and (isElementOnScreen(player)) and ((distance<limitdistance) or reconx) then
 					if not getElementData(player, "reconx") and not getElementData(player, "freecam:state") then
 						--local lx, ly, lz = getPedBonePosition(localPlayer, 7)
 						local lx, ly, lz = getCameraMatrix()
@@ -89,12 +91,20 @@ function renderNametags()
 						local collision = processLineOfSight(lx, ly, lz+1, rx, ry, rz, true, true, false, true, false, false, true, false, vehicle)
 
 						if not (collision) or (reconx) then
-							local x, y, z = getPedBonePosition(player, 7)
+							--local x, y, z = getPedBonePosition(player, 7)
+							local x, y, z = getElementPosition(player)
+							
+							if not (isPedDucked(player)) then
+								z = z + 1
+							else
+								z = z + 0.5
+							end
 							
 							local sx, sy = getScreenFromWorldPosition(x, y, z+0.45, 100, false)
 
 							-- HP
 							if (sx) and (sy) then
+								--[[
 								-- screen smoothing
 								if not (lastx[player]) then
 									lastx[player] = sx
@@ -104,14 +114,27 @@ function renderNametags()
 									lasty[player] = sy
 								end
 
-								if ( sx <= lastx[player]+100 ) and ( sy >= lasty[player]-100 ) and not (isPlayerMoving(player)) then
+								
+								local change = 100
+								
+								
+								if not (lastrot) then
+									lastrot = rz
+								end
+								
+								local rz = getPedCameraRotation(localPlayer)
+								if (( sx <= lastx[player]+change ) and ( sy >= lasty[player]-change ) and not (isPlayerMoving(player))) and (math.ceil(lastrot) == math.ceil(rz)) then
+									lastrot = rz
+									
 									sx = lastx[player]
 									sy = lasty[player]
-								elseif ( sx <= lastx[player]+100 ) and ( sy >= lasty[player]-100 ) and (isPlayerMoving(player)) then
+								elseif (( sx <= lastx[player]+change ) and ( sy >= lasty[player]-change ) and (isPlayerMoving(player))) and (math.ceil(lastrot) == math.ceil(rz)) then
+									lastrot = rz
 									sx = lastx[player]
 									sy = lasty[player]
 								end
 								-- end of screen smoothing
+								]]--
 							
 								--if (isPedInVehicle(player)) then sy = sy - 50 end
 								

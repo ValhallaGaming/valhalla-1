@@ -229,8 +229,7 @@ function useItem(itemSlot, additional)
 				exports.global:sendLocalMeAction(source, "slips a black gas mask over their face.")
 				
 				-- can't see their name
-				local pid = getElementData(source, "playerid")
-				local fixedName = "(" .. tostring(pid) .. ") Unknown Person"
+				local fixedName =  "Unknown Person"
 				setPlayerNametagText(source, tostring(fixedName))
 
 				setElementData(source, "gasmask", 1, true)
@@ -239,9 +238,8 @@ function useItem(itemSlot, additional)
 				
 				-- can't see their name
 				local pid = getElementData(source, "playerid")
-				local name = string.gsub(getPlayerName(source), "_", " ")
-				local fixedName = "(" .. tostring(pid) .. ") " .. name
-				setPlayerNametagText(source, tostring(fixedName))
+				local name = string.gsub(getPlayerName(source), "_", " ") name
+				setPlayerNametagText(source, tostring(name))
 
 				removeElementData(source, "gasmask")
 			end
@@ -344,7 +342,7 @@ function useItem(itemSlot, additional)
 				
 				-- can't see their name
 				local pid = getElementData(source, "playerid")
-				local fixedName = "(" .. tostring(pid) .. ") Unknown Person"
+				local fixedName = "Unknown Person"
 				setPlayerNametagText(source, tostring(fixedName))
 
 				setElementData(source, "mask", 1, false)
@@ -354,8 +352,7 @@ function useItem(itemSlot, additional)
 				-- can't see their name
 				local pid = getElementData(source, "playerid")
 				local name = string.gsub(getPlayerName(source), "_", " ")
-				local fixedName = "(" .. tostring(pid) .. ") " .. name
-				setPlayerNametagText(source, tostring(fixedName))
+				setPlayerNametagText(source, tostring(name))
 
 				setElementData(source, "mask", 0, false)
 			end

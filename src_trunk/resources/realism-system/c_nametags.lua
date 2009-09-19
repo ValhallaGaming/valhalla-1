@@ -88,7 +88,7 @@ function renderNametags()
 						--local lx, ly, lz = getPedBonePosition(localPlayer, 7)
 						local lx, ly, lz = getCameraMatrix()
 						local vehicle = getPedOccupiedVehicle(player)
-						local collision = processLineOfSight(lx, ly, lz+1, rx, ry, rz, true, true, false, true, false, false, true, false, vehicle)
+						local collision = processLineOfSight(lx, ly, lz, rx, ry, rz+1, true, true, false, true, false, false, true, false, vehicle)
 
 						if not (collision) or (reconx) then
 							--local x, y, z = getPedBonePosition(player, 7)
@@ -101,7 +101,7 @@ function renderNametags()
 							end
 							
 							local sx, sy = getScreenFromWorldPosition(x, y, z+0.45, 100, false)
-
+							local oldsy = nil
 							-- HP
 							if (sx) and (sy) then
 								--[[
@@ -156,8 +156,11 @@ function renderNametags()
 
 									local offset = 45 / distance
 									
+									
+									
 									-- DRAW BG
 									dxDrawRectangle(sx-offset-5, sy, 95 / distance, 20 / distance, tocolor(0, 0, 0, 100), false)
+									oldsy = sy 
 									
 									-- DRAW HEALTH
 									local width = 85
@@ -232,7 +235,7 @@ function renderNametags()
 								-- NAME
 								--sx, sy = getScreenFromWorldPosition(x, y, z+0.6, 100, false)
 								--sy = sy - (60 - distance*10)
-
+								
 								if (distance==1) then
 									sy = sy - 60
 								elseif (distance<=1.25) then
@@ -254,6 +257,22 @@ function renderNametags()
 									local r, g, b = getPlayerNametagColor(player)
 									dxDrawText(getPlayerNametagText(player), sx-offset+2, sy+2, (sx-offset)+130 / distance, sy+20 / distance, tocolor(0, 0, 0, 220), scale, font, "center", "middle", false, false, false)
 									dxDrawText(getPlayerNametagText(player), sx-offset, sy, (sx-offset)+130 / distance, sy+20 / distance, tocolor(r, g, b, 220), scale, font, "center", "middle", false, false, false)
+									
+									-- DRAW ids
+									local id = getElementData(player, "playerid")
+									
+									if (id<100 and id>9) then -- 2 digits
+										dxDrawRectangle(sx-offset-15, oldsy, 30 / distance, 20 / distance, tocolor(0, 0, 0, 100), false)
+										dxDrawText(tostring(id), sx-offset-22.5, oldsy, (sx-offset)+26 / distance, sy+20 / distance, tocolor(255, 255, 255, 220), scale, font, "center", "middle", false, false, false)
+									elseif (id<=9) then -- 1 digit
+										dxDrawRectangle(sx-offset-5, oldsy, 20 / distance, 20 / distance, tocolor(0, 0, 0, 100), false)
+										dxDrawText(tostring(id), sx-offset-12.5, oldsy, (sx-offset)+26 / distance, sy+20 / distance, tocolor(255, 255, 255, 220), scale, font, "center", "middle", false, false, false)
+									elseif (id>=100) then -- 3 digits
+										dxDrawRectangle(sx-offset-25, oldsy, 40 / distance, 20 / distance, tocolor(0, 0, 0, 100), false)
+										dxDrawText(tostring(id), sx-offset-32.5, oldsy, (sx-offset)+26 / distance, sy+20 / distance, tocolor(255, 255, 255, 220), scale, font, "center", "middle", false, false, false)
+									end
+								
+								
 								end
 							end
 						end

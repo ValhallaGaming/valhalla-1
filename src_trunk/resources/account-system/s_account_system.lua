@@ -1025,8 +1025,8 @@ function deleteCharacterByName(charname)
 		-- finally delete the character
 		mysql_free_result( mysql_query(handler, "DELETE FROM characters WHERE id='" .. charid .. "' AND account='" .. accountID .. "' LIMIT 1") )
 	end
-	sendAccounts(source, accountID)
-	showChat(source, true)
+	--sendAccounts(source, accountID)
+	--showChat(source, true)
 end
 addEvent("deleteCharacter", true)
 addEventHandler("deleteCharacter", getRootElement(), deleteCharacterByName)

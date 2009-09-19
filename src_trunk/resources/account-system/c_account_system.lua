@@ -1509,8 +1509,8 @@ function deleteSelectedCharacter(button, state)
 				function(button)
 					if (button=="left") then
 						if source == bYes then
-							hideUI()
 							triggerServerEvent("deleteCharacter", getLocalPlayer(), charname)
+							deleteCharacter(charname)
 						elseif source == bNo then
 							if wDelConfirmation then
 								destroyElement(wDelConfirmation)
@@ -1522,6 +1522,12 @@ function deleteSelectedCharacter(button, state)
 			)
 		end
 	end
+end
+
+function deleteCharacter(charname)
+	hideUI()
+	tableAccounts[selectedChar] = nil
+	showCharacterUI(tableAccounts, false)
 end
 			
 addEvent("onClientChooseCharacter", false)

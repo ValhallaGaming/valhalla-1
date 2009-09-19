@@ -26,8 +26,14 @@
 	$username = mysql_result($result, 0, 0);
 	$admin = mysql_result($result, 0, 1);
 	
+	if ($admin < 1)
+	{
+		header('Location: main.php');
+		exit;
+	}
+	
 	$userid = $_GET["id"];
-	$result = mysql_query("SELECT username, appgamingexperience, appcountry, applanguage, apphow, appwhy, appexpectations, appdefinitions, appfirstcharacter, appclarifications FROM accounts WHERE id='" . $userid . "' limit 1", $conn);
+	$result = mysql_query("SELECT username, appgamingexperience, appcountry, applanguage, apphow, appwhy, appexpectations, appdefinitions, appfirstcharacter, appclarifications, appreason FROM accounts WHERE id='" . $userid . "' limit 1", $conn);
 	
 	$targetusername = mysql_result($result, 0, 0);
 	$gamingexperience = mysql_result($result, 0, 1);
@@ -39,13 +45,13 @@
 	$definitions = mysql_result($result, 0, 7);
 	$firstcharacter = mysql_result($result, 0, 8);
 	$clarifications = mysql_result($result, 0, 9);
-	
-	
-	if ($admin < 1)
+	$adminreason = mysql_result($result, 0, 9);
+	if (strlen($adminreason) == 0)
 	{
-		header('Location: main.php');
-		exit;
+		$adminreason = "Write the reason why the person is denied here. This does not have any effect if you are accepting the application.";
 	}
+	
+
 ?>
 
 <html>
@@ -361,7 +367,7 @@ a:active {
 		          <input type="radio" name="deny" id="deny" value="deny" onClick="doCheck(this)"> 
 		          Deny
                   <br>
-                  <textarea name="reason" cols="45" rows="5" id="reason">Write the reason why the person is denied here. This does not have any effect if you are accepting the application.</textarea>
+                  <textarea name="reason" cols="45" rows="5" id="reason"><?php echo $adminreason; ?></textarea>
                   <br>
 		            <br>		          
 		            <input type="submit" name="submit" id="submit" value="Submit">

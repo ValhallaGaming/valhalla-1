@@ -101,7 +101,7 @@ function renderNametags()
 								lasty[player] = sy
 							end
 
-							if ( sx <= lastx[player]+5 ) and ( sy >= lasty[player]-5 ) and not (isPlayerMoving(player)) then
+							if ( sx <= lastx[player]+100 ) and ( sy >= lasty[player]-100 ) and not (isPlayerMoving(player)) then
 								sx = lastx[player]
 								sy = lasty[player]
 							elseif ( sx <= lastx[player]+100 ) and ( sy >= lasty[player]-100 ) and (isPlayerMoving(player)) then

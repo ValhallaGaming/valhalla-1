@@ -83,7 +83,8 @@ function renderNametags()
 				
 				if (player~=localPlayera) and (isElementOnScreen(player)) and ((distance<limitdistance) or reconx) then
 					if not getElementData(player, "reconx") and not getElementData(player, "freecam:state") then
-						local lx, ly, lz = getPedBonePosition(localPlayer, 7)
+						--local lx, ly, lz = getPedBonePosition(localPlayer, 7)
+						local lx, ly, lz = getCameraMatrix()
 						local vehicle = getPedOccupiedVehicle(player)
 						local collision = processLineOfSight(lx, ly, lz+1, rx, ry, rz, true, true, false, true, false, false, true, false, vehicle)
 
@@ -91,27 +92,27 @@ function renderNametags()
 							local x, y, z = getPedBonePosition(player, 7)
 							
 							local sx, sy = getScreenFromWorldPosition(x, y, z+0.45, 100, false)
-							
-							-- screen smoothing
-							if not (lastx[player]) then
-								lastx[player] = sx
-							end
-							
-							if not (lasty[player]) then
-								lasty[player] = sy
-							end
 
-							if ( sx <= lastx[player]+100 ) and ( sy >= lasty[player]-100 ) and not (isPlayerMoving(player)) then
-								sx = lastx[player]
-								sy = lasty[player]
-							elseif ( sx <= lastx[player]+100 ) and ( sy >= lasty[player]-100 ) and (isPlayerMoving(player)) then
-								sx = lastx[player]
-								sy = lasty[player]
-							end
-							-- end of screen smoothing
-							
 							-- HP
 							if (sx) and (sy) then
+								-- screen smoothing
+								if not (lastx[player]) then
+									lastx[player] = sx
+								end
+								
+								if not (lasty[player]) then
+									lasty[player] = sy
+								end
+
+								if ( sx <= lastx[player]+100 ) and ( sy >= lasty[player]-100 ) and not (isPlayerMoving(player)) then
+									sx = lastx[player]
+									sy = lasty[player]
+								elseif ( sx <= lastx[player]+100 ) and ( sy >= lasty[player]-100 ) and (isPlayerMoving(player)) then
+									sx = lastx[player]
+									sy = lasty[player]
+								end
+								-- end of screen smoothing
+							
 								--if (isPedInVehicle(player)) then sy = sy - 50 end
 								
 								local health = math.ceil(lasthp[player])

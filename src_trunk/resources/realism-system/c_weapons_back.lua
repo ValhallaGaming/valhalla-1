@@ -35,7 +35,7 @@ end
 addEventHandler("onClientVehicleEnter", getRootElement(), playerEntersVehicle)
 
 function playerExitsVehicle(player)
-	if (weapons[player]) then
+	if (weapons[player]) and getPedTotalAmmo(player, 5) > 0 then
 		local weapon = weapons[player][2]
 		weapons[player][1] = createModel(player, weapon)
 		weapons[player][3] = isPedDucked(player)

@@ -5,7 +5,7 @@ addEventHandler( "onClientPreRender", getRootElement(),
 	function( slice )
 		if getControlState( "sprint" ) or down > 0 then
 			run = run + slice
-			if run >= 20000 then
+			if run >= 40000 then
 				if isPedOnGround( getLocalPlayer( ) ) then
 					exports.global:applyAnimation(getLocalPlayer(), "FAT", "idle_tired", 5000, true, false, true)
 					run = 19000

@@ -8,24 +8,51 @@ function startRes()
 end
 addEventHandler("onClientResourceStart", getResourceRootElement(), startRes)
 
-function playerQuit()
-	playerhp[source] = nil
-	lasthp[source] = nil
-	playerarmor[source] = nil
-	lastarmor[source] = nil
-end
-	
-
 local playerhp = { }
 local lasthp = { }
 
 local playerarmor = { }
 local lastarmor = { }
 
+local lastx = { }
+local lasty = { }
+
+function playerQuit()
+	if (getElementType(source)=="player") then
+		playerhp[source] = nil
+		lasthp[source] = nil
+		playerarmor[source] = nil
+		lastarmor[source] = nil
+		lastx[source] = nil
+		lasty[source] = nil
+	end
+end
+addEventHandler("onClientElementStreamOut", getRootElement(), playerQuit)
+addEventHandler("onClientPlayerQuit", getRootElement(), playerQuit)
+
+
 function setNametagOnJoin()
 	setPlayerNametagShowing(source, false)
 end
 addEventHandler("onClientPlayerJoin", getRootElement(), setNametagOnJoin)
+
+function streamIn()
+	if (getElementType(source)=="player") then
+		playerhp[source] = getElementHealth(source)
+		lasthp[source] = playerhp[source]
+		
+		playerarmor[source] = getPedArmor(source)
+		lastarmor[source] = playerarmor[source]
+		
+		lastx[source] = 0
+		lasty[source] = 0
+	end
+end
+addEventHandler("onClientElementStreamIn", getRootElement(), streamIn)
+
+function isPlayerMoving(player)
+	return (not isPedInVehicle(player) and (getPedControlState(player, "forwards") or getPedControlState(player, "backwards") or getPedControlState(player, "left") or getPedControlState(player, "right")))
+end	
 
 function renderNametags()
 	if (show) then
@@ -54,7 +81,7 @@ function renderNametags()
 					lastarmor[player] = playerarmor[player]
 				end
 				
-				if (player~=localPlayer) and (isElementOnScreen(player)) and ((distance<limitdistance) or reconx) then
+				if (player~=localPlayera) and (isElementOnScreen(player)) and ((distance<limitdistance) or reconx) then
 					if not getElementData(player, "reconx") and not getElementData(player, "freecam:state") then
 						local lx, ly, lz = getPedBonePosition(localPlayer, 7)
 						local vehicle = getPedOccupiedVehicle(player)
@@ -63,6 +90,19 @@ function renderNametags()
 						if not (collision) or (reconx) then
 							local x, y, z = getPedBonePosition(player, 7)
 							local sx, sy = getScreenFromWorldPosition(x, y, z+0.45, 100, false)
+							
+							if not (lastx[player]) then
+								lastx[player] = sx
+							end
+							
+							if not (lasty[player]) then
+								lasty[player] = sy
+							end
+
+							if ( sx <= lastx[player]+25 ) and ( sy <= lasty[player]+25 ) and not (isPlayerMoving(player)) then
+								sx = lastx[player]
+								sy = lasty[player]
+							end
 							
 							-- HP
 							if (sx) and (sy) then

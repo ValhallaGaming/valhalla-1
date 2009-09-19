@@ -238,7 +238,7 @@ function useItem(itemSlot, additional)
 				
 				-- can't see their name
 				local pid = getElementData(source, "playerid")
-				local name = string.gsub(getPlayerName(source), "_", " ") name
+				local name = string.gsub(getPlayerName(source), "_", " ")
 				setPlayerNametagText(source, tostring(name))
 
 				removeElementData(source, "gasmask")

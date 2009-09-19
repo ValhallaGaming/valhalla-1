@@ -51,7 +51,7 @@ end
 addEventHandler("onClientElementStreamIn", getRootElement(), streamIn)
 
 function isPlayerMoving(player)
-	return (not isPedInVehicle(player) and (getPedControlState(player, "forwards") or getPedControlState(player, "backwards") or getPedControlState(player, "left") or getPedControlState(player, "right")))
+	return (not isPedInVehicle(player) and (getPedControlState(player, "forwards") or getPedControlState(player, "backwards") or getPedControlState(player, "left") or getPedControlState(player, "right") or getPedControlState(player, "accelerate") or getPedControlState(player, "brake_reverse") or getPedControlState(player, "enter_exit") or getPedControlState(player, "enter_passenger")))
 end	
 
 function renderNametags()
@@ -89,8 +89,10 @@ function renderNametags()
 
 						if not (collision) or (reconx) then
 							local x, y, z = getPedBonePosition(player, 7)
+							
 							local sx, sy = getScreenFromWorldPosition(x, y, z+0.45, 100, false)
 							
+							-- screen smoothing
 							if not (lastx[player]) then
 								lastx[player] = sx
 							end
@@ -99,10 +101,14 @@ function renderNametags()
 								lasty[player] = sy
 							end
 
-							if ( sx <= lastx[player]+25 ) and ( sy <= lasty[player]+25 ) and not (isPlayerMoving(player)) then
+							if ( sx <= lastx[player]+5 ) and ( sy >= lasty[player]-5 ) and not (isPlayerMoving(player)) then
+								sx = lastx[player]
+								sy = lasty[player]
+							elseif ( sx <= lastx[player]+100 ) and ( sy >= lasty[player]-100 ) and (isPlayerMoving(player)) then
 								sx = lastx[player]
 								sy = lasty[player]
 							end
+							-- end of screen smoothing
 							
 							-- HP
 							if (sx) and (sy) then

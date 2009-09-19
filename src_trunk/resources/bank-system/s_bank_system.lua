@@ -149,10 +149,10 @@ function transferMoneyToPersonal(business, name, amount, reason)
 			local theTeam = getPlayerTeam(source)
 			if exports.global:takeMoney(theTeam, amount) then
 				mysql_free_result( mysql_query( handler, "INSERT INTO wiretransfers (`from`, `to`, `amount`, `reason`, `type`) VALUES (" .. ( -getElementData( theTeam, "id" ) ) .. ", " .. dbid .. ", " .. amount .. ", '" .. reason .. "', 3)" ) )
-			else
-				setElementData(source, "bankmoney", getElementData(source, "bankmoney") - amount)
-				mysql_free_result( mysql_query( handler, "INSERT INTO wiretransfers (`from`, `to`, `amount`, `reason`, `type`) VALUES (" .. getElementData(source, "dbid") .. ", " .. dbid .. ", " .. amount .. ", '" .. reason .. "', 2)" ) )
 			end
+		else
+			setElementData(source, "bankmoney", getElementData(source, "bankmoney") - amount)
+			mysql_free_result( mysql_query( handler, "INSERT INTO wiretransfers (`from`, `to`, `amount`, `reason`, `type`) VALUES (" .. getElementData(source, "dbid") .. ", " .. dbid .. ", " .. amount .. ", '" .. reason .. "', 2)" ) )
 		end
 		
 		if reciever then

@@ -909,10 +909,17 @@ function sendAccounts(thePlayer, id, isChangeChar)
 			accounts[i] = { }
 			accounts[i][1] = mysql_result(result, i, 1)
 			accounts[i][2] = mysql_result(result, i, 2)
-			accounts[i][3] = mysql_result(result, i, 3)
+			
+			if (tonumber(mysql_result(result, i, 3))==1) then
+				accounts[i][3] = tonumber(mysql_result(result, i, 3))
+			end
+			
 			accounts[i][4] = mysql_result(result, i, 4)
 			accounts[i][5] = mysql_result(result, i, 5)
-			accounts[i][6] = mysql_result(result, i, 6)
+			
+			if (tonumber(mysql_result(result, i, 6))==1) then
+				accounts[i][6] = tonumber(mysql_result(result, i, 6))
+			end
 			
 			local factionID = tonumber(mysql_result(result, i, 7))
 			local factionRank = tonumber(mysql_result(result, i, 8))

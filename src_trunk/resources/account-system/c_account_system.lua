@@ -1364,7 +1364,7 @@ function showCharacterUI(accounts, firstTime)
 		end
 		
 		-- Gender
-		if (gender==0) then
+		if (gender==nil) then
 			gender = "Male"
 		else
 			gender = "Female"
@@ -1375,7 +1375,7 @@ function showCharacterUI(accounts, firstTime)
 		paneChars[key][1] = guiCreateStaticImage(0.0, 0.1, 0.95, 0.5, "img/charbg0.png", true, paneChars[key][7])
 		paneChars[key][8] = cked
 		
-		if (cked==0) then
+		if (cked==nil) then
 			paneChars[key][2] = guiCreateLabel(0.3, 0.1, 0.5, 0.2, tostring(charname), true, paneChars[key][7])
 		else
 			paneChars[key][2] = guiCreateLabel(0.3, 0.1, 0.5, 0.2, tostring(charname) .. " (Deceased)", true, paneChars[key][7])
@@ -1682,7 +1682,7 @@ function selectedCharacter(button, state)
 				
 				setElementAlpha(getLocalPlayer(), 0)
 					
-				if (cked==0) then
+				if (cked==nil) then
 					--if (skinID==0) then -- Load CJ's clothes etc.
 					--	local charname = tableAccounts[key][2]
 					--	triggerServerEvent("spawnClothes", getLocalPlayer(), charname)

@@ -147,12 +147,14 @@ function timerPDUnjailPlayer(jailedPlayer)
 	if(isElement(jailedPlayer)) then
 		local timeServed = getElementData(jailedPlayer, "pd.jailserved")
 		local timeLeft = getElementData(jailedPlayer, "pd.jailtime")
+		local theMagicTimer = getElementData(jailedPlayer, "pd.jailtimer") -- 0001290: PD /release bug
 		local username = getPlayerName(jailedPlayer)
 		setElementData(jailedPlayer, "pd.jailserved", timeServed+1, false)
 		local timeLeft = timeLeft - 1
 		setElementData(jailedPlayer, "pd.jailtime", timeLeft, false)
 
-		if (timeLeft<=0) then
+		if (timeLeft<=0) and (theMagicTimer) then
+			killTimer(theMagicTimer) -- 0001290: PD /release bug
 			fadeCamera(jailedPlayer, false)
 			local query = mysql_query(handler, "UPDATE characters SET pdjail_time='0', pdjail='0', pdjail_station='0' WHERE charactername='" .. username .. "'")
 			mysql_free_result(query)
@@ -176,6 +178,7 @@ function timerPDUnjailPlayer(jailedPlayer)
 			
 			fadeCamera(jailedPlayer, true)
 			outputChatBox("Your time has been served.", jailedPlayer, 0, 255, 0)
+
 		elseif (timeLeft>0) then
 			local query = mysql_query(handler, "UPDATE characters SET pdjail_time='" .. timeLeft .. "' WHERE charactername='" .. username .. "'")
 			mysql_free_result(query)
@@ -183,6 +186,10 @@ function timerPDUnjailPlayer(jailedPlayer)
 	else
 		local theTimer = getElementData(jailedPlayer, "jailtimer")
 		killTimer(theTimer)
+		-- 0001290: PD /release bug
+		local theMagicTimer = getElementData(jailedPlayer, "pd.jailtimer")
+		killTimer(theMagicTimer)
+		-- end 0001290: PD /release bug
 	end
 end
 

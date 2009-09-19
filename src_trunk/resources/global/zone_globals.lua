@@ -36,11 +36,11 @@ function getElementZoneName( element, citiesonly )
 					name = getElementData( entrance, 'name' )
 				end
 			end
+			cache[citiesonly][ getElementDimension( element ) ] = name
 		else
 			name = gezn( element, citiesonly ), gezn( element, not citiesonly )
 		end
 		
-		cache[citiesonly][ getElementDimension( element ) ] = name
 		return name
 	else
 		return cache[citiesonly][ getElementDimension( element ) ]

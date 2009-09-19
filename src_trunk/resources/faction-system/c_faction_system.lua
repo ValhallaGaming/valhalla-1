@@ -12,7 +12,10 @@ function showFactionMenu(motd, memberUsernames, memberRanks, memberLeaders, memb
 		arrLocations = memberLocation
 		arrFactionRanks = factionRanks
 		arrFactionWages = factionWages
+		
+		if (motd) == nil then motd = "" end
 		theMotd = motd
+	
 	
 		local thePlayer = getLocalPlayer()
 		theTeam = factionTheTeam
@@ -55,7 +58,19 @@ function showFactionMenu(motd, memberUsernames, memberRanks, memberLeaders, memb
 			local rankName = factionRanks[theRank]
 			guiGridListSetItemText(gMemberGrid, row, colRank, tostring(rankName), false, false)
 			
-			guiGridListSetItemText(gMemberGrid, row, colLastLogin, memberLastLogin[k], false, false)
+			local login = "Never"
+			if (not memberLastLogin[k]) then
+				login = "Never"
+			else
+				if (memberLastLogin[k]==0) then
+					login = "Today"
+				elseif (memberLastLogin[k]==1) then
+					login = tostring(memberLastLogin[k]) .. " day ago"
+				else
+					login = tostring(memberLastLogin[k]) .. " days ago"
+				end
+			end
+			guiGridListSetItemText(gMemberGrid, row, colLastLogin, login, false, false)
 			guiGridListSetItemText(gMemberGrid, row, colLocation, memberLocation[k], false, false)
 
 			if (factionType==2) or (factionType==3) or (factionType==4) or (factionType==5) or (factionType==6)then

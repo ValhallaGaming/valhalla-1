@@ -128,12 +128,6 @@ function showFactionMenu(source)
 					local wage1, wage2, wage3, wage4, wage5, wage6, wage7, wage8, wage9, wage10, wage11, wage12, wage13, wage14, wage15 = mysql_result(query3, 1, 1), mysql_result(query3, 1, 2), mysql_result(query3, 1, 3), mysql_result(query3, 1, 4), mysql_result(query3, 1, 5), mysql_result(query3, 1, 6), mysql_result(query3, 1, 7), mysql_result(query3, 1, 8), mysql_result(query3, 1, 9), mysql_result(query3, 1, 10), mysql_result(query3, 1, 11), mysql_result(query3, 1, 12), mysql_result(query3, 1, 13), mysql_result(query3, 1, 14), mysql_result(query3, 1, 15)
 					local motd = mysql_result(query3, 1, 16)
 					
-					-- Fix the MOTD
-					if (motd==nil) then
-						motd = ""
-					end
-					
-					
 					local memberUsernames = {}
 					local memberRanks = {}
 					local memberLeaders = {}
@@ -142,6 +136,8 @@ function showFactionMenu(source)
 					local memberLocation = {}
 					local factionRanks = {rank1, rank2, rank3, rank4, rank5, rank6, rank7, rank8, rank9, rank10, rank11, rank12, rank13, rank14, rank15 }
 					local factionWages = {wage1, wage2, wage3, wage4, wage5, wage6, wage7, wage8, wage9, wage10, wage11, wage12, wage13, wage14, wage15 }
+					
+					if (motd == "") then motd = nil end
 					
 					local i = 1
 					for result, row in mysql_rows(query) do
@@ -163,20 +159,8 @@ function showFactionMenu(source)
 						--local time = getRealTime()
 						--local year = 1900+time.year
 						--local yearday = time.yearday
-						local lastlogin = tonumber(row[4])
+						memberLastLogin[i] = tonumber(row[4])
 						
-						if (not lastlogin) then
-							login = "Never"
-						else
-							if (lastlogin==0) then
-								login = "Today"
-							elseif (lastlogin==1) then
-								login = tostring(lastlogin) .. " day ago"
-							else
-								login = tostring(lastlogin) .. " days ago"
-							end
-						end
-						memberLastLogin[i] = login
 						
 						local targetPlayer = getPlayerFromName(tostring(playerName))
 						if (targetPlayer) then

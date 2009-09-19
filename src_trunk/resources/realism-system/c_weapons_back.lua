@@ -8,7 +8,7 @@ function weaponSwitch(prevSlot, newSlot)
 		weapons[source] = { }
 	end
 	
-	if (weapon == 30 or weapon == 31) then
+	if (weapon == 30 or weapon == 31) and (isPedInVehicle(source)==false) then
 		if (weapons[source][1] == nil or weapons[source][2] ~= weapon or weapons[source][3] ~= isPedDucked(source)) then -- Model never created
 			weapons[source][1] = createModel(source, weapon)
 			weapons[source][2] = weapon
@@ -25,6 +25,23 @@ function weaponSwitch(prevSlot, newSlot)
 	end
 end
 addEventHandler("onClientPlayerWeaponSwitch", getRootElement(), weaponSwitch)
+
+function playerEntersVehicle(player)
+	if (weapons[player]) then
+		local object = weapons[player][1]
+		destroyElement(object)
+	end
+end
+addEventHandler("onClientVehicleEnter", getRootElement(), playerEntersVehicle)
+
+function playerExitsVehicle(player)
+	if (weapons[player]) then
+		local weapon = weapons[player][2]
+		weapons[player][1] = createModel(player, weapon)
+		weapons[player][3] = isPedDucked(player)
+	end
+end
+addEventHandler("onClientVehicleExit", getRootElement(), playerExitsVehicle)
 
 function createModel(player, weapon)
 	local bx, by, bz = getPedBonePosition(player, 3)

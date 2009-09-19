@@ -4,16 +4,14 @@
 		header('Location: index.php');
 		exit;
 	}
-?>
-
-<?php include("config.php"); ?>
-
-<?php 
+	
+	include("config.php");
+	
 	$conn = mysql_pconnect($mysql_host, $mysql_user, $mysql_pass);
 	$userid = mysql_real_escape_string($_COOKIE["uid"], $conn);
 	
 	mysql_select_db("mta", $conn);
-	$result = mysql_query("SELECT username, admin, donator, appstate, apphandler, appreason, banned, securitykey FROM accounts WHERE id='" . $userid . "' LIMIT 1", $conn);
+	$result = mysql_query("SELECT username, admin FROM accounts WHERE id='" . $userid . "' LIMIT 1", $conn);
 
 	if (!$result || mysql_num_rows($result)==0)
 	{
@@ -21,35 +19,14 @@
 		setcookie("username", "", time()-3600);
 		setcookie("password", "", time()-3600);		
 		header('Location: index.php');
-		exit;
 	}
 	$username = mysql_result($result, 0, 0);
 	$admin = mysql_result($result, 0, 1);
-	$donator = mysql_result($result, 0, 2);
-	$appstate = mysql_result($result, 0, 3);
-	$apphandler = mysql_result($result, 0, 4);
-	$appreason = mysql_result($result, 0, 5);
-	$banned = mysql_result($result, 0, 6);
-	$securitykey = mysql_result($result, 0, 7);
-?>
-
-<?php 
-	function getAdminTitleFromIndex($index)
-	{
-		$ranks = array("No", "Trial Admin", "Administrator", "Super Admin", "Lead Admin", "Head Admin", "Owner");
-		return $ranks[$index];
-	}
 	
-	function getDonatorTitleFromIndex($index)
+	if ($admin < 1)
 	{
-		$ranks = array("No", "Bronze" ,"Silver", "Gold", "Platinum", "Pearl", "Diamond", "Godly");
-		return $ranks[$index];
-	}
-	
-	function getStandingFromIndex($index)
-	{
-		$ranks = array("<em><font color='#66FF00'>In Good Standing</font></em>", "<em><font color='#FF0000'>Banned</font></em>");
-		return $ranks[$index];
+		header('Location: main.php');
+		exit;
 	}
 ?>
 
@@ -131,12 +108,9 @@ a:active {
 	font-weight: bold;
 }
         .style14 table tr td table tr td {
-	text-align: right;
+	text-align: center;
 }
         .style114 table tr td table tr td {
-	text-align: left;
-}
-    .style14 table tr td {
 	text-align: left;
 }
     </style>
@@ -199,95 +173,51 @@ a:active {
 		<tr>
 			<td height="274" class="style14" style="height: 40px; text-align: center; font-family: Verdana; font-size: xx-small;"><table width="1094" height="154" border="1">
 			  <tr>
-			    <td width="20%" valign="top">
-                <?php
-					if ($admin > 0)
-					{
-						// new applications
-						$result = mysql_query("SELECT COUNT(*) FROM accounts WHERE appstate=1");
-						$num = mysql_result($result, 0, 0);
-						echo "<font size='1'><a href='applications.php?show=1'> > New Applications (" . $num . ")</a></font><br>";
-						
-						// accepted
-					 	$result = mysql_query("SELECT COUNT(*) FROM accounts WHERE appstate=3");
-						$num = mysql_result($result, 0, 0);
-						echo "<font size='1'><a href='applications.php?show=4'>> Accepted Applications (" . $num . ")</a></font><br>";
-						
-						// declined
-						$result = mysql_query("SELECT COUNT(*) FROM accounts WHERE appstate=2");
-						$num = mysql_result($result, 0, 0);
-						echo "<font size='1'><a href='applications.php?show=2'>> Declined Applications (" . $num . ")</a></font><br>";
-						
-						// accounts without applications
-						$result = mysql_query("SELECT COUNT(*) FROM accounts WHERE appstate=0");
-						$num = mysql_result($result, 0, 0);
-						echo "<font size='1'><a href='applications.php?show=3'>> Application-less Accounts (" . $num . ")</a></font><br>";
-						
-						// bans
-						$result = mysql_query("SELECT COUNT(*) FROM accounts WHERE banned>0");
-						$num = mysql_result($result, 0, 0);
-						echo "<font size='1'><a href='applications.php?show=5'>> Banned Accounts (" . $num . ")</a></font><br>";
-						
-						// friends
-						$result = mysql_query("SELECT COUNT(*) FROM friends WHERE friend = " . $userid);
-						echo "<font size='1'><a href='friends.php'>> Your Friends (" . mysql_result($result, 0, 0) . ")</a></font><br>";
-					}
-				?>
-                
-                &nbsp;</td>
-			    <td width="60%">
-                <center>
-                <?php
-					if ($appstate == 3)
-					{
-						echo "<em><font color='#66FF00'>Your application was Accepted! (Handler: " . $apphandler . ").<br><br></font></em>";
-					}
-					elseif ($appstate == 2)
-					{
-						echo "<em><font color='#FF0000'>Your application was Denied! (Handler: " . $apphandler . ").<br><br>Reason: " . $appreason . "<br><br></font></em>";
-					}
-					?>
-                <table width="322" border="0" align="center">
-			      <tr>
-			        <td colspan="2"><center>
-			          <strong>Account Information</strong>
-			        </center></td>
-		          </tr>
-			      <tr>
-			        <td align="right">Application Status:</td>
-			        <td align="left">
+			    <td width="15%">&nbsp;</td>
+		      <td width="70%"><table width="600" border="1" align="center">
                     
                     <?php
-						if ($appstate == 0)
-							echo "<em><a href='writeapplication.php'><font color='#FF9900' align='left'>Click here to write one</font></a></em>";
-						elseif ($appstate == 1)
-							echo "<em><font color='#FF9900' align='left'>Pending Review</font></em>";
-						elseif ($appstate == 2)
-							echo "<em><a href='writeapplication.php'<font color='#FF0000'>Denied - Click here to write a new application.</a></font></em>";
-						elseif ($appstate == 3)
-							echo "<em><font color='#66FF00'>Accepted</font></em>";
+					if( isset($_GET['remove']) )
+					{
+						$remove = (int)$_GET['remove'];
+						mysql_query("DELETE FROM friends WHERE id = " . $remove . " AND friend = " . $userid);
+					}
+					
+					echo "<center>Your Friends</center>";
+					$query = mysql_query("SELECT f.id, a.username, a.friendsmessage, a.lastlogin, DATEDIFF(NOW(), a.lastlogin) FROM friends f LEFT JOIN accounts a ON f.id = a.id WHERE f.friend = " . $userid . " ORDER BY DATEDIFF(NOW(), a.lastlogin) ASC", $conn);
+					
+					echo "<tr>";
+					echo "<td align='center'><b>Username</b></td>";
+					echo "<td align='center'><b>Characters</b></td>";
+					echo "<td align='center'><b>Message </b></td>";
+					echo "<td align='center'><b>Last Online</b></td>";
+					echo "<td align='center'><b>Action</b></td>";
+					echo "</tr>";
+
+					while( $row = mysql_fetch_assoc( $query ) )
+					{
+						echo "<tr>";
+						echo "<td align='left'>" . $row['username'] . "</td>";
+						
+						// find chars
+						$altquery = mysql_query("SELECT charactername FROM characters WHERE account = " . $row['id']);
+						$alts = array();
+						while( $res = mysql_fetch_assoc( $altquery ) )
+						{
+							$alts[] = $res['charactername'];
+						}
+						echo "<td align='left'>" . implode('<br />', $alts) . "&nbsp;</td>";
+
+						echo "<td align='left'>" . $row['friendsmessage'] . "</td>";
+						echo "<td align='left'>" . $row['lastlogin'] . " (" . $row['DATEDIFF(NOW(), a.lastlogin)'] . " days ago)</td>";
+						echo "<td align='left'><a href='friends.php?remove=" . $row['id'] . "'>Remove ></a></td>";
+						echo "</tr>";
+					}
 					?>
                     
-                    </td>
-		          </tr>
-			      <tr class="">
-			        <td width="165" align="right">Administrator:</td>
-			        <td width="147" align="left"><em><?php echo getAdminTitleFromIndex($admin) ?></em></td>
-		          </tr>
-			      <tr>
-			        <td>Donator:</td>
-			        <td align="left"><em><?php echo getDonatorTitleFromIndex($donator) ?></em></td>
-		          </tr>
-			      <tr>
-			        <td>Account Standing:</td>
-			        <td align="left"><em><?php echo getStandingFromIndex($banned) ?></em></td>
-		          </tr>
-			      <tr>
-			        <td>Security Key:</td>
-			        <td align="left"><?php echo $securitykey; ?>&nbsp;</td>
-		          </tr>
+                    &nbsp;</p>
 		        </table></td>
-			    <td width="20%">&nbsp;</td>
+			    <td width="15%">&nbsp;</td>
 		      </tr>
 	      </table></td>
 		</tr>

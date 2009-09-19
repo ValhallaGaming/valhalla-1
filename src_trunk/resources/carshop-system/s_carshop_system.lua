@@ -34,7 +34,11 @@ setElementData(boatshopPickup, "shopid", 2, false)
 
 function pickupUse(thePlayer)
 	if getElementData(source, "shopid") then
-		triggerClientEvent(thePlayer, "showCarshopUI", thePlayer, getElementData(source, "shopid"))
+		if getElementData(thePlayer, "license.car") == 1 then
+			triggerClientEvent(thePlayer, "showCarshopUI", thePlayer, getElementData(source, "shopid"))
+		else
+			outputChatBox("You need a Driving License to buy a car.", thePlayer, 255, 0, 0)
+		end
 	end
 	cancelEvent()
 end

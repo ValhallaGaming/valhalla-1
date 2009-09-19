@@ -88,7 +88,7 @@ end
 addEventHandler( "onClientResourceStart", getResourceRootElement(), createGUI, false )
 addEventHandler( "onClientElementDataChange", localPlayer, 
 	function(n)
-		if n == "adminlevel" then
+		if n == "adminlevel" or n == "hiddenadmin" then
 			createGUI()
 		end
 	end, false

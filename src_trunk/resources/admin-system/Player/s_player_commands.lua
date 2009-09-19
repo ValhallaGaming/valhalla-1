@@ -1356,7 +1356,7 @@ function makePlayerAdmin(thePlayer, commandName, who, rank)
 				rank = tonumber(rank)
 				
 				if (rank<1337) then
-					setElementData(targetPlayer, "hiddenadmin", 0, false)
+					setElementData(targetPlayer, "hiddenadmin", 0)
 				end
 				
 				local query = mysql_query(handler, "UPDATE accounts SET admin='" .. tonumber(rank) .. "', hiddenadmin='0' WHERE id='" .. accountID .. "'")

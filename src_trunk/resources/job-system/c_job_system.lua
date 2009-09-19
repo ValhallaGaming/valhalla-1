@@ -71,7 +71,7 @@ function acceptJob(button, state)
 			
 			if ( jobtext=="Delivery Driver" or jobtext=="Taxi Driver" or jobtext=="Bus Driver" ) then  -- Driving job, requires the license
 				local carlicense = getElementData(getLocalPlayer(), "license.car")
-				if (carlicense==0) then
+				if (carlicense~=1) then
 					outputChatBox("You require a drivers license to do this job.", 255, 0, 0)
 					return
 				end

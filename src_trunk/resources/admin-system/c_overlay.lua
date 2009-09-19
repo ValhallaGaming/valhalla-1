@@ -112,3 +112,5 @@ addEventHandler( "updateReportsCount", getLocalPlayer(),
 		updateGUI()
 	end, false
 )
+
+addEventHandler( "onClientPlayerQuit", getRootElement(), updateGUI )

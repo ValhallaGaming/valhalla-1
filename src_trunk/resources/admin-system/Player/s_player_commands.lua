@@ -2296,7 +2296,18 @@ end
 local function showAlts(thePlayer, id)
 	result = mysql_query( handler, "SELECT charactername, cked, faction_id FROM characters WHERE account = " .. id )
 	if result then
-		outputChatBox( " ", thePlayer )
+		local name = mysql_query( handler, "SELECT username FROM accounts WHERE id = " .. id )
+		if name then
+			local uname = mysql_result( name, 1, 1 )
+			if uname and uname ~= mysql_null() then
+				outputChatBox( "~-~-~-~-~-~ " .. uname .. " ~-~-~-~-~-~", thePlayer, 255, 194, 14 )
+			else
+				outputChatBox( " ", thePlayer )
+			end
+			mysql_free_result( name )
+		else
+			outputChatBox( " ", thePlayer )
+		end
 		local count = 0
 		for result, row in mysql_rows( result ) do
 			count = count + 1

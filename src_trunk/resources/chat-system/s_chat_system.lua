@@ -830,6 +830,9 @@ function adminAnnouncement(thePlayer, commandName, ...)
 				local logged = getElementData(arrayPlayer, "loggedin")
 				
 				if (logged) then
+					if exports.global:isPlayerAdmin(arrayPlayer) then
+						outputChatBox( "Admin Announcement by " .. getPlayerName(thePlayer) .. ":", arrayPlayer, 255, 194, 14)
+					end
 					outputChatBox("   *** " .. message .. " ***", arrayPlayer, 255, 194, 14)
 				end
 			end

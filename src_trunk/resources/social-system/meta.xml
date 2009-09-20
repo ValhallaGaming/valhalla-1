@@ -9,14 +9,13 @@
 	
 	<script src="s_upgrade.lua" type="server"/>
 	
-	<file src="images/friendsme.png" />
+	<file src="images/red.png" />
+	<file src="images/grn.png" />
 	
-	<file src="images/Linux.png" />
-	<file src="images/Windows.png" />
 	
-	<file src="images/flags/sc.png" />
 	
 	<!--Country flags-->
+  <file src="images/flags/sc.png" />
   <file src="images/flags/ac.png" />
   <file src="images/flags/ad.png" />
   <file src="images/flags/ae.png" />

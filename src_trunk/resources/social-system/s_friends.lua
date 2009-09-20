@@ -54,8 +54,12 @@ function toggleFriends(source)
 		if visible == 0 then -- not already showing
 			local accid = tonumber(getElementData(source, "gameaccountid"))
 			
+			local achresult = mysql_query(handler, "SELECT COUNT(*) FROM achievements WHERE account='" .. accid .. "' LIMIT 1")
+			local myachievements = mysql_result(achresult, 1, 1)
+			mysql_free_result(achresult)
+			
 			-- load friends list
-			local result = mysql_query( handler, "SELECT f.friend, a.username, a.friendsmessage, DATEDIFF(NOW(), a.lastlogin), a.country, a.os, ( SELECT COUNT(*) FROM achievements b WHERE b.account = a.id ) FROM friends f LEFT JOIN accounts a ON f.friend = a.id WHERE f.id = " .. accid .. " ORDER BY DATEDIFF(NOW(), a.lastlogin) ASC" )
+			local result = mysql_query( handler, "SELECT f.friend, a.username, a.friendsmessage, DATEDIFF(NOW(), a.lastlogin), a.country, ( SELECT COUNT(*) FROM achievements b WHERE b.account = a.id ) FROM friends f LEFT JOIN accounts a ON f.friend = a.id WHERE f.id = " .. accid .. " ORDER BY DATEDIFF(NOW(), a.lastlogin) ASC" )
 			if result then
 				local friends = { }
 				for result, row in mysql_rows(result) do
@@ -83,18 +87,9 @@ function toggleFriends(source)
 						local state = "Offline"
 						
 						if player then
-							table.insert( friends, 1, { id, account, row[3], row[5], player, row[6], tonumber( row[7] ) } )
+							table.insert( friends, 1, { id, account, row[3], row[5], tonumber( row[6] ) } )
 						else
-							if not timeoffline then
-								state = "Last Seen: Never"
-							elseif timeoffline == 0 then
-								state = "Last Seen: Today"
-							elseif timeoffline == 1 then
-								state = "Last Seen: Yesterday"
-							else
-								state = "Last Seen: " .. timeoffline .. " days ago"
-							end
-							table.insert( friends, { id, account, row[3], row[5], state, row[6], tonumber( row[7] ) } )
+							table.insert( friends, { id, account, row[3], row[5], tonumber( row[6] ), timeoffline } )
 						end
 					end
 				end
@@ -112,7 +107,7 @@ function toggleFriends(source)
 				else
 					outputDebugString( "Friendmessage load failed: " .. mysql_error( handler ) )
 				end
-				triggerClientEvent( source, "showFriendsList", source, friends, friendsmessage )
+				triggerClientEvent( source, "showFriendsList", source, friends, friendsmessage, myachievements )
 				setElementData(source, "friends.visible", 1)
 			else
 				outputDebugString( "Friends load failed: " .. mysql_error(handler) )
@@ -133,9 +128,7 @@ function updateFriendsMessage(message)
 	
 	local query = mysql_query(handler, "UPDATE accounts SET friendsmessage='" .. safemessage .. "' WHERE id='" .. accid .. "'")
 	if (query) then
-		setElementData(source, "friends.visible", 0, false)
 		mysql_free_result(query)
-		toggleFriends(source)
 	else
 		outputChatBox("Error updating friends message - ensure you used no special characters!", source, 255, 0, 0)
 	end
@@ -143,7 +136,7 @@ end
 addEvent("updateFriendsMessage", true)
 addEventHandler("updateFriendsMessage", getRootElement(), updateFriendsMessage)
 
-function removeFriend(id, username, dontShowFriends)
+function removeFriend(id, username)
 	local accid = tonumber(getElementData(source, "gameaccountid"))
 	local result = mysql_query( handler, "DELETE FROM friends WHERE id = " .. accid .. " AND friend = " .. id )
 	if result then
@@ -154,12 +147,6 @@ function removeFriend(id, username, dontShowFriends)
 		end
 		
 		mysql_free_result( result )
-		outputChatBox("You removed '" .. username .. "' from your friends list.", source, 255, 194, 14)
-		
-		setElementData(source, "friends.visible", 0, false)
-		if (dontShowFriends==false) then
-			toggleFriends(source)
-		end
 	end
 end
 addEvent("removeFriend", true)

@@ -27,18 +27,26 @@ addEventHandler("sendPlayerInfo", getRootElement(), retrievePlayerInfo)
 function addFriend(player)
 	local accid = tonumber(getElementData(source, "gameaccountid"))
 	local targetID = tonumber(getElementData(player, "gameaccountid"))
-
-	local result = mysql_query( handler, "INSERT INTO friends VALUES (" .. accid .. ", " .. targetID .. ")")
-	if result then
-		local friends = getElementData(source, "friends")
-		if friends then
-			friends[ targetID ] = true
-			setElementData(source, "friends", friends, false)
-		end
-		outputChatBox("'" .. getPlayerName(player) .. "' was added to your friends list.", source, 255, 194, 14)
-		mysql_free_result( result )
+	
+	local countresult = mysql_query(handler, "SELECT COUNT(*) FROM friends WHERE id='" .. accid .. "' LIMIT 1")
+	local count = mysql_result(countresult, 1, 1)
+	mysql_free_result(countresult)
+	
+	if (count >=23) then
+		outputChatBox("Your friends list is currently full.", source, 255, 0, 0)
 	else
-		outputDebugString( "Add Friend: " .. mysql_error( handler ) )
+		local result = mysql_query( handler, "INSERT INTO friends VALUES (" .. accid .. ", " .. targetID .. ")")
+		if result then
+			local friends = getElementData(source, "friends")
+			if friends then
+				friends[ targetID ] = true
+				setElementData(source, "friends", friends, false)
+			end
+			outputChatBox("'" .. getPlayerName(player) .. "' was added to your friends list.", source, 255, 194, 14)
+			mysql_free_result( result )
+		else
+			outputDebugString( "Add Friend: " .. mysql_error( handler ) )
+		end
 	end
 end
 addEvent("addFriend", true)

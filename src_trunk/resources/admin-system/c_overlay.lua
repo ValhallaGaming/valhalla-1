@@ -23,11 +23,11 @@ function getAdminCount()
 	local online, duty, lead, leadduty = 0, 0, 0, 0
 	for key, value in ipairs(getElementsByType("player")) do
 		if (isElement(value)) then
-			local level = getElementData( value, "adminlevel" )
+			local level = getElementData( value, "adminlevel" ) or 0
 			if level >= 1 then
 				online = online + 1
 				
-				local aod = getElementData( value, "adminduty" )
+				local aod = getElementData( value, "adminduty" ) or 0
 				if aod == 1 then
 					duty = duty + 1
 				end
@@ -60,7 +60,7 @@ local function updateGUI()
 		end
 		
 		local onduty = "Off Duty"
-		if getElementData( localPlayer, "adminduty" ) and getElementData( localPlayer, "adminduty" ) == 1 then
+		if getElementData( localPlayer, "adminduty" ) == 1 then
 			onduty = "On Duty"
 		end
 		guiSetText( statusLabel, getAdminTitle( localPlayer ) .. " :: " .. onduty .. " :: " .. getElementData( localPlayer, "gameaccountusername" ) .. " :: " .. duty .. "/" .. online .. " Admins :: " .. leadduty .. "/" .. lead .. " Lead+ Admins :: " .. ( openReports - handledReports ) .. " unanswered reports" .. reporttext .. " :: " .. handledReports .. " handled reports" .. ownreporttext )

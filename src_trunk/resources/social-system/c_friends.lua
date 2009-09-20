@@ -63,6 +63,7 @@ function fadeInTextBox()
 	guiSetAlpha(messages[1], alpha2-0.1)
 	
 	if (alpha+0.1>=0.7) then
+		guiSetVisible(message[1], false)
 		guiBringToFront(textMessage)
 		addEventHandler("onClientGUIClick", buttonUpdate, sendMessage, false)
 		guiSetInputEnabled(true)
@@ -79,8 +80,10 @@ function fadeOutTextBox()
 	guiSetAlpha(messages[1], alpha2+0.1)
 	
 	if (alpha-0.1<=0.0) then
+		destroyElement(buttonUpdate)
+		destroyElement(textMessage)
 		guiSetInputEnabled(false)
-		guiBringToFront(messages[2])
+		guiBringToFront(messages[1])
 		killTimer(fadeTimerTB)
 	end
 end
@@ -228,7 +231,8 @@ end
 function sendMessage(button)
 	if (button=="left") then
 		message = guiGetText(textMessage)
-
+		
+		guiSetVisible(message[1], true)
 		guiSetText(messages[1], "'" .. tostring(message) .. "'")
 		
 		if (isTimer(fadeTimerTB)) then killTimer(fadeTimerTB) end

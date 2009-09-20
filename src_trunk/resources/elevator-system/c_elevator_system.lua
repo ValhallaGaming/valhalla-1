@@ -32,7 +32,7 @@ end
 
 addEventHandler( "onClientPlayerVehicleEnter", getLocalPlayer(),
 	function( vehicle )
-		setElementData( vehicle, "groundoffset", getElementDistanceFromCentreOfMassToBaseOfModel( vehicle ) )
+		setElementData( vehicle, "groundoffset", 0.2 + getElementDistanceFromCentreOfMassToBaseOfModel( vehicle ) )
 	end
 )
 

@@ -48,16 +48,11 @@ function getPlayerAdminTitle(thePlayer)
 	return text
 end
 
+-- Do not even think of adding your own name here unless you made a couple of recent commits.
 local scripterAccounts = {
 	Daniels = true,
-	Chamberlain = true,
 	mabako = true,
-	Serizzim = true,
-	Flobu = true,
-	ryden = true,
-	CCC = true,
-	Mount = true,
-	['Mr.Hankey'] = true
+	Mount = true
 }
 function isPlayerScripter(thePlayer)
 	return getElementType(thePlayer) == "console" or isPlayerHeadAdmin(thePlayer) or scripterAccounts[getElementData(thePlayer, "gameaccountusername")]

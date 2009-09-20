@@ -86,6 +86,9 @@ function fadeOutTextBox()
 end
 
 function showFriendsUI(friends, fmess, myachievements)
+	if (fadeTimer) then return end
+	setElementData(getLocalPlayer(), "friends.visible", 1, true)
+	
 	local cx = 0.015
 	local cy = 0.025
 	local count = 1
@@ -141,9 +144,16 @@ function showFriendsUI(friends, fmess, myachievements)
 		panels[key+1] = guiCreateTabPanel(cx, cy, 0.24, 0.15, true) -- 0.25, 0.15
 		guiSetAlpha(panels[key+1], 0.0)
 		
+		local found, name = isPlayerOnline(id)
+		local pid = nil
 		
 		-- Name
-		names[key+1] = guiCreateLabel(cx+0.02, cy+0.02, 0.9, 0.1, string.gsub(tostring(username), "_", " "), true)
+		if not found then
+			names[key+1] = guiCreateLabel(cx+0.02, cy+0.02, 0.9, 0.1, tostring(username), true)
+		else
+			pid = getElementData(getPlayerFromNick(name), "playerid")
+			names[key+1] = guiCreateLabel(cx+0.02, cy+0.02, 0.9, 0.1, tostring(username) .. "  (ID: " .. pid .. ")" , true)
+		end
 		guiSetFont(names[key+1], "default-bold-small")
 		guiSetAlpha(names[key+1], 0.0)
 		
@@ -154,9 +164,9 @@ function showFriendsUI(friends, fmess, myachievements)
 		guiSetAlpha(onlineimages[key+1], 0.0)
 		
 		-- Current Character
-		local found, name = isPlayerOnline(id)
+		
 		if (found) then
-			chars[key+1] = guiCreateLabel(cx+0.02, cy+0.04, 0.9, 0.1, "Currently Playing as " .. name , true)
+			chars[key+1] = guiCreateLabel(cx+0.02, cy+0.04, 0.9, 0.2, "Currently Playing as " .. string.gsub(name, "_", " ") , true)
 		else
 			if (timeoffline) then
 				if (timeoffline==0) then
@@ -286,6 +296,7 @@ function doFadeOutEffect(fadeBackIn)
 		removes = { }
 		
 		if (fadeBackIn) then
+			fadeTimer = nil
 			showFriendsUI(tableFriends, message, cachievements)
 		else
 			tableFriends = nil
@@ -362,8 +373,10 @@ function doFadeOutContent(fadeBackIn)
 end
 
 function hideFriendsUI(informServer, fadeBackIn)
+	if (fadeTimer) then return end
 	fadeTimer = setTimer(doFadeOutContent, 50, 0, fadeBackIn)
 	guiSetInputEnabled(false)
+	showCursor(false)
 	
 	if (informServer or informServer==nil) then
 		setElementData(getLocalPlayer(), "friends.visible", 0, true)

@@ -30,7 +30,7 @@ addEventHandler("onResourceStop", getResourceRootElement(getThisResource()), clo
 function bindKeys()
 	local players = exports.pool:getPoolElementsByType("player")
 	for k, arrayPlayer in ipairs(players) do
-		setElementData(arrayPlayer, "friends.visible", 0, false)
+		setElementData(arrayPlayer, "friends.visible", 0, true)
 		if not(isKeyBound(arrayPlayer, "o", "down", "friends")) then
 			bindKey(arrayPlayer, "o", "down", "friends")
 		end
@@ -40,7 +40,7 @@ end
 function bindKeysOnJoin()
 	bindKey(source, "o", "down", "friends")
 	
-	setElementData(source, "friends.visible", 0, false)
+	setElementData(source, "friends.visible", 0, true)
 end
 addEventHandler("onResourceStart", getResourceRootElement(), bindKeys)
 addEventHandler("onPlayerJoin", getRootElement(), bindKeysOnJoin)
@@ -108,7 +108,6 @@ function toggleFriends(source)
 					outputDebugString( "Friendmessage load failed: " .. mysql_error( handler ) )
 				end
 				triggerClientEvent( source, "showFriendsList", source, friends, friendsmessage, myachievements )
-				setElementData(source, "friends.visible", 1)
 			else
 				outputDebugString( "Friends load failed: " .. mysql_error(handler) )
 				outputChatBox("Error 600000 - Could not retrieve friends list.", source, 255, 0, 0)

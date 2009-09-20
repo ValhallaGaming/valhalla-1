@@ -29,7 +29,7 @@ function addFriend(player)
 	local targetID = tonumber(getElementData(player, "gameaccountid"))
 	
 	local countresult = mysql_query(handler, "SELECT COUNT(*) FROM friends WHERE id='" .. accid .. "' LIMIT 1")
-	local count = mysql_result(countresult, 1, 1)
+	local count = tonumber(mysql_result(countresult, 1, 1))
 	mysql_free_result(countresult)
 	
 	if (count >=23) then

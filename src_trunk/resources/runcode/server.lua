@@ -42,8 +42,10 @@ function runString (commandstring, outputTo, source)
 		return source
 	end
 	_G['source'] = source
-	vehicle = getPedOccupiedVehicle(source)
-	car = vehicle
+	if getElementType(source) == 'player' then
+		vehicle = getPedOccupiedVehicle(source) or getPedContactElement(source)
+		car = vehicle
+	end
 	checkMySQL()
 	
 	local notReturned

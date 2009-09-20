@@ -1161,6 +1161,8 @@ function setVehiclePosition(thePlayer, commandName)
 					mysql_free_result(query)
 					setVehicleRespawnPosition(veh, x, y, z, rx, ry, rz)
 					setElementData(veh, "respawnposition", {x, y, z, rx, ry, rz}, false)
+					setElementData(veh, "interior", interior)
+					setElementData(veh, "dimension", dimension)
 					outputChatBox("Vehicle spawn position set.", thePlayer)
 					
 					for key, value in ipairs(destroyTimers) do

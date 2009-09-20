@@ -200,7 +200,7 @@ function showFriendsUI(friends, fmess, myachievements)
 		guiSetAlpha(messages[key+1], 0.0)
 		
 		-- REMOVE
-		removes[key] = guiCreateLabel(cx+0.226, cy+0.01, 0.9, 0.03, "X", true)
+		removes[key] = guiCreateLabel(cx+0.226, cy+0.01, 0.01, 0.02, "X", true)
 		guiSetFont(removes[key], "default-bold-small")
 		guiSetAlpha(removes[key], 0.0)
 		addEventHandler("onClientGUIClick", removes[key], removeFriend, false)

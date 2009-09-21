@@ -510,35 +510,37 @@ function initiateDrivingTest()
 	outputChatBox("#FF9933((The #00FF00start point #FF9933has been added to your radar.))", 255, 194, 14, true)
 end
 
-function startDrivingTest()
-	local vehicle = getPedOccupiedVehicle(getLocalPlayer())
-	local id = getElementModel(vehicle)
-	if not (testVehicle[id]) then
-		outputChatBox("#FF9933You must be in a DMV test car when passing through the check points.", 255, 0, 0, true ) -- Wrong car type.
-	elseif not exports.global:hasMoney( getLocalPlayer(), 100 ) then
-		outputChatBox("You can't pay the processing fee.", 255, 0, 0 )
-	else
-		destroyElement(blip)
-		destroyElement(marker)
-		
-		outputChatBox("You have paid the $100 fee to take the driving practical test.", source, 255, 194, 14)
-		triggerServerEvent("payFee", getLocalPlayer(), 100)
-		
-		local vehicle = getPedOccupiedVehicle ( getLocalPlayer() )
-		setElementData(getLocalPlayer(), "drivingTest.marker", "1", false)
-
-		local x1,y1,z1 = nil -- Setup the first checkpoint
-		x1 = testRoute[2][1]
-		y1 = testRoute[2][2]
-		z1 = testRoute[2][3]
-		setElementData(getLocalPlayer(), "drivingTest.checkmarkers", 23, false)
-
-		blip = createBlip(x1, y1 , z1, 0, 2, 255, 0, 255, 255)
-		marker = createMarker( x1, y1,z1 , "checkpoint", 4, 255, 0, 255, 150)
+function startDrivingTest(element)
+	if element == getLocalPlayer() then
+		local vehicle = getPedOccupiedVehicle(getLocalPlayer())
+		local id = getElementModel(vehicle)
+		if not (testVehicle[id]) then
+			outputChatBox("#FF9933You must be in a DMV test car when passing through the check points.", 255, 0, 0, true ) -- Wrong car type.
+		elseif not exports.global:hasMoney( getLocalPlayer(), 100 ) then
+			outputChatBox("You can't pay the processing fee.", 255, 0, 0 )
+		else
+			destroyElement(blip)
+			destroyElement(marker)
 			
-		addEventHandler("onClientMarkerHit", marker, UpdateCheckpoints)	
+			outputChatBox("You have paid the $100 fee to take the driving practical test.", source, 255, 194, 14)
+			triggerServerEvent("payFee", getLocalPlayer(), 100)
 			
-		outputChatBox("#FF9933You will need to complete the route without damaging the test car. Good luck and drive safe.", 255, 194, 14, true)
+			local vehicle = getPedOccupiedVehicle ( getLocalPlayer() )
+			setElementData(getLocalPlayer(), "drivingTest.marker", "1", false)
+
+			local x1,y1,z1 = nil -- Setup the first checkpoint
+			x1 = testRoute[2][1]
+			y1 = testRoute[2][2]
+			z1 = testRoute[2][3]
+			setElementData(getLocalPlayer(), "drivingTest.checkmarkers", 23, false)
+
+			blip = createBlip(x1, y1 , z1, 0, 2, 255, 0, 255, 255)
+			marker = createMarker( x1, y1,z1 , "checkpoint", 4, 255, 0, 255, 150)
+				
+			addEventHandler("onClientMarkerHit", marker, UpdateCheckpoints)	
+				
+			outputChatBox("#FF9933You will need to complete the route without damaging the test car. Good luck and drive safe.", 255, 194, 14, true)
+		end
 	end
 end
 

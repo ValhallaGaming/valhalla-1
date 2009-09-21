@@ -65,7 +65,7 @@ function advertMessage(thePlayer, commandName, showNumber, ...)
 	if (logged==1) then
 		if not (...) or not (showNumber) then
 			outputChatBox("SYNTAX: /" .. commandName .. " [Show Phone Number 0/1] [Message]", thePlayer, 255, 194, 14)
-		elseif getElementData(thePlayer, "adminjail") == 1 then
+		elseif getElementData(thePlayer, "adminjailed") == 1 then
 			outputChatBox("You cannot advertise in jail.", thePlayer, 255, 0, 0)
 		elseif getElementData(thePlayer, "alcohollevel") and getElementData(thePlayer, "alcohollevel") ~= 0 then
 			outputChatBox("You are too drunk to advertise!", thePlayer, 255, 0, 0)
@@ -1001,12 +1001,6 @@ function togglePM(thePlayer, commandName)
 end
 addCommandHandler("togpm", togglePM)
 
-function resetTransactionWarning(thePlayer)
-	if (isElement(thePlayer)) then
-		removeElementData(thePlayer, "checktranslimit")
-	end
-end
-
 -- /pay
 function payPlayer(thePlayer, commandName, targetPlayerNick, amount)
 	local logged = getElementData(thePlayer, "loggedin")
@@ -1035,19 +1029,10 @@ function payPlayer(thePlayer, commandName, targetPlayerNick, amount)
 					elseif (hoursplayed<5) and (amount>50) then
 						outputChatBox("You must play atleast 5 hours before transferring over 50$", thePlayer, 255, 0, 0)
 					elseif exports.global:takeMoney(thePlayer, amount) then
+						
 						exports.logs:logMessage("[Money Transfer From " .. getPlayerName(thePlayer) .. " To: " .. getPlayerName(targetPlayer) .. "] Value: " .. amount .. "$", 5)
 						if (hoursplayed<5) then
-							local checktranslimit = getElementData(thePlayer, "checktranslimit")
-							if (checktranslimit) then
-								local newvalue = checktranslimit + 1
-								if (newvalue == 3) or (newvalue == 5) or (newvalue == 10) then
-									exports.global:sendMessageToAdmins("AdmWarn: New Player '" .. getPlayerName(thePlayer) .. "' made more then " .. newvalue .. " transactions within 5 minutes.")
-								end
-								setElementData(thePlayer, "checktranslimit", newvalue, false)
-							else
-								setElementData(thePlayer, "checktranslimit", 1, false)
-								setTimer(resetTransactionWarning, 300000, 1, thePlayer)
-							end
+							exports.global:sendMessageToAdmins("AdmWarn: New Player '" .. getPlayerName(thePlayer) .. "' transferred " .. amount .. "$ to '" .. getPlayerName(targetPlayer) .. "'.")
 						end
 						
 						exports.global:giveMoney(targetPlayer, amount)

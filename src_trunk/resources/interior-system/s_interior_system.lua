@@ -135,7 +135,8 @@ function findProperty(thePlayer, dimension)
 			return dbid, entrance, exit, getElementData(entrance,"inttype")
 		end]]
 		if intTable[dbid] then
-			return dbid, unpack( intTable[dbid] )
+			local entrance, exit = unpack( intTable[dbid] )
+			return dbid, entrance, exit, getElementData(entrance,"inttype")
 		end
 	end
 	return 0

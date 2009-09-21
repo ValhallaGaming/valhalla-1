@@ -146,7 +146,7 @@ addEvent("createBlipAtXY", true)
 addEventHandler("createBlipAtXY", getRootElement(), createBlipAtXY)
 
 function removeBlipAtXY(inttype, x, y)
-	if inttype == 3 then inttype = 0 end
+	if inttype == 3 or type(inttype) ~= 'number' then inttype = 0 end
 	for key, value in ipairs(getElementsByType("blip")) do
 		local bx, by, bz = getElementPosition(value)
 		local icon = getBlipIcon(value)

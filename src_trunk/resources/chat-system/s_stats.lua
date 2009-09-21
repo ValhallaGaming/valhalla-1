@@ -88,3 +88,8 @@ function showStats(thePlayer, commandName, targetPlayerName)
 	outputChatBox("~-~-~-~-~-~-~-~-~-~-~-~-~-~-~~-~", showPlayer, 255, 194, 14)
 end
 addCommandHandler("stats", showStats, false, false)
+
+function showMoney( thePlayer )
+	outputChatBox( "Your current money: $" .. exports.global:getMoney( thePlayer ), thePlayer )
+end
+addCommandHandler("money", showMoney, false, false)

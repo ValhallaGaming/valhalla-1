@@ -228,9 +228,14 @@ Car Teleport Modes:
 0: players only
 1: players and vehicles
 2: vehicles only
+3: no entrance
 ]]--
 function enterElevator(player, pickup)
 	local cartp = getElementData( pickup, "car" )
+	if cartp == 3 then
+		outputChatBox("You try the door handle, but it seems to be locked.", player, 255, 0,0, true)
+		return
+	end
 	vehicle = getPedOccupiedVehicle( player )
 	if isInPickup ( player, pickup ) and not getElementData(player, "UsedElevator") and ( ( vehicle and cartp ~= 0 and getVehicleOccupant( vehicle ) == player ) or not vehicle ) then
 		if not vehicle and cartp == 2 then
@@ -503,7 +508,7 @@ addEventHandler("onPlayerSpawn", getRootElement(), JoinsInCustomInt)
 addEvent( "toggleCarTeleportMode", false )
 addEventHandler( "toggleCarTeleportMode", getRootElement(),
 	function( player )
-		local mode = ( getElementData( source, "car" ) + 1 ) % 3
+		local mode = ( getElementData( source, "car" ) + 1 ) % 4
 		local query = mysql_query( handler, "UPDATE elevators SET car = " .. mode .. " WHERE id = " .. getElementData( source, "dbid" ) )
 		if query then
 			mysql_free_result( query )
@@ -512,8 +517,10 @@ addEventHandler( "toggleCarTeleportMode", getRootElement(),
 				outputChatBox( "You changed the mode to 'players only'.", player, 0, 255, 0 )
 			elseif mode == 1 then
 				outputChatBox( "You changed the mode to 'players and vehicles'.", player, 0, 255, 0 )
-			else
+			elseif mode == 2 then
 				outputChatBox( "You changed the mode to 'vehicles only'.", player, 0, 255, 0 )
+			else
+				outputChatBox( "You changed the mode to 'no entrance'.", player, 0, 255, 0 )
 			end
 			
 			setElementData( source, "car", mode, false )

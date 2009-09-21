@@ -117,6 +117,14 @@ function playerQuit()
 		
 		if (isElement(theAdmin)) then
 			outputChatBox(" [#" .. report .."] Player " .. getPlayerName(source) .. " left the game.", theAdmin, 0, 255, 255)
+		else
+			for key, value in ipairs(exports.global:getAdmins()) do
+				local adminduty = getElementData(value, "adminduty")
+				if adminduty == 1 then
+					outputChatBox(" [#" .. i .."] Player " .. getPlayerName(source) .. " left the game.", value, 0, 255, 255)
+					update = true
+				end
+			end
 		end
 		
 		local alertTimer = reports[report][6]

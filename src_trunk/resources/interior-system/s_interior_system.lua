@@ -790,7 +790,7 @@ function setPlayerInsideInterior(thePickup, thePlayer)
 	-- teleport the player inside the interior
 	local other = getElementData( thePickup, "other" )
 	if other then
-		local dimension = getElementDimension( other, "dbid" )
+		local dimension = getElementDimension( other )
 		local interior = getElementInterior( other )
 		local x, y, z = getElementPosition( other )
 		local rot = getElementData(thePickup, "angle")
@@ -1068,3 +1068,73 @@ function findParent( element, dimension )
 	local dbid, entrance = findProperty( element, dimension )
 	return entrance
 end
+
+function gotoHouse( thePlayer, commandName, houseID )
+	if exports.global:isPlayerFullAdmin( thePlayer ) then
+		houseID = tonumber( houseID )
+		if not houseID then
+			outputChatBox( "SYNTAX: /" .. commandName .. " [House/Biz ID]", thePlayer, 255, 194, 14 )
+		else
+			local dbid, entrance, exit = findProperty( thePlayer, houseID )
+			if entrance then
+				local dimension = getElementDimension( entrance )
+				local interior = getElementInterior( entrance )
+				local x, y, z = getElementPosition( entrance )
+				
+				setElementPosition(thePlayer, x, y, z)
+				setElementInterior(thePlayer, interior)
+				setElementDimension(thePlayer, dimension)
+				setCameraInterior(thePlayer, interior)
+				
+				outputChatBox( "Teleported to House #" .. houseID, thePlayer, 0, 255, 0 )
+			else
+				outputChatBox( "Invalid House.", thePlayer, 255, 0, 0 )
+			end
+		end
+	end
+end
+addCommandHandler( "gotohouse", gotoHouse )
+
+function setInteriorID( thePlayer, commandName, interiorID )
+	if exports.global:isPlayerLeadAdmin( thePlayer ) then
+		interiorID = tonumber( interiorID )
+		if not interiorID then
+			outputChatBox( "SYNTAX: /" .. commandName .. " [interior id] - changes the house interior", thePlayer, 255, 194, 14 )
+		elseif not interiors[interiorID] then
+			outputChatBox( "Invalid ID.", thePlayer, 255, 0, 0 )
+		else
+			local dbid, entrance, exit = findProperty( thePlayer )
+			if exit then
+				local interior = interiors[interiorID]
+				local ix = interior[2]
+				local iy = interior[3]
+				local iz = interior[4]
+				local optAngle = interior[5]
+				local interiorw = interior[1]
+				
+				local query = mysql_query(handler, "UPDATE interiors SET interior=" .. interiorw .. ", interiorx=" .. ix .. ", interiory=" .. iy .. ", interiorz=" .. iz .. ", angle=" .. optAngle .. " WHERE id=" .. dbid)
+				if query then
+					mysql_free_result( query )
+					
+					setElementPosition( exit, ix, iy, iz )
+					setElementInterior( exit, interiorw )
+					
+					for key, value in pairs( getElementsByType( "player" ) ) do
+						if isElement( value ) and getElementDimension( value ) == dbid then
+							setElementPosition( value, ix, iy, iz )
+							setElementInterior( value, interiorw )
+							setCameraInterior( value, interiorw )
+						end
+					end
+					
+					outputChatBox( "Interior Updated.", thePlayer, 0, 255, 0 )
+				else
+					outputChatBox( "Interior Update failed.", thePlayer, 255, 0, 0 )
+				end
+			else
+				outputChatBox( "You are not in an interior.", thePlayer, 255, 0, 0 )
+			end
+		end
+	end
+end
+addCommandHandler( "setinteriorid", setInteriorID )

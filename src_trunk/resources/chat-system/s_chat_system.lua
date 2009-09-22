@@ -489,6 +489,18 @@ function pmPlayer(thePlayer, commandName, who, ...)
 					outputChatBox("PM Sent to (" .. targetid .. ") " .. targetPlayerName .. ": " .. message, thePlayer, 255, 255, 0)
 					
 					exports.logs:logMessage("[PM From " ..playerName .. " TO " .. targetPlayerName .. "]" .. message, 8)
+					
+					-- big ears
+					local received = {}
+					for key, value in pairs( getElementsByType( "player" ) ) do
+						if isElement( value ) and not received[value] then
+							local listening = getElementData( value, "bigears" )
+							if listening == thePlayer or listening == targetPlayer then
+								received[value] = true
+								outputChatBox("(" .. playerid .. ") " .. playerName .. " -> (" .. targetid .. ") " .. targetPlayerName .. ": " .. message, value, 255, 255, 0)
+							end
+						end
+					end
 				elseif (logged==0) then
 					outputChatBox("Player is not logged in yet.", thePlayer, 255, 255, 0)
 				elseif (pmblocked==1) then
@@ -723,18 +735,16 @@ function factionOOC(thePlayer, commandName, ...)
 			if not(theTeam) or (theTeamName=="Citizen") then
 				outputChatBox("You are not in a faction.", thePlayer)
 			else
+				local message = table.concat({...}, " ")
+				
 				if (theTeamName=="Los Santos Police Department") then
 					exports.logs:logMessage("[OOC: Faction Chat] " .. playerName .. ": " .. message, 6)
 				end
 			
-				local message = table.concat({...}, " ")
-				local factionPlayers = getPlayersInTeam(theTeam)
-				
-				exports.irc:sendMessage("[OOC: Faction Chat] " .. playerName .. ": " .. message)
-				for index, arrayPlayer in ipairs(factionPlayers) do
-					local logged = getElementData(thePlayer, "loggedin")
-					
-					if (logged==1) then
+				for index, arrayPlayer in ipairs( getElementsByType( "player" ) ) do
+					if getElementData( arrayPlayer, "bigearsfaction" ) == theTeam then
+						outputChatBox("((" .. theTeamName .. ")) " .. playerName .. ": " .. message, arrayPlayer, 3, 157, 157)
+					elseif getPlayerTeam( arrayPlayer ) == theTeam and getElementData(thePlayer, "loggedin") == 1 then
 						outputChatBox("((OOC Faction Chat)) " .. playerName .. ": " .. message, arrayPlayer, 3, 237, 237)
 					end
 				end
@@ -1456,3 +1466,65 @@ function charityCash(thePlayer, commandName, amount)
 	end
 end
 addCommandHandler("charity", charityCash, false, false)
+
+-- /bigears
+function bigEars(thePlayer, commandName, targetPlayerNick)
+	if exports.global:isPlayerLeadAdmin(thePlayer) then
+		local current = getElementData(thePlayer, "bigears")
+		if not current and not targetPlayerNick then
+			outputChatBox("SYNTAX: /" .. commandName .. " [player]", thePlayer, 255, 194, 14)
+		elseif current and not targetPlayerNick then
+			removeElementData(thePlayer, "bigears")
+			outputChatBox("Big Ears turned off.", thePlayer, 255, 0, 0)
+		else
+			local targetPlayer = exports.global:findPlayerByPartialNick(targetPlayerNick)
+			
+			if not targetPlayer then
+				outputChatBox("Player not found or multiple were found.", thePlayer, 255, 0, 0)
+			else
+				outputChatBox("Now Listening to " .. getPlayerName(targetPlayer):gsub("_", " ") .. ".", thePlayer, 0, 255, 0)
+				setElementData(thePlayer, "bigears", targetPlayer, false)
+			end
+		end
+	end
+end
+addCommandHandler("bigears", bigEars)
+
+function removeBigEars()
+	for key, value in pairs( getElementsByType( "player" ) ) do
+		if isElement( value ) and getElementData( value, "bigears" ) == source then
+			removeElementData( value, "bigears" )
+			outputChatBox("Big Ears turned off (Player Left).", value, 255, 0, 0)
+		end
+	end
+end
+addEventHandler( "onPlayerQuit", getRootElement(), removeBigEars)
+
+function bigEarsFaction(thePlayer, commandName, factionID)
+	if exports.global:isPlayerLeadAdmin(thePlayer) then
+		factionID = tonumber( factionID )
+		local current = getElementData(thePlayer, "bigearsfaction")
+		if not current and not factionID then
+			outputChatBox("SYNTAX: /" .. commandName .. " [faction id]", thePlayer, 255, 194, 14)
+		elseif current and not factionID then
+			removeElementData(thePlayer, "bigearsfaction")
+			outputChatBox("Big Ears turned off.", thePlayer, 255, 0, 0)
+		else
+			local team = nil
+			for k, v in pairs( getElementsByType( "team" ) ) do
+				if getElementData( v, "id" ) == factionID then
+					team = v
+					break
+				end
+			end
+			
+			if not team then
+				outputChatBox("No faction with that ID found.", thePlayer, 255, 0, 0)
+			else
+				outputChatBox("Now Listening to " .. getTeamName(team) .. " OOC Chat.", thePlayer, 0, 255, 0)
+				setElementData(thePlayer, "bigearsfaction", team, false)
+			end
+		end
+	end
+end
+addCommandHandler("bigearsf", bigEarsFaction)

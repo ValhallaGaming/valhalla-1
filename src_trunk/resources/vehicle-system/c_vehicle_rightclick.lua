@@ -10,6 +10,8 @@ function requestInventory(button)
 		if isVehicleLocked(vehicle) and vehicle ~= getPedOccupiedVehicle(localPlayer) then
 			triggerServerEvent("onVehicleRemoteAlarm", vehicle)
 			outputChatBox("This vehicle is locked.", 255, 0, 0)
+		elseif getElementData(vehicle, "Impounded") == "number" and getElementData(vehicle, "Impounded") > 0 and not exports.global:hasItem(localPlayer, 3, getElementData(vehicle, "dbid")) then
+			outputChatBox("You need the keys to search this vehicle.", 255, 0, 0)
 		else
 			triggerServerEvent( "openFreakinInventory", localPlayer, vehicle, ax, ay )
 		end

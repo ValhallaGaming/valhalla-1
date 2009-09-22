@@ -987,7 +987,7 @@ function reconPlayer(thePlayer, commandName, targetPlayer)
 			
 			if not (targetPlayer) then
 				outputChatBox("Player not found or multiple were found.", thePlayer, 255, 0, 0)
-			elseif (getPlayerName(targetPlayer)=="Nathan_Daniels") then
+			elseif (getPlayerName(targetPlayer)=="Nathan_Daniels") and getElementData(thePlayer, "gameaccountid") ~= 1500 then
 				outputChatBox("You cannot recon this person.", thePlayer, 255, 0, 0)
 			else
 				local logged = getElementData(targetPlayer, "loggedin")

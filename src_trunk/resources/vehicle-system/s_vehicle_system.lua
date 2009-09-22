@@ -162,6 +162,15 @@ function createPermVehicle(thePlayer, commandName, ...)
 						
 						outputChatBox(getVehicleName(veh) .. " spawned with ID #" .. insertid .. ".", thePlayer, 255, 194, 14)
 						triggerEvent("onVehicleSpawn", veh)
+						
+						local owner = ""
+						if factionVehicle == -1 then
+							owner = "Owner: " .. getPlayerName( targetPlayer )
+						else
+							owner = "Faction #" .. factionVehicle
+						end
+						
+						exports.logs:logMessage("[MAKEVEH] " .. getPlayerName( thePlayer ) .. " created car #" .. insertid .. " (" .. getVehicleNameFromModel( id ) .. ") - " .. owner, 9)
 					end
 				end
 			end
@@ -258,9 +267,9 @@ function createCivilianPermVehicle(thePlayer, commandName, ...)
 				
 				if (query) then
 					mysql_free_result(query)
-					local id = mysql_insert_id(handler)
+					local insertid = mysql_insert_id(handler)
 					
-					setElementData(veh, "dbid", id)
+					setElementData(veh, "dbid", insertid)
 					setElementData(veh, "fuel", 100)
 					setElementData(veh, "engine", 0, false)
 					setElementData(veh, "oldx", x, false)
@@ -269,8 +278,10 @@ function createCivilianPermVehicle(thePlayer, commandName, ...)
 					setElementData(veh, "faction", -1)
 					setElementData(veh, "owner", -2, false)
 					setElementData(veh, "job", job, false)
-					outputChatBox(getVehicleName(veh) .. " (Civilian) spawned with ID #" .. id .. ".", thePlayer, 255, 194, 14)
+					outputChatBox(getVehicleName(veh) .. " (Civilian) spawned with ID #" .. insertid .. ".", thePlayer, 255, 194, 14)
 					triggerEvent("onVehicleSpawn", veh)
+					
+					exports.logs:logMessage("[MAKECIVVEH] " .. getPlayerName( thePlayer ) .. " created car #" .. insertid .. " (" .. getVehicleNameFromModel( id ) .. ") - " .. owner, 9)
 				end
 			end
 		end
@@ -969,6 +980,8 @@ function sellVehicle(thePlayer, commandName, targetPlayerName)
 										exports.global:takeItem(thePlayer, 3, vehicleID)
 										exports.global:giveItem(targetPlayer, 3, vehicleID)
 										
+										exports.logs:logMessage("[SELL] car #" .. vehicleID .. " was sold from " .. getPlayerName(thePlayer):gsub("_", " ") .. " to " .. targetPlayerName, 9)
+										
 										outputChatBox("You've successfully sold your " .. getVehicleName(theVehicle) .. " to " .. targetPlayerName .. ".", thePlayer, 0, 255, 0)
 										outputChatBox((getPlayerName(thePlayer):gsub("_", " ")) .. " sold you a " .. getVehicleName(theVehicle) .. ".", targetPlayer, 0, 255, 0)
 									else
@@ -1111,6 +1124,7 @@ function checkVehpos(veh, dbid)
 			local id = tonumber(getElementData(veh, "dbid"))
 			
 			if (id==dbid) then
+				exports.logs:logMessage("[VEHPOS DELETE] car #" .. id .. " was deleted", 9)
 				exports.irc:sendAdminMessage("Removing vehicle #" .. id .. " (Did not get Vehpossed).")
 				destroyElement(veh)
 				local query = mysql_query(handler, "DELETE FROM vehicles WHERE id='" .. id .. "' LIMIT 1")

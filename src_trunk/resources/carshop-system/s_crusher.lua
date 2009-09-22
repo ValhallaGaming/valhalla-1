@@ -103,7 +103,9 @@ local function crushCar(thePlayer, matching)
 						exports.global:sendMessageToAdmins("Removing vehicle #" .. dbid .. " (Crushed by " .. getPlayerName(thePlayer) .. ").")
 						exports.irc:sendAdminMessage("AdmInfo: Removing vehicle #" .. dbid .. " (Crushed by " .. getPlayerName(thePlayer) .. ").")
 						mysql_free_result(result)
-
+						
+						exports.logs:logMessage("[CRUSHER DELETE] Car #" .. dbid .. " was deleted by " .. getPlayerName(thePlayer), 9)
+						
 						destroyElement(theVehicle)
 					else
 						outputChatBox("Error 9004 - Report on Forums.", thePlayer, 255, 0, 0)

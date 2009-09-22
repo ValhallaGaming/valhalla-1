@@ -118,5 +118,7 @@ function makeCar(thePlayer, id, cost, col1, col2, x, y, z, rz, px, py, pz, prz)
 		setElementData(veh, "locked", locked, false)
 		triggerEvent("onVehicleSpawn", veh, false)
 		exports.global:givePlayerAchievement(thePlayer, 17) -- my ride
+		
+		exports.logs:logMessage("[CAR SHOP] " .. getPlayerName( thePlayer ) .. " bought car #" .. insertid .. " (" .. getVehicleNameFromModel( id ) .. ")", 9)
 	end
 end

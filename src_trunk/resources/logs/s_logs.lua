@@ -6,7 +6,8 @@ enumTypes = {
 [5] = "moneytransfers",
 [6] = "policechat",
 [7] = "meactions",
-[8] = "pms"
+[8] = "pms",
+[9] = "vehicles"
 }
 
 

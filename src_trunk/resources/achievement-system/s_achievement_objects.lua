@@ -32,7 +32,7 @@ end
 addEventHandler("onColShapeHit", benshape, giveBenAchievement)
 
 -- SAMP
-local sampshape = createColCuboid(1375, -810, 60, 80, 7, 100)
+local sampshape = createColCuboid(1375, -810, 60, 80, 7, 30)
 
 function giveBenAchievement(hitElement, matchingDimension)
 	if (matchingDimension) and (getElementType(hitElement)=="player") then

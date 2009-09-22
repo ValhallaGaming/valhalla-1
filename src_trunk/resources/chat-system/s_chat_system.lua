@@ -507,8 +507,11 @@ function localOOC(thePlayer, commandName, ...)
 	local interior = getElementInterior(thePlayer)
 		
 	if (logged==1) and not (isPedDead(thePlayer)) then
+		local muted = getElementData(thePlayer, "muted")
 		if not (...) then
 			outputChatBox("SYNTAX: /" .. commandName .. " [Message]", thePlayer, 255, 194, 14)
+		elseif (muted==1) then
+			outputChatBox("You are currenty muted from the OOC Chat.", thePlayer, 255, 0, 0)
 		else
 			local x, y, z = getElementPosition(thePlayer)
 			local chatSphere = createColSphere(x, y, z, 20)

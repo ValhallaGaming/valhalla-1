@@ -1025,7 +1025,7 @@ function reconPlayer(thePlayer, commandName, targetPlayer)
 					
 					local hiddenAdmin = getElementData(thePlayer, "hiddenadmin")
 					
-					if (hiddenAdmin==0) then
+					if hiddenAdmin == 0 and not exports.global:isPlayerLeadAdmin(thePlayer) then
 						local adminTitle = exports.global:getPlayerAdminTitle(thePlayer)
 						exports.global:sendMessageToAdmins("AdmCmd: " .. tostring(adminTitle) .. " " .. getPlayerName(thePlayer) .. " started reconning " .. targetPlayerName .. ".")
 					end

@@ -735,6 +735,11 @@ function loginPlayer(username, password, operatingsystem)
 				setElementData(source, "country", tostring(country))
 			end
 			
+			if tonumber(admin) == 0 then
+				adminduty = 0
+				hiddenadmin = 0
+			end
+			
 			setElementData(source, "donatorlevel", tonumber(donator))
 			setElementData(source, "adminlevel", tonumber(admin))
 			setElementData(source, "hiddenadmin", tonumber(hiddenadmin))

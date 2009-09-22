@@ -969,7 +969,7 @@ function sellVehicle(thePlayer, commandName, targetPlayerName)
 					local theVehicle = getPedOccupiedVehicle(thePlayer)
 					if theVehicle then
 						local vehicleID = getElementData(theVehicle, "dbid")
-						if getElementData(theVehicle, "owner") == getElementData(thePlayer, "dbid") or exports.global:isPlayerAdmin(thePlayer) then
+						if getElementData(theVehicle, "owner") == getElementData(thePlayer, "dbid") or exports.global:isPlayerSuperAdmin(thePlayer) then
 							if getElementData(targetPlayer, "dbid") ~= getElementData(theVehicle, "owner") then
 								if exports.global:hasSpaceForItem(targetPlayer) then
 									local query = mysql_query(handler, "UPDATE vehicles SET owner = '" .. getElementData(targetPlayer, "dbid") .. "' WHERE id='" .. vehicleID .. "'")

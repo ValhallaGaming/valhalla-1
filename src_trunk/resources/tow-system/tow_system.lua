@@ -115,8 +115,8 @@ function payRelease(vehID)
 		setVehicleLocked(vehID, true)
 		setElementData(vehID, "locked", true)
 		setElementData(vehID, "enginebroke", 0, false)
-		setVehicleDamageProof(vehID, false)
 		setVehicleEngineState(vehID, false)
+		setFrozen(vehID, false)
 		updateVehPos(vehID)
 		outputChatBox("Your vehicle has been released. Please remember to vehpos your vehicle so it does not respawn in our carpark.", source, 255, 194, 14)
 	else
@@ -212,3 +212,8 @@ function updateCivilianVehicles(theTruck)
 end
 
 addEventHandler("onTrailerDetach", getRootElement(), updateCivilianVehicles)
+
+function setFrozen(theVehicle, frozen)
+	setVehicleFrozen(theVehicle, frozen)
+	setVehicleDamageProof(theVehicle, frozen)
+end

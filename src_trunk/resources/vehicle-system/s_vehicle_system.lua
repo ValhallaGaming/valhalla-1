@@ -485,13 +485,10 @@ function loadAllVehicles(res)
 			setElementData(veh, "faction", faction)
 			setElementData(veh, "owner", owner, false)
 			setElementData(veh, "job", tonumber(job), false)
-			
+
 			-- Impounded
 			setElementData(veh, "Impounded", tonumber(Impounded))
-			if tonumber(Impounded) > 0 then
-				exports['tow-system']:setFrozen(veh, true)
-			end
-			
+
 			-- Interiors
 			setElementDimension(veh, currdimension)
 			setElementInterior(veh, currinterior)
@@ -1166,7 +1163,6 @@ function setVehiclePosition(thePlayer, commandName)
 					if (call(getResourceFromName("tow-system"), "CanTowTruckDriverGetPaid", thePlayer)) then
 						call(getResourceFromName("faction-system"), "addToFactionMoney", 30, 75)
 						call(getResourceFromName("faction-system"), "addToFactionMoney", 1, 75)
-						exports['tow-system']:setFrozen(veh, true)
 					end
 					removeElementData(veh, "requires.vehpos")
 					local x, y, z = getElementPosition(veh)

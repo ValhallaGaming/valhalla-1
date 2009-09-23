@@ -728,12 +728,13 @@ function loginPlayer(username, password, operatingsystem)
 			local chatbubbles = tonumber(mysql_result(result, 1, 19))
 			local appstate = tonumber(mysql_result(result, 1, 20))
 			
-			local country = exports.global:getPlayerCountry(source)
-			if (username=="Daniels") then
-				setElementData(source, "country", "SC")
-			else
-				setElementData(source, "country", tostring(country))
+			local country = tostring(exports.global:getPlayerCountry(source))
+			if username == "Daniels" then
+				country = "SC"
+			elseif username == "scottmcreary" then -- special request for Scott McReary (lol)
+				country = "UK"
 			end
+			setElementData(source, "country", country)
 			
 			if tonumber(admin) == 0 then
 				adminduty = 0

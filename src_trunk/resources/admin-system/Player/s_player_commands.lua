@@ -1969,6 +1969,7 @@ function makePlayerDonator(thePlayer, commandName, target, level)
 					outputChatBox("You set " .. targetPlayerName .. " as a " .. levelString .. ".", targetPlayer, 0, 255, 0)
 					exports.global:sendMessageToAdmins("AdmCmd: " .. username .. " set " .. targetPlayerName .. " as a " .. levelString .. ".")
 					exports.irc:sendMessage("[ADMIN] " .. username .. " set " .. targetPlayerName .. " as a " .. levelString .. ".")
+					exports.global:updateNametagColor(targetPlayer)
 				end
 			end
 		end

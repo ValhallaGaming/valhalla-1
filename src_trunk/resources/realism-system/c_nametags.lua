@@ -14,17 +14,12 @@ local lasthp = { }
 local playerarmor = { }
 local lastarmor = { }
 
---local lastx = { }
---local lasty = { }
-
 function playerQuit()
 	if (getElementType(source)=="player") then
 		playerhp[source] = nil
 		lasthp[source] = nil
 		playerarmor[source] = nil
 		lastarmor[source] = nil
-		--lastx[source] = nil
-		--lasty[source] = nil
 	end
 end
 addEventHandler("onClientElementStreamOut", getRootElement(), playerQuit)
@@ -43,9 +38,6 @@ function streamIn()
 		
 		playerarmor[source] = getPedArmor(source)
 		lastarmor[source] = playerarmor[source]
-		
-		--lastx[source] = 0
-		--lasty[source] = 0
 	end
 end
 addEventHandler("onClientElementStreamIn", getRootElement(), streamIn)
@@ -83,7 +75,7 @@ function renderNametags()
 					lastarmor[player] = playerarmor[player]
 				end
 				
-				if (player~=localPlayer) and (isElementOnScreen(player)) and ((distance<limitdistance) or reconx) then
+				if (playera~=localPlayer) and (isElementOnScreen(player)) and ((distance<limitdistance) or reconx) then
 					if not getElementData(player, "reconx") and not getElementData(player, "freecam:state") then
 						--local lx, ly, lz = getPedBonePosition(localPlayer, 7)
 						local lx, ly, lz = getCameraMatrix()
@@ -104,39 +96,6 @@ function renderNametags()
 							local oldsy = nil
 							-- HP
 							if (sx) and (sy) then
-								--[[
-								-- screen smoothing
-								if not (lastx[player]) then
-									lastx[player] = sx
-								end
-								
-								if not (lasty[player]) then
-									lasty[player] = sy
-								end
-
-								
-								local change = 100
-								
-								
-								if not (lastrot) then
-									lastrot = rz
-								end
-								
-								local rz = getPedCameraRotation(localPlayer)
-								if (( sx <= lastx[player]+change ) and ( sy >= lasty[player]-change ) and not (isPlayerMoving(player))) and (math.ceil(lastrot) == math.ceil(rz)) then
-									lastrot = rz
-									
-									sx = lastx[player]
-									sy = lasty[player]
-								elseif (( sx <= lastx[player]+change ) and ( sy >= lasty[player]-change ) and (isPlayerMoving(player))) and (math.ceil(lastrot) == math.ceil(rz)) then
-									lastrot = rz
-									sx = lastx[player]
-									sy = lasty[player]
-								end
-								-- end of screen smoothing
-								]]--
-							
-								--if (isPedInVehicle(player)) then sy = sy - 50 end
 								
 								local health = math.ceil(lasthp[player])
 								if ( math.ceil(playerhp[player]) < health ) then
@@ -242,7 +201,7 @@ function renderNametags()
 									sy = sy - 50
 								elseif (distance<=1.5) then
 									sy = sy - 40
-									elseif (distance<=1.75) then
+								elseif (distance<=1.75) then
 									sy = sy - 30
 								else
 									sy = sy - 20
@@ -251,7 +210,7 @@ function renderNametags()
 								if (sx) and (sy) then
 									if (distance < 1) then distance = 1 end
 									if (distance > 2) then distance = 2 end
-									local offset = 65 / distance
+									local offset = 75 / distance
 									local scale = 0.6 / distance
 									local font = "bankgothic"
 									local r, g, b = getPlayerNametagColor(player)
@@ -259,6 +218,7 @@ function renderNametags()
 									dxDrawText(getPlayerNametagText(player), sx-offset, sy, (sx-offset)+130 / distance, sy+20 / distance, tocolor(r, g, b, 220), scale, font, "center", "middle", false, false, false)
 									
 									-- DRAW ids
+									local offset = 65 / distance
 									local id = getElementData(player, "playerid")
 									
 									if (id<100 and id>9) then -- 2 digits

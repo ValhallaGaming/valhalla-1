@@ -62,7 +62,7 @@ function showReports(thePlayer)
 		if count == 0 then
 			outputChatBox("None.", thePlayer, 255, 194, 15)
 		else
-			outputChatBox("Type /reportinfo [id] to obtain more information about the report.", thePlayer, 255, 194, 15)
+			outputChatBox("Type /ri [id] to obtain more information about the report.", thePlayer, 255, 194, 15)
 		end
 	end
 end
@@ -107,6 +107,7 @@ function reportInfo(thePlayer, commandName, id)
 	end
 end
 addCommandHandler("reportinfo", reportInfo, false, false)
+addCommandHandler("ri", reportInfo, false, false)
 
 function playerQuit()
 	local report = getElementData(source, "report")

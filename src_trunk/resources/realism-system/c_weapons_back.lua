@@ -29,7 +29,10 @@ addEventHandler("onClientPlayerWeaponSwitch", getRootElement(), weaponSwitch)
 function playerEntersVehicle(player)
 	if (weapons[player]) then
 		local object = weapons[player][1]
-		destroyElement(object)
+		
+		if (isElement(object)) then
+			destroyElement(object)
+		end
 	end
 end
 addEventHandler("onClientVehicleEnter", getRootElement(), playerEntersVehicle)
@@ -37,8 +40,11 @@ addEventHandler("onClientVehicleEnter", getRootElement(), playerEntersVehicle)
 function playerExitsVehicle(player)
 	if (weapons[player]) and getPedTotalAmmo(player, 5) > 0 then
 		local weapon = weapons[player][2]
-		weapons[player][1] = createModel(player, weapon)
-		weapons[player][3] = isPedDucked(player)
+		
+		if (weapon) then
+			weapons[player][1] = createModel(player, weapon)
+			weapons[player][3] = isPedDucked(player)
+		end
 	end
 end
 addEventHandler("onClientVehicleExit", getRootElement(), playerExitsVehicle)

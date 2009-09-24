@@ -11,4 +11,5 @@
 	<script src="tow_door3.lua" type="server"/>
 	<script src="Yakuza_gate2.lua" type="server"/>
 	<script src="EinsGate.lua" type="server"/>
+	<script src="ScottieMansion.lua" type="server"/>
 </meta>

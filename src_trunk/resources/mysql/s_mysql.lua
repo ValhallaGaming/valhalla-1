@@ -1,5 +1,5 @@
-username = "root"
-password = "rewt"
+username = "mta_dev"
+password = "asd0f7a7s9f3*6R^#"
 db = "mta"
 host = "localhost"
 port = 3306

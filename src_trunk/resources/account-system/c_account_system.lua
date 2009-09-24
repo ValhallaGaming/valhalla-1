@@ -1224,7 +1224,7 @@ function validateDetails()
 					
 					-- security information
 					local node = xmlCreateChild(theFile, "timestamp")
-					local timestamp = generateTimestamp(3)
+					local timestamp = generateTimestamp(7)
 					xmlNodeSetValue(node, tostring(timestamp))
 					
 					local node = xmlCreateChild(theFile, "timestamphash")

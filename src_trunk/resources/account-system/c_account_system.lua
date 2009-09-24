@@ -904,8 +904,21 @@ end
 
 triggerServerEvent("getSalt", getLocalPlayer())
 
-function storeSalt(theSalt, version)
-	sversion = version
+function generateTimestamp(daysAhead)
+	local time = getRealTime()
+	local year = time.year
+	local yearday = time.yearday + daysAhead
+	
+	if (yearday > 365) then
+		yearday = yearday - 365
+		year = year + 1
+	end
+
+	return yearday .. year
+end
+
+function storeSalt(theSalt, theIP)
+	ip = theIP
 	salt = theSalt
 	
 	createMainUI(getThisResource())
@@ -1031,46 +1044,77 @@ function createMainUI(res, isChangeAccount)
 			bForgot = guiCreateButton(0.25, 0.75, 0.5, 0.2, "Retrieve Details", true, tabForgot)
 			addEventHandler("onClientGUIClick", bForgot, retrieveDetails, false)
 			
-			-- LOAD SAVED USER INFO
+			-- LOAD SAVED USER INFO 
 			local xmlRoot = xmlLoadFile("vgrplogin.xml")
 			if (xmlRoot) then
 				local usernameNode = xmlFindChild(xmlRoot, "username", 0)
 				local passwordNode = xmlFindChild(xmlRoot, "password", 0)
 				local autologinNode = xmlFindChild(xmlRoot, "autologin", 0)
+				local timestampNode = xmlFindChild(xmlRoot, "timestamp", 0)
+				local timestamphashNode = xmlFindChild(xmlRoot, "timestamphash", 0)
+				local iphashNode = xmlFindChild(xmlRoot, "iphash", 0)
+				local uname = nil
 				
 				if (usernameNode) then
-					local uname = xmlNodeGetValue(usernameNode)
-					if (uname) and (uname~="") then
-						guiSetText(tLogUsername, tostring(uname))
-						guiCheckBoxSetSelected(chkRemember, true)
-					end
+					uname = xmlNodeGetValue(usernameNode)
 				end
 				
-				if (passwordNode) then
-					local pword = xmlNodeGetValue(passwordNode)
-					if (pword) and (pword~="") then
-						guiSetText(tLogPassword, tostring(pword))
-						guiCheckBoxSetSelected(chkRemember, true)
+				if (timestampNode and timestamphashNode and iphashNode) then -- no security information? no continuing.
+					local timestamp = xmlNodeGetValue(timestampNode)
+					local timestampHash = xmlNodeGetValue(timestamphashNode)
+					local ipHash = xmlNodeGetValue(iphashNode)
+					local currTimestamp = generateTimestamp(0)
+					
+					-- Split the current ip up
+					local octet1 = gettok(ip, 1, string.byte("."))
+					local octet2 = gettok(ip, 2, string.byte("."))
+					local hashedIP = md5(octet1 .. octet2 .. salt .. uname)
+					
+					if ( md5(timestamp .. salt) ~= timestampHash) then
+						outputChatBox("The login file stored on this computer has been modified externally.", 255, 0, 0)
+						guiCheckBoxSetSelected(chkAutoLogin, false)
+						showChat(true)
+					elseif ( ipHash ~= hashedIP ) then
+						outputChatBox("The login file on this computer does not belong to this computer.", 255, 0, 0)
+						guiCheckBoxSetSelected(chkAutoLogin, false)
+						showChat(true)
+					elseif ( currTimestamp >= timestamp ) then
+						outputChatBox("The login file stored on this computer has expired.", 255, 0, 0)
+						guiCheckBoxSetSelected(chkAutoLogin, false)
+						showChat(true)
 					else
-						guiSetEnabled(chkAutoLogin, false)
-					end
-				end
-				
-				if (autologinNode) then
-					local autolog = xmlNodeGetValue(autologinNode)
-					if (autolog) and (autolog=="1") then
+						if (uname) and (uname~="") then
+							guiSetText(tLogUsername, tostring(uname))
+							guiCheckBoxSetSelected(chkRemember, true)
+						end
 						
-						if(guiGetEnabled(chkAutoLogin)) then
-							guiCheckBoxSetSelected(chkAutoLogin, true)
-							if not (isChangeAccount) then
-								local vinfo = getVersion()
-								local operatingsystem = vinfo.os
-								triggerServerEvent("attemptLogin", getLocalPlayer(), guiGetText(tLogUsername), guiGetText(tLogPassword), operatingsystem) 
+						if (passwordNode) then
+							local pword = xmlNodeGetValue(passwordNode)
+							if (pword) and (pword~="") then
+								guiSetText(tLogPassword, tostring(pword))
+								guiCheckBoxSetSelected(chkRemember, true)
+							else
+								guiSetEnabled(chkAutoLogin, false)
 							end
 						end
+						
+						if (autologinNode) then
+							local autolog = xmlNodeGetValue(autologinNode)
+							if (autolog) and (autolog=="1") then
+								
+								if(guiGetEnabled(chkAutoLogin)) then
+									guiCheckBoxSetSelected(chkAutoLogin, true)
+									if not (isChangeAccount) then
+										local vinfo = getVersion()
+										local operatingsystem = vinfo.os
+										triggerServerEvent("attemptLogin", getLocalPlayer(), guiGetText(tLogUsername), guiGetText(tLogPassword), operatingsystem) 
+									end
+								end
+							end
+						else
+							guiCheckBoxSetSelected(chkAutoLogin, false)
+						end
 					end
-				else
-					guiCheckBoxSetSelected(chkAutoLogin, false)
 				end
 			end
 			
@@ -1177,6 +1221,21 @@ function validateDetails()
 					else
 						xmlNodeSetValue(node, tostring(0))
 					end
+					
+					-- security information
+					local node = xmlCreateChild(theFile, "timestamp")
+					local timestamp = generateTimestamp(3)
+					xmlNodeSetValue(node, tostring(timestamp))
+					
+					local node = xmlCreateChild(theFile, "timestamphash")
+					local timestamphash = md5(timestamp .. salt)
+					xmlNodeSetValue(node, tostring(timestamphash))
+					
+					local node = xmlCreateChild(theFile, "iphash")
+					local octet1 = gettok(ip, 1, string.byte("."))
+					local octet2 = gettok(ip, 2, string.byte("."))
+					local hashedIP = md5(octet1 .. octet2 .. salt .. tostring(username))
+					xmlNodeSetValue(node, tostring(hashedIP))
 				else
 					local node = xmlCreateChild(theFile, "username")
 					xmlNodeSetValue(node, "")
@@ -1186,6 +1245,15 @@ function validateDetails()
 					
 					local node = xmlCreateChild(theFile, "autologin")
 					xmlNodeSetValue(node, tostring(0))
+					
+					local node = xmlCreateChild(theFile, "timestamp")
+					xmlNodeSetValue(node, "")
+					
+					local node = xmlCreateChild(theFile, "timestamphash")
+					xmlNodeSetValue(node, "")
+					
+					local node = xmlCreateChild(theFile, "iphash")
+					xmlNodeSetValue(node, "")
 				end
 				xmlSaveFile(theFile)
 			end

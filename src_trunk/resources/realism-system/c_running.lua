@@ -13,6 +13,9 @@ addEventHandler( "onClientPreRender", getRootElement(),
 					toggleControl( 'sprint', false )
 					setTimer( toggleControl, 5000, 1, 'sprint', true )
 				end
+				
+				local health = getElementHealth(getLocalPlayer())
+				setElementHealth(getLocalPlayer(), health-5)
 			end
 			if not getControlState( "sprint" ) then
 				down = math.max( 0, down - slice )

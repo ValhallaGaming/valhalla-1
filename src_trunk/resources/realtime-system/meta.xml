@@ -3,6 +3,6 @@
 
 	<script src="s_realtime_system.lua" type="server" />
 	<settings>
-		<setting name="*offset" value="[8]"/>
+		<setting name="*offset" value="[-1]"/>
 	</settings>
 </meta>

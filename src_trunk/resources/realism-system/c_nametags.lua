@@ -75,7 +75,7 @@ function renderNametags()
 					lastarmor[player] = playerarmor[player]
 				end
 				
-				if (playera~=localPlayer) and (isElementOnScreen(player)) and ((distance<limitdistance) or reconx) then
+				if (player~=localPlayer) and (isElementOnScreen(player)) and ((distance<limitdistance) or reconx) then
 					if not getElementData(player, "reconx") and not getElementData(player, "freecam:state") then
 						--local lx, ly, lz = getPedBonePosition(localPlayer, 7)
 						local lx, ly, lz = getCameraMatrix()

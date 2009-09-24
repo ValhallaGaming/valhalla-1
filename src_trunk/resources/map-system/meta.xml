@@ -4,6 +4,7 @@
 	<script src="Church Int.lua" type="client"/>
 	<script src="falcone map.lua" type="client"/>
 	<script src="Hospital Int.lua" type="client"/>
+	<script src="Impound.lua" type="client"/>
 	<script src="Jefferson Interior Doors.lua" type="client"/>
 	<script src="LS Harbor.lua" type="client"/>
 	<script src="LVMPD.lua" type="client"/>
@@ -20,7 +21,4 @@
 	<script src="Prison Int Cells.lua" type="client"/>
 	<script src="Prison Int Rec.lua" type="client"/>
 	<script src="Pershing_Square.lua" type="client"/>
-
-	
-	<script src="beachpartyTEMP.lua" type="client"/>
 </meta>

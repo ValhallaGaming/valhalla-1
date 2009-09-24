@@ -69,7 +69,7 @@ function createInterior(thePlayer, commandName, interiorId, inttype, cost, ...)
 				local max_items = interior[6]
 				
 				local rot = getPedRotation(thePlayer)
-				local query = mysql_query(handler, "INSERT INTO interiors SET x='" .. x .. "', y='" .. y .."', z='" .. z .."', type='" .. inttype .. "', owner='" .. owner .. "', locked='" .. locked .. "', cost='" .. cost .. "', name='" .. name .. "', interior='" .. interiorw .. "', interiorx='" .. ix .. "', interiory='" .. iy .. "', interiorz='" .. iz .. "', dimensionwithin='" .. dimension .. "', interiorwithin='" .. interiorwithin .. "', angle='" .. optAngle .. "', angleexit='" .. rot .. "', max_items='" .. max_items .. "', fee=0")
+				local query = mysql_query(handler, "INSERT INTO interiors SET x='" .. x .. "', y='" .. y .."', z='" .. z .."', type='" .. inttype .. "', owner='" .. owner .. "', locked='" .. locked .. "', cost='" .. cost .. "', name='" .. mysql_escape_string(handler, name) .. "', interior='" .. interiorw .. "', interiorx='" .. ix .. "', interiory='" .. iy .. "', interiorz='" .. iz .. "', dimensionwithin='" .. dimension .. "', interiorwithin='" .. interiorwithin .. "', angle='" .. optAngle .. "', angleexit='" .. rot .. "', max_items='" .. max_items .. "', fee=0")
 				
 				if (query) then
 					local id = mysql_insert_id(handler) -- Get the ID of the latest insert
@@ -877,7 +877,7 @@ function changeInteriorName( thePlayer, commandName, ...)
 		else
 			name = table.concat({...}, " ")
 		
-			local query = mysql_query(handler, "UPDATE interiors SET name='" .. name .. "' WHERE id='" .. id .. "'") -- Update the name in the sql.
+			local query = mysql_query(handler, "UPDATE interiors SET name='" .. mysql_escape_string(handler, name) .. "' WHERE id='" .. id .. "'") -- Update the name in the sql.
 			mysql_free_result(query)
 			outputChatBox("Interior name changed to ".. name ..".", thePlayer, 0, 255, 0) -- Output confirmation.
 			
